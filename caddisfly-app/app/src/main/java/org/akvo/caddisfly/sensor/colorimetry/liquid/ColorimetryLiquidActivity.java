@@ -38,7 +38,7 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.util.SparseArray;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -80,10 +80,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import timber.log.Timber;
+
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_180;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_270;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_90;
 
+/**
+ * The activity where the test chamber type test is conducted.
+ */
 @SuppressWarnings("deprecation")
 public class ColorimetryLiquidActivity extends BaseActivity
         implements ResultDialogFragment.ResultDialogListener,
@@ -91,8 +96,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
         CameraDialog.Cancelled {
 
     private static final String EMPTY_STRING = "";
+    private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
     private static final String RESULT_DIALOG_TAG = "resultDialog";
-    private static final String TAG = "ColorLiquidActivity";
     private static final int RESULT_RESTART_TEST = 3;
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final int MAX_SHAKE_DURATION_2 = 3000;
@@ -145,7 +150,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         super.onPostCreate(savedInstanceState);
         if (mIsCalibration && getSupportActionBar() != null) {
             String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
-                    getResources().getString(R.string.calibrate),
+                    getString(R.string.calibrate),
                     mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
             textDilution.setText(subTitle);
         }
@@ -173,6 +178,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
+
             @Override
             public void onShake() {
                 if ((mIgnoreShake) || mWaitingForStillness || mCameraFragment == null) {
@@ -185,7 +191,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 mWaitingForStillness = true;
 
-                showError(getString(R.string.errorTestInterrupted), null);
+                showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestInterrupted),
+                        getString(R.string.doNotMoveDeviceDuringTest)), null);
             }
         }, new ShakeDetector.OnNoShakeListener() {
             @Override
@@ -226,7 +233,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Acquire a wake lock to prevent the screen from turning off during the analysis process
+     * Acquire a wake lock to prevent the screen from turning off during the analysis process.
      */
     private void acquireWakeLock() {
         if (wakeLock == null || !wakeLock.isHeld()) {
@@ -241,7 +248,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Start the test by displaying the partial_progress bar
+     * Start the test by displaying the partial_progress bar.
      */
     private void dismissShakeAndStartTest() {
         mSensorManager.unregisterListener(mShakeDetector);
@@ -250,7 +257,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Show an error message dialog
+     * Show an error message dialog.
      *
      * @param message the message to be displayed
      * @param bitmap  any bitmap image to displayed along with error message
@@ -271,6 +278,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         releaseResources();
                         setResult(Activity.RESULT_CANCELED);
                         finish();
@@ -280,7 +288,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * In diagnostic mode show the diagnostic results dialog
+     * In diagnostic mode show the diagnostic results dialog.
      *
      * @param testFailed    if test has failed then dialog knows to show the retry button
      * @param result        the result shown to the user
@@ -350,23 +358,24 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Display error message for configuration not loading correctly
+     * Display error message for configuration not loading correctly.
      */
     private void alertCouldNotLoadConfig() {
-        String message = String.format("%s%n%n%s",
+        String message = String.format(TWO_SENTENCE_FORMAT,
                 getString(R.string.errorLoadingConfiguration),
                 getString(R.string.pleaseContactSupport));
         AlertUtil.showError(this, R.string.error, message, null, R.string.ok,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                         finish();
                     }
                 }, null, null);
     }
 
     /**
-     * Get the test result by analyzing the bitmap
+     * Get the test result by analyzing the bitmap.
      *
      * @param bitmap the bitmap of the photo taken during analysis
      */
@@ -415,7 +424,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 results.add(SwatchHelper.analyzeColor(3, photoColor, swatches, ColorUtil.ColorModel.RGB));
 
             } catch (CloneNotSupportedException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
 
             //use all the swatches for an all steps analysis
@@ -506,7 +515,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
                             } else {
-                                showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(bytes));
+                                showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.chamberNotFound),
+                                        getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(bytes));
                                 mCameraFragment.stopCamera();
                                 mCameraFragment.dismiss();
                                 return;
@@ -539,7 +549,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
                                     ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
                         } catch (Exception e) {
-                            Log.e(TAG, e.getMessage(), e);
+                            Timber.e(e);
                             finish();
                         }
                     }
@@ -552,7 +562,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     }
 
     /**
-     * Analyze the result and display the appropriate success/fail message
+     * Analyze the result and display the appropriate success/fail message.
      * <p/>
      * If the result value is too high then display the high contamination level message
      *
@@ -565,7 +575,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         if (mResults.size() == 0) {
             // Analysis failed. Display error
-            showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
+            showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.chamberNotFound),
+                    getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
         } else {
 
             mTestCompleted = true;
@@ -651,14 +662,16 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     showDiagnosticResultDialog(true, EMPTY_STRING, color, mIsCalibration);
                 } else {
                     if (mIsCalibration) {
-                        showError(getString(R.string.chamberNotFound), ImageUtil.getBitmap(data));
+                        showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.chamberNotFound),
+                                getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
                         PreferencesUtil.setInt(this, R.string.totalFailedCalibrationsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedCalibrationsKey, 0) + 1);
                     } else {
                         PreferencesUtil.setInt(this, R.string.totalFailedTestsKey,
                                 PreferencesUtil.getInt(this, R.string.totalFailedTestsKey, 0) + 1);
 
-                        showError(getString(R.string.errorTestFailed), ImageUtil.getBitmap(data));
+                        showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestFailed),
+                                getString(R.string.checkChamberPlacement)), ImageUtil.getBitmap(data));
                     }
                 }
             } else {
@@ -774,10 +787,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 resultIntent.putExtra(SensorConstants.IMAGE, path);
             }
 
-            ArrayList<String> results = new ArrayList<>();
-            results.add(resultText);
-
             TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+            SparseArray<String> results = new SparseArray<>();
+            results.put(testInfo.getSubTests().get(0).getId(), resultText);
+
             JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color,
                     resultImageUrl, null);
 
@@ -810,10 +824,9 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

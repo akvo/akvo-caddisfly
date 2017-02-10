@@ -19,10 +19,6 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.model;
 
-import android.content.Context;
-import android.util.Log;
-
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -38,12 +34,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
- * Created by linda on 8/19/15
+ * Holds information about the test.
  */
 public class StripTest {
-
-    private static final String TAG = "StripTest";
 
     private static final String TESTS = "tests";
 
@@ -116,7 +112,7 @@ public class StripTest {
                     return stripTests;
                 }
             } catch (JSONException e) {
-                Log.e(TAG, e.getMessage());
+                Timber.e(e);
             }
         } else {
             return stripTests;
@@ -125,7 +121,7 @@ public class StripTest {
         return null;
     }
 
-    public List<Brand> getBrandsAsList(Context context) {
+    public List<Brand> getBrandsAsList() {
 
         StripTest.clearStripTests();
         List<Brand> brandNames = new ArrayList<>();
@@ -144,7 +140,7 @@ public class StripTest {
                         continue;
                     }
 
-                    brandNames.add(getBrand(context, strip.getString(SensorConstants.UUID)));
+                    brandNames.add(getBrand(strip.getString(SensorConstants.UUID)));
                 }
             }
 
@@ -154,12 +150,12 @@ public class StripTest {
         return brandNames;
     }
 
-    public Brand getBrand(Context context, String uuid) {
-        return new Brand(context, uuid);
+    public Brand getBrand(String uuid) {
+        return new Brand(uuid);
     }
 
-    public int getPatchCount(Context context, String uuid) {
-        return getBrand(context, uuid).getPatches().size();
+    public int getPatchCount(String uuid) {
+        return getBrand(uuid).getPatches().size();
     }
 
     public enum GroupType {
@@ -178,7 +174,7 @@ public class StripTest {
         private GroupType groupingType;
         private JSONArray instructions;
 
-        Brand(Context context, String uuid) {
+        Brand(String uuid) {
 
             this.uuid = uuid;
             try {
@@ -190,7 +186,7 @@ public class StripTest {
                     JSONObject strip;
 
                     JSONObject instructionObj = new JSONObject(AssetsManager.getInstance()
-                            .loadJSONFromAsset(context.getString(R.string.strips_instruction_json)));
+                            .loadJSONFromAsset("strips-instruction.json"));
                     JSONArray instructionsJson = instructionObj.getJSONArray(TESTS);
 
                     for (int i = 0; i < stripsJson.length(); i++) {
@@ -228,20 +224,18 @@ public class StripTest {
 
                                     JSONObject patchObj = patchesArray.getJSONObject(ii);
 
-                                    String patchName = patchObj.getString("name");
-                                    double patchPos = patchObj.getDouble("patchPos");
                                     int id = patchObj.getInt("id");
-                                    int patchWidth = patchObj.getInt("patchWidth");
-                                    double timeLapse = patchObj.getDouble("timeLapse");
+                                    String patchName = patchObj.getString("name");
                                     String unit = patchObj.getString("unit");
-                                    JSONArray colors;
-                                    if (patchObj.has("colours")) {
-                                        colors = patchObj.getJSONArray("colours");
-                                    } else {
-                                        colors = patchObj.getJSONArray("colors");
-                                    }
+                                    String formula = patchObj.has("formula") ? patchObj.getString("formula") : "";
+                                    double patchPos = patchObj.has("patchPos") ? patchObj.getDouble("patchPos") : 0;
+                                    int patchWidth = patchObj.has("patchWidth") ? patchObj.getInt("patchWidth") : 0;
+                                    double timeLapse = patchObj.has("timeLapse") ? patchObj.getDouble("timeLapse") : 0;
+                                    JSONArray colors = patchObj.has("colors") ? patchObj.getJSONArray("colors") : new JSONArray();
+                                    int phase = patchObj.has("phase") ? patchObj.getInt("phase") : 1;
 
-                                    patches.add(new Patch(id, patchName, patchWidth, 0, patchPos, timeLapse, unit, colors));
+                                    patches.add(new Patch(id, patchName, patchWidth, 0, patchPos,
+                                            timeLapse, unit, formula, colors, phase));
                                 }
 
                                 switch (groupingType) {
@@ -256,6 +250,7 @@ public class StripTest {
                                         });
                                         break;
                                     case INDIVIDUAL:
+                                    default:
                                         // sort by time delay for analyzing each patch
                                         Collections.sort(patches, new Comparator<Patch>() {
                                             @Override
@@ -267,7 +262,7 @@ public class StripTest {
                                 }
 
                             } catch (JSONException e) {
-                                Log.e(TAG, e.getMessage(), e);
+                                Timber.e(e);
                             }
                             break;
                         }
@@ -275,7 +270,7 @@ public class StripTest {
                 }
 
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
         }
 
@@ -343,10 +338,12 @@ public class StripTest {
             private final String unit;
 
             private final JSONArray colors;
+            private final int phase;
+            private final String formula;
 
             @SuppressWarnings("SameParameterValue")
             Patch(int id, String desc, double width, double height, double position,
-                  double timeLapse, String unit, JSONArray colors) {
+                  double timeLapse, String unit, String formula, JSONArray colors, int phase) {
                 this.id = id;
                 this.desc = desc;
                 this.width = width;
@@ -355,6 +352,8 @@ public class StripTest {
                 this.timeLapse = timeLapse;
                 this.unit = unit;
                 this.colors = colors;
+                this.phase = phase;
+                this.formula = formula;
             }
 
             public int getId() {
@@ -387,6 +386,14 @@ public class StripTest {
 
             public double getWidth() {
                 return width;
+            }
+
+            public int getPhase() {
+                return phase;
+            }
+
+            public String getFormula() {
+                return formula;
             }
         }
     }

@@ -33,6 +33,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.TestConstant;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -70,6 +71,7 @@ import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.startsWith;
 
+@SuppressWarnings("PMD.NcssMethodCount")
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class NavigationTest {
@@ -125,6 +127,8 @@ public class NavigationTest {
         takeScreenshot();
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        mDevice.waitForWindowUpdate("", 1000);
 
         //About Screen
         takeScreenshot();
@@ -253,7 +257,7 @@ public class NavigationTest {
             //EC not found dialog
             takeScreenshot();
 
-            onView(withId(android.R.id.button2)).perform(click());
+            onView(withId(android.R.id.button1)).perform(click());
 
         } catch (Exception ex) {
             String message = String.format("%s\r\n\r\n%s", mActivityRule.getActivity().getString(R.string.phoneDoesNotSupport),
@@ -292,37 +296,50 @@ public class NavigationTest {
 
         gotoSurveyForm();
 
-        //clickExternalSourceButton("next");
+        clickExternalSourceButton(1);
 
-//        clickExternalSourceButton("useExternalSource", 0);
-//
 //        //Calibration incomplete
-//        takeScreenshot();
+        takeScreenshot();
 //
-//        onView(withId(android.R.id.button2)).perform(click());
+        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
-        //EC
-        //clickExternalSourceButton(1);
+        onView(withId(android.R.id.button2)).perform(click());
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(0);
 
         //Connect EC Sensor Screen
-        //takeScreenshot();
+        takeScreenshot();
 
-        //mDevice.pressBack();
+        mDevice.pressBack();
 
-        //pH
-//        clickExternalSourceButton(2);
+        // SEC
+        clickExternalSourceButton(1);
+
+        mDevice.pressBack();
+
+        // Soil Moisture
+        clickExternalSourceButton(2);
+
+        mDevice.pressBack();
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        //Phosphate
+        clickExternalSourceButton(0);
+
+        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
 
         //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         //onView(withText(R.string.ok)).perform(click());
 
         mDevice.pressBack();
-
-        //Caffeine
-        //clickExternalSourceButton(3);
-
-        //Test type not available
-        //takeScreenshot();
 
         //mDevice.pressBack();
         //onView(withId(android.R.id.button1)).perform(click());

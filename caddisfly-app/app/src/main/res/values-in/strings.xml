@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly.
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Common-->
+    <string name="ok">OK</string>
+    <string name="retry">Coba lagi</string>
+    <string name="cancel">Batalkan</string>
+    <string name="start">Mulai</string>
+    <string name="delete">Hapus</string>
+    <string name="error">Ada kesalahan</string>
+    <string name="general">Umum</string>
+    <string name="other">Lainnya</string>
+    <string name="save">Simpan</string>
+    <string name="load">Memuat</string>
+    <string name="swatches">Contoh</string>
+    <string name="calibrate">Kalibrasi</string>
+    <string name="calibrated">Sudah terkalibrasi</string>
+    <string name="calibrating">Sedang proses kalibrasi</string>
+    <string name="settings">Pengaturan</string>
+    <string name="about">Tentang</string>
+    <string name="name">Nama</string>
+    <string name="version">Versi</string>
+    <string name="deleted">Terhapus</string>
+    <string name="required">Wajib</string>
+    <string name="survey">Survei</string>
+    <string name="expires">Berakhir</string>
+    <string name="success" tools:ignore="UnusedResources">Sukses</string>
+    <string name="done" tools:ignore="UnusedResources">Selesai</string>
+    <string name="result">Hasil</string>
+    <string name="warning">Peringatan</string>
+    <string name="pleaseWait">Mohon tunggu..</string>
+    <string name="language">Bahasa</string>
+    <string name="notSupported">Tidak mendukung</string>
+    <string name="cameraBusy">Kamera Sibuk</string>
+    <!--External-->
+    <string name="sensor">Sensor</string>
+    <string name="sensors">Sensor-sensor</string>
+    <!--Calibration Screen-->
+    <string name="calibrationIsInvalid">Kalibrasi tidak benar</string>
+    <string name="tryRecalibrating">Mencoba kalibrasi</string>
+    <string name="reagentExpiry">Kadaluarsa bahan reaksi</string>
+    <string name="reagentBatch">Tumpukan bahan reaksi</string>
+    <string name="rgb_example_value">RGB (misal: 255.255.255)</string>
+    <string name="expired">Telah kadaluarsa</string>
+    <!--Dilution Selection Dialog-->
+    <string name="dilution">Pengenceran</string>
+    <string name="selectDilution">Pilih jumlah pengenceran</string>
+    <string name="noDilution">Tidak ada pengenceran</string>
+    <string name="timesDilution" tools:ignore="PluralsCandidate">%1$d kali pengenceran</string>
+    <!--Sensor Details Screen-->
+    <string name="deviceConnecting">Menghubungkan ke Perangkat</string>
+    <string name="acceptResult">Menerima hasil</string>
+    <!--EC Sensor Calibration-->
+    <string name="deviceConnectSensor">Menghubungkan sensor</string>
+    <string name="calibratePoint">Kalibrasi %.0f μS/cm</string>
+    <string name="calibrationSuccessful">Kalibrasi Sukses</string>
+    <string name="sensorCalibrated">Sensor EC telah dikalibrasi</string>
+    <string name="celsius">°Celsius</string>
+    <string name="sensorConnected">Sensor telah terhubung</string>
+    <string name="dipSensorInSample">Celup sensor dalam sampel</string>
+    <!--About Screen-->
+    <string name="waterQualitySystem">Sistem kualitas Air &amp; Tanah</string>
+    <string name="copyrightMessage">Hak Cipta © Stichting Akvo</string>
+    <string name="legalInformation">Informasi Hukum</string>
+    <string name="selectTest">Pilih uji coba</string>
+    <string name="calibrationDetails">Detail Kalibrasi</string>
+    <string name="customTests">Penyesuaian uji coba</string>
+    <string name="deviceConnected">Perangkat terhubung</string>
+    <string name="go">Mulai</string>
+    <string name="next">Selanjutnya</string>
+    <string name="saving">Menyimpan</string>
+    <string name="sensorDetails">Detail Sensor</string>
+    <string name="verifySensorDetails">Verifikasi detail sensor</string>
+    <string name="enterAnIdForSensor">Masukan identitas untuk sensor ini</string>
+    <string name="ecSensorId">Identitas Sensor EC</string>
+    <string name="testWithDilution">Uji coba dengan Pengenceran</string>
+    <!--StripTest-->
+    <string name="brightness">Tingkat kecerahan</string>
+    <string name="instructions">Instruksi</string>
+    <string name="shadows">Bayangan</string>
+    <string name="prepare_test">Mempersiapkan uji coba</string>
+    <string name="taking_photo">Mengambil foto</string>
+    <string name="waiting_for">Menunggu selama %s</string>
+    <string name="success_quality_checks">Sukses ! Pemeriksaan kualitas terlewati</string>
+    <string name="stage_one">Tahap 1:</string>
+    <string name="stage_two">Tahap 2:</string>
+    <string name="prepareForCalibration">Persiapkan kalibrasi</string>
+    <string name="stripTest">Uji Coba Kepingan</string>
+    <string name="no_result">Tidak ada hasil</string>
+    <string name="continue_anyway">Lanjutkan saja</string>
+    <string name="just_a_moment">Tunggu sebentar…</string>
+    <string name="checking_quality">Memeriksa kualitas cahaya</string>
+    <string name="seconds">Detik</string>
+    <string name="detecting_color_card">Mencari kartu warna</string>
+    <string name="ready_for_photo">Siap untuk mengambil foto</string>
+    <string name="do_not_show_again">Jangan tampilkan lagi</string>
+    <string name="stop_test">Hentikan uji coba</string>
+    <string name="noData">Tidak ada data</string>
+    <!--Alerts-->
+    <string name="errorAkvoFlowRequired">Mohon pasang aplikasi Akvo Flow</string>
+    <string name="cannotStartTest">Tidak dapat memulai uji coba</string>
+    <string name="errorTestNotAvailable">Uji coba yang diminta tidak tersedia</string>
+    <string name="pleaseContactSupport">Mohon hubungi bantuan teknisi</string>
+    <!--Permission-->
+    <string name="storagePermission">Dibutuhkan perizinan mengatur penyimpanan</string>
+    <string name="cameraAndStoragePermissions">Dibutuhkan perizinan kamera &amp; penyimpanan</string>
+    <!--Sensor-->
+    <string name="incorrectDevice">Perangkat salah</string>
+    <string name="expectedDeviceNotFound">Sensor yang diharapkan tidak ditemukan.</string>
+  <string name="connectCorrectSensor">
+    <Data><![CDATA[Sambung ke <b>%s</b> sensor.]]></Data>
+  </string>
+    <!--Messages-->
+    <string name="phoneDoesNotSupport">Perangkat ini tidak mendukung fitur ini</string>
+    <string name="cannotUseCamera">Tidak dapat menggunakan kamera. Pastikan lamou kamera mati dan tutup semua aplikasi yang menggunakan kamera</string>
+    <string name="cameraNotAvailable">Kamera tidak tersedia</string>
+    <string name="cameraRequired">Kamera hadap belakang dibutuhkan untuk analisa ukuran warna</string>
+    <string name="tryRestarting">Jika masalah terus muncul, mohon matikan dan nyalakan kembali perangkat ini</string>
+    <string name="cannotCalibrate">Tidak dapat mengkalibrasi</string>
+    <string name="errorCameraFlashRequired">Lampu kamera tidak dapat ditemukan dalam perangkat ini</string>
+    <string name="errorCalibrationIncomplete">Kalibrasi untuk %1$s tidak selesai</string>
+    <string name="doYouWantToCalibrate">Apakah Anda ingin kalibrasi sekarang?</string>
+    <!--Calibration Screen-->
+    <string name="errorLoadingConfiguration">Tidak dapat memuat informasi konfigurasi</string>
+    <string name="calibrateWithNewReagent">Kalibrasi ulang dengan bahan reaksi baru</string>
+    <!--Test Progress Screen-->
+    <string name="placeDevice">Tempatkan perangkat menghadap bawah pada permukaan datar</string>
+    <string name="errorTestInterrupted">Uji coba terganggu</string>
+    <string name="doNotMoveDeviceDuringTest">Dilarang menggerakan handphone ketika uji coba berlangsung</string>
+    <string name="errorTestFailed">Warna tidak cocok warna kalibrasi manapun.</string>
+    <string name="chamberNotFound">Tidak dapat menyelesaikan uji coba</string>
+    <string name="checkChamberPlacement">Periksa ruang telah ditempatkan dengan baik.</string>
+    <!--Result Screen-->
+    <string name="highLevelsFound">Kontaminasi level tinggi</string>
+    <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Coba lagi dengan %1$d kali pengenceran</string>
+    <!--EC Sensor Calibration-->
+    <string name="incorrectCalibrationCanAffect">Kalibrasi yang salah akan mempengaruhi kelayakan fungsi sensor</string>
+    <string name="sensorNotFound">Sensor tidak ditemukan</string>
+    <string name="cleanTheEcSensor">Bersihkan Sensor EC dengan benar</string>
+    <string name="getEcSolutionReady">Persiapkan %.0f μS/cm cairan EC</string>
+    <string name="dipEcSensorInSolution">Celupkan Sensor EC dalam cairan lalu tekan mulai</string>
+    <string name="errorCalibrationExpired">Kalibrasi telah melampaui batas kadaluarsa bahan reaksi</string>
+    <string name="orderFreshBatch">Mohon menggunakan bahan reaksi yang baru dan kalibrasi ulang</string>
+    <string name="highLevelRecommendation">Dikarenakan kontaminasi level tinggi, direkomendasikan untuk uji coba dengan pengenceran</string>
+    <!--StripTest-->
+    <string name="error_calibrating">Kalibrasi gagal</string>
+    <string name="error_conversion">Tidak dapat mengkonversi gambar</string>
+    <string name="error_cut_out_strip">Tidak ditemukan kepingan</string>
+    <string name="error_no_finder_pattern_info">Tidak ada informasi tentang penemuan pola</string>
+    <string name="no_data">Tidak ada data untuk tempelan</string>
+    <string name="start_camera_instruction">Tempatkan kepingan di area hitam pada kartu warna dan tahan kamera handphone diatas kartu warna untuk memulai proses analisa</string>
+    <string name="prepare_camera_instruction">Jangan mengambil sampel dahulu. Tahan kamera diatas kartu warna dan sesuaikan posisi sampai proses pemeriksaan sukses.</string>
+    <string name="you_can_set_phone_aside">Anda dapat menggerakan handphone sampai proses hitung mundur mencapai warna hijau</string>
+    <string name="prepareSolutionsForCalibration">Persiapkan 6 solusi dengan menggunakan nilai EC ini</string>
+    <string name="camera_not_good">Kamera tidak memenuhi untuk persyaratan minimal.\n\nUntuk hasil terbaik, setidaknya gunakan kamera dengan resolusi 8 megapixel</string>
+    <string name="qualityCheckFailed">Pemeriksaan kualitas gagal</string>
+    <string name="tryTestingInAWellLitArea">Tempatkan kartu warna di area dengan pencahayaan yang baik dan tidak ada bayangan dan coba lagi.</string>
+    <string name="shadows_detected">Terdeteksi bayangan/pantulan</string>
+    <string name="better_light_required">Dibutuhkan pencahayaan yang lebih baik</string>
+    <string name="color_card_not_found">Kartu warna tidak dapat ditemukan</string>
+</resources>

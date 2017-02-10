@@ -20,8 +20,9 @@
 package org.akvo.caddisfly.helper;
 
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.util.Log;
+import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -45,15 +46,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import timber.log.Timber;
+
+import static org.akvo.caddisfly.sensor.SensorConstants.DEPRECATED_TESTS_FILENAME;
+
 /**
- * Utility functions to parse a text config json text
+ * Utility functions to parse a text config json text.
  */
 public final class TestConfigHelper {
 
-    private static final String TAG = "TestConfigHelper";
-
     // Files
-    private static final String CONFIG_FILE = "tests.json";
     private static final int DEFAULT_MONTHS_VALID = 6;
     private static final int BIT_MASK = 0x00FFFFFF;
 
@@ -61,7 +63,7 @@ public final class TestConfigHelper {
     }
 
     /**
-     * Returns a TestInfo instance filled with test config for the given uuid
+     * Returns a TestInfo instance filled with test config for the given uuid.
      *
      * @param uuid the test uuid
      * @return the TestInfo instance
@@ -70,14 +72,19 @@ public final class TestConfigHelper {
 
         if (uuid != null && !uuid.isEmpty()) {
 
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 3; i++) {
 
                 String jsonText;
                 switch (i) {
                     case 1:
                         // Load any custom tests from the custom test config file
-                        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
+                        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
+                                SensorConstants.TESTS_META_FILENAME);
                         jsonText = FileUtil.loadTextFromFile(file);
+                        break;
+                    case 2:
+                        // Load any experimental tests if app is in diagnostic mode
+                        jsonText = AssetsManager.getInstance().loadJSONFromAsset(DEPRECATED_TESTS_FILENAME);
                         break;
                     default:
                         // Load the pre-configured tests from the app
@@ -95,7 +102,7 @@ public final class TestConfigHelper {
                     }
 
                 } catch (JSONException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
 
             }
@@ -104,7 +111,7 @@ public final class TestConfigHelper {
     }
 
     /**
-     * Load all the tests and their configurations from the json config text
+     * Load all the tests and their configurations from the json config text.
      *
      * @return ArrayList of TestInfo instances filled with config
      */
@@ -115,11 +122,14 @@ public final class TestConfigHelper {
         // Load the pre-configured tests from the app
         loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME), -1);
 
+        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset(DEPRECATED_TESTS_FILENAME), -1);
+
         // Load any custom tests from the custom test config file
-        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), CONFIG_FILE);
+        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG), SensorConstants.TESTS_META_FILENAME);
         if (file.exists()) {
             loadTests(tests, FileUtil.loadTextFromFile(file), R.string.customTests);
         }
+
 
         return tests;
     }
@@ -155,7 +165,7 @@ public final class TestConfigHelper {
                     tests.add(testInfo);
 
                 } catch (JSONException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
 
@@ -169,7 +179,7 @@ public final class TestConfigHelper {
             }
 
         } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
 
     }
@@ -238,8 +248,6 @@ public final class TestConfigHelper {
             testInfo = new TestInfo(name, type, rangesArray,
                     defaultColorsArray, dilutionsArray, uuid, resultsArray);
 
-            testInfo.setShortCode(item.has(SensorConstants.SHORT_CODE) ? item.getString(SensorConstants.SHORT_CODE) : "");
-
             testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
 
             testInfo.setDeviceId(item.has("deviceId") ? item.getString("deviceId") : "Unknown");
@@ -253,14 +261,25 @@ public final class TestConfigHelper {
             //if calibrate not specified then default to false otherwise use specified value
             testInfo.setRequiresCalibration(item.has("calibrate") && item.getBoolean("calibrate"));
 
+            testInfo.setIsDeprecated(item.has("deprecated") && item.getBoolean("deprecated"));
+
         } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
 
         return testInfo;
     }
 
-    public static JSONObject getJsonResult(TestInfo testInfo, List<String> results, int color,
+    /**
+     * Creates the json result containing the results for test.
+     * @param testInfo information about the test
+     * @param results the results for the test
+     * @param color the color extracted
+     * @param resultImageUrl the url of the image
+     * @param groupingType type of grouping
+     * @return the result in json format
+     */
+    public static JSONObject getJsonResult(TestInfo testInfo, SparseArray<String> results, int color,
                                            String resultImageUrl, StripTest.GroupType groupingType) {
 
         JSONObject resultJson = new JSONObject();
@@ -281,7 +300,7 @@ public final class TestConfigHelper {
 
                 // If a result exists for the sub test id then add it
                 if (results.size() >= subTest.getId()) {
-                    subTestJson.put(SensorConstants.VALUE, results.get(subTest.getId() - 1));
+                    subTestJson.put(SensorConstants.VALUE, results.get(subTest.getId()));
                 }
 
                 if (color > -1) {
@@ -326,7 +345,7 @@ public final class TestConfigHelper {
             resultJson.put(SensorConstants.DEVICE, TestConfigHelper.getDeviceDetails());
 
         } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
         return resultJson;
     }
@@ -359,7 +378,7 @@ public final class TestConfigHelper {
     }
 
     /**
-     * Returns a Uuid for the given shortCode
+     * Returns a Uuid for the given shortCode.
      *
      * @param shortCode the test shortCode
      * @return the Uuid
@@ -368,22 +387,31 @@ public final class TestConfigHelper {
     public static String getUuidFromShortCode(String shortCode) {
 
         if (!shortCode.isEmpty()) {
-
-            // Load the pre-configured tests from the app
-            String jsonText = AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME);
-            try {
-                JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
-                for (int i = 0; i < array.length(); i++) {
-                    JSONObject item = array.getJSONObject(i);
-                    if (item.has(SensorConstants.SHORT_CODE)
-                            && shortCode.equalsIgnoreCase(item.getString(SensorConstants.SHORT_CODE))) {
-                        return item.getString(SensorConstants.UUID);
-                    }
-                }
-
-            } catch (JSONException e) {
-                Log.e(TAG, e.getMessage(), e);
+            String uuid = getUuidByShortCode(shortCode, SensorConstants.TESTS_META_FILENAME);
+            if (uuid == null) {
+                uuid = getUuidByShortCode(shortCode, DEPRECATED_TESTS_FILENAME);
             }
+            return uuid;
+        }
+        return null;
+    }
+
+    @Nullable
+    private static String getUuidByShortCode(String shortCode, String filename) {
+        // Load the pre-configured tests from the app
+        String jsonText = AssetsManager.getInstance().loadJSONFromAsset(filename);
+        try {
+            JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject item = array.getJSONObject(i);
+                if (item.has(SensorConstants.SHORT_CODE)
+                        && shortCode.equalsIgnoreCase(item.getString(SensorConstants.SHORT_CODE))) {
+                    return item.getString(SensorConstants.UUID);
+                }
+            }
+
+        } catch (JSONException e) {
+            Timber.e(e);
         }
         return null;
     }

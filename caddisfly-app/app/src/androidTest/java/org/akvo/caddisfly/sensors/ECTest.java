@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.sensors;
 
-
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -38,7 +37,6 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.ToastMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -126,59 +124,63 @@ public class ECTest {
                         isDisplayed()));
         appCompatButton2.perform(click());
 
+        onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest))).check(matches(isDisplayed()));
+
         ViewInteraction relativeLayout = onView(
-                allOf(childAtPosition(
-                        withId(R.id.list_types),
-                        2),
-                        isDisplayed()));
-        relativeLayout.perform(click());
-
-        SystemClock.sleep(7000);
-
-        ViewInteraction relativeLayout6 = onView(
-                allOf(childAtPosition(
-                        withId(R.id.list_types),
-                        2),
-                        isDisplayed()));
-        relativeLayout6.perform(click());
-
-        onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest)));
-
-        SystemClock.sleep(1000);
-
-        onView(withText("Connect Soil Moisture sensor"))
-                .inRoot(new ToastMatcher()).check(matches(isDisplayed()));
-
-        ViewInteraction relativeLayout2 = onView(
-                allOf(childAtPosition(
-                        withId(R.id.list_types),
-                        1),
-                        isDisplayed()));
-        relativeLayout2.perform(click());
-
-        SystemClock.sleep(1000);
-
-        onView(withText("Connect Soil Electrical Conductivity sensor"))
-                .inRoot(new ToastMatcher()).check(matches(isDisplayed()));
-
-        ViewInteraction relativeLayout3 = onView(
                 allOf(childAtPosition(
                         withId(R.id.list_types),
                         0),
                         isDisplayed()));
-        relativeLayout3.perform(click());
+
+        relativeLayout.perform(click());
 
         SystemClock.sleep(7000);
 
-        onView(allOf(withId(R.id.textTitle), withText("Water Electrical Conductivity")));
+        onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor!")));
+        String message = "The expected sensor was not found.\n\n" +
+                "Connect the Soil - Electrical Conductivity sensor.";
 
-        onView(allOf(withId(R.id.textSubtitle), withText("Sensor connected")));
+        onView(withText(message)).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.textUnit), withText("μS/cm")));
+        onView(withId(android.R.id.button2)).perform(click());
 
-        onView(allOf(withId(R.id.textUnit2), withText("°Celsius")));
+        ViewInteraction relativeLayout6 = onView(
+                allOf(childAtPosition(
+                        withId(R.id.list_types),
+                        1),
+                        isDisplayed()));
+        relativeLayout6.perform(click());
+
+        SystemClock.sleep(7000);
+
+        onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
+
+        message = "The expected sensor was not found.\n\n" +
+                "Connect the Soil - Moisture sensor.";
+
+        onView(withText(message)).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button2)).perform(click());
+
+        ViewInteraction relativeLayout2 = onView(
+                allOf(childAtPosition(
+                        withId(R.id.list_types),
+                        2),
+                        isDisplayed()));
+        relativeLayout2.perform(click());
+
+        SystemClock.sleep(7000);
+
+        onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor"))).check(matches(isDisplayed()));
+
+        onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()));
+
+        onView(allOf(withId(R.id.textSubtitle), withText("Sensor connected"))).check(matches(isDisplayed()));
+
+        onView(allOf(withId(R.id.textUnit), withText("μS/cm"))).check(matches(isDisplayed()));
+
+        onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -191,6 +193,33 @@ public class ECTest {
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton2.perform(click());
+
+        ViewInteraction appCompatButton = onView(
+                allOf(ViewMatchers.withId(R.id.buttonSensors), withText("Sensors"),
+                        withParent(withId(R.id.mainLayout)),
+                        isDisplayed()));
+        appCompatButton.perform(click());
+
+        onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest))).check(matches(isDisplayed()));
+
+        ViewInteraction relativeLayout1 = onView(
+                allOf(childAtPosition(
+                        withId(R.id.list_types),
+                        0),
+                        isDisplayed()));
+
+        relativeLayout1.perform(click());
+
+        SystemClock.sleep(7000);
+
+        onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
+
+        message = "The expected sensor was not found.\n\n" +
+                "Connect the Soil - Electrical Conductivity sensor.";
+
+        onView(withText(message)).check(matches(isDisplayed()));
+
+        onView(withId(android.R.id.button2)).perform(click());
 
     }
 
@@ -211,7 +240,7 @@ public class ECTest {
 
         SystemClock.sleep(6000);
 
-        onView(allOf(withId(R.id.textTitle), withText("Water Electrical Conductivity")));
+        onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity")));
 
         onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor!")));
 

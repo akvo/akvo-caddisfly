@@ -31,7 +31,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,11 +56,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import timber.log.Timber;
+
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
+/**
+ * Displays the brand information for the test.
+ */
 public class BrandInfoActivity extends BaseActivity {
-
-    private static final String TAG = "BrandInfoActivity";
 
     private static final int PERMISSION_ALL = 1;
     private static final String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -109,7 +111,7 @@ public class BrandInfoActivity extends BaseActivity {
             StripTest stripTest = new StripTest();
 
             // Display the brand in title
-            setTitle(stripTest.getBrand(this, mUuid).getName());
+            setTitle(stripTest.getBrand(mUuid).getName());
 
 //            try {
 //                imageBrandLabel.setBackgroundColor(Color.parseColor(stripTest.getBrand(this, mUuid).getBackground()));
@@ -121,7 +123,7 @@ public class BrandInfoActivity extends BaseActivity {
             InputStream ims = null;
             try {
                 Drawable drawable;
-                String image = stripTest.getBrand(this, mUuid).getImage();
+                String image = stripTest.getBrand(mUuid).getImage();
 
                 if (image.contains(File.separator)) {
                     if (!image.contains(".")) {
@@ -135,22 +137,22 @@ public class BrandInfoActivity extends BaseActivity {
                 }
 
                 imageBrandLabel.setImageDrawable(drawable);
-                imageBrandLabel.setScaleType(stripTest.getBrand(this, mUuid).getImageScale().equals("centerCrop")
+                imageBrandLabel.setScaleType(stripTest.getBrand(mUuid).getImageScale().equals("centerCrop")
                         ? ImageView.ScaleType.CENTER_CROP : ImageView.ScaleType.FIT_CENTER);
             } catch (Exception ex) {
-                Log.e(TAG, ex.getMessage(), ex);
+                Timber.e(ex);
             } finally {
                 if (ims != null) {
                     try {
                         ims.close();
                     } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
+                        Timber.e(e);
                     }
                 }
 
             }
 
-            JSONArray instructions = stripTest.getBrand(this, mUuid).getInstructions();
+            JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
             if (instructions == null || instructions.length() == 0) {
                 buttonInstruction.setVisibility(View.INVISIBLE);
             }
@@ -235,6 +237,7 @@ public class BrandInfoActivity extends BaseActivity {
                             })
                             .setNegativeButton(R.string.stop_test, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
                                     finish();
                                 }
                             }).show();
@@ -246,7 +249,7 @@ public class BrandInfoActivity extends BaseActivity {
                     startActivityForResult(intent, 100);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
         } else {
             Intent intent = new Intent(getIntent());
@@ -275,15 +278,14 @@ public class BrandInfoActivity extends BaseActivity {
         super.onResume();
 
         StripTest stripTest = new StripTest();
-        setTitle(stripTest.getBrand(this, mUuid).getName());
+        setTitle(stripTest.getBrand(mUuid).getName());
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

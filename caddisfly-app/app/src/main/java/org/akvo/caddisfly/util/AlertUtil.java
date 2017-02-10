@@ -36,7 +36,7 @@ import android.widget.ImageView;
 import org.akvo.caddisfly.R;
 
 /**
- * Utility functions to show alert messages
+ * Utility functions to show alert messages.
  */
 @SuppressWarnings({"SameParameterValue", "UnusedReturnValue"})
 public final class AlertUtil {
@@ -44,10 +44,24 @@ public final class AlertUtil {
     private AlertUtil() {
     }
 
+    /**
+     * Displays an alert dialog.
+     *
+     * @param context   the context
+     * @param title     the title
+     * @param message   the message
+     */
     public static void showMessage(@NonNull Context context, @StringRes int title, @StringRes int message) {
         showAlert(context, title, message, null, null, null);
     }
 
+    /**
+     * Displays an alert dialog.
+     *
+     * @param context   the context
+     * @param title     the title
+     * @param message   the message
+     */
     public static void showMessage(@NonNull Context context, @StringRes int title, String message) {
         showAlert(context, title, message, null, null, null);
     }
@@ -108,7 +122,7 @@ public final class AlertUtil {
     }
 
     /**
-     * Displays an alert dialog
+     * Displays an alert dialog.
      *
      * @param context          the context
      * @param title            the title
@@ -165,7 +179,7 @@ public final class AlertUtil {
     }
 
     /**
-     * Displays an alert with error layout
+     * Displays an alert with error layout.
      *
      * @param context          the context
      * @param title            the title

@@ -21,7 +21,6 @@ package org.akvo.caddisfly.model;
 
 import android.graphics.Color;
 import android.support.annotation.StringRes;
-import android.util.Log;
 
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.json.JSONArray;
@@ -36,12 +35,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
- * Model to hold test configuration information
+ * Model to hold test configuration information.
  */
 public class TestInfo {
-
-    private static final String TAG = "TestInfo";
 
     private static final double RESULT_ERROR_MARGIN = 0.2;
     private final String name;
@@ -62,11 +61,11 @@ public class TestInfo {
     private long calibrationDate;
     private long expiryDate;
     private boolean useGrayScale;
-    private String shortCode;
     private int hueTrend;
     private double[] rangeValues;
     private String deviceId;
     private String responseFormat;
+    private boolean deprecated;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -129,7 +128,7 @@ public class TestInfo {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
                     subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"), patchObj.getString("unit")));
                 } catch (JSONException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
         }
@@ -150,7 +149,7 @@ public class TestInfo {
     }
 
     /**
-     * Sort the swatches for this test by their result values
+     * Sort the swatches for this test by their result values.
      */
     private void sort() {
         Collections.sort(swatches, new Comparator<Swatch>() {
@@ -208,7 +207,7 @@ public class TestInfo {
     }
 
     /**
-     * Gets if this test type requires calibration
+     * Gets if this test type requires calibration.
      *
      * @return true if calibration required
      */
@@ -300,14 +299,6 @@ public class TestInfo {
         this.useGrayScale = useGrayScale;
     }
 
-    public String getShortCode() {
-        return shortCode;
-    }
-
-    public void setShortCode(String shortCode) {
-        this.shortCode = shortCode;
-    }
-
     public int getHueTrend() {
         return hueTrend;
     }
@@ -334,6 +325,14 @@ public class TestInfo {
 
     public void setResponseFormat(String responseFormat) {
         this.responseFormat = responseFormat;
+    }
+
+    public boolean getIsDeprecated() {
+        return deprecated;
+    }
+
+    public void setIsDeprecated(boolean value) {
+        this.deprecated = value;
     }
 
     public static class SubTest {

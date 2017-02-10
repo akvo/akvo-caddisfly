@@ -1,7 +1,19 @@
-Akvo Caddisfly Android App
-==========================
+Akvo Caddisfly
+==============
 
-Android app to test water for contaminants by using the camera for color detection
+[![Build Status](https://travis-ci.org/akvo/akvo-caddisfly.svg?branch=develop)](https://travis-ci.org/akvo/akvo-caddisfly) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+
+Akvo Caddisfly is a simple, low cost, open source, smartphone-based drinking water testing system connected to an online data platform.
+
+
+Build with Android Studio
+-------------------------
+
+1. Clone Project
+
+2. Open project in Android Studio
+
+3. Build / Run
 
 
 Build from Command Line
@@ -23,32 +35,4 @@ Build from Command Line
 3. Install apk to device from `Caddisfly/build/apk` folder
 
 
-Build with Android Studio
--------------------------
 
-1. Clone Project
-
-2. Import project in Android Studio
-
-3. Build / Run
-
-
-License
--------
-
-Copyright (C) Stichting Akvo (Akvo Foundation)
-
-This file is part of Akvo Caddisfly.
-
-Akvo Caddisfly is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Akvo Caddisfly is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.

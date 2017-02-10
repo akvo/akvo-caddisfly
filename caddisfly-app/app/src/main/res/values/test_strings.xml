@@ -21,12 +21,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--Test Types-->
-    <string name="fluoride">Fluoride</string>
+    <string name="fluoride">Water - Fluoride</string>
     <string name="coliforms">Coliforms</string>
-    <string name="arsenic" tools:ignore="UnusedResources">Arsenic</string>
-    <string name="freeChlorine" tools:ignore="UnusedResources">Free Chlorine</string>
-    <string name="iron" tools:ignore="UnusedResources">Iron</string>
-    <string name="electricalConductivity" tools:ignore="UnusedResources">Water Electrical Conductivity</string>
+    <string name="arsenic" tools:ignore="UnusedResources">Water - Arsenic</string>
+    <string name="freeChlorine" tools:ignore="UnusedResources">Water - Free Chlorine</string>
+    <string name="iron" tools:ignore="UnusedResources">Water - Total Iron</string>
+    <string name="electricalConductivity" tools:ignore="UnusedResources">Water - Electrical Conductivity</string>
 
     <!--Akvo Flow -->
     <string name="unnamedDataPoint">Unnamed data point</string>

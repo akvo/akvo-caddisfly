@@ -18,7 +18,7 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="appName">Akvo Caddisfly</string>
+
     <!--Common-->
     <string name="ok">OK</string>
     <string name="retry">Réessayer</string>
@@ -36,10 +36,13 @@
     <string name="calibrating">En cours d\'étalonnage</string>
     <string name="settings">Paramètres</string>
     <string name="about">A propos</string>
+    <string name="name">Nom</string>
     <string name="version" tools:ignore="UnusedResources">Version</string>
+    <string name="deleted">Effacé</string>
+    <string name="required">Obligatoire</string>
+    <string name="survey">Enquête</string>
     <string name="success">Succès</string>
     <string name="done">Effectué</string>
-    <string name="survey">Enquête</string>
 
     <!--Messages-->
     <string name="pleaseWait">Veuillez attendre…</string>
@@ -81,41 +84,18 @@
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
-    <!--Diagnostic Mode: Messages-->
-    <string name="diagnosticModeEnabled">Mode diagnostique activé</string>
-    <string name="diagnosticModeDisabled">Mode diagnostique désactivé</string>
-    <!--Diagnostic Mode: Save / Load Calibration-->
-    <string name="saveInvalidFileName">Nom de fichier incorrect</string>
-    <string name="fileAlreadyExists">Ce fichier existe déjà</string>
-    <string name="doYouWantToOverwrite">Voulez-vous remplacer ce fichier?</string>
-    <string name="overwrite">Remplacer</string>
-    <string name="loadCalibration">Charger l\'étalonnage</string>
-    <string name="notFound">Introuvable</string>
-    <string name="loadFilesNotAvailable">Aucun étalonnage préalablement enregistré</string>
-    <string name="deleteConfirm">Les éléments sélectionnés seront supprimés</string>
-    <string name="errorLoadingFile">Erreur de chargement du fichier</string>
-
-    <!--Diagnostic Mode: Settings-->
-    <string name="diagnostics">Diagnostiques</string>
-    <string name="fileSaved">File saved</string>
-    <string name="calibrationLoaded">%1$s loaded</string>
-    <string name="name">Nom</string>
-    <string name="deleted">Effacé</string>
-    <string name="required">Obligatoire</string>
 
     <!--Strip Test-->
-    <string name="strips_instruction_json">fr/strips-instruction.json</string>
     <string name="error_calibrating">Erreur calibrage</string>
     <string name="error_conversion">Erreur converter couleurs</string>
     <string name="error_cut_out_strip">Pas de bande trouvee.</string>
     <string name="error_no_finder_pattern_info">Pas de motifs</string>
-    <string name="light">Lumiere</string>
+    <string name="brightness">Lumiere</string>
     <string name="no_data">Pas de donnees pour patch no.</string>
     <string name="instructions">Instructions</string>
-    <string name="contrast">Ombres</string>
+    <string name="shadows">Ombres</string>
     <string name="prepare_test">Preparez test</string>
     <string name="prepare_camera_instruction">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>
     <string name="next">Suivant</string>
 
-    <!--end Strip Test-->
 </resources>

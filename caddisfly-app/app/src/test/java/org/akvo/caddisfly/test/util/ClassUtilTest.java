@@ -21,11 +21,14 @@ package org.akvo.caddisfly.test.util;
 
 import junit.framework.TestCase;
 
+import java.lang.reflect.InvocationTargetException;
+
 
 @SuppressWarnings("unused")
 public class ClassUtilTest extends TestCase {
 
-    public void testAssertUtilityClassWellDefined() throws Exception {
+    public void testAssertUtilityClassWellDefined() throws NoSuchMethodException, InstantiationException,
+            IllegalAccessException, InvocationTargetException {
         ClassUtil.assertUtilityClassWellDefined(ClassUtil.class);
     }
 }

@@ -25,7 +25,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.text.Spanned;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +38,12 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import timber.log.Timber;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -54,8 +58,6 @@ import static android.graphics.Typeface.BOLD;
  */
 public class InstructionFragment extends CameraSharedFragmentBase {
 
-    private static final String TAG = "InstructionFragment";
-
     private static final int BUTTON_ENABLE_DELAY = 4000;
     private static final int ANIMATION_DURATION_MILLIS = 2000;
     private static final float BUTTON_START_ALPHA = 0.2f;
@@ -66,12 +68,18 @@ public class InstructionFragment extends CameraSharedFragmentBase {
     }
 
     @NonNull
-    public static InstructionFragment newInstance(String uuid) {
+    public static InstructionFragment newInstance(String uuid, int phase) {
         InstructionFragment fragment = new InstructionFragment();
         Bundle args = new Bundle();
         args.putString(Constant.UUID, uuid);
+        args.putInt(Constant.PHASE, phase);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @NonNull
+    public static InstructionFragment newInstance(String uuid) {
+        return newInstance(uuid, 1);
     }
 
     @Override
@@ -92,21 +100,40 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         if (getArguments() != null) {
 
             String uuid = getArguments().getString(Constant.UUID);
+            int phase = getArguments().getInt(Constant.PHASE);
 
             StripTest stripTest = new StripTest();
-            JSONArray instructions = stripTest.getBrand(getContext(), uuid).getInstructions();
+            JSONArray instructions = stripTest.getBrand(uuid).getInstructions();
 
-            showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
+            if (phase == 1) {
+                showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
+            }
 
             if (instructions != null) {
                 try {
                     for (int i = 0; i < instructions.length(); i++) {
-                        for (String instruction : instructions.getJSONObject(i).getString("text").split("<!")) {
-                            showInstruction(linearLayout, instruction, Typeface.NORMAL);
+
+                        JSONObject object = instructions.getJSONObject(i);
+                        Object item = instructions.getJSONObject(i).get("text");
+
+                        if ((object.has("phase") ? object.getInt("phase") : 1) == phase) {
+                            JSONArray jsonArray;
+
+                            if (item instanceof JSONArray) {
+                                jsonArray = (JSONArray) item;
+                            } else {
+                                String text = (String) item;
+                                jsonArray = new JSONArray();
+                                jsonArray.put(text);
+                            }
+
+                            for (int j = 0; j < jsonArray.length(); j++) {
+                                showInstruction(linearLayout, jsonArray.getString(j), Typeface.NORMAL);
+                            }
                         }
                     }
                 } catch (JSONException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
 
@@ -144,8 +171,19 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                 (int) getResources().getDimension(R.dimen.activity_vertical_margin),
                 (int) getResources().getDimension(R.dimen.activity_vertical_margin));
 
-        if (instruction.contains(">")) {
+        String text = instruction;
+        if (instruction.contains("<!>")) {
+            text = instruction.replaceAll("<!>", "");
             textView.setTextColor(Color.RED);
+        } else {
+            textView.setTextColor(Color.DKGRAY);
+        }
+
+        if (instruction.contains("<b>") || style == BOLD) {
+            text = text.replaceAll("<b>", "").replaceAll("</b>", "");
+            textView.setTypeface(null, Typeface.BOLD);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimension(R.dimen.titleTextSize));
         } else {
             textView.setTextColor(Color.DKGRAY);
         }
@@ -153,15 +191,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
                 getResources().getDisplayMetrics()), 1.0f);
 
-        textView.setTypeface(null, style);
-        if (style == BOLD) {
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    getResources().getDimension(R.dimen.titleTextSize));
-        }
-
-        String text = instruction.replaceAll(">", "");
+        Spanned spanned = StringUtil.getStringResourceByName(getContext(), text);
         if (!text.isEmpty()) {
-            textView.append(text);
+            textView.append(spanned);
             linearLayout.addView(textView);
         }
     }

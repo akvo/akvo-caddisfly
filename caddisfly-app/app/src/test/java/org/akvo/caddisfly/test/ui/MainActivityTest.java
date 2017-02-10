@@ -55,7 +55,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetResultValue() throws Exception {
+    public void testGetResultValue() {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             colors[i] = -1;
@@ -79,7 +79,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetResultValue2() throws Exception {
+    public void testGetResultValue2() {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             if (i > 1000) {
@@ -108,7 +108,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetResultValue3() throws Exception {
+    public void testGetResultValue3() {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             if (i > 1000) {
@@ -137,7 +137,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetResultValue4() throws Exception {
+    public void testGetResultValue4() {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             colors[i] = Color.rgb(250, 171, 130);
@@ -161,7 +161,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testGetResultValue5() throws Exception {
+    public void testGetResultValue5() {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
             colors[i] = Color.rgb(254, 115, 138);
@@ -185,7 +185,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void testLoadJson() throws Exception {
+    public void testLoadJson() {
         TestInfo testInfo = TestConfigHelper.loadTestByUuid("f0f3c1dd-89af-49f1-83e7-bcc31c3006cf");
         assert testInfo != null;
         assertEquals(SensorConstants.FLUORIDE_ID, testInfo.getId());

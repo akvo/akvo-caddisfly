@@ -24,7 +24,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,12 +39,13 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /*
 This class assumes that there are .png images in res/drawable that have the same name as the brand
 */
 public class InstructionActivity extends BaseActivity {
 
-    private static final String TAG = "InstructionActivity";
     private final List<Fragment> fragments = new ArrayList<>();
     private ViewPager mViewPager;
 
@@ -58,7 +58,7 @@ public class InstructionActivity extends BaseActivity {
         final ImageView imagePageLeft = (ImageView) findViewById(R.id.image_pageLeft);
         final ImageView imagePageRight = (ImageView) findViewById(R.id.image_pageRight);
 
-        StripTest.Brand brand = (new StripTest()).getBrand(this, getIntent().getStringExtra(Constant.UUID));
+        StripTest.Brand brand = (new StripTest()).getBrand(getIntent().getStringExtra(Constant.UUID));
 
         setTitle(brand.getName());
 
@@ -66,12 +66,24 @@ public class InstructionActivity extends BaseActivity {
         if (instructions != null) {
             for (int i = 0; i < instructions.length(); i++) {
                 try {
+
+                    Object item = instructions.getJSONObject(i).get("text");
+                    JSONArray jsonArray;
+
+                    if (item instanceof JSONArray) {
+                        jsonArray = (JSONArray) item;
+                    } else {
+                        String text = (String) item;
+                        jsonArray = new JSONArray();
+                        jsonArray.put(text);
+                    }
+
                     fragments.add(InstructionDetailFragment.newInstance(
-                            instructions.getJSONObject(i).getString("text"),
+                            jsonArray,
                             instructions.getJSONObject(i).has("png")
                                     ? instructions.getJSONObject(i).getString("png") : ""));
                 } catch (JSONException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
 
@@ -133,10 +145,9 @@ public class InstructionActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

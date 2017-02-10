@@ -20,9 +20,11 @@
 package org.akvo.caddisfly.sensor.ec;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -30,7 +32,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.util.Log;
+import android.support.annotation.NonNull;
+import android.text.Spanned;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -49,28 +53,29 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
+import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
+import timber.log.Timber;
+
+/**
+ * The activity that displays the results for the connected sensor.
+ */
 public class SensorActivity extends BaseActivity {
 
-    private static final String TAG = "SensorActivity";
     private static final String EMPTY_STRING = "";
-    private static final int REQUEST_DELAY_MILLIS = 2000;
-    private static final int IDENTIFY_DELAY_MILLIS = 500;
+    private static final int REQUEST_DELAY_MILLIS = 1500;
+    private static final int IDENTIFY_DELAY_MILLIS = 300;
     private static final int ANIMATION_DURATION = 500;
     private static final int ANIMATION_DURATION_LONG = 1500;
-    private static final int FINISH_DELAY_MILLIS = 3000;
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
-    private final List<String> results = new ArrayList<>();
+    private final SparseArray<String> results = new SparseArray<>();
+    private AlertDialog alertDialog;
     private TestInfo mCurrentTestInfo;
     private Toast debugToast;
     private boolean mIsInternal = false;
@@ -121,15 +126,8 @@ public class SensorActivity extends BaseActivity {
             }
         }
     };
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            requestResult();
-            handler.postDelayed(this, REQUEST_DELAY_MILLIS);
-        }
-    };
+    private int identityCheck = 0;
     private int deviceStatus = 0;
-
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
@@ -148,13 +146,26 @@ public class SensorActivity extends BaseActivity {
                     break;
                 case 1:
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
+                    alertDialog.dismiss();
                     break;
                 default:
-                    Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-                            mCurrentTestInfo.getName()),
-                            Toast.LENGTH_SHORT).show();
-                    finish();
+                    progressWait.setVisibility(View.GONE);
+                    if (!alertDialog.isShowing()) {
+                        alertDialog.show();
+                    }
+                    handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
+            }
+        }
+    };
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (deviceStatus == 1) {
+                requestResult();
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+            } else {
+                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
             }
         }
     };
@@ -162,6 +173,10 @@ public class SensorActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
+
+        deviceStatus = 0;
+        identityCheck = 0;
+
         setFilters();  // Start listening notifications from UsbService
 
         // Start UsbService(if it was not started before) and Bind it
@@ -178,6 +193,8 @@ public class SensorActivity extends BaseActivity {
     @Override
     public void onPause() {
         super.onPause();
+        deviceStatus = 0;
+        identityCheck = 0;
         handler.removeCallbacks(runnable);
         handler.removeCallbacks(validateDeviceRunnable);
         unregisterReceiver(mUsbReceiver);
@@ -201,9 +218,9 @@ public class SensorActivity extends BaseActivity {
         Intent bindingIntent = new Intent(this, service);
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-        deviceStatus = 0;
+        alertDialog.dismiss();
 
-        handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 3);
+        handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
     }
 
     private void requestResult() {
@@ -266,7 +283,7 @@ public class SensorActivity extends BaseActivity {
 
                 // TODO: Remove this when obsolete
                 // Backward compatibility. Return plain text result
-                resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(0));
+                resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(1));
 
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
@@ -278,17 +295,37 @@ public class SensorActivity extends BaseActivity {
         if (mCurrentTestInfo != null && !mCurrentTestInfo.getName().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
                     mCurrentTestInfo.getName());
-        }
 
+            String message = String.format("%s<br/><br/>%s", getString(R.string.expectedDeviceNotFound),
+                    getString(R.string.connectCorrectSensor, mCurrentTestInfo.getName()));
+            Spanned spanned = StringUtil.fromHtml(message);
+
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+
+            builder.setTitle(R.string.incorrectDevice)
+                    .setMessage(spanned)
+                    .setCancelable(false);
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    finish();
+                }
+            });
+
+            alertDialog = builder.create();
+        }
         progressWait.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -301,21 +338,6 @@ public class SensorActivity extends BaseActivity {
             imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
             buttonAcceptResult.setVisibility(View.GONE);
             textSubtitle.setText(R.string.deviceConnectSensor);
-
-            if (!mIsInternal) {
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
-                        if (!isFinishing()) {
-                            Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-                                    mCurrentTestInfo.getName()),
-                                    Toast.LENGTH_SHORT).show();
-
-                            finish();
-                        }
-
-                    }
-                }, FINISH_DELAY_MILLIS);
-            }
         }
     }
 
@@ -346,9 +368,14 @@ public class SensorActivity extends BaseActivity {
             if (deviceStatus == 0) {
                 if (value.contains(" ")) {
                     if (value.startsWith(mCurrentTestInfo.getDeviceId())) {
-                        deviceStatus = 1;
+                            progressWait.setVisibility(View.VISIBLE);
+                            hideNotConnectedView();
+                            deviceStatus = 1;
                     } else {
-                        deviceStatus = 2;
+                        if (identityCheck > 1) {
+                            deviceStatus = 2;
+                        }
+                        identityCheck++;
                     }
                 }
                 return;
@@ -356,6 +383,8 @@ public class SensorActivity extends BaseActivity {
 
             if (deviceStatus == 2) {
                 return;
+            } else {
+                alertDialog.dismiss();
             }
 
             String[] resultArray = value.split(",");
@@ -380,31 +409,24 @@ public class SensorActivity extends BaseActivity {
                         .replace(" ", EMPTY_STRING).replace(",", EMPTY_STRING).trim();
                 results.clear();
 
-                String[] tempString = new String[mCurrentTestInfo.getSubTests().size()];
-
                 for (int i = 0; i < resultArray.length; i++) {
                     resultArray[i] = resultArray[i].trim();
-
-                    int index = responseFormat.indexOf(String.valueOf(i + 1));
                     try {
-                        if (resultArray[i].equalsIgnoreCase("nan")) {
-                            tempString[index] = EMPTY_STRING;
-                        } else if (index > -1) {
-                            double result = Double.parseDouble(resultArray[i]);
-                            tempString[index] = String.format(Locale.US, "%.1f", result);
-                        }
+
+                        double result = Double.parseDouble(resultArray[i]);
+
+                        results.put(Integer.parseInt(responseFormat.substring(i, i + 1)), String.valueOf(result));
+
                     } catch (Exception e) {
-                        Log.e(TAG, e.getMessage(), e);
+                        Timber.e(e);
                         return;
                     }
                 }
 
-                Collections.addAll(results, tempString);
-
                 // display the results
                 if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0
-                        && !results.get(0).equals(EMPTY_STRING)) {
-                    textResult.setText(results.get(0));
+                        && !results.get(1).equals(EMPTY_STRING)) {
+                    textResult.setText(results.get(1));
                     textUnit.setText(mCurrentTestInfo.getSubTests().get(0).getUnit());
                     textResult.setVisibility(View.VISIBLE);
                     textUnit.setVisibility(View.VISIBLE);
@@ -422,7 +444,7 @@ public class SensorActivity extends BaseActivity {
                 }
 
                 if (mCurrentTestInfo.getSubTests().size() > 1 && results.size() > 1) {
-                    textResult2.setText(results.get(1));
+                    textResult2.setText(results.get(2));
                     textUnit2.setText(mCurrentTestInfo.getSubTests().get(1).getUnit());
                     textResult2.setVisibility(View.VISIBLE);
                     textUnit2.setVisibility(View.VISIBLE);
@@ -437,9 +459,13 @@ public class SensorActivity extends BaseActivity {
                 }
 
                 layoutResult.animate().alpha(1f).setDuration(ANIMATION_DURATION);
-                imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+                hideNotConnectedView();
             }
         }
+    }
+
+    private void hideNotConnectedView() {
+        imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
     }
 
     /*

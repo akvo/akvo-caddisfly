@@ -20,7 +20,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.util;
 
 /**
- * Created by linda on 9/3/15
+ * Various constants used for configuration and keys.
  */
 public final class Constant {
     public static final double MAX_LUM_LOWER = 200;
@@ -53,7 +53,8 @@ public final class Constant {
     public static final int TIMEOUT_PREPARE_EXTEND = 10000;
     public static final String SEND_IMAGE_IN_RESULT = "send_image";
     public static final int GET_READY_SECONDS = 12;
-    static final int MAX_COLOR_DISTANCE = 18;
+    public static final String PHASE = "org.akvo.caddisfly.phase";
+    static final int MAX_COLOR_DISTANCE = 15;
     static final double CONTRAST_DEVIATION_FRACTION = 0.05;
     static final double CONTRAST_MAX_DEVIATION_FRACTION = 0.20;
 

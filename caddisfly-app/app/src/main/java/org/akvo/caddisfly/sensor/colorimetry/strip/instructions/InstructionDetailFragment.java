@@ -20,9 +20,11 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.instructions;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Spanned;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +35,17 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
+import org.akvo.caddisfly.util.StringUtil;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+
+import timber.log.Timber;
 
 public class InstructionDetailFragment extends Fragment {
     /**
-     * The fragment arguments for the contents to be displayed
+     * The fragment arguments for the contents to be displayed.
      */
     private static final String ARG_ITEM_TEXT = "text";
     private static final String ARG_ITEM_IMAGE = "image";
@@ -48,10 +57,23 @@ public class InstructionDetailFragment extends Fragment {
     public InstructionDetailFragment() {
     }
 
-    public static InstructionDetailFragment newInstance(String text, String imageName) {
+    public static InstructionDetailFragment newInstance(JSONArray text, String imageName) {
         InstructionDetailFragment fragment = new InstructionDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_ITEM_TEXT, text);
+
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        if (text != null) {
+            for (int i = 0; i < text.length(); i++) {
+                try {
+                    arrayList.add(text.getString(i));
+                } catch (JSONException e) {
+                    Timber.e(e);
+                }
+            }
+        }
+
+        args.putStringArrayList(ARG_ITEM_TEXT, arrayList);
         args.putString(ARG_ITEM_IMAGE, imageName);
         fragment.setArguments(args);
         return fragment;
@@ -69,11 +91,11 @@ public class InstructionDetailFragment extends Fragment {
                     setImageDrawable(instructionDrawable);
         }
 
-        String instructionText = getArguments().getString(ARG_ITEM_TEXT);
+        ArrayList<String> instructionText = getArguments().getStringArrayList(ARG_ITEM_TEXT);
         if (instructionText != null) {
 
             LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_instructions);
-            for (String instruction : instructionText.split("<!")) {
+            for (String instruction : instructionText) {
                 TextView textView = new TextView(getActivity());
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                         getResources().getDimension(R.dimen.mediumTextSize));
@@ -84,14 +106,24 @@ public class InstructionDetailFragment extends Fragment {
                 textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
                         getResources().getDisplayMetrics()), 1.0f);
 
-                if (instruction.contains(">")) {
+                String text = instruction;
+                if (instruction.contains("<!>")) {
+                    text = instruction.replaceAll("<!>", "");
                     textView.setTextColor(Color.RED);
                 } else {
                     textView.setTextColor(Color.DKGRAY);
                 }
-                String text = instruction.replaceAll(">", "");
+
+                if (instruction.contains("<b>")) {
+                    text = text.replaceAll("<b>", "").replaceAll("</b>", "");
+                    textView.setTypeface(null, Typeface.BOLD);
+                } else {
+                    textView.setTextColor(Color.DKGRAY);
+                }
+
+                Spanned spanned = StringUtil.getStringResourceByName(getContext(), text);
                 if (!text.isEmpty()) {
-                    textView.append(text);
+                    textView.append(spanned);
                     linearLayout.addView(textView);
                 }
             }

@@ -64,8 +64,8 @@ public class SensorTypeListActivity extends BaseActivity {
                 continue;
             }
 
-            //Remove legacy items
-            if (mTests.get(i).getShortCode().equalsIgnoreCase("tempe")) {
+            //Remove deprecated items
+            if (mTests.get(i).getIsDeprecated()) {
                 mTests.remove(i);
             }
         }

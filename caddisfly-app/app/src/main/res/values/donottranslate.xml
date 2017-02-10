@@ -19,12 +19,16 @@
 
 <resources>
 
+    <string name="appName">"Akvo Caddisfly"</string>
+
     <string-array name="languages">
+        <item>Bahasa Indonesia</item>
         <item>English</item>
         <item>Français</item>
     </string-array>
 
     <string-array name="language_codes">
+        <item>in</item>
         <item>en</item>
         <item>fr</item>
     </string-array>
@@ -34,6 +38,10 @@
     <string name="rgb">RGB</string>
     <string name="hsv">HSV</string>
     <string name="saveImages">Save images and data</string>
+
+    <!--paths to assets-->
+    <string name="striptest_images">images/striptest</string>
+    <string name="instruction_images">images/instructions</string>
 
     <!--Keys-->
     <string name="languageKey">language</string>
@@ -66,10 +74,29 @@
     <string name="showMinMegaPixelDialogKey">showMinMegaPixelDialog</string>
 
     <!--Diagnostic-->
+    <string name="diagnostics">Diagnostics</string>
     <string name="cameraPreview">Colorimeter camera preview</string>
     <string name="noBackdropDetection">No backdrop detection</string>
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="ignoreStripTestDelay">Ignore strip test delay</string>
+
+    <!--Diagnostic Mode: Messages -->
+    <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
+    <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
+
+    <!--Diagnostic Mode: Save / Load Calibration-->
+    <string name="saveInvalidFileName">Invalid file name</string>
+    <string name="fileAlreadyExists">File already exists</string>
+    <string name="doYouWantToOverwrite">Do you want to overwrite the file?</string>
+    <string name="overwrite">Overwrite</string>
+    <string name="loadCalibration">Load Calibration</string>
+    <string name="notFound">Not Found</string>
+    <string name="loadFilesNotAvailable">There are no previously saved calibrations</string>
+    <string name="deleteConfirm">Selected items will be deleted</string>
+    <string name="errorLoadingFile">Could not load file. Check file for errors.</string>
+    <string name="fileSaved">File saved</string>
+    <string name="calibrationLoaded">%1$s loaded</string>
+
 </resources>

@@ -1,0 +1,25 @@
+{
+  "comment": "This file contains the metadata for deprecated tests. IMPORTANT: *DO NOT* change the uuid values",
+  "tests": [
+    {
+      "name": "Temperature",
+      "description": "This test is deprecated and will be removed in future versions",
+      "deprecated": true,
+      "subtype": "sensor",
+      "deviceId": "WaterEC",
+      "uuid": "07302aa0-21eb-4570-8264-62b77659101c",
+      "brand": "Akvo Caddisfly",
+      "shortCode": "tempe",
+      "ranges": "0",
+      "hasImage": false,
+      "responseFormat": "$1,$0",
+      "results": [
+        {
+          "name": "Temperature",
+          "id": 1,
+          "unit": "°Celsius"
+        }
+      ]
+    }
+  ]
+}

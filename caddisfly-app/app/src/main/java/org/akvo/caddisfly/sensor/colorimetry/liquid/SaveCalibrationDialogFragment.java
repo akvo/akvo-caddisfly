@@ -52,6 +52,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SaveCalibrationDialogFragment#newInstance} factory method to
@@ -310,18 +312,22 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     }
 
     /**
-     * Hides the keyboard
+     * Hides the keyboard.
      *
      * @param input the EditText for which the keyboard is open
      */
     private void closeKeyboard(Context context, EditText input) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+        try {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
 
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (Exception e) {
+            Timber.e(e);
         }
     }
 

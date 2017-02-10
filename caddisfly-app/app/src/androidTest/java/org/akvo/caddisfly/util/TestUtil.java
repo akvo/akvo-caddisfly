@@ -145,7 +145,7 @@ public final class TestUtil {
         try {
             if (listView.scrollTextIntoView(name)) {
                 listViewItem = listView.getChildByText(new UiSelector()
-                        .className(android.widget.TextView.class.getName()), "" + name + "");
+                        .className(TextView.class.getName()), "" + name + "");
                 listViewItem.click();
             } else {
                 return false;

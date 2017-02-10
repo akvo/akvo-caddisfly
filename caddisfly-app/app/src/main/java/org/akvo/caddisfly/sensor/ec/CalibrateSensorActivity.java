@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.sensor.ec;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -35,6 +36,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -48,6 +50,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.StringUtil;
 
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
@@ -86,6 +89,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
             }
         }
     };
+
     private TestInfo mCurrentTestInfo;
     private double[] calibrationPoints;
     private ProgressDialog progressDialog;
@@ -143,10 +147,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     handler.postDelayed(runnable, 100);
                     break;
                 default:
-                    Toast.makeText(getBaseContext(), getString(R.string.connectCorrectSensor,
-                            mCurrentTestInfo.getName()),
-                            Toast.LENGTH_LONG).show();
-                    finish();
+                    alertSensorNotFound();
                     break;
             }
         }
@@ -269,9 +270,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     }, INITIAL_DELAY_MILLIS);
 
                 } else {
-                    AlertUtil.showMessage(mContext, R.string.sensorNotFound,
-                            getString(R.string.connectCorrectSensor,
-                                    mCurrentTestInfo.getName()));
+                    alertSensorNotFound();
                 }
             }
         });
@@ -298,13 +297,36 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                     calibratePoint(calibrationPoints, calibrationIndex);
                     calibrationIndex++;
                 } else {
-                    AlertUtil.showMessage(mContext, R.string.sensorNotFound,
-                            getString(R.string.connectCorrectSensor,
-                                    mCurrentTestInfo.getName()));
-
+                    alertSensorNotFound();
                 }
             }
         });
+    }
+
+    private void alertSensorNotFound() {
+
+        String message = String.format("%s<br/><br/>%s", getString(R.string.expectedDeviceNotFound),
+                getString(R.string.connectCorrectSensor, mCurrentTestInfo.getName()));
+
+        Spanned spanned = StringUtil.fromHtml(message);
+
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(mContext);
+
+        builder.setTitle(R.string.sensorNotFound)
+                .setMessage(spanned)
+                .setCancelable(false);
+
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                finish();
+            }
+        });
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void showEditDetailsDialog() {
@@ -375,6 +397,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                                     R.string.sensorCalibrated, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
                                             finish();
                                         }
                                     }, null, null);
@@ -397,10 +420,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

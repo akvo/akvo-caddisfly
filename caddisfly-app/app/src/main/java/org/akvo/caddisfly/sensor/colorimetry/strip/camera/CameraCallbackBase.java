@@ -22,7 +22,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 import android.content.Context;
 import android.hardware.Camera;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.CalibrationException;
@@ -48,18 +47,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
- * Created by linda on 12/17/15
+ * The base class for camera callback.
  */
 @SuppressWarnings("deprecation")
 abstract class CameraCallbackBase implements Camera.PreviewCallback {
 
-    private static final String TAG = "CameraCallbackBase";
-
     private static final int NO_SHADOW_DATA = 101;
     private static final int MAX_LIST_COUNT = 25;
     private static final int MAX_RGB_INT_VALUE = 255;
+    @SuppressWarnings("PMD.LooseCoupling")
     private final LinkedList<Double> luminanceTrack = new LinkedList<>();
+    @SuppressWarnings("PMD.LooseCoupling")
     private final LinkedList<Double> shadowTrack = new LinkedList<>();
     private final int[] qualityChecksArray = new int[]{0, 0, 0}; //array containing brightness, shadow, level check values
     private final List<double[]> luminanceList = new ArrayList<>();
@@ -196,7 +197,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         } finally {
             if (bgr != null) {
                 bgr.release();
@@ -239,7 +240,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
                     shadowTrack.add(shadowPercentage);
                 }
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             } finally {
                 if (mat != null) {
                     mat.release();
@@ -317,7 +318,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         try {
             bitMatrix = binaryBitmap.getBlackMatrix();
         } catch (NotFoundException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
 
         if (bitMatrix != null && previewSize != null) {

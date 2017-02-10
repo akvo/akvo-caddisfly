@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly.
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+
+    <string name="sample_size_for_500_range">This sample size is for the range 0 – 500 ppb</string>
+    <string name="sample_size_for_4000_range">This sample size is for the range 0 – 4000 ppb</string>
+    <string name="collect_mehlich_extraction_sample">Collect Mehlich extraction sample</string>
+    <string name="collect_5ml_mehlich_sample">Collect <b>5 ml</b> Mehlich extraction sample using the provided bottle.</string>
+    <string name="collect_water_extraction_sample">Collect water extraction sample</string>
+    <string name="collect_water_sample">Collect water sample</string>
+    <string name="collect_5ml_sample">Collect <b>5 ml</b> water sample using the provided bottle.</string>
+    <string name="collect_50ml_sample">Collect <b>50 ml</b> water sample using the provided bottle.</string>
+    <string name="collect_9.6ml_sample">Collect <b>9.6 ml</b> water sample using the small container.</string>
+    <string name="fill_half_with_sample">Fill HALF of the vial with sample water.</string>
+    <string name="open_one_foil_and_add_powder">Open one foil packet and add powder contents to vial.</string>
+    <string name="add_5_drops_reagent_1">Add <b>5 drops</b> of <b>reagent 1</b> to the sample</string>
+    <string name="add_10_drops_nh4_reagent">Add <b>10 drops</b> of NH4+-1 reagent</string>
+    <string name="cap_vial_and_shake_rapidly">Cap vial and shake rapidly for <b>5 seconds</b>. Remove cap.</string>
+    <string name="wait_20_minutes_swirl_twice">Wait <b>20 minutes</b>. Swirl twice during the reaction period</string>
+    <string name="swirl_to_mix_reagent">Swirl the sample to mix the reagent</string>
+    <string name="put_6_drops_of_reagent_in_another_container">In the smaller container tube put <b>6 drops</b> of <b>reagent 2</b></string>
+    <string name="dip_strip_15_seconds_in_reagent_and_remove">Dip the strip for <b>15 seconds</b> in the small tube containing <b>reagent 2</b>.</string>
+    <string name="place_tube_in_provided_rack">Place the tube in the provided rack.</string>
+    <string name="dip_strip_into_water_and_remove">Dip a strip into sample and remove immediately.</string>
+    <string name="dip_strip_into_water_1_second">Dip strip into sample for <b>1 second</b> and remove.</string>
+    <string name="dip_strip_in_water_2_seconds">Dip a strip in the sample for at least <b>2 seconds</b> and remove.</string>
+    <string name="dip_strip_5_seconds_and_remove">Dip a strip into sample for <b>5 seconds</b> and remove.</string>
+    <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
+    <string name="dip_strip_move_back_forth_15_seconds">Dip the test strip into sample vial and rapidly move back and forth underwater for <b>15 seconds</b>.</string>
+    <string name="dip_strip_move_back_forth_30_seconds">Dip the strip into sample and move back and forth for <b>30 seconds</b> in sample.</string>
+    <string name="immerse_reaction_zone">Immerse the reaction zone of the test strip in the pretreated sample (15 – 30 °C) for <b>1 second</b></string>
+    <string name="dry_off_excess_water_place_on_towel">Dry off excess water. (e.g. place it on a towel)</string>
+    <string name="shake_excess_water">Shake excess water from test strip.</string>
+    <string name="do_not_shake_excess_water">Do not shake excess water from the test strip.</string>
+    <string name="allow_excess_liquid_to_run_off">Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel.</string>
+    <string name="add_reagent_k1">Add <b>1 drop</b> of reagent K-1 on the reaction zone and allow to react for <b>1 minute</b>.</string>
+    <string name="follow_the_instructions_for_reagents">Follow the instructions that came with the testing kit for adding reagents</string>
+    <string name="conduct_test_per_instructions">Conduct the test as per the instructions provided by the test kit.</string>
+    <string name="when_ready_place_strip_on_card">When ready, place the strip within the black area on the color card for analysis.</string>
+    <string name="place_strip_in_black_area">Place strip in the black area of the color card.</string>
+    <string name="press_start_button">Press <b>Start</b> button.</string>
+
+</resources>

@@ -32,7 +32,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.akvo.caddisfly.helper.CameraHelper;
@@ -137,19 +136,6 @@ public final class ApiUtil {
         }
 
         return true;
-    }
-
-    public static boolean isStoreVersion(@NonNull Context context) {
-        boolean result = false;
-
-        try {
-            String installer = context.getPackageManager()
-                    .getInstallerPackageName(context.getPackageName());
-            result = !TextUtils.isEmpty(installer);
-        } catch (Exception ignored) {
-        }
-
-        return result;
     }
 
     public static void startInstalledAppDetailsActivity(@Nullable final Activity context) {

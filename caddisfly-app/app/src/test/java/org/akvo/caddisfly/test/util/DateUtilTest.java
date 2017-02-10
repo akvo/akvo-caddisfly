@@ -19,33 +19,38 @@
 
 package org.akvo.caddisfly.test.util;
 
-import junit.framework.TestCase;
-
 import org.akvo.caddisfly.util.DateUtil;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Calendar;
 
-@SuppressWarnings("unused")
-public class DateUtilTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
+@SuppressWarnings("unused")
+public class DateUtilTest {
+
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         ClassUtil.assertUtilityClassWellDefined(DateUtil.class);
     }
 
-    public void testGetDaysNoDifference() throws Exception {
+    @Test
+    public void testGetDaysNoDifference() {
         Calendar currentDate = Calendar.getInstance();
         int days = DateUtil.getDaysDifference(currentDate, currentDate);
         assertEquals(0, days);
     }
 
-    public void testGetDaysDifferenceNull() throws Exception {
+    @Test
+    public void testGetDaysDifferenceNull() {
         Calendar currentDate = Calendar.getInstance();
         int days = DateUtil.getDaysDifference(currentDate, null);
         assertEquals(0, days);
     }
 
-    public void testGetDaysDifference() throws Exception {
+    @Test
+    public void testGetDaysDifference() {
         Calendar currentDate = Calendar.getInstance();
         Calendar nextDate = Calendar.getInstance();
         nextDate.add(Calendar.DAY_OF_MONTH, 1);
@@ -53,13 +58,13 @@ public class DateUtilTest extends TestCase {
         assertEquals(1, days);
     }
 
-    public void testGetHoursDifference() throws Exception {
+    @Test
+    public void testGetHoursDifference() {
         Calendar currentDate = Calendar.getInstance();
         Calendar nextDate = Calendar.getInstance();
         nextDate.add(Calendar.HOUR_OF_DAY, 2);
         int hours = DateUtil.getHoursDifference(currentDate, nextDate);
         assertEquals(2, hours);
     }
-
 
 }
