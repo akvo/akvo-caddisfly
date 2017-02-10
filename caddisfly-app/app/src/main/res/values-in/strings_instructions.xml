@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly.
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+
+    <string name="sample_size_for_500_range">Ukuran sampel ini untuk jarak nilai 0 – 500 ppb</string>
+    <string name="sample_size_for_4000_range">Ukuran sampel ini untuk jarak nilai 0 – 4000 ppb</string>
+    <string name="collect_mehlich_extraction_sample">Kumpulkan sampel ektraksi Mehlich</string>
+    <string name="collect_5ml_mehlich_sample">Kumpulkan <b>5 ml</b> sampel ekstraksi Mehlich menggunakan botol yang disediakan.</string>
+    <string name="collect_water_extraction_sample">Kumpulkan sampel ekstrasi air</string>
+    <string name="collect_water_sample">Kumpulkan sampel air</string>
+    <string name="collect_5ml_sample">Kumpulkan <b>5 ml</b> sampel air menggunakan botol yang disediakan.</string>
+    <string name="collect_50ml_sample">Kumpulkan <b>50 ml</b> sampel air menggunakan botol yang disediakan.</string>
+    <string name="collect_9.6ml_sample">Kumpulkan <b>9.6 ml</b> sampel air menggunakan wadah kecil.</string>
+    <string name="fill_half_with_sample">Isi SETENGAH botol kecil dengan sampel air</string>
+    <string name="open_one_foil_and_add_powder">Buka satu paket foil dan masukan bubuk ke wadah.</string>
+    <string name="add_5_drops_reagent_1">Masukan <b>5 tetes</b> <b> bahan reaksi 1</b> ke dalam sampel</string>
+    <string name="add_10_drops_nh4_reagent">Masukan <b>10 tetes</b> bahan reaksi NH4+-1</string>
+    <string name="cap_vial_and_shake_rapidly">Tutup wadah dan guncangkan dengan cepat selama <b>5 detik</b>. Lepas tutup wadah.</string>
+    <string name="wait_20_minutes_swirl_twice">Tunggu <b>20 menit</b>. Aduk dua kali selama periode reaksi</string>
+    <string name="swirl_to_mix_reagent">Aduk sampel untuk mencampur bahan reaksi</string>
+    <string name="put_6_drops_of_reagent_in_another_container">Dalam tabung wadah yang lebih kecil, masukan <b>6 tetes</b> <b>bahan reaksi 2</b></string>
+    <string name="dip_strip_15_seconds_in_reagent_and_remove">Celupkan kepingan selama <b>15 detik</b> di dalam wadah tabung kecil <b>bahan reaksi 2</b></string>
+    <string name="place_tube_in_provided_rack">Tempatkan tabung di rak yang tersedia.</string>
+    <string name="dip_strip_into_water_and_remove">Celupkan kepingan ke dalam sampel dan langsung tarik kembali.</string>
+    <string name="dip_strip_into_water_1_second">Celupkan kepingan kedalam sampel selama <b>1 detik</b> dan tarik kembali.</string>
+    <string name="dip_strip_in_water_2_seconds">Celupkan kepingan ke dalam sampel setidaknya selama <b>2 detik</b> dan tarik kembali.</string>
+    <string name="dip_strip_5_seconds_and_remove">Celupkan kepingan ke dalam sampel selama <b>5 detik</b> dan tarik kembali.</string>
+    <string name="dip_strip_15_seconds_and_remove">Celupkan kepingan ke dalam sampel selama <b>15 detik</b> dan tarik kembali.</string>
+    <string name="dip_strip_move_back_forth_15_seconds">Celupkan kepingan uji coba ke dalam wadah botol kecil dan langsung tarik kembali dan seterusnya celupkan ke dalam air selama <b>15 detik</b></string>
+    <string name="dip_strip_move_back_forth_30_seconds">Celupkan kepingan uji coba ke dalam wadah botol kecil dan langsung tarik kembali dan celupkan kembali ke dalam sampel selama <b>30 detik</b></string>
+    <string name="immerse_reaction_zone">Benamkan zona reaksi untuk kepingan uji coba ke dalam sampel (15 – 30 °C) selama <b>1 detik</b></string>
+    <string name="dry_off_excess_water_place_on_towel">Keringkan air yang lebih. (misal: lap dengan handuk)</string>
+    <string name="shake_excess_water">Guncangkan air lebih dari kepingan uji coba.</string>
+    <string name="do_not_shake_excess_water">Jangan guncangkan air lebih dari kepingan uji coba.</string>
+    <string name="allow_excess_liquid_to_run_off">Biarkan cairan lebih mengalir ke ujung kepingan sehingga menyerap ke handuk kertas.</string>
+    <string name="add_reagent_k1">Masukan <b>1 tetes</b> bahan reaksi K-1 dalam zona reaksi dan biarkan bereaksi selama <b>1 menit</b></string>
+    <string name="follow_the_instructions_for_reagents">Untuk menambahkan bahan reaksi, ikuti instruksi dari perlengkapan uji coba</string>
+    <string name="conduct_test_per_instructions">Lakukan uji coba sesuai dengan instruksi dari perlengkapan uji coba.</string>
+    <string name="when_ready_place_strip_on_card">Saat sudah siap, tempatkan kepingan di dalam area hitam pada kertas warna untuk memulai proses analisa.</string>
+    <string name="place_strip_in_black_area">Tempatkan kepingan di dalam area hitam di kartu warna.</string>
+    <string name="press_start_button">Tekan tombol <b>Mulai</b></string>
+
+</resources>
