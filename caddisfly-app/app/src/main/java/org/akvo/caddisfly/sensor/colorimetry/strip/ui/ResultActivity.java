@@ -448,7 +448,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
                 try {
                     if (!patches.get(patchNum).getFormula().isEmpty() && !Double.isNaN(resultValue)) {
-                        resultValue = MathUtil.eval(String.format(patches.get(patchNum).getFormula(), resultValue));
+                        resultValue = MathUtil.eval(String.format(Locale.US, patches.get(patchNum).getFormula(), resultValue));
                     }
                 } catch (Exception e) {
                     Timber.e(e);
@@ -650,7 +650,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                         // todo: fix the hardcoding of the result indexes
                         if (!finalResultPatch.getFormula().isEmpty()) {
 
-                            resultValue = MathUtil.eval(String.format(finalResultPatch.getFormula(),
+                            resultValue = MathUtil.eval(String.format(Locale.US, finalResultPatch.getFormula(),
                                     Double.parseDouble(results.get(2)), Double.parseDouble(results.get(3))));
 
                             results.put(1, String.valueOf(ResultUtil.roundSignificant(resultValue)));
