@@ -152,13 +152,6 @@
         <activity
             android:name=".sensor.colorimetry.strip.ui.ResultActivity"
             android:screenOrientation="nosensor" />
-        <activity android:name=".sensor.colorimetry.strip.ui.UncaughtExceptionActivity">
-            <intent-filter>
-                <action android:name="org.akvo.SEND_LOG" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <!-- end StripTest -->
         <service
             android:name=".usb.UsbService"

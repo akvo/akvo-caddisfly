@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.util;
+package org.akvo.caddisfly.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;

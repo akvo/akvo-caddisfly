@@ -34,7 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.AssetsManager;
+import org.akvo.caddisfly.util.AssetsManager;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
