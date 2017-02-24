@@ -66,6 +66,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 /**
@@ -80,6 +82,19 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
     private final MyHandler handler = new MyHandler();
     private final Map<String, Integer> qualityCountMap = new LinkedHashMap<>(3); // <Type, count>
+
+    @BindView(R.id.activity_cameraMainLayout)
+    LinearLayout mainLayout;
+
+    @BindView(R.id.level_cameraLevel)
+    LevelView levelView;
+
+    @BindView(R.id.finder_indicator)
+    FinderPatternIndicatorView finderPatternIndicatorView;
+
+    @BindView(R.id.countdownTimer)
+    TimerView timerCountdown;
+
     private boolean torchModeOn = false;
     private WeakReference<CameraActivity> mActivity;
     private Camera mCamera;
@@ -89,8 +104,6 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     private FrameLayout previewLayout;
     @Nullable
     private CameraPreview cameraPreview;
-    private FinderPatternIndicatorView finderPatternIndicatorView;
-    private LevelView levelView;
     private String uuid;
     private CameraSharedFragmentBase currentFragment;
     //OpenCV Manager
@@ -157,10 +170,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             }
         }
     };
-    private TimerView timerCountdown;
     private boolean mCameraPaused;
     private InstructionFragment instructionFragment;
-    private LinearLayout parentLayout;
     private Snackbar snackbar;
 
     @Override
@@ -169,18 +180,11 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         setContentView(R.layout.activity_camera_view);
 
-        parentLayout = (LinearLayout) findViewById(R.id.activity_cameraMainLayout);
+        ButterKnife.bind(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         sound = new SoundPoolPlayer(this);
-
-        finderPatternIndicatorView =
-                (FinderPatternIndicatorView) findViewById(R.id.finder_indicator);
-
-        levelView = (LevelView) findViewById(R.id.level_cameraLevel);
-
-        timerCountdown = (TimerView) findViewById(R.id.countdownTimer);
 
         showFinderPatternRunnable = new ShowFinderPatternRunnable();
         showLevelRunnable = new ShowLevelRunnable();
@@ -599,7 +603,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                         }, 100);
 
                         snackbar = Snackbar
-                                .make(parentLayout, getString(R.string.you_can_set_phone_aside),
+                                .make(mainLayout, getString(R.string.you_can_set_phone_aside),
                                         Snackbar.LENGTH_INDEFINITE);
 
                         TypedValue typedValue = new TypedValue();

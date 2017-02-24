@@ -240,7 +240,6 @@ public final class OpenCVUtil {
                 }
             }
 
-            //Log.d("Caddisfly", String.valueOf(colTotal));
             colCount[i] = colTotal;
         }
 

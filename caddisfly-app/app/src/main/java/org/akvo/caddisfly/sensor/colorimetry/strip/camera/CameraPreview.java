@@ -21,23 +21,23 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.content.Context;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.detector.CameraConfigurationUtils;
 
 import java.io.IOException;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by linda on 7/7/15
  */
 @SuppressWarnings("deprecation")
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-
-    private static final String TAG = "CameraPreview";
 
     private static final int MIN_CAMERA_WIDTH = 1300;
     private final Camera mCamera;
@@ -47,7 +47,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     public CameraPreview(Context context) {
         super(context);
         // Create an instance of Camera
-        mCamera = TheCamera.getCameraInstance();
+        mCamera = ApiUtil.getCameraInstance();
 
         try {
             activity = (CameraActivity) context;
@@ -64,7 +64,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             mCamera.setPreviewDisplay(holder);
         } catch (Exception e) {
-            Log.d("", "Error setting camera preview: " + e.getMessage());
+            Timber.d("", "Error setting camera preview: " + e.getMessage());
         }
     }
 
@@ -144,7 +144,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             CameraConfigurationUtils.setFocus(parameters, canAutoFocus, disableContinuousFocus, false);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
 
         //white balance
@@ -156,7 +156,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             mCamera.setParameters(parameters);
         } catch (Exception e) {
-            Log.e(TAG, "Error setting camera parameters: " + e.getMessage(), e);
+            Timber.e(e);
         }
 
         try {
@@ -164,7 +164,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             activity.setPreviewProperties();
             mCamera.startPreview();
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
 
     }

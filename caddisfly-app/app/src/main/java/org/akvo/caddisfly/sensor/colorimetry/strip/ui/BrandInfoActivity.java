@@ -56,6 +56,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -68,42 +71,24 @@ public class BrandInfoActivity extends BaseActivity {
     private static final int PERMISSION_ALL = 1;
     private static final String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
+
+    @BindView(R.id.button_instructions)
+    Button buttonInstruction;
+
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.imageBrandLabel)
+    ImageView imageBrandLabel;
+
     private String mUuid;
-    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brand_info);
 
-        final Activity activity = this;
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
-        ImageView imageBrandLabel = (ImageView) findViewById(R.id.imageBrandLabel);
-
-        // To start Camera
-        Button buttonPrepareTest = (Button) findViewById(R.id.button_prepare);
-        buttonPrepareTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!ApiUtil.hasPermissions(activity, PERMISSIONS)) {
-                    ActivityCompat.requestPermissions(activity, PERMISSIONS, PERMISSION_ALL);
-                } else {
-                    startCamera();
-                }
-            }
-        });
-
-        // To display Instructions
-        Button buttonInstruction = (Button) findViewById(R.id.button_instructions);
-        buttonInstruction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), InstructionActivity.class);
-                intent.putExtra(Constant.UUID, mUuid);
-                startActivity(intent);
-            }
-        });
+        ButterKnife.bind(this);
 
         mUuid = getIntent().getStringExtra(Constant.UUID);
 
@@ -112,12 +97,6 @@ public class BrandInfoActivity extends BaseActivity {
 
             // Display the brand in title
             setTitle(stripTest.getBrand(mUuid).getName());
-
-//            try {
-//                imageBrandLabel.setBackgroundColor(Color.parseColor(stripTest.getBrand(this, mUuid).getBackground()));
-//            } catch (Exception ignored) {
-//
-//            }
 
             // Display the brand photo
             InputStream ims = null;
@@ -149,7 +128,6 @@ public class BrandInfoActivity extends BaseActivity {
                         Timber.e(e);
                     }
                 }
-
             }
 
             JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
@@ -157,6 +135,22 @@ public class BrandInfoActivity extends BaseActivity {
                 buttonInstruction.setVisibility(View.INVISIBLE);
             }
         }
+    }
+
+    @OnClick(R.id.button_prepare)
+    void prepareTest() {
+        if (!ApiUtil.hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        } else {
+            startCamera();
+        }
+    }
+
+    @OnClick(R.id.button_instructions)
+    public void showInstructions() {
+        Intent intent = new Intent(getBaseContext(), InstructionActivity.class);
+        intent.putExtra(Constant.UUID, mUuid);
+        startActivity(intent);
     }
 
     @Override

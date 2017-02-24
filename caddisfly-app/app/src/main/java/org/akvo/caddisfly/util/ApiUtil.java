@@ -32,19 +32,18 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 
 import org.akvo.caddisfly.helper.CameraHelper;
 
 import java.util.UUID;
+
+import timber.log.Timber;
 
 /**
  * Utility functions for api related actions
  */
 @SuppressWarnings("deprecation")
 public final class ApiUtil {
-
-    private static final String TAG = "ApiUtil";
 
     private static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
     @Nullable
@@ -59,7 +58,7 @@ public final class ApiUtil {
         try {
             c = Camera.open();
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
         return c;
     }

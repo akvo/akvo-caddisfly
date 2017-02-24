@@ -24,16 +24,15 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.support.annotation.StringRes;
-import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
-public final class CameraHelper {
+import timber.log.Timber;
 
-    private static final String TAG = "CameraHelper";
+public final class CameraHelper {
 
     private static final float ONE_MILLION = 1000000f;
     private static boolean hasCameraFlash;
@@ -143,7 +142,7 @@ public final class CameraHelper {
                 PreferencesUtil.setInt(context, R.string.cameraMegaPixelsKey, cameraMegaPixels);
 
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             } finally {
                 if (camera != null) {
                     camera.release();

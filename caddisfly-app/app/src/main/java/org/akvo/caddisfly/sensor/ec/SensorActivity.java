@@ -60,6 +60,9 @@ import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 /**
@@ -75,39 +78,34 @@ public class SensorActivity extends BaseActivity {
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private final SparseArray<String> results = new SparseArray<>();
-    private AlertDialog alertDialog;
-    private TestInfo mCurrentTestInfo;
-    private Toast debugToast;
-    private boolean mIsInternal = false;
-    private LinearLayout layoutResult;
-    private ProgressBar progressWait;
-    private TextView textResult;
-    private TextView textResult2;
-    private TextView textUnit;
-    private TextView textUnit2;
-    private Button buttonAcceptResult;
-    private TextView textSubtitle;
-    private String mReceivedData = EMPTY_STRING;
-    private UsbService usbService;
-    private MyHandler mHandler;
-    private ImageView imageUsbConnection;
-    private final ServiceConnection usbConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            usbService = ((UsbService.UsbBinder) arg1).getService();
-            usbService.setHandler(mHandler);
-            if (usbService.isUsbConnected()) {
-                textSubtitle.setText(R.string.sensorConnected);
-                imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
-                progressWait.setVisibility(View.VISIBLE);
-            }
-        }
 
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            usbService = null;
-        }
-    };
+    @BindView(R.id.buttonAcceptResult)
+    Button buttonAcceptResult;
+
+    @BindView(R.id.textSubtitle)
+    TextView textSubtitle;
+
+    @BindView(R.id.progressWait)
+    ProgressBar progressWait;
+
+    @BindView(R.id.textResult)
+    TextView textResult;
+
+    @BindView(R.id.textResult2)
+    TextView textResult2;
+
+    @BindView(R.id.textUnit)
+    TextView textUnit;
+
+    @BindView(R.id.textUnit2)
+    TextView textUnit2;
+
+    @BindView(R.id.imageUsbConnection)
+    ImageView imageUsbConnection;
+
+    @BindView(R.id.layoutResult)
+    LinearLayout layoutResult;
+
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -126,8 +124,43 @@ public class SensorActivity extends BaseActivity {
             }
         }
     };
+    private AlertDialog alertDialog;
+    private TestInfo mCurrentTestInfo;
+    private Toast debugToast;
+    private boolean mIsInternal = false;
+    private String mReceivedData = EMPTY_STRING;
+    private UsbService usbService;
+    private MyHandler mHandler;
+    private final ServiceConnection usbConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            usbService = ((UsbService.UsbBinder) arg1).getService();
+            usbService.setHandler(mHandler);
+            if (usbService.isUsbConnected()) {
+                textSubtitle.setText(R.string.sensorConnected);
+                imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+                progressWait.setVisibility(View.VISIBLE);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            usbService = null;
+        }
+    };
     private int identityCheck = 0;
     private int deviceStatus = 0;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (deviceStatus == 1) {
+                requestResult();
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+            } else {
+                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
+            }
+        }
+    };
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
@@ -155,17 +188,6 @@ public class SensorActivity extends BaseActivity {
                     }
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
-            }
-        }
-    };
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (deviceStatus == 1) {
-                requestResult();
-                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
-            } else {
-                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
             }
         }
     };
@@ -249,6 +271,8 @@ public class SensorActivity extends BaseActivity {
 
         setContentView(R.layout.activity_sensor);
 
+        ButterKnife.bind(this);
+
         final Intent intent = getIntent();
         String mUuid = intent.getStringExtra(Constant.UUID);
         CaddisflyApp.getApp().loadTestConfigurationByUuid(mUuid);
@@ -257,40 +281,9 @@ public class SensorActivity extends BaseActivity {
         mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
 
-        textSubtitle = (TextView) findViewById(R.id.textSubtitle);
-        progressWait = (ProgressBar) findViewById(R.id.progressWait);
-        textResult = (TextView) findViewById(R.id.textResult);
-        textResult2 = (TextView) findViewById(R.id.textResult2);
-        textUnit = (TextView) findViewById(R.id.textUnit);
-        textUnit2 = (TextView) findViewById(R.id.textUnit2);
-        imageUsbConnection = (ImageView) findViewById(R.id.imageUsbConnection);
-
         textSubtitle.setText(R.string.deviceConnectSensor);
 
-        buttonAcceptResult = (Button) findViewById(R.id.buttonAcceptResult);
         buttonAcceptResult.setVisibility(View.INVISIBLE);
-        buttonAcceptResult.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // Build the result json to be returned
-                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-                Intent resultIntent = new Intent(intent);
-
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, EMPTY_STRING, null);
-                resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-
-                // TODO: Remove this when obsolete
-                // Backward compatibility. Return plain text result
-                resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(1));
-
-                setResult(Activity.RESULT_OK, resultIntent);
-                finish();
-            }
-        });
-
-        layoutResult = (LinearLayout) findViewById(R.id.layoutResult);
 
         if (mCurrentTestInfo != null && !mCurrentTestInfo.getName().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
@@ -320,6 +313,27 @@ public class SensorActivity extends BaseActivity {
         progressWait.setVisibility(View.VISIBLE);
 
     }
+
+
+    @OnClick(R.id.buttonAcceptResult)
+    void acceptResult() {
+
+        // Build the result json to be returned
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+        Intent resultIntent = new Intent(getIntent());
+
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, EMPTY_STRING, null);
+        resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
+
+        // TODO: Remove this when obsolete
+        // Backward compatibility. Return plain text result
+        resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(1));
+
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -368,9 +382,9 @@ public class SensorActivity extends BaseActivity {
             if (deviceStatus == 0) {
                 if (value.contains(" ")) {
                     if (value.startsWith(mCurrentTestInfo.getDeviceId())) {
-                            progressWait.setVisibility(View.VISIBLE);
-                            hideNotConnectedView();
-                            deviceStatus = 1;
+                        progressWait.setVisibility(View.VISIBLE);
+                        hideNotConnectedView();
+                        deviceStatus = 1;
                     } else {
                         if (identityCheck > 1) {
                             deviceStatus = 2;

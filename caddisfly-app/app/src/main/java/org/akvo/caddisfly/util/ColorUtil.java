@@ -22,7 +22,6 @@ package org.akvo.caddisfly.util;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.model.ColorInfo;
@@ -31,6 +30,8 @@ import org.akvo.caddisfly.model.XyzColor;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 
 import java.util.Locale;
+
+import timber.log.Timber;
 
 /**
  * Set of utility functions for color calculations and analysis
@@ -41,7 +42,7 @@ public final class ColorUtil {
      * The default color model used for analysis
      */
     public static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
-    private static final String TAG = "ColorUtil";
+
     /**
      * The maximum color distance before the color is considered out of range
      */
@@ -158,7 +159,7 @@ public final class ColorUtil {
             m.clear();
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
 
         return new ColorInfo(commonColor, quality);

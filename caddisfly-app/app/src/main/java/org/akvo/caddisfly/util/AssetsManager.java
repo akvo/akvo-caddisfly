@@ -22,7 +22,6 @@ package org.akvo.caddisfly.util;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -32,12 +31,12 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
  * Created by linda on 8/19/15
  */
 public final class AssetsManager {
-
-    private static final String TAG = "AssetsManager";
 
     private static AssetsManager assetsManager;
     private final AssetManager manager;
@@ -90,14 +89,14 @@ public final class AssetsManager {
 
             json = new String(buffer, "UTF-8");
         } catch (IOException ex) {
-            Log.e(TAG, ex.getMessage(), ex);
+            Timber.e(ex);
             return null;
         } finally {
             if (is != null) {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
         }

@@ -21,7 +21,6 @@ package org.akvo.caddisfly.helper;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
@@ -55,9 +54,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public final class SwatchHelper {
+import timber.log.Timber;
 
-    private static final String TAG = "SwatchHelper";
+public final class SwatchHelper {
 
     private static final int MAX_DISTANCE = 999;
     private static final int MAX_DIFFERENCE = 150;
@@ -412,7 +411,7 @@ public final class SwatchHelper {
                     swatches.add(clonedSwatch);
                 }
             } catch (CloneNotSupportedException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
 
         }
@@ -648,7 +647,7 @@ public final class SwatchHelper {
         try {
             return nf.parse(text).doubleValue();
         } catch (ParseException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
             return 0.0;
         }
     }

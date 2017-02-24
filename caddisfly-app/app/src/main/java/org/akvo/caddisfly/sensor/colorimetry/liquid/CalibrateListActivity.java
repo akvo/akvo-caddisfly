@@ -65,6 +65,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * An activity representing a list of Calibrate items.
  * <p/>
@@ -78,10 +82,22 @@ public class CalibrateListActivity extends BaseActivity
 
     private static final int REQUEST_CALIBRATE = 100;
     private static final int FREEZE_BUTTON_DELAY_MILLIS = 500;
-    private FloatingActionButton fabEditCalibration;
-    private TextView textSubtitle;
-    private TextView textSubtitle1;
-    private TextView textSubtitle2;
+
+    @BindView(R.id.textSubtitle)
+    TextView textSubtitle;
+
+    @BindView(R.id.textSubtitle1)
+    TextView textSubtitle1;
+
+    @BindView(R.id.textSubtitle2)
+    TextView textSubtitle2;
+
+    @BindView(R.id.textTitle)
+    TextView textTitle;
+
+    @BindView(R.id.fabEditCalibration)
+    FloatingActionButton fabEditCalibration;
+
     private int mPosition;
 
     @Override
@@ -128,29 +144,21 @@ public class CalibrateListActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate_list);
 
-        textSubtitle = (TextView) findViewById(R.id.textSubtitle);
-        textSubtitle1 = (TextView) findViewById(R.id.textSubtitle1);
-        textSubtitle2 = (TextView) findViewById(R.id.textSubtitle2);
+        ButterKnife.bind(this);
 
-        ((TextView) findViewById(R.id.textTitle)).setText(CaddisflyApp.getApp().
-                getCurrentTestInfo().getName());
-
-        fabEditCalibration =
-                (FloatingActionButton) findViewById(R.id.fabEditCalibration);
+        textTitle.setText(CaddisflyApp.getApp().getCurrentTestInfo().getName());
 
         if (AppPreferences.isDiagnosticMode()) {
             fabEditCalibration.setBackgroundTintList(
                     ColorStateList.valueOf(ContextCompat.getColor(this, R.color.cyan)));
         }
 
-        fabEditCalibration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showEditCalibrationDetailsDialog(true);
-            }
-        });
-
         loadDetails();
+    }
+
+    @OnClick(R.id.fabEditCalibration)
+    public void showCalibrationDetailsDialog() {
+        showEditCalibrationDetailsDialog(true);
     }
 
     private void showEditCalibrationDetailsDialog(boolean isEdit) {

@@ -39,6 +39,9 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 /*
@@ -47,16 +50,25 @@ This class assumes that there are .png images in res/drawable that have the same
 public class InstructionActivity extends BaseActivity {
 
     private final List<Fragment> fragments = new ArrayList<>();
-    private ViewPager mViewPager;
+
+    @BindView(R.id.pager_indicator)
+    PageIndicatorView pageIndicatorView;
+
+    @BindView(R.id.image_pageLeft)
+    ImageView imagePageLeft;
+
+    @BindView(R.id.image_pageRight)
+    ImageView imagePageRight;
+
+    @BindView(R.id.pager)
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instruction);
 
-        final PageIndicatorView pageIndicatorView = (PageIndicatorView) findViewById(R.id.pager_indicator);
-        final ImageView imagePageLeft = (ImageView) findViewById(R.id.image_pageLeft);
-        final ImageView imagePageRight = (ImageView) findViewById(R.id.image_pageRight);
+        ButterKnife.bind(this);
 
         StripTest.Brand brand = (new StripTest()).getBrand(getIntent().getStringExtra(Constant.UUID));
 
@@ -90,8 +102,6 @@ public class InstructionActivity extends BaseActivity {
             pageIndicatorView.setPageCount(instructions.length());
         }
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-
         final PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(pagerAdapter);
 
@@ -122,25 +132,21 @@ public class InstructionActivity extends BaseActivity {
             }
         });
 
-        imagePageLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewPager.setCurrentItem(Math.max(0, mViewPager.getCurrentItem() - 1));
-            }
-        });
-
-        imagePageRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mViewPager.setCurrentItem(Math.min(fragments.size() - 1, mViewPager.getCurrentItem() + 1));
-            }
-        });
-
         if (pagerAdapter.getCount() < 2) {
             imagePageLeft.setVisibility(View.GONE);
             imagePageRight.setVisibility(View.GONE);
         }
 
+    }
+
+    @OnClick(R.id.image_pageLeft)
+    void pageLeft() {
+        mViewPager.setCurrentItem(Math.max(0, mViewPager.getCurrentItem() - 1));
+    }
+
+    @OnClick(R.id.image_pageRight)
+    void pageRight() {
+        mViewPager.setCurrentItem(Math.min(fragments.size() - 1, mViewPager.getCurrentItem() + 1));
     }
 
     @Override

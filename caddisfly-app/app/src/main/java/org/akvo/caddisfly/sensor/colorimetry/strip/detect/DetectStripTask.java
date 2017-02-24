@@ -192,7 +192,7 @@ public class DetectStripTask extends AsyncTask<Intent, Void, Void> {
                                 calibrationMat = calResult.getCalibratedImage();
                             }
 
-//                            Log.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
+//                            Timber.d(this.getClass().getSimpleName(), "E94 error mean: " + String.format(Locale.US, "%.2f", calResult.meanE94)
 //                                    + ", max: " + String.format(Locale.US, "%.2f", calResult.maxE94)
 //                                    + ", total: " + String.format(Locale.US, "%.2f", calResult.totalE94));
 

@@ -30,7 +30,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.ImageHelper;
@@ -40,12 +39,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import timber.log.Timber;
+
 /**
  * Set of utility functions to manipulate images
  */
 public final class ImageUtil {
-
-    private static final String TAG = "ImageUtil";
 
     private static final int FOUND_CIRCLE_RADIUS = 50;
     private static final int IMAGE_CENTER_CIRCLE_RADIUS = 20;
@@ -187,7 +186,7 @@ public final class ImageUtil {
                 try {
                     fos.close();
                 } catch (IOException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
         }

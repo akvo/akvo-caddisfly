@@ -19,20 +19,18 @@
 
 package org.akvo.caddisfly.util;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import timber.log.Timber;
+
 /**
  * Utility functions for date and time
  */
 public final class DateUtil {
-
-    private static final String TAG = "DateUtil";
 
     private DateUtil() {
     }
@@ -80,7 +78,7 @@ public final class DateUtil {
         try {
             return simpleDateFormat.parse(dateString.trim());
         } catch (ParseException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
         return null;
     }

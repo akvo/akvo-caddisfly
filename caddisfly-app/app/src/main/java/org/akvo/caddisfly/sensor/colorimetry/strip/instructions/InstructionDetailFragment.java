@@ -41,6 +41,8 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class InstructionDetailFragment extends Fragment {
@@ -49,6 +51,12 @@ public class InstructionDetailFragment extends Fragment {
      */
     private static final String ARG_ITEM_TEXT = "text";
     private static final String ARG_ITEM_IMAGE = "image";
+
+    @BindView(R.id.image_illustration)
+    ImageView imageIllustration;
+
+    @BindView(R.id.layout_instructions)
+    LinearLayout layoutInstructions;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,7 +68,6 @@ public class InstructionDetailFragment extends Fragment {
     public static InstructionDetailFragment newInstance(JSONArray text, String imageName) {
         InstructionDetailFragment fragment = new InstructionDetailFragment();
         Bundle args = new Bundle();
-
 
         ArrayList<String> arrayList = new ArrayList<>();
         if (text != null) {
@@ -84,17 +91,18 @@ public class InstructionDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction_detail, container, false);
 
+        ButterKnife.bind(this, rootView);
+
         Drawable instructionDrawable = AssetsManager.getImage(getActivity(),
                 getArguments().getString(ARG_ITEM_IMAGE));
+
         if (instructionDrawable != null) {
-            ((ImageView) rootView.findViewById(R.id.image_illustration)).
-                    setImageDrawable(instructionDrawable);
+            imageIllustration.setImageDrawable(instructionDrawable);
         }
 
         ArrayList<String> instructionText = getArguments().getStringArrayList(ARG_ITEM_TEXT);
         if (instructionText != null) {
 
-            LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_instructions);
             for (String instruction : instructionText) {
                 TextView textView = new TextView(getActivity());
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
@@ -124,7 +132,7 @@ public class InstructionDetailFragment extends Fragment {
                 Spanned spanned = StringUtil.getStringResourceByName(getContext(), text);
                 if (!text.isEmpty()) {
                     textView.append(spanned);
-                    linearLayout.addView(textView);
+                    layoutInstructions.addView(textView);
                 }
             }
         }

@@ -24,12 +24,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -47,7 +45,15 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
+import timber.log.Timber;
+
 public class TestTypeListActivity extends BaseActivity {
+
+    @BindView(R.id.list_types)
+    ListView listTypes;
 
     private StripAdapter adapter;
     private StripTest stripTest;
@@ -58,9 +64,9 @@ public class TestTypeListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_type_list);
 
-        setTitle(R.string.selectTest);
+        ButterKnife.bind(this);
 
-        ListView listTypes = (ListView) findViewById(R.id.list_types);
+        setTitle(R.string.selectTest);
 
         if (stripTest == null) {
             stripTest = new StripTest();
@@ -83,13 +89,12 @@ public class TestTypeListActivity extends BaseActivity {
             }
             listTypes.setAdapter(adapter);
 
-            listTypes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    startDetailActivity(brands.get(i).getUuid());
-                }
-            });
         }
+    }
+
+    @OnItemClick(R.id.list_types)
+    void showDetailedInfo(int position) {
+        startDetailActivity(brands.get(position).getUuid());
     }
 
     private void startDetailActivity(String uuid) {
@@ -128,8 +133,6 @@ public class TestTypeListActivity extends BaseActivity {
     }
 
     static class StripAdapter extends ArrayAdapter<StripTest.Brand> {
-
-        private static final String TAG = "StripAdapter";
 
         private final List<StripTest.Brand> brandList;
         private final int resource;
@@ -188,7 +191,7 @@ public class TestTypeListActivity extends BaseActivity {
                                         patch.getColors().getJSONObject(valueCount - 1).getDouble(SensorConstants.VALUE)));
                             }
                         } catch (JSONException e) {
-                            Log.e(TAG, e.getMessage(), e);
+                            Timber.e(e);
                         }
                         if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
                             break;
@@ -197,11 +200,6 @@ public class TestTypeListActivity extends BaseActivity {
 
                     holder.textView.setText(brand.getName());
                     holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges.toString());
-//                    if (brand.isCustomTest()) {
-//                        holder.imageIcon.setVisibility(View.VISIBLE);
-//                    } else {
-//                        holder.imageIcon.setVisibility(View.INVISIBLE);
-//                    }
                 }
             }
             return view;
@@ -214,14 +212,11 @@ public class TestTypeListActivity extends BaseActivity {
             private final TextView textView;
             @NonNull
             private final TextView textSubtitle;
-//            @NonNull
-//            private final ImageView imageIcon;
 
             ViewHolder(@NonNull View v) {
 
                 textView = (TextView) v.findViewById(R.id.text_title);
                 textSubtitle = (TextView) v.findViewById(R.id.text_subtitle);
-//                imageIcon = (ImageView) v.findViewById(R.id.imageIcon);
             }
         }
     }

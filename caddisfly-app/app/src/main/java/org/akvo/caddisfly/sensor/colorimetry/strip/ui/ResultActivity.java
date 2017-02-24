@@ -35,6 +35,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -76,6 +77,9 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 import static org.opencv.imgproc.Imgproc.INTER_CUBIC;
@@ -89,8 +93,22 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
     private static final int MAX_RGB_INT_VALUE = 255;
     private static final double LAB_COLOR_NORMAL_DIVISOR = 2.55;
     private final SparseArray<String> results = new SparseArray<>();
-    private Button buttonSave;
-    private Button buttonCancel;
+
+    @BindView(R.id.button_save)
+    Button buttonSave;
+
+    @BindView(R.id.button_cancel)
+    Button buttonCancel;
+
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.layout_results)
+    LinearLayout layoutResults;
+
+    @BindView(R.id.testProgress)
+    TextView testProgress;
+
     @Nullable
     private Mat resultImage = null;
     private String resultImageUrl;
@@ -102,54 +120,9 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
+        ButterKnife.bind(this);
+
         setTitle(R.string.result);
-
-        buttonSave = (Button) findViewById(R.id.button_save);
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getIntent());
-                String path;
-
-                if (getIntent().getBooleanExtra(Constant.SEND_IMAGE_IN_RESULT, false) && resultImage != null) {
-
-                    // store image on sd card
-                    path = FileUtil.writeBitmapToExternalStorage(
-                            ResultUtil.makeBitmap(resultImage), "/result-images", resultImageUrl);
-                    intent.putExtra(SensorConstants.IMAGE, path);
-
-                    if (path.length() == 0) {
-                        resultImageUrl = "";
-                    }
-                } else {
-                    resultImageUrl = "";
-                }
-
-
-                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-                StripTest stripTest = new StripTest();
-                // get information on the strip test from JSON
-                StripTest.Brand brand = stripTest.getBrand(testInfo.getId());
-
-                JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, results, -1,
-                        resultImageUrl, brand.getGroupingType());
-
-                intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
-                setResult(RESULT_OK, intent);
-                finish();
-            }
-        });
-
-        buttonCancel = (Button) findViewById(R.id.button_cancel);
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getIntent());
-                setResult(RESULT_CANCELED, intent);
-                finish();
-            }
-        });
 
         if (savedInstanceState == null) {
             int format = getIntent().getIntExtra(Constant.FORMAT, 0);
@@ -159,6 +132,47 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
             new DetectStripTask(this).execute(detectStripIntent);
         }
+    }
+
+    @OnClick(R.id.button_save)
+    void saveResult() {
+        Intent intent = new Intent(getIntent());
+        String path;
+
+        if (getIntent().getBooleanExtra(Constant.SEND_IMAGE_IN_RESULT, false) && resultImage != null) {
+
+            // store image on sd card
+            path = FileUtil.writeBitmapToExternalStorage(
+                    ResultUtil.makeBitmap(resultImage), "/result-images", resultImageUrl);
+            intent.putExtra(SensorConstants.IMAGE, path);
+
+            if (path.length() == 0) {
+                resultImageUrl = "";
+            }
+        } else {
+            resultImageUrl = "";
+        }
+
+
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+        StripTest stripTest = new StripTest();
+        // get information on the strip test from JSON
+        StripTest.Brand brand = stripTest.getBrand(testInfo.getId());
+
+        JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, results, -1,
+                resultImageUrl, brand.getGroupingType());
+
+        intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @OnClick(R.id.button_cancel)
+    void cancel() {
+        Intent intent = new Intent(getIntent());
+        setResult(RESULT_CANCELED, intent);
+        finish();
     }
 
     /**
@@ -195,7 +209,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
 
     @Override
     public void showSpinner() {
-        findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -260,13 +274,12 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         } else {
             TextView textView = new TextView(this);
             textView.setText(R.string.noData);
-            LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
 
-            layout.addView(textView);
+            layoutResults.addView(textView);
         }
 
-        findViewById(R.id.progressBar).setVisibility(View.GONE);
-        findViewById(R.id.testProgress).setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
+        testProgress.setVisibility(View.GONE);
     }
 
     private class DeleteTask extends AsyncTask<Void, Void, Void> {
@@ -637,8 +650,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 invalid = true;
             }
 
-            LinearLayout layout = (LinearLayout) findViewById(R.id.layout_results);
-            layout.addView(itemResult);
+            layoutResults.addView(itemResult);
 
             // Job is done, decrement the work counter.
             int tasksLeft = this.workCounter.decrementAndGet();

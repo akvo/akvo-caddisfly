@@ -43,6 +43,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 import static android.graphics.Typeface.BOLD;
@@ -61,6 +64,8 @@ public class InstructionFragment extends CameraSharedFragmentBase {
     private static final int BUTTON_ENABLE_DELAY = 4000;
     private static final int ANIMATION_DURATION_MILLIS = 2000;
     private static final float BUTTON_START_ALPHA = 0.2f;
+    @BindView(R.id.button_start)
+    Button buttonStart;
     private CameraViewListener mListener;
 
     public InstructionFragment() {
@@ -87,7 +92,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
-        final Button buttonStart = (Button) rootView.findViewById(R.id.button_start);
+
+        ButterKnife.bind(this, rootView);
+
         buttonStart.setEnabled(false);
         buttonStart.setAlpha(BUTTON_START_ALPHA);
         LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_information);
@@ -139,13 +146,6 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
         }
 
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.nextFragment();
-            }
-        });
-
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 buttonStart.setEnabled(true);
@@ -158,6 +158,11 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
 
         return rootView;
+    }
+
+    @OnClick(R.id.button_start)
+    void nextFragment() {
+        mListener.nextFragment();
     }
 
     private void showInstruction(@NonNull LinearLayout linearLayout, @NonNull String instruction, int style) {

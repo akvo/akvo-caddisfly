@@ -21,7 +21,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.calibration;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
@@ -58,10 +57,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import timber.log.Timber;
+
 // Performs the calibration of the image
 public final class CalibrationCard {
-
-    private static final String TAG = "CalibrationCard";
 
     private static final int CODE_NOT_FOUND = 0;
     private static final double ONE_OVER_NINE = 1.0 / 9;
@@ -179,7 +178,7 @@ public final class CalibrationCard {
                     return calData;
 
                 } catch (JSONException e) {
-                    Log.e(TAG, "Error reading calibration file", e);
+                    Timber.e("Error reading calibration file", e);
                 }
             } else {
                 // Wait for a few version readings before declaring error
@@ -810,7 +809,7 @@ public final class CalibrationCard {
                     index++;
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Error sample line into new row");
+                Timber.e("Error sample line into new row", e);
                 return CODE_NOT_FOUND;
             }
 
@@ -838,7 +837,7 @@ public final class CalibrationCard {
                 // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
                 // which is too small.
                 if (lengthPattern < 20) {
-                    Log.e(TAG, "Length of pattern too small");
+                    Timber.e("Length of pattern too small");
                     return CODE_NOT_FOUND;
                 }
 

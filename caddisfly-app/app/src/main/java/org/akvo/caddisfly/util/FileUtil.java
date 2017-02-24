@@ -22,7 +22,6 @@ package org.akvo.caddisfly.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.util.Log;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
@@ -47,12 +46,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 /**
  * Utility functions to file and folder manipulation
  */
 public final class FileUtil {
-
-    private static final String TAG = "FileUtil";
 
     private FileUtil() {
     }
@@ -105,7 +104,7 @@ public final class FileUtil {
             pw.write(data);
 
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         } finally {
             if (pw != null) {
                 pw.close();
@@ -144,14 +143,14 @@ public final class FileUtil {
                     try {
                         isr.close();
                     } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
+                        Timber.e(e);
                     }
                 }
                 if (fis != null) {
                     try {
                         fis.close();
                     } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
+                        Timber.e(e);
                     }
                 }
             }
@@ -196,21 +195,21 @@ public final class FileUtil {
                     try {
                         isr.close();
                     } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
+                        Timber.e(e);
                     }
                 }
                 if (bufferedReader != null) {
                     try {
                         bufferedReader.close();
                     } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
+                        Timber.e(e);
                     }
                 }
                 if (fis != null) {
                     try {
                         fis.close();
                     } catch (IOException e) {
-                        Log.e(TAG, e.getMessage(), e);
+                        Timber.e(e);
                     }
                 }
             }
@@ -257,7 +256,7 @@ public final class FileUtil {
                 f.close();
                 return file.getAbsolutePath();
             } catch (IOException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
         }
         // on failure, return empty string
@@ -278,7 +277,7 @@ public final class FileUtil {
             outputStream.close();
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
     }
 
@@ -313,13 +312,13 @@ public final class FileUtil {
                 outputStream.write(s);
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         } finally {
             if (outputStream != null) {
                 try {
                     outputStream.close();
                 } catch (IOException e) {
-                    Log.e(TAG, e.getMessage(), e);
+                    Timber.e(e);
                 }
             }
         }
@@ -347,7 +346,7 @@ public final class FileUtil {
 
             return json;
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
 
         return null;

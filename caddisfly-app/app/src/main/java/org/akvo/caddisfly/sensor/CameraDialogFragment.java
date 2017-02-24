@@ -30,7 +30,6 @@ import android.graphics.Rect;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -47,6 +46,9 @@ import org.akvo.caddisfly.util.ApiUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.ButterKnife;
+import timber.log.Timber;
 
 
 /**
@@ -91,6 +93,8 @@ public class CameraDialogFragment extends CameraDialog {
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
+
+        ButterKnife.bind(this, view);
 
         // Create preview and set it as the content
         if (!safeCameraOpenInView(view)) {
@@ -225,7 +229,6 @@ public class CameraDialogFragment extends CameraDialog {
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
         static final double ASPECT_TOLERANCE = 0.1;
-        private static final String TAG = "CameraPreview";
         private final SurfaceHolder mHolder;
         private Paint circleStroke;
         private List<Camera.Size> mSupportedPreviewSizes;
@@ -268,7 +271,7 @@ public class CameraDialogFragment extends CameraDialog {
                 mCamera.setPreviewDisplay(mHolder);
                 mCamera.startPreview();
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
         }
 
@@ -389,13 +392,13 @@ public class CameraDialogFragment extends CameraDialog {
                 mCamera.setParameters(parameters);
                 mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
             } catch (Exception e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
 
             try {
                 mCamera.setPreviewDisplay(mHolder);
             } catch (IOException e) {
-                Log.e(TAG, e.getMessage(), e);
+                Timber.e(e);
             }
             mCamera.startPreview();
         }
@@ -485,7 +488,7 @@ public class CameraDialogFragment extends CameraDialog {
                             }
                         }, mSamplingDelay);
                     } catch (Exception e) {
-                        Log.e(CameraPreview.TAG, e.getMessage(), e);
+                        Timber.e(e);
                     }
                 }
             }

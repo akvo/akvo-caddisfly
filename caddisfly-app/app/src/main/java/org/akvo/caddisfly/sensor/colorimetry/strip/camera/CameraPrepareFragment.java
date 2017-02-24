@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,9 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PercentageMeterView;
 
 import java.lang.ref.WeakReference;
+
+import butterknife.ButterKnife;
+import timber.log.Timber;
 
 /**
  * Activities that contain this fragment must implement the
@@ -48,7 +50,6 @@ import java.lang.ref.WeakReference;
 @SuppressWarnings("deprecation")
 public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
-    private static final String TAG = "CameraPrepareFragment";
     private static final int SHADOW_UNKNOWN_VALUE = 101;
     private final Handler handler = new Handler();
     @Nullable
@@ -93,6 +94,8 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_prepare, container, false);
+
+        ButterKnife.bind(this, rootView);
 
         PercentageMeterView exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
         PercentageMeterView contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
@@ -188,7 +191,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
             showShadow(SHADOW_UNKNOWN_VALUE);
 
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
     }
 }

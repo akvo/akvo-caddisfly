@@ -300,10 +300,13 @@ public class NavigationTest {
 
 //        //Calibration incomplete
         takeScreenshot();
-//
-        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
-        onView(withId(android.R.id.button2)).perform(click());
+        // Chlorine not calibrated
+        //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+
+        //onView(withId(android.R.id.button2)).perform(click());
+
+        mDevice.pressBack();
 
         clickExternalSourceButton(TestConstant.NEXT);
 

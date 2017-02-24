@@ -19,8 +19,6 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -28,12 +26,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import timber.log.Timber;
+
 /**
  * Created by linda on 12/13/15
  */
 class CameraScheduledExecutorService {
-
-    private static final String TAG = "CamScheduledExecService";
 
     private final ScheduledExecutorService scheduledExecutorService =
             Executors.newScheduledThreadPool(5, Executors.defaultThreadFactory());
@@ -51,7 +49,7 @@ class CameraScheduledExecutorService {
 
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
     }
 
@@ -86,7 +84,7 @@ class CameraScheduledExecutorService {
                 tasks.put(runnable.toString(), taskExecuted);
             }
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
     }
 
