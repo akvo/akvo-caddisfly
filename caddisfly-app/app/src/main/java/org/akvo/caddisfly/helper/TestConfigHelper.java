@@ -147,7 +147,7 @@ public final class TestConfigHelper {
                     JSONObject item = array.getJSONObject(i);
                     String uuid = item.getString(SensorConstants.UUID);
 
-                    // get uuids
+                    // Ignore duplicate uuid
                     boolean found = false;
                     for (TestInfo test : tests) {
                         if (uuid.equalsIgnoreCase(test.getId())) {
@@ -242,7 +242,7 @@ public final class TestConfigHelper {
                 defaultColorsArray = defaultColors.split(",");
             }
 
-            // get uuids
+            // get uuid
             String uuid = item.getString(SensorConstants.UUID);
 
             testInfo = new TestInfo(name, type, rangesArray,

@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.sensor;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -226,21 +227,17 @@ public class CameraDialogFragment extends CameraDialog {
         }
     }
 
+    @SuppressLint("ViewConstructor")
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
         static final double ASPECT_TOLERANCE = 0.1;
         private final SurfaceHolder mHolder;
-        private Paint circleStroke;
-        private List<Camera.Size> mSupportedPreviewSizes;
+        private final Paint circleStroke;
+        private final List<Camera.Size> mSupportedPreviewSizes;
         private Camera mCamera;
         @SuppressWarnings("unused")
         private List<String> mSupportedFlashModes;
         private Camera.Size mPreviewSize;
-
-        CameraPreview(Context context) {
-            super(context);
-            mHolder = getHolder();
-        }
 
         CameraPreview(Context context, Camera camera) {
             super(context);

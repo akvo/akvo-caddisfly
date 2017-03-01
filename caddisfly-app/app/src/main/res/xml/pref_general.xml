@@ -19,6 +19,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/general">
+        <!--suppress AndroidDomInspection -->
         <ListPreference
             android:defaultValue="en"
             android:dialogTitle="@string/language"
