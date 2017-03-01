@@ -110,8 +110,6 @@
     <string name="taking_photo">Taking photo</string>
     <string name="waiting_for">Waiting for %s</string>
     <string name="success_quality_checks">Success! Quality check passed</string>
-    <string name="stage_one">Stage 1:</string>
-    <string name="stage_two">Stage 2:</string>
     <string name="prepareForCalibration">Prepare for calibration</string>
     <string name="stripTest">Strip Test</string>
     <string name="no_result">No result</string>
@@ -180,9 +178,7 @@
 
     <!--StripTest-->
     <string name="error_calibrating">Calibration failed</string>
-    <string name="error_conversion">Could not convert image</string>
     <string name="error_cut_out_strip">No strip found</string>
-    <string name="error_no_finder_pattern_info">No info about finder patterns</string>
     <string name="no_data">No data for patch</string>
     <string name="start_camera_instruction">Place strip in black area of the colour card &amp; hold camera above it to analyse.</string>
     <string name="prepare_camera_instruction">Don\'t take sample yet. Hold camera above colour card and adjust position until check succeeds.</string>

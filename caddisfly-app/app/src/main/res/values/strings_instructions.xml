@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -18,8 +17,10 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
 
+    <string name="stage_one">Stage 1:</string>
+    <string name="stage_two">Stage 2:</string>
     <string name="sample_size_for_500_range">This sample size is for the range 0 – 500 ppb</string>
     <string name="sample_size_for_4000_range">This sample size is for the range 0 – 4000 ppb</string>
     <string name="collect_mehlich_extraction_sample">Collect Mehlich extraction sample</string>
