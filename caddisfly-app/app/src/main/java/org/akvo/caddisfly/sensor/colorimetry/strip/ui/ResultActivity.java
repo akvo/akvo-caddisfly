@@ -680,22 +680,10 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                     }
                 }
 
-                boolean resultAvailable = false;
-                // check if at least one result was returned
-                for (int i = 0; i < results.size(); i++) {
-                    int key = results.keyAt(i);
-
-                    String value = results.get(key);
-                    resultAvailable = value != null && !value.isEmpty();
-                    if (resultAvailable) {
-                        break;
-                    }
-                }
-
                 boolean isInternal = getIntent().getBooleanExtra("internal", false);
 
-                // show the save button only if at least one result is available
-                buttonSave.setVisibility(isInternal || !resultAvailable ? View.GONE : View.VISIBLE);
+                // show the save and cancel buttons if results to be sent to external app
+                buttonSave.setVisibility(isInternal ? View.GONE : View.VISIBLE);
                 buttonCancel.setVisibility(isInternal ? View.GONE : View.VISIBLE);
 
                 new DeleteTask().execute();
