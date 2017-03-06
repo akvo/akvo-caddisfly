@@ -73,6 +73,20 @@
                     android:layout_gravity="center"
                     android:visibility="invisible"
                     app:circleColor="#016ec6" />
+
+                <TextView
+                    android:id="@+id/textMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#000"
+                    android:paddingBottom="40dp"
+                    android:paddingEnd="20dp"
+                    android:paddingStart="20dp"
+                    android:paddingTop="40dp"
+                    android:text="@string/correctThePhoneTilt"
+                    android:textColor="#fff"
+                    android:visibility="gone" />
             </FrameLayout>
 
             <FrameLayout

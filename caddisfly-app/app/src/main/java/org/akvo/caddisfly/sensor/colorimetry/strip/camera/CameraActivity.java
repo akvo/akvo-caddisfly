@@ -42,6 +42,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.helper.MathHelper;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.model.TestStatus;
 import org.akvo.caddisfly.sensor.colorimetry.strip.calibration.CalibrationCard;
@@ -88,6 +89,9 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
     @BindView(R.id.level_cameraLevel)
     LevelView levelView;
+
+    @BindView(R.id.textMessage)
+    TextView textMessage;
 
     @BindView(R.id.finder_indicator)
     FinderPatternIndicatorView finderPatternIndicatorView;
@@ -472,6 +476,19 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     @Override
     public void showLevel(final float[] tilts) {
         showLevelRunnable.setAngles(tilts);
+
+        // Show a message to user if the device is tilted too much
+        if (tilts != null) {
+            float degrees = MathHelper.getTiltAngle(tilts);
+            if (degrees == 0) {
+                textMessage.setVisibility(View.GONE);
+            } else {
+                textMessage.setVisibility(View.VISIBLE);
+            }
+        } else {
+            textMessage.setVisibility(View.GONE);
+        }
+
         handler.post(showLevelRunnable);
     }
 

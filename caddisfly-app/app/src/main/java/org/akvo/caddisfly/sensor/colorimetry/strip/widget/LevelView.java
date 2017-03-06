@@ -28,7 +28,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.helper.MathHelper;
 
 /**
  * Created by linda on 10/27/15
@@ -61,7 +61,7 @@ public class LevelView extends View {
     protected void onDraw(Canvas canvas) {
 
         if (tilts != null) {
-            float degrees = getDegrees(tilts);
+            float degrees = MathHelper.getTiltAngle(tilts);
             if (degrees != 0) {
                 canvas.save();
                 canvas.rotate(degrees, canvas.getWidth() / 2f, canvas.getHeight() / 2f);
@@ -75,20 +75,5 @@ public class LevelView extends View {
     public void setAngles(float[] tiltValues) {
         this.tilts = tiltValues == null ? null : tiltValues.clone();
         invalidate();
-    }
-
-    private float getDegrees(float[] tiltValues) {
-        float degrees = 0f;
-
-        // if the horizontal tilt is too large, indicate it
-        if (Math.abs(tiltValues[0] - 1) > Constant.MAX_TILT_DIFF) {
-            degrees = tiltValues[0] - 1 < 0 ? -DEGREES_90 : DEGREES_90;
-        }
-
-        // if the vertical tilt is too large, indicate it
-        if (Math.abs(tiltValues[1] - 1) > Constant.MAX_TILT_DIFF) {
-            degrees = tiltValues[1] - 1 < 0 ? DEGREES_180 : 1;
-        }
-        return degrees;
     }
 }
