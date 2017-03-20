@@ -170,7 +170,7 @@
           "formula": "(%1$f * 5) * 2.24",
           "patchPos": 4.5,
           "patchWidth": 7,
-          "timeLapse": 0,
+          "timeLapse": 60,
           "colors":[
             {
               "value": 0,
