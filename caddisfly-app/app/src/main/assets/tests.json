@@ -2,7 +2,7 @@
   "comment": "This file contains the metadata for tests. IMPORTANT: *DO NOT* change the uuid values",
   "tests":[
     {
-      "name": "Soil - Available Nitrogen",
+      "name": "Soil - Nitrogen",
       "description": "Measures nitrate and nitrite in water. Nitrate 0 - 50 ppm, Nitrite 0 - 3.0 ppm",
       "subtype": "striptest",
       "tags": ["soil quality"],
@@ -18,9 +18,9 @@
       "results": [
         {
           "id":1,
-          "name":"Available Nitrogen",
-          "unit": "kg/ha",
-          "formula": "((%1$f + %2$f) * 5) * 2.24"
+          "name": "Nitrogen",
+          "unit": "ppm",
+          "formula": "((%1$f + %2$f) * 5)"
         },
         {
           "id":2,
@@ -97,7 +97,7 @@
       ]
     },
     {
-      "name":  "Soil - Available Phosphorous",
+      "name": "Soil - Phosphorous",
       "description": "Phosphorous, 0 - 100 kg/ha.",
       "subtype": "striptest",
       "tags": ["soil quality"],
@@ -113,9 +113,9 @@
       "results": [
         {
           "id":1,
-          "name":"Available Phosphorous",
-          "unit": "kg/ha",
-          "formula": "((%1$f * 0.326138) * 5) * 2.24",
+          "name": "Phosphorous",
+          "unit": "ppm",
+          "formula": "((%1$f * 0.326138) * 5)",
           "patchPos":5,
           "patchWidth":6,
           "timeLapse":60,
@@ -149,7 +149,7 @@
       ]
     },
     {
-      "name": "Soil - Available Potassium",
+      "name": "Soil - Potassium",
       "description": "Potassium, 0 - 1000 ppm.",
       "subtype": "striptest",
       "tags": ["soil quality"],
@@ -165,9 +165,9 @@
       "results": [
         {
           "id": 1,
-          "name": "Available Potassium",
-          "unit": "kg/ha",
-          "formula": "(%1$f * 5) * 2.24",
+          "name": "Potassium",
+          "unit": "ppm",
+          "formula": "(%1$f * 5)",
           "patchPos": 4.5,
           "patchWidth": 7,
           "timeLapse": 60,
