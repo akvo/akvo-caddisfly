@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 168
-        versionName "1.0.0 Beta 8.6"
+        versionCode 170
+        versionName "1.0.0 Beta 8.8"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->
@@ -108,7 +108,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.6.2'
-    testCompile 'org.robolectric:robolectric:3.2.2'
+    testCompile 'org.robolectric:robolectric:3.3.1'
     testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test:runner:0.5'
