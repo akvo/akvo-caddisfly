@@ -121,7 +121,7 @@ public class EditSensorIdentity extends DialogFragment {
                 public void onClick(View v) {
                     if (formEntryValid() && !editId.getText().toString().trim().isEmpty()) {
                         if (mListener != null) {
-                            mListener.onFragmentInteraction(editId.getText().toString());
+                            mListener.onFragmentInteraction(editId.getText().toString().trim());
                         }
                         closeKeyboard(context, editId);
                         dismiss();

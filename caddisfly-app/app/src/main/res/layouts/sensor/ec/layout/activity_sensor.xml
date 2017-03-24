@@ -56,7 +56,15 @@
             android:layout_height="wrap_content"
             android:textColor="#d6f6fdf6"
             android:textSize="16sp"
-            tools:text="Waiting for EC Sensor" />
+            tools:text="Sensor ID: 123" />
+
+        <TextView
+            android:id="@+id/textSubtitle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp"
+            tools:text="@string/dipSensorInSample" />
 
     </LinearLayout>
 

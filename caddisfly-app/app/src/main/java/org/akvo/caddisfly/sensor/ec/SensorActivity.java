@@ -59,6 +59,8 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,11 +72,13 @@ import timber.log.Timber;
  */
 public class SensorActivity extends BaseActivity {
 
-    private static final String EMPTY_STRING = "";
     private static final int REQUEST_DELAY_MILLIS = 1500;
     private static final int IDENTIFY_DELAY_MILLIS = 300;
     private static final int ANIMATION_DURATION = 500;
     private static final int ANIMATION_DURATION_LONG = 1500;
+    private static final String LINE_FEED = "\r\n";
+    private static final String EMPTY_STRING = "";
+
     private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private final SparseArray<String> results = new SparseArray<>();
@@ -84,6 +88,9 @@ public class SensorActivity extends BaseActivity {
 
     @BindView(R.id.textSubtitle)
     TextView textSubtitle;
+
+    @BindView(R.id.textSubtitle2)
+    TextView textSubtitle2;
 
     @BindView(R.id.progressWait)
     ProgressBar progressWait;
@@ -137,7 +144,6 @@ public class SensorActivity extends BaseActivity {
             usbService = ((UsbService.UsbBinder) arg1).getService();
             usbService.setHandler(mHandler);
             if (usbService.isUsbConnected()) {
-                textSubtitle.setText(R.string.sensorConnected);
                 imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
                 progressWait.setVisibility(View.VISIBLE);
             }
@@ -150,21 +156,10 @@ public class SensorActivity extends BaseActivity {
     };
     private int identityCheck = 0;
     private int deviceStatus = 0;
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (deviceStatus == 1) {
-                requestResult();
-                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
-            } else {
-                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
-            }
-        }
-    };
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
-            String data = "device\r\n";
+            String data = "device" + LINE_FEED;
             if (usbService != null && usbService.isUsbConnected()) {
                 // if UsbService was correctly bound, Send data
                 usbService.write(data.getBytes(StandardCharsets.UTF_8));
@@ -188,6 +183,17 @@ public class SensorActivity extends BaseActivity {
                     }
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
+            }
+        }
+    };
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (deviceStatus == 1) {
+                requestResult();
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+            } else {
+                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
             }
         }
     };
@@ -246,7 +252,7 @@ public class SensorActivity extends BaseActivity {
     }
 
     private void requestResult() {
-        String data = "r\r\n";
+        String data = "r" + LINE_FEED;
         if (usbService != null && usbService.isUsbConnected()) {
             // if UsbService was correctly bound, Send data
             usbService.write(data.getBytes(StandardCharsets.UTF_8));
@@ -300,7 +306,7 @@ public class SensorActivity extends BaseActivity {
                     .setMessage(spanned)
                     .setCancelable(false);
 
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(@NonNull DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
@@ -352,6 +358,7 @@ public class SensorActivity extends BaseActivity {
             imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
             buttonAcceptResult.setVisibility(View.GONE);
             textSubtitle.setText(R.string.deviceConnectSensor);
+            textSubtitle2.setText("");
         }
     }
 
@@ -368,8 +375,8 @@ public class SensorActivity extends BaseActivity {
 
         // clean up data
         value = value.trim();
-        if (value.contains("\r\n")) {
-            String[] values = value.split("\r\n");
+        if (value.contains(LINE_FEED)) {
+            String[] values = value.split(LINE_FEED);
             if (values.length > 0) {
                 value = values[1];
             }
@@ -382,6 +389,16 @@ public class SensorActivity extends BaseActivity {
             if (deviceStatus == 0) {
                 if (value.contains(" ")) {
                     if (value.startsWith(mCurrentTestInfo.getDeviceId())) {
+
+                        Pattern p = Pattern.compile(".*\\s(\\d+)");
+                        deviceStatus = 1;
+                        Matcher m = p.matcher(value);
+                        if (m.matches()) {
+                            textSubtitle.setText(String.format("Sensor ID: %s", m.group(1)));
+                        } else {
+                            textSubtitle.setText(value);
+                        }
+
                         progressWait.setVisibility(View.VISIBLE);
                         hideNotConnectedView();
                         deviceStatus = 1;
@@ -446,7 +463,6 @@ public class SensorActivity extends BaseActivity {
                     textUnit.setVisibility(View.VISIBLE);
                     progressWait.setVisibility(View.GONE);
                     buttonAcceptResult.setVisibility(View.VISIBLE);
-                    textSubtitle.setText(R.string.sensorConnected);
                 } else {
                     textResult.setText(EMPTY_STRING);
                     textUnit.setText(EMPTY_STRING);
@@ -454,7 +470,7 @@ public class SensorActivity extends BaseActivity {
                     textUnit.setVisibility(View.INVISIBLE);
                     progressWait.setVisibility(View.VISIBLE);
                     buttonAcceptResult.setVisibility(View.GONE);
-                    textSubtitle.setText(R.string.dipSensorInSample);
+                    textSubtitle2.setText(R.string.dipSensorInSample);
                 }
 
                 if (mCurrentTestInfo.getSubTests().size() > 1 && results.size() > 1) {
@@ -500,7 +516,7 @@ public class SensorActivity extends BaseActivity {
                 SensorActivity sensorActivity = mActivity.get();
                 if (sensorActivity != null) {
                     sensorActivity.mReceivedData += data;
-                    if (sensorActivity.mReceivedData.contains("\r\n")) {
+                    if (sensorActivity.mReceivedData.contains(LINE_FEED)) {
                         sensorActivity.displayResult(sensorActivity.mReceivedData);
                         sensorActivity.mReceivedData = EMPTY_STRING;
                     }

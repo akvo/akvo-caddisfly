@@ -451,10 +451,11 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
                 displayInformation(calibrationIndex);
 
+                savingProgressDialog.dismiss();
+
                 if (viewAnimator.getDisplayedChild() == 0) {
                     viewAnimator.showNext();
                     fabEdit.setVisibility(View.VISIBLE);
-                    savingProgressDialog.dismiss();
                 }
             }
         }, SAVING_DELAY_MILLIS);
