@@ -91,11 +91,11 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             if (getStatus() == TestStatus.QUALITY_CHECK_DONE) {
                 if (imagePatchArray.length() < patches.size()) {
                     if (mListener != null) {
-                        int secondsLeft = (int) (Math.max(0, patches.get(patchesCovered + 1).getTimeLapse() - timeLapsed));
+                        int secondsLeft = (int) (Math.max(0, patches.get(patchesCovered + 1).getTimeDelay() - timeLapsed));
 
                         mListener.showCountdownTimer(secondsLeft,
-                                patches.get(patchesCovered + 1).getTimeLapse()
-                                        - (patchesCovered >= 0 ? patches.get(patchesCovered).getTimeLapse() : 0));
+                                patches.get(patchesCovered + 1).getTimeDelay()
+                                        - (patchesCovered >= 0 ? patches.get(patchesCovered).getTimeDelay() : 0));
 
                         if (secondsLeft > Constant.GET_READY_SECONDS) {
                             showMessage(getString(R.string.waiting_for, patches.get(patchesCovered + 1).getDesc()));
@@ -302,14 +302,14 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         for (int i = 0; i < patches.size(); i++) {
 
             //if next patch is no later than previous, skip.
-            if (i > 0 && patches.get(i).getTimeLapse() - patches.get(i - 1).getTimeLapse() == 0) {
+            if (i > 0 && patches.get(i).getTimeDelay() - patches.get(i - 1).getTimeDelay() == 0) {
                 continue;
             }
 
             //tell CameraActivity when it is time to take the next picture
-            //add 10 milliseconds to avoid it being on same time as preview if timeLapse is 0;
+            //add 10 milliseconds to avoid it being on same time as preview if timeDelay is 0;
             if (mListener != null && patches.get(i).getPhase() < 2) {
-                mListener.takeNextPicture((long) patches.get(i).getTimeLapse() * 1000 + 10);
+                mListener.takeNextPicture((long) patches.get(i).getTimeDelay() * 1000 + 10);
             }
         }
     }
@@ -340,7 +340,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
             }
 
             //in case the reading is done after the time lapse we want to save the data for all patches before the time-lapse...
-            if (timeMillis > initTimeMillis + patches.get(i).getTimeLapse() * 1000) {
+            if (timeMillis > initTimeMillis + patches.get(i).getTimeDelay() * 1000) {
 
                 boolean found = false;
                 try {

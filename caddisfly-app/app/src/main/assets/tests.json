@@ -28,7 +28,7 @@
           "unit": "ppm",
           "patchPos":3.3,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -66,7 +66,7 @@
           "unit": "ppm",
           "patchPos": 16.8,
           "patchWidth":6,
-          "timeLapse":30,
+          "timeDelay": 30,
           "colors":[
             {
               "value": 0,
@@ -118,7 +118,7 @@
           "formula": "((%1$f * 0.326138) * 5)",
           "patchPos":5,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -170,7 +170,7 @@
           "formula": "(%1$f * 5)",
           "patchPos": 4.5,
           "patchWidth": 7,
-          "timeLapse": 60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -218,7 +218,7 @@
           "formula": "(%1$f * 115) / 100",
           "patchPos":3.6,
           "patchWidth":6,
-          "timeLapse":15,
+          "timeDelay": 15,
           "colors":[
             {
               "value": 4,
@@ -268,7 +268,7 @@
           "unit": "ppm",
           "patchPos": 4.5,
           "patchWidth": 6,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -322,7 +322,7 @@
           "unit": "ppb",
           "patchPos": 6.0,
           "patchWidth": 6,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -387,7 +387,7 @@
           "unit": "ppb",
           "patchPos": 5.5,
           "patchWidth": 3,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -440,7 +440,7 @@
           "unit": "ppb",
           "patchPos": 6.2,
           "patchWidth": 3,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -495,7 +495,7 @@
           "unit": "ppm",
           "patchPos":4.25,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -529,7 +529,7 @@
           "unit": "ppm",
           "patchPos":11.5,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -563,7 +563,7 @@
           "unit": "ppm",
           "patchPos":19,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -597,7 +597,7 @@
           "unit": "ppm",
           "patchPos":26,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -631,7 +631,7 @@
           "unit": "ppm",
           "patchPos":33.25,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -725,7 +725,7 @@
           "unit": "ppm",
           "patchPos":3,
           "patchWidth":6,
-          "timeLapse":35,
+          "timeDelay": 35,
           "phase": 2,
           "colors":[
             {
@@ -760,7 +760,7 @@
           "unit": "ppm",
           "patchPos":17,
           "patchWidth":6,
-          "timeLapse":35,
+          "timeDelay": 35,
           "phase": 2,
           "colors":[
             {
@@ -795,7 +795,7 @@
           "unit": "gpg",
           "patchPos":30.5,
           "patchWidth":6,
-          "timeLapse":30,
+          "timeDelay": 30,
           "colors":[
             {
               "value": 0,
@@ -829,7 +829,7 @@
           "unit": "ppm",
           "patchPos":44,
           "patchWidth":6,
-          "timeLapse":30,
+          "timeDelay": 30,
           "colors":[
             {
               "value": 0,
@@ -863,7 +863,7 @@
           "unit": "",
           "patchPos":57,
           "patchWidth":6,
-          "timeLapse":30,
+          "timeDelay": 30,
           "colors":[
             {
               "value": 6.2,
@@ -910,7 +910,7 @@
           "unit": "ppm",
           "patchPos":3.3,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -948,7 +948,7 @@
           "unit": "ppm",
           "patchPos": 16.8,
           "patchWidth":6,
-          "timeLapse":30,
+          "timeDelay": 30,
           "colors":[
             {
               "value": 0,
@@ -999,7 +999,7 @@
           "unit": "",
           "patchPos":3.6,
           "patchWidth":6,
-          "timeLapse":15,
+          "timeDelay": 15,
           "colors":[
             {
               "value": 4,
@@ -1051,7 +1051,7 @@
           "unit": "pH",
           "patchPos": 4.5,
           "patchWidth": 6.05,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -1121,7 +1121,7 @@
           "unit": "pH",
           "patchPos": 10.55,
           "patchWidth": 6.05,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -1191,7 +1191,7 @@
           "name": "pH",
           "patchPos": 16.6,
           "patchWidth": 6.05,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -1261,7 +1261,7 @@
           "unit": "pH",
           "patchPos": 22.65,
           "patchWidth": 6.05,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -1348,7 +1348,7 @@
           "unit": "ppm",
           "patchPos":5,
           "patchWidth":6,
-          "timeLapse":60,
+          "timeDelay": 60,
           "colors":[
             {
               "value": 0,
@@ -1400,7 +1400,7 @@
           "unit": "ppm",
           "patchPos":3.3,
           "patchWidth":6,
-          "timeLapse":45,
+          "timeDelay": 45,
           "colors":[
             {
               "value": 0,
@@ -1447,7 +1447,7 @@
           "unit": "ppm",
           "patchPos": 4.5,
           "patchWidth": 7,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -1537,7 +1537,7 @@
           "unit": "ppm",
           "patchPos": 3.3,
           "patchWidth": 6,
-          "timeLapse": 0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -1571,7 +1571,7 @@
           "unit": "ppm",
           "patchPos":17.2,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,
@@ -1622,7 +1622,7 @@
           "unit": "ppm",
           "patchPos":3.3,
           "patchWidth":6,
-          "timeLapse":0,
+          "timeDelay": 0,
           "colors":[
             {
               "value": 0,

@@ -230,12 +230,12 @@ public class StripTest {
                                     String formula = patchObj.has("formula") ? patchObj.getString("formula") : "";
                                     double patchPos = patchObj.has("patchPos") ? patchObj.getDouble("patchPos") : 0;
                                     int patchWidth = patchObj.has("patchWidth") ? patchObj.getInt("patchWidth") : 0;
-                                    double timeLapse = patchObj.has("timeLapse") ? patchObj.getDouble("timeLapse") : 0;
+                                    double timeDelay = patchObj.has("timeDelay") ? patchObj.getDouble("timeDelay") : 0;
                                     JSONArray colors = patchObj.has("colors") ? patchObj.getJSONArray("colors") : new JSONArray();
                                     int phase = patchObj.has("phase") ? patchObj.getInt("phase") : 1;
 
                                     patches.add(new Patch(id, patchName, patchWidth, 0, patchPos,
-                                            timeLapse, unit, formula, colors, phase));
+                                            timeDelay, unit, formula, colors, phase));
                                 }
 
                                 switch (groupingType) {
@@ -255,7 +255,7 @@ public class StripTest {
                                         Collections.sort(patches, new Comparator<Patch>() {
                                             @Override
                                             public int compare(final Patch lhs, final Patch rhs) {
-                                                return Double.compare(lhs.timeLapse, rhs.timeLapse);
+                                                return Double.compare(lhs.timeDelay, rhs.timeDelay);
                                             }
                                         });
                                         break;
@@ -334,7 +334,7 @@ public class StripTest {
             @SuppressWarnings("unused")
             private final double height; //mm
             private final double position; //x in mm
-            private final double timeLapse; //seconds between this and previous patch
+            private final double timeDelay; //seconds between this and previous patch
             private final String unit;
 
             private final JSONArray colors;
@@ -343,13 +343,13 @@ public class StripTest {
 
             @SuppressWarnings("SameParameterValue")
             Patch(int id, String desc, double width, double height, double position,
-                  double timeLapse, String unit, String formula, JSONArray colors, int phase) {
+                  double timeDelay, String unit, String formula, JSONArray colors, int phase) {
                 this.id = id;
                 this.desc = desc;
                 this.width = width;
                 this.height = height;
                 this.position = position;
-                this.timeLapse = timeLapse;
+                this.timeDelay = timeDelay;
                 this.unit = unit;
                 this.colors = colors;
                 this.phase = phase;
@@ -372,11 +372,11 @@ public class StripTest {
                 return colors;
             }
 
-            public double getTimeLapse() {
+            public double getTimeDelay() {
                 if (AppPreferences.ignoreStripTestDelay()) {
                     return 3;
                 } else {
-                    return timeLapse;
+                    return timeDelay;
                 }
             }
 

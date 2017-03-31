@@ -161,9 +161,7 @@
     <string name="highLevelRecommendation">Dikarenakan kontaminasi level tinggi, direkomendasikan untuk uji coba dengan pengenceran</string>
     <!--StripTest-->
     <string name="error_calibrating">Kalibrasi gagal</string>
-    <string name="error_conversion">Tidak dapat mengkonversi gambar</string>
     <string name="error_cut_out_strip">Tidak ditemukan kepingan</string>
-    <string name="error_no_finder_pattern_info">Tidak ada informasi tentang penemuan pola</string>
     <string name="no_data">Tidak ada data untuk tempelan</string>
     <string name="start_camera_instruction">Tempatkan kepingan di area hitam pada kartu warna dan tahan kamera handphone diatas kartu warna untuk memulai proses analisa</string>
     <string name="prepare_camera_instruction">Jangan mengambil sampel dahulu. Tahan kamera diatas kartu warna dan sesuaikan posisi sampai proses pemeriksaan sukses.</string>
