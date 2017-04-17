@@ -215,7 +215,6 @@
           "id":1,
           "name":"pH",
           "unit": "",
-          "formula": "(%1$f * 115) / 100",
           "patchPos":3.6,
           "patchWidth":6,
           "timeDelay": 15,
