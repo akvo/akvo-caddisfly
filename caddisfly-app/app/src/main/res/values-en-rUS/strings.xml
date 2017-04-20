@@ -25,5 +25,6 @@
     <string name="tryTestingInAWellLitArea">Place the color card in an area with good light and no shadows and try again.</string>
     <string name="detecting_color_card">Looking for color card</string>
     <string name="color_card_not_found">Color card not found</string>
+    <string name="correctThePhoneTilt">Hold the phone level with color card</string>
 
 </resources>
