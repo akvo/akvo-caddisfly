@@ -62,7 +62,7 @@ public class ColorUtilTest {
             testInfo.addSwatch(swatch);
         }
 
-        List<Swatch> list = SwatchHelper.generateGradient(testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL, 0.01);
+        List<Swatch> list = SwatchHelper.generateGradient(testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL);
 
         assertEquals(401, list.size());
 

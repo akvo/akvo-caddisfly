@@ -37,8 +37,6 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 public class DiagnosticSwatchFragment extends ListFragment {
 
-    public static final double DEFAULT_INCREMENT = 0.05;
-
     public DiagnosticSwatchFragment() {
     }
 
@@ -59,7 +57,7 @@ public class DiagnosticSwatchFragment extends ListFragment {
         if (testInfo.getSwatches().size() > 0) {
 
             List<Swatch> swatchList = SwatchHelper.generateGradient(testInfo.getSwatches(),
-                    ColorUtil.DEFAULT_COLOR_MODEL, DEFAULT_INCREMENT);
+                    ColorUtil.DEFAULT_COLOR_MODEL);
 
             DiagnosticSwatchesAdapter diagnosticSwatchesAdapter = new DiagnosticSwatchesAdapter(getActivity(), swatchList);
             setListAdapter(diagnosticSwatchesAdapter);

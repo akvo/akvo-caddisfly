@@ -95,9 +95,9 @@ public final class AppPreferences {
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useFlashModeKey, false);
     }
 
-    public static boolean ignoreStripTestDelay() {
+    public static boolean ignoreTimeDelays() {
         return isDiagnosticMode()
-                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreStripTestDelayKey, false);
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreTimeDelaysKey, false);
     }
 
 }

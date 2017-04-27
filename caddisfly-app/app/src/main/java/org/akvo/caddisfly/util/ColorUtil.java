@@ -64,7 +64,7 @@ public final class ColorUtil {
     /**
      * The color distance within which the sampled colors should be for a valid test
      */
-    private static final double MAX_SAMPLING_COLOR_DISTANCE_RGB = 11;
+    private static final double MAX_SAMPLING_COLOR_DISTANCE_RGB = 15;
     private static final double MAX_SAMPLING_COLOR_DISTANCE_LAB = 1.5;
 
     private ColorUtil() {

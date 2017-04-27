@@ -661,6 +661,22 @@
       ]
     },
     {
+      "name": "Water - Chromium",
+      "subtype": "liquid-chamber",
+      "uuid": "082ec36a-71af-49d5-add8-5c03fc1c2f0b",
+      "calibrate": "true",
+      "ranges": "0,25,50,75,100,5000,10000,25000",
+      "monthsValid": "6",
+      "results": [
+        {
+          "id": 1,
+          "name": "Chromium",
+          "unit": "ppb",
+          "timeDelay": 300
+        }
+      ]
+    },
+    {
       "name": "Water - Fluoride",
       "description": "Measures Fluoride in water. 0 - 2 ppm",
       "subtype": "liquid-chamber",

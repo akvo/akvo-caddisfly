@@ -373,7 +373,7 @@ public class StripTest {
             }
 
             public double getTimeDelay() {
-                if (AppPreferences.ignoreStripTestDelay()) {
+                if (AppPreferences.ignoreTimeDelays()) {
                     return 3;
                 } else {
                     return timeDelay;

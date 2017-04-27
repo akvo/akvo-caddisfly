@@ -102,6 +102,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final int MAX_SHAKE_DURATION_2 = 3000;
     private static final int DELAY_MILLIS = 500;
+    public static final int SHORT_DELAY = 600;
     private final Handler delayHandler = new Handler();
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -137,7 +138,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private boolean mIgnoreShake;
     //reference to last dialog opened so it can be dismissed on activity getting destroyed
     private AlertDialog alertDialogToBeDestroyed;
-    private boolean mIsFirstResult;
+    private int mResultNumber;
 
     @Override
     protected void onResume() {
@@ -448,7 +449,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         mResults = new ArrayList<>();
 
         mWaitingForStillness = false;
-        mIsFirstResult = true;
+        mResultNumber = 0;
 
         mShakeDetector.setMinShakeAcceleration(1);
         mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION_2);
@@ -511,7 +512,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         }
 
                         //Ignore the first result as camera may not have focused correctly
-                        if (!mIsFirstResult) {
+                        if (mResultNumber > 1) {
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
                             } else {
@@ -522,7 +523,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                                 return;
                             }
                         }
-                        mIsFirstResult = false;
+                        mResultNumber++;
 
                         if (completed) {
                             analyzeFinalResult(bytes, croppedBitmap);
@@ -535,6 +536,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
                 acquireWakeLock();
 
+                final TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
                 delayRunnable = new Runnable() {
                     @Override
                     public void run() {
@@ -546,8 +549,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         ft.addToBackStack(null);
                         try {
                             mCameraFragment.show(ft, "cameraDialog");
-                            mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
-                                    ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
+
+                            if (testInfo.getSubTests().get(0).getTimeDelay() > 0
+                                    ) {
+                                // test has time delay so take the pictures quickly with short delay
+                                mCameraFragment.takePictures(AppPreferences.getSamplingTimes(), SHORT_DELAY);
+                            } else {
+                                mCameraFragment.takePictures(AppPreferences.getSamplingTimes(),
+                                        ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
+                            }
                         } catch (Exception e) {
                             Timber.e(e);
                             finish();
@@ -555,7 +565,15 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     }
                 };
 
-                delayHandler.postDelayed(delayRunnable, ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
+                int timeDelay = ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING;
+                // If the test has a time delay config then use that otherwise use standard delay
+                if (testInfo.getSubTests().get(0).getTimeDelay() > 0
+                        && !AppPreferences.ignoreTimeDelays()) {
+                    sound.playShortResource(R.raw.beep);
+                    timeDelay = Math.max(SHORT_DELAY, testInfo.getSubTests().get(0).getTimeDelay());
+                }
+
+                delayHandler.postDelayed(delayRunnable, timeDelay);
 
             }
         }).execute();

@@ -69,7 +69,7 @@
     <string name="useExternalCameraKey">useExternalCamera</string>
     <string name="useFlashModeKey">useFlashMode</string>
 
-    <string name="ignoreStripTestDelayKey">ignoreStripTestDelay</string>
+    <string name="ignoreTimeDelaysKey">ignoreTimeDelays</string>
     <string name="cameraMegaPixelsKey">cameraMegaPixels</string>
     <string name="showMinMegaPixelDialogKey">showMinMegaPixelDialog</string>
 
@@ -80,7 +80,7 @@
     <string name="debuggingOn">Show debug messages</string>
     <string name="noSound">Turn sound off</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
-    <string name="ignoreStripTestDelay">Ignore strip test delay</string>
+    <string name="ignoreTimeDelays">Ignore time delays</string>
 
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
