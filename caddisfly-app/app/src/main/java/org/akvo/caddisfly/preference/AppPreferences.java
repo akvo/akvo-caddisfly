@@ -52,8 +52,8 @@ public final class AppPreferences {
         } else {
             samplingTimes = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
         }
-        //Add 1 because first sample is always discarded during analysis
-        return samplingTimes + 1;
+        //Add skip count as the first few samples may not be valid
+        return samplingTimes + ColorimetryLiquidConfig.SKIP_SAMPLING_COUNT;
     }
 
     public static int getColorDistanceTolerance() {

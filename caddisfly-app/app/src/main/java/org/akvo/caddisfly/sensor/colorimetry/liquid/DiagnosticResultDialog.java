@@ -251,7 +251,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                     calibrationSteps = 3;
                     break;
                 default:
-                    calibrationSteps = 5;
+                    calibrationSteps = mResults.get(0).getCalibrationSteps();
                     break;
             }
 
@@ -287,7 +287,8 @@ public class DiagnosticResultDialog extends DialogFragment {
                             break;
                     }
 
-                    if (calibrationSteps == 5 && resultDetail.getColorModel() == ColorUtil.DEFAULT_COLOR_MODEL) {
+                    if (calibrationSteps == mResults.get(0).getCalibrationSteps()
+                            && resultDetail.getColorModel() == ColorUtil.DEFAULT_COLOR_MODEL) {
                         textResult.setTypeface(Typeface.DEFAULT_BOLD);
                     }
                 }

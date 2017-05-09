@@ -49,10 +49,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import timber.log.Timber;
 
@@ -60,19 +58,15 @@ public final class SwatchHelper {
 
     private static final int MAX_DISTANCE = 999;
     private static final int MAX_DIFFERENCE = 150;
-    private static final double MAX_DIFF_FOR_AVG_CALC = 0.21;
     private static final int HSV_CROSSOVER_DIFFERENCE = 200;
-    private static final int INTERPOLATION_COUNT = 250;
+
+    // If the color distance between samplings exceeds this the test is rejected
+    private static final double MAX_COLOR_DISTANCE = 25;
+
+    // The number of interpolations to generate between range values
+    private static final double INTERPOLATION_COUNT = 250;
 
     private SwatchHelper() {
-    }
-
-    private static double[] convertDoubles(List<Double> doubles) {
-        double[] ret = new double[doubles.size()];
-        for (int i = 0; i < ret.length; i++) {
-            ret[i] = doubles.get(i);
-        }
-        return ret;
     }
 
     /**
@@ -307,35 +301,6 @@ public final class SwatchHelper {
     }
 
     /**
-     * Returns the value that appears the most number of times in the array
-     *
-     * @param array the array of values
-     * @return the most frequent value
-     */
-    private static double mostFrequent(double[] array) {
-        Map<Double, Integer> map = new HashMap<>();
-
-        for (double a : array) {
-            if (a >= 0) {
-                Integer freq = map.get(a);
-                map.put(a, (freq == null) ? 1 : freq + 1);
-            }
-        }
-
-        int max = -1;
-        double mostFrequent = -1;
-
-        for (Map.Entry<Double, Integer> e : map.entrySet()) {
-            if (e.getValue() > max) {
-                mostFrequent = e.getKey();
-                max = e.getValue();
-            }
-        }
-
-        return mostFrequent;
-    }
-
-    /**
      * Returns the average of a list of values
      *
      * @param results the results
@@ -345,22 +310,29 @@ public final class SwatchHelper {
 
         double result = 0;
 
-        ArrayList<Double> resultValues = new ArrayList<>();
+        // First check that all sampled colors are not too distant from each other
         for (int i = 0; i < results.size(); i++) {
-            resultValues.add(results.get(i).getResults().get(0).getResult());
+            int color1 = results.get(i).getResults().get(0).getColor();
+            for (int j = 0; j < results.size(); j++) {
+                int color2 = results.get(j).getResults().get(0).getColor();
+
+                if (ColorUtil.getColorDistance(color1, color2) > MAX_COLOR_DISTANCE) {
+                    return -1;
+                }
+            }
         }
 
-        double commonResult = mostFrequent(convertDoubles(resultValues));
-
+        // Sum up all the sampled results
         for (int i = 0; i < results.size(); i++) {
             double value = results.get(i).getResults().get(0).getResult();
-            if (value > -1 && Math.abs(value - commonResult) < MAX_DIFF_FOR_AVG_CALC) {
+            if (value > -1) {
                 result += value;
             } else {
                 return -1;
             }
         }
 
+        // Get the average
         try {
             result = round(result / results.size(), 2);
         } catch (Exception ex) {

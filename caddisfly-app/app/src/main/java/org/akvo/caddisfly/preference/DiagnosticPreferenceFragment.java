@@ -97,7 +97,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                         }
 
                     } catch (Exception e) {
-                        newValue = 1;
+                        newValue = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
                     }
                     sampleTimesPreference.setText(String.valueOf(newValue));
                     sampleTimesPreference.setSummary(String.valueOf(newValue));
@@ -170,7 +170,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                         }
 
                     } catch (Exception e) {
-                        newValue = 30;
+                        newValue = ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
                     }
                     distancePreference.setText(String.valueOf(newValue));
                     distancePreference.setSummary(String.valueOf(newValue));

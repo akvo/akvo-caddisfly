@@ -21,6 +21,7 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -95,6 +96,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
 
+    public static final int SHORT_DELAY = 600;
     private static final String EMPTY_STRING = "";
     private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
     private static final String RESULT_DIALOG_TAG = "resultDialog";
@@ -102,7 +104,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final int MAX_SHAKE_DURATION_2 = 3000;
     private static final int DELAY_MILLIS = 500;
-    public static final int SHORT_DELAY = 600;
     private final Handler delayHandler = new Handler();
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -305,6 +306,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             ft.remove(prev);
         }
         mResultFragment.setCancelable(false);
+        mResultFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
         mResultFragment.show(ft, "gridDialog");
     }
 
@@ -512,7 +514,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                         }
 
                         //Ignore the first result as camera may not have focused correctly
-                        if (mResultNumber > 1) {
+                        if (mResultNumber >= ColorimetryLiquidConfig.SKIP_SAMPLING_COUNT) {
                             if (croppedBitmap != null) {
                                 getAnalyzedResult(croppedBitmap);
                             } else {

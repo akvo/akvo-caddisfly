@@ -37,7 +37,16 @@ public final class ColorimetryLiquidConfig {
      * Tolerance at which a calibrated color is valid when compared to expected color
      */
     public static final int MAX_VALID_CALIBRATION_TOLERANCE = 250;
+
+    /**
+     * Max distance between colors at which the colors are considered to be similar
+     */
     public static final int MAX_COLOR_DISTANCE_RGB = 40;
+
+    /**
+     * The number of photo samples to be skipped during analysis
+     */
+    public static final int SKIP_SAMPLING_COUNT = 1;
 
     private ColorimetryLiquidConfig() {
     }
