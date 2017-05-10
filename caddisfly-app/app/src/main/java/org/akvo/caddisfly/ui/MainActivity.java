@@ -40,6 +40,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
@@ -81,6 +82,9 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         makeUpgrades();
+
+        // If app has expired then close this activity
+        ApkHelper.isAppVersionExpired(this);
     }
 
     /**
