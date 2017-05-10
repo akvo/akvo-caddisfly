@@ -26,6 +26,16 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -153,9 +163,19 @@
             android:name=".sensor.colorimetry.strip.ui.ResultActivity"
             android:screenOrientation="nosensor" />
         <!-- end StripTest -->
+
+
+        <activity android:name=".sensor.colorimetry.liquid.DeviceScanActivity" />
+        <activity android:name=".sensor.colorimetry.liquid.DeviceControlActivity" />
+
+        <service
+            android:name=".sensor.colorimetry.liquid.BluetoothLeService"
+            android:enabled="true" />
+
         <service
             android:name=".usb.UsbService"
             android:enabled="true" />
+
 
     </application>
 
