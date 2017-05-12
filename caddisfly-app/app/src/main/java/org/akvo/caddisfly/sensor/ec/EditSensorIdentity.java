@@ -49,10 +49,6 @@ public class EditSensorIdentity extends DialogFragment {
     private OnFragmentInteractionListener mListener;
     private EditText editId;
 
-    public EditSensorIdentity() {
-        // Required empty public constructor
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

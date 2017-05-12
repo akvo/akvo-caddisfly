@@ -231,7 +231,7 @@ public final class FileUtil {
         // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
         // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
 
-        File root = android.os.Environment.getExternalStorageDirectory();
+        File root = Environment.getExternalStorageDirectory();
         File dir = new File(root.getAbsolutePath() + FileHelper.ROOT_DIRECTORY + dirPath);
         File file = new File(dir, fileName);
 
