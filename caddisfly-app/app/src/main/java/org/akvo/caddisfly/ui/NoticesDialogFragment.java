@@ -37,10 +37,6 @@ import timber.log.Timber;
  */
 public class NoticesDialogFragment extends DialogFragment {
 
-    public NoticesDialogFragment() {
-        // Required empty public constructor
-    }
-
     public static NoticesDialogFragment newInstance() {
         return new NoticesDialogFragment();
     }

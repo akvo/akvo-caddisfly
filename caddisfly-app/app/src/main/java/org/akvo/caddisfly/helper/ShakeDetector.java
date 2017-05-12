@@ -146,6 +146,7 @@ public class ShakeDetector implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // Nothing to do here
     }
 
     private void setCurrentAcceleration(@NonNull SensorEvent event) {

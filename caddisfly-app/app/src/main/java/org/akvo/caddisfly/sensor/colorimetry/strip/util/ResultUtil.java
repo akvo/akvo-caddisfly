@@ -539,7 +539,8 @@ public final class ResultUtil {
     @NonNull
     private static double[][] createInterpolTable(@NonNull JSONArray colors) {
         JSONArray patchColorValues;
-        double resultPatchValueStart, resultPatchValueEnd;
+        double resultPatchValueStart;
+        double resultPatchValueEnd;
         double[] pointStart;
         double[] pointEnd;
         double lInter, aInter, bInter, vInter;

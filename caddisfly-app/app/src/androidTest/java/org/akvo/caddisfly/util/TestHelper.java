@@ -153,7 +153,7 @@ public final class TestHelper {
                 + "1.5=254  0  0\n"
                 + "2.0=224  0  0\n");
 
-        if (languageCode.equals("en")) {
+        if ("en".equals(languageCode)) {
             currentHashMap = STRING_HASH_MAP_EN;
         } else {
             currentHashMap = STRING_HASH_MAP_FR;

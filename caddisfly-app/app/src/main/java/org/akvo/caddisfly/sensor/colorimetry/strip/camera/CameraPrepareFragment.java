@@ -77,10 +77,6 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
         }
     };
 
-    public CameraPrepareFragment() {
-        // Required empty public constructor
-    }
-
     @NonNull
     public static CameraPrepareFragment newInstance() {
 

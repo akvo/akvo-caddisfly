@@ -75,10 +75,6 @@ public class CameraDialogFragment extends CameraDialog {
     // View to display the camera output.
     private CameraPreview mCameraPreview;
 
-    public CameraDialogFragment() {
-        // Required empty public constructor
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.

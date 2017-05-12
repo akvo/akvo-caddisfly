@@ -657,7 +657,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-
+                            // Nothing to do here
                         }
 
                         @Override
@@ -668,7 +668,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
-
+                            // Nothing to do here
                         }
                     });
                     timerCountdown.startAnimation(animation);

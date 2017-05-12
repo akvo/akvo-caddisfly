@@ -348,9 +348,13 @@ public final class CalibrationCard {
         // Correct image
         // we do this per row. We tried to do it in one block, but there is no speed difference.
         byte[] temp = new byte[imgLab.cols() * imgLab.channels()];
-        int valL, valA, valB;
-        int ii, ii3;
-        float iiSq, iSq;
+        int valL;
+        int valA;
+        int valB;
+        int ii;
+        int ii3;
+        float iiSq;
+        float iSq;
         int imgCols = imgLab.cols();
         int imgRows = imgLab.rows();
 
@@ -488,7 +492,12 @@ public final class CalibrationCard {
             final double[] coefficientB = fitter.fit(obsB.toList());
 
             double[] valIllumination;
-            double L_orig, A_orig, B_orig, L_new, A_new, B_new;
+            double L_orig;
+            double A_orig;
+            double B_orig;
+            double L_new;
+            double A_new;
+            double B_new;
 
             // transform patch values using the 1d calibration results
             Map<String, double[]> calResult1D = new HashMap<>();
@@ -531,7 +540,15 @@ public final class CalibrationCard {
             DecompositionSolver solver = new SingularValueDecomposition(coefficient).getSolver();
             RealMatrix sol = solver.solve(cal);
 
-            float a_L, b_L, c_L, a_A, b_A, c_A, a_B, b_B, c_B;
+            float a_L;
+            float b_L;
+            float c_L;
+            float a_A;
+            float b_A;
+            float c_A;
+            float a_B;
+            float b_B;
+            float c_B;
             a_L = (float) sol.getEntry(0, 0);
             b_L = (float) sol.getEntry(1, 0);
             c_L = (float) sol.getEntry(2, 0);
@@ -543,8 +560,15 @@ public final class CalibrationCard {
             c_B = (float) sol.getEntry(2, 2);
 
             //use the solution to correct the image
-            double L_temp, A_temp, B_temp, L_mid, A_mid, B_mid;
-            int L_fin, A_fin, B_fin;
+            double L_temp;
+            double A_temp;
+            double B_temp;
+            double L_mid;
+            double A_mid;
+            double B_mid;
+            int L_fin;
+            int A_fin;
+            int B_fin;
             int ii3;
             byte[] temp = new byte[imgMat.cols() * imgMat.channels()];
             for (int i = 0; i < imgMat.rows(); i++) { // y

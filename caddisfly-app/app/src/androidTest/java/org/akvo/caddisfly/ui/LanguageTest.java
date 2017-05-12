@@ -22,7 +22,6 @@ package org.akvo.caddisfly.ui;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -84,7 +83,7 @@ public class LanguageTest {
     @Test
     public void testLanguage() {
 
-        onView(ViewMatchers.withId(R.id.actionSettings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 

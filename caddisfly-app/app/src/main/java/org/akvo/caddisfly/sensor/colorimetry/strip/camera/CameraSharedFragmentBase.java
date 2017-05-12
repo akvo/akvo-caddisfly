@@ -193,7 +193,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                // Nothing to do here
             }
 
             @Override

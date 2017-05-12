@@ -55,10 +55,6 @@ public class DiagnosticResultDialog extends DialogFragment {
     private List<Result> mResults;
     private boolean mIsCalibration;
 
-    public DiagnosticResultDialog() {
-        // Required empty public constructor
-    }
-
     /**
      * Returns a new instance of this dialog
      *

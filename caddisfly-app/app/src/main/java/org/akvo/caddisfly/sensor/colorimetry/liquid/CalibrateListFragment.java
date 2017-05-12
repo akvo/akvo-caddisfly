@@ -52,6 +52,7 @@ public class CalibrateListFragment extends ListFragment {
     private static final Callbacks DUMMY_CALLBACKS = new Callbacks() {
         @Override
         public void onItemSelected(int id) {
+            // Nothing to do here
         }
     };
     private static final long MIN_DELAY_MILLIS = 1000;

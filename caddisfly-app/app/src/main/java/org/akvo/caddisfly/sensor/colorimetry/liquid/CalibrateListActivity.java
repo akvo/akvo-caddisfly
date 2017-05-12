@@ -134,6 +134,8 @@ public class CalibrateListActivity extends BaseActivity
             case android.R.id.home:
                 onBackPressed();
                 return true;
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);

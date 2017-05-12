@@ -58,13 +58,6 @@ public class InstructionDetailFragment extends Fragment {
     @BindView(R.id.layout_instructions)
     LinearLayout layoutInstructions;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public InstructionDetailFragment() {
-    }
-
     public static InstructionDetailFragment newInstance(JSONArray text, String imageName) {
         InstructionDetailFragment fragment = new InstructionDetailFragment();
         Bundle args = new Bundle();

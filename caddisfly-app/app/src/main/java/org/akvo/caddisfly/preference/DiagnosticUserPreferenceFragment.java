@@ -40,10 +40,6 @@ public class DiagnosticUserPreferenceFragment extends PreferenceFragment {
 
     private ListView list;
 
-    public DiagnosticUserPreferenceFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -25,7 +25,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -121,7 +120,7 @@ public class NavigationTest {
         //Main Screen
         takeScreenshot();
 
-        onView(ViewMatchers.withId(R.id.actionSettings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         //Settings Screen
         takeScreenshot();

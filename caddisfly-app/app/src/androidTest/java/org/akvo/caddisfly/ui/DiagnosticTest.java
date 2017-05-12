@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -81,7 +80,7 @@ public class DiagnosticTest {
     @Test
     public void testDiagnosticMode() {
 
-        onView(ViewMatchers.withId(R.id.actionSettings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 

@@ -128,7 +128,7 @@ public class InstructionActivity extends BaseActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                // Nothing to do here
             }
         });
 

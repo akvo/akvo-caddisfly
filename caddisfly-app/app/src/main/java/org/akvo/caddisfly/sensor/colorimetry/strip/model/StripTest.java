@@ -45,9 +45,6 @@ public class StripTest {
 
     private static JSONArray stripTests = null;
 
-    public StripTest() {
-    }
-
     private static void clearStripTests() {
         StripTest.stripTests = null;
     }
@@ -104,7 +101,7 @@ public class StripTest {
                     for (int i = stripTests.length() - 1; i >= 0; i--) {
                         JSONObject strip = stripTests.getJSONObject(i);
                         String subtype = strip.getString("subtype");
-                        if (!subtype.equals("striptest")) {
+                        if (!"striptest".equals(subtype)) {
                             stripTests.remove(i);
                         }
                     }

@@ -86,7 +86,8 @@ public class EditSensorIdentity extends DialogFragment {
                 .setPositiveButton(R.string.save,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-
+                                closeKeyboard(context, editId);
+                                dismiss();
                             }
                         }
                 )

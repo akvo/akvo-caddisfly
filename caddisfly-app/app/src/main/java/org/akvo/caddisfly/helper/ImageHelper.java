@@ -93,7 +93,8 @@ public final class ImageHelper {
 
             double[] circleCoordinates = circles.get(0, 0);
 
-            int x = (int) circleCoordinates[0], y = (int) circleCoordinates[1];
+            int x = (int) circleCoordinates[0];
+            int y = (int) circleCoordinates[1];
 
             org.opencv.core.Point center = new org.opencv.core.Point(x, y);
             int foundRadius = (int) circleCoordinates[2];

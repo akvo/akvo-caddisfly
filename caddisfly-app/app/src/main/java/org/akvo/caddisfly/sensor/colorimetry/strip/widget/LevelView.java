@@ -34,8 +34,6 @@ import org.akvo.caddisfly.helper.MathHelper;
  * Created by linda on 10/27/15
  */
 public class LevelView extends View {
-    private static final int DEGREES_90 = 90;
-    private static final int DEGREES_180 = 180;
     private final Paint drawPaint;
     private final Bitmap arrowBitmap;
     private float[] tilts;

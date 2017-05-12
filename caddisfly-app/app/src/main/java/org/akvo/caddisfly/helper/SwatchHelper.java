@@ -581,6 +581,7 @@ public final class SwatchHelper {
                     case LAB:
                         color = ColorUtil.labToColor(ColorUtil.getGradientLabColor(ColorUtil.colorToLab(startColor),
                                 ColorUtil.colorToLab(endColor), steps, j));
+                        break;
                 }
 
                 list.add(new Swatch(startValue + (j * increment), color, Color.TRANSPARENT));

@@ -68,10 +68,6 @@ public class InstructionFragment extends CameraSharedFragmentBase {
     Button buttonStart;
     private CameraViewListener mListener;
 
-    public InstructionFragment() {
-        // Required empty public constructor
-    }
-
     @NonNull
     public static InstructionFragment newInstance(String uuid, int phase) {
         InstructionFragment fragment = new InstructionFragment();
@@ -186,7 +182,7 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
         if (instruction.contains("<b>") || style == BOLD) {
             text = text.replaceAll("<b>", "").replaceAll("</b>", "");
-            textView.setTypeface(null, Typeface.BOLD);
+            textView.setTypeface(null, BOLD);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(R.dimen.titleTextSize));
         } else {

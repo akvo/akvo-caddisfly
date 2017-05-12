@@ -435,18 +435,20 @@ public class ExternalActionActivity extends BaseActivity {
     @NonNull
     @Deprecated
     private String getTestName(@NonNull String title) {
+
+        String tempTitle = title;
         //ensure we have short name to display as title
         if (title.length() > 0) {
             if (title.length() > 30) {
-                title = title.substring(0, 30);
+                tempTitle = title.substring(0, 30);
             }
             if (title.contains("-")) {
-                title = title.substring(0, title.indexOf("-")).trim();
+                tempTitle = title.substring(0, title.indexOf("-")).trim();
             }
         } else {
-            title = getString(R.string.error);
+            tempTitle = getString(R.string.error);
         }
-        return title;
+        return tempTitle;
     }
 
     /**

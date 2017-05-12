@@ -89,6 +89,7 @@ public final class TestConfigHelper {
                     default:
                         // Load the pre-configured tests from the app
                         jsonText = AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME);
+                        break;
                 }
                 try {
                     JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
@@ -272,11 +273,12 @@ public final class TestConfigHelper {
 
     /**
      * Creates the json result containing the results for test.
-     * @param testInfo information about the test
-     * @param results the results for the test
-     * @param color the color extracted
+     *
+     * @param testInfo       information about the test
+     * @param results        the results for the test
+     * @param color          the color extracted
      * @param resultImageUrl the url of the image
-     * @param groupingType type of grouping
+     * @param groupingType   type of grouping
      * @return the result in json format
      */
     public static JSONObject getJsonResult(TestInfo testInfo, SparseArray<String> results, int color,
