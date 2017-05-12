@@ -61,7 +61,7 @@ public final class SwatchHelper {
     private static final int HSV_CROSSOVER_DIFFERENCE = 200;
 
     // If the color distance between samplings exceeds this the test is rejected
-    private static final double MAX_COLOR_DISTANCE = 25;
+    private static final double MAX_COLOR_DISTANCE = 30;
 
     // The number of interpolations to generate between range values
     private static final double INTERPOLATION_COUNT = 250;
