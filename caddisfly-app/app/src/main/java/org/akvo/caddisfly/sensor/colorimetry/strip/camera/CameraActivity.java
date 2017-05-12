@@ -567,6 +567,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                 break;
             default:
                 title = R.string.qualityCheckFailed;
+                break;
         }
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -763,7 +764,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             }
         }
 
-        void setAngles(@Nullable float[] tiltValues) {
+        private void setAngles(@Nullable float[] tiltValues) {
             this.tilts = tiltValues == null ? null : tiltValues.clone();
         }
     }

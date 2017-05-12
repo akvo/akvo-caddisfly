@@ -64,10 +64,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     private ListView list;
     private View coordinatorLayout;
 
-    public DiagnosticPreferenceFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,20 +83,23 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    Object value = newValue;
                     try {
+
                         if (Integer.parseInt(String.valueOf(newValue)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
-                            newValue = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
+                            value = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
                         }
 
                         if (Integer.parseInt(String.valueOf(newValue)) < 1) {
-                            newValue = 1;
+                            value = 1;
                         }
 
                     } catch (Exception e) {
-                        newValue = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
+                        value = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
                     }
-                    sampleTimesPreference.setText(String.valueOf(newValue));
-                    sampleTimesPreference.setSummary(String.valueOf(newValue));
+                    sampleTimesPreference.setText(String.valueOf(value));
+                    sampleTimesPreference.setSummary(String.valueOf(value));
                     return false;
                 }
             });

@@ -115,10 +115,6 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     private PercentageMeterView contrastView;
     private boolean secondPhase;
 
-    public CameraStartTestFragment() {
-        // Required empty public constructor
-    }
-
     @NonNull
     public static CameraStartTestFragment newInstance(String uuid) {
 
@@ -267,6 +263,11 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         if (contrastView != null) {
             contrastView.setPercentage((float) value);
         }
+    }
+
+    @Override
+    public void goNext() {
+        // Nothing to do here
     }
 
     /*

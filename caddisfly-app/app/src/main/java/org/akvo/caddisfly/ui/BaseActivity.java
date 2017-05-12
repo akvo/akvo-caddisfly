@@ -135,7 +135,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Changes the action bar style depending on if the app is in user mode or diagnostic mode
      * This serves as a visual indication as to what mode the app is running in
      */
-    void changeActionBarStyleBasedOnCurrentMode() {
+    protected void changeActionBarStyleBasedOnCurrentMode() {
         if (AppPreferences.isDiagnosticMode()) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(

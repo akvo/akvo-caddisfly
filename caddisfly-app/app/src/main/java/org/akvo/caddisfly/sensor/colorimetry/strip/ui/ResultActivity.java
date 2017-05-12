@@ -703,11 +703,11 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 this.patchCenter = patchCenter;
             }
 
-            Mat getAnalyzedArea() {
+            private Mat getAnalyzedArea() {
                 return analyzedArea;
             }
 
-            Mat getPatchArea() {
+            private Mat getPatchArea() {
                 return patchArea;
             }
 

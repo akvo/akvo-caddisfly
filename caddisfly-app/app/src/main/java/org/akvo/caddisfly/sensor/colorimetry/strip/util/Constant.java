@@ -54,9 +54,9 @@ public final class Constant {
     public static final String SEND_IMAGE_IN_RESULT = "send_image";
     public static final int GET_READY_SECONDS = 12;
     public static final String PHASE = "org.akvo.caddisfly.phase";
-    static final int MAX_COLOR_DISTANCE = 22;
-    static final double CONTRAST_DEVIATION_FRACTION = 0.05;
-    static final double CONTRAST_MAX_DEVIATION_FRACTION = 0.20;
+    public static final int MAX_COLOR_DISTANCE = 22;
+    public static final double CONTRAST_DEVIATION_FRACTION = 0.05;
+    public static final double CONTRAST_MAX_DEVIATION_FRACTION = 0.20;
 
     private Constant() {
     }

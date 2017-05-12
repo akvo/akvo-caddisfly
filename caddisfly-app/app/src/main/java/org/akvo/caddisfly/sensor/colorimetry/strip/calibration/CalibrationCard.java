@@ -455,7 +455,7 @@ public final class CalibrationCard {
     * 2) a 3d calibration which can mix the L,A,B channels to arrive at optimal results
      */
     @NonNull
-    private static Mat do1D_3DCorrection(@NonNull Mat imgMat, @Nullable CalibrationData calData) throws CalibrationException {
+    private static Mat do1D3DCorrection(@NonNull Mat imgMat, @Nullable CalibrationData calData) throws CalibrationException {
 
         if (calData == null) {
             throw new CalibrationException("no calibration data.");
@@ -659,7 +659,7 @@ public final class CalibrationCard {
 
             // 1D and 3D color balance
             if (labImg != null) {
-                labImg = do1D_3DCorrection(labImg, calData);
+                labImg = do1D3DCorrection(labImg, calData);
             }
 
             if (labImg != null) {
@@ -684,7 +684,7 @@ public final class CalibrationCard {
     *
     * @returns: E94 distance
      */
-    public static double E94(double l1, double a1, double b1, double l2, double a2, double b2, boolean normalise) {
+    public static double computeE94Distance(double l1, double a1, double b1, double l2, double a2, double b2, boolean normalise) {
 
         if (normalise) {
             // normalise values to standard ranges
@@ -743,7 +743,7 @@ public final class CalibrationCard {
             }
 
             // as both measured and calibration values are in openCV range, we need to normalise the values
-            double E94Dist = E94(LAB_color[0], LAB_color[1], LAB_color[2], cal.getL(), cal.getA(), cal.getB(), true);
+            double E94Dist = computeE94Distance(LAB_color[0], LAB_color[1], LAB_color[2], cal.getL(), cal.getA(), cal.getB(), true);
             totE94 += E94Dist;
             if (E94Dist > maxE94) {
                 maxE94 = E94Dist;

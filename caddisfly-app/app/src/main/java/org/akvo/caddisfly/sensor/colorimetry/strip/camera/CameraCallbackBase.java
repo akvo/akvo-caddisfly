@@ -92,7 +92,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         CalibrationCard.initialize();
     }
 
-    void stop() {
+    protected void stop() {
         stopped = true;
     }
 

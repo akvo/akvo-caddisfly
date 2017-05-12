@@ -281,6 +281,8 @@ public class DiagnosticResultDialog extends DialogFragment {
                                 textResult.setTextSize(TEXT_SIZE);
                             }
                             break;
+                        default:
+                            break;
                     }
 
                     if (calibrationSteps == mResults.get(0).getCalibrationSteps()

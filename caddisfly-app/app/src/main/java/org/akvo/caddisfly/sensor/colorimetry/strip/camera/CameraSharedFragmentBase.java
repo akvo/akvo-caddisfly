@@ -110,14 +110,11 @@ public abstract class CameraSharedFragmentBase extends Fragment {
         return lastQualityIncrementTime;
     }
 
-    void showBrightness(double value) {
-    }
+    abstract void showBrightness(double value);
 
-    void showShadow(double value) {
-    }
+    abstract void showShadow(double value);
 
-    public void goNext() {
-    }
+    public abstract void goNext();
 
     /*
     *  Display number of successful quality checks

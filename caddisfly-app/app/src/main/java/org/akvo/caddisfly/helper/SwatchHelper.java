@@ -582,6 +582,8 @@ public final class SwatchHelper {
                         color = ColorUtil.labToColor(ColorUtil.getGradientLabColor(ColorUtil.colorToLab(startColor),
                                 ColorUtil.colorToLab(endColor), steps, j));
                         break;
+                    default:
+                        break;
                 }
 
                 list.add(new Swatch(startValue + (j * increment), color, Color.TRANSPARENT));
@@ -617,10 +619,10 @@ public final class SwatchHelper {
      */
     private static double stringToDouble(String text) {
 
-        text = text.replaceAll(",", ".");
+        String tempText = text.replaceAll(",", ".");
         NumberFormat nf = NumberFormat.getInstance(Locale.US);
         try {
-            return nf.parse(text).doubleValue();
+            return nf.parse(tempText).doubleValue();
         } catch (ParseException e) {
             Timber.e(e);
             return 0.0;

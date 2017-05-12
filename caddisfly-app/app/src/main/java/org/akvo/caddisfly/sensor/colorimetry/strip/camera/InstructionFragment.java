@@ -216,4 +216,18 @@ public class InstructionFragment extends CameraSharedFragmentBase {
         mListener = null;
     }
 
+    @Override
+    void showBrightness(double value) {
+        // Nothing to do here
+    }
+
+    @Override
+    void showShadow(double value) {
+        // Nothing to do here
+    }
+
+    @Override
+    public void goNext() {
+        // Nothing to do here
+    }
 }

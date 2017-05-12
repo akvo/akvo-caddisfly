@@ -305,7 +305,7 @@ public final class OpenCVUtil {
         return new Rect(stripTopLeft, stripBottomRight);
     }
 
-    static ColorDetected detectStripPatchColor(Mat lab) {
+    public static ColorDetected detectStripPatchColor(Mat lab) {
         // compute mean lab color. This is the value that will be
         // used for the result computation
         Scalar mean = Core.mean(lab);
