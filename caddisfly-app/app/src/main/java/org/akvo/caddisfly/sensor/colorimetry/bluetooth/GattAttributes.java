@@ -33,42 +33,16 @@
  * limitations under the License.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.liquid;
-
-import java.util.HashMap;
+package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
 /**
- * This class includes a small subset of standard GATT attributes for demonstration purposes.
+ * This GATT attributes for the device.
  */
-final class SampleGattAttributes {
+final class GattAttributes {
 
-    //static String HEART_RATE_MEASUREMENT = "e7add780-b042-4876-aae1-112855353cc1";
     static final String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
     static final String LOVIBOND_DATA_CHARACTERISTIC = "e7add780-b042-4876-aae1-112855353cc1";
-    private static HashMap<String, String> attributes = new HashMap<>();
 
-    static {
-        // Sample Services.
-//        attributes.put("e7add780-b042-4876-aae1-112855353cc1", "Heart Rate Service");
-//        attributes.put("e7add780-b042-4876-aae1-112855353cc1", "Device Information Service");
-//        // Sample Characteristics.
-//        attributes.put(HEART_RATE_MEASUREMENT, "Heart Rate Measurement");
-//        attributes.put("e7add780-b042-4876-aae1-112855353cc1", "Manufacturer Name String");
-
-        attributes.put("00002a00-0000-1000-8000-00805f9b34fb", "Device name");
-        attributes.put("00002a01-0000-1000-8000-00805f9b34fb", "Appearance");
-        attributes.put("00002a29-0000-1000-8000-00805f9b34fb", "Manufacturer name");
-        attributes.put("00002a24-0000-1000-8000-00805f9b34fb", "Model number");
-        attributes.put("590c4bd9-b5e2-4a1a-867e-9b033ed1eadb", "DFU Reboot trigger");
-        attributes.put(LOVIBOND_DATA_CHARACTERISTIC, "Data");
-
-    }
-
-    private SampleGattAttributes() {
-    }
-
-    static String lookup(String uuid, String defaultName) {
-        String name = attributes.get(uuid);
-        return name == null ? defaultName : name;
+    private GattAttributes() {
     }
 }

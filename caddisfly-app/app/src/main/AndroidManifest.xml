@@ -52,6 +52,7 @@
     <application
         android:name=".app.CaddisflyApp"
         android:allowBackup="true"
+        android:extractNativeLibs="false"
         android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
@@ -165,11 +166,11 @@
         <!-- end StripTest -->
 
 
-        <activity android:name=".sensor.colorimetry.liquid.DeviceScanActivity" />
-        <activity android:name=".sensor.colorimetry.liquid.DeviceControlActivity" />
+        <activity android:name=".sensor.colorimetry.bluetooth.DeviceScanActivity" />
+        <activity android:name=".sensor.colorimetry.bluetooth.DeviceControlActivity" />
 
         <service
-            android:name=".sensor.colorimetry.liquid.BluetoothLeService"
+            android:name=".sensor.colorimetry.bluetooth.BluetoothLeService"
             android:enabled="true" />
 
         <service

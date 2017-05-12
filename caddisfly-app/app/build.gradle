@@ -22,12 +22,12 @@ apply plugin: 'de.mobilej.unmock'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
-        targetSdkVersion 25
+        targetSdkVersion 21
         versionCode 172
         versionName "1.0.0 Beta 9"
         resConfigs "en", "en_US", "fr", "in"
@@ -63,6 +63,7 @@ android {
             res.srcDirs =
                     [
                             'src/main/res/layouts/main',
+                            'src/main/res/layouts/sensor/bluetooth',
                             'src/main/res/layouts/sensor/liquid',
                             'src/main/res/layouts/sensor/strip',
                             'src/main/res/layouts/sensor/ec',
