@@ -100,7 +100,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
     public void onPreviewFrame(byte[] data, Camera camera) {
     }
 
-    int[] qualityChecks(byte[] data, FinderPatternInfo info) {
+    protected int[] qualityChecks(byte[] data, FinderPatternInfo info) {
         luminanceList.clear();
         float[] tilts;
         int luminance;
@@ -301,7 +301,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         return maxLuminance;
     }
 
-    FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) throws CalibrationException {
+    protected FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) throws CalibrationException {
 
         BitMatrix bitMatrix = null;
 
@@ -361,15 +361,15 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         return patternInfo;
     }
 
-    boolean isRunning() {
+    protected boolean isRunning() {
         return !stopped;
     }
 
-    Camera.Size getPreviewSize() {
+    protected Camera.Size getPreviewSize() {
         return previewSize;
     }
 
-    CameraViewListener getListener() {
+    protected CameraViewListener getListener() {
         return listener;
     }
 

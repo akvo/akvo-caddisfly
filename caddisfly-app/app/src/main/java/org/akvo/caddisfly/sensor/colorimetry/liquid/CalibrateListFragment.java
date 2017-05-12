@@ -63,7 +63,7 @@ public class CalibrateListFragment extends ListFragment {
     private TextView textCalibrationError;
     private long mLastClickTime;
 
-    void setAdapter() {
+    public void setAdapter() {
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         CalibrationsAdapter calibrationsAdapter = new CalibrationsAdapter(getActivity(),

@@ -114,7 +114,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    void showBrightness(double value) {
+    public void showBrightness(double value) {
 
         if (wrExposureView != null) {
             PercentageMeterView meterView = wrExposureView.get();
@@ -125,7 +125,7 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    void showShadow(double value) {
+    public void showShadow(double value) {
 
         if (wrContrastView != null) {
             PercentageMeterView meterView = wrContrastView.get();

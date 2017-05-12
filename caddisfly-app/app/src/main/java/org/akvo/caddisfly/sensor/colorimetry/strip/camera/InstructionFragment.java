@@ -217,12 +217,12 @@ public class InstructionFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    void showBrightness(double value) {
+    public void showBrightness(double value) {
         // Nothing to do here
     }
 
     @Override
-    void showShadow(double value) {
+    public void showShadow(double value) {
         // Nothing to do here
     }
 

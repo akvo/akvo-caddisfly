@@ -57,7 +57,7 @@ public class Swatch implements Cloneable {
         return redDifference;
     }
 
-    void setRedDifference(int redDifference) {
+    public void setRedDifference(int redDifference) {
         this.redDifference = redDifference;
     }
 
@@ -65,7 +65,7 @@ public class Swatch implements Cloneable {
         return greenDifference;
     }
 
-    void setGreenDifference(int greenDifference) {
+    public void setGreenDifference(int greenDifference) {
         this.greenDifference = greenDifference;
     }
 
@@ -73,7 +73,7 @@ public class Swatch implements Cloneable {
         return blueDifference;
     }
 
-    void setBlueDifference(int blueDifference) {
+    public void setBlueDifference(int blueDifference) {
         this.blueDifference = blueDifference;
     }
 }

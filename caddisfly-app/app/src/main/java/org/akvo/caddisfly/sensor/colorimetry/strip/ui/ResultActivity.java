@@ -711,7 +711,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 return patchArea;
             }
 
-            PatchMat invoke() {
+            private PatchMat invoke() {
                 resultPatchAreas = new Mat(0, Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
                         CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 

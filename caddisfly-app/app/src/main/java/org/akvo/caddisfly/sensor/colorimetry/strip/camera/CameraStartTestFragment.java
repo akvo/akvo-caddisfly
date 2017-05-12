@@ -250,7 +250,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    void showBrightness(double value) {
+    public void showBrightness(double value) {
 
         if (exposureView != null) {
             exposureView.setPercentage((float) (100 - value));
@@ -258,7 +258,7 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
     }
 
     @Override
-    void showShadow(double value) {
+    public void showShadow(double value) {
 
         if (contrastView != null) {
             contrastView.setPercentage((float) value);

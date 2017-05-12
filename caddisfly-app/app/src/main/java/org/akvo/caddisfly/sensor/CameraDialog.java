@@ -26,7 +26,7 @@ import java.util.List;
 
 public abstract class CameraDialog extends DialogFragment {
 
-    final List<PictureTaken> pictureTakenObservers = new ArrayList<>();
+    protected final List<PictureTaken> pictureTakenObservers = new ArrayList<>();
 
     public abstract void takePictureSingle();
 

@@ -188,7 +188,8 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.save,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-
+                                closeKeyboard(context, editName);
+                                dismiss();
                             }
                         }
                 )

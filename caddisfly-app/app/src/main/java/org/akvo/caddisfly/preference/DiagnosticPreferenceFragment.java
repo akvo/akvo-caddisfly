@@ -87,11 +87,11 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     Object value = newValue;
                     try {
 
-                        if (Integer.parseInt(String.valueOf(newValue)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
+                        if (Integer.parseInt(String.valueOf(value)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
                             value = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
                         }
 
-                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
+                        if (Integer.parseInt(String.valueOf(value)) < 1) {
                             value = 1;
                         }
 
@@ -159,20 +159,22 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             distancePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    Object value = newValue;
                     try {
-                        if (Integer.parseInt(String.valueOf(newValue)) > MAX_TOLERANCE) {
-                            newValue = MAX_TOLERANCE;
+                        if (Integer.parseInt(String.valueOf(value)) > MAX_TOLERANCE) {
+                            value = MAX_TOLERANCE;
                         }
 
-                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
-                            newValue = 1;
+                        if (Integer.parseInt(String.valueOf(value)) < 1) {
+                            value = 1;
                         }
 
                     } catch (Exception e) {
-                        newValue = ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
+                        value = ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
                     }
-                    distancePreference.setText(String.valueOf(newValue));
-                    distancePreference.setSummary(String.valueOf(newValue));
+                    distancePreference.setText(String.valueOf(value));
+                    distancePreference.setSummary(String.valueOf(value));
                     return false;
                 }
             });
