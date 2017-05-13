@@ -216,11 +216,13 @@ public final class ResultUtil {
      * Create Mat with swatches for the colors in the color chart range and also write the value.
      *
      * @param colors the colors to draw
-     * @param width  the final width of the Mat
+     * @param matWidth  the final width of the Mat
      * @return the created Mat
      */
     @NonNull
-    public static Mat createColorRangeMatSingle(@NonNull JSONArray colors, int width) {
+    public static Mat createColorRangeMatSingle(@NonNull JSONArray colors, int matWidth) {
+
+        int width = matWidth;
 
         double gutterWidth = X_MARGIN;
         if (colors.length() > 10) {

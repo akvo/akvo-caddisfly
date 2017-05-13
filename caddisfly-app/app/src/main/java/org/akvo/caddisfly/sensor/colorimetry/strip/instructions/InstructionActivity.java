@@ -108,7 +108,7 @@ public class InstructionActivity extends BaseActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                // Nothing to do here
             }
 
             @Override
@@ -136,7 +136,6 @@ public class InstructionActivity extends BaseActivity {
             imagePageLeft.setVisibility(View.GONE);
             imagePageRight.setVisibility(View.GONE);
         }
-
     }
 
     @OnClick(R.id.image_pageLeft)

@@ -648,29 +648,31 @@ public final class CalibrationCard {
      * @result: calibrated image
      */
     @Nullable
-    public static CalibrationResultData calibrateImage(@Nullable Mat labImg,
+    public static CalibrationResultData calibrateImage(@Nullable Mat labImageMat,
                                                        @Nullable CalibrationData calData) throws CalibrationException {
+
+        Mat mat = null;
 
         if (calData != null) {
             // illumination correction
-            if (labImg != null) {
-                labImg = doIlluminationCorrection(labImg, calData);
+            if (labImageMat != null) {
+                mat = doIlluminationCorrection(labImageMat, calData);
             }
 
             // 1D and 3D color balance
-            if (labImg != null) {
-                labImg = do1D3DCorrection(labImg, calData);
+            if (mat != null) {
+                mat = do1D3DCorrection(mat, calData);
             }
 
-            if (labImg != null) {
+            if (mat != null) {
                 // measure quality of the calibration
-                computeE94Error(labImg, calData);
+                computeE94Error(mat, calData);
 
                 // insert calibration colors in image
-                addCalColors(labImg, calData);
+                addCalColors(mat, calData);
             }
 
-            return new CalibrationResultData(labImg);
+            return new CalibrationResultData(mat);
         }
         return null;
     }

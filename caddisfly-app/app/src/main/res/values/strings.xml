@@ -79,7 +79,6 @@
     <string name="calibrationSuccessful">Calibration Successful</string>
     <string name="sensorCalibrated">EC Sensor has been calibrated</string>
     <string name="celsius">°Celsius</string>
-    <string name="sensorConnected">Sensor connected</string>
     <string name="dipSensorInSample">Dip sensor in sample</string>
 
     <!--About Screen-->

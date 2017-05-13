@@ -17,9 +17,8 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.util;
+package org.akvo.caddisfly.util;
 
-import org.akvo.caddisfly.util.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
 

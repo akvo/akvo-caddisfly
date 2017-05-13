@@ -65,19 +65,10 @@ public class StripTest {
                             JSONObject customTests = new JSONObject(jsonText);
                             JSONArray customTestsArray = customTests.getJSONArray(TESTS);
 
-                            boolean isUnique = true;
                             for (int i = 0; i < customTestsArray.length(); i++) {
 
-                                String uuid = customTestsArray.getJSONObject(i).getString(SensorConstants.UUID);
-                                for (int j = 0; j < stripTests.length(); j++) {
-                                    if (stripTests.getJSONObject(j).getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
-                                        isUnique = false;
-                                        break;
-                                    }
-                                }
-
                                 // only add the custom test if it has an unique uuid and not a duplicate
-                                if (isUnique) {
+                                if (isTestUnique(customTestsArray, i)) {
                                     JSONObject test = new JSONObject(customTestsArray.getJSONObject(i).toString());
                                     String brandDescription = test.getString("brand");
                                     String image = test.has(SensorConstants.IMAGE)
@@ -116,6 +107,16 @@ public class StripTest {
         }
 
         return null;
+    }
+
+    private boolean isTestUnique(JSONArray customTestsArray, int index) throws JSONException {
+        String uuid = customTestsArray.getJSONObject(index).getString(SensorConstants.UUID);
+        for (int j = 0; j < stripTests.length(); j++) {
+            if (stripTests.getJSONObject(j).getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public List<Brand> getBrandsAsList() {
@@ -231,7 +232,7 @@ public class StripTest {
                                     JSONArray colors = patchObj.has("colors") ? patchObj.getJSONArray("colors") : new JSONArray();
                                     int phase = patchObj.has("phase") ? patchObj.getInt("phase") : 1;
 
-                                    patches.add(new Patch(id, patchName, patchWidth, 0, patchPos,
+                                    patches.add(new Patch(id, patchName, patchWidth, patchPos,
                                             timeDelay, unit, formula, colors, phase));
                                 }
 
@@ -339,12 +340,12 @@ public class StripTest {
             private final String formula;
 
             @SuppressWarnings("SameParameterValue")
-            Patch(int id, String desc, double width, double height, double position,
+            Patch(int id, String desc, double width, double position,
                   double timeDelay, String unit, String formula, JSONArray colors, int phase) {
                 this.id = id;
                 this.desc = desc;
                 this.width = width;
-                this.height = height;
+                this.height = 0;
                 this.position = position;
                 this.timeDelay = timeDelay;
                 this.unit = unit;

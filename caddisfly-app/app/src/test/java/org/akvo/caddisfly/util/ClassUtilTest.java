@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.util;
+package org.akvo.caddisfly.util;
 
 import junit.framework.TestCase;
 

@@ -186,6 +186,8 @@ public class CaddisflyApp extends Application {
 
         Locale locale;
 
+        String code = languageCode;
+
         //the languages supported by the app
         String[] supportedLanguages = getResources().getStringArray(R.array.language_codes);
 
@@ -202,10 +204,10 @@ public class CaddisflyApp extends Application {
             PreferencesUtil.setString(this, R.string.languageKey, currentSystemLanguage);
         }
 
-        if (languageCode == null || !Arrays.asList(supportedLanguages).contains(languageCode)) {
+        if (code == null || !Arrays.asList(supportedLanguages).contains(code)) {
             //if requested language code is not supported then use language from preferences
-            languageCode = PreferencesUtil.getString(this, R.string.languageKey, "");
-            if (!Arrays.asList(supportedLanguages).contains(languageCode)) {
+            code = PreferencesUtil.getString(this, R.string.languageKey, "");
+            if (!Arrays.asList(supportedLanguages).contains(code)) {
                 //no language was selected in the app settings so use the system language
                 String currentLanguage = getResources().getConfiguration().locale.getLanguage();
                 if (currentLanguage.equals(currentSystemLanguage)) {
@@ -213,10 +215,10 @@ public class CaddisflyApp extends Application {
                     return;
                 } else if (Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
                     //set to system language
-                    languageCode = currentSystemLanguage;
+                    code = currentSystemLanguage;
                 } else {
                     //no supported languages found just default to English
-                    languageCode = "en";
+                    code = "en";
                 }
             }
         }
@@ -225,10 +227,10 @@ public class CaddisflyApp extends Application {
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration config = res.getConfiguration();
 
-        locale = new Locale(languageCode, Locale.getDefault().getCountry());
+        locale = new Locale(code, Locale.getDefault().getCountry());
 
         //if the app language is not already set to languageCode then set it now
-        if (!config.locale.getLanguage().substring(0, 2).equalsIgnoreCase(languageCode)
+        if (!config.locale.getLanguage().substring(0, 2).equalsIgnoreCase(code)
                 || !config.locale.getCountry().equalsIgnoreCase(Locale.getDefault().getCountry())) {
 
             config.locale = locale;

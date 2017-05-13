@@ -98,6 +98,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
+        // Override in sub class
     }
 
     protected int[] qualityChecks(byte[] data, FinderPatternInfo info) {
@@ -232,18 +233,18 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
             double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
             double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
             double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
-            mat = OpenCVUtil.perspectiveTransform(tl, tr, bl, br, mat).clone();
+            Mat tempMat = OpenCVUtil.perspectiveTransform(tl, tr, bl, br, mat).clone();
 
             try {
                 if (calibrationData != null) {
-                    shadowPercentage = PreviewUtil.getShadowPercentage(mat, calibrationData);
+                    shadowPercentage = PreviewUtil.getShadowPercentage(tempMat, calibrationData);
                     shadowTrack.add(shadowPercentage);
                 }
             } catch (Exception e) {
                 Timber.e(e);
             } finally {
-                if (mat != null) {
-                    mat.release();
+                if (tempMat != null) {
+                    tempMat.release();
                 }
             }
         }

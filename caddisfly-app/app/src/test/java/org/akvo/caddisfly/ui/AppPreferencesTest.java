@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.ui;
+package org.akvo.caddisfly.ui;
 
 import android.support.annotation.StringRes;
 

@@ -428,10 +428,10 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         return super.onOptionsItemSelected(item);
     }
 
-    private void displayId(String value) {
-        value = value.replace(LINE_FEED, "");
-        textId.setText(value);
-        deviceHasId = (!value.trim().equals("") && !value.trim().equals("0"));
+    private void displayId(String id) {
+        String displayText = id.trim();
+        textId.setText(displayText);
+        deviceHasId = (!displayText.isEmpty() && !displayText.equals("0"));
     }
 
     @Override

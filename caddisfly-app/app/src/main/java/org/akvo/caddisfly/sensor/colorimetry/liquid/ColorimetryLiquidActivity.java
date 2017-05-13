@@ -96,7 +96,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
 
-    public static final int SHORT_DELAY = 600;
+    private static final int SHORT_DELAY = 600;
     private static final String EMPTY_STRING = "";
     private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
     private static final String RESULT_DIALOG_TAG = "resultDialog";
