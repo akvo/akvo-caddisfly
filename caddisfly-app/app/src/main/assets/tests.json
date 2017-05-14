@@ -664,6 +664,7 @@
       "name": "Water - Fluoride",
       "description": "Measures Fluoride in water. 0 - 2 ppm",
       "subtype": "liquid-chamber",
+      "device": "external",
       "tags": ["water quality"],
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
       "brand": "Akvo Caddisfly",

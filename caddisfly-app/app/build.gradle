@@ -63,6 +63,7 @@ android {
             res.srcDirs =
                     [
                             'src/main/res/layouts/main',
+                            'src/main/res/layouts/sensor/bluetooth',
                             'src/main/res/layouts/sensor/liquid',
                             'src/main/res/layouts/sensor/strip',
                             'src/main/res/layouts/sensor/ec',

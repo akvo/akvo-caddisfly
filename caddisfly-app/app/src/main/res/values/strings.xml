@@ -191,8 +191,15 @@
     <string name="color_card_not_found">Colour card not found</string>
     <string name="correctThePhoneTilt">Hold the phone level with colour card</string>
 
-    <string name="versionExpired">Version expired</string> 
-    <string name="thisVersionHasExpired">This version of the app has expired.</string> 
+    <string name="versionExpired">Version expired</string>
+    <string name="thisVersionHasExpired">This version of the app has expired.</string>
     <string name="uninstallAndInstallFromStore">Please uninstall and then install the latest version from Play Store.</string>
+
+    <string name="ble_not_supported">BLE is not supported</string>
+    <string name="connected">Connected to photometer</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="title_devices">BLE Device Scan</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="unknown_device">Unknown device</string>
 
 </resources>

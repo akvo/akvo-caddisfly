@@ -44,9 +44,8 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -315,9 +314,11 @@ public class ExternalActionActivity extends BaseActivity {
                 final Intent intent = new Intent();
                 intent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
-                    intent.setClass(context, SelectDilutionActivity.class);
+                    //intent.setClass(context, SelectDilutionActivity.class);
+                    intent.setClass(getBaseContext(), DeviceScanActivity.class);
                 } else {
-                    intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+                    //intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
+                    intent.setClass(getBaseContext(), DeviceScanActivity.class);
                 }
 
                 intent.putExtra(Constant.UUID, uuid);
