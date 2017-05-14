@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -76,7 +75,7 @@ public class SensorsTest {
     @Test
     public void sensorsTest() {
         ViewInteraction appCompatButton = onView(
-                allOf(ViewMatchers.withId(R.id.buttonSensors), withText("Sensors"),
+                allOf(withId(R.id.buttonSensors), withText("Sensors"),
                         withParent(withId(R.id.mainLayout)),
                         isDisplayed()));
         appCompatButton.perform(click());

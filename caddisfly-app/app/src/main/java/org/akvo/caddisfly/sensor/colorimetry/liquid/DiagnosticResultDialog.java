@@ -55,10 +55,6 @@ public class DiagnosticResultDialog extends DialogFragment {
     private List<Result> mResults;
     private boolean mIsCalibration;
 
-    public DiagnosticResultDialog() {
-        // Required empty public constructor
-    }
-
     /**
      * Returns a new instance of this dialog
      *
@@ -284,6 +280,8 @@ public class DiagnosticResultDialog extends DialogFragment {
                                 textResult.setTextColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
                                 textResult.setTextSize(TEXT_SIZE);
                             }
+                            break;
+                        default:
                             break;
                     }
 

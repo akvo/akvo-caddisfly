@@ -23,7 +23,6 @@ import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -119,7 +118,7 @@ public class ECTest {
     public void eCTest() {
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(ViewMatchers.withId(R.id.buttonSensors), withText("Sensors"),
+                allOf(withId(R.id.buttonSensors), withText("Sensors"),
                         withParent(withId(R.id.mainLayout)),
                         isDisplayed()));
         appCompatButton2.perform(click());
@@ -195,7 +194,7 @@ public class ECTest {
         appCompatImageButton2.perform(click());
 
         ViewInteraction appCompatButton = onView(
-                allOf(ViewMatchers.withId(R.id.buttonSensors), withText("Sensors"),
+                allOf(withId(R.id.buttonSensors), withText("Sensors"),
                         withParent(withId(R.id.mainLayout)),
                         isDisplayed()));
         appCompatButton.perform(click());

@@ -17,12 +17,11 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.helper;
+package org.akvo.caddisfly.helper;
 
 import android.util.SparseArray;
 
 import org.akvo.caddisfly.BuildConfig;
-import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.json.JSONObject;

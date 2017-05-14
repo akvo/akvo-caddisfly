@@ -133,7 +133,8 @@ public final class OpenCVUtil {
         final WeightedObservedPoints points = new WeightedObservedPoints();
         final WeightedObservedPoints corrPoints = new WeightedObservedPoints();
 
-        double tot, yTot;
+        double tot;
+        double yTot;
         for (int i = 0; i < binary.cols(); i++) { // iterate over cols
             tot = 0;
             yTot = 0;
@@ -154,7 +155,8 @@ public final class OpenCVUtil {
         final double[] coefficient = fitter.fit(pointsList);
 
         // second pass, remove outliers
-        double estimate, actual;
+        double estimate;
+        double actual;
 
         for (int i = 0; i < pointsList.size(); i++) {
             estimate = coefficient[1] * pointsList.get(i).getX() + coefficient[0];
@@ -221,7 +223,7 @@ public final class OpenCVUtil {
         Point stripTopLeft = new Point(0, risePos);
         Point stripBottomRight = new Point(dstBinary.cols(), fallPos);
 
-        org.opencv.core.Rect stripAreaRect = new org.opencv.core.Rect(stripTopLeft, stripBottomRight);
+        Rect stripAreaRect = new Rect(stripTopLeft, stripBottomRight);
         Mat binaryStrip = dstBinary.submat(stripAreaRect);
 
         // also cut out colored strip
@@ -303,7 +305,7 @@ public final class OpenCVUtil {
         return new Rect(stripTopLeft, stripBottomRight);
     }
 
-    static ColorDetected detectStripPatchColor(Mat lab) {
+    public static ColorDetected detectStripPatchColor(Mat lab) {
         // compute mean lab color. This is the value that will be
         // used for the result computation
         Scalar mean = Core.mean(lab);

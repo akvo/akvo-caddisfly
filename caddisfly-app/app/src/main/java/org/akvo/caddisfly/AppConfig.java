@@ -25,6 +25,14 @@ package org.akvo.caddisfly;
 public final class AppConfig {
 
     /**
+     * Date on which the app version will expire.
+     * This is to ensure that installs from apk meant for testing only cannot be used for too long.
+     */
+    public static final int APP_EXPIRY_DAY = 1;
+    public static final int APP_EXPIRY_MONTH = 7;
+    public static final int APP_EXPIRY_YEAR = 2017;
+
+    /**
      * To launch Flow app.
      */
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";

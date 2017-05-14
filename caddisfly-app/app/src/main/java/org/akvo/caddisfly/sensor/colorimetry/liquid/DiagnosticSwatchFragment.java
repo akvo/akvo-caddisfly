@@ -37,9 +37,6 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 public class DiagnosticSwatchFragment extends ListFragment {
 
-    public DiagnosticSwatchFragment() {
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

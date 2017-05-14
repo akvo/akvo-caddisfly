@@ -52,6 +52,7 @@ public class CalibrateListFragment extends ListFragment {
     private static final Callbacks DUMMY_CALLBACKS = new Callbacks() {
         @Override
         public void onItemSelected(int id) {
+            // Nothing to do here
         }
     };
     private static final long MIN_DELAY_MILLIS = 1000;
@@ -62,10 +63,7 @@ public class CalibrateListFragment extends ListFragment {
     private TextView textCalibrationError;
     private long mLastClickTime;
 
-    public CalibrateListFragment() {
-    }
-
-    void setAdapter() {
+    public void setAdapter() {
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         CalibrationsAdapter calibrationsAdapter = new CalibrationsAdapter(getActivity(),

@@ -348,9 +348,13 @@ public final class CalibrationCard {
         // Correct image
         // we do this per row. We tried to do it in one block, but there is no speed difference.
         byte[] temp = new byte[imgLab.cols() * imgLab.channels()];
-        int valL, valA, valB;
-        int ii, ii3;
-        float iiSq, iSq;
+        int valL;
+        int valA;
+        int valB;
+        int ii;
+        int ii3;
+        float iiSq;
+        float iSq;
         int imgCols = imgLab.cols();
         int imgRows = imgLab.rows();
 
@@ -451,7 +455,7 @@ public final class CalibrationCard {
     * 2) a 3d calibration which can mix the L,A,B channels to arrive at optimal results
      */
     @NonNull
-    private static Mat do1D_3DCorrection(@NonNull Mat imgMat, @Nullable CalibrationData calData) throws CalibrationException {
+    private static Mat do1D3DCorrection(@NonNull Mat imgMat, @Nullable CalibrationData calData) throws CalibrationException {
 
         if (calData == null) {
             throw new CalibrationException("no calibration data.");
@@ -488,7 +492,12 @@ public final class CalibrationCard {
             final double[] coefficientB = fitter.fit(obsB.toList());
 
             double[] valIllumination;
-            double L_orig, A_orig, B_orig, L_new, A_new, B_new;
+            double L_orig;
+            double A_orig;
+            double B_orig;
+            double L_new;
+            double A_new;
+            double B_new;
 
             // transform patch values using the 1d calibration results
             Map<String, double[]> calResult1D = new HashMap<>();
@@ -531,7 +540,15 @@ public final class CalibrationCard {
             DecompositionSolver solver = new SingularValueDecomposition(coefficient).getSolver();
             RealMatrix sol = solver.solve(cal);
 
-            float a_L, b_L, c_L, a_A, b_A, c_A, a_B, b_B, c_B;
+            float a_L;
+            float b_L;
+            float c_L;
+            float a_A;
+            float b_A;
+            float c_A;
+            float a_B;
+            float b_B;
+            float c_B;
             a_L = (float) sol.getEntry(0, 0);
             b_L = (float) sol.getEntry(1, 0);
             c_L = (float) sol.getEntry(2, 0);
@@ -543,8 +560,15 @@ public final class CalibrationCard {
             c_B = (float) sol.getEntry(2, 2);
 
             //use the solution to correct the image
-            double L_temp, A_temp, B_temp, L_mid, A_mid, B_mid;
-            int L_fin, A_fin, B_fin;
+            double L_temp;
+            double A_temp;
+            double B_temp;
+            double L_mid;
+            double A_mid;
+            double B_mid;
+            int L_fin;
+            int A_fin;
+            int B_fin;
             int ii3;
             byte[] temp = new byte[imgMat.cols() * imgMat.channels()];
             for (int i = 0; i < imgMat.rows(); i++) { // y
@@ -624,29 +648,31 @@ public final class CalibrationCard {
      * @result: calibrated image
      */
     @Nullable
-    public static CalibrationResultData calibrateImage(@Nullable Mat labImg,
+    public static CalibrationResultData calibrateImage(@Nullable Mat labImageMat,
                                                        @Nullable CalibrationData calData) throws CalibrationException {
+
+        Mat mat = null;
 
         if (calData != null) {
             // illumination correction
-            if (labImg != null) {
-                labImg = doIlluminationCorrection(labImg, calData);
+            if (labImageMat != null) {
+                mat = doIlluminationCorrection(labImageMat, calData);
             }
 
             // 1D and 3D color balance
-            if (labImg != null) {
-                labImg = do1D_3DCorrection(labImg, calData);
+            if (mat != null) {
+                mat = do1D3DCorrection(mat, calData);
             }
 
-            if (labImg != null) {
+            if (mat != null) {
                 // measure quality of the calibration
-                computeE94Error(labImg, calData);
+                computeE94Error(mat, calData);
 
                 // insert calibration colors in image
-                addCalColors(labImg, calData);
+                addCalColors(mat, calData);
             }
 
-            return new CalibrationResultData(labImg);
+            return new CalibrationResultData(mat);
         }
         return null;
     }
@@ -660,7 +686,7 @@ public final class CalibrationCard {
     *
     * @returns: E94 distance
      */
-    public static double E94(double l1, double a1, double b1, double l2, double a2, double b2, boolean normalise) {
+    public static double computeE94Distance(double l1, double a1, double b1, double l2, double a2, double b2, boolean normalise) {
 
         if (normalise) {
             // normalise values to standard ranges
@@ -719,7 +745,7 @@ public final class CalibrationCard {
             }
 
             // as both measured and calibration values are in openCV range, we need to normalise the values
-            double E94Dist = E94(LAB_color[0], LAB_color[1], LAB_color[2], cal.getL(), cal.getA(), cal.getB(), true);
+            double E94Dist = computeE94Distance(LAB_color[0], LAB_color[1], LAB_color[2], cal.getL(), cal.getA(), cal.getB(), true);
             totE94 += E94Dist;
             if (E94Dist > maxE94) {
                 maxE94 = E94Dist;

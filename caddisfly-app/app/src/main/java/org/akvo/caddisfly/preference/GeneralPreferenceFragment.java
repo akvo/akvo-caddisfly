@@ -38,10 +38,6 @@ public class GeneralPreferenceFragment extends PreferenceFragment {
 
     private ListView list;
 
-    public GeneralPreferenceFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

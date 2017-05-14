@@ -17,14 +17,16 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.util;
-
-import junit.framework.Assert;
+package org.akvo.caddisfly.util;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 //http://stackoverflow.com/questions/4520216/how-to-add-test-coverage-to-a-private-constructor
 final class ClassUtil {
@@ -45,14 +47,14 @@ final class ClassUtil {
     public static void assertUtilityClassWellDefined(final Class<?> clazz)
             throws NoSuchMethodException, InvocationTargetException,
             InstantiationException, IllegalAccessException {
-        Assert.assertTrue("class must be final",
+        assertTrue("class must be final",
                 Modifier.isFinal(clazz.getModifiers()));
-        Assert.assertEquals("There must be only one constructor", 1,
+        assertEquals("There must be only one constructor", 1,
                 clazz.getDeclaredConstructors().length);
         final Constructor<?> constructor = clazz.getDeclaredConstructor();
         if (constructor.isAccessible()
                 || !Modifier.isPrivate(constructor.getModifiers())) {
-            Assert.fail("constructor is not private");
+            fail("constructor is not private");
         }
         constructor.setAccessible(true);
         constructor.newInstance();
@@ -60,7 +62,7 @@ final class ClassUtil {
         for (final Method method : clazz.getMethods()) {
             if (!Modifier.isStatic(method.getModifiers())
                     && method.getDeclaringClass().equals(clazz)) {
-                Assert.fail("there exists a non-static method:" + method);
+                fail("there exists a non-static method:" + method);
             }
         }
     }

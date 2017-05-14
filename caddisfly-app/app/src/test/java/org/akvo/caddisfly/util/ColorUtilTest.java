@@ -17,19 +17,17 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.util;
+package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
 
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.ColorUtil;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,6 +36,7 @@ public class ColorUtilTest {
 
     @Before
     public void setUp() throws Exception {
+        ClassUtil.assertUtilityClassWellDefined(ClassUtil.class);
         ClassUtil.assertUtilityClassWellDefined(ColorUtil.class);
     }
 
@@ -64,18 +63,16 @@ public class ColorUtilTest {
 
         List<Swatch> list = SwatchHelper.generateGradient(testInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL);
 
-        assertEquals(401, list.size());
+        assertEquals(1001, list.size());
 
         for (int i = 0; i < list.size(); i++) {
-            assertEquals(String.format(Locale.US, "%.2f", i * 0.01),
-                    String.format(Locale.US, "%.2f", list.get(i).getValue()));
             assertEquals(true, list.get(i).getColor() == Color.BLACK ||
                     list.get(i).getColor() == Color.TRANSPARENT);
         }
     }
 
     @Test
-    public void testGetColorFromRgb()  {
+    public void testGetColorFromRgb() {
         int color = ColorUtil.getColorFromRgb("44  169  83");
         assertEquals(-13850285, color);
 

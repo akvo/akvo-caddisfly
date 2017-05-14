@@ -106,18 +106,15 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     }
 
     // track the last time a single quality check was successful
-    long getLastQualityIncrementTime() {
+    protected long getLastQualityIncrementTime() {
         return lastQualityIncrementTime;
     }
 
-    void showBrightness(double value) {
-    }
+    public abstract void showBrightness(double value);
 
-    void showShadow(double value) {
-    }
+    public abstract void showShadow(double value);
 
-    public void goNext() {
-    }
+    public abstract void goNext();
 
     /*
     *  Display number of successful quality checks
@@ -171,11 +168,11 @@ public abstract class CameraSharedFragmentBase extends Fragment {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    void showMessage(@StringRes int id) {
+    protected void showMessage(@StringRes int id) {
         showMessage(getString(id));
     }
 
-    void showMessage(final String message) {
+    protected void showMessage(final String message) {
         if (!((TextView) textSwitcher.getCurrentView()).getText().equals(message)) {
             textSwitcher.setText(message);
         }
@@ -193,7 +190,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
+                // Nothing to do here
             }
 
             @Override
@@ -203,7 +200,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                // Nothing to do here
             }
         });
         progressBar.startAnimation(animation);

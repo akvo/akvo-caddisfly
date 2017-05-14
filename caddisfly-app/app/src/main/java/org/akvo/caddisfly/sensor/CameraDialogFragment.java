@@ -75,10 +75,6 @@ public class CameraDialogFragment extends CameraDialog {
     // View to display the camera output.
     private CameraPreview mCameraPreview;
 
-    public CameraDialogFragment() {
-        // Required empty public constructor
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -230,7 +226,7 @@ public class CameraDialogFragment extends CameraDialog {
     @SuppressLint("ViewConstructor")
     static class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
-        static final double ASPECT_TOLERANCE = 0.1;
+        private static final double ASPECT_TOLERANCE = 0.1;
         private final SurfaceHolder mHolder;
         private final Paint circleStroke;
         private final List<Camera.Size> mSupportedPreviewSizes;

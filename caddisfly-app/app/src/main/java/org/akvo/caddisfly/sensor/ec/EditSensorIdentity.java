@@ -49,10 +49,6 @@ public class EditSensorIdentity extends DialogFragment {
     private OnFragmentInteractionListener mListener;
     private EditText editId;
 
-    public EditSensorIdentity() {
-        // Required empty public constructor
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -90,7 +86,8 @@ public class EditSensorIdentity extends DialogFragment {
                 .setPositiveButton(R.string.save,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-
+                                closeKeyboard(context, editId);
+                                dismiss();
                             }
                         }
                 )

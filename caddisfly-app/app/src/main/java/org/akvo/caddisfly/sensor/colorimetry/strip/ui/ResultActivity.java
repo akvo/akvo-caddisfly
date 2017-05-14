@@ -483,7 +483,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                                        Mat analyzedArea, Mat patchArea, int resultMatWidth) {
 
             // create Mat to hold strip itself
-            mat = ResultUtil.createStripMat(mat, patchCenter, grouped, resultMatWidth);
+            Mat tempMat = ResultUtil.createStripMat(mat, patchCenter, grouped, resultMatWidth);
 
             // Create Mat to hold patchDescription of patch
             Mat descMat = ResultUtil.createDescriptionMat(patchDescription, resultMatWidth);
@@ -516,7 +516,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
             combined = new Mat(0, resultMatWidth, CvType.CV_8UC3,
                     new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 
-            combined = ResultUtil.concatenate(combined, mat); // add strip
+            combined = ResultUtil.concatenate(combined, tempMat); // add strip
 
             // display extracted color only if there was a match
             if (!Double.isNaN(resultValue)) {
@@ -548,7 +548,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
             }
 
             combined.release();
-            mat.release();
+            tempMat.release();
             valueMeasuredMat.release();
             colorRangeMat.release();
             if (AppPreferences.isDiagnosticMode()) {
@@ -703,15 +703,15 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 this.patchCenter = patchCenter;
             }
 
-            Mat getAnalyzedArea() {
+            private Mat getAnalyzedArea() {
                 return analyzedArea;
             }
 
-            Mat getPatchArea() {
+            private Mat getPatchArea() {
                 return patchArea;
             }
 
-            PatchMat invoke() {
+            private PatchMat invoke() {
                 resultPatchAreas = new Mat(0, Math.min(subMatSize * MAT_SIZE_MULTIPLIER, MAX_MAT_SIZE),
                         CvType.CV_8UC3, new Scalar(MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE, MAX_RGB_INT_VALUE));
 

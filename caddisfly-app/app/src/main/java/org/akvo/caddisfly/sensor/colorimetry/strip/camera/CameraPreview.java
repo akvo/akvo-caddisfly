@@ -69,7 +69,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        // Nothing to do here
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
@@ -166,7 +166,6 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } catch (IOException e) {
             Timber.e(e);
         }
-
     }
 
     public boolean toggleFlashMode() {

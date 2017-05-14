@@ -74,7 +74,8 @@ public final class ImageHelper {
         // detected (including false circles).
         // The larger the threshold is, the more circles will
         // potentially be returned.
-        double param1 = 10, param2 = 100;
+        double param1 = 10;
+        double param2 = 100;
 
         // create a Mat object to store the circles detected
         Mat circles = new Mat(bitmap.getWidth(),
@@ -92,7 +93,8 @@ public final class ImageHelper {
 
             double[] circleCoordinates = circles.get(0, 0);
 
-            int x = (int) circleCoordinates[0], y = (int) circleCoordinates[1];
+            int x = (int) circleCoordinates[0];
+            int y = (int) circleCoordinates[1];
 
             org.opencv.core.Point center = new org.opencv.core.Point(x, y);
             int foundRadius = (int) circleCoordinates[2];

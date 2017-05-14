@@ -567,6 +567,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                 break;
             default:
                 title = R.string.qualityCheckFailed;
+                break;
         }
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -657,7 +658,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
                     animation.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
-
+                            // Nothing to do here
                         }
 
                         @Override
@@ -668,7 +669,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
-
+                            // Nothing to do here
                         }
                     });
                     timerCountdown.startAnimation(animation);
@@ -763,7 +764,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             }
         }
 
-        void setAngles(@Nullable float[] tiltValues) {
+        private void setAngles(@Nullable float[] tiltValues) {
             this.tilts = tiltValues == null ? null : tiltValues.clone();
         }
     }

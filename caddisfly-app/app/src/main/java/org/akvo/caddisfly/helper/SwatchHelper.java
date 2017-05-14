@@ -41,8 +41,6 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,7 +59,7 @@ public final class SwatchHelper {
     private static final int HSV_CROSSOVER_DIFFERENCE = 200;
 
     // If the color distance between samplings exceeds this the test is rejected
-    private static final double MAX_COLOR_DISTANCE = 25;
+    private static final double MAX_COLOR_DISTANCE = 30;
 
     // The number of interpolations to generate between range values
     private static final double INTERPOLATION_COUNT = 250;
@@ -332,26 +330,14 @@ public final class SwatchHelper {
             }
         }
 
-        // Get the average
+        // Get the average and round to 2 places
         try {
-            result = round(result / results.size(), 2);
+            result = Math.round((result / results.size()) * 100.0) / 100.0;
         } catch (Exception ex) {
             result = -1;
         }
 
         return result;
-    }
-
-    //Ref: http://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
-    @SuppressWarnings("SameParameterValue")
-    private static double round(double value, int places) {
-        if (places < 0) {
-            throw new IllegalArgumentException();
-        }
-
-        BigDecimal bd = new BigDecimal(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
     }
 
     public static void generateSwatches(List<Swatch> swatches, List<Swatch> testSwatches) {
@@ -581,6 +567,9 @@ public final class SwatchHelper {
                     case LAB:
                         color = ColorUtil.labToColor(ColorUtil.getGradientLabColor(ColorUtil.colorToLab(startColor),
                                 ColorUtil.colorToLab(endColor), steps, j));
+                        break;
+                    default:
+                        break;
                 }
 
                 list.add(new Swatch(startValue + (j * increment), color, Color.TRANSPARENT));
@@ -616,10 +605,10 @@ public final class SwatchHelper {
      */
     private static double stringToDouble(String text) {
 
-        text = text.replaceAll(",", ".");
+        String tempText = text.replaceAll(",", ".");
         NumberFormat nf = NumberFormat.getInstance(Locale.US);
         try {
-            return nf.parse(text).doubleValue();
+            return nf.parse(tempText).doubleValue();
         } catch (ParseException e) {
             Timber.e(e);
             return 0.0;

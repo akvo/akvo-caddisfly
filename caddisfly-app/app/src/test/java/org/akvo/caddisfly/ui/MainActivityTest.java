@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.ui;
+package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -32,7 +32,6 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
-import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;

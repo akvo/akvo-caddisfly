@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.ui;
+package org.akvo.caddisfly.ui;
 
 import android.support.annotation.StringRes;
 
@@ -31,6 +31,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static junit.framework.Assert.assertEquals;
@@ -40,19 +41,57 @@ import static junit.framework.Assert.assertEquals;
 @Config(constants = BuildConfig.class, sdk = 23)
 public class AppPreferencesTest {
 
+    private static final boolean DEFAULT_FALSE = false;
+
     @Test
     public void checkPlaySound() {
-        checkDiagnosticPreference(R.string.noSoundKey, false, "isSoundOff", true);
+
+        String methodName = "isSoundOff";
+        boolean defaultValue = false;
+
+        checkDiagnosticPreference(R.string.noSoundKey, DEFAULT_FALSE, methodName, true);
+
+        Method method;
+        try {
+            method = AppPreferences.class.getDeclaredMethod(methodName);
+
+            try {
+                assertEquals(DEFAULT_FALSE, method.invoke(null));
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void checkDebugMessagesKey() {
-        checkDiagnosticPreference(R.string.showDebugMessagesKey, false, "getShowDebugMessages", true);
+
+        String methodName = "getShowDebugMessages";
+        boolean defaultValue = false;
+
+        checkDiagnosticPreference(R.string.showDebugMessagesKey, DEFAULT_FALSE, methodName, true);
+
+        Method method;
+        try {
+            method = AppPreferences.class.getDeclaredMethod(methodName);
+
+            try {
+                assertEquals(DEFAULT_FALSE, method.invoke(null));
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void checkSamplingTimes() {
-        assertEquals(6, AppPreferences.getSamplingTimes());
+        assertEquals(7, AppPreferences.getSamplingTimes());
     }
 
     private void checkDiagnosticPreference(@StringRes int key, Object defaultValue,

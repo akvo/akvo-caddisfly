@@ -22,7 +22,6 @@ package org.akvo.caddisfly.ui;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -87,7 +86,7 @@ public class SensorTest {
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        onView(ViewMatchers.withText(R.string.sensors)).perform(click());
+        onView(withText(R.string.sensors)).perform(click());
 
         onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
 

@@ -38,6 +38,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
@@ -96,6 +97,11 @@ public class ExternalActionActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        // Stop if the app version has expired
+        if (ApkHelper.isAppVersionExpired(this)) {
+            return;
+        }
 
         Intent intent = getIntent();
         String type = intent.getType();
@@ -430,18 +436,20 @@ public class ExternalActionActivity extends BaseActivity {
     @NonNull
     @Deprecated
     private String getTestName(@NonNull String title) {
+
+        String tempTitle = title;
         //ensure we have short name to display as title
         if (title.length() > 0) {
             if (title.length() > 30) {
-                title = title.substring(0, 30);
+                tempTitle = title.substring(0, 30);
             }
             if (title.contains("-")) {
-                title = title.substring(0, title.indexOf("-")).trim();
+                tempTitle = title.substring(0, title.indexOf("-")).trim();
             }
         } else {
-            title = getString(R.string.error);
+            tempTitle = getString(R.string.error);
         }
-        return title;
+        return tempTitle;
     }
 
     /**

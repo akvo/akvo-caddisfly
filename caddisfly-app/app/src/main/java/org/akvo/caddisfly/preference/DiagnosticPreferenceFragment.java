@@ -64,10 +64,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     private ListView list;
     private View coordinatorLayout;
 
-    public DiagnosticPreferenceFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,46 +74,21 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.card_row, container, false);
 
-        final EditTextPreference sampleTimesPreference =
-                (EditTextPreference) findPreference(getString(R.string.samplingsTimeKey));
-        if (sampleTimesPreference != null) {
+        setupSampleTimesPreference();
 
-            sampleTimesPreference.setSummary(sampleTimesPreference.getText());
+        setupStartTestPreference();
 
-            sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    try {
-                        if (Integer.parseInt(String.valueOf(newValue)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
-                            newValue = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
-                        }
+        setupStartStripTestPreference();
 
-                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
-                            newValue = 1;
-                        }
+        setupCameraPreviewPreference();
 
-                    } catch (Exception e) {
-                        newValue = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
-                    }
-                    sampleTimesPreference.setText(String.valueOf(newValue));
-                    sampleTimesPreference.setSummary(String.valueOf(newValue));
-                    return false;
-                }
-            });
-        }
+        setupDistancePreference();
 
-        final Preference startTestPreference = findPreference("startTest");
-        if (startTestPreference != null) {
-            startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    final Intent intent = new Intent(getActivity(), TypeListActivity.class);
-                    intent.putExtra("runTest", true);
-                    startActivity(intent);
-                    return true;
-                }
-            });
-        }
+        coordinatorLayout = rootView;
+        return rootView;
+    }
 
+    private void setupStartStripTestPreference() {
         final Preference startStripTestPreference = findPreference("startStripTest");
         if (startStripTestPreference != null) {
             startStripTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -129,7 +100,56 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 }
             });
         }
+    }
 
+    private void setupStartTestPreference() {
+        final Preference startTestPreference = findPreference("startTest");
+        if (startTestPreference != null) {
+            startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    final Intent intent = new Intent(getActivity(), TypeListActivity.class);
+                    intent.putExtra("runTest", true);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+        }
+    }
+
+    private void setupSampleTimesPreference() {
+        final EditTextPreference sampleTimesPreference =
+                (EditTextPreference) findPreference(getString(R.string.samplingsTimeKey));
+        if (sampleTimesPreference != null) {
+
+            sampleTimesPreference.setSummary(sampleTimesPreference.getText());
+
+            sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    Object value = newValue;
+                    try {
+
+                        if (Integer.parseInt(String.valueOf(value)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
+                            value = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
+                        }
+
+                        if (Integer.parseInt(String.valueOf(value)) < 1) {
+                            value = 1;
+                        }
+
+                    } catch (Exception e) {
+                        value = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
+                    }
+                    sampleTimesPreference.setText(String.valueOf(value));
+                    sampleTimesPreference.setSummary(String.valueOf(value));
+                    return false;
+                }
+            });
+        }
+    }
+
+    private void setupCameraPreviewPreference() {
         final Preference cameraPreviewPreference = findPreference("cameraPreview");
         if (cameraPreviewPreference != null) {
             cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -151,7 +171,9 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 }
             });
         }
+    }
 
+    private void setupDistancePreference() {
         final EditTextPreference distancePreference =
                 (EditTextPreference) findPreference(getString(R.string.colorDistanceToleranceKey));
         if (distancePreference != null) {
@@ -160,27 +182,26 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
             distancePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    Object value = newValue;
                     try {
-                        if (Integer.parseInt(String.valueOf(newValue)) > MAX_TOLERANCE) {
-                            newValue = MAX_TOLERANCE;
+                        if (Integer.parseInt(String.valueOf(value)) > MAX_TOLERANCE) {
+                            value = MAX_TOLERANCE;
                         }
 
-                        if (Integer.parseInt(String.valueOf(newValue)) < 1) {
-                            newValue = 1;
+                        if (Integer.parseInt(String.valueOf(value)) < 1) {
+                            value = 1;
                         }
 
                     } catch (Exception e) {
-                        newValue = ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
+                        value = ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
                     }
-                    distancePreference.setText(String.valueOf(newValue));
-                    distancePreference.setSummary(String.valueOf(newValue));
+                    distancePreference.setText(String.valueOf(value));
+                    distancePreference.setSummary(String.valueOf(value));
                     return false;
                 }
             });
         }
-
-        coordinatorLayout = rootView;
-        return rootView;
     }
 
     private void startPreview() {

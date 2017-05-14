@@ -88,7 +88,7 @@ class CameraScheduledExecutorService {
         }
     }
 
-    void shutdown() {
+    protected void shutdown() {
         scheduledExecutorService.shutdown();
     }
 }

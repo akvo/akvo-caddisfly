@@ -68,10 +68,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private EditText editRgb;
     private boolean isEditing = false;
 
-    public SaveCalibrationDialogFragment() {
-        // Required empty public constructor
-    }
-
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -192,7 +188,8 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.save,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-
+                                closeKeyboard(context, editName);
+                                dismiss();
                             }
                         }
                 )

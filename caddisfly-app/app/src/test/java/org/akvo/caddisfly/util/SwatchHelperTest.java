@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.test.util;
+package org.akvo.caddisfly.util;
 
 import android.graphics.Color;
 
@@ -73,7 +73,7 @@ public class SwatchHelperTest {
         results.add(createNewResult(1.5));
 
         double result = SwatchHelper.getAverageResult(results);
-        assertEquals(-1, result, 0);
+        assertEquals(1.16, result, 0);
     }
 
     @Test
@@ -88,7 +88,7 @@ public class SwatchHelperTest {
         results.add(createNewResult(1.5));
 
         double result = SwatchHelper.getAverageResult(results);
-        assertEquals(-1.0, result, 0);
+        assertEquals(1.61, result, 0);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class SwatchHelperTest {
         results.add(createNewResult(1.5));
 
         double result = SwatchHelper.getAverageResult(results);
-        assertEquals(-1, result, 0);
+        assertEquals(1.63, result, 0);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class SwatchHelperTest {
         results.add(createNewResult(1.5));
 
         double result = SwatchHelper.getAverageResult(results);
-        assertEquals(-1.0, result, 0);
+        assertEquals(1.6, result, 0);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class SwatchHelperTest {
         results.add(createNewResult(1.7));
 
         double result = SwatchHelper.getAverageResult(results);
-        assertEquals(-1.0, result, 0);
+        assertEquals(1.62, result, 0);
     }
 
     public void testAverage6() {

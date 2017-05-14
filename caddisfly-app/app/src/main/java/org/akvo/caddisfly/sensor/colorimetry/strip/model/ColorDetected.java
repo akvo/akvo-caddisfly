@@ -29,9 +29,6 @@ public class ColorDetected {
     private int color;
     private Scalar lab;
 
-    public ColorDetected() {
-    }
-
     @SuppressWarnings("unused")
     public int getColor() {
         return color;

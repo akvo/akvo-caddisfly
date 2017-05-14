@@ -92,15 +92,16 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         CalibrationCard.initialize();
     }
 
-    void stop() {
+    protected void stop() {
         stopped = true;
     }
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
+        // Override in sub class
     }
 
-    int[] qualityChecks(byte[] data, FinderPatternInfo info) {
+    protected int[] qualityChecks(byte[] data, FinderPatternInfo info) {
         luminanceList.clear();
         float[] tilts;
         int luminance;
@@ -232,18 +233,18 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
             double[] tr = new double[]{info.getTopRight().getX(), info.getTopRight().getY()};
             double[] bl = new double[]{info.getBottomLeft().getX(), info.getBottomLeft().getY()};
             double[] br = new double[]{info.getBottomRight().getX(), info.getBottomRight().getY()};
-            mat = OpenCVUtil.perspectiveTransform(tl, tr, bl, br, mat).clone();
+            Mat tempMat = OpenCVUtil.perspectiveTransform(tl, tr, bl, br, mat).clone();
 
             try {
                 if (calibrationData != null) {
-                    shadowPercentage = PreviewUtil.getShadowPercentage(mat, calibrationData);
+                    shadowPercentage = PreviewUtil.getShadowPercentage(tempMat, calibrationData);
                     shadowTrack.add(shadowPercentage);
                 }
             } catch (Exception e) {
                 Timber.e(e);
             } finally {
-                if (mat != null) {
-                    mat.release();
+                if (tempMat != null) {
+                    tempMat.release();
                 }
             }
         }
@@ -301,7 +302,7 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         return maxLuminance;
     }
 
-    FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) throws CalibrationException {
+    protected FinderPatternInfo findPossibleCenters(byte[] data, final Camera.Size size) throws CalibrationException {
 
         BitMatrix bitMatrix = null;
 
@@ -361,15 +362,15 @@ abstract class CameraCallbackBase implements Camera.PreviewCallback {
         return patternInfo;
     }
 
-    boolean isRunning() {
+    protected boolean isRunning() {
         return !stopped;
     }
 
-    Camera.Size getPreviewSize() {
+    protected Camera.Size getPreviewSize() {
         return previewSize;
     }
 
-    CameraViewListener getListener() {
+    protected CameraViewListener getListener() {
         return listener;
     }
 

@@ -22,7 +22,6 @@ package org.akvo.caddisfly.ui;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -98,7 +97,7 @@ public class SurveyTest {
     @Test
     public void testChangeTestType() {
 
-        onView(ViewMatchers.withText(R.string.calibrate)).perform(click());
+        onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 

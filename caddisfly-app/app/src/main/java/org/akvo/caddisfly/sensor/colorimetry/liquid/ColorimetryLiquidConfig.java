@@ -46,7 +46,7 @@ public final class ColorimetryLiquidConfig {
     /**
      * The number of photo samples to be skipped during analysis
      */
-    public static final int SKIP_SAMPLING_COUNT = 1;
+    public static final int SKIP_SAMPLING_COUNT = 2;
 
     private ColorimetryLiquidConfig() {
     }

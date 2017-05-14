@@ -78,6 +78,7 @@ public final class FileHelper {
                 break;
             default:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true);
+                break;
         }
         File dir = new File(path);
         if (!subPath.isEmpty()) {

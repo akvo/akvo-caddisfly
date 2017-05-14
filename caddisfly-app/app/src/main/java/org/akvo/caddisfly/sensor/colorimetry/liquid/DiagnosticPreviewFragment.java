@@ -155,6 +155,7 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
         mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
             @Override
             public void onShake() {
+                // Nothing to do here
             }
         }, new ShakeDetector.OnNoShakeListener() {
             @Override

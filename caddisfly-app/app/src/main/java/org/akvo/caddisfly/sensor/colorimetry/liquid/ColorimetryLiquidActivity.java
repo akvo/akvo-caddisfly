@@ -96,7 +96,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         DiagnosticResultDialog.DiagnosticResultDialogListener,
         CameraDialog.Cancelled {
 
-    public static final int SHORT_DELAY = 600;
+    private static final int SHORT_DELAY = 600;
     private static final String EMPTY_STRING = "";
     private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
     private static final String RESULT_DIALOG_TAG = "resultDialog";
@@ -326,6 +326,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                 break;
             default:
                 textDilution.setText(R.string.noDilution);
+                break;
         }
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
@@ -722,6 +723,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                                 break;
                             default:
                                 message = EMPTY_STRING;
+                                break;
                         }
                     } else {
                         sound.playShortResource(R.raw.done);
@@ -757,15 +759,12 @@ public class ColorimetryLiquidActivity extends BaseActivity
             batteryPercent = (int) ((level / (float) scale) * 100);
         }
 
-        if (mIsCalibration) {
-            result = String.format(Locale.US, "%.2f", mSwatchValue);
-        }
-
         String date = new SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.US).format(new Date());
         ImageUtil.saveImage(data,
                 CaddisflyApp.getApp().getCurrentTestInfo().getId(),
                 String.format(Locale.US, "%s_%s_%s_%d_%s", date, (mIsCalibration ? "C" : "T"),
-                        result, batteryPercent, ApiUtil.getInstallationId(this)));
+                        mIsCalibration ? String.format(Locale.US, "%.2f", mSwatchValue) : result,
+                        batteryPercent, ApiUtil.getInstallationId(this)));
     }
 
     @Override
@@ -887,6 +886,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                     break;
                 default:
                     message = EMPTY_STRING;
+                    break;
             }
 
             ResultDialogFragment mResultDialogFragment = ResultDialogFragment.newInstance(title, result,

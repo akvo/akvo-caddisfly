@@ -156,6 +156,17 @@ public class SensorActivity extends BaseActivity {
     };
     private int identityCheck = 0;
     private int deviceStatus = 0;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (deviceStatus == 1) {
+                requestResult();
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+            } else {
+                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
+            }
+        }
+    };
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
@@ -183,17 +194,6 @@ public class SensorActivity extends BaseActivity {
                     }
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
-            }
-        }
-    };
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (deviceStatus == 1) {
-                requestResult();
-                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
-            } else {
-                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
             }
         }
     };
@@ -364,39 +364,41 @@ public class SensorActivity extends BaseActivity {
 
     private void displayResult(String value) {
 
+        String tempValue = value;
+
         if (AppPreferences.getShowDebugMessages()) {
-            Toast.makeText(this, value, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, tempValue, Toast.LENGTH_SHORT).show();
         }
 
         // reject value if corrupt
-        if (value.startsWith(".") || value.startsWith(",")) {
+        if (tempValue.startsWith(".") || tempValue.startsWith(",")) {
             return;
         }
 
         // clean up data
-        value = value.trim();
-        if (value.contains(LINE_FEED)) {
-            String[] values = value.split(LINE_FEED);
+        tempValue = tempValue.trim();
+        if (tempValue.contains(LINE_FEED)) {
+            String[] values = tempValue.split(LINE_FEED);
             if (values.length > 0) {
-                value = values[1];
+                tempValue = values[1];
             }
         }
 
-        value = value.trim();
-        if (!value.isEmpty()) {
+        tempValue = tempValue.trim();
+        if (!tempValue.isEmpty()) {
 
             // if device not yet validated then check if device id is ok
             if (deviceStatus == 0) {
-                if (value.contains(" ")) {
-                    if (value.startsWith(mCurrentTestInfo.getDeviceId())) {
+                if (tempValue.contains(" ")) {
+                    if (tempValue.startsWith(mCurrentTestInfo.getDeviceId())) {
 
                         Pattern p = Pattern.compile(".*\\s(\\d+)");
                         deviceStatus = 1;
-                        Matcher m = p.matcher(value);
+                        Matcher m = p.matcher(tempValue);
                         if (m.matches()) {
                             textSubtitle.setText(String.format("Sensor ID: %s", m.group(1)));
                         } else {
-                            textSubtitle.setText(value);
+                            textSubtitle.setText(tempValue);
                         }
 
                         progressWait.setVisibility(View.VISIBLE);
@@ -418,10 +420,10 @@ public class SensorActivity extends BaseActivity {
                 alertDialog.dismiss();
             }
 
-            String[] resultArray = value.split(",");
+            String[] resultArray = tempValue.split(",");
 
             if (AppPreferences.getShowDebugMessages()) {
-                final String finalValue = value;
+                final String finalValue = tempValue;
                 runOnUiThread(new Runnable() {
                     public void run() {
                         if (debugToast == null) {

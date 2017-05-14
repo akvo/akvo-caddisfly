@@ -216,11 +216,13 @@ public final class ResultUtil {
      * Create Mat with swatches for the colors in the color chart range and also write the value.
      *
      * @param colors the colors to draw
-     * @param width  the final width of the Mat
+     * @param matWidth  the final width of the Mat
      * @return the created Mat
      */
     @NonNull
-    public static Mat createColorRangeMatSingle(@NonNull JSONArray colors, int width) {
+    public static Mat createColorRangeMatSingle(@NonNull JSONArray colors, int matWidth) {
+
+        int width = matWidth;
 
         double gutterWidth = X_MARGIN;
         if (colors.length() > 10) {
@@ -539,10 +541,14 @@ public final class ResultUtil {
     @NonNull
     private static double[][] createInterpolTable(@NonNull JSONArray colors) {
         JSONArray patchColorValues;
-        double resultPatchValueStart, resultPatchValueEnd;
+        double resultPatchValueStart;
+        double resultPatchValueEnd;
         double[] pointStart;
         double[] pointEnd;
-        double lInter, aInter, bInter, vInter;
+        double lInter;
+        double aInter;
+        double bInter;
+        double vInter;
         double[][] interpolTable = new double[(colors.length() - 1) * INTERPOLATION_NUMBER + 1][4];
         int count = 0;
 
@@ -613,7 +619,7 @@ public final class ResultUtil {
         for (int j = 0; j < interpolTable.length; j++) {
             // Find the closest point using the E94 distance
             // the values are already in the right range, so we don't need to normalize
-            distance = CalibrationCard.E94(labPoint[0], labPoint[1], labPoint[2], interpolTable[j][0],
+            distance = CalibrationCard.computeE94Distance(labPoint[0], labPoint[1], labPoint[2], interpolTable[j][0],
                     interpolTable[j][1], interpolTable[j][2], false);
             if (distance < nearest) {
                 nearest = distance;
@@ -668,7 +674,7 @@ public final class ResultUtil {
         for (int j = 0; j < interpolTables[0].length; j++) {
             distance = 0;
             for (int p = 0; p < patches.size(); p++) {
-                distance += CalibrationCard.E94(labPoint[p][0], labPoint[p][1], labPoint[p][2],
+                distance += CalibrationCard.computeE94Distance(labPoint[p][0], labPoint[p][1], labPoint[p][2],
                         interpolTables[p][j][0], interpolTables[p][j][1], interpolTables[p][j][2], false);
             }
             if (distance < nearest) {

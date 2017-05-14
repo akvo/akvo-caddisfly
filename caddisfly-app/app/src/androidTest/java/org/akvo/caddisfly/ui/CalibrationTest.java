@@ -25,7 +25,6 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -108,7 +107,7 @@ public class CalibrationTest {
 
         goToMainScreen();
 
-        onView(ViewMatchers.withId(R.id.actionSettings)).perform(click());
+        onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
