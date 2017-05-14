@@ -36,6 +36,7 @@ public class ColorUtilTest {
 
     @Before
     public void setUp() throws Exception {
+        ClassUtil.assertUtilityClassWellDefined(ClassUtil.class);
         ClassUtil.assertUtilityClassWellDefined(ColorUtil.class);
     }
 

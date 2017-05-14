@@ -431,7 +431,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     private void displayId(String id) {
         String displayText = id.trim();
         textId.setText(displayText);
-        deviceHasId = (!displayText.isEmpty() && !displayText.equals("0"));
+        deviceHasId = (!displayText.isEmpty() && !"0".equals(displayText));
     }
 
     @Override

@@ -74,6 +74,49 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.card_row, container, false);
 
+        setupSampleTimesPreference();
+
+        setupStartTestPreference();
+
+        setupStartStripTestPreference();
+
+        setupCameraPreviewPreference();
+
+        setupDistancePreference();
+
+        coordinatorLayout = rootView;
+        return rootView;
+    }
+
+    private void setupStartStripTestPreference() {
+        final Preference startStripTestPreference = findPreference("startStripTest");
+        if (startStripTestPreference != null) {
+            startStripTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    final Intent intent = new Intent(getActivity(), TestTypeListActivity.class);
+                    intent.putExtra("internal", true);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+        }
+    }
+
+    private void setupStartTestPreference() {
+        final Preference startTestPreference = findPreference("startTest");
+        if (startTestPreference != null) {
+            startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference preference) {
+                    final Intent intent = new Intent(getActivity(), TypeListActivity.class);
+                    intent.putExtra("runTest", true);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+        }
+    }
+
+    private void setupSampleTimesPreference() {
         final EditTextPreference sampleTimesPreference =
                 (EditTextPreference) findPreference(getString(R.string.samplingsTimeKey));
         if (sampleTimesPreference != null) {
@@ -104,31 +147,9 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 }
             });
         }
+    }
 
-        final Preference startTestPreference = findPreference("startTest");
-        if (startTestPreference != null) {
-            startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    final Intent intent = new Intent(getActivity(), TypeListActivity.class);
-                    intent.putExtra("runTest", true);
-                    startActivity(intent);
-                    return true;
-                }
-            });
-        }
-
-        final Preference startStripTestPreference = findPreference("startStripTest");
-        if (startStripTestPreference != null) {
-            startStripTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    final Intent intent = new Intent(getActivity(), TestTypeListActivity.class);
-                    intent.putExtra("internal", true);
-                    startActivity(intent);
-                    return true;
-                }
-            });
-        }
-
+    private void setupCameraPreviewPreference() {
         final Preference cameraPreviewPreference = findPreference("cameraPreview");
         if (cameraPreviewPreference != null) {
             cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -150,7 +171,9 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 }
             });
         }
+    }
 
+    private void setupDistancePreference() {
         final EditTextPreference distancePreference =
                 (EditTextPreference) findPreference(getString(R.string.colorDistanceToleranceKey));
         if (distancePreference != null) {
@@ -179,9 +202,6 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 }
             });
         }
-
-        coordinatorLayout = rootView;
-        return rootView;
     }
 
     private void startPreview() {
