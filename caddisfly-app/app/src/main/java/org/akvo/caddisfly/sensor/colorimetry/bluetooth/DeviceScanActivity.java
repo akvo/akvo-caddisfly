@@ -60,6 +60,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -96,6 +98,13 @@ public class DeviceScanActivity extends BaseActivity {
                     });
                 }
             };
+    private LinearLayout layoutInfo;
+    private BluetoothAdapter mBluetoothAdapter;
+    private BluetoothLeScanner mBluetoothLeScanner;
+    private boolean mScanning;
+    private Handler mHandler;
+    private ListView deviceList;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private final ScanCallback mScanCallback = new ScanCallback() {
         @Override
@@ -103,7 +112,7 @@ public class DeviceScanActivity extends BaseActivity {
             super.onScanResult(callbackType, result);
             Timber.d("onScanResult");
             processResult(result);
-
+            connectToDevice(0);
         }
 
         @Override
@@ -123,15 +132,15 @@ public class DeviceScanActivity extends BaseActivity {
 
         private void processResult(ScanResult result) {
             Timber.i("New LE Device: " + result.getDevice().getName() + " @ " + result.getRssi());
+
+            deviceList.setVisibility(View.VISIBLE);
+            layoutInfo.setVisibility(View.GONE);
+
             mLeDeviceListAdapter.addDevice(result.getDevice());
             mLeDeviceListAdapter.notifyDataSetChanged();
+
         }
     };
-    private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothLeScanner mBluetoothLeScanner;
-    private boolean mScanning;
-    private Handler mHandler;
-    private ListView deviceList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -170,25 +179,23 @@ public class DeviceScanActivity extends BaseActivity {
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            // Android M Permission check
-            if (this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("This app needs location access");
-                builder.setMessage("Please grant location access so this app can detect beacons.");
-                builder.setPositiveButton(android.R.string.ok, null);
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                                    PERMISSION_REQUEST_COARSE_LOCATION);
-                        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("This app needs location access");
+            builder.setMessage("Please grant location access so this app can detect beacons.");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                                PERMISSION_REQUEST_COARSE_LOCATION);
                     }
-                });
+                }
+            });
 
-                builder.show();
-            }
+            builder.show();
         }
 
         deviceList = (ListView) findViewById(R.id.device_list);
@@ -196,27 +203,44 @@ public class DeviceScanActivity extends BaseActivity {
         deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
-                if (device == null) {
-                    return;
-                }
-                final Intent intent = new Intent(DeviceScanActivity.this, DeviceControlActivity.class);
-                intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
-                intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
-                if (mScanning) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        mBluetoothLeScanner.stopScan(mScanCallback);
-                    } else {
-                        mBluetoothAdapter.stopLeScan(mLeScanCallback);
-                    }
-                    mScanning = false;
-                }
-
-                intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-                startActivity(intent);
-                finish();
+                connectToDevice(position);
             }
         });
+
+
+        Button instructionsButton = (Button) findViewById(R.id.button_instructions);
+        instructionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(DeviceScanActivity.this, BluetoothInstructionsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        layoutInfo = (LinearLayout) findViewById(R.id.layout_bluetooth_info);
+
+    }
+
+    private void connectToDevice(int position) {
+        final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
+        if (device == null) {
+            return;
+        }
+        final Intent intent = new Intent(DeviceScanActivity.this, DeviceControlActivity.class);
+        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
+        intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
+        if (mScanning) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                mBluetoothLeScanner.stopScan(mScanCallback);
+            } else {
+                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            }
+            mScanning = false;
+        }
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -232,13 +256,16 @@ public class DeviceScanActivity extends BaseActivity {
                     builder.setTitle("Functionality limited");
                     builder.setMessage("Since location access has not been granted, app cannot discover beacons when in the background.");
                     builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-                    });
+//                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                        @Override
+//                        public void onDismiss(DialogInterface dialog) {
+//                        }
+//                    });
                     builder.show();
                 }
+                break;
+            default:
+                break;
         }
     }
 
@@ -280,7 +307,6 @@ public class DeviceScanActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
-
     }
 
     @Override
