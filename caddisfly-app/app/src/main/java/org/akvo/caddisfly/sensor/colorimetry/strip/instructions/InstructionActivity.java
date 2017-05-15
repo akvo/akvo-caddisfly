@@ -157,7 +157,7 @@ public class InstructionActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public class PagerAdapter extends FragmentStatePagerAdapter {
+    private class PagerAdapter extends FragmentStatePagerAdapter {
 
         PagerAdapter(FragmentManager fm) {
             super(fm);

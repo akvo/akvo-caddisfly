@@ -1,6 +1,27 @@
 {
   "tests": [
     {
+      "name": "Water - Fluoride",
+      "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
+      "instructions": [
+        {
+          "text": "Press <b>Shift</b> + <b>1</b>,<b>7</b>,<b>0</b> to select Fluoride test and press <b>Enter</b>"
+        },
+        {
+          "text": "Fill vial (24mm) with 10 ml of your sample, close cap tightly"
+        },
+        {
+          "text": "<!>do_not_shake_excess_water<!>"
+        },
+        {
+          "text": "place_strip_in_black_area"
+        },
+        {
+          "text": "press_start_button"
+        }
+      ]
+    },
+    {
       "name": "Soil - Available Nitrogen",
       "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",
       "instructions": [

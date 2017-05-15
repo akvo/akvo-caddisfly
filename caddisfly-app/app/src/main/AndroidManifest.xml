@@ -173,7 +173,10 @@
             android:name=".usb.UsbService"
             android:enabled="true" />
 
-        <activity android:name=".sensor.colorimetry.bluetooth.BluetoothInstructionsActivity"></activity>
+        <activity android:name=".sensor.colorimetry.bluetooth.BluetoothInstructionsActivity" />
+        <activity
+            android:name=".sensor.colorimetry.bluetooth.TestInstructionsActivity"
+            android:theme="@style/AppTheme.Orange" />
     </application>
 
 </manifest>

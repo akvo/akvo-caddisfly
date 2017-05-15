@@ -219,6 +219,12 @@ public final class TestConfigHelper {
                 resultsArray = item.getJSONArray("results");
             }
 
+            //Load instructions
+            JSONArray instructionsArray = null;
+            if (item.has("instructions")) {
+                instructionsArray = item.getJSONArray("instructions");
+            }
+
             //Load the dilution percentages
             String dilutions = "0";
             if (item.has("dilutions")) {
@@ -247,7 +253,7 @@ public final class TestConfigHelper {
             String uuid = item.getString(SensorConstants.UUID);
 
             testInfo = new TestInfo(name, type, rangesArray,
-                    defaultColorsArray, dilutionsArray, uuid, resultsArray);
+                    defaultColorsArray, dilutionsArray, uuid, resultsArray, instructionsArray);
 
             testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
 

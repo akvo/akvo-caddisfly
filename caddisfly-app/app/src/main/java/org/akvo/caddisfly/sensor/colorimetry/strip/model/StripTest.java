@@ -184,7 +184,7 @@ public class StripTest {
                     JSONObject strip;
 
                     JSONObject instructionObj = new JSONObject(AssetsManager.getInstance()
-                            .loadJSONFromAsset("strips-instruction.json"));
+                            .loadJSONFromAsset("test-instruction.json"));
                     JSONArray instructionsJson = instructionObj.getJSONArray(TESTS);
 
                     for (int i = 0; i < stripsJson.length(); i++) {

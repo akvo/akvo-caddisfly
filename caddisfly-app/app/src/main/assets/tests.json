@@ -682,6 +682,27 @@
           "id": 1,
           "unit": "ppm"
         }
+      ],
+      "instructions": [
+        {
+          "text": "Press <b>Shift</b> + <b>1</b>,<b>7</b>,<b>0</b> to select Fluoride test and press <b>Enter</b>"
+        },
+        {
+          "text": "Fill vial (24mm) with 10 ml of your sample, close cap tightly"
+        },
+        {
+          "text": "Place vial in the chamber. Align arrow marks and press <b>Zero</b>"
+        },
+        {
+          "text": "Take vial out and 2 ml of SPADNS reagent to the sample. Close the cap tightly and swirl several times."
+        },
+        {
+          "text": "Place the vial back in the chamber and press <b>Test</b>"
+        },
+        {
+          "text": "Once the result is visible press <b>F3</b>"
+        }
+
       ]
     },
     {

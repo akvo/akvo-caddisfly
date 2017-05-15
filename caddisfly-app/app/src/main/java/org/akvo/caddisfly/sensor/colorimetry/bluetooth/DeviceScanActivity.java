@@ -67,6 +67,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 import java.util.ArrayList;
@@ -112,7 +113,6 @@ public class DeviceScanActivity extends BaseActivity {
             super.onScanResult(callbackType, result);
             Timber.d("onScanResult");
             processResult(result);
-            connectToDevice(0);
         }
 
         @Override
@@ -227,6 +227,8 @@ public class DeviceScanActivity extends BaseActivity {
             return;
         }
         final Intent intent = new Intent(DeviceScanActivity.this, DeviceControlActivity.class);
+        intent.putExtra(Constant.UUID, getIntent().getStringExtra(Constant.UUID));
+
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
         if (mScanning) {

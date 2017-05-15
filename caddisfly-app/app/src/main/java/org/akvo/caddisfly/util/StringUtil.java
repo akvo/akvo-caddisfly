@@ -33,7 +33,7 @@ public final class StringUtil {
         String packageName = context.getPackageName();
         int resId = context.getResources().getIdentifier(key, "string", packageName);
         if (resId == 0) {
-            return Spannable.Factory.getInstance().newSpannable(key);
+            return Spannable.Factory.getInstance().newSpannable(fromHtml(key));
         } else {
             return Spannable.Factory.getInstance().newSpannable(context.getText(resId));
         }

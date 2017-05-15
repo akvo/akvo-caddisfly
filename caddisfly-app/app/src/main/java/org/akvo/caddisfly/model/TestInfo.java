@@ -66,15 +66,18 @@ public class TestInfo {
     private String deviceId;
     private String responseFormat;
     private boolean deprecated;
+    private JSONArray instructions;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
-                    String uuid, JSONArray resultsArray) {
+                    String uuid, JSONArray resultsArray, JSONArray instructionsArray) {
         this.name = name;
         this.testType = testType;
         this.uuid = uuid;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
+
+        instructions = instructionsArray;
 
         rangeValues = new double[swatchArray.length];
 
@@ -335,6 +338,10 @@ public class TestInfo {
 
     public void setIsDeprecated(boolean value) {
         this.deprecated = value;
+    }
+
+    public JSONArray getInstructions() {
+        return instructions;
     }
 
     public static class SubTest {
