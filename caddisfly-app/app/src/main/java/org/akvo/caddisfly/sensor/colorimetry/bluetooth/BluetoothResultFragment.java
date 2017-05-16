@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -29,14 +30,14 @@ public class BluetoothResultFragment extends Fragment {
 
 
     private final SparseArray<String> results = new SparseArray<>();
-    private Button mAcceptButton;
     private String mResult;
-    private TextView mDataField;
-    private String mData;
+    private TextView textResult;
+    private TextView textUnit;
+
+    private LinearLayout layoutWaiting;
+    private LinearLayout layoutResult;
 
     private OnFragmentInteractionListener mListener;
-    private TextView textPerformTest;
-    private Button instructionsButton;
 
 
     public BluetoothResultFragment() {
@@ -50,7 +51,7 @@ public class BluetoothResultFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_bluetooth_result, container, false);
 
-        instructionsButton = (Button) view.findViewById(R.id.button_instructions);
+        Button instructionsButton = (Button) view.findViewById(R.id.button_instructions);
         instructionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,11 +61,13 @@ public class BluetoothResultFragment extends Fragment {
             }
         });
 
-        mDataField = (TextView) view.findViewById(R.id.data_value);
+        textResult = (TextView) view.findViewById(R.id.textResult);
+        textUnit = (TextView) view.findViewById(R.id.textUnit);
 
-        textPerformTest = (TextView) view.findViewById(R.id.textPerformTest);
+        layoutWaiting = (LinearLayout) view.findViewById(R.id.layoutWaiting);
+        layoutResult = (LinearLayout) view.findViewById(R.id.layoutResult);
 
-        mAcceptButton = (Button) view.findViewById(R.id.button_accept_result);
+        Button mAcceptButton = (Button) view.findViewById(R.id.button_accept_result);
 
         mAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,25 +104,34 @@ public class BluetoothResultFragment extends Fragment {
 
     public void displayData(String data) {
 
-        String resultTitles = ",,,,,Test,,,,,Date,Time,,,,,,,Result,Unit";
+        String resultTitles = ",,,,Id,Test,,,,,Date,Time,,,,,,,Result,Unit";
         String[] titles = resultTitles.split(",");
+        String testId = "";
 
         String[] result = data.split(";");
         for (int i = 0; i < result.length; i++) {
             if (titles.length > i && !titles[i].isEmpty()) {
+                if (titles[i].equals("Id")) {
+                    testId = result[i].trim();
+                }
                 if (titles[i].equals("Result")) {
                     mResult = result[i];
+                    textResult.setText(result[i].trim());
                 }
-                mDataField.append(String.format("%s: %s %n", titles[i], result[i]));
+                if (titles[i].equals("Unit")) {
+                    textUnit.setText(result[i].trim());
+                }
+                //textResult.append(String.format("%s: %s %n", titles[i], result[i]));
             }
         }
 
-        mAcceptButton.setVisibility(View.VISIBLE);
-
-        textPerformTest.setVisibility(View.GONE);
-
-        instructionsButton.setVisibility(View.GONE);
-
+        if (testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
+            layoutResult.setVisibility(View.VISIBLE);
+            layoutWaiting.setVisibility(View.GONE);
+        } else {
+            layoutResult.setVisibility(View.GONE);
+            layoutWaiting.setVisibility(View.VISIBLE);
+        }
 
     }
 

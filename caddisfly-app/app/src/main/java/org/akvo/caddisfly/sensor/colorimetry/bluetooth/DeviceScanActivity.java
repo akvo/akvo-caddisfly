@@ -63,10 +63,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 
@@ -81,7 +83,7 @@ import timber.log.Timber;
 public class DeviceScanActivity extends BaseActivity {
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after scan period
-    private static final long SCAN_PERIOD = 15000;
+    private static final long SCAN_PERIOD = 30000;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     private LeDeviceListAdapter mLeDeviceListAdapter;
     // Device scan callback.
@@ -104,6 +106,7 @@ public class DeviceScanActivity extends BaseActivity {
     private BluetoothLeScanner mBluetoothLeScanner;
     private boolean mScanning;
     private Handler mHandler;
+    private ProgressBar progressBar;
     private ListView deviceList;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -135,6 +138,7 @@ public class DeviceScanActivity extends BaseActivity {
 
             deviceList.setVisibility(View.VISIBLE);
             layoutInfo.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
 
             mLeDeviceListAdapter.addDevice(result.getDevice());
             mLeDeviceListAdapter.notifyDataSetChanged();
@@ -148,7 +152,7 @@ public class DeviceScanActivity extends BaseActivity {
 
         setContentView(R.layout.activity_device_list);
 
-        setTitle("Scanning for device...");
+        setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName());
 
         if (getActionBar() != null) {
             getActionBar().setTitle(R.string.title_devices);
@@ -199,7 +203,6 @@ public class DeviceScanActivity extends BaseActivity {
         }
 
         deviceList = (ListView) findViewById(R.id.device_list);
-
         deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -207,6 +210,7 @@ public class DeviceScanActivity extends BaseActivity {
             }
         });
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         Button instructionsButton = (Button) findViewById(R.id.button_instructions);
         instructionsButton.setOnClickListener(new View.OnClickListener() {
@@ -332,6 +336,12 @@ public class DeviceScanActivity extends BaseActivity {
                         mBluetoothLeScanner.stopScan(mScanCallback);
                     } else {
                         mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    }
+
+                    if (mLeDeviceListAdapter.getCount() < 1) {
+                        deviceList.setVisibility(View.GONE);
+                        layoutInfo.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     invalidateOptionsMenu();

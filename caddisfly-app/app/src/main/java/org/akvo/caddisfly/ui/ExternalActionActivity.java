@@ -46,6 +46,8 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -279,6 +281,15 @@ public class ExternalActionActivity extends BaseActivity {
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
 
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
+            case BLUETOOTH:
+                final Intent bluetoothIntent = new Intent();
+                bluetoothIntent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
+                bluetoothIntent.setClass(getBaseContext(), DeviceScanActivity.class);
+                bluetoothIntent.putExtra(Constant.UUID, uuid);
+                bluetoothIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
+                startActivityForResult(bluetoothIntent, REQUEST_TEST);
+                break;
+
             case COLORIMETRIC_LIQUID:
 
                 if (!AppPreferences.useExternalCamera()
@@ -314,11 +325,9 @@ public class ExternalActionActivity extends BaseActivity {
                 final Intent intent = new Intent();
                 intent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
-                    //intent.setClass(context, SelectDilutionActivity.class);
-                    intent.setClass(getBaseContext(), DeviceScanActivity.class);
+                    intent.setClass(context, SelectDilutionActivity.class);
                 } else {
-                    //intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-                    intent.setClass(getBaseContext(), DeviceScanActivity.class);
+                    intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
                 }
 
                 intent.putExtra(Constant.UUID, uuid);

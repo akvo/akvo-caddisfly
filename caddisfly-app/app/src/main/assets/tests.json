@@ -663,8 +663,8 @@
     {
       "name": "Water - Fluoride",
       "description": "Measures Fluoride in water. 0 - 2 ppm",
-      "subtype": "liquid-chamber",
-      "device": "external",
+      "subtype": "bluetooth",
+      "tintometerId": "170",
       "tags": ["water quality"],
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
       "brand": "Akvo Caddisfly",
@@ -708,7 +708,8 @@
     {
       "name": "Water - Free Chlorine",
       "description": "Measures Free chlorine in water. 0 - 1 ppm",
-      "subtype": "liquid-chamber",
+      "subtype": "bluetooth",
+      "tintometerId": "100",
       "tags": ["water quality"],
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
       "brand": "Akvo Caddisfly",

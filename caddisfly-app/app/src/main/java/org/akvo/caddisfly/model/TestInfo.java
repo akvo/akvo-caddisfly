@@ -67,6 +67,7 @@ public class TestInfo {
     private String responseFormat;
     private boolean deprecated;
     private JSONArray instructions;
+    private String tintometerId;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -342,6 +343,14 @@ public class TestInfo {
 
     public JSONArray getInstructions() {
         return instructions;
+    }
+
+    public String getTintometerId() {
+        return tintometerId;
+    }
+
+    public void setTintometerId(String tintometerId) {
+        this.tintometerId = tintometerId;
     }
 
     public static class SubTest {

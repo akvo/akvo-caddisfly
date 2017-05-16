@@ -199,7 +199,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         mData += data;
 
         int beginIndex = mData.indexOf("DT01");
-        int endIndex = mData.indexOf(";;;;;");
+        int endIndex = mData.indexOf(";;;");
 
         if (endIndex > beginIndex) {
             mData = mData.substring(beginIndex, endIndex);

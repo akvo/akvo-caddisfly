@@ -40,5 +40,10 @@ public enum TestType {
      */
     SENSOR,
 
+    /**
+     * External bluetooth testing device
+     */
+    BLUETOOTH,
+
 }
 
