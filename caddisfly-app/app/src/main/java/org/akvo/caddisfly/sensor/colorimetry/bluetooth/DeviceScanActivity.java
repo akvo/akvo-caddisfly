@@ -108,6 +108,7 @@ public class DeviceScanActivity extends BaseActivity {
     private Handler mHandler;
     private ProgressBar progressBar;
     private ListView deviceList;
+    private LinearLayout layoutDevices;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private final ScanCallback mScanCallback = new ScanCallback() {
@@ -136,6 +137,8 @@ public class DeviceScanActivity extends BaseActivity {
         private void processResult(ScanResult result) {
             Timber.i("New LE Device: " + result.getDevice().getName() + " @ " + result.getRssi());
 
+
+            layoutDevices.setVisibility(View.VISIBLE);
             deviceList.setVisibility(View.VISIBLE);
             layoutInfo.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
@@ -201,6 +204,8 @@ public class DeviceScanActivity extends BaseActivity {
 
             builder.show();
         }
+
+        layoutDevices = (LinearLayout) findViewById(R.id.layoutDevices);
 
         deviceList = (ListView) findViewById(R.id.device_list);
         deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -289,6 +294,16 @@ public class DeviceScanActivity extends BaseActivity {
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
         deviceList.setAdapter(mLeDeviceListAdapter);
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mLeDeviceListAdapter.getCount() < 1) {
+                    layoutInfo.setVisibility(View.VISIBLE);
+                }
+            }
+        }, 1000);
+
         scanLeDevice(true);
     }
 

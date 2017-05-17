@@ -122,7 +122,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_result);
 
-        setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName());
+        setTitle(R.string.result);
 
         final Intent intent = getIntent();
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);

@@ -33,9 +33,11 @@ public class BluetoothResultFragment extends Fragment {
     private String mResult;
     private TextView textResult;
     private TextView textUnit;
+    private Button buttonOk;
 
     private LinearLayout layoutWaiting;
     private LinearLayout layoutResult;
+    private LinearLayout layoutError;
 
     private OnFragmentInteractionListener mListener;
 
@@ -63,9 +65,11 @@ public class BluetoothResultFragment extends Fragment {
 
         textResult = (TextView) view.findViewById(R.id.textResult);
         textUnit = (TextView) view.findViewById(R.id.textUnit);
+        textUnit = (Button) view.findViewById(R.id.buttonOk);
 
         layoutWaiting = (LinearLayout) view.findViewById(R.id.layoutWaiting);
         layoutResult = (LinearLayout) view.findViewById(R.id.layoutResult);
+        layoutError = (LinearLayout) view.findViewById(R.id.layoutError);
 
         Button mAcceptButton = (Button) view.findViewById(R.id.button_accept_result);
 
@@ -80,11 +84,8 @@ public class BluetoothResultFragment extends Fragment {
                 results.clear();
 
                 try {
-
                     double result = Double.parseDouble(mResult);
-
                     results.put(1, String.valueOf(result));
-
                 } catch (Exception e) {
                     Timber.e(e);
                     return;
@@ -121,7 +122,6 @@ public class BluetoothResultFragment extends Fragment {
                 if (titles[i].equals("Unit")) {
                     textUnit.setText(result[i].trim());
                 }
-                //textResult.append(String.format("%s: %s %n", titles[i], result[i]));
             }
         }
 
@@ -129,12 +129,11 @@ public class BluetoothResultFragment extends Fragment {
             layoutResult.setVisibility(View.VISIBLE);
             layoutWaiting.setVisibility(View.GONE);
         } else {
+            layoutError.setVisibility(View.VISIBLE);
             layoutResult.setVisibility(View.GONE);
-            layoutWaiting.setVisibility(View.VISIBLE);
+            layoutWaiting.setVisibility(View.GONE);
         }
-
     }
-
 
     @Override
     public void onAttach(Context context) {
