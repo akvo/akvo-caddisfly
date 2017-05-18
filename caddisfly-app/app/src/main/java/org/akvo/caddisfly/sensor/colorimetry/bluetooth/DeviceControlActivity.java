@@ -35,6 +35,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -95,11 +96,13 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                updateConnectionState(R.string.connected);
+                //updateConnectionState(R.string.connected);
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                updateConnectionState(R.string.disconnected);
+                //updateConnectionState(R.string.disconnected);
+                Toast.makeText(DeviceControlActivity.this, "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
                 invalidateOptionsMenu();
+                finish();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 setGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -107,6 +110,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             }
         }
     };
+    private Fragment mInstructionsFragment;
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -122,30 +126,47 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_result);
 
-        setTitle(R.string.result);
-
         final Intent intent = getIntent();
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
-        //mConnectionState = (TextView) findViewById(R.id.connection_state);
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        setTitle(testInfo.getName());
 
+        if (testInfo.getInstructions() == null || testInfo.getInstructions().length() < 1) {
+            numPages = 1;
+        }
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-        setTitle(testInfo.getName());
-
         mBluetoothResultFragment = new BluetoothResultFragment();
+        mInstructionsFragment = new InstructionFragment();
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+//                if (position == 0) {
+//                    setTitle("Result");
+//                } else {
+//                    setTitle("Test Instructions");
+//                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
-
-
     }
 
     @Override
@@ -180,14 +201,14 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateConnectionState(final int resourceId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //mConnectionState.setText(resourceId);
-            }
-        });
-    }
+//    private void updateConnectionState() {
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                //mConnectionState.setText(resourceId);
+//            }
+//        });
+//    }
 
     private void displayData(String data) {
 
@@ -204,10 +225,11 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         if (endIndex > beginIndex) {
             mData = mData.substring(beginIndex, endIndex);
 
-            mBluetoothResultFragment.displayData(mData);
-
-            numPages = 1;
-            mPagerAdapter.notifyDataSetChanged();
+            if (mBluetoothResultFragment.displayData(mData)) {
+                numPages = 1;
+                mPagerAdapter.notifyDataSetChanged();
+                setTitle("Result");
+            }
 
             mPager.setCurrentItem(0);
         }
@@ -282,7 +304,6 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         mPager.setCurrentItem(1);
     }
 
-
     /**
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
@@ -297,7 +318,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             if (position == 0) {
                 return mBluetoothResultFragment;
             } else {
-                return new InstructionFragment();
+                return mInstructionsFragment;
             }
         }
 

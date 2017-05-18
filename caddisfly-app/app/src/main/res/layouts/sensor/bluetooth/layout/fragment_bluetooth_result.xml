@@ -17,41 +17,55 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".sensor.colorimetry.bluetooth.InstructionFragment">
 
+
     <LinearLayout
         android:id="@+id/layoutWaiting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/layoutTitleBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:lineSpacingExtra="6dp"
-            android:text="Waiting for result"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
+            android:background="?colorPrimary"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="20dp">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Awaiting result"
+                android:textColor="#fff"
+                android:textSize="30sp" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textPerformTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="15dp"
             android:lineSpacingExtra="6dp"
-            android:text="Perform the Fluoride test on the MD610 photometer and press F3 when ready"
             android:textSize="18sp"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:text="@string/perform_test" />
 
         <ProgressBar
             android:id="@+id/progressBar2"
@@ -72,7 +86,7 @@
             android:drawableEnd="@drawable/ic_play_arrow_black_24dp"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"
-            android:text="@string/instructions"
+            android:text="Test Instructions"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -85,6 +99,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
+            android:textColor="#555"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            tools:text="Water - Fluoride" />
 
         <TextView
             android:id="@+id/textResult"
@@ -117,55 +143,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layoutError"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:lineSpacingExtra="6dp"
-            android:text="Incorrect test type"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:lineSpacingExtra="6dp"
-            android:text="Data received does not match the expected test type."
-            android:textSize="18sp"
-            android:visibility="visible" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:lineSpacingExtra="6dp"
-            android:text="Please select the Fluoride test on the MD610 device and try again."
-            android:textSize="18sp"
-            android:visibility="visible" />
-
-        <Button
-            android:id="@+id/buttonOk"
-            style="@style/Button"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="33dp"
-            android:text="@string/ok"
-            android:theme="?primaryButtonStyle"
-            android:visibility="visible" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

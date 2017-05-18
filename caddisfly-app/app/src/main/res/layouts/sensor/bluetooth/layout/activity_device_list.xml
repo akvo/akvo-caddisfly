@@ -27,50 +27,71 @@
         layout="@layout/toolbar" />
 
     <LinearLayout
+        android:id="@+id/layoutTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorPrimary"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="20dp">
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="sans-serif-light"
+            android:text="Nearby devices"
+            android:textColor="#fff"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/textSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Connect to your device"
+            android:textColor="#d6f6fdf6"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <RelativeLayout
         android:id="@+id/layoutDevices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:orientation="vertical"
         android:visibility="gone">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:lineSpacingExtra="6dp"
-            android:text="Select the device to connect"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <ListView
             android:id="@+id/device_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible" />
+            android:layout_height="wrap_content" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/button_instructions"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/device_list"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:text="Device not displayed?"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/layout_bluetooth_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/textSearching"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:lineSpacingExtra="6dp"
-            android:text="Connecting to MD610 photometer"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        android:visibility="visible">
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -80,30 +101,6 @@
             android:layout_marginBottom="30dp"
             android:layout_marginTop="40dp"
             android:indeterminate="true" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:lineSpacingExtra="6dp"
-            android:text="Please switch on MD610 and turn its bluetooth on"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/button_instructions"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:drawableEnd="@drawable/ic_play_arrow_black_24dp"
-            android:text="@string/instructions"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
     </LinearLayout>
 </LinearLayout>

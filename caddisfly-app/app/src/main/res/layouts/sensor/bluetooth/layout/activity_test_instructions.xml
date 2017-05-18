@@ -22,8 +22,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothInstructionsActivity">
+    android:orientation="vertical">
 
     <include
         android:id="@+id/toolbar"

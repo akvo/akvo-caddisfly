@@ -163,8 +163,12 @@
             android:screenOrientation="nosensor" />
         <!-- end StripTest -->
 
-        <activity android:name=".sensor.colorimetry.bluetooth.DeviceScanActivity" />
-        <activity android:name=".sensor.colorimetry.bluetooth.DeviceControlActivity" />
+        <activity
+            android:name=".sensor.colorimetry.bluetooth.DeviceScanActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.colorimetry.bluetooth.DeviceControlActivity"
+            android:screenOrientation="nosensor" />
 
         <service
             android:name=".sensor.colorimetry.bluetooth.BluetoothLeService"
@@ -173,10 +177,6 @@
             android:name=".usb.UsbService"
             android:enabled="true" />
 
-        <activity android:name=".sensor.colorimetry.bluetooth.BluetoothInstructionsActivity" />
-        <activity
-            android:name=".sensor.colorimetry.bluetooth.TestInstructionsActivity"
-            android:theme="@style/AppTheme.Orange" />
     </application>
 
 </manifest>

@@ -161,7 +161,8 @@ public class InstructionFragment extends Fragment {
 
 
     private static class ViewHolder {
-        private TextView deviceName;
+        private TextView textInstruction;
+        private TextView textNumber;
     }
 
     // Adapter for holding devices found through scanning.
@@ -200,21 +201,23 @@ public class InstructionFragment extends Fragment {
 
         @SuppressLint("InflateParams")
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(int position, View view, ViewGroup viewGroup) {
             ViewHolder viewHolder;
             // General ListView optimization code.
             if (view == null) {
                 view = mInflater.inflate(R.layout.item_instruction, null);
                 viewHolder = new ViewHolder();
-                viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name);
+                viewHolder.textInstruction = (TextView) view.findViewById(R.id.textInstruction);
+                viewHolder.textNumber = (TextView) view.findViewById(R.id.textNumber);
                 view.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) view.getTag();
             }
 
-            Spanned spanned = StringUtil.getStringResourceByName(getActivity(), mInstructions.get(i));
+            viewHolder.textNumber.setText(String.format("%s.", position + 1));
 
-            viewHolder.deviceName.setText(spanned);
+            Spanned spanned = StringUtil.getStringResourceByName(getActivity(), mInstructions.get(position));
+            viewHolder.textInstruction.setText(spanned);
 
             return view;
         }
