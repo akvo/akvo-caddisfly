@@ -59,6 +59,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
+import static android.content.pm.PackageManager.FEATURE_BLUETOOTH_LE;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class ExternalActionActivity extends BaseActivity {
@@ -282,12 +283,16 @@ public class ExternalActionActivity extends BaseActivity {
 
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
             case BLUETOOTH:
-                final Intent bluetoothIntent = new Intent();
-                bluetoothIntent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
-                bluetoothIntent.setClass(getBaseContext(), DeviceScanActivity.class);
-                bluetoothIntent.putExtra(Constant.UUID, uuid);
-                bluetoothIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
-                startActivityForResult(bluetoothIntent, REQUEST_TEST);
+                if (this.getPackageManager().hasSystemFeature(FEATURE_BLUETOOTH_LE)) {
+                    final Intent bluetoothIntent = new Intent();
+                    bluetoothIntent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
+                    bluetoothIntent.setClass(getBaseContext(), DeviceScanActivity.class);
+                    bluetoothIntent.putExtra(Constant.UUID, uuid);
+                    bluetoothIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
+                    startActivityForResult(bluetoothIntent, REQUEST_TEST);
+                } else {
+                    alertFeatureNotSupported();
+                }
                 break;
 
             case COLORIMETRIC_LIQUID:

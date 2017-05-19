@@ -34,7 +34,7 @@ import timber.log.Timber;
  */
 public class BluetoothResultFragment extends Fragment {
 
-    private static final int ANIMATION_DURATION = 500;
+    private static final int ANIMATION_DURATION = 400;
     private final SparseArray<String> results = new SparseArray<>();
     private AlertDialog alertDialog;
     private String mResult;

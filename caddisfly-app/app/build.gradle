@@ -29,7 +29,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 22 //target older sdk for bluetooth to work without location turned on
         versionCode 175
-        versionName "1.0.0 Beta 8.95"
+        versionName "MD610 Bluetooth Test - 1"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->

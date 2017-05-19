@@ -44,7 +44,9 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -52,6 +54,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
@@ -413,7 +416,16 @@ public class DeviceScanActivity extends BaseActivity {
 
             mScanning = true;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mBluetoothLeScanner.startScan(mScanCallback);
+
+                ScanFilter filter = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(GattAttributes.LOVIBOND_SERVICE)).build();
+
+                List<ScanFilter> scanFilters = new ArrayList<>();
+                scanFilters.add(filter);
+
+                ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_BALANCED).build();
+
+                mBluetoothLeScanner.startScan(scanFilters, settings, mScanCallback);
+
                 progressBar.setVisibility(View.VISIBLE);
             } else {
                 mBluetoothAdapter.startLeScan(mLeScanCallback);
@@ -520,7 +532,7 @@ public class DeviceScanActivity extends BaseActivity {
             BluetoothDevice device = mLeDevices.get(position);
             final String deviceName = device.getName();
             if (deviceName != null && deviceName.length() > 0) {
-                viewHolder.deviceName.setText(deviceName);
+                viewHolder.deviceName.setText("MD610 Photometer");
             } else {
                 viewHolder.deviceName.setText(R.string.unknown_device);
             }

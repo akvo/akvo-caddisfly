@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
@@ -28,6 +29,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -223,15 +225,28 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         int endIndex = mData.indexOf(";;;");
 
         if (endIndex > beginIndex) {
+
             mData = mData.substring(beginIndex, endIndex);
 
-            if (mBluetoothResultFragment.displayData(mData)) {
-                numPages = 1;
-                mPagerAdapter.notifyDataSetChanged();
-                setTitle("Result");
-            }
+            final ProgressDialog dlg = new ProgressDialog(this);
+            dlg.setMessage("Receiving data");
+            dlg.setCancelable(false);
+            dlg.show();
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
 
-            mPager.setCurrentItem(0);
+                    if (mBluetoothResultFragment.displayData(mData)) {
+                        numPages = 1;
+                        mPagerAdapter.notifyDataSetChanged();
+                        setTitle("Result");
+                    }
+
+                    mPager.setCurrentItem(0);
+                    dlg.dismiss();
+                }
+            }, 2000);
+
+
         }
 
 //        String resultTitles = ",,,,,Test,,,,,Date,Time,,,,,,,Result,Unit";
