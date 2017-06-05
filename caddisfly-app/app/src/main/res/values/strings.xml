@@ -200,6 +200,18 @@
     <string name="disconnected">Disconnected</string>
     <string name="title_devices">BLE Device Scan</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
-    <string name="unknown_device">Unknown device</string>
+    <string name="unknown_device">Unknown</string>
+
+    <string name="turnOnMd610">Switch on MD610 bluetooth</string>
+    <string name="press_on_button"><![CDATA[Press <b>On/Off</b> to turn device on.]]></string>
+    <string name="press_mode_button"><![CDATA[Press <b>Mode</b> to enter menu.]]></string>
+    <string name="select_bluetooth"><![CDATA[Press <b>Down</b> to scroll to Bluetooth and press <b>Enter \u21B5</b>.]]></string>
+    <string name="turn_bluetooth_on"><![CDATA[Press <b>Shift</b> + <b>1</b> to turn bluetooth on.]]></string>
+    <string name="escape_to_menu"><![CDATA[Press <b>Enter \u21B5</b> and <b>Esc</b> to return to main menu.]]></string>
+    <string name="perform_test"><![CDATA[Perform <b>%1$s (%2$s)</b> test on the MD610 photometer and press <b>F3</b> when ready.]]></string>
+    <string name="select_test_instruction"><![CDATA[Press <b>Shift</b> + <b>%1$s</b> and <b>Enter</b> on the MD610 photometer to select %2$s test.]]></string>
+    <string name="select_correct_test"><![CDATA[Select the correct test and try again.]]></string>
+    <string name="data_does_not_match">Received data does not match the expected test type.</string>
+    <string name="incorrect_test_selected">Incorrect test selected</string>
 
 </resources>

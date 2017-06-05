@@ -46,6 +46,8 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -57,6 +59,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
+import static android.content.pm.PackageManager.FEATURE_BLUETOOTH_LE;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class ExternalActionActivity extends BaseActivity {
@@ -279,6 +282,19 @@ public class ExternalActionActivity extends BaseActivity {
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
 
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
+            case BLUETOOTH:
+                if (this.getPackageManager().hasSystemFeature(FEATURE_BLUETOOTH_LE)) {
+                    final Intent bluetoothIntent = new Intent();
+                    bluetoothIntent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
+                    bluetoothIntent.setClass(getBaseContext(), DeviceScanActivity.class);
+                    bluetoothIntent.putExtra(Constant.UUID, uuid);
+                    bluetoothIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
+                    startActivityForResult(bluetoothIntent, REQUEST_TEST);
+                } else {
+                    alertFeatureNotSupported();
+                }
+                break;
+
             case COLORIMETRIC_LIQUID:
 
                 if (!AppPreferences.useExternalCamera()
@@ -314,11 +330,9 @@ public class ExternalActionActivity extends BaseActivity {
                 final Intent intent = new Intent();
                 intent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
                 if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
-                    //intent.setClass(context, SelectDilutionActivity.class);
-                    intent.setClass(getBaseContext(), DeviceScanActivity.class);
+                    intent.setClass(context, SelectDilutionActivity.class);
                 } else {
-                    //intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-                    intent.setClass(getBaseContext(), DeviceScanActivity.class);
+                    intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
                 }
 
                 intent.putExtra(Constant.UUID, uuid);

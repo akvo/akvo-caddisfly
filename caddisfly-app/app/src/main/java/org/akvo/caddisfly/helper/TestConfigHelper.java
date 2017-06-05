@@ -193,6 +193,9 @@ public final class TestConfigHelper {
             TestType type;
             if (item.has("subtype")) {
                 switch (item.getString("subtype")) {
+                    case "bluetooth":
+                        type = TestType.BLUETOOTH;
+                        break;
                     case "liquid-chamber":
                         type = TestType.COLORIMETRIC_LIQUID;
                         break;
@@ -217,6 +220,12 @@ public final class TestConfigHelper {
             JSONArray resultsArray = null;
             if (item.has("results")) {
                 resultsArray = item.getJSONArray("results");
+            }
+
+            //Load instructions
+            JSONArray instructionsArray = null;
+            if (item.has("instructions")) {
+                instructionsArray = item.getJSONArray("instructions");
             }
 
             //Load the dilution percentages
@@ -247,7 +256,7 @@ public final class TestConfigHelper {
             String uuid = item.getString(SensorConstants.UUID);
 
             testInfo = new TestInfo(name, type, rangesArray,
-                    defaultColorsArray, dilutionsArray, uuid, resultsArray);
+                    defaultColorsArray, dilutionsArray, uuid, resultsArray, instructionsArray);
 
             testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
 
@@ -263,6 +272,9 @@ public final class TestConfigHelper {
             testInfo.setRequiresCalibration(item.has("calibrate") && item.getBoolean("calibrate"));
 
             testInfo.setIsDeprecated(item.has("deprecated") && item.getBoolean("deprecated"));
+
+            testInfo.setTintometerId(item.has("tintometerId") ? item.getString("tintometerId") : "");
+
 
         } catch (JSONException e) {
             Timber.e(e);
