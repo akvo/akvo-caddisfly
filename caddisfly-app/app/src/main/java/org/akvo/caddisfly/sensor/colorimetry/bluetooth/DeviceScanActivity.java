@@ -236,8 +236,6 @@ public class DeviceScanActivity extends BaseActivity {
 
         textSubtitle = (TextView) findViewById(R.id.textSubtitle);
         textSubtitle.setText("Searching for bluetooth devices");
-        //textSubtitle.setVisibility(View.GONE);
-
     }
 
     private void showInstructionDialog(Activity activity) {
@@ -406,8 +404,6 @@ public class DeviceScanActivity extends BaseActivity {
                             showInstructionDialog(activity);
                         }
                     }
-                    //invalidateOptionsMenu();
-
                 }
             };
 
@@ -441,12 +437,10 @@ public class DeviceScanActivity extends BaseActivity {
             }
 
         }
-        //invalidateOptionsMenu();
     }
 
     private static class ViewHolder {
         private TextView deviceName;
-        //private TextView deviceAddress;
     }
 
     // Adapter for holding devices found through scanning.
@@ -460,7 +454,7 @@ public class DeviceScanActivity extends BaseActivity {
             mInflater = DeviceScanActivity.this.getLayoutInflater();
         }
 
-        void addDevice(BluetoothDevice device) {
+        private void addDevice(BluetoothDevice device) {
             if (!mLeDevices.contains(device)
                     && device.getType() != BluetoothDevice.DEVICE_TYPE_CLASSIC
                     && device.getType() != BluetoothDevice.DEVICE_TYPE_UNKNOWN
@@ -478,7 +472,7 @@ public class DeviceScanActivity extends BaseActivity {
             }
         }
 
-        BluetoothDevice getDevice(int position) {
+        private BluetoothDevice getDevice(int position) {
             return mLeDevices.get(position);
         }
 
@@ -503,13 +497,13 @@ public class DeviceScanActivity extends BaseActivity {
 
         @SuppressLint("InflateParams")
         @Override
-        public View getView(final int position, View view, ViewGroup viewGroup) {
+        public View getView(final int position, View convertView, ViewGroup viewGroup) {
             ViewHolder viewHolder;
-            // General ListView optimization code.
+            View view = convertView;
+
             if (view == null) {
                 view = mInflater.inflate(R.layout.item_device, null);
                 viewHolder = new ViewHolder();
-                //viewHolder.deviceAddress = (TextView) view.findViewById(R.id.device_address);
                 viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name);
                 view.setTag(viewHolder);
 
@@ -526,8 +520,6 @@ public class DeviceScanActivity extends BaseActivity {
             } else {
                 viewHolder = (ViewHolder) view.getTag();
             }
-
-            //Timber.e("Doing something");
 
             BluetoothDevice device = mLeDevices.get(position);
             final String deviceName = device.getName();

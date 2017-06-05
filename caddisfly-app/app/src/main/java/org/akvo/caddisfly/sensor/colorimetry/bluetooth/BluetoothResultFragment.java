@@ -45,10 +45,6 @@ public class BluetoothResultFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private TextView textName;
 
-    public BluetoothResultFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -211,7 +207,7 @@ public class BluetoothResultFragment extends Fragment {
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }

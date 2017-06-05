@@ -40,9 +40,9 @@ package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
  */
 final class GattAttributes {
 
-    static final String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
-    static final String LOVIBOND_DATA_CHARACTERISTIC = "e7add780-b042-4876-aae1-112855353cc1";
-    static final String LOVIBOND_SERVICE = "0bd51666-e7cb-469b-8e4d-2742f1ba77cc";
+    public static final String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
+    public static final String LOVIBOND_DATA_CHARACTERISTIC = "e7add780-b042-4876-aae1-112855353cc1";
+    public static final String LOVIBOND_SERVICE = "0bd51666-e7cb-469b-8e4d-2742f1ba77cc";
 
     private GattAttributes() {
     }

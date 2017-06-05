@@ -57,9 +57,8 @@ import timber.log.Timber;
 public class DeviceControlActivity extends BaseActivity implements BluetoothResultFragment.OnFragmentInteractionListener {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
-    /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
+    private static final long RESULT_DISPLAY_DELAY = 2000;
+
     private int numPages = 2;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
@@ -84,10 +83,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     };
     private BluetoothResultFragment mBluetoothResultFragment;
     private String mData;
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
+
     private ViewPager mPager;
     /**
      * The pager adapter, which provides the pages to the view pager widget.
@@ -142,31 +138,10 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         mBluetoothResultFragment = new BluetoothResultFragment();
-        mInstructionsFragment = new InstructionFragment();
+        mInstructionsFragment = InstructionFragment.newInstance();
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-//                if (position == 0) {
-//                    setTitle("Result");
-//                } else {
-//                    setTitle("Test Instructions");
-//                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
     }
@@ -214,7 +189,6 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
 
     private void displayData(String data) {
 
-
         if (data.contains("DT01")) {
             mData = "";
         }
@@ -244,40 +218,8 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
                     mPager.setCurrentItem(0);
                     dlg.dismiss();
                 }
-            }, 2000);
-
-
+            }, RESULT_DISPLAY_DELAY);
         }
-
-//        String resultTitles = ",,,,,Test,,,,,Date,Time,,,,,,,Result,Unit";
-//        String[] titles = resultTitles.split(",");
-//
-//        if (data.contains("DT01")) {
-//            mData = "";
-//            mDataField.setText("");
-////            mAcceptButton.setVisibility(View.GONE);
-//        }
-//
-//        mData += data;
-//
-//        int beginIndex = mData.indexOf("DT01");
-//        int endIndex = mData.indexOf(";;;;;");
-//
-//        if (endIndex > beginIndex) {
-//            mData = mData.substring(beginIndex, endIndex);
-//
-//            String[] result = mData.split(";");
-//            for (int i = 0; i < result.length; i++) {
-//                if (titles.length > i && !titles[i].isEmpty()) {
-//                    if (titles[i].equals("Result")) {
-//                        //mResult = result[i];
-//                    }
-//                    mDataField.append(String.format("%s: %s %n", titles[i], result[i]));
-//                }
-//            }
-
-//            mAcceptButton.setVisibility(View.VISIBLE);
-//        }
     }
 
     private void setGattServices(List<BluetoothGattService> gattServices) {
@@ -319,10 +261,6 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         mPager.setCurrentItem(1);
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);

@@ -57,7 +57,7 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     private int previousQualityCount = 0;
     private long lastQualityIncrementTime;
 
-    TestStatus getStatus() {
+    protected TestStatus getStatus() {
         return status;
     }
 
