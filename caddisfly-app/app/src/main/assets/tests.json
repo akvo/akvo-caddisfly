@@ -663,8 +663,7 @@
     {
       "name": "Water - Fluoride",
       "description": "Measures Fluoride in water. 0 - 2 ppm",
-      "subtype": "bluetooth",
-      "tintometerId": "170",
+      "subtype": "liquid-chamber",
       "tags": ["water quality"],
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
       "brand": "Akvo Caddisfly",
@@ -682,30 +681,12 @@
           "id": 1,
           "unit": "ppm"
         }
-      ],
-      "instructions": [
-        {
-          "text": "Fill vial (24mm) with 10 ml of your sample, close cap tightly"
-        },
-        {
-          "text": "Place vial in the chamber. Align arrow marks and press <b>Zero</b>"
-        },
-        {
-          "text": "Take vial out and add 2 ml of SPADNS reagent to the sample. Close the cap tightly and swirl several times."
-        },
-        {
-          "text": "Place the vial back in the chamber and press <b>Test</b>"
-        },
-        {
-          "text": "Once the result is displayed, press <b>F3</b>"
-        }
       ]
     },
     {
       "name": "Water - Free Chlorine",
       "description": "Measures Free chlorine in water. 0 - 1 ppm",
-      "subtype": "bluetooth",
-      "tintometerId": "100",
+      "subtype": "liquid-chamber",
       "tags": ["water quality"],
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
       "brand": "Akvo Caddisfly",
@@ -719,29 +700,6 @@
           "name": "Free Chlorine",
           "id": 1,
           "unit": "ppm"
-        }
-      ],
-      "instructions": [
-        {
-          "text": "Fill vial (24mm) with 10 ml of your sample, close cap tightly"
-        },
-        {
-          "text": "Place vial in the chamber. Align arrow marks and press <b>Zero</b>"
-        },
-        {
-          "text": "Take vial out and empty it, <i>leaving a few drops remaining in the vial<i>."
-        },
-        {
-          "text": "Add one DPD No.1 tablet and crush the tablet using a clean stirring rod."
-        },
-        {
-          "text": "Add water sample to the 10 ml mark. Close the cap tightly and swirl several times until tablet is dissolved."
-        },
-        {
-          "text": "Place the vial back in the chamber and press <b>Test</b>"
-        },
-        {
-          "text": "Once the result is displayed, press <b>F3</b>"
         }
       ]
     },
