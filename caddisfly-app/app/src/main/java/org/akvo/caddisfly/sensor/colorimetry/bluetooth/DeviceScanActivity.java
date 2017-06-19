@@ -240,10 +240,14 @@ public class DeviceScanActivity extends BaseActivity {
 
     private void showInstructionDialog(Activity activity) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle(R.string.turnOnMd610);
+        alertDialog.setTitle("Device not found");
 
         alertDialog.setMessage(TextUtils.concat(
-                StringUtil.fromHtml(getString(R.string.press_on_button)
+                StringUtil.fromHtml("<b><big>To turn the MD610 on:</big></b>"
+                        + "<br /><br />"
+                        + getString(R.string.press_on_button)
+                        + "<br /><br />"
+                        + "<big><b>To turn Bluetooth on:</b></big>"
                         + "<br /><br />"
                         + getString(R.string.press_mode_button)
                         + "<br /><br />"
@@ -252,6 +256,7 @@ public class DeviceScanActivity extends BaseActivity {
                         + getString(R.string.turn_bluetooth_on)
                         + "<br /><br />"
                         + getString(R.string.escape_to_menu)
+                        + ""
                 )
 
         ));

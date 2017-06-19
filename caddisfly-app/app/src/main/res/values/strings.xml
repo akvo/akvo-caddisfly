@@ -203,7 +203,7 @@
     <string name="unknown_device">Unknown</string>
 
     <string name="turnOnMd610">Switch on MD610 bluetooth</string>
-    <string name="press_on_button"><![CDATA[Press <b>On/Off</b> to turn device on.]]></string>
+    <string name="press_on_button"><![CDATA[Press <b>On/Off</b>]]></string>
     <string name="press_mode_button"><![CDATA[Press <b>Mode</b> to enter menu.]]></string>
     <string name="select_bluetooth"><![CDATA[Press <b>Down</b> to scroll to Bluetooth and press <b>Enter \u21B5</b>.]]></string>
     <string name="turn_bluetooth_on"><![CDATA[Press <b>Shift</b> + <b>1</b> to turn bluetooth on.]]></string>

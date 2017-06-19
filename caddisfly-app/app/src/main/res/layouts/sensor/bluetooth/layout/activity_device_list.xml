@@ -56,6 +56,24 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_bluetooth_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="40dp"
+            android:indeterminate="true" />
+
+    </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/layoutDevices"
         android:layout_width="match_parent"
@@ -75,32 +93,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/device_list"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
+            android:drawableEnd="@drawable/ic_play_arrow_black_24dp"
+            android:layout_alignParentRight="true"
             android:layout_marginTop="40dp"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
             android:text="Device not displayed?"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="16sp"
             android:textStyle="bold" />
 
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_bluetooth_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="40dp"
-            android:indeterminate="true" />
-
-    </LinearLayout>
 </LinearLayout>

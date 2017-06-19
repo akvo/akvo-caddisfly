@@ -663,8 +663,7 @@
     {
       "name": "Water - Fluoride",
       "description": "Measures Fluoride in water. 0 - 2 ppm",
-      "subtype": "bluetooth",
-      "tintometerId": "170",
+      "subtype": "liquid-chamber",
       "tags": ["water quality"],
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
       "brand": "Akvo Caddisfly",
@@ -676,6 +675,43 @@
       "dilutions": "0,50,20",
       "monthsValid": 12,
       "hasImage": true,
+      "results": [
+        {
+          "name": "Fluoride",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": "Water - Free Chlorine",
+      "description": "Measures Free chlorine in water. 0 - 1 ppm",
+      "subtype": "liquid-chamber",
+      "tags": ["water quality"],
+      "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
+      "brand": "Akvo Caddisfly",
+      "shortCode": "chlor",
+      "calibrate": true,
+      "ranges": "0,0.25,0.5,0.75,1.0",
+      "monthsValid": 24,
+      "hasImage": true,
+      "results": [
+        {
+          "name": "Free Chlorine",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": "Water - Fluoride L (MD 610)",
+      "description": "Measures Fluoride in water. 0 - 2 ppm",
+      "subtype": "bluetooth",
+      "tintometerId": "170",
+      "tags": ["water quality"],
+      "uuid": "47981bb1-ca74-4c3a-bd0e-ee0823e5aa9e",
+      "brand": "Lovibond",
+      "shortCode": "fluor",
       "results": [
         {
           "name": "Fluoride",
@@ -702,18 +738,14 @@
       ]
     },
     {
-      "name": "Water - Free Chlorine",
+      "name": "Water - Chlorine T (MD 610)",
       "description": "Measures Free chlorine in water. 0 - 1 ppm",
       "subtype": "bluetooth",
       "tintometerId": "100",
       "tags": ["water quality"],
-      "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
-      "brand": "Akvo Caddisfly",
+      "uuid": "a7f6dcf3-b897-4616-b6f6-97c441d0c583",
+      "brand": "Lovibond",
       "shortCode": "chlor",
-      "calibrate": true,
-      "ranges": "0,0.25,0.5,0.75,1.0",
-      "monthsValid": 24,
-      "hasImage": true,
       "results": [
         {
           "name": "Free Chlorine",
