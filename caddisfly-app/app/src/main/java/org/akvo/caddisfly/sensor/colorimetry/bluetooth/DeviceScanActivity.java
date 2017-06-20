@@ -39,6 +39,8 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -57,7 +59,6 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,7 +77,6 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,7 @@ import timber.log.Timber;
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
  */
-public class DeviceScanActivity extends BaseActivity {
+public class DeviceScanActivity extends BaseActivity implements DeviceConnectDialog.InterfaceCommunicator {
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after scan period
     private static final long SCAN_PERIOD = 13000;
@@ -219,13 +219,11 @@ public class DeviceScanActivity extends BaseActivity {
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        final Activity activity = this;
-
         Button instructionsButton = (Button) findViewById(R.id.button_instructions);
         instructionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showInstructionDialog(activity);
+                showInstructionDialog();
             }
         });
 
@@ -238,40 +236,21 @@ public class DeviceScanActivity extends BaseActivity {
         textSubtitle.setText("Searching for bluetooth devices");
     }
 
-    private void showInstructionDialog(Activity activity) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle("Device not found");
+    private void showInstructionDialog() {
 
-        alertDialog.setMessage(TextUtils.concat(
-                StringUtil.fromHtml("<b><big>To turn the MD610 on:</big></b>"
-                        + "<br /><br />"
-                        + getString(R.string.press_on_button)
-                        + "<br /><br />"
-                        + "<big><b>To turn Bluetooth on:</b></big>"
-                        + "<br /><br />"
-                        + getString(R.string.press_mode_button)
-                        + "<br /><br />"
-                        + getString(R.string.select_bluetooth)
-                        + "<br /><br />"
-                        + getString(R.string.turn_bluetooth_on)
-                        + "<br /><br />"
-                        + getString(R.string.escape_to_menu)
-                        + ""
-                )
+        DeviceConnectDialog deviceConnectDialog = DeviceConnectDialog.newInstance();
 
-        ));
+        final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                scanLeDevice(true);
-            }
-        });
+        Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+        if (fragment != null) {
+            ft.remove(fragment);
+        }
 
-        alertDialog.setCancelable(false);
-        AlertDialog dialog = alertDialog.create();
-        dialog.show();
+        deviceConnectDialog.setCancelable(true);
+        deviceConnectDialog.show(ft, "connectionInfoDialog");
     }
+
 
     private void connectToDevice(int position) {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
@@ -366,6 +345,7 @@ public class DeviceScanActivity extends BaseActivity {
             finish();
             return;
         }
+
         super.onActivityResult(requestCode, resultCode, data);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -406,7 +386,7 @@ public class DeviceScanActivity extends BaseActivity {
                             deviceList.setVisibility(View.GONE);
                             layoutInfo.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.GONE);
-                            showInstructionDialog(activity);
+                            showInstructionDialog();
                         }
                     }
                 }
@@ -442,6 +422,11 @@ public class DeviceScanActivity extends BaseActivity {
             }
 
         }
+    }
+
+    @Override
+    public void sendRequestCode(int code) {
+        scanLeDevice(true);
     }
 
     private static class ViewHolder {
