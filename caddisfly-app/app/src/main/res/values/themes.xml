@@ -36,7 +36,7 @@
         <item name="cardBackgroundColor">@color/window_background</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="primaryButtonStyle">@style/AppTheme.Button.Cyan</item>
-        <item name="primaryButtonColor">@color/cyan</item>
+        <item name="primaryButtonColor">@color/button_green</item>
         <item name="secondaryButtonStyle">@style/AppTheme.Button.Cyan</item>
         <item name="longButtonStyle">@style/AppTheme.Button.Blue</item>
         <item name="longButtonText">@color/gray_text</item>

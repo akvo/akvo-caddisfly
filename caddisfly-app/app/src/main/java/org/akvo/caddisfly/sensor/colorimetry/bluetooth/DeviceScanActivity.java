@@ -41,6 +41,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -89,8 +90,10 @@ import timber.log.Timber;
 public class DeviceScanActivity extends BaseActivity implements DeviceConnectDialog.InterfaceCommunicator {
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after scan period
-    private static final long SCAN_PERIOD = 13000;
+    private static final long SCAN_PERIOD = 6000;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    private static final int REQUEST_CODE = 100;
+    private static final long CONNECTING_DELAY = 2000;
     // Device scan callback.
     private BluetoothAdapter.LeScanCallback mLeScanCallback;
     private LeDeviceListAdapter mLeDeviceListAdapter;
@@ -106,6 +109,8 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     private TextView textTitle;
     private TextView textSubtitle;
     private ScanCallback mScanCallback;
+    private DeviceConnectDialog deviceConnectDialog;
+    private AlertDialog alertDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -219,14 +224,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        Button instructionsButton = (Button) findViewById(R.id.button_instructions);
-        instructionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showInstructionDialog();
-            }
-        });
-
         layoutInfo = (LinearLayout) findViewById(R.id.layout_bluetooth_info);
 
         textTitle = (TextView) findViewById(R.id.textTitle);
@@ -238,19 +235,20 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
     private void showInstructionDialog() {
 
-        DeviceConnectDialog deviceConnectDialog = DeviceConnectDialog.newInstance();
+        if (deviceConnectDialog == null || !deviceConnectDialog.isVisible()) {
+            deviceConnectDialog = DeviceConnectDialog.newInstance();
 
-        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
-        if (fragment != null) {
-            ft.remove(fragment);
+            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+            if (fragment != null) {
+                ft.remove(fragment);
+            }
+
+            deviceConnectDialog.setCancelable(false);
+            deviceConnectDialog.show(ft, "connectionInfoDialog");
         }
-
-        deviceConnectDialog.setCancelable(true);
-        deviceConnectDialog.show(ft, "connectionInfoDialog");
     }
-
 
     private void connectToDevice(int position) {
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
@@ -271,10 +269,19 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             mScanning = false;
         }
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        startActivity(intent);
-        finish();
+        final ProgressDialog dlg = new ProgressDialog(this);
+        dlg.setMessage(getString(R.string.deviceConnecting));
+        dlg.setCancelable(false);
+        dlg.show();
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                startActivityForResult(intent, REQUEST_CODE);
+                dlg.dismiss();
+            }
+        }, CONNECTING_DELAY);
+
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -306,6 +313,9 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     protected void onResume() {
         super.onResume();
 
+        layoutDevices.setVisibility(View.GONE);
+        layoutInfo.setVisibility(View.VISIBLE);
+
         // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
         // fire an intent to display a dialog asking the user to grant permission to enable it.
         if (!mBluetoothAdapter.isEnabled()) {
@@ -332,6 +342,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            mHandler.removeCallbacks(runnable);
             onBackPressed();
             return true;
         }
@@ -346,6 +357,12 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             return;
         }
 
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Intent intent = new Intent(data);
+            this.setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -357,6 +374,9 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     protected void onPause() {
         super.onPause();
         mHandler.removeCallbacks(runnable);
+        if (deviceConnectDialog != null) {
+            deviceConnectDialog.dismiss();
+        }
         scanLeDevice(false);
         mLeDeviceListAdapter.clear();
     }
@@ -368,7 +388,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
         progressBar.setVisibility(View.VISIBLE);
 
-        final Activity activity = this;
         if (enable) {
 
             runnable = new Runnable() {
@@ -381,7 +400,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                         mBluetoothAdapter.stopLeScan(mLeScanCallback);
                     }
 
-                    if (!activity.isDestroyed()) {
+                    if (!isDestroyed() && !isFinishing()) {
                         if (mLeDeviceListAdapter.getCount() < 1) {
                             deviceList.setVisibility(View.GONE);
                             layoutInfo.setVisibility(View.VISIBLE);
@@ -426,7 +445,11 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
     @Override
     public void sendRequestCode(int code) {
-        scanLeDevice(true);
+        if (code == RESULT_OK) {
+            scanLeDevice(true);
+        } else {
+            finish();
+        }
     }
 
     private static class ViewHolder {

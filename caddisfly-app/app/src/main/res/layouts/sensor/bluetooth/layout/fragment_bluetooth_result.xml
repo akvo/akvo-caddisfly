@@ -61,7 +61,7 @@
 
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:lineSpacingExtra="6dp"
             android:textSize="18sp"
             android:visibility="visible"
@@ -134,7 +134,7 @@
 
         <Button
             android:id="@+id/button_accept_result"
-            style="@style/Button"
+            style="@style/ActionButton"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="33dp"
             android:text="@string/acceptResult"

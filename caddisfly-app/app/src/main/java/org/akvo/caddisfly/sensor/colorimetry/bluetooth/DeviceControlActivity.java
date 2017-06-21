@@ -19,12 +19,15 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -36,13 +39,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.List;
 
@@ -89,6 +98,8 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
      * The pager adapter, which provides the pages to the view pager widget.
      */
     private PagerAdapter mPagerAdapter;
+    private Fragment mInstructionsFragment;
+    private LinearLayout selectTestLayout;
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -108,7 +119,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             }
         }
     };
-    private Fragment mInstructionsFragment;
+    private AlertDialog alertDialog;
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -130,6 +141,11 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         setTitle(testInfo.getName());
 
+        TextView textSelectTest = (TextView) findViewById(R.id.textSelectTest);
+        textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
+                testInfo.getName())));
+
+
         if (testInfo.getInstructions() == null || testInfo.getInstructions().length() < 1) {
             numPages = 1;
         }
@@ -140,10 +156,29 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         mBluetoothResultFragment = new BluetoothResultFragment();
         mInstructionsFragment = InstructionFragment.newInstance();
 
-        // Instantiate a ViewPager and a PagerAdapter.
+        selectTestLayout = (LinearLayout) findViewById(R.id.selectTestLayout);
+        selectTestLayout.setVisibility(View.VISIBLE);
+        findViewById(R.id.buttonTestSelected).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPager.setVisibility(View.VISIBLE);
+                selectTestLayout.setVisibility(View.GONE);
+            }
+        });
+
+        // Instantiate a ViewPager and a PagerAdapter
         mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setVisibility(View.GONE);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
+
+        Button instructionsButton = (Button) findViewById(R.id.button_instructions);
+        instructionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog = showInstructionDialog(DeviceControlActivity.this, alertDialog);
+            }
+        });
     }
 
     @Override
@@ -160,6 +195,9 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     protected void onPause() {
         super.onPause();
         unregisterReceiver(mGattUpdateReceiver);
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
     }
 
     @Override
@@ -176,6 +214,53 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            if (selectTestLayout.getVisibility() == View.GONE) {
+                if (mBluetoothResultFragment.isVisible()) {
+                    mBluetoothResultFragment.displayWaiting();
+                }
+
+                selectTestLayout.setVisibility(View.VISIBLE);
+                mPager.setVisibility(View.GONE);
+            } else {
+                super.onBackPressed();
+            }
+        } else {
+            // Otherwise, select the previous step.
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        }
+    }
+
+    private AlertDialog showInstructionDialog(Activity activity, AlertDialog dialog) {
+        if (dialog == null) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+            alert.setTitle(R.string.to_select_test);
+
+            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+            alert.setMessage(TextUtils.concat(
+                    StringUtil.fromHtml(String.format(getString(R.string.select_test_instruction),
+                            testInfo.getTintometerId(), testInfo.getName()))
+            ));
+
+            alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alert.setCancelable(false);
+            dialog = alert.create();
+        }
+        dialog.show();
+        return dialog;
     }
 
 //    private void updateConnectionState() {
@@ -219,6 +304,11 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
                     dlg.dismiss();
                 }
             }, RESULT_DISPLAY_DELAY);
+
+            mPager.setVisibility(View.VISIBLE);
+            selectTestLayout.setVisibility(View.GONE);
+            //mBluetoothResultFragment.displayWaiting();
+
         }
     }
 
@@ -241,18 +331,6 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
                     mBluetoothLeService.setCharacteristicIndication(gattCharacteristic, true);
                 }
             }
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
         }
     }
 

@@ -36,7 +36,6 @@ public class BluetoothResultFragment extends Fragment {
 
     private static final int ANIMATION_DURATION = 400;
     private final SparseArray<String> results = new SparseArray<>();
-    private AlertDialog alertDialog;
     private String mResult;
     private TextView textResult;
     private TextView textUnit;
@@ -105,35 +104,9 @@ public class BluetoothResultFragment extends Fragment {
         });
 
         textPerformTest.setText(StringUtil.fromHtml(String.format(getString(R.string.perform_test),
-                testInfo.getName(), testInfo.getTintometerId())));
-
-        alertDialog = showInstructionDialog(getActivity());
+                testInfo.getName())));
 
         return view;
-    }
-
-    private AlertDialog showInstructionDialog(Activity activity) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle(R.string.selectTest);
-
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-        alertDialog.setMessage(TextUtils.concat(
-                StringUtil.fromHtml(String.format(getString(R.string.select_test_instruction),
-                        testInfo.getTintometerId(), testInfo.getName()))
-        ));
-
-        alertDialog.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        alertDialog.setCancelable(false);
-        AlertDialog dialog = alertDialog.create();
-        dialog.show();
-        return dialog;
     }
 
     private AlertDialog showError(Activity activity) {
@@ -150,7 +123,7 @@ public class BluetoothResultFragment extends Fragment {
                         testInfo.getTintometerId(), testInfo.getName()))
         ));
 
-        alertDialog.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -161,6 +134,14 @@ public class BluetoothResultFragment extends Fragment {
         AlertDialog dialog = alertDialog.create();
         dialog.show();
         return dialog;
+    }
+
+    public void displayWaiting() {
+
+        layoutResult.setVisibility(View.GONE);
+        layoutWaiting.setVisibility(View.VISIBLE);
+        layoutWaiting.setAlpha(1f);
+
     }
 
     public boolean displayData(String data) {
@@ -186,8 +167,6 @@ public class BluetoothResultFragment extends Fragment {
 
         textName.setText(testInfo.getName());
         textUnit.setText(testInfo.getUnit());
-
-        alertDialog.dismiss();
 
         if (testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
             crossFade();
@@ -260,7 +239,6 @@ public class BluetoothResultFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction();
     }
-
 
 }
 

@@ -704,7 +704,7 @@
       ]
     },
     {
-      "name": "Water - Fluoride L (MD 610)",
+      "name": "Fluoride L",
       "description": "Measures Fluoride in water. 0 - 2 ppm",
       "subtype": "bluetooth",
       "tintometerId": "170",
@@ -738,7 +738,7 @@
       ]
     },
     {
-      "name": "Water - Chlorine T (MD 610)",
+      "name": "Chlorine T",
       "description": "Measures Free chlorine in water. 0 - 1 ppm",
       "subtype": "bluetooth",
       "tintometerId": "100",

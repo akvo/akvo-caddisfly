@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -44,17 +45,25 @@ public class DeviceConnectDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("MD610 device not found");
+        builder.setTitle("MD610 not found");
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View newFileView = inflater.inflate(R.layout.dialog_device_instructions, null);
         builder.setView(newFileView);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 InterfaceCommunicator listener = (InterfaceCommunicator) getActivity();
-                listener.sendRequestCode(1);
+                listener.sendRequestCode(Activity.RESULT_OK);
+            }
+        });
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                InterfaceCommunicator listener = (InterfaceCommunicator) getActivity();
+                listener.sendRequestCode(Activity.RESULT_CANCELED);
             }
         });
 
