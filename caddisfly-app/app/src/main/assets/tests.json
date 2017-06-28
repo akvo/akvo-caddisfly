@@ -723,19 +723,24 @@
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
-          "text": "Fill vial (24mm) with 10 ml of your sample, close cap tightly"
+          "text": "Fill vial (24mm) with 10 ml of your sample, close cap tightly",
+          "png": "coming-soon"
         },
         {
-          "text": "Wipe the outside of the vial, then hold the vial by its lid and place it in the chamber. Align arrow marks and press #zero#"
+          "text": "Wipe the outside of the vial, then hold the vial by its lid and place it in the chamber. Align arrow marks and press #zero#",
+          "png": "coming-soon"
         },
         {
-          "text": "Take vial out and add 2 ml of SPADNS reagent to the sample. Close the cap tightly and swirl several times."
+          "text": "Take vial out and add 2 ml of SPADNS reagent to the sample. Close the cap tightly and swirl several times.",
+          "png": "coming-soon"
         },
         {
-          "text": "Wipe the outside of the vial, then hold the vial by its lid and place it in the chamber. Align arrow marks and press #test#"
+          "text": "Wipe the outside of the vial, then hold the vial by its lid and place it in the chamber. Align arrow marks and press #test#",
+          "png": "coming-soon"
         },
         {
-          "text": "Once the result is displayed, press #f3#"
+          "text": "Once the result is displayed, press #f3#",
+          "png": "coming-soon"
         }
       ]
     },
@@ -759,25 +764,32 @@
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
         {
-          "text": "Fill vial (24mm) with 10 ml of your sample, close cap tightly"
+          "text": "Fill vial (24mm) with 10 ml of your sample, close cap tightly",
+          "png": "coming-soon"
         },
         {
-          "text": "Wipe the outside of the vial, then hold the vial by its lid and place it in the chamber. Align arrow marks and press #zero#"
+          "text": "Wipe the outside of the vial, then hold the vial by its lid and place it in the chamber. Align arrow marks and press #zero#",
+          "png": "coming-soon"
         },
         {
-          "text": "Take vial out and empty it, <i>leaving a few drops remaining in the vial<i>."
+          "text": "Take vial out and empty it, <i>leaving a few drops remaining in the vial<i>.",
+          "png": "coming-soon"
         },
         {
-          "text": "Add one DPD No.1 tablet and crush the tablet using a clean stirring rod."
+          "text": "Add one DPD No.1 tablet and crush the tablet using a clean stirring rod.",
+          "png": "coming-soon"
         },
         {
-          "text": "Add water sample to the 10 ml mark. Close the cap tightly and swirl several times until tablet is dissolved."
+          "text": "Add water sample to the 10 ml mark. Close the cap tightly and swirl several times until tablet is dissolved.",
+          "png": "coming-soon"
         },
         {
-          "text": "Wipe the outside of the vial, then hold the vial by its lid and place it in the chamber. Align arrow marks and press #test#"
+          "text": "Wipe the outside of the vial, then hold the vial by its lid and place it in the chamber. Align arrow marks and press #test#",
+          "png": "coming-soon"
         },
         {
-          "text": "Once the result is displayed, press #f3#"
+          "text": "Once the result is displayed, press #f3#",
+          "png": "coming-soon"
         }
       ]
     },

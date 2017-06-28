@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.instructions;
+package org.akvo.caddisfly.sensor.instructions;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -75,6 +75,13 @@ public class InstructionActivity extends BaseActivity {
         setTitle(brand.getName());
 
         JSONArray instructions = brand.getInstructions();
+
+//        if (instructions == null) {
+//            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+//            setTitle(testInfo.getName());
+//            instructions = testInfo.getInstructions();
+//        }
+//
         if (instructions != null) {
             for (int i = 0; i < instructions.length(); i++) {
                 try {

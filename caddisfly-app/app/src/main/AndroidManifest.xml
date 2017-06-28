@@ -151,7 +151,7 @@
             android:name=".sensor.colorimetry.strip.ui.BrandInfoActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.strip.instructions.InstructionActivity"
+            android:name=".sensor.instructions.InstructionActivity"
             android:parentActivityName=".sensor.colorimetry.strip.ui.BrandInfoActivity"
             android:screenOrientation="nosensor" />
         <activity

@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.instructions;
+package org.akvo.caddisfly.sensor.instructions;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -122,7 +122,7 @@ public class InstructionDetailFragment extends Fragment {
                     textView.setTextColor(Color.DKGRAY);
                 }
 
-                Spanned spanned = StringUtil.getStringResourceByName(getContext(), text);
+                Spanned spanned = StringUtil.toInstruction(getContext(), text);
                 if (!text.isEmpty()) {
                     textView.append(spanned);
                     layoutInstructions.addView(textView);

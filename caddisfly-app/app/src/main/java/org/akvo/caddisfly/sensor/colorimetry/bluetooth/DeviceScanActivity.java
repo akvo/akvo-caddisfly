@@ -240,7 +240,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+            Fragment fragment = getFragmentManager().findFragmentByTag("connectionInfoDialog");
             if (fragment != null) {
                 ft.remove(fragment);
             }

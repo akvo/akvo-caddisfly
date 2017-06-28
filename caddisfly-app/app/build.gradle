@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 22 //target older sdk for bluetooth to work without location turned on
-        versionCode 176
-        versionName "MD610 Bluetooth Test - 2"
+        versionCode 177
+        versionName "MD610 Bluetooth Test - 3"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->

@@ -27,8 +27,6 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
-import timber.log.Timber;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -87,13 +85,7 @@ public class BluetoothResultFragment extends Fragment {
 
                 results.clear();
 
-                try {
-                    double result = Double.parseDouble(mResult);
-                    results.put(1, String.valueOf(result));
-                } catch (Exception e) {
-                    Timber.e(e);
-                    return;
-                }
+                results.put(1, String.valueOf(mResult));
 
                 JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
                 resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
@@ -115,13 +107,9 @@ public class BluetoothResultFragment extends Fragment {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
         alertDialog.setTitle(R.string.incorrect_test_selected);
 
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
         alertDialog.setMessage(TextUtils.concat(
                 StringUtil.toInstruction(getActivity(), getString(R.string.data_does_not_match) + "<br /><br />"),
-                StringUtil.toInstruction(getActivity(), getString(R.string.select_correct_test) + "<br /><br />"),
-                StringUtil.toInstruction(getActivity(), String.format(getString(R.string.select_test_instruction),
-                        StringUtil.convertToTags(testInfo.getTintometerId()), testInfo.getName()))
+                StringUtil.toInstruction(getActivity(), getString(R.string.select_correct_test))
         ));
 
         alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -153,9 +141,10 @@ public class BluetoothResultFragment extends Fragment {
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        String resultTitles = ",,,,Id,Test,,,,,Date,Time,,,,,,,Result,Unit";
+        String resultTitles = ",,,,Id,Test,Range,,,,Date,Time,,,,,,,Result,Unit";
         String[] titles = resultTitles.split(",");
         String testId = "";
+        String[] ranges = null;
 
         String[] result = data.split(";");
         for (int i = 0; i < result.length; i++) {
@@ -163,12 +152,33 @@ public class BluetoothResultFragment extends Fragment {
                 if (titles[i].equals("Id")) {
                     testId = result[i].trim();
                 }
+                if (titles[i].equals("Range")) {
+                    ranges = result[i].substring(0, result[i].indexOf(" ")).trim().split("-");
+                }
+
                 if (titles[i].equals("Result")) {
                     mResult = result[i].trim();
-                    if (mResult.equalsIgnoreCase("underrange")) {
-                        mResult = "<" + testInfo.getRangeValues()[0];
-                    } else if (mResult.equalsIgnoreCase("overrange")) {
-                        mResult = ">" + testInfo.getRangeValues()[testInfo.getRangeValues().length - 1];
+
+                    boolean isText = false;
+                    try {
+                        //noinspection ResultOfMethodCallIgnored
+                        Double.parseDouble(mResult);
+                    } catch (Exception e) {
+                        isText = true;
+                    }
+
+                    if (isText) {
+                        if (ranges != null && ranges.length > 1) {
+                            if (mResult.equalsIgnoreCase("underrange")) {
+                                mResult = "<" + ranges[0];
+                            } else if (mResult.equalsIgnoreCase("overrange")) {
+                                mResult = ">" + ranges[1];
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
                     }
                     textResult.setText(mResult);
                 }
