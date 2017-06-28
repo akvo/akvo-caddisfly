@@ -31,20 +31,20 @@ public class HtmlTextView extends AppCompatTextView {
 
     public HtmlTextView(Context context) {
         super(context);
-        init();
+        init(context);
     }
 
     public HtmlTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context);
     }
 
     public HtmlTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context);
     }
 
-    private void init() {
-        setText(StringUtil.fromHtml(getText().toString()));
+    private void init(Context context) {
+        setText(StringUtil.toInstruction(context, getText().toString()));
     }
 }

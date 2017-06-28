@@ -54,11 +54,10 @@
 
         </LinearLayout>
 
-        <TextView
+        <org.akvo.caddisfly.widget.HtmlTextView
             android:id="@+id/textPerformTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="20dp"

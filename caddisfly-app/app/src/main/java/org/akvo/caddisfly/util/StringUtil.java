@@ -22,7 +22,13 @@ package org.akvo.caddisfly.util;
 import android.content.Context;
 import android.text.Html;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+
+import org.akvo.caddisfly.widget.CenteredImageSpan;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class StringUtil {
 
@@ -49,4 +55,41 @@ public final class StringUtil {
         }
         return result;
     }
+
+    public static SpannableStringBuilder toInstruction(Context context, String text) {
+
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        Spanned spanned = StringUtil.getStringResourceByName(context, text);
+        builder.append(spanned);
+
+        Matcher m = Pattern.compile("#(\\w+)#").matcher(builder);
+
+        while (m.find()) {
+
+            int resId = context.getResources().getIdentifier("button_" + m.group(1), "drawable", context.getPackageName());
+
+            if (resId > 0) {
+                builder.setSpan(new CenteredImageSpan(context, resId),
+                        m.start(1) - 1, m.end(1) + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            }
+        }
+
+        return builder;
+    }
+
+    public static String convertToTags(String text) {
+        String result = "";
+        for (int i = 0; i < text.length(); i++) {
+            result += "#";
+            result += text.charAt(i);
+            result += "#";
+        }
+        return result;
+    }
+
+    public static String getStringByName(Context context, String name) {
+        return context.getResources().getString(context.getResources().getIdentifier(name, "string", context.getPackageName()));
+    }
+
 }

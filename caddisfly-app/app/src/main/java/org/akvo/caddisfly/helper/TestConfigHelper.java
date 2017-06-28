@@ -275,6 +275,8 @@ public final class TestConfigHelper {
 
             testInfo.setTintometerId(item.has("tintometerId") ? item.getString("tintometerId") : "");
 
+            testInfo.setSelectInstruction(item.has("selectInstruction") ? item.getString("selectInstruction") : "");
+
 
         } catch (JSONException e) {
             Timber.e(e);

@@ -54,6 +54,8 @@ import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import timber.log.Timber;
 
@@ -245,8 +247,9 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
             alert.setMessage(TextUtils.concat(
-                    StringUtil.fromHtml(String.format(getString(R.string.select_test_instruction),
-                            testInfo.getTintometerId(), testInfo.getName()))
+                    StringUtil.toInstruction(this,
+                            String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
+                                    StringUtil.convertToTags(testInfo.getTintometerId()), testInfo.getName()))
             ));
 
             alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -274,18 +277,13 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
 
     private void displayData(String data) {
 
-        if (data.contains("DT01")) {
-            mData = "";
-        }
-
         mData += data;
 
-        int beginIndex = mData.indexOf("DT01");
-        int endIndex = mData.indexOf(";;;");
+        Matcher m = Pattern.compile("DT01.*?;;;").matcher(mData);
 
-        if (endIndex > beginIndex) {
-
-            mData = mData.substring(beginIndex, endIndex);
+        if (m.find()) {
+            final String fullData = m.group();
+            mData = "";
 
             final ProgressDialog dlg = new ProgressDialog(this);
             dlg.setMessage("Receiving data");
@@ -294,7 +292,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             new Handler().postDelayed(new Runnable() {
                 public void run() {
 
-                    if (mBluetoothResultFragment.displayData(mData)) {
+                    if (mBluetoothResultFragment.displayData(fullData)) {
                         numPages = 1;
                         mPagerAdapter.notifyDataSetChanged();
                         setTitle("Result");
@@ -335,8 +333,17 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     }
 
     @Override
-    public void onFragmentInteraction() {
-        mPager.setCurrentItem(1);
+    public void onFragmentInteraction(int mode) {
+        if (mode == 1) {
+            if (mBluetoothResultFragment.isVisible()) {
+                mBluetoothResultFragment.displayWaiting();
+            }
+
+            selectTestLayout.setVisibility(View.VISIBLE);
+            mPager.setVisibility(View.GONE);
+        } else {
+            mPager.setCurrentItem(1);
+        }
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

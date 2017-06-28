@@ -68,6 +68,7 @@ public class TestInfo {
     private boolean deprecated;
     private JSONArray instructions;
     private String tintometerId;
+    private String selectInstruction;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -351,6 +352,14 @@ public class TestInfo {
 
     public void setTintometerId(String tintometerId) {
         this.tintometerId = tintometerId;
+    }
+
+    public void setSelectInstruction(String selectInstruction) {
+        this.selectInstruction = selectInstruction;
+    }
+
+    public String getSelectInstruction() {
+        return selectInstruction;
     }
 
     public static class SubTest {

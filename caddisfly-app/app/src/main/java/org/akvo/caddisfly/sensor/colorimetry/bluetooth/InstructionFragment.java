@@ -22,7 +22,7 @@ package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Spanned;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,8 +71,7 @@ public class InstructionFragment extends Fragment {
                 try {
 
                     Object item = instructions.getJSONObject(i).get("text");
-
-                    instructionsListAdapter.addInstruction((String) item);
+                    instructionsListAdapter.addInstruction(StringUtil.toInstruction(getActivity(), item.toString()));
 
                 } catch (JSONException e) {
                     Timber.e(e);
@@ -92,7 +91,7 @@ public class InstructionFragment extends Fragment {
 
     // Adapter for holding devices found through scanning.
     private class InstructionListAdapter extends BaseAdapter {
-        private final List<String> mInstructions;
+        private final List<SpannableStringBuilder> mInstructions;
         private final LayoutInflater mInflater;
 
         InstructionListAdapter() {
@@ -101,7 +100,7 @@ public class InstructionFragment extends Fragment {
             mInflater = getActivity().getLayoutInflater();
         }
 
-        private void addInstruction(String instruction) {
+        private void addInstruction(SpannableStringBuilder instruction) {
             mInstructions.add(instruction);
         }
 
@@ -138,8 +137,7 @@ public class InstructionFragment extends Fragment {
 
             viewHolder.textNumber.setText(String.format("%s.", position + 1));
 
-            Spanned spanned = StringUtil.getStringResourceByName(getActivity(), mInstructions.get(position));
-            viewHolder.textInstruction.setText(spanned);
+            viewHolder.textInstruction.setText(mInstructions.get(position));
 
             return view;
         }

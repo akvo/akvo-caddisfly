@@ -43,6 +43,7 @@ public class BluetoothResultFragment extends Fragment {
     private LinearLayout layoutResult;
     private OnFragmentInteractionListener mListener;
     private TextView textName;
+    private AlertDialog dialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,7 +58,7 @@ public class BluetoothResultFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.onFragmentInteraction();
+                    mListener.onFragmentInteraction(0);
                 }
             }
         });
@@ -103,7 +104,7 @@ public class BluetoothResultFragment extends Fragment {
             }
         });
 
-        textPerformTest.setText(StringUtil.fromHtml(String.format(getString(R.string.perform_test),
+        textPerformTest.setText(StringUtil.toInstruction(getActivity(), String.format(getString(R.string.perform_test),
                 testInfo.getName())));
 
         return view;
@@ -117,10 +118,10 @@ public class BluetoothResultFragment extends Fragment {
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         alertDialog.setMessage(TextUtils.concat(
-                StringUtil.fromHtml(getString(R.string.data_does_not_match) + "<br /><br />"),
-                StringUtil.fromHtml(getString(R.string.select_correct_test) + "<br /><br />"),
-                StringUtil.fromHtml(String.format(getString(R.string.select_test_instruction),
-                        testInfo.getTintometerId(), testInfo.getName()))
+                StringUtil.toInstruction(getActivity(), getString(R.string.data_does_not_match) + "<br /><br />"),
+                StringUtil.toInstruction(getActivity(), getString(R.string.select_correct_test) + "<br /><br />"),
+                StringUtil.toInstruction(getActivity(), String.format(getString(R.string.select_test_instruction),
+                        StringUtil.convertToTags(testInfo.getTintometerId()), testInfo.getName()))
         ));
 
         alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -131,7 +132,7 @@ public class BluetoothResultFragment extends Fragment {
         });
 
         alertDialog.setCancelable(false);
-        AlertDialog dialog = alertDialog.create();
+        dialog = alertDialog.create();
         dialog.show();
         return dialog;
     }
@@ -146,6 +147,10 @@ public class BluetoothResultFragment extends Fragment {
 
     public boolean displayData(String data) {
 
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         String resultTitles = ",,,,Id,Test,,,,,Date,Time,,,,,,,Result,Unit";
@@ -159,8 +164,13 @@ public class BluetoothResultFragment extends Fragment {
                     testId = result[i].trim();
                 }
                 if (titles[i].equals("Result")) {
-                    mResult = result[i];
-                    textResult.setText(result[i].trim());
+                    mResult = result[i].trim();
+                    if (mResult.equalsIgnoreCase("underrange")) {
+                        mResult = "<" + testInfo.getRangeValues()[0];
+                    } else if (mResult.equalsIgnoreCase("overrange")) {
+                        mResult = ">" + testInfo.getRangeValues()[testInfo.getRangeValues().length - 1];
+                    }
+                    textResult.setText(mResult);
                 }
             }
         }
@@ -176,6 +186,12 @@ public class BluetoothResultFragment extends Fragment {
             showError(getActivity());
             layoutResult.setVisibility(View.GONE);
             layoutWaiting.setVisibility(View.VISIBLE);
+            layoutWaiting.setAlpha(1);
+
+            if (mListener != null) {
+                mListener.onFragmentInteraction(1);
+            }
+
             return false;
         }
     }
@@ -236,8 +252,7 @@ public class BluetoothResultFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction();
+        void onFragmentInteraction(int mode);
     }
 
 }
