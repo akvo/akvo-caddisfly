@@ -20,170 +20,183 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingEnd="22dp"
-    android:paddingStart="22dp">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="17sp"
         android:layout_marginTop="10dp"
-        android:text="Check that MD610 and it's bluetooth are both turned on"/>
+        android:paddingEnd="22dp"
+        android:paddingStart="22dp"
+        android:text="Check that MD610 and its bluetooth are both turned on"
+        android:textSize="17sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="15dp"
-        android:text="To turn MD610 on:"
-        android:textColor="#444"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-
-    <TableLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="12dp">
+        android:layout_height="match_parent">
 
-        <TableRow
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:clickable="false"
-            android:columnCount="2"
-            android:focusable="false"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:paddingEnd="22dp"
+            android:paddingStart="22dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="1."
-                android:textSize="17sp" />
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="15dp"
+                android:text="To turn MD610 on:"
+                android:textColor="#444"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <org.akvo.caddisfly.widget.HtmlTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/press_on_button"
-                android:textSize="17sp" />
-        </TableRow>
 
-    </TableLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="To turn bluetooth on:"
-        android:textColor="#444"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:shrinkColumns="2">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:columnCount="2"
-            android:focusable="false"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="1."
-                android:textSize="17sp" />
-
-            <org.akvo.caddisfly.widget.HtmlTextView
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:text="@string/press_mode_button"
-                android:textSize="17sp" />
-        </TableRow>
+                android:layout_marginStart="12dp">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:columnCount="2"
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:clickable="false"
+                    android:columnCount="2"
+                    android:focusable="false"
+                    android:orientation="horizontal">
 
-            android:focusable="false"
-            android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="1."
+                        android:textSize="17sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="2."
-                android:textSize="17sp" />
+                    <org.akvo.caddisfly.widget.HtmlTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/press_on_button"
+                        android:textSize="17sp" />
+                </TableRow>
 
-            <org.akvo.caddisfly.widget.HtmlTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:text="@string/select_bluetooth"
-                android:textSize="17sp" />
-        </TableRow>
-
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:columnCount="2"
-            android:focusable="false"
-            android:orientation="horizontal">
+            </TableLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="3."
-                android:textSize="17sp" />
+                android:layout_marginBottom="8dp"
+                android:text="To turn bluetooth on:"
+                android:textColor="#444"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-            <org.akvo.caddisfly.widget.HtmlTextView
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="1"
-                android:text="@string/turn_bluetooth_on"
-                android:textSize="17sp" />
-        </TableRow>
+                android:layout_marginStart="12dp"
+                android:shrinkColumns="2">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:clickable="false"
-            android:columnCount="2"
-            android:focusable="false"
-            android:orientation="horizontal">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:columnCount="2"
+                    android:focusable="false"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="4."
-                android:textSize="17sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="1."
+                        android:textSize="17sp" />
 
-            <org.akvo.caddisfly.widget.HtmlTextView
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:text="@string/escape_to_menu"
-                android:textSize="17sp" />
-        </TableRow>
-    </TableLayout>
+                    <org.akvo.caddisfly.widget.HtmlTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/press_mode_button"
+                        android:textSize="17sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:columnCount="2"
+
+                    android:focusable="false"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="2."
+                        android:textSize="17sp" />
+
+                    <org.akvo.caddisfly.widget.HtmlTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/select_bluetooth"
+                        android:textSize="17sp" />
+                </TableRow>
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:columnCount="2"
+                    android:focusable="false"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="3."
+                        android:textSize="17sp" />
+
+                    <org.akvo.caddisfly.widget.HtmlTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/turn_bluetooth_on"
+                        android:textSize="17sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:clickable="false"
+                    android:columnCount="2"
+                    android:focusable="false"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:text="4."
+                        android:textSize="17sp" />
+
+                    <org.akvo.caddisfly.widget.HtmlTextView
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:text="@string/escape_to_menu"
+                        android:textSize="17sp" />
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

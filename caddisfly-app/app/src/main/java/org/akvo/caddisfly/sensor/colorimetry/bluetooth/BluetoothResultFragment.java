@@ -141,14 +141,23 @@ public class BluetoothResultFragment extends Fragment {
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        String resultTitles = ",,,,Id,Test,Range,,,,Date,Time,,,,,,,Result,Unit";
+        String resultTitles = ",,Version,Version,Id,Test,Range,,,,Date,Time,,,,,,,Result,Unit";
         String[] titles = resultTitles.split(",");
         String testId = "";
         String[] ranges = null;
+        boolean dataOk = false;
 
         String[] result = data.split(";");
         for (int i = 0; i < result.length; i++) {
             if (titles.length > i && !titles[i].isEmpty()) {
+                if (titles[i].equals("Version")) {
+                    String version = result[i].trim();
+                    if (version.startsWith("V")) {
+                        dataOk = true;
+                    } else {
+                        return false;
+                    }
+                }
                 if (titles[i].equals("Id")) {
                     testId = result[i].trim();
                 }
@@ -188,7 +197,7 @@ public class BluetoothResultFragment extends Fragment {
         textName.setText(testInfo.getName());
         textUnit.setText(testInfo.getUnit());
 
-        if (testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
+        if (dataOk && testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
             crossFade();
             return true;
         } else {

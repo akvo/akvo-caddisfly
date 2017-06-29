@@ -293,7 +293,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         layoutInstructions.setVisibility(View.GONE);
         layoutSelectTest.setVisibility(View.GONE);
 
-        Matcher m = Pattern.compile("DT01.*?;;;").matcher(mData);
+        Matcher m = Pattern.compile("DT01;.*?;;;;").matcher(mData);
 
         if (m.find()) {
 
