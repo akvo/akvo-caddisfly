@@ -35,7 +35,6 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -51,7 +50,6 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -64,7 +62,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -193,34 +190,34 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("This app needs location access");
-            builder.setMessage("Please grant location access so this app can detect beacons.");
-            builder.setPositiveButton(android.R.string.ok, null);
-            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                                PERMISSION_REQUEST_COARSE_LOCATION);
-                    }
-                }
-            });
-
-            builder.show();
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+//                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("This app needs location access");
+//            builder.setMessage("Please grant location access so this app can detect beacons.");
+//            builder.setPositiveButton(android.R.string.ok, null);
+//            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialogInterface) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                                PERMISSION_REQUEST_COARSE_LOCATION);
+//                    }
+//                }
+//            });
+//
+//            builder.show();
+//        }
 
         layoutDevices = (RelativeLayout) findViewById(R.id.layoutDevices);
 
         deviceList = (ListView) findViewById(R.id.device_list);
-        deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                connectToDevice(position);
-            }
-        });
+//        deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                connectToDevice(position);
+//            }
+//        });
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -251,6 +248,13 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     }
 
     private void connectToDevice(int position) {
+
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            return;
+        }
+
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) {
             return;
@@ -316,13 +320,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         layoutDevices.setVisibility(View.GONE);
         layoutInfo.setVisibility(View.VISIBLE);
 
-        // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
-        // fire an intent to display a dialog asking the user to grant permission to enable it.
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
-
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
         deviceList.setAdapter(mLeDeviceListAdapter);
@@ -357,10 +354,14 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             return;
         }
 
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Intent intent = new Intent(data);
-            this.setResult(Activity.RESULT_OK, intent);
-            finish();
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Intent intent = new Intent(data);
+                this.setResult(Activity.RESULT_OK, intent);
+                finish();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                scanLeDevice(true);
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -382,13 +383,25 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     }
 
     private void scanLeDevice(final boolean enable) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mBluetoothLeScanner == null) {
-            return;
-        }
 
         progressBar.setVisibility(View.VISIBLE);
 
         if (enable) {
+
+            if (mScanning) {
+                return;
+            }
+
+            // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
+            // fire an intent to display a dialog asking the user to grant permission to enable it.
+            if (!mBluetoothAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mBluetoothLeScanner == null) {
+                return;
+            }
 
             runnable = new Runnable() {
                 @Override

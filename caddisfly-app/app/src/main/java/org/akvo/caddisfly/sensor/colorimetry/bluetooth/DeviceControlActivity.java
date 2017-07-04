@@ -42,6 +42,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -67,7 +68,6 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     private static final long RESULT_DISPLAY_DELAY = 2000;
     private boolean resultReceived = false;
 
-    private int numPages = 2;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
     // to manage Service lifecycle.
@@ -97,6 +97,9 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
      * The pager adapter, which provides the pages to the view pager widget.
      */
     private LinearLayout layoutSelectTest;
+    private AlertDialog alertDialog;
+    private RelativeLayout layoutInstructions;
+    private RelativeLayout layoutWaiting;
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -106,9 +109,9 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 //updateConnectionState(R.string.disconnected);
-//                Toast.makeText(DeviceControlActivity.this, "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DeviceControlActivity.this, "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
 //                invalidateOptionsMenu();
-//                finish();
+                finish();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 setGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -116,9 +119,6 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             }
         }
     };
-    private AlertDialog alertDialog;
-    private RelativeLayout layoutInstructions;
-    private RelativeLayout layoutWaiting;
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -145,10 +145,6 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
                 testInfo.getName())));
 
 
-        if (testInfo.getInstructions() == null || testInfo.getInstructions().length() < 1) {
-            numPages = 1;
-        }
-
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
@@ -164,13 +160,10 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         ft.commit();
 
         layoutSelectTest = (LinearLayout) findViewById(R.id.selectTestLayout);
-        layoutSelectTest.setVisibility(View.VISIBLE);
         findViewById(R.id.buttonTestSelected).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                layoutSelectTest.setVisibility(View.GONE);
-                layoutInstructions.setVisibility(View.GONE);
-                layoutWaiting.setVisibility(View.VISIBLE);
+                showWaitingView();
             }
         });
 
@@ -181,6 +174,8 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
                 alertDialog = showInstructionDialog(DeviceControlActivity.this, alertDialog);
             }
         });
+
+        showSelectTestView();
     }
 
     @Override
@@ -231,19 +226,13 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             super.onBackPressed();
         } else if (resultReceived && mBluetoothResultFragment.isVisible()) {
             mBluetoothResultFragment.displayWaiting();
-            layoutInstructions.setVisibility(View.GONE);
-            layoutSelectTest.setVisibility(View.GONE);
-            layoutWaiting.setVisibility(View.VISIBLE);
+            showWaitingView();
             registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
             resultReceived = false;
         } else if (layoutInstructions.getVisibility() == View.VISIBLE) {
-            layoutInstructions.setVisibility(View.GONE);
-            layoutSelectTest.setVisibility(View.GONE);
-            layoutWaiting.setVisibility(View.VISIBLE);
+            showWaitingView();
         } else if (mBluetoothResultFragment.isVisible()) {
-            layoutWaiting.setVisibility(View.GONE);
-            layoutInstructions.setVisibility(View.GONE);
-            layoutSelectTest.setVisibility(View.VISIBLE);
+            showSelectTestView();
         } else {
             super.onBackPressed();
         }
@@ -276,22 +265,11 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         return dialog;
     }
 
-//    private void updateConnectionState() {
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                //mConnectionState.setText(resourceId);
-//            }
-//        });
-//    }
-
     private void displayData(String data) {
 
         mData += data;
 
-        layoutWaiting.setVisibility(View.VISIBLE);
-        layoutInstructions.setVisibility(View.GONE);
-        layoutSelectTest.setVisibility(View.GONE);
+        showWaitingView();
 
         Matcher m = Pattern.compile("DT01;.*?;;;;").matcher(mData);
 
@@ -316,21 +294,15 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
 //                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 //                        }
 
-                        numPages = 1;
                         setTitle("Result");
                     } else {
                         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-                        layoutWaiting.setVisibility(View.GONE);
-                        layoutInstructions.setVisibility(View.GONE);
-                        layoutSelectTest.setVisibility(View.VISIBLE);
+                        showSelectTestView();
                     }
 
                     dlg.dismiss();
                 }
             }, RESULT_DISPLAY_DELAY);
-
-            layoutSelectTest.setVisibility(View.GONE);
-
         }
     }
 
@@ -363,17 +335,30 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
                 mBluetoothResultFragment.displayWaiting();
             }
 
-            layoutSelectTest.setVisibility(View.VISIBLE);
-            layoutWaiting.setVisibility(View.GONE);
-            layoutInstructions.setVisibility(View.GONE);
+            showSelectTestView();
 
         } else {
             mInstructionFragment.returnToFirstPage();
-            layoutInstructions.setVisibility(View.VISIBLE);
-            layoutSelectTest.setVisibility(View.GONE);
-            layoutWaiting.setVisibility(View.GONE);
+            showInstructionsView();
         }
     }
 
+    private void showInstructionsView() {
+        layoutInstructions.setVisibility(View.VISIBLE);
+        layoutSelectTest.setVisibility(View.GONE);
+        layoutWaiting.setVisibility(View.GONE);
+    }
+
+    private void showSelectTestView() {
+        layoutSelectTest.setVisibility(View.VISIBLE);
+        layoutWaiting.setVisibility(View.GONE);
+        layoutInstructions.setVisibility(View.GONE);
+    }
+
+    private void showWaitingView() {
+        layoutWaiting.setVisibility(View.VISIBLE);
+        layoutSelectTest.setVisibility(View.GONE);
+        layoutInstructions.setVisibility(View.GONE);
+    }
 
 }
