@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView;
 import org.akvo.caddisfly.sensor.instructions.InstructionDetailFragment;
 import org.json.JSONArray;
@@ -96,8 +97,8 @@ public class InstructionFragment extends Fragment {
 
                         fragments.add(InstructionDetailFragment.newInstance(
                                 jsonArray,
-                                instructions.getJSONObject(i).has("png")
-                                        ? instructions.getJSONObject(i).getString("png") : ""));
+                                instructions.getJSONObject(i).has(SensorConstants.IMAGE)
+                                        ? instructions.getJSONObject(i).getString(SensorConstants.IMAGE) : ""));
                     } catch (JSONException e) {
                         Timber.e(e);
                     }

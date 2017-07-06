@@ -45,6 +45,7 @@ import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -131,6 +132,13 @@ public class MainActivity extends BaseActivity {
         } else {
             startStripTest();
         }
+    }
+
+    @OnClick(R.id.buttonBluetooth)
+    void navigateToMD610Tests() {
+        final Intent intent = new Intent(getBaseContext(), BluetoothTypeListActivity.class);
+        intent.putExtra("internal", true);
+        startActivity(intent);
     }
 
     @OnClick(R.id.buttonSensors)

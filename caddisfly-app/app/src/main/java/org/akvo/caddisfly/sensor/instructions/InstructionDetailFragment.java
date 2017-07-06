@@ -108,18 +108,17 @@ public class InstructionDetailFragment extends Fragment {
                         getResources().getDisplayMetrics()), 1.0f);
 
                 String text = instruction;
+
+                textView.setTextColor(Color.DKGRAY);
+
                 if (instruction.contains("<!>")) {
                     text = instruction.replaceAll("<!>", "");
                     textView.setTextColor(Color.RED);
-                } else {
-                    textView.setTextColor(Color.DKGRAY);
                 }
 
                 if (instruction.contains("<b>")) {
                     text = text.replaceAll("<b>", "").replaceAll("</b>", "");
                     textView.setTypeface(null, Typeface.BOLD);
-                } else {
-                    textView.setTextColor(Color.DKGRAY);
                 }
 
                 Spanned spanned = StringUtil.toInstruction(getContext(), text);

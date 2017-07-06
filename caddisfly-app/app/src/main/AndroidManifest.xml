@@ -160,6 +160,9 @@
         <!-- end StripTest -->
 
         <activity
+            android:name=".sensor.colorimetry.bluetooth.BluetoothTypeListActivity"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".sensor.colorimetry.bluetooth.DeviceScanActivity"
             android:screenOrientation="nosensor" />
         <activity

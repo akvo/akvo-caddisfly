@@ -41,6 +41,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
-        android:scaleType="fitStart"
+        android:scaleType="fitCenter"
         tools:src="@android:drawable/ic_menu_gallery" />
 </LinearLayout>

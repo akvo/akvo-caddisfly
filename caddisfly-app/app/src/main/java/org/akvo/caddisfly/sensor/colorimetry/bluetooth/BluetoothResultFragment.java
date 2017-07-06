@@ -27,6 +27,8 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -34,7 +36,7 @@ public class BluetoothResultFragment extends Fragment {
 
     private static final int ANIMATION_DURATION = 400;
     private final SparseArray<String> results = new SparseArray<>();
-    private String mResult;
+    private HashMap<String, String> resultMap = new HashMap<>();
     private TextView textResult;
     private TextView textUnit;
     private LinearLayout layoutWaiting;
@@ -83,9 +85,6 @@ public class BluetoothResultFragment extends Fragment {
 
                 Intent resultIntent = new Intent(getActivity().getIntent());
 
-                results.clear();
-
-                results.put(1, String.valueOf(mResult));
 
                 JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
                 resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
@@ -147,11 +146,13 @@ public class BluetoothResultFragment extends Fragment {
         String[] ranges = null;
         boolean dataOk = false;
 
-        String[] result = data.split(";");
-        for (int i = 0; i < result.length; i++) {
+//        textResult.setText("");
+
+        String[] dataArray = data.split(";");
+        for (int i = 0; i < dataArray.length; i++) {
             if (titles.length > i && !titles[i].isEmpty()) {
                 if (titles[i].equals("Version")) {
-                    String version = result[i].trim();
+                    String version = dataArray[i].trim();
                     if (version.startsWith("V")) {
                         dataOk = true;
                     } else {
@@ -159,42 +160,60 @@ public class BluetoothResultFragment extends Fragment {
                     }
                 }
                 if (titles[i].equals("Id")) {
-                    testId = result[i].trim();
+                    testId = dataArray[i].trim();
                 }
                 if (titles[i].equals("Range")) {
-                    ranges = result[i].substring(0, result[i].indexOf(" ")).trim().split("-");
+                    ranges = dataArray[i].substring(0, dataArray[i].indexOf(" ")).trim().split("-");
                 }
 
+
                 if (titles[i].equals("Result")) {
-                    mResult = result[i].trim();
 
-                    boolean isText = false;
-                    try {
-                        //noinspection ResultOfMethodCallIgnored
-                        Double.parseDouble(mResult);
-                    } catch (Exception e) {
-                        isText = true;
-                    }
+                    for (int j = 0; j + i < dataArray.length; j = j + 4) {
 
-                    if (isText) {
-                        if (ranges != null && ranges.length > 1) {
-                            if (mResult.equalsIgnoreCase("underrange")) {
-                                mResult = "<" + ranges[0];
-                            } else if (mResult.equalsIgnoreCase("overrange")) {
-                                mResult = ">" + ranges[1];
+                        String result = dataArray[j + i].trim();
+                        String md610Id = dataArray[j + i + 1].trim();
+
+                        boolean isText = false;
+                        try {
+                            //noinspection ResultOfMethodCallIgnored
+                            Double.parseDouble(result);
+                        } catch (Exception e) {
+                            isText = true;
+                        }
+
+                        if (isText) {
+                            if (ranges != null && ranges.length > 1) {
+                                if (result.equalsIgnoreCase("underrange")) {
+                                    result = "<" + ranges[0];
+                                } else if (result.equalsIgnoreCase("overrange")) {
+                                    result = ">" + ranges[1];
+                                } else {
+                                    continue;
+                                }
                             } else {
                                 return false;
                             }
-                        } else {
-                            return false;
                         }
+
+                        for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
+                            if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
+                                results.put(subTest.getId(), result);
+
+                                textResult.append(result);
+                            }
+                        }
+
                     }
-                    textResult.setText(mResult);
+
+                    dataOk = true;
+                    break;
+//                    textResult.setText(result);
                 }
             }
         }
 
-        textName.setText(testInfo.getName());
+        textName.setText(testInfo.getSubTests().get(0).getDesc());
         textUnit.setText(testInfo.getUnit());
 
         if (dataOk && testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {

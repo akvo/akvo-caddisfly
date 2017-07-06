@@ -138,7 +138,8 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        setTitle(testInfo.getName());
+        //setTitle(testInfo.getName());
+        setTitle("Connected");
 
         TextView textSelectTest = (TextView) findViewById(R.id.textSelectTest);
         textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
@@ -347,18 +348,21 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         layoutInstructions.setVisibility(View.VISIBLE);
         layoutSelectTest.setVisibility(View.GONE);
         layoutWaiting.setVisibility(View.GONE);
+        setTitle("Instructions");
     }
 
     private void showSelectTestView() {
         layoutSelectTest.setVisibility(View.VISIBLE);
         layoutWaiting.setVisibility(View.GONE);
         layoutInstructions.setVisibility(View.GONE);
+        setTitle("Connected");
     }
 
     private void showWaitingView() {
         layoutWaiting.setVisibility(View.VISIBLE);
         layoutSelectTest.setVisibility(View.GONE);
         layoutInstructions.setVisibility(View.GONE);
+        setTitle("Connected");
     }
 
 }

@@ -273,7 +273,7 @@ public final class TestConfigHelper {
 
             testInfo.setIsDeprecated(item.has("deprecated") && item.getBoolean("deprecated"));
 
-            testInfo.setTintometerId(item.has("tintometerId") ? item.getString("tintometerId") : "");
+            testInfo.setTintometerId(item.has("md610_id") ? item.getString("md610_id") : "");
 
             testInfo.setSelectInstruction(item.has("selectInstruction") ? item.getString("selectInstruction") : "");
 

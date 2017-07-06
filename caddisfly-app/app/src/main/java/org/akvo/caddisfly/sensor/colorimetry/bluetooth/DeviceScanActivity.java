@@ -72,7 +72,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 
@@ -115,8 +114,8 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
         setContentView(R.layout.activity_device_list);
 
-        setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName());
-
+        //setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName());
+        setTitle("Connection");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 

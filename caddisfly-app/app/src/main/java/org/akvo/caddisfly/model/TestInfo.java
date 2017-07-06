@@ -133,7 +133,8 @@ public class TestInfo {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
                     subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"),
                             patchObj.getString("unit"),
-                            patchObj.has("timeDelay") ? patchObj.getInt("timeDelay") : 0));
+                            patchObj.has("timeDelay") ? patchObj.getInt("timeDelay") : 0,
+                            patchObj.has("md610_id") ? patchObj.getString("md610_id") : ""));
                 } catch (JSONException e) {
                     Timber.e(e);
                 }
@@ -367,12 +368,14 @@ public class TestInfo {
         private final String desc;
         private final String unit;
         private final int timeDelay;
+        private final String md610Id;
 
-        SubTest(int id, String desc, String unit, int timeDelay) {
+        SubTest(int id, String desc, String unit, int timeDelay, String md610Id) {
             this.id = id;
             this.desc = desc;
             this.unit = unit;
             this.timeDelay = timeDelay * 1000;
+            this.md610Id = md610Id;
         }
 
         public int getId() {
@@ -391,5 +394,8 @@ public class TestInfo {
             return timeDelay;
         }
 
+        public String getMd610Id() {
+            return md610Id;
+        }
     }
 }
