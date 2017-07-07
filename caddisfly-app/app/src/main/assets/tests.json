@@ -544,6 +544,98 @@
           ]
         }
       ]
+    },{
+      "name": "Soil - Nitrate 100",
+      "description": "",
+      "subtype": "striptest",
+      "tags": ["soil quality"],
+      "uuid": "77957656-3b72-4f0f-9507-d555f04db952",
+      "calibration": "07 Jun 2017 using X-Rite i1Pro 2",
+      "brand": "Quantofix 91351",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 95.20,
+      "height": 5.5,
+      "unit": "mm",
+      "hasImage": true,
+      "results": [
+        {
+          "id":1,
+          "name":"Nitrate",
+          "unit": "ppm",
+          "patchPos": 4.25,
+          "patchWidth":6,
+          "timeDelay": 60,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[84.59,-0.31,2.45]
+            },
+            {
+              "value": 5,
+              "lab":[82.53,4.82,0.29]
+            },
+            {
+              "value": 10,
+              "lab":[80.18,9.75,-2.06]
+            },
+            {
+              "value": 25,
+              "lab":[75.28,20.72,-6.78]
+            },
+            {
+              "value": 50,
+              "lab":[69.78,30.86,-10.03]
+            },
+            {
+              "value": 75,
+              "lab":[65.92,37.61,-11.58]
+            },
+            {
+              "value": 100,
+              "lab":[63.16,41.17,-12.13]
+            }
+          ]
+        },
+        {
+          "id":2,
+          "name":"Nitrite",
+          "unit": "ppm",
+          "patchPos": 13.25,
+          "patchWidth":6,
+          "timeDelay": 60,
+          "colors":[
+            {
+              "value": 0,
+              "lab":[86.92,-1.25,2.70]
+            },
+            {
+              "value": 0.5,
+              "lab":[84.87,3.08,0.92]
+            },
+            {
+              "value": 2,
+              "lab":[78.56,15.70,-4.87]
+            },
+            {
+              "value": 5,
+              "lab":[71.42,29.91,-10.67]
+            },
+            {
+              "value": 10,
+              "lab":[64.05,42.91,-14.78]
+            },
+            {
+              "value": 25,
+              "lab":[53.36,57.47,-16.20]
+            },
+            {
+              "value": 50,
+              "lab":[45.24,62.00,-13.58]
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "Water - Ammonium",
