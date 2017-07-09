@@ -73,7 +73,6 @@
     <string name="calibrationSuccessful">Kalibrasi Sukses</string>
     <string name="sensorCalibrated">Sensor EC telah dikalibrasi</string>
     <string name="celsius">°Celsius</string>
-    <string name="sensorConnected">Sensor telah terhubung</string>
     <string name="dipSensorInSample">Celup sensor dalam sampel</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Sistem kualitas Air &amp; Tanah</string>
