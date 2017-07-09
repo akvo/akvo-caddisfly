@@ -209,7 +209,7 @@
     <string name="select_bluetooth"><![CDATA[Press #down# to scroll to Bluetooth and press #enter#]]></string>
     <string name="turn_bluetooth_on"><![CDATA[Press #shift# + #1# to turn bluetooth on.]]></string>
     <string name="escape_to_menu"><![CDATA[Press #enter# and #esc# to return to main menu.]]></string>
-    <string name="perform_test"><![CDATA[Perform <b>%1$s</b> test on MD610 and press #f3# when ready.]]></string>
+    <string name="perform_test"><![CDATA[Perform <b>%1$s</b> test on MD610 and press ##f3## when ready.]]></string>
     <string name="select_correct_test"><![CDATA[Select the correct test and try again.]]></string>
     <string name="data_does_not_match">Received data does not match the expected test type.</string>
     <string name="incorrect_test_selected">Incorrect test selected</string>
@@ -269,8 +269,8 @@
     <string name="press_enter_wait_1">Press #enter# and wait for a reaction period of %reactiontime1 minutes</string>
     <string name="press_enter_wait_2">Press #enter# and wait for a reaction period of %reactiontime2 minutes</string>
     <string name="remix">Remix the solution</string>
-    <string name="insert_13mm_apapter">Insert the adapter for 13 mm Ø round vials.</string>
-    <string name="insert_16mm_apapter">Insert the adapter for 16 mm Ø vials</string>
+    <string name="insert_13mm_adapter">Insert the adapter for 13 mm Ø round vials.</string>
+    <string name="insert_16mm_adapter">Insert the adapter for 16 mm Ø vials</string>
     <string name="reaction_tube_1ml_sample">Open another white capped reaction vial and add 1 ml of the water sample. Close the cap tightly.</string>
     <string name="reaction_tube_2ml_blank">Open one white capped reaction vial and add 2 ml deionised water (this is the blank)</string>
     <string name="reaction_tube_2ml_sample">Open another white capped reaction vial and add 2 ml of the water sample (this is the sample).</string>
@@ -293,7 +293,7 @@
     <string name="vacuvial_test">Place the Vacu-vial<sup>®</sup> in the sample chamber and press #test#</string>
     <string name="phosphate_syringe">Fill a clean 20 ml syringe with approx. 14 ml water sample.</string>
     <string name="phosphate_discharge">Connect the syringe to the filtration assembly (using a GF/C filter) and discharge the syringe to waste, down to the 10 ml mark.</string>
-    <string name="phoshate_fill_vial_test">Fill vial (24 mm Ø) with 10 ml of your sample from the syringe, wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press #zero#</string>
+    <string name="phosphate_fill_vial_test">Fill vial (24 mm Ø) with 10 ml of your sample from the syringe, wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press #zero#</string>
     <string name="blend_tss">Blend approx. 500 ml of the water sample (e.g. in a blender) at high speed for 2 minutes.</string>
     <string name="stirr_tss">Stir the blended water sample. Immediately rinse the vial with the water sample and fill with 10 ml water sample.</string>
     <string name="stirr_fau">Stir the water sample. Immediately rinse the vial with the water sample and fill with 10 ml water sample.</string>

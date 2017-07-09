@@ -20,6 +20,8 @@
 package org.akvo.caddisfly.model;
 
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -27,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,8 +43,19 @@ import timber.log.Timber;
 /**
  * Model to hold test configuration information.
  */
-public class TestInfo {
+public class TestInfo implements Parcelable {
 
+    public static final Creator<TestInfo> CREATOR = new Creator<TestInfo>() {
+        @Override
+        public TestInfo createFromParcel(Parcel in) {
+            return new TestInfo(in);
+        }
+
+        @Override
+        public TestInfo[] newArray(int size) {
+            return new TestInfo[size];
+        }
+    };
     private static final double RESULT_ERROR_MARGIN = 0.2;
     private final String name;
     private final String uuid;
@@ -69,6 +83,9 @@ public class TestInfo {
     private JSONArray instructions;
     private String tintometerId;
     private String selectInstruction;
+    private ArrayList<String> reagents;
+    private Serializable sampleQuantity;
+    private ArrayList<String> reactionTimes;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -78,6 +95,8 @@ public class TestInfo {
         this.uuid = uuid;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
+        reagents = new ArrayList<>();
+        reactionTimes = new ArrayList<>();
 
         instructions = instructionsArray;
 
@@ -154,6 +173,33 @@ public class TestInfo {
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
         this.requiresCalibration = false;
+    }
+
+    protected TestInfo(Parcel in) {
+        name = in.readString();
+        uuid = in.readString();
+        unit = in.readString();
+        requiresCalibration = in.readByte() != 0;
+        allInteger = in.readByte() != 0;
+        mIsDirty = in.readByte() != 0;
+        monthsValid = in.readInt();
+        isGroup = in.readByte() != 0;
+        groupName = in.readInt();
+        batchNumber = in.readString();
+        calibrationDate = in.readLong();
+        expiryDate = in.readLong();
+        useGrayScale = in.readByte() != 0;
+        hueTrend = in.readInt();
+        rangeValues = in.createDoubleArray();
+        deviceId = in.readString();
+        responseFormat = in.readString();
+        deprecated = in.readByte() != 0;
+        tintometerId = in.readString();
+        selectInstruction = in.readString();
+        reagents = in.createStringArrayList();
+        swatches = null;
+        testType = null;
+        dilutions = null;
     }
 
     /**
@@ -355,12 +401,75 @@ public class TestInfo {
         this.tintometerId = tintometerId;
     }
 
+    public String getSelectInstruction() {
+        return selectInstruction;
+    }
+
     public void setSelectInstruction(String selectInstruction) {
         this.selectInstruction = selectInstruction;
     }
 
-    public String getSelectInstruction() {
-        return selectInstruction;
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(uuid);
+        dest.writeString(unit);
+        dest.writeByte((byte) (requiresCalibration ? 1 : 0));
+        dest.writeByte((byte) (allInteger ? 1 : 0));
+        dest.writeByte((byte) (mIsDirty ? 1 : 0));
+        dest.writeInt(monthsValid);
+        dest.writeByte((byte) (isGroup ? 1 : 0));
+        dest.writeInt(groupName);
+        dest.writeString(batchNumber);
+        dest.writeLong(calibrationDate);
+        dest.writeLong(expiryDate);
+        dest.writeByte((byte) (useGrayScale ? 1 : 0));
+        dest.writeInt(hueTrend);
+        dest.writeDoubleArray(rangeValues);
+        dest.writeString(deviceId);
+        dest.writeString(responseFormat);
+        dest.writeByte((byte) (deprecated ? 1 : 0));
+        dest.writeString(tintometerId);
+        dest.writeString(selectInstruction);
+        dest.writeStringList(reagents);
+    }
+
+    public String getReagent(int index) {
+        if (reagents.size() > index) {
+            return reagents.get(index);
+        } else {
+            return "";
+        }
+    }
+
+    public void setReagent(String value) {
+        this.reagents.add(value);
+    }
+
+    public Serializable getSampleQuantity() {
+        return sampleQuantity;
+    }
+
+    public void setSampleQuantity(Serializable sampleQuantity) {
+        this.sampleQuantity = sampleQuantity;
+    }
+
+    public void setReactionTime(String value) {
+        this.reactionTimes.add(value);
+    }
+
+    public String getReactionTime(int index) {
+        if (reactionTimes.size() > index) {
+            return reactionTimes.get(index);
+        } else {
+            return "";
+        }
+
     }
 
     public static class SubTest {

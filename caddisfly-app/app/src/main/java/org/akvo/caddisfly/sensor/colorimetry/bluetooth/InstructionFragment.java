@@ -95,7 +95,7 @@ public class InstructionFragment extends Fragment {
                             jsonArray.put(text);
                         }
 
-                        fragments.add(InstructionDetailFragment.newInstance(
+                        fragments.add(InstructionDetailFragment.newInstance(testInfo,
                                 jsonArray,
                                 instructions.getJSONObject(i).has(SensorConstants.IMAGE)
                                         ? instructions.getJSONObject(i).getString(SensorConstants.IMAGE) : ""));

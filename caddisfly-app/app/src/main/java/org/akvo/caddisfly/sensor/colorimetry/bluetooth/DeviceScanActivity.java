@@ -282,9 +282,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 dlg.dismiss();
             }
         }, CONNECTING_DELAY);
-
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

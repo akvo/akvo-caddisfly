@@ -25,6 +25,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.widget.CenteredImageSpan;
 
 import java.util.regex.Matcher;
@@ -57,7 +58,7 @@ public final class StringUtil {
         return result;
     }
 
-    public static SpannableStringBuilder toInstruction(Context context, String text) {
+    public static SpannableStringBuilder toInstruction(Context context, TestInfo testInfo, String text) {
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
@@ -73,6 +74,28 @@ public final class StringUtil {
             if (resId > 0) {
                 builder.setSpan(new CenteredImageSpan(context, resId),
                         m.start(1) - 1, m.end(1) + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            }
+        }
+
+        // Set reagent in the string
+        for (int i = 1; i < 5; i++) {
+            Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
+            while (m1.find()) {
+                builder.replace(m1.start(), m1.end(), testInfo.getReagent(i - 1));
+            }
+        }
+
+        // Set sample quantity in the string
+        Matcher m1 = Pattern.compile("%samplequantity").matcher(builder);
+        while (m1.find()) {
+            builder.replace(m1.start(), m1.end(), testInfo.getSampleQuantity().toString());
+        }
+
+        // Set reaction time in the string
+        for (int i = 1; i < 5; i++) {
+            Matcher m2 = Pattern.compile("%reactiontime" + i).matcher(builder);
+            while (m2.find()) {
+                builder.replace(m2.start(), m2.end(), testInfo.getReactionTime(i - 1));
             }
         }
 

@@ -88,7 +88,7 @@ public class BluetoothTypeListActivity extends BaseActivity {
     private void startDetailActivity(String uuid) {
 
         CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
-        final Intent intent = new Intent(getBaseContext(), DeviceScanActivity.class);
+        final Intent intent = new Intent(getBaseContext(), DeviceControlActivity.class);
         intent.putExtra(Constant.UUID, uuid);
         intent.putExtra("internal", true);
         startActivity(intent);

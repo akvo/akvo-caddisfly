@@ -95,7 +95,7 @@ public class BluetoothResultFragment extends Fragment {
             }
         });
 
-        textPerformTest.setText(StringUtil.toInstruction(getActivity(), String.format(getString(R.string.perform_test),
+        textPerformTest.setText(StringUtil.toInstruction(getActivity(), testInfo, String.format(getString(R.string.perform_test),
                 testInfo.getName())));
 
         return view;
@@ -107,8 +107,8 @@ public class BluetoothResultFragment extends Fragment {
         alertDialog.setTitle(R.string.incorrect_test_selected);
 
         alertDialog.setMessage(TextUtils.concat(
-                StringUtil.toInstruction(getActivity(), getString(R.string.data_does_not_match) + "<br /><br />"),
-                StringUtil.toInstruction(getActivity(), getString(R.string.select_correct_test))
+                StringUtil.toInstruction(getActivity(), null, getString(R.string.data_does_not_match) + "<br /><br />"),
+                StringUtil.toInstruction(getActivity(), null, getString(R.string.select_correct_test))
         ));
 
         alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {

@@ -147,6 +147,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
 
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         mBluetoothResultFragment = new BluetoothResultFragment();
@@ -208,7 +209,11 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(mServiceConnection);
+        try {
+            unbindService(mServiceConnection);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mBluetoothLeService = null;
     }
 
@@ -247,7 +252,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
             alert.setMessage(TextUtils.concat(
-                    StringUtil.toInstruction(this,
+                    StringUtil.toInstruction(this, testInfo,
                             String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
                                     StringUtil.convertToTags(testInfo.getTintometerId()), testInfo.getName()))
             ));

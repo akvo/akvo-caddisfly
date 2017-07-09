@@ -702,7 +702,8 @@
           "unit": "ppm"
         }
       ]
-    },{
+    },
+    {
       "name": "30 Alkalinity-m, Tablet (5 - 200 mg/l CaCO3)",
       "description": "",
       "subtype": "bluetooth",
@@ -710,6 +711,9 @@
       "tags": "[water quality]",
       "uuid": "85e9bea2-8538-4759-a46a-46459783c2d3",
       "brand": "Lovibond",
+      "reagent1": "ALKA-M-PHOTOMETER",
+      "sampleQuantity": "10",
+      "reactionTime1": "0",
       "ranges": "5,200",
       "results": [
         {
@@ -746,6 +750,9 @@
       "tags": "[water quality]",
       "uuid": "403af73f-377f-42ea-bba3-f9c88cfe97d2",
       "brand": "Lovibond",
+      "reagent1": "ALKA-M-HR PHOTOMETER ",
+      "sampleQuantity": "10",
+      "reactionTime1": "1",
       "ranges": "5,500",
       "results": [
         {
@@ -788,6 +795,9 @@
       "tags": "[water quality]",
       "uuid": "76defb64-592f-405c-b491-77ffa76fbad8",
       "brand": "Lovibond",
+      "reagent1": "ALUMINIUM No. 1",
+      "sampleQuantity": "10",
+      "reactionTime1": "5",
       "ranges": "0.01,0.3",
       "results": [
         {
@@ -827,6 +837,9 @@
       "tags": "[water quality]",
       "uuid": "f0d60451-a220-4113-821d-3a658167cc9f",
       "brand": "Lovibond",
+      "reagent1": "AMMONIA No. 1 ",
+      "sampleQuantity": "10",
+      "reactionTime1": "10",
       "ranges": "0.02,1",
       "results": [
         {
@@ -866,6 +879,9 @@
       "tags": "[water quality]",
       "uuid": "538ab4d3-706b-4c5e-93a9-adb5c13b1be9",
       "brand": "Lovibond",
+      "reagent1": "Vario Ammonia Salicylate F10 ",
+      "sampleQuantity": "10",
+      "reactionTime1": "3",
       "ranges": "0.01,0.8",
       "results": [
         {
@@ -922,6 +938,9 @@
       "tags": "[water quality]",
       "uuid": "3221bdba-8898-4ae2-958f-5f6a1f949c8f",
       "brand": "Lovibond",
+      "reagent1": "Vario Ammonia Salicylate F5",
+      "sampleQuantity": "2",
+      "reactionTime1": "20",
       "ranges": "0.02,2.5",
       "results": [
         {
@@ -933,7 +952,7 @@
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -975,6 +994,9 @@
       "tags": "[water quality]",
       "uuid": "17ca9214-23d4-49bf-99cc-c0463db03a90",
       "brand": "Lovibond",
+      "reagent1": "Vario Ammonia Salicylate F5",
+      "sampleQuantity": "0.1",
+      "reactionTime1": "20",
       "ranges": "1,50",
       "results": [
         {
@@ -986,7 +1008,7 @@
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -1028,6 +1050,9 @@
       "tags": "[water quality]",
       "uuid": "4f8fcb4b-35f6-40df-aa1c-c3f4a96352d4",
       "brand": "Lovibond",
+      "reagent1": "CHLORIDE T1 ",
+      "sampleQuantity": "10",
+      "reactionTime1": "2",
       "ranges": "0.5,25",
       "results": [
         {
@@ -1067,6 +1092,9 @@
       "tags": "[water quality]",
       "uuid": "e2849dba-6486-4ceb-b5fd-58472d61fe5e",
       "brand": "Lovibond",
+      "reagent1": "20 drops KS251 (Chloride Reagent A) ",
+      "sampleQuantity": "10",
+      "reactionTime1": "2",
       "ranges": "0.5,20",
       "results": [
         {
@@ -1109,6 +1137,9 @@
       "tags": "[water quality]",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
       "brand": "Lovibond",
+      "reagent1": "DPD No. 1 ",
+      "sampleQuantity": "10",
+      "reactionTime1": "2",
       "ranges": "0.01,6",
       "results": [
         {
@@ -1167,6 +1198,9 @@
       "tags": "[water quality]",
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
       "brand": "Lovibond",
+      "reagent1": "DPD No. 1 ",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0.01,6",
       "results": [
         {
@@ -1206,6 +1240,9 @@
       "tags": "[water quality]",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
       "brand": "Lovibond",
+      "reagent1": "DPD No. 1 HR ",
+      "sampleQuantity": "10",
+      "reactionTime1": "2",
       "ranges": "0.1,10",
       "results": [
         {
@@ -1264,6 +1301,9 @@
       "tags": "[water quality]",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
       "brand": "Lovibond",
+      "reagent1": "DPD No. 1 HR ",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0.1,10",
       "results": [
         {
@@ -1303,6 +1343,9 @@
       "tags": "[water quality]",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
       "brand": "Lovibond",
+      "reagent1": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
+      "sampleQuantity": "10",
+      "reactionTime1": "2",
       "ranges": "0.02,4",
       "results": [
         {
@@ -1361,6 +1404,9 @@
       "tags": "[water quality]",
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
       "brand": "Lovibond",
+      "reagent1": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0.02,4",
       "results": [
         {
@@ -1400,6 +1446,9 @@
       "tags": "[water quality]",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
       "brand": "Lovibond",
+      "reagent1": "VARIO Chlorine FREE-DPD/F10",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0.02,2",
       "results": [
         {
@@ -1460,6 +1509,9 @@
       "tags": "[water quality]",
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
       "brand": "Lovibond",
+      "reagent1": "VARIO Chlorine FREE-DPD/F10",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0.02,2",
       "results": [
         {
@@ -1497,6 +1549,9 @@
       "tags": "[water quality]",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
       "brand": "Lovibond",
+      "reagent1": "VARIO Chlorine FREE-DPD/F10",
+      "sampleQuantity": "5",
+      "reactionTime1": "3",
       "ranges": "0.1,8",
       "results": [
         {
@@ -1557,6 +1612,9 @@
       "tags": "[water quality]",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
       "brand": "Lovibond",
+      "reagent1": "VARIO Chlorine FREE-DPD/F10",
+      "sampleQuantity": "5",
+      "reactionTime1": "",
       "ranges": "0.1,8",
       "results": [
         {
@@ -1594,6 +1652,9 @@
       "tags": "[water quality]",
       "uuid": "b6b46404-3392-4718-ac35-d2379c0f7d6d",
       "brand": "Lovibond",
+      "reagent1": "PERSULF.RGT FOR CR",
+      "sampleQuantity": "10",
+      "reactionTime1": "5",
       "ranges": "0.02,2",
       "results": [
         {
@@ -1615,7 +1676,7 @@
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -1673,6 +1734,9 @@
       "tags": "[water quality]",
       "uuid": "b6b12955-46ae-4be7-8c57-e2ccb417bd7b",
       "brand": "Lovibond",
+      "reagent1": "CHROMIUM HEXAVALENT",
+      "sampleQuantity": "10",
+      "reactionTime1": "5",
       "ranges": "0.02,2",
       "results": [
         {
@@ -1684,7 +1748,7 @@
       "selectInstruction": "select_Cr_VI_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -1713,6 +1777,9 @@
       "tags": "[water quality]",
       "uuid": "cdbbd63a-2740-4e42-9b4b-5a3d490d9df3",
       "brand": "Lovibond",
+      "reagent1": "PERSULF.RGT FOR CR",
+      "sampleQuantity": "10",
+      "reactionTime1": "5",
       "ranges": "0.02,2",
       "results": [
         {
@@ -1724,7 +1791,7 @@
       "selectInstruction": "select_Cr_III_VI_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -1769,6 +1836,9 @@
       "tags": "[water quality]",
       "uuid": "f15575d4-141e-4696-9c99-59cc2d3153b9",
       "brand": "Lovibond",
+      "reagent1": "",
+      "sampleQuantity": "2",
+      "reactionTime1": "",
       "ranges": "0,150",
       "results": [
         {
@@ -1780,7 +1850,7 @@
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -1817,6 +1887,9 @@
       "tags": "[water quality]",
       "uuid": "c99c85fa-ab1a-4065-b959-9991fb84dd90",
       "brand": "Lovibond",
+      "reagent1": "",
+      "sampleQuantity": "2",
+      "reactionTime1": "",
       "ranges": "0,1500",
       "results": [
         {
@@ -1828,7 +1901,7 @@
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -1865,6 +1938,9 @@
       "tags": "[water quality]",
       "uuid": "cf6a1ce4-0e5d-42a9-827d-606b771e0ffe",
       "brand": "Lovibond",
+      "reagent1": "",
+      "sampleQuantity": "0.2",
+      "reactionTime1": "",
       "ranges": "0,15",
       "results": [
         {
@@ -1876,7 +1952,7 @@
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -1913,6 +1989,9 @@
       "tags": "[water quality]",
       "uuid": "d839537b-8106-44e8-953a-6060e4dbe59d",
       "brand": "Lovibond",
+      "reagent1": "2 ml SPADNS",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0.05,2",
       "results": [
         {
@@ -1949,6 +2028,9 @@
       "tags": "[water quality]",
       "uuid": "3e7c94de-1963-4b59-b196-de40aa126a24",
       "brand": "Lovibond",
+      "reagent1": "CALCHECK",
+      "sampleQuantity": "2",
+      "reactionTime1": "2",
       "ranges": "50,900",
       "results": [
         {
@@ -1973,7 +2055,7 @@
           "text": "remove_vial"
         },
         {
-          "text": "wipe_place_align_vial_blank_zero_wait"
+          "text": "wipe_place_align_vial_wait_1"
         },
         {
           "text": "remove_vial"
@@ -1997,6 +2079,9 @@
       "tags": "[water quality]",
       "uuid": "d4d57975-5e87-4ba9-b9d1-09ec2eb8f500",
       "brand": "Lovibond",
+      "reagent1": "HARDCHECK P ",
+      "sampleQuantity": "1",
+      "reactionTime1": "5",
       "ranges": "2,50",
       "results": [
         {
@@ -2032,6 +2117,9 @@
       "tags": "[water quality]",
       "uuid": "5d82d3a3-cfb3-40fb-a739-49e308b0f9b4",
       "brand": "Lovibond",
+      "reagent1": "HARDCHECK P ",
+      "sampleQuantity": "10",
+      "reactionTime1": "5",
       "ranges": "20,500",
       "results": [
         {
@@ -2068,6 +2156,9 @@
       "tags": "[water quality]",
       "uuid": "ac65e12d-632a-439d-b841-383b1b9b7026",
       "brand": "Lovibond",
+      "reagent1": "IRON LR",
+      "sampleQuantity": "10",
+      "reactionTime1": "5",
       "ranges": "0.02,1",
       "results": [
         {
@@ -2104,6 +2195,9 @@
       "tags": "[water quality]",
       "uuid": "7a9457b0-96c2-487d-b3d3-c52c50fb2279",
       "brand": "Lovibond",
+      "reagent1": "Vario Ferro F10",
+      "sampleQuantity": "10",
+      "reactionTime1": "3",
       "ranges": "0.02,1",
       "results": [
         {
@@ -2141,6 +2235,9 @@
       "tags": "[water quality]",
       "uuid": "928f2cf7-7c98-4707-af3b-2e12e0d2d46b",
       "brand": "Lovibond",
+      "reagent1": "Vario IRON TPTZ F10 ",
+      "sampleQuantity": "10",
+      "reactionTime1": "3",
       "ranges": "0.02,1.8",
       "results": [
         {
@@ -2186,6 +2283,9 @@
       "tags": "[water quality]",
       "uuid": "1f704c37-9dbe-4ca7-a3da-00adc1e5fa0b",
       "brand": "Lovibond",
+      "reagent1": "10 drops KS61 (Ferrozine/Thioglycolate)",
+      "sampleQuantity": "10",
+      "reactionTime1": "5",
       "ranges": "0.03,2",
       "results": [
         {
@@ -2222,6 +2322,9 @@
       "tags": "[water quality]",
       "uuid": "bdcf8941-f7df-4c04-9242-fc8a5b3af672",
       "brand": "Lovibond",
+      "reagent1": "10 drops KS63 (Thioglycolate)",
+      "sampleQuantity": "10",
+      "reactionTime1": "15",
       "ranges": "0.1,10",
       "results": [
         {
@@ -2264,6 +2367,9 @@
       "tags": "[water quality]",
       "uuid": "a213cf40-7cb8-4828-872e-25bf2b8b12aa",
       "brand": "Lovibond",
+      "reagent1": "Vario Nitrate Chromotropic",
+      "sampleQuantity": "1",
+      "reactionTime1": "5",
       "ranges": "1,30",
       "results": [
         {
@@ -2275,7 +2381,7 @@
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
-          "text": "insert_16mm_apapter",
+          "text": "insert_16mm_adapter",
           "image": "16mm_adapter"
         },
         {
@@ -2306,6 +2412,9 @@
       "tags": "[water quality]",
       "uuid": "252298b1-5c2b-4b7d-9385-cc25d617725d",
       "brand": "Lovibond",
+      "reagent1": "NITRATE TEST ",
+      "sampleQuantity": "10",
+      "reactionTime1": "10",
       "ranges": "0.08,1",
       "results": [
         {
@@ -2360,6 +2469,9 @@
       "tags": "[water quality]",
       "uuid": "22963cac-e81d-43db-a84b-e71c27a3dd60",
       "brand": "Lovibond",
+      "reagent1": "NITRITE LR",
+      "sampleQuantity": "10",
+      "reactionTime1": "10",
       "ranges": "0.01,0.5",
       "results": [
         {
@@ -2396,6 +2508,9 @@
       "tags": "[water quality]",
       "uuid": "1ad51f5d-bfea-4a49-8797-efd899d7f484",
       "brand": "Lovibond",
+      "reagent1": "Vario Nitri 3 ",
+      "sampleQuantity": "10",
+      "reactionTime1": "20",
       "ranges": "0.01,0.3",
       "results": [
         {
@@ -2433,6 +2548,9 @@
       "tags": "[water quality]",
       "uuid": "15198865-9397-417e-b7e0-b59b2eb197fc",
       "brand": "Lovibond",
+      "reagent1": "",
+      "sampleQuantity": "",
+      "reactionTime1": "",
       "ranges": "10,800",
       "results": [
         {
@@ -2444,7 +2562,7 @@
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
-          "text": "insert_13mm_apapter",
+          "text": "insert_13mm_adapter",
           "image": "13mm_adapter"
         },
         {
@@ -2474,6 +2592,9 @@
       "tags": "[water quality]",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
       "brand": "Lovibond",
+      "reagent1": "PHOSPHATE No. 1 LR ",
+      "sampleQuantity": "10",
+      "reactionTime1": "10",
       "ranges": "0.05,4",
       "results": [
         {
@@ -2513,6 +2634,9 @@
       "tags": "[water quality]",
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
       "brand": "Lovibond",
+      "reagent1": "PHOSPHATE No. 1 HR ",
+      "sampleQuantity": "10",
+      "reactionTime1": "10",
       "ranges": "1,80",
       "results": [
         {
@@ -2552,6 +2676,9 @@
       "tags": "[water quality]",
       "uuid": "ef94c4fc-be81-4a25-b879-7c0ab18efe43",
       "brand": "Lovibond",
+      "reagent1": "VARIO Phosphate Rgt. F10",
+      "sampleQuantity": "10",
+      "reactionTime1": "2",
       "ranges": "0.06,2.5",
       "results": [
         {
@@ -2589,6 +2716,9 @@
       "tags": "[water quality]",
       "uuid": "78db84dc-ea94-45bd-a985-1ccfe1157994",
       "brand": "Lovibond",
+      "reagent1": "50 drops KS80 (CRP)",
+      "sampleQuantity": "10",
+      "reactionTime1": "10",
       "ranges": "0.1,10",
       "results": [
         {
@@ -2606,7 +2736,7 @@
           "text": "phosphate_discharge"
         },
         {
-          "text": "phoshate_fill_vial_test"
+          "text": "phosphate_fill_vial_test"
         },
         {
           "text": "remove_vial"
@@ -2636,6 +2766,9 @@
       "tags": "[water quality]",
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
       "brand": "Lovibond",
+      "reagent1": "25 drops KS228 (Ammonium Molybdate)",
+      "sampleQuantity": "10",
+      "reactionTime1": "10",
       "ranges": "5,80",
       "results": [
         {
@@ -2653,7 +2786,7 @@
           "text": "phosphate_discharge"
         },
         {
-          "text": "phoshate_fill_vial_test"
+          "text": "phosphate_fill_vial_test"
         },
         {
           "text": "remove_vial"
@@ -2683,6 +2816,9 @@
       "tags": "[water quality]",
       "uuid": "58bd3f92-7092-4bfa-ac4a-1f3f24b85b6c",
       "brand": "Lovibond",
+      "reagent1": "BROMOCRESOLPURPLE PHOTOMETER ",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "5.2,6.8",
       "results": [
         {
@@ -2719,6 +2855,9 @@
       "tags": "[water quality]",
       "uuid": "6b6e9183-215f-4dc2-94a9-68444b1ec0df",
       "brand": "Lovibond",
+      "reagent1": "PHENOL RED PHOTOMETER ",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "6.5,8.4",
       "results": [
         {
@@ -2755,6 +2894,9 @@
       "tags": "[water quality]",
       "uuid": "976a33ff-a5cd-4a21-98ed-f07cd94f018e",
       "brand": "Lovibond",
+      "reagent1": " 6 drops of PHENOL RED solution",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "6.5,8.4",
       "results": [
         {
@@ -2791,6 +2933,9 @@
       "tags": "[water quality]",
       "uuid": "635fe6af-b66b-48b4-aa62-0b6a8db0a493",
       "brand": "Lovibond",
+      "reagent1": "THYMOLBLUE PHOTOMETER ",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "8,9.6",
       "results": [
         {
@@ -2827,6 +2972,9 @@
       "tags": "[water quality]",
       "uuid": "6b485134-e6e5-4db1-88b3-d96ff081e629",
       "brand": "Lovibond",
+      "reagent1": "Potassium T ",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0.7,12",
       "results": [
         {
@@ -2863,6 +3011,9 @@
       "tags": "[water quality]",
       "uuid": "4275391e-1498-4623-a068-e3f40dea8c29",
       "brand": "Lovibond",
+      "reagent1": "Sulfate T ",
+      "sampleQuantity": "10",
+      "reactionTime1": "2",
       "ranges": "5,100",
       "results": [
         {
@@ -2899,6 +3050,9 @@
       "tags": "[water quality]",
       "uuid": "64248882-405c-4ec2-b433-5977bf505ffb",
       "brand": "Lovibond",
+      "reagent1": "VARIO Sulpha 4/ F10 ",
+      "sampleQuantity": "10",
+      "reactionTime1": "5",
       "ranges": "5,100",
       "results": [
         {
@@ -2936,6 +3090,9 @@
       "tags": "[water quality]",
       "uuid": "51c6bbf7-f027-478d-8a60-37404537d819",
       "brand": "Lovibond",
+      "reagent1": "",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0,750",
       "results": [
         {
@@ -2974,6 +3131,9 @@
       "tags": "[water quality]",
       "uuid": "90d6c006-2646-4c79-aa17-bb0ec47e2007",
       "brand": "Lovibond",
+      "reagent1": "",
+      "sampleQuantity": "10",
+      "reactionTime1": "",
       "ranges": "0,1000",
       "results": [
         {

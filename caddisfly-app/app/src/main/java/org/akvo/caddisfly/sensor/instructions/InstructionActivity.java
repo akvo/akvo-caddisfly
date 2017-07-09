@@ -29,6 +29,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView;
@@ -97,8 +99,9 @@ public class InstructionActivity extends BaseActivity {
                         jsonArray.put(text);
                     }
 
+                    TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
                     fragments.add(InstructionDetailFragment.newInstance(
-                            jsonArray,
+                            testInfo, jsonArray,
                             instructions.getJSONObject(i).has("png")
                                     ? instructions.getJSONObject(i).getString("png") : ""));
                 } catch (JSONException e) {

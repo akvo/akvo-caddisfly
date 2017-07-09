@@ -45,6 +45,6 @@ public class HtmlTextView extends AppCompatTextView {
     }
 
     private void init(Context context) {
-        setText(StringUtil.toInstruction(context, getText().toString()));
+        setText(StringUtil.toInstruction(context, null, getText().toString()));
     }
 }

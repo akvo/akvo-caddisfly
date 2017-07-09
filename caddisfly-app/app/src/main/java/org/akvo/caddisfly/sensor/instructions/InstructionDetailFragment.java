@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AssetsManager;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONArray;
@@ -51,14 +52,14 @@ public class InstructionDetailFragment extends Fragment {
      */
     private static final String ARG_ITEM_TEXT = "text";
     private static final String ARG_ITEM_IMAGE = "image";
-
+    private static final String ARG_ITEM_INFO = "testInfo";
     @BindView(R.id.image_illustration)
     ImageView imageIllustration;
-
     @BindView(R.id.layout_instructions)
     LinearLayout layoutInstructions;
 
-    public static InstructionDetailFragment newInstance(JSONArray text, String imageName) {
+    public static InstructionDetailFragment newInstance(TestInfo testInfo,
+                                                        JSONArray text, String imageName) {
         InstructionDetailFragment fragment = new InstructionDetailFragment();
         Bundle args = new Bundle();
 
@@ -75,6 +76,8 @@ public class InstructionDetailFragment extends Fragment {
 
         args.putStringArrayList(ARG_ITEM_TEXT, arrayList);
         args.putString(ARG_ITEM_IMAGE, imageName);
+        args.putParcelable(ARG_ITEM_INFO, testInfo);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,6 +91,8 @@ public class InstructionDetailFragment extends Fragment {
 
         Drawable instructionDrawable = AssetsManager.getImage(getActivity(),
                 getArguments().getString(ARG_ITEM_IMAGE));
+
+        TestInfo testInfo = getArguments().getParcelable(ARG_ITEM_INFO);
 
         if (instructionDrawable != null) {
             imageIllustration.setImageDrawable(instructionDrawable);
@@ -121,11 +126,17 @@ public class InstructionDetailFragment extends Fragment {
                     textView.setTypeface(null, Typeface.BOLD);
                 }
 
-                Spanned spanned = StringUtil.toInstruction(getContext(), text);
+                //text = text.replace("%reagent1", testInfo.getReagent(0));
+
+                Spanned spanned = StringUtil.toInstruction(getContext(), testInfo, text);
+
+                //spanned.toString().replace("%reagent1", testInfo.getReagent(0));
+
                 if (!text.isEmpty()) {
                     textView.append(spanned);
                     layoutInstructions.addView(textView);
                 }
+
             }
         }
 
