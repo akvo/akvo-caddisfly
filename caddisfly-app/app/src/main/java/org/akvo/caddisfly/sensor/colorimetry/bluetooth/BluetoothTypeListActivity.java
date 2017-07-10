@@ -162,12 +162,12 @@ public class BluetoothTypeListActivity extends BaseActivity {
                 holder.textView.setText(values[0]);
                 for (int i = 1; i < values.length - 1; i++) {
                     holder.textView.append(" ");
-                    holder.textView.append(values[i]);
+                    holder.textView.append(values[i].trim());
                 }
 
                 holder.textSubtitle.setText("");
                 if (values.length > 1) {
-                    holder.textSubtitle.setText(values[values.length - 1]);
+                    holder.textSubtitle.setText(values[values.length - 1].trim());
                 }
             }
 

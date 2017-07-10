@@ -65,7 +65,7 @@ public final class StringUtil {
         Spanned spanned = StringUtil.getStringResourceByName(context, text);
         builder.append(spanned);
 
-        Matcher m = Pattern.compile("#(\\w+)#").matcher(builder);
+        Matcher m = Pattern.compile("\\[\\*(\\w+)\\*\\]").matcher(builder);
 
         while (m.find()) {
 
@@ -73,7 +73,7 @@ public final class StringUtil {
 
             if (resId > 0) {
                 builder.setSpan(new CenteredImageSpan(context, resId),
-                        m.start(1) - 1, m.end(1) + 1, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+                        m.start(0), m.end(0), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             }
         }
 
@@ -105,9 +105,9 @@ public final class StringUtil {
     public static String convertToTags(String text) {
         String result = "";
         for (int i = 0; i < text.length(); i++) {
-            result += "#";
+            result += "[*";
             result += text.charAt(i);
-            result += "#";
+            result += "*]";
         }
         return result;
     }

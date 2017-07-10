@@ -285,6 +285,8 @@ public final class TestConfigHelper {
             testInfo.setReactionTime(item.has("reactionTime1") ? item.getString("reactionTime1") : "");
             testInfo.setReactionTime(item.has("reactionTime2") ? item.getString("reactionTime2") : "");
 
+            testInfo.setTitle(item.has("title") ? item.getString("title") : "");
+
         } catch (JSONException e) {
             Timber.e(e);
         }

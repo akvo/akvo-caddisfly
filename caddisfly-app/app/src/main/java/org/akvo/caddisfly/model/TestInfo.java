@@ -86,6 +86,7 @@ public class TestInfo implements Parcelable {
     private ArrayList<String> reagents;
     private Serializable sampleQuantity;
     private ArrayList<String> reactionTimes;
+    private String title;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -469,7 +470,14 @@ public class TestInfo implements Parcelable {
         } else {
             return "";
         }
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public static class SubTest {

@@ -145,10 +145,9 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
                 testInfo.getName())));
 
-
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+        //bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         mBluetoothResultFragment = new BluetoothResultFragment();
         mInstructionFragment = new InstructionFragment();
@@ -353,7 +352,10 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         layoutInstructions.setVisibility(View.VISIBLE);
         layoutSelectTest.setVisibility(View.GONE);
         layoutWaiting.setVisibility(View.GONE);
-        setTitle("Instructions");
+
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+        setTitle(testInfo.getTitle().replace(" and ", " & "));
     }
 
     private void showSelectTestView() {
