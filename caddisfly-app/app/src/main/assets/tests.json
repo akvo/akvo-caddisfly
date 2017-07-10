@@ -545,10 +545,10 @@
         }
       ]
     },{
-      "name": "Soil - Nitrate 100",
+      "name": "Water - Nitrate 100",
       "description": "",
       "subtype": "striptest",
-      "tags": ["soil quality"],
+      "tags": ["water quality"],
       "uuid": "77957656-3b72-4f0f-9507-d555f04db952",
       "calibration": "07 Jun 2017 using X-Rite i1Pro 2",
       "brand": "Quantofix 91351",
