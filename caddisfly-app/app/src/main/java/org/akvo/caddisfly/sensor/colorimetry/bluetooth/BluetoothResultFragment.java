@@ -27,8 +27,6 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -36,14 +34,27 @@ public class BluetoothResultFragment extends Fragment {
 
     private static final int ANIMATION_DURATION = 400;
     private final SparseArray<String> results = new SparseArray<>();
-    private HashMap<String, String> resultMap = new HashMap<>();
-    private TextView textResult;
-    private TextView textUnit;
+    //private HashMap<String, String> resultMap = new HashMap<>();
+    private TextView textName1;
+    private TextView textResult1;
+    private TextView textUnit1;
+
+    private TextView textName2;
+    private TextView textResult2;
+    private TextView textUnit2;
+
+    private TextView textName3;
+    private TextView textResult3;
+    private TextView textUnit3;
+
     private LinearLayout layoutWaiting;
     private LinearLayout layoutResult;
     private OnFragmentInteractionListener mListener;
-    private TextView textName;
     private AlertDialog dialog;
+    private LinearLayout layoutResult1;
+    private LinearLayout layoutResult2;
+    private LinearLayout layoutResult3;
+    private Button mAcceptButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,15 +78,27 @@ public class BluetoothResultFragment extends Fragment {
             buttonInstructions.setVisibility(View.GONE);
         }
 
-        textResult = (TextView) view.findViewById(R.id.textResult);
-        textUnit = (TextView) view.findViewById(R.id.textUnit);
-        textName = (TextView) view.findViewById(R.id.textName);
+        layoutResult1 = (LinearLayout) view.findViewById(R.id.layoutResult1);
+        textResult1 = (TextView) view.findViewById(R.id.textResult1);
+        textUnit1 = (TextView) view.findViewById(R.id.textUnit1);
+        textName1 = (TextView) view.findViewById(R.id.textName1);
+
+        layoutResult2 = (LinearLayout) view.findViewById(R.id.layoutResult2);
+        textResult2 = (TextView) view.findViewById(R.id.textResult2);
+        textUnit2 = (TextView) view.findViewById(R.id.textUnit2);
+        textName2 = (TextView) view.findViewById(R.id.textName2);
+
+        layoutResult3 = (LinearLayout) view.findViewById(R.id.layoutResult3);
+        textResult3 = (TextView) view.findViewById(R.id.textResult3);
+        textUnit3 = (TextView) view.findViewById(R.id.textUnit3);
+        textName3 = (TextView) view.findViewById(R.id.textName3);
+
         TextView textPerformTest = (TextView) view.findViewById(R.id.textPerformTest);
 
         layoutWaiting = (LinearLayout) view.findViewById(R.id.layoutWaiting);
         layoutResult = (LinearLayout) view.findViewById(R.id.layoutResult);
 
-        Button mAcceptButton = (Button) view.findViewById(R.id.button_accept_result);
+        mAcceptButton = (Button) view.findViewById(R.id.button_accept_result);
 
         mAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,6 +211,8 @@ public class BluetoothResultFragment extends Fragment {
                                     result = "<" + ranges[0];
                                 } else if (result.equalsIgnoreCase("overrange")) {
                                     result = ">" + ranges[1];
+                                } else if (result.equalsIgnoreCase("???")) {
+                                    result = "";
                                 } else {
                                     continue;
                                 }
@@ -196,25 +221,52 @@ public class BluetoothResultFragment extends Fragment {
                             }
                         }
 
-                        for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
-                            if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
-                                results.put(subTest.getId(), result);
+                        if (testInfo.getSubTests().size() > 1) {
 
-                                textResult.append(result);
+                            for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
+                                if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
+
+                                    if (subTest.getId() == 1) {
+                                        layoutResult1.setVisibility(View.VISIBLE);
+                                        textName1.setText(subTest.getDesc());
+                                        textUnit1.setText(subTest.getUnit());
+                                        textResult1.setText(result);
+                                    }
+
+                                    if (subTest.getId() == 2) {
+                                        layoutResult2.setVisibility(View.VISIBLE);
+                                        textName2.setText(subTest.getDesc());
+                                        textUnit2.setText(subTest.getUnit());
+                                        textResult2.setText(result);
+                                    }
+
+                                    if (subTest.getId() == 3) {
+                                        layoutResult3.setVisibility(View.VISIBLE);
+                                        textName3.setText(subTest.getDesc());
+                                        textUnit3.setText(subTest.getUnit());
+                                        textResult3.setText(result);
+                                    }
+                                }
+
+                                results.put(subTest.getId(), result);
                             }
+                        } else {
+                            layoutResult1.setVisibility(View.VISIBLE);
+                            textName1.setText(testInfo.getSubTests().get(0).getDesc());
+                            textResult1.setText(result);
+                            textUnit1.setText(testInfo.getSubTests().get(0).getUnit());
+                            results.put(1, result);
                         }
 
                     }
 
                     dataOk = true;
+                    mAcceptButton.setVisibility(View.VISIBLE);
                     break;
-//                    textResult.setText(result);
                 }
             }
         }
 
-        textName.setText(testInfo.getSubTests().get(0).getDesc());
-        textUnit.setText(testInfo.getUnit());
 
         if (dataOk && testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
             crossFade();

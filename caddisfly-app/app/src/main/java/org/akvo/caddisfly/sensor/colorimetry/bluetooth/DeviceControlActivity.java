@@ -138,7 +138,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        //setTitle(testInfo.getName());
+
         setTitle("Connected");
 
         TextView textSelectTest = (TextView) findViewById(R.id.textSelectTest);
@@ -147,7 +147,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
-        //bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         mBluetoothResultFragment = new BluetoothResultFragment();
         mInstructionFragment = new InstructionFragment();
@@ -280,7 +280,11 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
 
         if (m.find()) {
 
-            unregisterReceiver(mGattUpdateReceiver);
+            try {
+                unregisterReceiver(mGattUpdateReceiver);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             final String fullData = m.group();
             mData = "";

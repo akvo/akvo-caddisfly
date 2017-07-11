@@ -1164,16 +1164,19 @@
         {
           "name": "Free Chlorine",
           "id": "1",
+          "md610_id": "free Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Combined Chlorine",
           "id": "2",
+          "md610_id": "comb. Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Total Chlorine",
           "id": "3",
+          "md610_id": "total Cl2",
           "unit": "mg/l"
         }
       ],
@@ -1269,16 +1272,19 @@
         {
           "name": "Free Chlorine",
           "id": "1",
+          "md610_id": "free Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Combined Chlorine",
           "id": "2",
+          "md610_id": "comb. Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Total Chlorine",
           "id": "3",
+          "md610_id": "total Cl2",
           "unit": "mg/l"
         }
       ],
@@ -1374,16 +1380,19 @@
         {
           "name": "Free Chlorine",
           "id": "1",
+          "md610_id": "free Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Combined Chlorine",
           "id": "2",
+          "md610_id": "comb. Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Total Chlorine",
           "id": "3",
+          "md610_id": "total Cl2",
           "unit": "mg/l"
         }
       ],
@@ -1479,16 +1488,19 @@
         {
           "name": "Free Chlorine",
           "id": "1",
+          "md610_id": "free Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Combined Chlorine",
           "id": "2",
+          "md610_id": "comb. Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Total Chlorine",
           "id": "3",
+          "md610_id": "total Cl2",
           "unit": "mg/l"
         }
       ],
@@ -1584,16 +1596,19 @@
         {
           "name": "Free Chlorine",
           "id": "1",
+          "md610_id": "free Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Combined Chlorine",
           "id": "2",
+          "md610_id": "comb. Cl2",
           "unit": "mg/l"
         },
         {
           "name": "Total Chlorine",
           "id": "3",
+          "md610_id": "total Cl2",
           "unit": "mg/l"
         }
       ],
@@ -1693,7 +1708,7 @@
           "unit": "mg/l"
         },
         {
-          "name": "Cromium (lll)",
+          "name": "Chromium (lll)",
           "id": "2",
           "unit": "mg/l"
         },

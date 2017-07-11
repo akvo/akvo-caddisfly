@@ -250,7 +250,7 @@
     <string name="add_spoon_KP119_test_powder">Add <b>one level spoon of reagent KP119 (Ascorbic Acid)</b> to the same water sample</string>
     <string name="close_swirl_mix">Close the vial tightly with the cap and swirl several times to mix the contents</string>
     <string name="close_swirl_gently">Close the vial tightly with the cap and swirl gently several times.</string>
-    <string name="close_swirl_mix_purple">Close the vial tightly with the cap and swirl several times to mix the contents. Wait until <b>purple coloration</b> goes before continuing.</string>
+    <string name="close_swirl_mix_purple">Close the vial tightly with the cap and swirl several times to mix the contents. Wait until <font color='#2C2A74'>purple coloration</font> goes before continuing.</string>
     <string name="close_invert_mix">Close the vial tightly with the cap and invert several times to mix the contents.</string>
     <string name="close_invert_mix_dissolve">Close the vial tightly with the cap and invert several times to dissolve the powder</string>
     <string name="close_invert_gently_mix">Close the vial tightly with the cap and invert gently several times to mix the contents</string>
