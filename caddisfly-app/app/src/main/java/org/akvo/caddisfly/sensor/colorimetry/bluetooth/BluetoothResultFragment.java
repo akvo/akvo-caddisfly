@@ -34,7 +34,6 @@ public class BluetoothResultFragment extends Fragment {
 
     private static final int ANIMATION_DURATION = 400;
     private final SparseArray<String> results = new SparseArray<>();
-    //private HashMap<String, String> resultMap = new HashMap<>();
     private TextView textName1;
     private TextView textResult1;
     private TextView textUnit1;
