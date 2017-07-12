@@ -171,6 +171,10 @@
             android:screenOrientation="nosensor" />
 
         <activity
+            android:name=".sensor.cbt.CompartmentBagMainActivity"
+            android:screenOrientation="nosensor" />
+
+        <activity
             android:name=".sensor.cbt.CompartmentBagActivity"
             android:screenOrientation="nosensor" />
 
