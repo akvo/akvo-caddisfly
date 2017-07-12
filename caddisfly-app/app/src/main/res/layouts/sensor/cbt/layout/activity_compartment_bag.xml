@@ -30,8 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingEnd="22dp"
-            android:paddingStart="22dp">
+            android:paddingEnd="12dp"
+            android:paddingStart="8dp">
 
 
             <TableLayout
@@ -269,14 +269,6 @@
                         android:text="@string/take_photo_of_incubated_sample"
                         android:textSize="17sp" />
                 </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:shrinkColumns="2">
-
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -300,14 +292,6 @@
                         android:text="@string/click_bag_compartments"
                         android:textSize="17sp" />
                 </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:shrinkColumns="2">
-
 
                 <TableRow
                     android:layout_width="match_parent"
@@ -337,8 +321,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:textColor="#777"
+                android:layout_marginStart="12dp"
                 android:text="@string/source_aquagenx"
+                android:textColor="#777"
                 android:textSize="14sp" />
 
         </LinearLayout>
