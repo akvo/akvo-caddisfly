@@ -1,197 +1,197 @@
 {
-  "comment": "This file contains the MPN table. 'key' is the sum of the quantities of compartments in which the color has changed",
+  "comment": "This file contains the MPN table.",
   "rows": [
     {
-      "key": "0",
+      "key": "00000",
       "mpn": "0",
       "confidence": "2.87",
-      "riskCategory": "Low Risk/Safe"
+      "riskCategory": "low_risk_safe"
     },
     {
-      "key": "1",
-      "mpn": "1",
-      "confidence": "4.74",
-      "riskCategory": "Intermediate Risk / Probably Safe"
-    },
-    {
-      "key": "3",
+      "key": "00010",
       "mpn": "1",
       "confidence": "5.14",
-      "riskCategory": "Intermediate Risk / Probably Safe"
+      "riskCategory": "probably_safe"
     },
     {
-      "key": "4",
-      "mpn": "2",
-      "confidence": "6.32",
-      "riskCategory": "Intermediate Risk / Probably Safe"
+      "key": "00001",
+      "mpn": "1",
+      "confidence": "4.74",
+      "riskCategory": "probably_safe"
     },
     {
-      "key": "10",
+      "key": "10000",
       "mpn": "1.1",
       "confidence": "5.16",
-      "riskCategory": "Intermediate Risk / Probably Safe"
+      "riskCategory": "probably_safe"
     },
     {
-      "key": "11",
-      "mpn": "2.1",
-      "confidence": "6.64",
-      "riskCategory": "Intermediate Risk / Probably Safe"
-    },
-    {
-      "key": "13",
-      "mpn": "2.1",
-      "confidence": "6.85",
-      "riskCategory": "Intermediate Risk / Probably Safe"
-    },
-    {
-      "key": "14",
-      "mpn": "3.2",
-      "confidence": "8.38",
-      "riskCategory": "Intermediate Risk / Probably Safe"
-    },
-    {
-      "key": "30",
+      "key": "01000",
       "mpn": "1.2",
       "confidence": "5.64",
-      "riskCategory": "Intermediate Risk / Probably Safe"
+      "riskCategory": "probably_safe"
     },
     {
-      "key": "31",
-      "mpn": "2.4",
-      "confidence": "8.12",
-      "riskCategory": "Intermediate Risk / Probably Safe"
-    },
-    {
-      "key": "33",
-      "mpn": "2.4",
-      "confidence": "7.81",
-      "riskCategory": "Intermediate Risk / Probably Safe"
-    },
-    {
-      "key": "34",
-      "mpn": "3.7",
-      "confidence": "9.7",
-      "riskCategory": "Intermediate Risk / Probably Safe"
-    },
-    {
-      "key": "40",
-      "mpn": "2.6",
-      "confidence": "8.51",
-      "riskCategory": "Intermediate Risk / Probably Safe"
-    },
-    {
-      "key": "41",
-      "mpn": "3.9",
-      "confidence": "10.43",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
-    },
-    {
-      "key": "43",
-      "mpn": "4",
-      "confidence": "10.94",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
-    },
-    {
-      "key": "44",
-      "mpn": "5.4",
-      "confidence": "12.93",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
-    },
-    {
-      "key": "56",
+      "key": "00100",
       "mpn": "1.5",
       "confidence": "7.81",
-      "riskCategory": "Intermediate Risk / Probably Safe"
+      "riskCategory": "probably_safe"
     },
     {
-      "key": "57",
+      "key": "00011",
+      "mpn": "2",
+      "confidence": "6.32",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "10010",
+      "mpn": "2.1",
+      "confidence": "6.85",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "10001",
+      "mpn": "2.1",
+      "confidence": "6.64",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "01010",
+      "mpn": "2.4",
+      "confidence": "7.81",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "01001",
+      "mpn": "2.4",
+      "confidence": "8.12",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "11000",
+      "mpn": "2.6",
+      "confidence": "8.51",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "10011",
+      "mpn": "3.2",
+      "confidence": "8.38",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "01011",
+      "mpn": "3.7",
+      "confidence": "9.7",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "00101",
       "mpn": "3.1",
       "confidence": "11.36",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
+      "riskCategory": "possibly_safe"
     },
     {
-      "key": "59",
+      "key": "00110",
       "mpn": "3.2",
       "confidence": "11.82",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
+      "riskCategory": "possibly_safe"
     },
     {
-      "key": "60",
-      "mpn": "5.2",
-      "confidence": "14.73",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
-    },
-    {
-      "key": "66",
+      "key": "10100",
       "mpn": "3.4",
       "confidence": "12.53",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
+      "riskCategory": "possibly_safe"
     },
     {
-      "key": "67",
-      "mpn": "5.6",
-      "confidence": "17.14",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
+      "key": "11001",
+      "mpn": "3.9",
+      "confidence": "10.43",
+      "riskCategory": "possibly_safe"
     },
     {
-      "key": "69",
-      "mpn": "5.8",
-      "confidence": "16.87",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
+      "key": "11010",
+      "mpn": "4",
+      "confidence": "10.94",
+      "riskCategory": "possibly_safe"
     },
     {
-      "key": "70",
-      "mpn": "8.4",
-      "confidence": "21.19",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
-    },
-    {
-      "key": "86",
+      "key": "01100",
       "mpn": "4.7",
       "confidence": "22.75",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
+      "riskCategory": "possibly_safe"
     },
     {
-      "key": "87",
+      "key": "00111",
+      "mpn": "5.2",
+      "confidence": "14.73",
+      "riskCategory": "possibly_safe"
+    },
+    {
+      "key": "11011",
+      "mpn": "5.4",
+      "confidence": "12.93",
+      "riskCategory": "possibly_safe"
+    },
+    {
+      "key": "10101",
+      "mpn": "5.6",
+      "confidence": "17.14",
+      "riskCategory": "possibly_safe"
+    },
+    {
+      "key": "10110",
+      "mpn": "5.8",
+      "confidence": "16.87",
+      "riskCategory": "possibly_safe"
+    },
+    {
+      "key": "10111",
+      "mpn": "8.4",
+      "confidence": "21.19",
+      "riskCategory": "possibly_safe"
+    },
+    {
+      "key": "01101",
       "mpn": "9.1",
       "confidence": "37.04",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
+      "riskCategory": "possibly_safe"
     },
     {
-      "key": "89",
+      "key": "01110",
       "mpn": "9.6",
       "confidence": "37.68",
-      "riskCategory": "Intermediate Risk / Possibly Safe"
+      "riskCategory": "possibly_safe"
     },
     {
-      "key": "90",
-      "mpn": "17.1",
-      "confidence": "56.35",
-      "riskCategory": "High Risk / Possibly Safe"
-    },
-    {
-      "key": "96",
+      "key": "11100",
       "mpn": "13.6",
       "confidence": "83.06",
-      "riskCategory": "High Risk / Possibly Safe"
+      "riskCategory": "possibly_unsafe"
     },
     {
-      "key": "97",
+      "key": "01111",
+      "mpn": "17.1",
+      "confidence": "56.35",
+      "riskCategory": "possibly_unsafe"
+    },
+    {
+      "key": "11101",
       "mpn": "32.6",
       "confidence": "145.55",
-      "riskCategory": "High Risk/Probably Unsafe"
+      "riskCategory": "probably_unsafe"
     },
     {
-      "key": "99",
+      "key": "11110",
       "mpn": "48.3",
       "confidence": "351.91",
-      "riskCategory": "High Risk/Probably Unsafe"
+      "riskCategory": "probably_unsafe"
     },
     {
-      "key": "100",
+      "key": "11111",
       "mpn": ">100",
       "confidence": "9435.1",
-      "riskCategory": "Unsafe"
+      "riskCategory": "unsafe"
     }
   ]
 }
