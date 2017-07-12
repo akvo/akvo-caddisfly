@@ -92,6 +92,23 @@
                 android:theme="?longButtonStyle" />
 
             <Button
+                android:id="@+id/buttonCBT"
+                style="@style/Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:background="#014b86"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical|start"
+                android:minHeight="80dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:text="@string/cbt"
+                android:textAlignment="viewStart"
+                android:textColor="?longButtonText"
+                android:theme="?longButtonStyle" />
+
+            <Button
                 android:id="@+id/buttonCalibrate"
                 style="@style/Button"
                 android:layout_width="match_parent"

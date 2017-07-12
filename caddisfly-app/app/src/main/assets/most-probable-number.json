@@ -1,0 +1,17 @@
+{
+  "comment": "This file contains the MPN table. Key is the sum of the quantities of compartments in which the color has changed",
+  "rows": [
+    {
+      "key": 0,
+      "mpn": 1,
+      "confidence": 2.87,
+      "riskCategory": "Low Risk / Safe"
+    },
+    {
+      "key": 8,
+      "mpn": 1,
+      "confidence": 5.14,
+      "riskCategory": "Intermediate Risk / Probably Safe"
+    }
+  ]
+}

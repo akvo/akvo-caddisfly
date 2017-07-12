@@ -45,6 +45,7 @@ import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.cbt.CompartmentBagActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -138,6 +139,18 @@ public class MainActivity extends BaseActivity {
         boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
         if (hasOtg) {
             final Intent intent = new Intent(getBaseContext(), SensorTypeListActivity.class);
+            intent.putExtra("internal", true);
+            startActivity(intent);
+        } else {
+            alertFeatureNotSupported();
+        }
+    }
+
+    @OnClick(R.id.buttonCBT)
+    public void navigatetoCBT() {
+        boolean hasBluetooth = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+        if (hasBluetooth) {
+            final Intent intent = new Intent(getBaseContext(), CompartmentBagActivity.class);
             intent.putExtra("internal", true);
             startActivity(intent);
         } else {

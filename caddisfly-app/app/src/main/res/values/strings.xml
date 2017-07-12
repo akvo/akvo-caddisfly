@@ -214,4 +214,18 @@
     <string name="data_does_not_match">Received data does not match the expected test type.</string>
     <string name="incorrect_test_selected">Incorrect test selected</string>
 
+    <string name="cbt">Compartment Bag Test</string>
+    <string name="collect_sample_thio_bag">Collect 100 mL water sample with bottle or Thio Bag</string>
+    <string name="add_medium_to_thio_bag">Add E. coli growth medium to bottle or Thio Bag</string>
+    <string name="slowly_pour_sample_into_bag">Slowly pour sample into compartment bag for incubation period</string>
+    <string name="let_sample_incubate">Let the sample incubate, depending on the ambient temperature</string>
+    <string name="incubate_20_24_hours">35–44.5°C: Incubate 20–24 hours</string>
+    <string name="incubate_24_30_hours">31–34°C: Incubate 24–30 hours</string>
+    <string name="incubate_40_48_hours">25–30°C: Incubate 40–48 hours</string>
+    <string name="incubate_in_portable_incubator">Below 25 °C: Incubate in a portable incubator, preferably at 35–37 °C for 48 hours or put in or near another heat source. In addition to portable incubators, samples can be maintained at 25°C to 44.5°C using: thermal coolers/bags; proximity to heat sources for humans and food; poultry or reptile incubator, or near refrigerator coils or room heating vents</string>
+    <string name="take_photo_of_incubated_sample">Take photo of the incubated sample</string>
+    <string name="click_bag_compartments">Click on the different bag compartments to change the colours according to the test results</string>
+    <string name="view_results">View results</string>
+    <string name="source_aquagenx">Source: https://www.aquagenx.com</string>
+
 </resources>

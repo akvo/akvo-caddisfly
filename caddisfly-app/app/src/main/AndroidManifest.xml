@@ -170,6 +170,10 @@
             android:name=".sensor.colorimetry.bluetooth.DeviceControlActivity"
             android:screenOrientation="nosensor" />
 
+        <activity
+            android:name=".sensor.cbt.CompartmentBagActivity"
+            android:screenOrientation="nosensor" />
+
         <service
             android:name=".sensor.colorimetry.bluetooth.BluetoothLeService"
             android:enabled="true" />

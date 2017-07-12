@@ -26,6 +26,7 @@ import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -49,6 +50,7 @@ import java.util.Locale;
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.sensor.SensorConstants.DEPRECATED_TESTS_FILENAME;
+import static org.akvo.caddisfly.sensor.SensorConstants.MPN_TABLE_FILENAME;
 
 /**
  * Utility functions to parse a text config json text.
@@ -58,6 +60,8 @@ public final class TestConfigHelper {
     // Files
     private static final int DEFAULT_MONTHS_VALID = 6;
     private static final int BIT_MASK = 0x00FFFFFF;
+
+    private static SparseArray<MpnValue> mpnTableSparseArray;
 
     private TestConfigHelper() {
     }
@@ -281,6 +285,38 @@ public final class TestConfigHelper {
         }
 
         return testInfo;
+    }
+
+    public static MpnValue getMpnValueForKey(int key) {
+        if (mpnTableSparseArray == null) {
+            loadMpnTable();
+        }
+        return mpnTableSparseArray.get(key);
+    }
+
+    private static SparseArray<MpnValue> loadMpnTable() {
+
+        SparseArray<MpnValue> mapper = new SparseArray<>();
+
+        String jsonText = AssetsManager.getInstance().loadJSONFromAsset(MPN_TABLE_FILENAME);
+        try {
+            JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
+
+            for (int j = 0; j < array.length(); j++) {
+                JSONObject item = array.getJSONObject(j);
+
+                int key = item.getInt("key");
+
+                mapper.put(key, new MpnValue(item.getString("mpn"), item.getInt("confidence"),
+                        item.getString("riskCategory")));
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return mapper;
     }
 
     /**
