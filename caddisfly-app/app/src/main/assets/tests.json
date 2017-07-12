@@ -2070,6 +2070,25 @@
           "unit": "°Celsius"
         }
       ]
+    },
+    {
+      "name": "E.coli – Aquagenx CBT (MPN)",
+      "description": "Aquagenx Compartment Bag Test",
+      "subtype": "cbt",
+      "tags": ["water quality"],
+      "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
+      "brand": "Aquagenx",
+      "hasImage": false,
+      "results": [
+        {
+          "name": "MPN",
+          "id": 1
+        },
+        {
+          "name": "Health Risk Category",
+          "id": 2
+        }
+      ]
     }
   ]
 }

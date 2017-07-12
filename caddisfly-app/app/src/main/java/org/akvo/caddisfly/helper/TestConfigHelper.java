@@ -210,6 +210,9 @@ public final class TestConfigHelper {
                     case "sensor":
                         type = TestType.SENSOR;
                         break;
+                    case "cbt":
+                        type = TestType.CBT;
+                        break;
                     default:
                         return null;
                 }

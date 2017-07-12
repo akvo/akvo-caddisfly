@@ -45,5 +45,10 @@ public enum TestType {
      */
     BLUETOOTH,
 
+    /**
+     * Compartment Bag Test
+     */
+    CBT
+
 }
 

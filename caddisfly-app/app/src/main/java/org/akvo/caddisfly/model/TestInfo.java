@@ -131,7 +131,7 @@ public class TestInfo {
                 try {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
                     subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"),
-                            patchObj.getString("unit"),
+                            patchObj.has("unit") ? patchObj.getString("unit") : "",
                             patchObj.has("timeDelay") ? patchObj.getInt("timeDelay") : 0));
                 } catch (JSONException e) {
                     Timber.e(e);
