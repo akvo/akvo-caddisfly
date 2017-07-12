@@ -205,10 +205,10 @@
 
     <string name="turnOnMd610">Switch on MD610 bluetooth</string>
     <string name="press_on_button"><![CDATA[Press [*on*]]]></string>
-    <string name="press_mode_button"><![CDATA[Press [*mode*]to enter menu.]]></string>
-    <string name="select_bluetooth"><![CDATA[Press [*down*]to scroll to Bluetooth and press [*enter#]]></string>
-    <string name="turn_bluetooth_on"><![CDATA[Press [*shift*]+ [*1*]to turn bluetooth on.]]></string>
-    <string name="escape_to_menu"><![CDATA[Press [*enter*]and [*esc*]to return to main menu.]]></string>
+    <string name="press_mode_button"><![CDATA[Press [*mode*] to enter menu.]]></string>
+    <string name="select_bluetooth"><![CDATA[Press [*down*] to scroll to Bluetooth and press [*enter*]]]></string>
+    <string name="turn_bluetooth_on"><![CDATA[Press [*shift*] + [*1*] to turn bluetooth on.]]></string>
+    <string name="escape_to_menu"><![CDATA[Press [*enter*] and [*esc*] to return to main menu.]]></string>
     <string name="perform_test"><![CDATA[Perform <b>%1$s</b> test on MD610 and press [*f3*] when ready.]]></string>
     <string name="select_correct_test"><![CDATA[Select the correct test and try again.]]></string>
     <string name="data_does_not_match">Received data does not match the expected test type.</string>
