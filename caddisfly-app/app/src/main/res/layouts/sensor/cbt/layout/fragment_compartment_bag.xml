@@ -17,16 +17,36 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".sensor.cbt.CompartmentBagFragment">
 
     <org.akvo.caddisfly.sensor.cbt.CustomShapeButton
         android:id="@+id/compartments"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:text="Hello"/>
+        android:layout_height="300dp" />
 
-</FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="30dp"
+        android:text="Tap on the different bag compartments above to change the colours according to the test results"
+        android:textSize="18dp" />
+
+
+    <Button
+        android:id="@+id/button_prepare"
+        style="@style/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:enabled="true"
+        android:text="Colors Matched"
+        android:theme="?primaryButtonStyle" />
+</LinearLayout>

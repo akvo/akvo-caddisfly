@@ -3,11 +3,12 @@ package org.akvo.caddisfly.sensor.cbt;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.ui.BaseActivity;
 
-public class CompartmentBagMainActivity extends AppCompatActivity {
+public class CompartmentBagMainActivity extends BaseActivity {
 
     private FragmentManager fragmentManager;
 
@@ -23,5 +24,16 @@ public class CompartmentBagMainActivity extends AppCompatActivity {
                 .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
                 .commit();
 
+        setTitle("Set compartment colors");
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
