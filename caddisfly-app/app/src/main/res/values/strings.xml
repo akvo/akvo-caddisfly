@@ -214,7 +214,7 @@
     <string name="data_does_not_match">Received data does not match the expected test type.</string>
     <string name="incorrect_test_selected">Incorrect test selected</string>
 
-    <string name="cbt">Compartment Bag Test</string>
+    <string name="cbt">E.coli – Aquagenx CBT</string>
     <string name="collect_sample_thio_bag">Collect 100 mL water sample with bottle or Thio Bag</string>
     <string name="add_medium_to_thio_bag">Add E. coli growth medium to bottle or Thio Bag</string>
     <string name="slowly_pour_sample_into_bag">Slowly pour sample into compartment bag for incubation period</string>

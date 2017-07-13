@@ -39,6 +39,7 @@ public class CustomShapeButton extends View {
     private boolean active5 = false;
 
     private Rect rect1;
+    private String mKey;
 
     public CustomShapeButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -101,6 +102,8 @@ public class CustomShapeButton extends View {
             invalidate();
         }
 
+        getKey();
+
         return super.onTouchEvent(event);
     }
 
@@ -121,10 +124,10 @@ public class CustomShapeButton extends View {
             rect1 = new Rect(0, top, width, halfHeight);
         }
 
-        canvas.drawRect(rect1, area1 ? active1 ? greenSelectPaint : greenPaint : ( active1 ? fillSelectPaint : fillPaint));
+        canvas.drawRect(rect1, area1 ? active1 ? greenSelectPaint : greenPaint : (active1 ? fillSelectPaint : fillPaint));
 
-        canvas.drawRect(0, halfHeight, width, height, area2 ? (active2 ? greenSelectPaint : greenPaint) : ( active2 ? fillSelectPaint : fillPaint));
-        canvas.drawRect(width, top, width * 2, height, area2 ? active2 ? greenSelectPaint : greenPaint : ( active2 ? fillSelectPaint : fillPaint));
+        canvas.drawRect(0, halfHeight, width, height, area2 ? (active2 ? greenSelectPaint : greenPaint) : (active2 ? fillSelectPaint : fillPaint));
+        canvas.drawRect(width, top, width * 2, height, area2 ? active2 ? greenSelectPaint : greenPaint : (active2 ? fillSelectPaint : fillPaint));
 
         canvas.drawRect(width * 2, top, width * 3, height, area3 ? active3 ? greenSelectPaint : greenPaint : fillPaint);
         canvas.drawRect(width * 3, thirdHeight, width * 4 + (width / 3), height, area3 ? active3 ? greenSelectPaint : greenPaint : fillPaint);
@@ -164,10 +167,22 @@ public class CustomShapeButton extends View {
     }
 
     public String getKey() {
-        return (area1 ? "1" : "0") +
+        mKey = (area1 ? "1" : "0") +
                 (area2 ? "1" : "0") +
                 (area3 ? "1" : "0") +
                 (area4 ? "1" : "0") +
                 (area5 ? "1" : "0");
+
+        return mKey;
+    }
+
+    public void setKey(String key) {
+        mKey = key;
+        String[] values = mKey.split("");
+        area1 = values[1].equals("1");
+        area2 = values[2].equals("1");
+        area3 = values[3].equals("1");
+        area4 = values[4].equals("1");
+        area5 = values[5].equals("1");
     }
 }

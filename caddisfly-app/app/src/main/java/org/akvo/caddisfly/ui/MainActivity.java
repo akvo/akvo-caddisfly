@@ -42,7 +42,6 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -148,10 +147,10 @@ public class MainActivity extends BaseActivity {
     }
 
     @OnClick(R.id.buttonCBT)
-    public void navigatetoCBT() {
+    public void navigateToCbt() {
         boolean hasBluetooth = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
         if (hasBluetooth) {
-            TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
+            CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
             final Intent intent = new Intent(getBaseContext(), CompartmentBagMainActivity.class);
             intent.putExtra("internal", true);
             startActivity(intent);

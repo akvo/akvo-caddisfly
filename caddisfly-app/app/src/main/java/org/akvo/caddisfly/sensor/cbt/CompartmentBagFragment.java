@@ -22,7 +22,6 @@ package org.akvo.caddisfly.sensor.cbt;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,32 +29,30 @@ import android.view.ViewGroup;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CompartmentBagFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CompartmentBagFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CompartmentBagFragment extends BaseFragment {
     private OnFragmentInteractionListener mListener;
+    private static final String ARG_PARAM1 = "param1";
+
+    private String mKey = "00000";
 
     public CompartmentBagFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment CompartmentBagFragment.
-     */
-    public static CompartmentBagFragment newInstance() {
+    public static CompartmentBagFragment newInstance(String key) {
         CompartmentBagFragment fragment = new CompartmentBagFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, key);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mKey = getArguments().getString(ARG_PARAM1);
+        }
     }
 
     @Override
@@ -66,13 +63,15 @@ public class CompartmentBagFragment extends BaseFragment {
 
         final CustomShapeButton customShapeButton = (CustomShapeButton) view.findViewById(R.id.compartments);
 
+        customShapeButton.setKey(mKey);
+
         customShapeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String key = customShapeButton.getKey();
+                mKey = customShapeButton.getKey();
 
                 if (mListener != null) {
-                    mListener.onFragmentInteraction(key);
+                    mListener.onFragmentInteraction(mKey);
                 }
             }
         });

@@ -344,7 +344,6 @@ public final class TestConfigHelper {
             resultJson.put(SensorConstants.NAME, testInfo.getName());
             resultJson.put(SensorConstants.UUID, testInfo.getId());
 
-
             JSONArray resultsJsonArray = new JSONArray();
             for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
                 JSONObject subTestJson = new JSONObject();
