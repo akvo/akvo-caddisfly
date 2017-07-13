@@ -5,6 +5,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,14 +20,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -162,6 +168,46 @@ public class BluetoothResultFragment extends Fragment {
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
+
+        // Display data received for diagnostics
+        if (PreferencesUtil.getBoolean(getActivity(), R.string.diagnosticModeKey2, false)) {
+            AlertDialog dialog;
+            AlertDialog.Builder builder;
+            final TextView showText = new TextView(getActivity());
+            showText.setText(testInfo.getName() + " = " + data);
+
+            showText.setPadding(50, 20, 40, 30);
+
+            builder = new AlertDialog.Builder(getActivity());
+            builder.setView(showText);
+
+            builder.setPositiveButton("Copy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("", showText.getText());
+                    clipboard.setPrimaryClip(clip);
+
+                    Toast.makeText(getActivity(), "Data copied to clipboard",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog = builder.create();
+            dialog.setTitle("Received Data");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
         String resultTitles = ",,Version,Version,Id,Test,Range,,,,Date,Time,,,,,,,Result,Unit";
         String[] titles = resultTitles.split(",");
         String testId = "";
@@ -191,7 +237,10 @@ public class BluetoothResultFragment extends Fragment {
 
                 if (titles[i].equals("Result")) {
 
+                    int resultCount = 0;
                     for (int j = 0; j + i < dataArray.length; j = j + 4) {
+
+                        resultCount++;
 
                         String result = dataArray[j + i].trim();
                         String md610Id = dataArray[j + i + 1].trim();
@@ -259,8 +308,9 @@ public class BluetoothResultFragment extends Fragment {
 
                     }
 
-                    dataOk = true;
-                    mAcceptButton.setVisibility(View.VISIBLE);
+                    if (resultCount != testInfo.getSubTests().size()) {
+                        dataOk = false;
+                    }
                     break;
                 }
             }
@@ -268,6 +318,7 @@ public class BluetoothResultFragment extends Fragment {
 
 
         if (dataOk && testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
+            mAcceptButton.setVisibility(View.VISIBLE);
             crossFade();
             return true;
         } else {
