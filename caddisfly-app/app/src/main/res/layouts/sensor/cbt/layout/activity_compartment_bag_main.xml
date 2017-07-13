@@ -24,8 +24,6 @@
     android:orientation="vertical"
     tools:context="org.akvo.caddisfly.sensor.cbt.CompartmentBagMainActivity">
 
-    <include layout="@layout/toolbar" />
-
     <RelativeLayout
         android:id="@+id/layoutFragment"
         android:layout_width="match_parent"

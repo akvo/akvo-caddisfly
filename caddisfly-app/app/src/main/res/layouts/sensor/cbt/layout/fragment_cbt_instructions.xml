@@ -17,14 +17,19 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="20dp">
+
+    <include layout="@layout/toolbar" />
 
     <ScrollView
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonStart">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -260,59 +265,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
-                        android:text="5."
-                        android:textSize="17sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:text="@string/take_photo_of_incubated_sample"
-                        android:textSize="17sp" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="false"
-                    android:columnCount="2"
-                    android:focusable="false"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="6."
-                        android:textSize="17sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:text="@string/click_bag_compartments"
-                        android:textSize="17sp" />
-                </TableRow>
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:clickable="false"
-                    android:columnCount="2"
-                    android:focusable="false"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
                         android:text="7."
                         android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:text="@string/view_results"
+                        android:text="Click next below"
                         android:textSize="17sp" />
                 </TableRow>
             </TableLayout>
@@ -328,4 +287,16 @@
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <Button
+        android:id="@+id/buttonStart"
+        style="@style/SingleButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Next"
+        android:theme="?primaryButtonStyle"
+        android:visibility="visible"
+        android:onClick="onClickNextButton"/>
+
+</RelativeLayout>

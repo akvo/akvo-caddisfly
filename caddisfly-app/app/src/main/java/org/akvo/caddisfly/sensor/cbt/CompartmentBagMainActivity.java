@@ -4,13 +4,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseActivity;
 
-public class CompartmentBagMainActivity extends BaseActivity {
+public class CompartmentBagMainActivity extends BaseActivity implements CompartmentBagFragment.OnFragmentInteractionListener {
 
     private FragmentManager fragmentManager;
+    private String mResult = "00000";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +22,9 @@ public class CompartmentBagMainActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.layoutFragment, CompartmentBagFragment.newInstance(), "compartmentFragment")
+        fragmentTransaction.replace(R.id.layoutFragment, CbtInstructionsFragment.newInstance(), "cbtInstructions")
                 .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
                 .commit();
-
-        setTitle("Set compartment colors");
     }
 
     @Override
@@ -36,4 +36,30 @@ public class CompartmentBagMainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onClickNextButton(View view) {
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.layoutFragment, CompartmentBagFragment.newInstance(), "compartmentFragment")
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
+                .commit();
+    }
+
+    public void onClickMatchedButton(View view) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.layoutFragment, CbtResultFragment.newInstance(mResult), "resultFragment")
+                .addToBackStack(null)
+                .setTransition(FragmentTransaction.TRANSIT_ENTER_MASK)
+                .commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(String key) {
+        mResult = key;
+    }
+
+    public void onClickAcceptResult(View view) {
+        finish();
+
+    }
 }

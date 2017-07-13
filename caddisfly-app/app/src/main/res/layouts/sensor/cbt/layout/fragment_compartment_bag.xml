@@ -17,21 +17,26 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingBottom="20dp"
     tools:context=".sensor.cbt.CompartmentBagFragment">
+
+    <include layout="@layout/toolbar" />
 
     <org.akvo.caddisfly.sensor.cbt.CustomShapeButton
         android:id="@+id/compartments"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:layout_below="@id/toolbar" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/compartments"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="30dp"
@@ -44,9 +49,12 @@
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:enabled="true"
+        android:onClick="onClickMatchedButton"
         android:text="Colors Matched"
         android:theme="?primaryButtonStyle" />
-</LinearLayout>
+</RelativeLayout>

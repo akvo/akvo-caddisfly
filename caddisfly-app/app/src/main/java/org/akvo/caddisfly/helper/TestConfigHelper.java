@@ -44,6 +44,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -61,7 +62,7 @@ public final class TestConfigHelper {
     private static final int DEFAULT_MONTHS_VALID = 6;
     private static final int BIT_MASK = 0x00FFFFFF;
 
-    private static SparseArray<MpnValue> mpnTableSparseArray;
+    private static HashMap<String, MpnValue> mpnTable;
 
     private TestConfigHelper() {
     }
@@ -290,25 +291,25 @@ public final class TestConfigHelper {
         return testInfo;
     }
 
-    public static MpnValue getMpnValueForKey(int key) {
-        if (mpnTableSparseArray == null) {
-            loadMpnTable();
+    public static MpnValue getMpnValueForKey(String key) {
+        if (mpnTable == null) {
+            mpnTable = loadMpnTable();
         }
-        return mpnTableSparseArray.get(key);
+        return mpnTable.get(key);
     }
 
-    private static SparseArray<MpnValue> loadMpnTable() {
+    private static HashMap<String, MpnValue> loadMpnTable() {
 
-        SparseArray<MpnValue> mapper = new SparseArray<>();
+        HashMap<String, MpnValue> mapper = new HashMap<>();
 
         String jsonText = AssetsManager.getInstance().loadJSONFromAsset(MPN_TABLE_FILENAME);
         try {
-            JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
+            JSONArray array = new JSONObject(jsonText).getJSONArray("rows");
 
             for (int j = 0; j < array.length(); j++) {
                 JSONObject item = array.getJSONObject(j);
 
-                int key = item.getInt("key");
+                String key = item.getString("key");
 
                 mapper.put(key, new MpnValue(item.getString("mpn"), item.getInt("confidence"),
                         item.getString("riskCategory")));
