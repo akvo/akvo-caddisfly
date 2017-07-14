@@ -19,30 +19,44 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Spanned;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.StringUtil;
+import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView;
+import org.akvo.caddisfly.sensor.instructions.InstructionDetailFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 public class InstructionFragment extends Fragment {
+
+    private final List<Fragment> fragments = new ArrayList<>();
+    @BindView(R.id.pager_indicator)
+    PageIndicatorView pageIndicatorView;
+    @BindView(R.id.image_pageLeft)
+    ImageView imagePageLeft;
+    @BindView(R.id.image_pageRight)
+    ImageView imagePageRight;
+    @BindView(R.id.pager)
+    ViewPager mViewPager;
 
     /**
      * Use this factory method to create a new instance of
@@ -59,89 +73,111 @@ public class InstructionFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_instructions, container, false);
+
+        ButterKnife.bind(this, view);
+
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        if (fragments.size() < 1) {
+            JSONArray instructions = testInfo.getInstructions();
 
-        ListView listView = (ListView) view.findViewById(R.id.list_instructions);
+            if (instructions != null) {
+                for (int i = 0; i < instructions.length(); i++) {
+                    try {
 
-        InstructionListAdapter instructionsListAdapter = new InstructionListAdapter();
+                        Object item = instructions.getJSONObject(i).get("text");
+                        JSONArray jsonArray;
 
-        JSONArray instructions = testInfo.getInstructions();
-        if (instructions != null) {
-            for (int i = 0; i < instructions.length(); i++) {
-                try {
+                        if (item instanceof JSONArray) {
+                            jsonArray = (JSONArray) item;
+                        } else {
+                            String text = (String) item;
+                            jsonArray = new JSONArray();
+                            jsonArray.put(text);
+                        }
 
-                    Object item = instructions.getJSONObject(i).get("text");
-
-                    instructionsListAdapter.addInstruction((String) item);
-
-                } catch (JSONException e) {
-                    Timber.e(e);
+                        fragments.add(InstructionDetailFragment.newInstance(testInfo,
+                                jsonArray,
+                                instructions.getJSONObject(i).has(SensorConstants.IMAGE)
+                                        ? instructions.getJSONObject(i).getString(SensorConstants.IMAGE) : ""));
+                    } catch (JSONException e) {
+                        Timber.e(e);
+                    }
                 }
+
+                pageIndicatorView.setPageCount(instructions.length());
             }
         }
 
-        listView.setAdapter(instructionsListAdapter);
+        final PagerAdapter pagerAdapter = new PagerAdapter(getChildFragmentManager());
+        mViewPager.setAdapter(pagerAdapter);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pageIndicatorView.setActiveIndex(position);
+                if (position < 1) {
+                    imagePageLeft.setVisibility(View.INVISIBLE);
+                } else {
+                    imagePageLeft.setVisibility(View.VISIBLE);
+                }
+                if (position > pagerAdapter.getCount() - 2) {
+                    imagePageRight.setVisibility(View.INVISIBLE);
+                } else {
+                    imagePageRight.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Nothing to do here
+            }
+        });
+
+        if (pagerAdapter.getCount() < 2) {
+            imagePageLeft.setVisibility(View.GONE);
+            imagePageRight.setVisibility(View.GONE);
+        }
         return view;
     }
 
-    private static class ViewHolder {
-        private TextView textInstruction;
-        private TextView textNumber;
+    @OnClick(R.id.image_pageLeft)
+    void pageLeft() {
+        mViewPager.setCurrentItem(Math.max(0, mViewPager.getCurrentItem() - 1));
     }
 
-    // Adapter for holding devices found through scanning.
-    private class InstructionListAdapter extends BaseAdapter {
-        private final List<String> mInstructions;
-        private final LayoutInflater mInflater;
+    @OnClick(R.id.image_pageRight)
+    void pageRight() {
+        mViewPager.setCurrentItem(Math.min(fragments.size() - 1, mViewPager.getCurrentItem() + 1));
+    }
 
-        InstructionListAdapter() {
-            super();
-            mInstructions = new ArrayList<>();
-            mInflater = getActivity().getLayoutInflater();
+    public void returnToFirstPage() {
+        mViewPager.setCurrentItem(0, false);
+    }
+
+    private class PagerAdapter extends FragmentStatePagerAdapter {
+
+        PagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        private void addInstruction(String instruction) {
-            mInstructions.add(instruction);
+        @Override
+        public Fragment getItem(int position) {
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
-            return mInstructions.size();
+            return fragments.size();
         }
 
         @Override
-        public Object getItem(int i) {
-            return mInstructions.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @SuppressLint("InflateParams")
-        @Override
-        public View getView(int position, View convertView, ViewGroup viewGroup) {
-            ViewHolder viewHolder;
-            View view = convertView;
-
-            if (view == null) {
-                view = mInflater.inflate(R.layout.item_instruction, null);
-                viewHolder = new ViewHolder();
-                viewHolder.textInstruction = (TextView) view.findViewById(R.id.textInstruction);
-                viewHolder.textNumber = (TextView) view.findViewById(R.id.textNumber);
-                view.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) view.getTag();
-            }
-
-            viewHolder.textNumber.setText(String.format("%s.", position + 1));
-
-            Spanned spanned = StringUtil.getStringResourceByName(getActivity(), mInstructions.get(position));
-            viewHolder.textInstruction.setText(spanned);
-
-            return view;
+        public CharSequence getPageTitle(int position) {
+            return "";
         }
     }
 }

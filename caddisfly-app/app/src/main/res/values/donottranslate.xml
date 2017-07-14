@@ -47,6 +47,7 @@
     <string name="languageKey">language</string>
     <string name="systemLanguageKey">systemLanguage</string>
     <string name="diagnosticModeKey">diagnosticMode</string>
+    <string name="diagnosticModeKey2">diagnosticMode2</string>
     <string name="showDebugMessagesKey">showDebugMessages</string>
     <string name="noSoundKey">noSound</string>
     <string name="noBackdropDetectionKey">noBackdropDetection</string>

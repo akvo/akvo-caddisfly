@@ -26,13 +26,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.location.gps"
         android:required="false" />
     <uses-feature
         android:name="android.hardware.camera"
@@ -151,7 +147,7 @@
             android:name=".sensor.colorimetry.strip.ui.BrandInfoActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.strip.instructions.InstructionActivity"
+            android:name=".sensor.instructions.InstructionActivity"
             android:parentActivityName=".sensor.colorimetry.strip.ui.BrandInfoActivity"
             android:screenOrientation="nosensor" />
         <activity

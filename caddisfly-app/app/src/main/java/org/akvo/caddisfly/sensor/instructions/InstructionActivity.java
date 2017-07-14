@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensor.colorimetry.strip.instructions;
+package org.akvo.caddisfly.sensor.instructions;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +29,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView;
@@ -75,6 +77,13 @@ public class InstructionActivity extends BaseActivity {
         setTitle(brand.getName());
 
         JSONArray instructions = brand.getInstructions();
+
+//        if (instructions == null) {
+//            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+//            setTitle(testInfo.getName());
+//            instructions = testInfo.getInstructions();
+//        }
+//
         if (instructions != null) {
             for (int i = 0; i < instructions.length(); i++) {
                 try {
@@ -90,8 +99,9 @@ public class InstructionActivity extends BaseActivity {
                         jsonArray.put(text);
                     }
 
+                    TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
                     fragments.add(InstructionDetailFragment.newInstance(
-                            jsonArray,
+                            testInfo, jsonArray,
                             instructions.getJSONObject(i).has("png")
                                     ? instructions.getJSONObject(i).getString("png") : ""));
                 } catch (JSONException e) {

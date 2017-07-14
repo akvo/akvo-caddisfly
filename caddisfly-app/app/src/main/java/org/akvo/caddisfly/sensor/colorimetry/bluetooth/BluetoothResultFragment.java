@@ -5,6 +5,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,16 +20,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
-import timber.log.Timber;
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,14 +40,26 @@ public class BluetoothResultFragment extends Fragment {
 
     private static final int ANIMATION_DURATION = 400;
     private final SparseArray<String> results = new SparseArray<>();
-    private AlertDialog alertDialog;
-    private String mResult;
-    private TextView textResult;
-    private TextView textUnit;
+    private TextView textName1;
+    private TextView textResult1;
+    private TextView textUnit1;
+
+    private TextView textName2;
+    private TextView textResult2;
+    private TextView textUnit2;
+
+    private TextView textName3;
+    private TextView textResult3;
+    private TextView textUnit3;
+
     private LinearLayout layoutWaiting;
     private LinearLayout layoutResult;
     private OnFragmentInteractionListener mListener;
-    private TextView textName;
+    private AlertDialog dialog;
+    private LinearLayout layoutResult1;
+    private LinearLayout layoutResult2;
+    private LinearLayout layoutResult3;
+    private Button mAcceptButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,7 +74,7 @@ public class BluetoothResultFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
-                    mListener.onFragmentInteraction();
+                    mListener.onFragmentInteraction(0);
                 }
             }
         });
@@ -67,15 +83,27 @@ public class BluetoothResultFragment extends Fragment {
             buttonInstructions.setVisibility(View.GONE);
         }
 
-        textResult = (TextView) view.findViewById(R.id.textResult);
-        textUnit = (TextView) view.findViewById(R.id.textUnit);
-        textName = (TextView) view.findViewById(R.id.textName);
+        layoutResult1 = (LinearLayout) view.findViewById(R.id.layoutResult1);
+        textResult1 = (TextView) view.findViewById(R.id.textResult1);
+        textUnit1 = (TextView) view.findViewById(R.id.textUnit1);
+        textName1 = (TextView) view.findViewById(R.id.textName1);
+
+        layoutResult2 = (LinearLayout) view.findViewById(R.id.layoutResult2);
+        textResult2 = (TextView) view.findViewById(R.id.textResult2);
+        textUnit2 = (TextView) view.findViewById(R.id.textUnit2);
+        textName2 = (TextView) view.findViewById(R.id.textName2);
+
+        layoutResult3 = (LinearLayout) view.findViewById(R.id.layoutResult3);
+        textResult3 = (TextView) view.findViewById(R.id.textResult3);
+        textUnit3 = (TextView) view.findViewById(R.id.textUnit3);
+        textName3 = (TextView) view.findViewById(R.id.textName3);
+
         TextView textPerformTest = (TextView) view.findViewById(R.id.textPerformTest);
 
         layoutWaiting = (LinearLayout) view.findViewById(R.id.layoutWaiting);
         layoutResult = (LinearLayout) view.findViewById(R.id.layoutResult);
 
-        Button mAcceptButton = (Button) view.findViewById(R.id.button_accept_result);
+        mAcceptButton = (Button) view.findViewById(R.id.button_accept_result);
 
         mAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,15 +113,6 @@ public class BluetoothResultFragment extends Fragment {
 
                 Intent resultIntent = new Intent(getActivity().getIntent());
 
-                results.clear();
-
-                try {
-                    double result = Double.parseDouble(mResult);
-                    results.put(1, String.valueOf(result));
-                } catch (Exception e) {
-                    Timber.e(e);
-                    return;
-                }
 
                 JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
                 resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
@@ -104,36 +123,10 @@ public class BluetoothResultFragment extends Fragment {
             }
         });
 
-        textPerformTest.setText(StringUtil.fromHtml(String.format(getString(R.string.perform_test),
-                testInfo.getName(), testInfo.getTintometerId())));
-
-        alertDialog = showInstructionDialog(getActivity());
+        textPerformTest.setText(StringUtil.toInstruction(getActivity(), testInfo, String.format(getString(R.string.perform_test),
+                testInfo.getName())));
 
         return view;
-    }
-
-    private AlertDialog showInstructionDialog(Activity activity) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle(R.string.selectTest);
-
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-        alertDialog.setMessage(TextUtils.concat(
-                StringUtil.fromHtml(String.format(getString(R.string.select_test_instruction),
-                        testInfo.getTintometerId(), testInfo.getName()))
-        ));
-
-        alertDialog.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-
-        alertDialog.setCancelable(false);
-        AlertDialog dialog = alertDialog.create();
-        dialog.show();
-        return dialog;
     }
 
     private AlertDialog showError(Activity activity) {
@@ -141,16 +134,12 @@ public class BluetoothResultFragment extends Fragment {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
         alertDialog.setTitle(R.string.incorrect_test_selected);
 
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
         alertDialog.setMessage(TextUtils.concat(
-                StringUtil.fromHtml(getString(R.string.data_does_not_match) + "<br /><br />"),
-                StringUtil.fromHtml(getString(R.string.select_correct_test) + "<br /><br />"),
-                StringUtil.fromHtml(String.format(getString(R.string.select_test_instruction),
-                        testInfo.getTintometerId(), testInfo.getName()))
+                StringUtil.toInstruction(getActivity(), null, getString(R.string.data_does_not_match) + "<br /><br />"),
+                StringUtil.toInstruction(getActivity(), null, getString(R.string.select_correct_test))
         ));
 
-        alertDialog.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -158,38 +147,178 @@ public class BluetoothResultFragment extends Fragment {
         });
 
         alertDialog.setCancelable(false);
-        AlertDialog dialog = alertDialog.create();
+        dialog = alertDialog.create();
         dialog.show();
         return dialog;
     }
 
+    public void displayWaiting() {
+
+        layoutResult.setVisibility(View.GONE);
+        layoutWaiting.setVisibility(View.VISIBLE);
+        layoutWaiting.setAlpha(1f);
+
+    }
+
     public boolean displayData(String data) {
+
+        if (dialog != null) {
+            dialog.dismiss();
+        }
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        String resultTitles = ",,,,Id,Test,,,,,Date,Time,,,,,,,Result,Unit";
+
+        // Display data received for diagnostics
+        if (PreferencesUtil.getBoolean(getActivity(), R.string.diagnosticModeKey2, false)) {
+            AlertDialog dialog;
+            AlertDialog.Builder builder;
+            final TextView showText = new TextView(getActivity());
+            showText.setText(testInfo.getName() + " = " + data);
+
+            showText.setPadding(50, 20, 40, 30);
+
+            builder = new AlertDialog.Builder(getActivity());
+            builder.setView(showText);
+
+            builder.setPositiveButton("Copy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("", showText.getText());
+                    clipboard.setPrimaryClip(clip);
+
+                    Toast.makeText(getActivity(), "Data copied to clipboard",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
+
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog = builder.create();
+            dialog.setTitle("Received Data");
+            dialog.setCancelable(false);
+            dialog.show();
+        }
+
+        String resultTitles = ",,Version,Version,Id,Test,Range,,,,Date,Time,,,,,,,Result,Unit";
         String[] titles = resultTitles.split(",");
         String testId = "";
+        String[] ranges = null;
+        boolean dataOk = false;
 
-        String[] result = data.split(";");
-        for (int i = 0; i < result.length; i++) {
+//        textResult.setText("");
+
+        String[] dataArray = data.split(";");
+        for (int i = 0; i < dataArray.length; i++) {
             if (titles.length > i && !titles[i].isEmpty()) {
-                if (titles[i].equals("Id")) {
-                    testId = result[i].trim();
+                if (titles[i].equals("Version")) {
+                    String version = dataArray[i].trim();
+                    if (version.startsWith("V")) {
+                        dataOk = true;
+                    } else {
+                        return false;
+                    }
                 }
+                if (titles[i].equals("Id")) {
+                    testId = dataArray[i].trim();
+                }
+                if (titles[i].equals("Range")) {
+                    ranges = dataArray[i].substring(0, dataArray[i].indexOf(" ")).trim().split("-");
+                }
+
+
                 if (titles[i].equals("Result")) {
-                    mResult = result[i];
-                    textResult.setText(result[i].trim());
+
+                    int resultCount = 0;
+                    for (int j = 0; j + i < dataArray.length; j = j + 4) {
+
+                        resultCount++;
+
+                        String result = dataArray[j + i].trim();
+                        String md610Id = dataArray[j + i + 1].trim();
+
+                        boolean isText = false;
+                        try {
+                            //noinspection ResultOfMethodCallIgnored
+                            Double.parseDouble(result);
+                        } catch (Exception e) {
+                            isText = true;
+                        }
+
+                        if (isText) {
+                            if (ranges != null && ranges.length > 1) {
+                                if (result.equalsIgnoreCase("underrange")) {
+                                    result = "<" + ranges[0];
+                                } else if (result.equalsIgnoreCase("overrange")) {
+                                    result = ">" + ranges[1];
+                                } else if (result.equalsIgnoreCase("???")) {
+                                    result = "";
+                                } else {
+                                    continue;
+                                }
+                            } else {
+                                return false;
+                            }
+                        }
+
+                        if (testInfo.getSubTests().size() > 1) {
+
+                            for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
+                                if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
+
+                                    if (subTest.getId() == 1) {
+                                        layoutResult1.setVisibility(View.VISIBLE);
+                                        textName1.setText(subTest.getDesc());
+                                        textUnit1.setText(subTest.getUnit());
+                                        textResult1.setText(result);
+                                    }
+
+                                    if (subTest.getId() == 2) {
+                                        layoutResult2.setVisibility(View.VISIBLE);
+                                        textName2.setText(subTest.getDesc());
+                                        textUnit2.setText(subTest.getUnit());
+                                        textResult2.setText(result);
+                                    }
+
+                                    if (subTest.getId() == 3) {
+                                        layoutResult3.setVisibility(View.VISIBLE);
+                                        textName3.setText(subTest.getDesc());
+                                        textUnit3.setText(subTest.getUnit());
+                                        textResult3.setText(result);
+                                    }
+                                }
+
+                                results.put(subTest.getId(), result);
+                            }
+                        } else {
+                            layoutResult1.setVisibility(View.VISIBLE);
+                            textName1.setText(testInfo.getSubTests().get(0).getDesc());
+                            textResult1.setText(result);
+                            textUnit1.setText(testInfo.getSubTests().get(0).getUnit());
+                            results.put(1, result);
+                        }
+
+                    }
+
+                    if (resultCount != testInfo.getSubTests().size()) {
+                        dataOk = false;
+                    }
+                    break;
                 }
             }
         }
 
-        textName.setText(testInfo.getName());
-        textUnit.setText(testInfo.getUnit());
 
-        alertDialog.dismiss();
-
-        if (testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
+        if (dataOk && testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
+            mAcceptButton.setVisibility(View.VISIBLE);
             crossFade();
             return true;
         } else {
@@ -197,6 +326,12 @@ public class BluetoothResultFragment extends Fragment {
             showError(getActivity());
             layoutResult.setVisibility(View.GONE);
             layoutWaiting.setVisibility(View.VISIBLE);
+            layoutWaiting.setAlpha(1);
+
+            if (mListener != null) {
+                mListener.onFragmentInteraction(1);
+            }
+
             return false;
         }
     }
@@ -257,10 +392,8 @@ public class BluetoothResultFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction();
+        void onFragmentInteraction(int mode);
     }
-
 
 }
 

@@ -19,32 +19,40 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import timber.log.Timber;
 
@@ -58,8 +66,8 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
+    private boolean resultReceived = false;
 
-    private int numPages = 2;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
     // to manage Service lifecycle.
@@ -82,13 +90,16 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         }
     };
     private BluetoothResultFragment mBluetoothResultFragment;
+    private InstructionFragment mInstructionFragment;
     private String mData;
 
-    private ViewPager mPager;
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
-    private PagerAdapter mPagerAdapter;
+    private LinearLayout layoutSelectTest;
+    private AlertDialog alertDialog;
+    private RelativeLayout layoutInstructions;
+    private RelativeLayout layoutWaiting;
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -99,7 +110,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 //updateConnectionState(R.string.disconnected);
                 Toast.makeText(DeviceControlActivity.this, "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
-                invalidateOptionsMenu();
+//                invalidateOptionsMenu();
                 finish();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 setGattServices(mBluetoothLeService.getSupportedGattServices());
@@ -108,7 +119,6 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             }
         }
     };
-    private Fragment mInstructionsFragment;
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -128,22 +138,45 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        setTitle(testInfo.getName());
 
-        if (testInfo.getInstructions() == null || testInfo.getInstructions().length() < 1) {
-            numPages = 1;
-        }
+        setTitle("Connected");
+
+        TextView textSelectTest = (TextView) findViewById(R.id.textSelectTest);
+        textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
+                testInfo.getName())));
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         mBluetoothResultFragment = new BluetoothResultFragment();
-        mInstructionsFragment = InstructionFragment.newInstance();
+        mInstructionFragment = new InstructionFragment();
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
+        layoutInstructions = (RelativeLayout) findViewById(R.id.layoutInstructions);
+        layoutWaiting = (RelativeLayout) findViewById(R.id.layoutWaiting);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.layoutInstructions, mInstructionFragment, "instructionFragment");
+        ft.replace(R.id.layoutWaiting, mBluetoothResultFragment);
+        ft.commit();
+
+        layoutSelectTest = (LinearLayout) findViewById(R.id.selectTestLayout);
+        findViewById(R.id.buttonTestSelected).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showWaitingView();
+            }
+        });
+
+        Button instructionsButton = (Button) findViewById(R.id.button_instructions);
+        instructionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog = showInstructionDialog(DeviceControlActivity.this, alertDialog);
+            }
+        });
+
+        showSelectTestView();
     }
 
     @Override
@@ -152,6 +185,9 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+            if (!result) {
+                finish();
+            }
             Timber.d("Connect request result=" + result);
         }
     }
@@ -159,13 +195,24 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
+        try {
+            unregisterReceiver(mGattUpdateReceiver);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (alertDialog != null) {
+            alertDialog.dismiss();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(mServiceConnection);
+        try {
+            unbindService(mServiceConnection);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mBluetoothLeService = null;
     }
 
@@ -178,29 +225,69 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         return super.onOptionsItemSelected(item);
     }
 
-//    private void updateConnectionState() {
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                //mConnectionState.setText(resourceId);
-//            }
-//        });
-//    }
+    @Override
+    public void onBackPressed() {
+        if (layoutSelectTest.getVisibility() == View.VISIBLE) {
+            super.onBackPressed();
+        } else if (resultReceived && mBluetoothResultFragment.isVisible()) {
+            mBluetoothResultFragment.displayWaiting();
+            showWaitingView();
+            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+            resultReceived = false;
+        } else if (layoutInstructions.getVisibility() == View.VISIBLE) {
+            showWaitingView();
+        } else if (mBluetoothResultFragment.isVisible()) {
+            showSelectTestView();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private AlertDialog showInstructionDialog(Activity activity, AlertDialog dialog) {
+        if (dialog == null) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+            alert.setTitle(R.string.to_select_test);
+
+            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+            alert.setMessage(TextUtils.concat(
+                    StringUtil.toInstruction(this, testInfo,
+                            String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
+                                    StringUtil.convertToTags(testInfo.getTintometerId()), testInfo.getName()))
+            ));
+
+            alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alert.setCancelable(false);
+            dialog = alert.create();
+        }
+        dialog.show();
+        return dialog;
+    }
 
     private void displayData(String data) {
 
-        if (data.contains("DT01")) {
-            mData = "";
-        }
-
         mData += data;
 
-        int beginIndex = mData.indexOf("DT01");
-        int endIndex = mData.indexOf(";;;");
+        showWaitingView();
 
-        if (endIndex > beginIndex) {
+        Matcher m = Pattern.compile("DT01;.*?;;;;").matcher(mData);
 
-            mData = mData.substring(beginIndex, endIndex);
+        if (m.find()) {
+
+            try {
+                unregisterReceiver(mGattUpdateReceiver);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            final String fullData = m.group();
+            mData = "";
 
             final ProgressDialog dlg = new ProgressDialog(this);
             dlg.setMessage("Receiving data");
@@ -209,13 +296,19 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             new Handler().postDelayed(new Runnable() {
                 public void run() {
 
-                    if (mBluetoothResultFragment.displayData(mData)) {
-                        numPages = 1;
-                        mPagerAdapter.notifyDataSetChanged();
+                    if (mBluetoothResultFragment.displayData(fullData)) {
+
+                        resultReceived = true;
+//                        if (getSupportActionBar() != null) {
+//                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//                        }
+
                         setTitle("Result");
+                    } else {
+                        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+                        showSelectTestView();
                     }
 
-                    mPager.setCurrentItem(0);
                     dlg.dismiss();
                 }
             }, RESULT_DISPLAY_DELAY);
@@ -245,40 +338,42 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     }
 
     @Override
-    public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
-    }
-
-    @Override
-    public void onFragmentInteraction() {
-        mPager.setCurrentItem(1);
-    }
-
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (position == 0) {
-                return mBluetoothResultFragment;
-            } else {
-                return mInstructionsFragment;
+    public void onFragmentInteraction(int mode) {
+        if (mode == 1) {
+            if (mBluetoothResultFragment.isVisible()) {
+                mBluetoothResultFragment.displayWaiting();
             }
-        }
 
-        @Override
-        public int getCount() {
-            return numPages;
+            showSelectTestView();
+
+        } else {
+            mInstructionFragment.returnToFirstPage();
+            showInstructionsView();
         }
+    }
+
+    private void showInstructionsView() {
+        layoutInstructions.setVisibility(View.VISIBLE);
+        layoutSelectTest.setVisibility(View.GONE);
+        layoutWaiting.setVisibility(View.GONE);
+
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+        setTitle(testInfo.getTitle().replace(" and ", " & "));
+    }
+
+    private void showSelectTestView() {
+        layoutSelectTest.setVisibility(View.VISIBLE);
+        layoutWaiting.setVisibility(View.GONE);
+        layoutInstructions.setVisibility(View.GONE);
+        setTitle("Connected");
+    }
+
+    private void showWaitingView() {
+        layoutWaiting.setVisibility(View.VISIBLE);
+        layoutSelectTest.setVisibility(View.GONE);
+        layoutInstructions.setVisibility(View.GONE);
+        setTitle("Connected");
     }
 
 }
