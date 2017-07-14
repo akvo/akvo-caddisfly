@@ -281,8 +281,19 @@ public final class TestConfigHelper {
 
             testInfo.setIsDeprecated(item.has("deprecated") && item.getBoolean("deprecated"));
 
-            testInfo.setTintometerId(item.has("tintometerId") ? item.getString("tintometerId") : "");
+            testInfo.setTintometerId(item.has("md610_id") ? item.getString("md610_id") : "");
 
+            testInfo.setSelectInstruction(item.has("selectInstruction") ? item.getString("selectInstruction") : "");
+
+            testInfo.setReagent(item.has("reagent1") ? item.getString("reagent1") : "");
+            testInfo.setReagent(item.has("reagent2") ? item.getString("reagent2") : "");
+
+            testInfo.setSampleQuantity(item.has("sampleQuantity") ? item.getString("sampleQuantity") : "");
+
+            testInfo.setReactionTime(item.has("reactionTime1") ? item.getString("reactionTime1") : "");
+            testInfo.setReactionTime(item.has("reactionTime2") ? item.getString("reactionTime2") : "");
+
+            testInfo.setTitle(item.has("title") ? item.getString("title") : "");
 
         } catch (JSONException e) {
             Timber.e(e);
@@ -343,6 +354,7 @@ public final class TestConfigHelper {
             resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
             resultJson.put(SensorConstants.NAME, testInfo.getName());
             resultJson.put(SensorConstants.UUID, testInfo.getId());
+
 
             JSONArray resultsJsonArray = new JSONArray();
             for (TestInfo.SubTest subTest : testInfo.getSubTests()) {

@@ -32,6 +32,9 @@
     <color name="blue">#014378</color>
     <color name="blue_dark">#003b69</color>
 
+    <color name="button_green">#00a79d</color>
+    <color name="button_green_selected">#007f77</color>
+
     <color name="orange">#ff6f00</color>
     <color name="orange_button">#f96c00</color>
     <color name="orange_button_dark">#e96500</color>

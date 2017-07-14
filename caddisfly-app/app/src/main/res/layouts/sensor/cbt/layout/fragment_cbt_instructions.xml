@@ -85,7 +85,7 @@
                         android:text="2."
                         android:textSize="17sp" />
 
-                    <TextView
+                    <org.akvo.caddisfly.widget.HtmlTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
