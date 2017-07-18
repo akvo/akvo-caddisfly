@@ -107,6 +107,27 @@
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textVersionExpiry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:ellipsize="none"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:textAllCaps="true"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#9500192d"
+                    android:textSize="12dp"
+                    tools:ignore="SpUsage"
+                    tools:text="Version expires: 15 Jan 2018" />
+            </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
 

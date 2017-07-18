@@ -96,7 +96,7 @@ public final class ApkHelper {
      * <p>
      * source: http://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
      */
-    private static boolean isStoreVersion(@NonNull Context context) {
+    public static boolean isStoreVersion(@NonNull Context context) {
 
         // Valid installer package names
         List<String> validInstallers = new ArrayList<>(Arrays.asList("com.android.vending", "com.google.android.feedback"));

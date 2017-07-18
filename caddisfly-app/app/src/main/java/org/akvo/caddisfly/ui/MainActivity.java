@@ -54,6 +54,10 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,10 +72,16 @@ public class MainActivity extends BaseActivity {
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
     private final Handler finishOnSurveyOpenedHandler = new Handler();
+
     @BindView(R.id.coordinatorLayout)
     View coordinatorLayout;
+
     @BindView(R.id.layoutDiagnostics)
     View layoutDiagnostics;
+
+    @BindView(R.id.textVersionExpiry)
+    TextView textVersionExpiry;
+
     private Runnable finishRunnable;
 
     @Override
@@ -83,8 +93,20 @@ public class MainActivity extends BaseActivity {
 
         makeUpgrades();
 
-        // If app has expired then close this activity
-        ApkHelper.isAppVersionExpired(this);
+        if (!ApkHelper.isStoreVersion(this)) {
+
+            final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+                    AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
+
+            DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+            textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
+
+            textVersionExpiry.setVisibility(View.VISIBLE);
+
+            // If app has expired then close this activity
+            ApkHelper.isAppVersionExpired(this);
+
+        }
     }
 
     /**
