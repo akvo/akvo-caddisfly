@@ -111,6 +111,27 @@
       "height": 5.8,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "text": "collect_water_sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "dip_strip_in_water_2_seconds",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "shake_excess_water"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -558,6 +579,27 @@
       "height": 5.5,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "text": "collect_water_sample",
+          "png": "instruction_collect_sample"
+        },
+        {
+          "text": "dip_strip_into_water_1_second",
+          "png": "instruction_dip"
+        },
+        {
+          "text": "shake_excess_water"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "png": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "png": ""
+        }
+      ],
       "results": [
         {
           "id":1,
