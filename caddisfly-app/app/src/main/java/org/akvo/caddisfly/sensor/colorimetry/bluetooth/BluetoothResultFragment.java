@@ -31,6 +31,9 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
@@ -123,8 +126,8 @@ public class BluetoothResultFragment extends Fragment {
             }
         });
 
-        textPerformTest.setText(StringUtil.toInstruction(getActivity(), testInfo, String.format(getString(R.string.perform_test),
-                testInfo.getName())));
+        textPerformTest.setText(StringUtil.toInstruction(getActivity(), testInfo,
+                String.format(getString(R.string.perform_test), testInfo.getName())));
 
         return view;
     }
@@ -168,7 +171,6 @@ public class BluetoothResultFragment extends Fragment {
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-
         // Display data received for diagnostics
         if (PreferencesUtil.getBoolean(getActivity(), R.string.diagnosticModeKey2, false)) {
             AlertDialog dialog;
@@ -211,10 +213,9 @@ public class BluetoothResultFragment extends Fragment {
         String resultTitles = ",,Version,Version,Id,Test,Range,,,,Date,Time,,,,,,,Result,Unit";
         String[] titles = resultTitles.split(",");
         String testId = "";
-        String[] ranges = null;
+        String[] ranges = new String[2];
+        String unit = "";
         boolean dataOk = false;
-
-//        textResult.setText("");
 
         String[] dataArray = data.split(";");
         for (int i = 0; i < dataArray.length; i++) {
@@ -231,9 +232,14 @@ public class BluetoothResultFragment extends Fragment {
                     testId = dataArray[i].trim();
                 }
                 if (titles[i].equals("Range")) {
-                    ranges = dataArray[i].substring(0, dataArray[i].indexOf(" ")).trim().split("-");
+                    Matcher m = Pattern.compile("([-+]?[0-9]*\\.?[0-9]+)\\-([-+]?[0-9]*\\.?[0-9]+)\\s+(.+)\\s+(.+)").matcher(dataArray[i].trim());
+                    if (m.find()) {
+                        ranges[0] = m.group(1);
+                        ranges[1] = m.group(2);
+                        unit = m.group(3);
+                        //String formula = m.group(4);
+                    }
                 }
-
 
                 if (titles[i].equals("Result")) {
 
@@ -243,7 +249,7 @@ public class BluetoothResultFragment extends Fragment {
                         resultCount++;
 
                         String result = dataArray[j + i].trim();
-                        String md610Id = dataArray[j + i + 1].trim();
+                        String md610Id = dataArray[j + i + 1].trim().replace(unit, "").trim();
 
                         boolean isText = false;
                         try {
@@ -254,7 +260,7 @@ public class BluetoothResultFragment extends Fragment {
                         }
 
                         if (isText) {
-                            if (ranges != null && ranges.length > 1) {
+                            if (ranges.length > 1) {
                                 if (result.equalsIgnoreCase("underrange")) {
                                     result = "<" + ranges[0];
                                 } else if (result.equalsIgnoreCase("overrange")) {
@@ -279,24 +285,20 @@ public class BluetoothResultFragment extends Fragment {
                                         textName1.setText(subTest.getDesc());
                                         textUnit1.setText(subTest.getUnit());
                                         textResult1.setText(result);
-                                    }
-
-                                    if (subTest.getId() == 2) {
+                                    } else if (subTest.getId() == 2) {
                                         layoutResult2.setVisibility(View.VISIBLE);
                                         textName2.setText(subTest.getDesc());
                                         textUnit2.setText(subTest.getUnit());
                                         textResult2.setText(result);
-                                    }
-
-                                    if (subTest.getId() == 3) {
+                                    } else if (subTest.getId() == 3) {
                                         layoutResult3.setVisibility(View.VISIBLE);
                                         textName3.setText(subTest.getDesc());
                                         textUnit3.setText(subTest.getUnit());
                                         textResult3.setText(result);
                                     }
-                                }
 
-                                results.put(subTest.getId(), result);
+                                    results.put(subTest.getId(), result);
+                                }
                             }
                         } else {
                             layoutResult1.setVisibility(View.VISIBLE);
@@ -308,7 +310,7 @@ public class BluetoothResultFragment extends Fragment {
 
                     }
 
-                    if (resultCount != testInfo.getSubTests().size()) {
+                    if (results.size() < 1 || resultCount != testInfo.getSubTests().size()) {
                         dataOk = false;
                     }
                     break;
