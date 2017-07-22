@@ -48,6 +48,14 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
 
     public void onClickMatchedButton(View view) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.layoutFragment, CbtCameraFragment.newInstance(mResult), "cameraFragment")
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    public void onClickShowResult(View view) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.layoutFragment, CbtResultFragment.newInstance(mResult), "resultFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                 .addToBackStack(null)

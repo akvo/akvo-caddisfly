@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly.
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+  -->
+<layout>
+
+    <data>
+
+        <variable
+            name="callback"
+            type="org.akvo.caddisfly.sensor.cbt.CbtCameraFragment" />
+
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <io.fotoapparat.view.CameraView
+            android:id="@+id/camera_view"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/buttonCapture"
+            style="@style/SingleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            android:onClick="@{() ->  callback.onClickCapture()}"
+            android:text="Take Photo" />
+
+        <Button
+            android:id="@+id/buttonOk"
+            style="@style/SingleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="50dp"
+            android:onClick="onClickShowResult"
+            android:text="Ok"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</layout>
