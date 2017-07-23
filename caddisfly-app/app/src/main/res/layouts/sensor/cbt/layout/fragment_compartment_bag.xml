@@ -27,25 +27,25 @@
 
     <include layout="@layout/toolbar" />
 
+    <TextView
+        android:id="@+id/textInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="10dp"
+        android:text="Tap on the sections below to match the colours of bag compartments in the test."
+        android:textSize="18dp" />
+
     <org.akvo.caddisfly.sensor.cbt.CustomShapeButton
         android:id="@+id/compartments"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_below="@id/toolbar" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/compartments"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="30dp"
-        android:text="Tap on the different bag compartments above to change the colours according to the test results"
-        android:textSize="18dp" />
-
+        android:layout_below="@+id/textInfo" />
 
     <Button
-        android:id="@+id/button_prepare"
+        android:id="@+id/buttonNext"
         style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,6 +55,6 @@
         android:layout_marginTop="20dp"
         android:enabled="true"
         android:onClick="onClickMatchedButton"
-        android:text="Colors Matched"
+        android:text="Next"
         android:theme="?primaryButtonStyle" />
 </RelativeLayout>

@@ -21,10 +21,13 @@ package org.akvo.caddisfly.sensor.cbt;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
@@ -32,6 +35,9 @@ import org.akvo.caddisfly.ui.BaseFragment;
 public class CompartmentBagFragment extends BaseFragment {
     private OnFragmentInteractionListener mListener;
     private static final String ARG_PARAM1 = "param1";
+    private static final int BUTTON_ENABLE_DELAY = 2000;
+    private static final int ANIMATION_DURATION_MILLIS = 1000;
+    private static final float BUTTON_START_ALPHA = 0f;
 
     private String mKey = "00000";
 
@@ -75,6 +81,21 @@ public class CompartmentBagFragment extends BaseFragment {
                 }
             }
         });
+
+        final Button buttonNext = (Button) view.findViewById(R.id.buttonNext);
+        (new Handler()).postDelayed(new Runnable() {
+            public void run() {
+                buttonNext.setEnabled(true);
+                AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
+                buttonNext.setAlpha(1f);
+                animation.setDuration(ANIMATION_DURATION_MILLIS);
+                buttonNext.startAnimation(animation);
+            }
+        }, BUTTON_ENABLE_DELAY);
+
+        buttonNext.setEnabled(false);
+        buttonNext.setAlpha(BUTTON_START_ALPHA);
+
         return view;
     }
 

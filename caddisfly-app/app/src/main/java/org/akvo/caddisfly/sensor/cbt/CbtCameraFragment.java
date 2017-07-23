@@ -1,9 +1,9 @@
 package org.akvo.caddisfly.sensor.cbt;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +13,10 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.databinding.FragmentCbtCameraBinding;
 import org.akvo.caddisfly.ui.BaseFragment;
+import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.util.ImageUtil;
 
 import io.fotoapparat.Fotoapparat;
-import io.fotoapparat.FotoapparatSwitcher;
 import io.fotoapparat.error.CameraErrorCallback;
 import io.fotoapparat.hardware.CameraException;
 import io.fotoapparat.parameter.LensPosition;
@@ -29,7 +30,6 @@ import static io.fotoapparat.log.Loggers.logcat;
 import static io.fotoapparat.log.Loggers.loggers;
 import static io.fotoapparat.parameter.selector.AspectRatioSelectors.standardRatio;
 import static io.fotoapparat.parameter.selector.FlashSelectors.autoFlash;
-import static io.fotoapparat.parameter.selector.FlashSelectors.autoRedEye;
 import static io.fotoapparat.parameter.selector.FlashSelectors.off;
 import static io.fotoapparat.parameter.selector.FlashSelectors.torch;
 import static io.fotoapparat.parameter.selector.FocusModeSelectors.autoFocus;
@@ -44,10 +44,9 @@ public class CbtCameraFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "arg";
     FragmentCbtCameraBinding binding;
+    Fotoapparat backFotoapparat;
     private PermissionsDelegate permissionsDelegate;
-    //    private String mKey = "00000";
     private boolean hasCameraPermission;
-    private FotoapparatSwitcher fotoapparatSwitcher;
 
     public static Fragment newInstance(String key) {
         CbtCameraFragment fragment = new CbtCameraFragment();
@@ -88,7 +87,7 @@ public class CbtCameraFragment extends BaseFragment {
     public void onStart() {
         super.onStart();
         if (hasCameraPermission) {
-            fotoapparatSwitcher.start();
+            backFotoapparat.start();
         }
     }
 
@@ -96,7 +95,7 @@ public class CbtCameraFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         if (hasCameraPermission) {
-            fotoapparatSwitcher.stop();
+            backFotoapparat.stop();
         }
     }
 
@@ -104,9 +103,15 @@ public class CbtCameraFragment extends BaseFragment {
         takePicture();
     }
 
+    public void onClickRetake() {
+        binding.result.setVisibility(View.GONE);
+        binding.cameraView.setVisibility(View.VISIBLE);
+        binding.buttonCapture.setVisibility(View.VISIBLE);
+        binding.layoutButtons.setVisibility(View.GONE);
+    }
+
     private void setupFotoapparat() {
-        Fotoapparat backFotoapparat = createFotoapparat(LensPosition.BACK);
-        fotoapparatSwitcher = FotoapparatSwitcher.withDefault(backFotoapparat);
+        backFotoapparat = createFotoapparat(LensPosition.BACK);
     }
 
     private Fotoapparat createFotoapparat(LensPosition position) {
@@ -122,7 +127,6 @@ public class CbtCameraFragment extends BaseFragment {
                         fixed()
                 ))
                 .flash(firstAvailable(
-                        autoRedEye(),
                         autoFlash(),
                         torch(),
                         off()
@@ -141,20 +145,24 @@ public class CbtCameraFragment extends BaseFragment {
     }
 
     private void takePicture() {
-        PhotoResult photoResult = fotoapparatSwitcher.getCurrentFotoapparat().takePicture();
+        PhotoResult photoResult = backFotoapparat.takePicture();
 
         photoResult
                 .toBitmap(scaled(0.25f))
                 .whenAvailable(new PendingResult.Callback<BitmapPhoto>() {
                     @Override
                     public void onResult(BitmapPhoto result) {
-                        binding.result.setImageBitmap(result.bitmap);
-                        binding.result.setRotation(-result.rotationDegrees);
+
+                        Bitmap bitmap = ImageUtil.rotateImage(result.bitmap, -result.rotationDegrees);
+                        FileUtil.writeBitmapToExternalStorage(bitmap, "/temp", "cbt.jpg");
+
+                        result.bitmap.recycle();
+                        binding.result.setImageBitmap(bitmap);
 
                         binding.result.setVisibility(View.VISIBLE);
                         binding.cameraView.setVisibility(View.GONE);
                         binding.buttonCapture.setVisibility(View.GONE);
-                        binding.buttonOk.setVisibility(View.VISIBLE);
+                        binding.layoutButtons.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -167,12 +175,5 @@ public class CbtCameraFragment extends BaseFragment {
         if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
             binding.cameraView.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        setTitle(view, "Result");
     }
 }

@@ -26,7 +26,7 @@
 
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -34,14 +34,16 @@
         <io.fotoapparat.view.CameraView
             android:id="@+id/camera_view"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="match_parent"
             android:visibility="gone"
             tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/result"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             android:visibility="gone" />
 
         <Button
@@ -49,23 +51,42 @@
             style="@style/SingleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="50dp"
             android:onClick="@{() ->  callback.onClickCapture()}"
-            android:text="Take Photo" />
+            android:text="Take Photo"
+            android:theme="?secondaryButtonStyle"
+            android:visibility="visible" />
 
-        <Button
-            android:id="@+id/buttonOk"
-            style="@style/SingleButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/layoutButtons"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="50dp"
-            android:onClick="onClickShowResult"
-            android:text="Ok"
-            android:visibility="gone" />
+            android:layout_gravity="bottom"
+            android:visibility="gone">
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/buttonRetake"
+                style="@style/SingleButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:alpha="0.5"
+                android:onClick="@{() ->  callback.onClickRetake()}"
+                android:text="Retake"
+                android:theme="?secondaryButtonStyle" />
+
+            <Button
+                android:id="@+id/buttonOk"
+                style="@style/SingleButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:alpha="0.5"
+                android:onClick="onClickShowResult"
+                android:text="Save"
+                android:theme="?secondaryButtonStyle" />
+        </LinearLayout>
+
+    </FrameLayout>
 </layout>
