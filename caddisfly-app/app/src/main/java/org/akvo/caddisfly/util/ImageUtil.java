@@ -29,15 +29,20 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.ImageHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import timber.log.Timber;
 
@@ -192,9 +197,136 @@ public final class ImageUtil {
         }
     }
 
+    private static boolean saveImage(Bitmap bitmap, String filename) {
+        OutputStream out = null;
+        try {
+            out = new BufferedOutputStream(new FileOutputStream(filename));
+            if (bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)) {
+                return true;
+            }
+        } catch (FileNotFoundException e) {
+            Timber.e(e.getMessage());
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (Exception ignored) {
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static Bitmap rotateImage(@NonNull Bitmap in, int angle) {
         Matrix mat = new Matrix();
         mat.postRotate(angle);
         return Bitmap.createBitmap(in, 0, 0, in.getWidth(), in.getHeight(), mat, true);
+    }
+
+    private static void checkOrientation(String originalImage, String resizedImage) {
+        try {
+            ExifInterface exif1 = new ExifInterface(originalImage);
+            ExifInterface exif2 = new ExifInterface(resizedImage);
+
+            final String orientation1 = exif1.getAttribute(ExifInterface.TAG_ORIENTATION);
+            final String orientation2 = exif2.getAttribute(ExifInterface.TAG_ORIENTATION);
+
+            if (!TextUtils.isEmpty(orientation1) && !orientation1.equals(orientation2)) {
+                Timber.d("Orientation property in EXIF does not match. Overriding it with original value...");
+                exif2.setAttribute(ExifInterface.TAG_ORIENTATION, orientation1);
+                exif2.saveAttributes();
+            }
+        } catch (IOException e) {
+            Timber.e(e.getMessage());
+        }
+    }
+
+    /**
+     * resizeImage handles resizing a too-large image file from the camera,
+     *
+     * @return true if the image was successfully resized to the new file, false otherwise
+     */
+    public static boolean resizeImage(String origFilename, String outFilename) {
+        int reqWidth, reqHeight;
+        reqWidth = 1280;
+        reqHeight = 960;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(origFilename, options);
+
+        // If image is in portrait mode, we swap the maximum width and height
+        if (options.outHeight > options.outWidth) {
+            int tmp = reqHeight;
+            //noinspection SuspiciousNameCombination
+            reqHeight = reqWidth;
+            reqWidth = tmp;
+        }
+
+        Timber.d("Orig Image size: %d x %d", options.outWidth, options.outHeight);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        Bitmap bitmap = BitmapFactory.decodeFile(origFilename, options);
+
+        if (bitmap != null && ImageUtil.saveImage(bitmap, outFilename)) {
+            ImageUtil.checkOrientation(origFilename, outFilename);// Ensure the EXIF data is not lost
+            Timber.d("Resized Image size: %d x %d", bitmap.getWidth(), bitmap.getHeight());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Calculate an inSampleSize for use in a {@link BitmapFactory.Options} object when decoding
+     * bitmaps using the decode* methods from {@link BitmapFactory}. This implementation calculates
+     * the closest inSampleSize that will result in the final decoded bitmap having a width and
+     * height equal to or larger than the requested width and height. This implementation does not
+     * ensure a power of 2 is returned for inSampleSize which can be faster when decoding but
+     * results in a larger bitmap which isn't as useful for caching purposes.
+     *
+     * @param options   An options object with out* params already populated (run through a decode*
+     *                  method with inJustDecodeBounds==true
+     * @param reqWidth  The requested width of the resulting bitmap
+     * @param reqHeight The requested height of the resulting bitmap
+     * @return The value to be used for inSampleSize
+     */
+    private static int calculateInSampleSize(BitmapFactory.Options options,
+                                             int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            // Calculate ratios of height and width to requested height and width
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+            // Choose the smallest ratio as inSampleSize value, this will guarantee a final image
+            // with both dimensions larger than or equal to the requested height and width.
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+
+            // This offers some additional logic in case the image has a strange
+            // aspect ratio. For example, a panorama may have a much larger
+            // width than height. In these cases the total pixels might still
+            // end up being too large to fit comfortably in memory, so we should
+            // be more aggressive with sample down the image (=larger inSampleSize).
+
+            final float totalPixels = width * height;
+
+            // Anything more than 2x the requested pixels we'll sample down further
+            final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+
+            while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+                inSampleSize++;
+            }
+        }
+        return inSampleSize;
     }
 }

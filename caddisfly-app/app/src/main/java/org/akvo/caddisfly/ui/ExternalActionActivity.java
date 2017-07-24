@@ -44,6 +44,7 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.cbt.CompartmentBagMainActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
@@ -356,6 +357,18 @@ public class ExternalActionActivity extends BaseActivity {
                     final Intent sensorIntent = new Intent(context, SensorActivity.class);
                     sensorIntent.putExtra(Constant.UUID, uuid);
                     startActivityForResult(sensorIntent, REQUEST_TEST);
+                } else {
+                    alertFeatureNotSupported();
+                }
+                break;
+            case CBT:
+
+                boolean hasBluetooth = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+                if (hasBluetooth) {
+                    TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
+                    final Intent cbtIntent = new Intent(getBaseContext(), CompartmentBagMainActivity.class);
+                    cbtIntent.putExtra("internal", true);
+                    startActivityForResult(cbtIntent, REQUEST_TEST);
                 } else {
                     alertFeatureNotSupported();
                 }

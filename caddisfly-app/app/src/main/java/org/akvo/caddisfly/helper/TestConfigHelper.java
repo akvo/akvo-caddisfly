@@ -26,6 +26,7 @@ import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -43,12 +44,14 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.sensor.SensorConstants.DEPRECATED_TESTS_FILENAME;
+import static org.akvo.caddisfly.sensor.SensorConstants.MPN_TABLE_FILENAME;
 
 /**
  * Utility functions to parse a text config json text.
@@ -58,6 +61,8 @@ public final class TestConfigHelper {
     // Files
     private static final int DEFAULT_MONTHS_VALID = 6;
     private static final int BIT_MASK = 0x00FFFFFF;
+
+    private static HashMap<String, MpnValue> mpnTable;
 
     private TestConfigHelper() {
     }
@@ -206,6 +211,9 @@ public final class TestConfigHelper {
                     case "sensor":
                         type = TestType.SENSOR;
                         break;
+                    case "cbt":
+                        type = TestType.CBT;
+                        break;
                     default:
                         return null;
                 }
@@ -292,6 +300,38 @@ public final class TestConfigHelper {
         }
 
         return testInfo;
+    }
+
+    public static MpnValue getMpnValueForKey(String key) {
+        if (mpnTable == null) {
+            mpnTable = loadMpnTable();
+        }
+        return mpnTable.get(key);
+    }
+
+    private static HashMap<String, MpnValue> loadMpnTable() {
+
+        HashMap<String, MpnValue> mapper = new HashMap<>();
+
+        String jsonText = AssetsManager.getInstance().loadJSONFromAsset(MPN_TABLE_FILENAME);
+        try {
+            JSONArray array = new JSONObject(jsonText).getJSONArray("rows");
+
+            for (int j = 0; j < array.length(); j++) {
+                JSONObject item = array.getJSONObject(j);
+
+                String key = item.getString("key");
+
+                mapper.put(key, new MpnValue(item.getString("mpn"), item.getInt("confidence"),
+                        item.getString("riskCategory")));
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return mapper;
     }
 
     /**

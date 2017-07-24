@@ -152,7 +152,7 @@ public class TestInfo implements Parcelable {
                 try {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
                     subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"),
-                            patchObj.getString("unit"),
+                            patchObj.has("unit") ? patchObj.getString("unit") : "",
                             patchObj.has("timeDelay") ? patchObj.getInt("timeDelay") : 0,
                             patchObj.has("md610_id") ? patchObj.getString("md610_id") : ""));
                 } catch (JSONException e) {

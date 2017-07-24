@@ -19,36 +19,27 @@
 
 package org.akvo.caddisfly.model;
 
-/**
- * The different types of testing methods
- */
-public enum TestType {
-    /**
-     * Liquid reagent is mixed with sample and color is analysed from the resulting
-     * color change in the solution
-     */
-    COLORIMETRIC_LIQUID,
+public class MpnValue {
+    private String mpn;
+    private int confidence;
+    private String riskCategory;
 
-    /**
-     * Strip paper is dipped into the sample and color is analysed from the resulting
-     * color change on the strip paper
-     */
-    COLORIMETRIC_STRIP,
+    public MpnValue(String mpn, int confidence, String riskCategory) {
 
-    /**
-     * External sensors connected to the phone/device
-     */
-    SENSOR,
+        this.mpn = mpn;
+        this.confidence = confidence;
+        this.riskCategory = riskCategory;
+    }
 
-    /**
-     * External bluetooth testing device
-     */
-    BLUETOOTH,
+    public String getMpn() {
+        return mpn;
+    }
 
-    /**
-     * Compartment Bag Test
-     */
-    CBT
+    public int getConfidence() {
+        return confidence;
+    }
 
+    public String getRiskCategory() {
+        return riskCategory;
+    }
 }
-
