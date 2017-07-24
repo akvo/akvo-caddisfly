@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -17,19 +17,20 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/other">
-        <Preference
-            android:key="about"
-            android:title="@string/about">
-            <intent
-                android:targetClass="org.akvo.caddisfly.ui.AboutActivity"
-                android:targetPackage="org.akvo.caddisfly" />
-        </Preference>
+<resources>
 
-        <CheckBoxPreference
-            android:key="@string/diagnosticModeKey2"
-            android:title="Diagnostic Mode" />
+    <style name="ActionButton" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:minWidth">200dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:minHeight">50dp</item>
+    </style>
 
-    </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
-</PreferenceScreen>
+</resources>
