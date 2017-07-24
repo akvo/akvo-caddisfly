@@ -101,6 +101,14 @@ public class SurveyTest {
 
         clickExternalSourceButton(TestConstant.NEXT);
 
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
         clickExternalSourceButton(0);
 
         SystemClock.sleep(12000);

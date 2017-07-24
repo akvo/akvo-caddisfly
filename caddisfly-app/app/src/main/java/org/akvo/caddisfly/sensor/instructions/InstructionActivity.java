@@ -102,8 +102,8 @@ public class InstructionActivity extends BaseActivity {
                     TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
                     fragments.add(InstructionDetailFragment.newInstance(
                             testInfo, jsonArray,
-                            instructions.getJSONObject(i).has("png")
-                                    ? instructions.getJSONObject(i).getString("png") : ""));
+                            instructions.getJSONObject(i).has("image")
+                                    ? instructions.getJSONObject(i).getString("image") : ""));
                 } catch (JSONException e) {
                     Timber.e(e);
                 }

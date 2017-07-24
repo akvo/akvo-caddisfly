@@ -6,23 +6,23 @@
       "instructions": [
         {
           "text": "collect_mehlich_extraction_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": "dip_strip_into_water_and_remove",
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "<!>do_not_shake_excess_water<!>",
-          "png": ""
+          "image": ""
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -32,43 +32,43 @@
       "instructions": [
         {
           "text": "collect_5ml_mehlich_sample",
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "add_5_drops_reagent_1",
             "swirl_to_mix_reagent"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "put_6_drops_of_reagent_in_another_container",
             "place_tube_in_provided_rack"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "dip_strip_15_seconds_and_remove",
             "shake_excess_water"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "dip_strip_15_seconds_in_reagent_and_remove",
             "shake_excess_water"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -78,11 +78,11 @@
       "instructions": [
         {
           "text": "collect_mehlich_extraction_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": "immerse_reaction_zone",
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "allow_excess_liquid_to_run_off"
@@ -95,11 +95,11 @@
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -109,22 +109,22 @@
       "instructions": [
         {
           "text": "collect_water_extraction_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": [
             "dip_strip_into_water_and_remove",
             "do_not_shake_excess_water"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -134,29 +134,29 @@
       "instructions": [
         {
           "text": "collect_5ml_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": [
             "add_10_drops_nh4_reagent",
             "swirl_to_mix_reagent"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "dip_strip_5_seconds_and_remove",
             "shake_excess_water"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -181,7 +181,7 @@
             "collect_9.6ml_sample",
             "<!>sample_size_for_4000_range<!>"
           ],
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": "follow_the_instructions_for_reagents"
@@ -191,11 +191,11 @@
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -208,7 +208,7 @@
             "collect_50ml_sample",
             "<!>sample_size_for_500_range<!>"
           ],
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": "follow_the_instructions_for_reagents"
@@ -218,11 +218,11 @@
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -235,22 +235,22 @@
             "<b>stage_one</b>",
             "collect_water_sample"
           ],
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": [
             "dip_strip_into_water_1_second",
             "do_not_shake_excess_water"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         },
         {
           "phase": 2,
@@ -259,17 +259,17 @@
             "dip_strip_move_back_forth_30_seconds",
             "dry_off_excess_water_place_on_towel"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "phase": 2,
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "phase": 2,
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -279,22 +279,22 @@
       "instructions": [
         {
           "text": "collect_water_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": [
             "dip_strip_into_water_1_second",
             "shake_excess_water"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -304,23 +304,23 @@
       "instructions": [
         {
           "text": "collect_water_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": "dip_strip_into_water_and_remove",
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "<!>do_not_shake_excess_water<!>",
-          "png": ""
+          "image": ""
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -330,22 +330,22 @@
       "instructions": [
         {
           "text": "collect_water_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": [
             "dip_strip_into_water_and_remove",
             "do_not_shake_excess_water"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -355,22 +355,22 @@
       "instructions": [
         {
           "text": "collect_water_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": "dip_strip_in_water_2_seconds",
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "shake_excess_water"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -380,43 +380,43 @@
       "instructions": [
         {
           "text": "collect_5ml_sample",
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "add_5_drops_reagent_1",
             "swirl_to_mix_reagent"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "put_6_drops_of_reagent_in_another_container",
             "place_tube_in_provided_rack"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "dip_strip_15_seconds_and_remove",
             "shake_excess_water"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "dip_strip_15_seconds_in_reagent_and_remove",
             "shake_excess_water"
           ],
-          "png": ""
+          "image": ""
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -426,22 +426,22 @@
       "instructions": [
         {
           "text": "collect_water_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": [
             "dip_strip_5_seconds_and_remove",
             "do_not_shake_excess_water"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -451,11 +451,11 @@
       "instructions": [
         {
           "text": "collect_water_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": "immerse_reaction_zone",
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "allow_excess_liquid_to_run_off"
@@ -468,11 +468,11 @@
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -482,22 +482,22 @@
       "instructions": [
         {
           "text": "collect_water_sample",
-          "png": "instruction_collect_sample"
+          "image": "instruction_collect_sample"
         },
         {
           "text": [
             "dip_strip_move_back_forth_30_seconds",
             "dry_off_excess_water_place_on_towel"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     },
@@ -507,30 +507,30 @@
       "instructions": [
         {
           "text": "fill_half_with_sample",
-          "png": ""
+          "image": ""
         },
         {
           "text": "open_one_foil_and_add_powder",
-          "png": ""
+          "image": ""
         },
         {
           "text": "cap_vial_and_shake_rapidly",
-          "png": ""
+          "image": ""
         },
         {
           "text": [
             "dip_strip_move_back_forth_15_seconds",
             "shake_excess_water"
           ],
-          "png": "instruction_dip"
+          "image": "instruction_dip"
         },
         {
           "text": "place_strip_in_black_area",
-          "png": "instruction_place_strip"
+          "image": "instruction_place_strip"
         },
         {
           "text": "press_start_button",
-          "png": ""
+          "image": ""
         }
       ]
     }

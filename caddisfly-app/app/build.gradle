@@ -111,7 +111,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.jakewharton:butterknife:8.6.0'
-    compile 'io.fotoapparat.fotoapparat:library:1.2.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.8.0'
     testCompile 'org.robolectric:robolectric:3.4-rc3'

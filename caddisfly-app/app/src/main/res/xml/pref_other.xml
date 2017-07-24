@@ -26,10 +26,5 @@
                 android:targetClass="org.akvo.caddisfly.ui.AboutActivity"
                 android:targetPackage="org.akvo.caddisfly" />
         </Preference>
-
-        <CheckBoxPreference
-            android:key="@string/diagnosticModeKey2"
-            android:title="Diagnostic Mode" />
-
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>
