@@ -20,6 +20,8 @@
 package org.akvo.caddisfly.model;
 
 import android.graphics.Color;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -27,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,8 +43,19 @@ import timber.log.Timber;
 /**
  * Model to hold test configuration information.
  */
-public class TestInfo {
+public class TestInfo implements Parcelable {
 
+    public static final Creator<TestInfo> CREATOR = new Creator<TestInfo>() {
+        @Override
+        public TestInfo createFromParcel(Parcel in) {
+            return new TestInfo(in);
+        }
+
+        @Override
+        public TestInfo[] newArray(int size) {
+            return new TestInfo[size];
+        }
+    };
     private static final double RESULT_ERROR_MARGIN = 0.2;
     private final String name;
     private final String uuid;
@@ -68,6 +82,11 @@ public class TestInfo {
     private boolean deprecated;
     private JSONArray instructions;
     private String tintometerId;
+    private String selectInstruction;
+    private ArrayList<String> reagents;
+    private Serializable sampleQuantity;
+    private ArrayList<String> reactionTimes;
+    private String title;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -77,6 +96,8 @@ public class TestInfo {
         this.uuid = uuid;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
+        reagents = new ArrayList<>();
+        reactionTimes = new ArrayList<>();
 
         instructions = instructionsArray;
 
@@ -131,8 +152,9 @@ public class TestInfo {
                 try {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
                     subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"),
-                            patchObj.getString("unit"),
-                            patchObj.has("timeDelay") ? patchObj.getInt("timeDelay") : 0));
+                            patchObj.has("unit") ? patchObj.getString("unit") : "",
+                            patchObj.has("timeDelay") ? patchObj.getInt("timeDelay") : 0,
+                            patchObj.has("md610_id") ? patchObj.getString("md610_id") : ""));
                 } catch (JSONException e) {
                     Timber.e(e);
                 }
@@ -152,6 +174,33 @@ public class TestInfo {
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
         this.requiresCalibration = false;
+    }
+
+    protected TestInfo(Parcel in) {
+        name = in.readString();
+        uuid = in.readString();
+        unit = in.readString();
+        requiresCalibration = in.readByte() != 0;
+        allInteger = in.readByte() != 0;
+        mIsDirty = in.readByte() != 0;
+        monthsValid = in.readInt();
+        isGroup = in.readByte() != 0;
+        groupName = in.readInt();
+        batchNumber = in.readString();
+        calibrationDate = in.readLong();
+        expiryDate = in.readLong();
+        useGrayScale = in.readByte() != 0;
+        hueTrend = in.readInt();
+        rangeValues = in.createDoubleArray();
+        deviceId = in.readString();
+        responseFormat = in.readString();
+        deprecated = in.readByte() != 0;
+        tintometerId = in.readString();
+        selectInstruction = in.readString();
+        reagents = in.createStringArrayList();
+        swatches = null;
+        testType = null;
+        dilutions = null;
     }
 
     /**
@@ -353,17 +402,97 @@ public class TestInfo {
         this.tintometerId = tintometerId;
     }
 
+    public String getSelectInstruction() {
+        return selectInstruction;
+    }
+
+    public void setSelectInstruction(String selectInstruction) {
+        this.selectInstruction = selectInstruction;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(uuid);
+        dest.writeString(unit);
+        dest.writeByte((byte) (requiresCalibration ? 1 : 0));
+        dest.writeByte((byte) (allInteger ? 1 : 0));
+        dest.writeByte((byte) (mIsDirty ? 1 : 0));
+        dest.writeInt(monthsValid);
+        dest.writeByte((byte) (isGroup ? 1 : 0));
+        dest.writeInt(groupName);
+        dest.writeString(batchNumber);
+        dest.writeLong(calibrationDate);
+        dest.writeLong(expiryDate);
+        dest.writeByte((byte) (useGrayScale ? 1 : 0));
+        dest.writeInt(hueTrend);
+        dest.writeDoubleArray(rangeValues);
+        dest.writeString(deviceId);
+        dest.writeString(responseFormat);
+        dest.writeByte((byte) (deprecated ? 1 : 0));
+        dest.writeString(tintometerId);
+        dest.writeString(selectInstruction);
+        dest.writeStringList(reagents);
+    }
+
+    public String getReagent(int index) {
+        if (reagents.size() > index) {
+            return reagents.get(index);
+        } else {
+            return "";
+        }
+    }
+
+    public void setReagent(String value) {
+        this.reagents.add(value);
+    }
+
+    public Serializable getSampleQuantity() {
+        return sampleQuantity;
+    }
+
+    public void setSampleQuantity(Serializable sampleQuantity) {
+        this.sampleQuantity = sampleQuantity;
+    }
+
+    public void setReactionTime(String value) {
+        this.reactionTimes.add(value);
+    }
+
+    public String getReactionTime(int index) {
+        if (reactionTimes.size() > index) {
+            return reactionTimes.get(index);
+        } else {
+            return "";
+        }
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
     public static class SubTest {
         private final int id;
         private final String desc;
         private final String unit;
         private final int timeDelay;
+        private final String md610Id;
 
-        SubTest(int id, String desc, String unit, int timeDelay) {
+        SubTest(int id, String desc, String unit, int timeDelay, String md610Id) {
             this.id = id;
             this.desc = desc;
             this.unit = unit;
             this.timeDelay = timeDelay * 1000;
+            this.md610Id = md610Id;
         }
 
         public int getId() {
@@ -382,5 +511,8 @@ public class TestInfo {
             return timeDelay;
         }
 
+        public String getMd610Id() {
+            return md610Id;
+        }
     }
 }

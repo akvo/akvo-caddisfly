@@ -26,13 +26,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.location.gps"
         android:required="false" />
     <uses-feature
         android:name="android.hardware.camera"
@@ -151,7 +147,7 @@
             android:name=".sensor.colorimetry.strip.ui.BrandInfoActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.strip.instructions.InstructionActivity"
+            android:name=".sensor.instructions.InstructionActivity"
             android:parentActivityName=".sensor.colorimetry.strip.ui.BrandInfoActivity"
             android:screenOrientation="nosensor" />
         <activity
@@ -164,10 +160,17 @@
         <!-- end StripTest -->
 
         <activity
+            android:name=".sensor.colorimetry.bluetooth.BluetoothTypeListActivity"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".sensor.colorimetry.bluetooth.DeviceScanActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.colorimetry.bluetooth.DeviceControlActivity"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".sensor.cbt.CompartmentBagMainActivity"
             android:screenOrientation="nosensor" />
 
         <service
@@ -176,6 +179,16 @@
         <service
             android:name=".usb.UsbService"
             android:enabled="true" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="org.akvo.caddisfly.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
     </application>
 

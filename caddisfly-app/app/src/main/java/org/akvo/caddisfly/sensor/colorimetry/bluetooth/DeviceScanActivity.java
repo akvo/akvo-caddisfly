@@ -35,10 +35,12 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -48,7 +50,6 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -57,12 +58,10 @@ import android.os.Handler;
 import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -73,10 +72,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,11 +83,13 @@ import timber.log.Timber;
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
  */
-public class DeviceScanActivity extends BaseActivity {
+public class DeviceScanActivity extends BaseActivity implements DeviceConnectDialog.InterfaceCommunicator {
     private static final int REQUEST_ENABLE_BT = 1;
     // Stops scanning after scan period
-    private static final long SCAN_PERIOD = 13000;
+    private static final long SCAN_PERIOD = 6000;
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
+    private static final int REQUEST_CODE = 100;
+    private static final long CONNECTING_DELAY = 2000;
     // Device scan callback.
     private BluetoothAdapter.LeScanCallback mLeScanCallback;
     private LeDeviceListAdapter mLeDeviceListAdapter;
@@ -106,6 +105,8 @@ public class DeviceScanActivity extends BaseActivity {
     private TextView textTitle;
     private TextView textSubtitle;
     private ScanCallback mScanCallback;
+    private DeviceConnectDialog deviceConnectDialog;
+    private AlertDialog alertDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,8 +114,8 @@ public class DeviceScanActivity extends BaseActivity {
 
         setContentView(R.layout.activity_device_list);
 
-        setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName());
-
+        //setTitle(CaddisflyApp.getApp().getCurrentTestInfo().getName());
+        setTitle("Connection");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
@@ -188,46 +189,36 @@ public class DeviceScanActivity extends BaseActivity {
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("This app needs location access");
-            builder.setMessage("Please grant location access so this app can detect beacons.");
-            builder.setPositiveButton(android.R.string.ok, null);
-            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                                PERMISSION_REQUEST_COARSE_LOCATION);
-                    }
-                }
-            });
-
-            builder.show();
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+//                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//            builder.setTitle("This app needs location access");
+//            builder.setMessage("Please grant location access so this app can detect beacons.");
+//            builder.setPositiveButton(android.R.string.ok, null);
+//            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//                @Override
+//                public void onDismiss(DialogInterface dialogInterface) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                                PERMISSION_REQUEST_COARSE_LOCATION);
+//                    }
+//                }
+//            });
+//
+//            builder.show();
+//        }
 
         layoutDevices = (RelativeLayout) findViewById(R.id.layoutDevices);
 
         deviceList = (ListView) findViewById(R.id.device_list);
-        deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                connectToDevice(position);
-            }
-        });
+//        deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                connectToDevice(position);
+//            }
+//        });
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        final Activity activity = this;
-
-        Button instructionsButton = (Button) findViewById(R.id.button_instructions);
-        instructionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showInstructionDialog(activity);
-            }
-        });
 
         layoutInfo = (LinearLayout) findViewById(R.id.layout_bluetooth_info);
 
@@ -238,37 +229,31 @@ public class DeviceScanActivity extends BaseActivity {
         textSubtitle.setText("Searching for bluetooth devices");
     }
 
-    private void showInstructionDialog(Activity activity) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
-        alertDialog.setTitle(R.string.turnOnMd610);
+    private void showInstructionDialog() {
 
-        alertDialog.setMessage(TextUtils.concat(
-                StringUtil.fromHtml(getString(R.string.press_on_button)
-                        + "<br /><br />"
-                        + getString(R.string.press_mode_button)
-                        + "<br /><br />"
-                        + getString(R.string.select_bluetooth)
-                        + "<br /><br />"
-                        + getString(R.string.turn_bluetooth_on)
-                        + "<br /><br />"
-                        + getString(R.string.escape_to_menu)
-                )
+        if (deviceConnectDialog == null || !deviceConnectDialog.isVisible()) {
+            deviceConnectDialog = DeviceConnectDialog.newInstance();
 
-        ));
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                scanLeDevice(true);
+            Fragment fragment = getFragmentManager().findFragmentByTag("connectionInfoDialog");
+            if (fragment != null) {
+                ft.remove(fragment);
             }
-        });
 
-        alertDialog.setCancelable(false);
-        AlertDialog dialog = alertDialog.create();
-        dialog.show();
+            deviceConnectDialog.setCancelable(false);
+            deviceConnectDialog.show(ft, "connectionInfoDialog");
+        }
     }
 
     private void connectToDevice(int position) {
+
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            return;
+        }
+
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) {
             return;
@@ -287,9 +272,16 @@ public class DeviceScanActivity extends BaseActivity {
             mScanning = false;
         }
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        startActivity(intent);
-        finish();
+        final ProgressDialog dlg = new ProgressDialog(this);
+        dlg.setMessage(getString(R.string.deviceConnecting));
+        dlg.setCancelable(false);
+        dlg.show();
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                startActivityForResult(intent, REQUEST_CODE);
+                dlg.dismiss();
+            }
+        }, CONNECTING_DELAY);
     }
 
     @Override
@@ -322,12 +314,8 @@ public class DeviceScanActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
-        // fire an intent to display a dialog asking the user to grant permission to enable it.
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
+        layoutDevices.setVisibility(View.GONE);
+        layoutInfo.setVisibility(View.VISIBLE);
 
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
@@ -348,6 +336,7 @@ public class DeviceScanActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            mHandler.removeCallbacks(runnable);
             onBackPressed();
             return true;
         }
@@ -361,6 +350,17 @@ public class DeviceScanActivity extends BaseActivity {
             finish();
             return;
         }
+
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                Intent intent = new Intent(data);
+                this.setResult(Activity.RESULT_OK, intent);
+                finish();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                scanLeDevice(true);
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -372,19 +372,33 @@ public class DeviceScanActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         mHandler.removeCallbacks(runnable);
+        if (deviceConnectDialog != null) {
+            deviceConnectDialog.dismiss();
+        }
         scanLeDevice(false);
         mLeDeviceListAdapter.clear();
     }
 
     private void scanLeDevice(final boolean enable) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mBluetoothLeScanner == null) {
-            return;
-        }
 
         progressBar.setVisibility(View.VISIBLE);
 
-        final Activity activity = this;
         if (enable) {
+
+            if (mScanning) {
+                return;
+            }
+
+            // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
+            // fire an intent to display a dialog asking the user to grant permission to enable it.
+            if (!mBluetoothAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mBluetoothLeScanner == null) {
+                return;
+            }
 
             runnable = new Runnable() {
                 @Override
@@ -396,12 +410,12 @@ public class DeviceScanActivity extends BaseActivity {
                         mBluetoothAdapter.stopLeScan(mLeScanCallback);
                     }
 
-                    if (!activity.isDestroyed()) {
+                    if (!isDestroyed() && !isFinishing()) {
                         if (mLeDeviceListAdapter.getCount() < 1) {
                             deviceList.setVisibility(View.GONE);
                             layoutInfo.setVisibility(View.VISIBLE);
                             progressBar.setVisibility(View.GONE);
-                            showInstructionDialog(activity);
+                            showInstructionDialog();
                         }
                     }
                 }
@@ -436,6 +450,15 @@ public class DeviceScanActivity extends BaseActivity {
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
             }
 
+        }
+    }
+
+    @Override
+    public void sendRequestCode(int code) {
+        if (code == RESULT_OK) {
+            scanLeDevice(true);
+        } else {
+            finish();
         }
     }
 

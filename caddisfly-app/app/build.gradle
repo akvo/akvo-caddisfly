@@ -39,24 +39,28 @@ android {
         }
     }
 
-    signingConfigs {
-        caddisflyRelease {
-            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
-            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
-            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
-            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
-        }
+    dataBinding {
+        enabled = true
     }
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.caddisflyRelease
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            zipAlignEnabled true
-        }
-    }
+//    signingConfigs {
+//        caddisflyRelease {
+//            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
+//            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
+//            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
+//            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
+//        }
+//    }
+//
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.caddisflyRelease
+//            minifyEnabled true
+//            shrinkResources true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            zipAlignEnabled true
+//        }
+//    }
 
     sourceSets {
         main {
@@ -67,6 +71,7 @@ android {
                             'src/main/res/layouts/sensor/liquid',
                             'src/main/res/layouts/sensor/strip',
                             'src/main/res/layouts/sensor/ec',
+                            'src/main/res/layouts/sensor/cbt',
                             'src/main/res/layouts/diagnostic',
                             'src/main/res/layouts/general',
                             'src/main/res/layouts',
@@ -106,14 +111,15 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.jakewharton:butterknife:8.6.0'
+    compile 'io.fotoapparat.fotoapparat:library:1.2.0'
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:3.8.0'
     testCompile 'org.robolectric:robolectric:3.4-rc3'
-    testCompile 'org.khronos:opengl-api:gl1.1-android-2.1_r1'
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support:support-annotations:25.4.0'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    unmock 'org.robolectric:android-all:4.3_r2-robolectric-0'
 }
