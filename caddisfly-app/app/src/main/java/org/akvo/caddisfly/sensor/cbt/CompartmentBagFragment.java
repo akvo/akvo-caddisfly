@@ -35,9 +35,9 @@ import org.akvo.caddisfly.ui.BaseFragment;
 public class CompartmentBagFragment extends BaseFragment {
     private OnFragmentInteractionListener mListener;
     private static final String ARG_PARAM1 = "param1";
-    private static final int BUTTON_ENABLE_DELAY = 2000;
-    private static final int ANIMATION_DURATION_MILLIS = 1000;
-    private static final float BUTTON_START_ALPHA = 0f;
+    private static final int BUTTON_ENABLE_DELAY = 1500;
+    private static final int ANIMATION_DURATION_MILLIS = 500;
+    private static final float BUTTON_START_ALPHA = 0.1f;
 
     private String mKey = "00000";
 
