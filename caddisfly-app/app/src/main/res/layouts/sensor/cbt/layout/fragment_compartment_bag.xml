@@ -35,8 +35,8 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp"
-        android:text="Tap on the sections below to match the colours of bag compartments in the test."
-        android:textSize="18dp" />
+        android:text="Change the colours of sections below to match the colours of the bag compartments in the test (click to change)."
+        android:textSize="17dp" />
 
     <org.akvo.caddisfly.sensor.cbt.CustomShapeButton
         android:id="@+id/compartments"

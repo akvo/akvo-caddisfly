@@ -18,6 +18,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -66,6 +67,8 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
     }
 
     public void onClickMatchedButton(View view) {
+
+        Toast.makeText(this, "Take a photo of the compartment bag", Toast.LENGTH_LONG).show();
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
