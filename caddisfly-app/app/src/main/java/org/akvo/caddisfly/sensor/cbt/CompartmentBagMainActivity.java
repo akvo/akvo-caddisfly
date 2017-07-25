@@ -148,7 +148,9 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
 
         final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
 
-        ImageUtil.resizeImage(mCurrentPhotoPath, photoPath.getAbsolutePath() + File.separator + imageFileName);
+        String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+
+        ImageUtil.resizeImage(mCurrentPhotoPath, resultImagePath);
 
         //noinspection ResultOfMethodCallIgnored
         new File(mCurrentPhotoPath).delete();
@@ -160,6 +162,7 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, imageFileName, null);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
+        resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
 
         setResult(Activity.RESULT_OK, resultIntent);
 

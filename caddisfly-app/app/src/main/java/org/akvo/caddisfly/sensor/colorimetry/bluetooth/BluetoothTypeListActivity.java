@@ -83,6 +83,14 @@ public class BluetoothTypeListActivity extends BaseActivity {
                 startDetailActivity(mTests.get(i).getId());
             }
         });
+
+        String code = getIntent().getStringExtra("testCode");
+        if (code != null && !code.isEmpty()) {
+            String uuid = TestConfigHelper.getBluetoothTest(code);
+            if (uuid != null) {
+                startDetailActivity(uuid);
+            }
+        }
     }
 
     private void startDetailActivity(String uuid) {
@@ -91,7 +99,7 @@ public class BluetoothTypeListActivity extends BaseActivity {
         final Intent intent = new Intent(getBaseContext(), DeviceScanActivity.class);
         intent.putExtra(Constant.UUID, uuid);
         intent.putExtra("internal", true);
-        startActivity(intent);
+        startActivityForResult(intent, 100);
     }
 
     @Override

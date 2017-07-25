@@ -45,6 +45,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.cbt.CompartmentBagMainActivity;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
@@ -59,6 +60,8 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static android.content.pm.PackageManager.FEATURE_BLUETOOTH_LE;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -138,10 +141,17 @@ public class ExternalActionActivity extends BaseActivity {
                     colorimetricStripIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                     startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
                     return;
+                } else {
+                    Matcher m = Pattern.compile("bt(\\d{3})").matcher(code.toLowerCase());
+                    if (m.find()) {
+                        final Intent i = new Intent(this, BluetoothTypeListActivity.class);
+                        i.putExtra("testCode", m.group(1));
+                        startActivityForResult(i, REQUEST_TEST);
+                        return;
+                    }
                 }
 
                 mTestTypeUuid = TestConfigHelper.getUuidFromShortCode(code);
-
             }
 
             //Get the test config by uuid

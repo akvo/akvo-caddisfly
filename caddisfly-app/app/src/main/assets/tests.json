@@ -4647,8 +4647,9 @@
       "subtype": "cbt",
       "tags": ["water quality"],
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
+      "shortCode": "axcbt",
       "brand": "Aquagenx",
-      "hasImage": false,
+      "hasImage": true,
       "results": [
         {
           "name": "MPN",
