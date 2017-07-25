@@ -51,7 +51,6 @@ import java.util.Locale;
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.sensor.SensorConstants.DEPRECATED_TESTS_FILENAME;
-import static org.akvo.caddisfly.sensor.SensorConstants.MPN_TABLE_FILENAME;
 
 /**
  * Utility functions to parse a text config json text.
@@ -300,38 +299,6 @@ public final class TestConfigHelper {
         }
 
         return testInfo;
-    }
-
-    public static MpnValue getMpnValueForKey(String key) {
-        if (mpnTable == null) {
-            mpnTable = loadMpnTable();
-        }
-        return mpnTable.get(key);
-    }
-
-    private static HashMap<String, MpnValue> loadMpnTable() {
-
-        HashMap<String, MpnValue> mapper = new HashMap<>();
-
-        String jsonText = AssetsManager.getInstance().loadJSONFromAsset(MPN_TABLE_FILENAME);
-        try {
-            JSONArray array = new JSONObject(jsonText).getJSONArray("rows");
-
-            for (int j = 0; j < array.length(); j++) {
-                JSONObject item = array.getJSONObject(j);
-
-                String key = item.getString("key");
-
-                mapper.put(key, new MpnValue(item.getString("mpn"), item.getInt("confidence"),
-                        item.getString("riskCategory")));
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return mapper;
     }
 
     /**

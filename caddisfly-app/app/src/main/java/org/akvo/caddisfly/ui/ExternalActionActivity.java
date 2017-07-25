@@ -44,8 +44,6 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.cbt.CompartmentBagMainActivity;
-import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
@@ -60,7 +58,6 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.lang.ref.WeakReference;
 import java.util.Date;
 
-import static android.content.pm.PackageManager.FEATURE_BLUETOOTH_LE;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class ExternalActionActivity extends BaseActivity {
@@ -283,19 +280,6 @@ public class ExternalActionActivity extends BaseActivity {
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
 
         switch (caddisflyApp.getCurrentTestInfo().getType()) {
-            case BLUETOOTH:
-                if (this.getPackageManager().hasSystemFeature(FEATURE_BLUETOOTH_LE)) {
-                    final Intent bluetoothIntent = new Intent();
-                    bluetoothIntent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
-                    bluetoothIntent.setClass(getBaseContext(), DeviceScanActivity.class);
-                    bluetoothIntent.putExtra(Constant.UUID, uuid);
-                    bluetoothIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
-                    startActivityForResult(bluetoothIntent, REQUEST_TEST);
-                } else {
-                    alertFeatureNotSupported();
-                }
-                break;
-
             case COLORIMETRIC_LIQUID:
 
                 if (!AppPreferences.useExternalCamera()
@@ -357,18 +341,6 @@ public class ExternalActionActivity extends BaseActivity {
                     final Intent sensorIntent = new Intent(context, SensorActivity.class);
                     sensorIntent.putExtra(Constant.UUID, uuid);
                     startActivityForResult(sensorIntent, REQUEST_TEST);
-                } else {
-                    alertFeatureNotSupported();
-                }
-                break;
-            case CBT:
-
-                boolean hasBluetooth = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
-                if (hasBluetooth) {
-                    TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
-                    final Intent cbtIntent = new Intent(getBaseContext(), CompartmentBagMainActivity.class);
-                    cbtIntent.putExtra("internal", true);
-                    startActivityForResult(cbtIntent, REQUEST_TEST);
                 } else {
                     alertFeatureNotSupported();
                 }

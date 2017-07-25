@@ -24,12 +24,7 @@
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
-    <uses-feature
-        android:name="android.hardware.bluetooth_le"
-        android:required="false" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -159,36 +154,9 @@
             android:screenOrientation="nosensor" />
         <!-- end StripTest -->
 
-        <activity
-            android:name=".sensor.colorimetry.bluetooth.BluetoothTypeListActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.colorimetry.bluetooth.DeviceScanActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.colorimetry.bluetooth.DeviceControlActivity"
-            android:screenOrientation="nosensor" />
-
-        <activity
-            android:name=".sensor.cbt.CompartmentBagMainActivity"
-            android:screenOrientation="nosensor" />
-
-        <service
-            android:name=".sensor.colorimetry.bluetooth.BluetoothLeService"
-            android:enabled="true" />
         <service
             android:name=".usb.UsbService"
             android:enabled="true" />
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="org.akvo.caddisfly.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
 
     </application>
 
