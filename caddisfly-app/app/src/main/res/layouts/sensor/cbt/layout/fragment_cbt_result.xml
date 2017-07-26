@@ -51,6 +51,16 @@
         android:textSize="24sp"
         tools:text="MPN : 3.1" />
 
+    <TextView
+        android:id="@+id/textResult3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:textColor="#333"
+        android:textSize="24sp"
+        tools:text="Confidence interval : 8.38" />
+
     <Button
         android:id="@+id/buttonAcceptResult"
         style="@style/Button"

@@ -157,8 +157,10 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
 
-        results.put(1, mpnValue.getMpn());
-        results.put(2, StringUtil.getStringResourceByName(this, mpnValue.getRiskCategory()).toString());
+        results.put(1, StringUtil.getStringResourceByName(this, mpnValue.getRiskCategory()).toString());
+        results.put(2, mpnValue.getMpn());
+        results.put(3, mpnValue.getConfidence());
+
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, imageFileName, null);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());

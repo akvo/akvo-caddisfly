@@ -322,7 +322,7 @@ public final class TestConfigHelper {
 
                 String key = item.getString("key");
 
-                mapper.put(key, new MpnValue(item.getString("mpn"), item.getInt("confidence"),
+                mapper.put(key, new MpnValue(item.getString("mpn"), item.getString("confidence"),
                         item.getString("riskCategory")));
             }
 

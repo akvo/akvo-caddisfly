@@ -27,9 +27,9 @@ android {
     defaultConfig {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
-        targetSdkVersion 25
-        versionCode 191
-        versionName "1.0.0 Beta 8.95"
+        targetSdkVersion 22
+        versionCode 186
+        versionName "MD610 - v9 & CBT - v1"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->

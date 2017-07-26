@@ -70,12 +70,15 @@ public class CbtResultFragment extends BaseFragment {
 
         TextView textResult = (TextView) view.findViewById(R.id.textResult);
         TextView textResult2 = (TextView) view.findViewById(R.id.textResult2);
+        TextView textResult3 = (TextView) view.findViewById(R.id.textResult3);
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
 
         textResult.setText(StringUtil.getStringResourceByName(getActivity(), mpnValue.getRiskCategory()));
 
         textResult2.setText(String.format("MPN : %s", mpnValue.getMpn()));
+
+        textResult3.setText(String.format("Confidence level : %s", mpnValue.getConfidence()));
 
         return view;
     }

@@ -1584,6 +1584,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "100",
+      "shortCode": "100TC",
       "tags": "[water quality]",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
       "brand": "Lovibond",
@@ -1650,6 +1651,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "100",
+      "shortCode": "100FC",
       "tags": "[water quality]",
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
       "brand": "Lovibond",
@@ -1692,6 +1694,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "103",
+      "shortCode": "103TC",
       "tags": "[water quality]",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
       "brand": "Lovibond",
@@ -1758,6 +1761,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "103",
+      "shortCode": "103FC",
       "tags": "[water quality]",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
       "brand": "Lovibond",
@@ -1800,6 +1804,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "101",
+      "shortCode": "101TC",
       "tags": "[water quality]",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
       "brand": "Lovibond",
@@ -1866,6 +1871,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "101",
+      "shortCode": "101FC",
       "tags": "[water quality]",
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
       "brand": "Lovibond",
@@ -1908,6 +1914,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "110",
+      "shortCode": "110TC",
       "tags": "[water quality]",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
       "brand": "Lovibond",
@@ -1976,6 +1983,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "110",
+      "shortCode": "110FC",
       "tags": "[water quality]",
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
       "brand": "Lovibond",
@@ -2016,6 +2024,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "111",
+      "shortCode": "111TC",
       "tags": "[water quality]",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
       "brand": "Lovibond",
@@ -2084,6 +2093,7 @@
       "description": "",
       "subtype": "bluetooth",
       "md610_id": "111",
+      "shortCode": "111FC",
       "tags": "[water quality]",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
       "brand": "Lovibond",
@@ -4652,12 +4662,16 @@
       "hasImage": true,
       "results": [
         {
-          "name": "MPN",
+          "name": "Health Risk Category",
           "id": 1
         },
         {
-          "name": "Health Risk Category",
+          "name": "MPN",
           "id": 2
+        },
+        {
+          "name": "Confidence Level",
+          "id": 3
         }
       ]
     }

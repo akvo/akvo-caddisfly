@@ -21,10 +21,10 @@ package org.akvo.caddisfly.model;
 
 public class MpnValue {
     private String mpn;
-    private int confidence;
+    private String confidence;
     private String riskCategory;
 
-    public MpnValue(String mpn, int confidence, String riskCategory) {
+    public MpnValue(String mpn, String confidence, String riskCategory) {
 
         this.mpn = mpn;
         this.confidence = confidence;
@@ -35,7 +35,7 @@ public class MpnValue {
         return mpn;
     }
 
-    public int getConfidence() {
+    public String getConfidence() {
         return confidence;
     }
 

@@ -141,8 +141,12 @@ public class ExternalActionActivity extends BaseActivity {
                     colorimetricStripIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                     startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
                     return;
-                } else {
-                    Matcher m = Pattern.compile("bt(\\d{3})").matcher(code.toLowerCase());
+                }
+
+                mTestTypeUuid = TestConfigHelper.getUuidFromShortCode(code);
+
+                if (mTestTypeUuid == null){
+                    Matcher m = Pattern.compile("(\\d{3})").matcher(code.toLowerCase());
                     if (m.find()) {
                         final Intent i = new Intent(this, BluetoothTypeListActivity.class);
                         i.putExtra("testCode", m.group(1));
@@ -150,8 +154,6 @@ public class ExternalActionActivity extends BaseActivity {
                         return;
                     }
                 }
-
-                mTestTypeUuid = TestConfigHelper.getUuidFromShortCode(code);
             }
 
             //Get the test config by uuid
