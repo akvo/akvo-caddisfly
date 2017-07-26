@@ -29,6 +29,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
 
+import com.evernote.android.job.JobManager;
+
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.SwatchHelper;
@@ -113,6 +115,8 @@ public class CaddisflyApp extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+
+        JobManager.create(this).addJobCreator(new NotificationJobCreator());
     }
 
     /**

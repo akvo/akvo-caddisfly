@@ -148,7 +148,23 @@ public class CalibrateListActivity extends BaseActivity
 
         ButterKnife.bind(this);
 
-        textTitle.setText(CaddisflyApp.getApp().getCurrentTestInfo().getName());
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+        final Intent intent = new Intent(getIntent());
+        String id = intent.getStringExtra("uuid");
+        if (id != null) {
+            CaddisflyApp.getApp().loadTestConfigurationByUuid(id);
+            testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+            ((CalibrateListFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.fragmentCalibrateList)).setAdapter();
+
+        }
+
+        if (testInfo == null || testInfo.getId().isEmpty()) {
+            finish();
+            return;
+        }
+        textTitle.setText(testInfo.getName());
 
         if (AppPreferences.isDiagnosticMode()) {
             fabEditCalibration.setBackgroundTintList(

@@ -40,6 +40,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.app.ShowNotificationJob;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -105,8 +106,9 @@ public class MainActivity extends BaseActivity {
 
             // If app has expired then close this activity
             ApkHelper.isAppVersionExpired(this);
-
         }
+
+        ShowNotificationJob.schedulePeriodic();
     }
 
     /**
@@ -259,6 +261,7 @@ public class MainActivity extends BaseActivity {
             this.recreate();
         }
     }
+
 
     /**
      * Alert shown when a feature is not supported by the device

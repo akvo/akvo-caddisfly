@@ -28,7 +28,6 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Locale;
 
 import timber.log.Timber;
@@ -58,13 +57,7 @@ public final class AssetsManager {
         String path = context.getResources().getString(R.string.instruction_images);
         try {
 
-            String localeLanguage = Locale.getDefault().getLanguage();
-            String localePath = path + "-" + localeLanguage + "/" + imageName + ".png";
-            if (Arrays.asList(context.getResources().getAssets().list("")).contains(localePath)) {
-                path += "-" + localeLanguage;
-            }
-
-            InputStream ims = context.getAssets().open(path + "/" + imageName.toLowerCase(Locale.US) + ".png");
+            InputStream ims = context.getAssets().open(path + "/" + imageName.toLowerCase(Locale.US) + ".webp");
 
             return Drawable.createFromStream(ims, null);
 

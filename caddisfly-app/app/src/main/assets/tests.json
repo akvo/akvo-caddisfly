@@ -114,7 +114,7 @@
       "instructions": [
         {
           "text": "collect_water_sample",
-          "image": "instruction_collect_sample"
+          "image": "put_gloves"
         },
         {
           "text": "dip_strip_in_water_2_seconds",
