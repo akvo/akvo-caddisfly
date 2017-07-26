@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -59,15 +60,6 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
 
     public void onClickNextButton(View view) {
 
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.layoutFragment, CompartmentBagFragment.newInstance(mResult), "compartmentFragment")
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void onClickMatchedButton(View view) {
-
         Toast.makeText(this, "Take a photo of the compartment bag", Toast.LENGTH_LONG).show();
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -92,7 +84,8 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
         }
     }
 
-    public void onClickShowResult(View view) {
+    public void onClickMatchedButton(View view) {
+
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.layoutFragment, CbtResultFragment.newInstance(mResult), "resultFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
@@ -124,7 +117,7 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
             switch (requestCode) {
                 case REQUEST_TAKE_PHOTO:
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.layoutFragment, CbtResultFragment.newInstance(mResult), "resultFragment")
+                    fragmentTransaction.replace(R.id.layoutFragment, CompartmentBagFragment.newInstance(mResult), "compartmentFragment")
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                             .addToBackStack(null)
                             .commit();
@@ -187,6 +180,7 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
     }
 
     public static class FireMissilesDialogFragment extends DialogFragment {
+        @NonNull
         @SuppressLint("InflateParams")
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
