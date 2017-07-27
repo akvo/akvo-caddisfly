@@ -61,8 +61,8 @@
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="20dp"
-            android:textSize="18sp"
             android:lineSpacingExtra="10dp"
+            android:textSize="18sp"
             android:visibility="visible"
             tools:text="@string/perform_test" />
 
@@ -88,8 +88,7 @@
             android:text="@string/test_instructions"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="visible" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -103,7 +102,6 @@
             android:id="@+id/layoutResult1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:orientation="vertical">
 
             <TextView
@@ -111,20 +109,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
+                android:layout_marginTop="18dp"
+                android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="27sp"
+                android:textSize="25sp"
                 android:textStyle="bold"
                 tools:text="Water - Fluoride" />
 
             <TextView
                 android:id="@+id/textResult1"
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
-                android:textSize="40sp"
+                android:textSize="35sp"
                 tools:text="15000" />
 
             <TextView
@@ -133,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="-20dp"
+                android:layout_marginTop="-10dp"
                 android:textColor="#444"
                 android:textSize="17sp"
                 tools:text="ppm" />
@@ -158,19 +157,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
+                android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="27sp"
+                android:textSize="25sp"
                 android:textStyle="bold"
                 tools:text="Water - Fluoride" />
 
             <TextView
                 android:id="@+id/textResult2"
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
-                android:textSize="40sp"
+                android:textSize="35sp"
                 tools:text="15000" />
 
             <TextView
@@ -179,7 +179,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="-20dp"
+                android:layout_marginTop="-10dp"
                 android:textColor="#444"
                 android:textSize="17sp"
                 tools:text="ppm" />
@@ -204,19 +204,20 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
+                android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="27sp"
+                android:textSize="25sp"
                 android:textStyle="bold"
                 tools:text="Water - Fluoride" />
 
             <TextView
                 android:id="@+id/textResult3"
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
-                android:textSize="40sp"
+                android:textSize="35sp"
                 tools:text="15000" />
 
             <TextView
@@ -225,7 +226,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="15dp"
-                android:layout_marginTop="-20dp"
+                android:layout_marginTop="-10dp"
                 android:textColor="#444"
                 android:textSize="17sp"
                 tools:text="ppm" />
@@ -241,7 +242,7 @@
             android:id="@+id/button_accept_result"
             style="@style/ActionButton"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="20dp"
             android:text="@string/acceptResult"
             android:theme="?primaryButtonStyle"
             android:visibility="gone" />

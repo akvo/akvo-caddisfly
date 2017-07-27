@@ -29,37 +29,51 @@
 
     <include layout="@layout/toolbar" />
 
-    <TextView
-        android:id="@+id/textResult"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="50dp"
-        android:gravity="center_vertical"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        tools:text="Intermediate Risk / Possibly Safe" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="40dp"
+        android:background="@color/gray_text"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textResult2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:textColor="#333"
-        android:textSize="24sp"
-        tools:text="MPN : 3.1" />
+        <TextView
+            android:id="@+id/textResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
 
-    <TextView
-        android:id="@+id/textResult3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:textColor="#333"
-        android:textSize="24sp"
-        tools:text="Confidence interval : 8.38" />
+            android:background="#ccc"
+
+            android:gravity="center_vertical"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Intermediate Risk / Possibly Safe" />
+
+        <TextView
+            android:id="@+id/textResult2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textColor="#333"
+            android:textSize="20sp"
+            tools:text="MPN : 3.1" />
+
+        <TextView
+            android:id="@+id/textResult3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textColor="#333"
+            android:textSize="20sp"
+            tools:text="Confidence interval : 8.38" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/buttonAcceptResult"

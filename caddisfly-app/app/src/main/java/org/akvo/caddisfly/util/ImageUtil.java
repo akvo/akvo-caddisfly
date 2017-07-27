@@ -275,7 +275,7 @@ public final class ImageUtil {
 
         if (bitmap != null && ImageUtil.saveImage(bitmap, outFilename)) {
             ImageUtil.checkOrientation(origFilename, outFilename);// Ensure the EXIF data is not lost
-            Timber.d("Resized Image size: %d x %d", bitmap.getWidth(), bitmap.getHeight());
+//            Timber.d("Resized Image size: %d x %d", bitmap.getWidth(), bitmap.getHeight());
             return true;
         }
         return false;
