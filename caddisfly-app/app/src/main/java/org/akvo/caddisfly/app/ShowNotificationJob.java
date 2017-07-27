@@ -137,7 +137,6 @@ public class ShowNotificationJob extends Job {
                         .setShowWhen(true)
                         .setColor(ContextCompat.getColor(getContext(), R.color.akvo_orange))
                         .setLocalOnly(true)
-                        .setExtras(new Bundle())
                         .build();
 
                 NotificationManagerCompat.from(getContext())

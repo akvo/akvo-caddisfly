@@ -347,15 +347,15 @@ public class NavigationTest {
 
         mDevice.pressBack();
 
-        mDevice.swipe(100, 300, 400, 300, 10);
+        mDevice.swipe(100, 300, 400, 300, 5);
         mDevice.waitForIdle();
-        mDevice.swipe(100, 300, 400, 300, 10);
+        mDevice.swipe(100, 300, 400, 300, 5);
         mDevice.waitForIdle();
-        mDevice.swipe(100, 300, 400, 300, 10);
+        mDevice.swipe(100, 300, 400, 300, 5);
         mDevice.waitForIdle();
-        mDevice.swipe(100, 300, 400, 300, 10);
+        mDevice.swipe(100, 300, 400, 300, 5);
         mDevice.waitForIdle();
-        mDevice.swipe(100, 300, 400, 300, 10);
+        mDevice.swipe(100, 300, 400, 300, 5);
         mDevice.waitForIdle();
 
         clickExternalSourceButton(0);

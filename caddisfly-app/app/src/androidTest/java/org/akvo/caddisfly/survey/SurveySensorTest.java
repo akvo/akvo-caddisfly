@@ -60,7 +60,7 @@ import static org.hamcrest.Matchers.not;
 // Survey number 4310913
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class SurveyTest {
+public class SurveySensorTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
@@ -127,7 +127,6 @@ public class SurveyTest {
 
         onView(withId(R.id.buttonAcceptResult)).perform(click());
 
-
         clickExternalSourceButton(1);
 
         SystemClock.sleep(12000);
@@ -143,7 +142,6 @@ public class SurveyTest {
         onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
         onView(withId(R.id.buttonAcceptResult)).perform(click());
-
 
         clickExternalSourceButton(2);
 
@@ -162,6 +160,5 @@ public class SurveyTest {
         onView(withId(R.id.buttonAcceptResult)).perform(click());
 
     }
-
 }
 
