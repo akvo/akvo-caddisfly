@@ -481,6 +481,33 @@
       "height": 6,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "text": "collect_mehlich_extraction_sample",
+          "image": "instruction_collect_sample"
+        },
+        {
+          "text": "immerse_reaction_zone",
+          "image": "instruction_dip"
+        },
+        {
+          "text": "allow_excess_liquid_to_run_off"
+        },
+        {
+          "text": "add_reagent_k1"
+        },
+        {
+          "text": "allow_excess_liquid_to_run_off"
+        },
+        {
+          "text": "place_strip_in_black_area",
+          "image": "instruction_place_strip"
+        },
+        {
+          "text": "press_start_button",
+          "image": ""
+        }
+      ],
       "results": [
         {
           "id": 1,

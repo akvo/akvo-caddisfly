@@ -73,37 +73,6 @@
       ]
     },
     {
-      "name": "Soil - Available Potassium",
-      "uuid": "ac533acc-8ffc-48e1-a66e-2394f9a54050",
-      "instructions": [
-        {
-          "text": "collect_mehlich_extraction_sample",
-          "image": "instruction_collect_sample"
-        },
-        {
-          "text": "immerse_reaction_zone",
-          "image": "instruction_dip"
-        },
-        {
-          "text": "allow_excess_liquid_to_run_off"
-        },
-        {
-          "text": "add_reagent_k1"
-        },
-        {
-          "text": "allow_excess_liquid_to_run_off"
-        },
-        {
-          "text": "place_strip_in_black_area",
-          "image": "instruction_place_strip"
-        },
-        {
-          "text": "press_start_button",
-          "image": ""
-        }
-      ]
-    },
-    {
       "name": "Soil - pH",
       "uuid": "895845dd-9990-49f3-b611-420551851acd",
       "instructions": [

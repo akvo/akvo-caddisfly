@@ -46,6 +46,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
+
 public class ShowNotificationJob extends Job {
 
     static final String TAG = "show_notification";
@@ -124,6 +126,7 @@ public class ShowNotificationJob extends Job {
 
                 Intent i = new Intent(getContext(), MainActivity.class);
                 i.putExtra("appExpiryNotification", true);
+                i.addFlags(FLAG_ACTIVITY_SINGLE_TOP);
 
                 PendingIntent pi = PendingIntent.getActivity(getContext(), 0, i, 0);
 

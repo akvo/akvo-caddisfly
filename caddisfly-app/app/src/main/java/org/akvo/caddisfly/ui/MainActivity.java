@@ -113,37 +113,39 @@ public class MainActivity extends BaseActivity {
         ShowNotificationJob.schedulePeriodic();
     }
 
-    private void displayExpiryNotice() {
-        if (getIntent().hasExtra("appExpiryNotification")) {
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (!ApkHelper.isStoreVersion(this)) {
+            if (intent.hasExtra("appExpiryNotification")) {
 
-            getIntent().removeExtra("appExpiryNotification");
+                GregorianCalendar now = new GregorianCalendar();
+                long difference = appExpiryDate.getTimeInMillis() - now.getTimeInMillis();
 
-            GregorianCalendar now = new GregorianCalendar();
-            long difference = appExpiryDate.getTimeInMillis() - now.getTimeInMillis();
+                int remainingDays = (int) (difference / DAYS_IN_MILLIS);
 
-            int remainingDays = (int) (difference / DAYS_IN_MILLIS);
+                String message = String.format("%s%n%n%s%n%n%s",
+                        String.format(getResources().getQuantityString(R.plurals.appWillExpireInDays, remainingDays), remainingDays),
+                        getString(R.string.thisIsATestVersion),
+                        getString(R.string.uninstallAndInstallFromStore));
 
-            String message = String.format("%s%n%n%s%n%n%s",
-                    String.format(getResources().getQuantityString(R.plurals.appWillExpireInDays, remainingDays), remainingDays),
-                    getString(R.string.thisIsATestVersion),
-                    getString(R.string.uninstallAndInstallFromStore));
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(this);
 
-            AlertDialog.Builder builder;
-            builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.appName)
+                        .setMessage(message)
+                        .setCancelable(false);
 
-            builder.setTitle(R.string.notice)
-                    .setMessage(message)
-                    .setCancelable(false);
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
 
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
-
-            final AlertDialog alertDialog = builder.create();
-            alertDialog.show();
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
         }
     }
 
@@ -252,10 +254,6 @@ public class MainActivity extends BaseActivity {
         if (PreferencesUtil.getBoolean(this, R.string.themeChangedKey, false)) {
             PreferencesUtil.setBoolean(this, R.string.themeChangedKey, false);
             refreshHandler.sendEmptyMessage(0);
-        }
-
-        if (!ApkHelper.isStoreVersion(this)) {
-            displayExpiryNotice();
         }
     }
 
