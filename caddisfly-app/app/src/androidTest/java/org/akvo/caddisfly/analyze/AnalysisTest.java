@@ -23,7 +23,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
@@ -45,6 +47,8 @@ import org.junit.runner.RunWith;
 import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -83,6 +87,10 @@ import static org.hamcrest.Matchers.startsWith;
 public class AnalysisTest {
 
     private static final int TEST_START_DELAY = 16000;
+
+    @Rule
+    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(WRITE_EXTERNAL_STORAGE, CAMERA);
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -113,6 +121,7 @@ public class AnalysisTest {
     }
 
     @Test
+    @RequiresDevice
     public void testStartHighLevelTest() {
 
         saveCalibration("HighLevelTest");
@@ -279,6 +288,7 @@ public class AnalysisTest {
     }
 
     @Test
+    @RequiresDevice
     public void testStartNoDilutionTest() {
 
         saveCalibration("TestValid");

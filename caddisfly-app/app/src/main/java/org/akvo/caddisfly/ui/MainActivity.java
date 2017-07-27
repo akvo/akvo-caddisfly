@@ -21,6 +21,8 @@ package org.akvo.caddisfly.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -68,9 +70,12 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity {
 
+    private static final long DAYS_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int AUTO_FINISH_DELAY_MILLIS = 4000;
     private static final int PERMISSION_ALL = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
+    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+            AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
     private final Handler finishOnSurveyOpenedHandler = new Handler();
 
@@ -96,9 +101,6 @@ public class MainActivity extends BaseActivity {
 
         if (!ApkHelper.isStoreVersion(this)) {
 
-            final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
-                    AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
-
             DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
             textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
 
@@ -109,6 +111,40 @@ public class MainActivity extends BaseActivity {
         }
 
         ShowNotificationJob.schedulePeriodic();
+    }
+
+    private void displayExpiryNotice() {
+        if (getIntent().hasExtra("appExpiryNotification")) {
+
+            getIntent().removeExtra("appExpiryNotification");
+
+            GregorianCalendar now = new GregorianCalendar();
+            long difference = appExpiryDate.getTimeInMillis() - now.getTimeInMillis();
+
+            int remainingDays = (int) (difference / DAYS_IN_MILLIS);
+
+            String message = String.format("%s%n%n%s%n%n%s",
+                    String.format(getResources().getQuantityString(R.plurals.appWillExpireInDays, remainingDays), remainingDays),
+                    getString(R.string.thisIsATestVersion),
+                    getString(R.string.uninstallAndInstallFromStore));
+
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(this);
+
+            builder.setTitle(R.string.notice)
+                    .setMessage(message)
+                    .setCancelable(false);
+
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            final AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
     }
 
     /**
@@ -216,6 +252,10 @@ public class MainActivity extends BaseActivity {
         if (PreferencesUtil.getBoolean(this, R.string.themeChangedKey, false)) {
             PreferencesUtil.setBoolean(this, R.string.themeChangedKey, false);
             refreshHandler.sendEmptyMessage(0);
+        }
+
+        if (!ApkHelper.isStoreVersion(this)) {
+            displayExpiryNotice();
         }
     }
 

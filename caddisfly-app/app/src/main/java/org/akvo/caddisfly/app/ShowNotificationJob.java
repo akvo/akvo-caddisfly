@@ -36,13 +36,14 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ShowNotificationJob extends Job {
@@ -65,44 +66,49 @@ public class ShowNotificationJob extends Job {
     @Override
     protected Result onRunJob(Params params) {
 
-        String uuid = SensorConstants.FLUORIDE_ID;
+        List<TestInfo> tests = TestConfigHelper.getTestsByType(TestType.COLORIMETRIC_LIQUID);
 
-        long milliseconds = PreferencesUtil.getLong(getContext(), uuid,
-                R.string.calibrationExpiryDateKey);
+        for (TestInfo testInfo : tests) {
 
-        long difference = milliseconds - new Date().getTime();
+            String uuid = testInfo.getId();
 
-        int remainingDays = (int) (difference / DAYS_IN_MILLIS);
+            long milliseconds = PreferencesUtil.getLong(getContext(), uuid, R.string.calibrationExpiryDateKey);
 
-        if (remainingDays > -1 && remainingDays < 16) {
+            long difference = milliseconds - new Date().getTime();
 
-            String message = getContext().getResources().getQuantityString(R.plurals.calibrationWillExpire, remainingDays);
-            TestInfo testInfo = TestConfigHelper.loadTestByUuid(uuid);
-            message = String.format(message, remainingDays, testInfo.getName());
+            int remainingDays = (int) (difference / DAYS_IN_MILLIS);
 
-            Intent i = new Intent(getContext(), CalibrateListActivity.class);
-            i.putExtra("uuid", uuid);
+            if (remainingDays > -1 && remainingDays < 16) {
 
-            Bundle bundle = new Bundle();
-            bundle.putString("uuid", uuid);
-            PendingIntent pi = PendingIntent.getActivity(getContext(), 0, i, 0);
+                //String message = getContext().getResources().getQuantityString(R.plurals.calibrationWillExpire, remainingDays);
 
-            Notification notification = new NotificationCompat.Builder(getContext())
-                    .setContentTitle(getContext().getString(R.string.appName))
-                    .setContentText(message)
-                    .setAutoCancel(true)
-                    .setOnlyAlertOnce(true)
-                    .setContentIntent(pi)
-                    .setSmallIcon(R.drawable.notification_icon)
-                    .setShowWhen(true)
-                    .setColor(ContextCompat.getColor(getContext(), R.color.akvo_orange))
-                    .setLocalOnly(true)
-                    .setExtras(new Bundle())
-                    .build();
+                //message = String.format(message, remainingDays, testInfo.getName());
 
-            NotificationManagerCompat.from(getContext())
-                    .notify(CALIBRATION_NOTIFICATION_ID, notification);
+                Intent i = new Intent(getContext(), CalibrateListActivity.class);
+                i.putExtra("uuid", uuid);
 
+                Bundle bundle = new Bundle();
+                bundle.putString("uuid", uuid);
+                PendingIntent pi = PendingIntent.getActivity(getContext(), 0, i, 0);
+
+                Notification notification = new NotificationCompat.Builder(getContext())
+                        .setContentTitle(getContext().getString(R.string.appName))
+                        .setContentText(getContext().getString(R.string.calibrationExpireSoon))
+                        .setAutoCancel(true)
+                        .setOnlyAlertOnce(true)
+                        .setContentIntent(pi)
+                        .setSmallIcon(R.drawable.notification_icon)
+                        .setShowWhen(true)
+                        .setColor(ContextCompat.getColor(getContext(), R.color.akvo_orange))
+                        .setLocalOnly(true)
+                        .setExtras(new Bundle())
+                        .build();
+
+                NotificationManagerCompat.from(getContext())
+                        .notify(CALIBRATION_NOTIFICATION_ID, notification);
+
+                break;
+            }
         }
 
         if (!ApkHelper.isStoreVersion(getContext())) {
@@ -111,9 +117,9 @@ public class ShowNotificationJob extends Job {
                     AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
 
             GregorianCalendar now = new GregorianCalendar();
-            difference = appExpiryDate.getTimeInMillis() - now.getTimeInMillis();
+            long difference = appExpiryDate.getTimeInMillis() - now.getTimeInMillis();
 
-            remainingDays = (int) (difference / DAYS_IN_MILLIS);
+            int remainingDays = (int) (difference / DAYS_IN_MILLIS);
             if (remainingDays > -1 && remainingDays < 5) {
 
                 Intent i = new Intent(getContext(), MainActivity.class);

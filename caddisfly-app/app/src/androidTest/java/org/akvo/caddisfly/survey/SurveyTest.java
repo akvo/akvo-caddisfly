@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
@@ -91,6 +92,7 @@ public class SurveyTest {
     }
 
     @Test
+    @RequiresDevice
     public void surveyQuestions() {
 
         goToMainScreen();

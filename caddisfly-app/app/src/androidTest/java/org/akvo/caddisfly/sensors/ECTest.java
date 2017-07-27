@@ -24,6 +24,7 @@ import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
@@ -115,6 +116,7 @@ public class ECTest {
     }
 
     @Test
+    @RequiresDevice
     public void eCTest() {
 
         ViewInteraction appCompatButton2 = onView(
@@ -223,8 +225,8 @@ public class ECTest {
     }
 
     @Test
+    @RequiresDevice
     public void testSensorFromSurvey() {
-
 
         onView(withId(R.id.buttonSurvey)).perform(click());
 

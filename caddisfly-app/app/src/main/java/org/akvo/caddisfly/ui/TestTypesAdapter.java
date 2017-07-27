@@ -41,7 +41,7 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
     private final TestInfo[] mTestInfoArray;
 
     TestTypesAdapter(Activity activity, TestInfo[] testInfoArray) {
-        super(activity, R.layout.row_calibrate, testInfoArray);
+        super(activity, -1, testInfoArray);
         mActivity = activity;
         mTestInfoArray = testInfoArray.clone();
     }

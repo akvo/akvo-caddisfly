@@ -443,4 +443,20 @@ public final class TestConfigHelper {
         }
         return null;
     }
+
+    public static List<TestInfo> getTestsByType(TestType testType) {
+
+        List<TestInfo> tests = new ArrayList<>();
+
+        // Load the pre-configured tests from the app
+        loadTests(tests, AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME), -1);
+
+        for (int i = tests.size() - 1; i >= 0; i--) {
+            if (tests.get(i).getType() != testType) {
+                tests.remove(i);
+            }
+        }
+
+        return tests;
+    }
 }
