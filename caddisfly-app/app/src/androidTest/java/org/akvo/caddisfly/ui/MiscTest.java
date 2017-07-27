@@ -21,11 +21,13 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
@@ -63,6 +65,7 @@ import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
+import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.util.TestUtil.getActivityInstance;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
@@ -82,6 +85,17 @@ public class MiscTest {
                 mDevice.pressBack();
             }
         }
+    }
+
+    public static boolean isEmulator() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT);
     }
 
     @Before
@@ -118,6 +132,7 @@ public class MiscTest {
     }
 
     @Test
+    @RequiresDevice
     public void testSwatches() {
 
         onView(withId(R.id.actionSettings)).perform(click());
@@ -142,6 +157,7 @@ public class MiscTest {
     }
 
     @Test
+    @RequiresDevice
     public void testZErrors() {
 
 //        getActivity().runOnUiThread(new Runnable() {
@@ -225,6 +241,7 @@ public class MiscTest {
     }
 
     @Test
+    @RequiresDevice
     public void testRestartAppDuringAnalysis() {
 
         onView(withText(R.string.calibrate)).perform(click());
@@ -273,5 +290,53 @@ public class MiscTest {
 
         clickListViewItem("test caddisfly");
 
+    }
+
+    @Test
+    public void testNoFlash() {
+
+        goToMainScreen();
+
+        //Main Screen
+        takeScreenshot();
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        //Settings Screen
+        takeScreenshot();
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        mDevice.waitForWindowUpdate("", 1000);
+
+        //About Screen
+        takeScreenshot();
+
+        Espresso.pressBack();
+
+        onView(withText(R.string.language)).perform(click());
+
+        mDevice.waitForWindowUpdate("", 1000);
+
+        //Language Dialog
+        takeScreenshot();
+
+        onView(withId(android.R.id.button2)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        enterDiagnosticMode();
+
+        goToMainScreen();
+
+        onView(withText(R.string.calibrate)).perform(click());
+
+        sleep(4000);
+
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        if (isEmulator()) {
+            onView(withText(R.string.errorCameraFlashRequired)).perform(click());
+        }
     }
 }

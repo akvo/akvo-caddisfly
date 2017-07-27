@@ -22,6 +22,7 @@ package org.akvo.caddisfly.ui;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
@@ -78,6 +79,7 @@ public class DiagnosticTest {
     }
 
     @Test
+    @RequiresDevice
     public void testDiagnosticMode() {
 
         onView(withId(R.id.actionSettings)).perform(click());

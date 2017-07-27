@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
@@ -101,6 +102,7 @@ public class CalibrationTest {
     }
 
     @Test
+    @RequiresDevice
     public void testOutOfSequence() {
 
         saveCalibration("OutOfSequence");
@@ -152,6 +154,7 @@ public class CalibrationTest {
     }
 
     @Test
+    @RequiresDevice
     public void testExpiryDate() {
 
         onView(withId(R.id.actionSettings)).perform(click());
