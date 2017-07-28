@@ -66,7 +66,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/collect_sample_thio_bag"
+                        android:text="@string/collect_100ml_water_sample"
                         android:textSize="17sp" />
                 </TableRow>
 
@@ -90,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_weight="1"
-                        android:text="@string/add_medium_to_thio_bag"
+                        android:text="@string/open_growth_medium_sachet"
                         android:textSize="17sp" />
                 </TableRow>
 
@@ -139,7 +139,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/let_sample_incubate"
+                        android:text="@string/let_incubate"
                         android:textSize="17sp" />
                 </TableRow>
 
@@ -216,7 +216,7 @@
                         android:paddingEnd="0dp"
                         android:paddingStart="14dp"
                         android:paddingTop="7dp"
-                        android:text="@string/incubate_20_24_hours"
+                        android:text="@string/hours_20_24"
                         android:textSize="17sp" />
                 </TableRow>
 
@@ -254,7 +254,7 @@
                         android:paddingEnd="0dp"
                         android:paddingStart="14dp"
                         android:paddingTop="7dp"
-                        android:text="@string/incubate_24_30_hours"
+                        android:text="@string/hours_24_30"
                         android:textSize="17sp" />
                 </TableRow>
 
@@ -292,7 +292,7 @@
                         android:paddingEnd="0dp"
                         android:paddingStart="14dp"
                         android:paddingTop="7dp"
-                        android:text="@string/incubate_40_48_hours"
+                        android:text="@string/hours_40_48"
                         android:textSize="17sp" />
                 </TableRow>
 

@@ -37,13 +37,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="@string/incubate_in_portable_incubator"
+        android:text="@string/incubate_in_portable"
         android:textSize="18sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/incubate_in_portable_incubator2"
+        android:text="@string/incubate_in_portable"
         android:textSize="18sp" />
 
 </LinearLayout>
