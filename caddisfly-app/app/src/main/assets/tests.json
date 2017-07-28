@@ -4660,6 +4660,40 @@
       "shortCode": "axcbt",
       "brand": "Aquagenx",
       "hasImage": true,
+      "instructions": [
+        {
+          "text": "put_on_gloves",
+          "image": "1"
+        },
+        {
+          "text": "collect_100ml_water_sample",
+          "image": "2"
+        },
+        {
+          "text": "avoid_touching_with_bare_hands",
+          "image": "3"
+        },
+        {
+          "text": "open_growth_medium_sachet",
+          "image": "4"
+        },
+        {
+          "text": "dissolve_medium_in_sample",
+          "image": "5"
+        },
+        {
+          "text": "medium_dissolves",
+          "image": "6"
+        },
+        {
+          "text": "when_medium_dissolved",
+          "image": "7"
+        },
+        {
+          "text": "label_compartment_bag",
+          "image": "8"
+        }
+      ],
       "results": [
         {
           "name": "Health Risk Category",

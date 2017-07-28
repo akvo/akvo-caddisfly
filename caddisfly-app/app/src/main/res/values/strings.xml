@@ -301,17 +301,6 @@
     <string name="stirr_fau">Stir the water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
 
     <string name="cbt">E.coli – Aquagenx CBT</string>
-    <string name="collect_sample_thio_bag">Collect 100 mL water sample with bottle or Thio Bag</string>
-    <string name="add_medium_to_thio_bag">Add E. coli growth medium</string>
-    <string name="slowly_pour_sample_into_bag">Slowly pour sample into compartment bag</string>
-    <string name="let_sample_incubate">Let the sample incubate, depending on the ambient temperature</string>
-    <string name="incubate_20_24_hours">20 – 24 hours</string>
-    <string name="incubate_24_30_hours">24 – 30 hours</string>
-    <string name="incubate_40_48_hours">40 – 48 hours</string>
-    <string name="incubate_in_portable_incubator">Incubate in a portable incubator, preferably at 35 – 37 °C for 48 hours or put in or near another heat source.</string>
-    <string name="incubate_in_portable_incubator2">In addition to portable incubators, samples can be maintained at 25°C to 44.5°C using: thermal coolers/bags; proximity to heat sources for humans and food; poultry or reptile incubator, or near refrigerator coils or room heating vents</string>
-    <string name="take_photo_of_incubated_sample">Take photo of the incubated sample</string>
-    <string name="click_bag_compartments">Click on the different bag compartments to change the colours according to the test results</string>
     <string name="view_results">View results</string>
     <string name="source_aquagenx">Source: https://www.aquagenx.com</string>
     <string name="low_risk_safe">Low Risk / Safe</string>
@@ -320,5 +309,37 @@
     <string name="possibly_unsafe">High Risk / Possibly Unsafe</string>
     <string name="probably_unsafe">High Risk / Probably Unsafe</string>
     <string name="unsafe">Unsafe</string>
+
+    <string name="put_on_gloves">Put on plastic gloves</string>
+    <string name="collect_100ml_water_sample">Collect <b>100 ml</b> water sample with bottle or Thio Bag.</string>
+    <string name="avoid_touching_with_bare_hands">Avoid touching the inside of the bottle, lid or Thio Bag with bare hands.</string>
+    <string name="open_growth_medium_sachet">Open growth medium sachet and add test bud straight to the sample from the sachet</string>
+    <string name="dissolve_medium_in_sample">Dissolve medium in sample for 10–12 minutes maximum by periodically swirling the bottle or squeezing the test bud in the Thio Bag to promote release of the medium from its plastic carrier</string>
+    <string name="medium_dissolves">The medium dissolves from its plastic carrier.</string>
+    <string name="when_medium_dissolved">When medium is completely dissolved, the plastic carrier turns white or nearly white.</string>
+    <string name="label_compartment_bag">Label the compartment bag before filling</string>
+    <string name="tear_perforated_seam">Tear of perforated seam at top of the bag.</string>
+    <string name="rub_sides_of_compartment">Rub sides at the top of each compartment to open the bag, use the white tabs at top of the bag to keep the bag open while pouring.</string>
+    <string name="slowly_pour_sample_into_bag">Slowly pour sample into bag while gently tilting and squeezing bag to distribute sample amongst five compartments.</string>
+    <string name="fill_evenly_across_bag"><b>Fill evenly across bag to the black fill line </b>.</string>
+    <string name="leave_test_bud_carrier">Leave test bud carrier in bottle or Thio Bag while pouring.</string>
+    <string name="attach_seal_clip">Attach seal clip across the bag above the fill line and below the compartment top openings.</string>
+    <string name="snap_rod_shaped">Snap rod-shaped part of the clip from other side of bag into U-shape to lock in place across the bag.</string>
+    <string name="roll_fold_bag">After attaching clip, bag can be kept vertical or horizontal.</string>
+    <string name="close_top_of_bag">Close the top of the bag with the yellow Whirl-Pak seal and then roll down the bag toward the seal clip and fold the yellow ends.</string>
+    <string name="let_incubate">Let the sample incubate, depending on the ambient temperature:</string>
+    <string name="incubate">Incubate</string>
+    <string name="temperature_34_44">35 – 44.5°C</string>
+    <string name="temperature_31_34">31 – 34°C</string>
+    <string name="temperature_25_30">25 – 30°C</string>
+    <string name="below_25">Below 25 °C</string>
+    <string name="hours_20_24">20 – 24 hours</string>
+    <string name="hours_24_30">24 – 30 hours</string>
+    <string name="hours_40_48">40 – 48 hours</string>
+    <string name="incubate_in_portable">Incubate in a portable incubator, preferably at 35–37 °C for 48 hours or put in or near another heat source. In addition to portable incubators, samples can be maintained at 25°C to 44.5°C using: thermal coolers/bags; proximity to heat sources for humans and food; poultry or reptile incubator, or near refrigerator coils or room heating vents</string>
+    <string name="take_photo_of_incubated">Take photo of the incubated sample.</string>
+    <string name="change_colors_to_match">Change the colours in the interface below to match the colours of the interface to sample.</string>
+    <string name="click_compartments_to_change">Click the compartments to change colour.</string>
+
 
 </resources>
