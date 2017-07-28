@@ -21,8 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -42,7 +40,6 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.app.ShowNotificationJob;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -57,10 +54,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -101,53 +95,51 @@ public class MainActivity extends BaseActivity {
 
         if (!ApkHelper.isStoreVersion(this)) {
 
-            DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
-            textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
+//            DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+//            textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
 
-            textVersionExpiry.setVisibility(View.VISIBLE);
+            textVersionExpiry.setVisibility(View.GONE);
 
             // If app has expired then close this activity
-            ApkHelper.isAppVersionExpired(this);
-        }
-
-        ShowNotificationJob.schedulePeriodic();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (!ApkHelper.isStoreVersion(this)) {
-            if (intent.hasExtra("appExpiryNotification")) {
-
-                GregorianCalendar now = new GregorianCalendar();
-                long difference = appExpiryDate.getTimeInMillis() - now.getTimeInMillis();
-
-                int remainingDays = (int) (difference / DAYS_IN_MILLIS);
-
-                String message = String.format("%s%n%n%s%n%n%s",
-                        String.format(getResources().getQuantityString(R.plurals.appWillExpireInDays, remainingDays), remainingDays),
-                        getString(R.string.thisIsATestVersion),
-                        getString(R.string.uninstallAndInstallFromStore));
-
-                AlertDialog.Builder builder;
-                builder = new AlertDialog.Builder(this);
-
-                builder.setTitle(R.string.appName)
-                        .setMessage(message)
-                        .setCancelable(false);
-
-                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
+//            ApkHelper.isAppVersionExpired(this);
         }
     }
+
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        if (!ApkHelper.isStoreVersion(this)) {
+//            if (intent.hasExtra("appExpiryNotification")) {
+//
+//                GregorianCalendar now = new GregorianCalendar();
+//                long difference = appExpiryDate.getTimeInMillis() - now.getTimeInMillis();
+//
+//                int remainingDays = (int) (difference / DAYS_IN_MILLIS);
+//
+//                String message = String.format("%s%n%n%s%n%n%s",
+//                        String.format(getResources().getQuantityString(R.plurals.appWillExpireInDays, remainingDays), remainingDays),
+//                        getString(R.string.thisIsATestVersion),
+//                        getString(R.string.uninstallAndInstallFromStore));
+//
+//                AlertDialog.Builder builder;
+//                builder = new AlertDialog.Builder(this);
+//
+//                builder.setTitle(R.string.appName)
+//                        .setMessage(message)
+//                        .setCancelable(false);
+//
+//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(@NonNull DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                });
+//
+//                final AlertDialog alertDialog = builder.create();
+//                alertDialog.show();
+//            }
+//        }
+//    }
 
     /**
      * Navigate to the survey

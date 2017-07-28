@@ -28,9 +28,9 @@ public final class AppConfig {
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
-    public static final int APP_EXPIRY_DAY = 29;
-    public static final int APP_EXPIRY_MONTH = 7;
-    public static final int APP_EXPIRY_YEAR = 2017;
+    public static final int APP_EXPIRY_DAY = 14;
+    public static final int APP_EXPIRY_MONTH = 2;
+    public static final int APP_EXPIRY_YEAR = 2018;
 
     /**
      * To launch Flow app.

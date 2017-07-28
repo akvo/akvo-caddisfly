@@ -38,7 +38,6 @@ import android.widget.Toast;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
@@ -100,9 +99,9 @@ public class ExternalActionActivity extends BaseActivity {
         super.onStart();
 
         // Stop if the app version has expired
-        if (ApkHelper.isAppVersionExpired(this)) {
-            return;
-        }
+//        if (ApkHelper.isAppVersionExpired(this)) {
+//            return;
+//        }
 
         Intent intent = getIntent();
         String type = intent.getType();
