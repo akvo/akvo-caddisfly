@@ -1007,29 +1007,13 @@
       ]
     },
     {
-      "name": "Water - Chromium 2",
+      "name": "Water - Chromium",
       "subtype": "liquid-chamber",
-      "uuid": "4970bfed-d289-429c-b4c0-5645ec6fd5af",
-      "shortCode": "chro2",
+      "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
+      "shortCode": "chrom",
       "calibrate": "true",
-      "ranges": " 0,0.025,0.050,0.075,0.100,0.5,1.0",
-      "monthsValid": "3",
-      "results": [
-        {
-          "id": 1,
-          "name": "Chromium",
-          "unit": "ppm",
-          "timeDelay": 300
-        }
-      ]
-    },
-    {
-      "name": "Water - Chromium 3",
-      "subtype": "liquid-chamber",
-      "uuid": "e0730417-b475-4484-b9e0-a5e2b2b65e8c",
-      "shortCode": "chro3",
-      "calibrate": "true",
-      "ranges": "0,1,5,15,25",
+      "ranges": "0,0.5,1,2,3",
+      "dilutions": "0,50,20",
       "monthsValid": "3",
       "results": [
         {
