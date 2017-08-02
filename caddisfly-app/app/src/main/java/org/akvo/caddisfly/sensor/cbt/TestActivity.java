@@ -37,6 +37,7 @@ import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ImageUtil;
+import org.akvo.caddisfly.util.PermissionsDelegate;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
@@ -78,7 +79,7 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
         ActivityTestBinding binding =
                 DataBindingUtil.setContentView(this, R.layout.activity_test);
 
-        //hasPermissions = permissionsDelegate.hasPermissions(permissions);
+        hasPermissions = permissionsDelegate.hasPermissions(permissions);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -151,11 +152,11 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
 
     public void onStartTestClick(View view) {
 
-        //if (hasPermissions) {
-        startTest();
-        //} else {
-        //permissionsDelegate.requestPermissions(permissions);
-        //}
+        if (hasPermissions) {
+            startTest();
+        } else {
+            permissionsDelegate.requestPermissions(permissions);
+        }
 
     }
 
@@ -295,6 +296,15 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
 //        navigationController.navigateToTest(this, uuid);
 //    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public static class IncubationTimesDialogFragment extends DialogFragment {
         @NonNull
         @SuppressLint("InflateParams")
@@ -330,15 +340,6 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
                 f.recreate();
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -41,5 +41,5 @@
         android:layout_height="wrap_content"
         android:contentDescription="@null"
         android:scaleType="fitCenter"
-        android:src="@drawable/pour_sachet_contents" />
+        tools:src="@android:drawable/picture_frame" />
 </LinearLayout>

@@ -65,7 +65,7 @@ public final class StringUtil {
         Spanned spanned = StringUtil.getStringResourceByName(context, text);
         builder.append(spanned);
 
-        Matcher m = Pattern.compile("\\[\\*(\\w+)\\*\\]").matcher(builder);
+        Matcher m = Pattern.compile("\\[\\*(\\w+)\\*]").matcher(builder);
 
         while (m.find()) {
 

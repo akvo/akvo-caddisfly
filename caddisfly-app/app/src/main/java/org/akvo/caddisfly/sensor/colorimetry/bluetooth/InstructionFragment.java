@@ -84,7 +84,7 @@ public class InstructionFragment extends Fragment {
                 for (int i = 0; i < instructions.length(); i++) {
                     try {
 
-                        Object item = instructions.getJSONObject(i).get("text");
+                        Object item = instructions.getJSONObject(i).get("section");
                         JSONArray jsonArray;
 
                         if (item instanceof JSONArray) {

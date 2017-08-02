@@ -88,7 +88,7 @@ public class InstructionActivity extends BaseActivity {
             for (int i = 0; i < instructions.length(); i++) {
                 try {
 
-                    Object item = instructions.getJSONObject(i).get("text");
+                    Object item = instructions.getJSONObject(i).get("section");
                     JSONArray jsonArray;
 
                     if (item instanceof JSONArray) {
@@ -102,8 +102,8 @@ public class InstructionActivity extends BaseActivity {
                     TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
                     fragments.add(InstructionDetailFragment.newInstance(
                             testInfo, jsonArray,
-                            instructions.getJSONObject(i).has("png")
-                                    ? instructions.getJSONObject(i).getString("png") : ""));
+                            instructions.getJSONObject(i).has("image")
+                                    ? instructions.getJSONObject(i).getString("image") : ""));
                 } catch (JSONException e) {
                     Timber.e(e);
                 }

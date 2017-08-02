@@ -35,6 +35,7 @@
 
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -149,18 +150,12 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             };
         } else {
             mLeScanCallback =
-                    new BluetoothAdapter.LeScanCallback() {
-
+                    (device, rssi, scanRecord) -> runOnUiThread(new Runnable() {
                         @Override
-                        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mLeDeviceListAdapter.addDevice(device);
-                                }
-                            });
+                        public void run() {
+                            mLeDeviceListAdapter.addDevice(device);
                         }
-                    };
+                    });
         }
 
         mHandler = new Handler();
@@ -189,28 +184,25 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             mBluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         }
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-//                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//            builder.setTitle("This app needs location access");
-//            builder.setMessage("Please grant location access so this app can detect beacons.");
-//            builder.setPositiveButton(android.R.string.ok, null);
-//            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialogInterface) {
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-//                                PERMISSION_REQUEST_COARSE_LOCATION);
-//                    }
-//                }
-//            });
-//
-//            builder.show();
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("This app needs location access");
+            builder.setMessage("Please grant location access so this app can detect beacons.");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(dialogInterface -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                            PERMISSION_REQUEST_COARSE_LOCATION);
+                }
+            });
 
-        layoutDevices = (RelativeLayout) findViewById(R.id.layoutDevices);
+            builder.show();
+        }
 
-        deviceList = (ListView) findViewById(R.id.device_list);
+        layoutDevices = findViewById(R.id.layoutDevices);
+
+        deviceList = findViewById(R.id.device_list);
 //        deviceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -218,14 +210,14 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 //            }
 //        });
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
-        layoutInfo = (LinearLayout) findViewById(R.id.layout_bluetooth_info);
+        layoutInfo = findViewById(R.id.layout_bluetooth_info);
 
-        textTitle = (TextView) findViewById(R.id.textTitle);
+        textTitle = findViewById(R.id.textTitle);
         textTitle.setText("Scanning...");
 
-        textSubtitle = (TextView) findViewById(R.id.textSubtitle);
+        textSubtitle = findViewById(R.id.textSubtitle);
         textSubtitle.setText("Searching for bluetooth devices");
     }
 
@@ -276,11 +268,9 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         dlg.setMessage(getString(R.string.deviceConnecting));
         dlg.setCancelable(false);
         dlg.show();
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                startActivityForResult(intent, REQUEST_CODE);
-                dlg.dismiss();
-            }
+        new Handler().postDelayed(() -> {
+            startActivityForResult(intent, REQUEST_CODE);
+            dlg.dismiss();
         }, CONNECTING_DELAY);
     }
 
@@ -527,10 +517,10 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             if (view == null) {
                 view = mInflater.inflate(R.layout.item_device, null);
                 viewHolder = new ViewHolder();
-                viewHolder.deviceName = (TextView) view.findViewById(R.id.device_name);
+                viewHolder.deviceName = view.findViewById(R.id.device_name);
                 view.setTag(viewHolder);
 
-                Button buttonConnect = (Button) view.findViewById(R.id.button_connect);
+                Button buttonConnect = view.findViewById(R.id.button_connect);
 
                 buttonConnect.setOnClickListener(new View.OnClickListener() {
                     @Override
