@@ -75,7 +75,8 @@ public class CompartmentBagMainActivity extends BaseActivity implements Compartm
         fragmentManager = getSupportFragmentManager();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.layoutFragment, CbtInstructionsFragment.newInstance(), "cbtInstructions")
+        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        fragmentTransaction.replace(R.id.layoutFragment, CbtInstructionFragment.forProduct(testInfo), "cbtInstructions")
                 .commit();
     }
 

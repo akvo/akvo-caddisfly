@@ -27,52 +27,85 @@
     android:minWidth="400dp"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/layoutResult"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="40dp"
-        android:background="@color/gray_text"
-        android:orientation="vertical">
+        android:background="#c20f0f"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/textResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="#faf1f1"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            tools:text="High Risk" />
+
+        <TextView
+            android:id="@+id/textResult1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="#faf1f1"
+            android:textSize="27sp"
+            android:textStyle="bold"
+            tools:text="Possibly Unsafe" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutResult1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d23f3f"
+        android:orientation="vertical"
+        android:paddingBottom="20dp"
+        android:paddingTop="30dp">
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-
-            android:background="#ccc"
-
-            android:gravity="center_vertical"
-            android:padding="@dimen/activity_horizontal_margin"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="Intermediate Risk / Possibly Safe" />
+            android:layout_gravity="center_horizontal"
+            android:text="MPN (CFU/100ml)"
+            android:textColor="#cce2e2e2"
+            android:layout_marginBottom="10dp"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textResult2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:textColor="#333"
-            android:textSize="20sp"
-            tools:text="MPN : 3.1" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:textColor="#fdf2f2"
+            android:textSize="35sp"
+            tools:text="> 100" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Upper 95% Confidence Interval"
+            android:textColor="#cce2e2e2"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textResult3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:textColor="#333"
-            android:textSize="20sp"
-            tools:text="Confidence interval : 8.38" />
+            android:textColor="#fdf2f2"
+            android:textSize="35sp"
+            tools:text="9435.1" />
     </LinearLayout>
 
     <Button

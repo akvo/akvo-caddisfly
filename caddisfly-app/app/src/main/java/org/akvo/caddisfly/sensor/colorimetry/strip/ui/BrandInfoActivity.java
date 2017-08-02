@@ -42,7 +42,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.CameraHelper;
+import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.cbt.CompartmentBagMainActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.camera.CameraActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -187,7 +190,7 @@ public class BrandInfoActivity extends BaseActivity {
 
                 snackbar.setActionTextColor(typedValue.data);
                 View snackView = snackbar.getView();
-                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
                 textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
                 textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
                 textView.setTextColor(Color.WHITE);
@@ -198,6 +201,14 @@ public class BrandInfoActivity extends BaseActivity {
 
     private void startCamera() {
 
+        if (mUuid.equalsIgnoreCase(SensorConstants.UUID)) {
+            CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
+            final Intent intent = new Intent(getBaseContext(), CompartmentBagMainActivity.class);
+            intent.putExtra("internal", true);
+            startActivity(intent);
+            return;
+        }
+
         if (PreferencesUtil.getBoolean(this, R.string.showMinMegaPixelDialogKey, true)) {
             try {
 
@@ -206,7 +217,7 @@ public class BrandInfoActivity extends BaseActivity {
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
                     View checkBoxView = View.inflate(this, R.layout.dialog_message, null);
-                    CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
+                    CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
                     checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                         @Override

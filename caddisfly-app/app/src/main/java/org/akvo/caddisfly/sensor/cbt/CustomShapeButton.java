@@ -49,11 +49,11 @@ public class CustomShapeButton extends View {
 
         // fill
         fillPaint.setStyle(Paint.Style.FILL);
-        fillPaint.setColor(Color.rgb(246, 226, 168));
-        fillSelectPaint.setColor(Color.rgb(240, 220, 160));
+        fillPaint.setColor(Color.rgb(229, 239, 97));
+        fillSelectPaint.setColor(Color.rgb(240, 250, 97));
 
-        greenPaint.setColor(Color.rgb(176, 200, 200));
-        greenSelectPaint.setColor(Color.rgb(166, 195, 195));
+        greenPaint.setColor(Color.rgb(69, 159, 159));
+        greenSelectPaint.setColor(Color.rgb(79, 165, 165));
 
         // stroke
         strokePaint.setStyle(Paint.Style.STROKE);

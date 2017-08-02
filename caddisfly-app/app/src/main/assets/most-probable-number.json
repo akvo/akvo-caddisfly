@@ -189,7 +189,7 @@
     },
     {
       "key": "11111",
-      "mpn": ">100",
+      "mpn": "> 100",
       "confidence": "9435.1",
       "riskCategory": "unsafe"
     }

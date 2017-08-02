@@ -44,7 +44,7 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.cbt.CompartmentBagMainActivity;
+import org.akvo.caddisfly.sensor.cbt.TestActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
@@ -145,7 +145,7 @@ public class ExternalActionActivity extends BaseActivity {
 
                 mTestTypeUuid = TestConfigHelper.getUuidFromShortCode(code);
 
-                if (mTestTypeUuid == null){
+                if (mTestTypeUuid == null) {
                     Matcher m = Pattern.compile("(\\d{3})").matcher(code.toLowerCase());
                     if (m.find()) {
                         final Intent i = new Intent(this, BluetoothTypeListActivity.class);
@@ -375,15 +375,10 @@ public class ExternalActionActivity extends BaseActivity {
                 break;
             case CBT:
 
-                boolean hasBluetooth = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
-                if (hasBluetooth) {
-                    TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
-                    final Intent cbtIntent = new Intent(getBaseContext(), CompartmentBagMainActivity.class);
-                    cbtIntent.putExtra("internal", true);
-                    startActivityForResult(cbtIntent, REQUEST_TEST);
-                } else {
-                    alertFeatureNotSupported();
-                }
+                TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
+                final Intent cbtIntent = new Intent(getBaseContext(), TestActivity.class);
+                cbtIntent.putExtra("internal", true);
+                startActivityForResult(cbtIntent, REQUEST_TEST);
                 break;
             default:
         }

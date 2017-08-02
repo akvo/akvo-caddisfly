@@ -45,9 +45,10 @@ import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.cbt.CompartmentBagMainActivity;
+import org.akvo.caddisfly.sensor.cbt.TestActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -178,15 +179,12 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.buttonCBT)
     public void navigateToCbt() {
-        boolean hasBluetooth = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
-        if (hasBluetooth) {
-            CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
-            final Intent intent = new Intent(getBaseContext(), CompartmentBagMainActivity.class);
-            intent.putExtra("internal", true);
-            startActivity(intent);
-        } else {
-            alertFeatureNotSupported();
-        }
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
+        Intent intent = new Intent(getIntent());
+        intent.setClass(this, TestActivity.class);
+        intent.putExtra(Constant.UUID, SensorConstants.CBT_ID);
+        intent.setFlags(0);
+        startActivityForResult(intent, 100);
     }
 
     @OnClick(R.id.buttonCalibrate)
@@ -336,7 +334,7 @@ public class MainActivity extends BaseActivity {
 
                 snackbar.setActionTextColor(typedValue.data);
                 View snackView = snackbar.getView();
-                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
                 textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
                 textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
                 textView.setTextColor(Color.WHITE);

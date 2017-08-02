@@ -25,8 +25,6 @@
     android:paddingBottom="20dp"
     tools:context=".sensor.cbt.CompartmentBagFragment">
 
-    <include layout="@layout/toolbar" />
-
     <TextView
         android:id="@+id/textInfo"
         android:layout_width="match_parent"
@@ -35,25 +33,37 @@
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp"
-        android:text="Change the colours of sections below to match the colours of the bag compartments in the test (click to change)."
+        android:text="@string/change_colors_to_match"
+        android:textSize="17dp" />
+
+    <TextView
+        android:id="@+id/textInfo2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textInfo"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="10dp"
+        android:text="@string/click_compartments_to_change"
         android:textSize="17dp" />
 
     <org.akvo.caddisfly.sensor.cbt.CustomShapeButton
         android:id="@+id/compartments"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/textInfo" />
+        android:layout_marginTop="10dp"
+        android:layout_height="280dp"
+        android:layout_below="@+id/textInfo2" />
 
     <Button
         android:id="@+id/buttonNext"
         style="@style/Button"
         android:alpha="0.1"
+        android:layout_marginTop="40dp"
         android:layout_width="wrap_content"
+        android:layout_below="@+id/compartments"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
         android:enabled="true"
         android:onClick="onClickMatchedButton"
         android:text="Next"
