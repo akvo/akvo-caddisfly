@@ -42,10 +42,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.CameraHelper;
-import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.cbt.CompartmentBagMainActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.camera.CameraActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -200,14 +197,6 @@ public class BrandInfoActivity extends BaseActivity {
     }
 
     private void startCamera() {
-
-        if (mUuid.equalsIgnoreCase(SensorConstants.UUID)) {
-            CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
-            final Intent intent = new Intent(getBaseContext(), CompartmentBagMainActivity.class);
-            intent.putExtra("internal", true);
-            startActivity(intent);
-            return;
-        }
 
         if (PreferencesUtil.getBoolean(this, R.string.showMinMegaPixelDialogKey, true)) {
             try {
