@@ -98,18 +98,36 @@ public class CustomShapeButton extends View {
             }
 
             invalidate();
+
+            return true;
         } else if (action == MotionEvent.ACTION_UP) {
+
             active1 = false;
             active2 = false;
             active3 = false;
             active4 = false;
             active5 = false;
             invalidate();
+
+            performClick();
+
+            return true;
         }
 
         getKey();
 
-        return super.onTouchEvent(event);
+        return false;
+    }
+
+    @Override
+    public boolean performClick() {
+        // Calls the super implementation, which generates an AccessibilityEvent
+        // and calls the onClick() listener on the view, if any
+        super.performClick();
+
+        // Handle the action for the custom click here
+
+        return true;
     }
 
     @Override

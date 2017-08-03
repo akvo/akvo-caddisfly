@@ -120,7 +120,7 @@ public class CbtResultFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setTitle(view, "Result");
+        getActivity().setTitle(R.string.result);
     }
 
 }

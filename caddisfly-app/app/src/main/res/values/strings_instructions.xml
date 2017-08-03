@@ -154,6 +154,7 @@
     <string name="blend_tss">Blend approx. 500 ml of the water sample (e.g. in a blender) at high speed for 2 minutes.</string>
     <string name="stirr_tss">Stir the blended water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
     <string name="stirr_fau">Stir the water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
+
     <string name="view_results">View results</string>
     <string name="low_risk_safe">Low Risk / Safe</string>
     <string name="probably_safe">Intermediate Risk / Probably Safe</string>
@@ -161,6 +162,9 @@
     <string name="possibly_unsafe">High Risk / Possibly Unsafe</string>
     <string name="probably_unsafe">High Risk / Probably Unsafe</string>
     <string name="unsafe">Unsafe</string>
+    <string name="mpn">MPN (CFU/100ml)</string>
+    <string name="confidenceInterval">Upper 95% Confidence Interval</string>
+
     <string name="put_on_gloves">Put on plastic gloves</string>
     <string name="collect_100ml_water_sample">Collect <b>100 ml</b> water sample with bottle or Thio Bag.</string>
     <string name="avoid_touching_with_bare_hands">Avoid touching the inside of the bottle, lid or Thio Bag with bare hands.</string>

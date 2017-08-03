@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="MPN (CFU/100ml)"
+            android:text="@string/mpn"
             android:textColor="#cce2e2e2"
             android:layout_marginBottom="10dp"
             android:textSize="15sp"
@@ -84,7 +84,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
             android:textColor="#fdf2f2"
-            android:textSize="35sp"
+            android:textSize="37sp"
             tools:text="> 100" />
 
         <TextView
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_gravity="center_horizontal"
-            android:text="Upper 95% Confidence Interval"
+            android:text="@string/confidenceInterval"
             android:textColor="#cce2e2e2"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -104,7 +104,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
             android:textColor="#fdf2f2"
-            android:textSize="35sp"
+            android:textSize="37sp"
             tools:text="9435.1" />
     </LinearLayout>
 

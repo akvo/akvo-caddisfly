@@ -80,6 +80,9 @@ public class TestInfoFragment extends Fragment {
 
         mBinding.setTestInfo(testInfo);
 
+        if (testInfo != null) {
+            getActivity().setTitle(testInfo.getName());
+        }
     }
 
 }

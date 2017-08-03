@@ -33,12 +33,11 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
 
 public class CompartmentBagFragment extends BaseFragment {
-    private OnFragmentInteractionListener mListener;
     private static final String ARG_PARAM1 = "param1";
     private static final int BUTTON_ENABLE_DELAY = 1500;
     private static final int ANIMATION_DURATION_MILLIS = 500;
     private static final float BUTTON_START_ALPHA = 0.1f;
-
+    private OnFragmentInteractionListener mListener;
     private String mKey = "00000";
 
     public CompartmentBagFragment() {
@@ -67,7 +66,7 @@ public class CompartmentBagFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_compartment_bag, container, false);
 
-        final CustomShapeButton customShapeButton = (CustomShapeButton) view.findViewById(R.id.compartments);
+        final CustomShapeButton customShapeButton = view.findViewById(R.id.compartments);
 
         customShapeButton.setKey(mKey);
 
@@ -82,7 +81,7 @@ public class CompartmentBagFragment extends BaseFragment {
             }
         });
 
-        final Button buttonNext = (Button) view.findViewById(R.id.buttonNext);
+        final Button buttonNext = view.findViewById(R.id.buttonNext);
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 buttonNext.setEnabled(true);
@@ -102,7 +101,7 @@ public class CompartmentBagFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setTitle(view, "Set compartment colors");
+        getActivity().setTitle(R.string.setCompartmentColors);
     }
 
 

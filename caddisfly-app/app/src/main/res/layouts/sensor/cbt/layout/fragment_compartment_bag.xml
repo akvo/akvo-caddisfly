@@ -34,7 +34,7 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp"
         android:text="@string/change_colors_to_match"
-        android:textSize="17dp" />
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/textInfo2"
@@ -45,7 +45,7 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp"
         android:text="@string/click_compartments_to_change"
-        android:textSize="17dp" />
+        android:textSize="17sp" />
 
     <org.akvo.caddisfly.sensor.cbt.CustomShapeButton
         android:id="@+id/compartments"
@@ -66,6 +66,6 @@
         android:layout_gravity="center_horizontal"
         android:enabled="true"
         android:onClick="onClickMatchedButton"
-        android:text="Next"
+        android:text="@string/next"
         android:theme="?primaryButtonStyle" />
 </RelativeLayout>

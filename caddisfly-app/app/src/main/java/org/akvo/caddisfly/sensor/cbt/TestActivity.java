@@ -197,7 +197,6 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_TAKE_PHOTO:
-                    setTitle(R.string.setCompartmentColors);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.fragment_container, CompartmentBagFragment.newInstance(mResult), "compartmentFragment")
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
