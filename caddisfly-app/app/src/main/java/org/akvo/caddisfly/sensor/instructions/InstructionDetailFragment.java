@@ -26,6 +26,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -95,6 +96,8 @@ public class InstructionDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction_detail, container, false);
 
+        Context context = getContext();
+
         ButterKnife.bind(this, rootView);
 
         Drawable instructionDrawable = AssetsManager.getImage(getActivity(),
@@ -112,8 +115,23 @@ public class InstructionDetailFragment extends Fragment {
             windowManager.getDefaultDisplay().getRealSize(size);
         }
 
-
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+        double divisor = 3;
+        if (displayMetrics.densityDpi > 250) {
+            divisor = 2.5;
+        }
+
+        if (size.y > displayMetrics.heightPixels) {
+            divisor += 0.3;
+        }
+
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (int) (displayMetrics.heightPixels / divisor));
+
+        llp.setMargins(0, 0, 0, 20);
+
 
         ArrayList<String> instructionText = getArguments().getStringArrayList(ARG_ITEM_TEXT);
         if (instructionText != null) {
@@ -122,39 +140,38 @@ public class InstructionDetailFragment extends Fragment {
 
                 if (instruction.contains("image:")) {
 
-                    String image = ILLUSTRATION_PATH +
-                            instruction.substring(instruction.indexOf(":") + 1, instruction.length()) + ".png";
+                    String imageName = instruction.substring(instruction.indexOf(":") + 1, instruction.length());
 
-                    InputStream ims = null;
-                    try {
-                        ims = getContext().getAssets().open(image);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (ims != null) {
+                    int resourceId = context.getResources().getIdentifier("drawable/in_" + imageName,
+                            "id", "org.akvo.caddisfly");
 
-                        ImageView imageView = new ImageView(getContext());
-                        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    if (resourceId > 0) {
 
-                        imageView.setImageDrawable(Drawable.createFromStream(ims, null));
-
-                        double divisor = 3;
-                        if (displayMetrics.densityDpi > 250) {
-                            divisor = 2.5;
-                        }
-
-                        if (size.y > displayMetrics.heightPixels) {
-                            divisor += 0.3;
-                        }
-
-                        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                (int) (displayMetrics.heightPixels / divisor));
-
-                        llp.setMargins(0, 0, 0, 20);
+                        final AppCompatImageView imageView = new AppCompatImageView(context);
+                        imageView.setImageResource(resourceId);
                         imageView.setLayoutParams(llp);
 
                         layoutInstructions.addView(imageView);
+
+                    } else {
+
+                        InputStream ims = null;
+                        try {
+                            ims = context.getAssets().open(ILLUSTRATION_PATH + imageName + ".png");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (ims != null) {
+
+                            ImageView imageView = new ImageView(getContext());
+                            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+                            imageView.setImageDrawable(Drawable.createFromStream(ims, null));
+
+                            imageView.setLayoutParams(llp);
+
+                            layoutInstructions.addView(imageView);
+                        }
                     }
 
                 }else {

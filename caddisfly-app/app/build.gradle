@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 188
-        versionName "( MD610 - v9 ) ( CBT - v4 )"
+        versionCode 189
+        versionName "( MD610 - v9 ) ( CBT - v5 )"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->
@@ -123,6 +123,7 @@ dependencies {
     androidTestCompile 'com.android.support.test:runner:1.0.0'
     androidTestCompile 'com.android.support:support-annotations:26.0.0'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.0'
+    androidTestCompile 'com.android.support.test.espresso:espresso-intents:3.0.0'
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
     unmock 'org.robolectric:android-all:4.3_r2-robolectric-0'

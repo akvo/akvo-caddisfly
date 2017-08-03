@@ -59,6 +59,20 @@
     <string name="place_strip_in_black_area">Place strip in the black area of the color card.</string>
     <string name="press_start_button">Press <b>Start</b> button.</string>
 
+    <string name="fill_bottle_5ml">Fill the provided bottle with <b>5 ml</b> of your water sample.</string>
+    <string name="add_10_drops_nh1">Add <b>10 drops</b> of the <b>NH4-1 Reagent</b> to the sample.</string>
+    <string name="swirl_and_mix">Swirl the sample to mix the reagent.</string>
+    <string name="dip_sample_5s">Dip the test strip into the sample for <b>5 seconds</b> and remove.</string>
+    <string name="shake_excess_water_off">Shake excess water from the test strip.</string>
+    <string name="place_strip_clr">Place the test strip with the patch facing <b>left</b> on the black area of the Colour Reference Card and press <b>Start</b>.</string>
+    <string name="add_5_drops_po4_1">Add <b>5 drops</b> of the <b>PO4-1 Reagent</b> to the sample.</string>
+    <string name="place_smaller_container">Place smaller container in the provided rack.</string>
+    <string name="add_6_drops_po4_2">Add <b>6 drops</b> of the <b>PO4-2 Reagent</b> to the smaller container.</string>
+    <string name="dip_sample_15s">Dip the test strip into the sample for <b>15 seconds</b> and remove.</string>
+    <string name="dip_container_15s">Dip the test strip into the smaller tube for <b>15 seconds</b> and remove.</string>
+    <string name="collect_sample_strip">Collect your water sample.</string>
+    <string name="dip_sample_1s">Dip the test strip into the sample for <b>1 second</b> and remove.</string>
+
     <string name="select_test_instruction">Press [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and then press [*enter*]</string>
     <string name="select_diff_test_instruction">Press [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and press [*enter*]. Select <b>\'diff\'</b> and then press [*enter*]</string>
     <string name="select_free_test_instruction">Press [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test [*enter*]. Select <b>\'free\'</b> and then press [*enter*]</string>

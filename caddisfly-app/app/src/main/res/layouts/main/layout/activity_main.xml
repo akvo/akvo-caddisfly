@@ -101,7 +101,7 @@
                 android:theme="?longButtonStyle" />
           
             <Button
-                android:id="@+id/buttonCBT"
+                android:id="@+id/buttonCbt"
                 style="@style/Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

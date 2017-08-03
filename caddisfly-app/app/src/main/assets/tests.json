@@ -38,8 +38,8 @@
         },
         {
           "section": [
-            "place_strip_in_black_area",
-            "image:instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
           ]
         },
         {
@@ -219,8 +219,8 @@
         },
         {
           "section": [
-            "place_strip_in_black_area",
-            "image:instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
           ]
         },
         {
@@ -800,9 +800,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -919,8 +919,8 @@
         },
         {
           "section": [
-            "place_strip_in_black_area",
-            "image:instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
           ]
         },
         {
@@ -1015,8 +1015,8 @@
         },
         {
           "section": [
-            "place_strip_in_black_area",
-            "image:instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
           ]
         },
         {
@@ -1106,30 +1106,26 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample",
-            "image:instruction_collect_sample"
+            "collect_sample_strip",
+            "image:collect_sample"
           ]
         },
         {
           "section": [
-            "dip_strip_into_water_1_second",
-            "image:instruction_dip"
+            "dip_sample_1s",
+            "image:dip_sample_1"
           ]
         },
         {
           "section": [
-            "shake_excess_water"
+            "shake_excess_water_off",
+            "image:shake_excess"
           ]
         },
         {
           "section": [
-            "place_strip_in_black_area",
-            "image:instruction_place_strip"
-          ]
-        },
-        {
-          "section": [
-            "press_start_button"
+            "place_strip_clr",
+            "image:place_clr"
           ]
         }
       ],
@@ -1288,32 +1284,38 @@
       "instructions": [
         {
           "section": [
-            "collect_5ml_sample"
-          ],
-          "image": "instruction_collect_sample"
-        },
-        {
-          "section": [
-            "add_10_drops_nh4_reagent",
-            "swirl_to_mix_reagent"
+            "fill_bottle_5ml",
+            "image:fill_5ml"
           ]
         },
         {
           "section": [
-            "dip_strip_5_seconds_and_remove",
-            "shake_excess_water"
-          ],
-          "image": "instruction_dip"
+            "add_10_drops_nh1",
+            "image:add_nh41"
+          ]
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "swirl_and_mix",
+            "image:swirl_mix"
+          ]
         },
         {
           "section": [
-            "press_start_button"
+            "dip_sample_5s",
+            "image:dip_sample_5"
+          ]
+        },
+        {
+          "section": [
+            "shake_excess_water_off",
+            "image:shake_excess"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
           ]
         }
       ],
@@ -1404,8 +1406,13 @@
       "instructions": [
         {
           "section": [
-            "conduct_test_per_instructions",
-            "when_ready_place_strip_on_card"
+            "conduct_test_per_instructions"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
           ]
         }
       ],
@@ -1532,9 +1539,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -1641,9 +1648,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -1740,26 +1747,26 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample"
-          ],
-          "image": "instruction_collect_sample"
+            "collect_sample_strip",
+            "image:collect_sample"
+          ]
         },
         {
           "section": [
-            "dip_strip_into_water_1_second",
-            "shake_excess_water"
-          ],
-          "image": "instruction_dip"
+            "dip_sample_1s",
+            "image:dip_sample_1"
+          ]
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "shake_excess_water_off",
+            "image:shake_excess"
+          ]
         },
         {
           "section": [
-            "press_start_button"
+            "place_strip_clr",
+            "image:place_clr"
           ]
         }
       ],
@@ -5735,9 +5742,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -5756,9 +5763,9 @@
         {
           "phase": 2,
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "phase": 2,
@@ -6091,9 +6098,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -6261,9 +6268,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -6370,9 +6377,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -6922,42 +6929,62 @@
       "instructions": [
         {
           "section": [
-            "collect_5ml_sample"
+            "fill_bottle_5ml",
+            "image:fill_5ml"
           ]
         },
         {
           "section": [
-            "add_5_drops_reagent_1",
-            "swirl_to_mix_reagent"
+            "add_5_drops_po4_1",
+            "image:add_po4_1"
           ]
         },
         {
           "section": [
-            "put_6_drops_of_reagent_in_another_container",
-            "place_tube_in_provided_rack"
+            "swirl_and_mix",
+            "image:swirl_mix"
           ]
         },
         {
           "section": [
-            "dip_strip_15_seconds_and_remove",
-            "shake_excess_water"
+            "place_smaller_container",
+            "image:place_container"
           ]
         },
         {
           "section": [
-            "dip_strip_15_seconds_in_reagent_and_remove",
-            "shake_excess_water"
+            "add_6_drops_po4_2",
+            "image:add_po4_2"
           ]
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "dip_sample_15s",
+            "image:dip_sample_15"
+          ]
         },
         {
           "section": [
-            "press_start_button"
+            "shake_excess_water_off",
+            "image:shake_excess"
+          ]
+        },
+        {
+          "section": [
+            "dip_container_15s",
+            "image:dip_tube_15"
+          ]
+        },
+        {
+          "section": [
+            "shake_excess_water_off",
+            "image:shake_excess"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
           ]
         }
       ],
@@ -7056,9 +7083,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -7167,9 +7194,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -7324,9 +7351,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [
@@ -7495,9 +7522,9 @@
         },
         {
           "section": [
-            "place_strip_in_black_area"
-          ],
-          "image": "instruction_place_strip"
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
           "section": [

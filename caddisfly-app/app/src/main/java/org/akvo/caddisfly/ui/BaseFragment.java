@@ -28,11 +28,10 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 
-
 public class BaseFragment extends Fragment {
 
     protected void setTitle(View view, String title) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
         if (toolbar != null) {
             try {
                 ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -46,11 +45,10 @@ public class BaseFragment extends Fragment {
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
 
-            TextView textTitle = (TextView) view.findViewById(R.id.textToolbarTitle);
+            TextView textTitle = view.findViewById(R.id.textToolbarTitle);
             if (textTitle != null) {
                 textTitle.setText(title);
             }
         }
     }
-
 }

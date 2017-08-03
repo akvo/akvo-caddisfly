@@ -177,7 +177,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.buttonCBT)
+    @OnClick(R.id.buttonCbt)
     public void navigateToCbt() {
         CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
         Intent intent = new Intent(getIntent());

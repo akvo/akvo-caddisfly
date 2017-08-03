@@ -220,6 +220,6 @@
     <string name="test_instructions">Test Instructions</string>
 
     <string name="cbt">Ecoli - Aquagenx CBT</string>
-    <string name="setCompartmentColors">Site compartment colors</string>
+    <string name="setCompartmentColors">Set compartment colors</string>
 
 </resources>
