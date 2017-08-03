@@ -195,7 +195,6 @@
     <string name="thisVersionHasExpired">This version of the app has expired.</string>
     <string name="uninstallAndInstallFromStore">Please uninstall and then install the latest version from Play Store.</string>
 
-    <string name="ble_not_supported">BLE is not supported</string>
     <string name="connect">Connect</string>
     <string name="connected">Connected to photometer</string>
     <string name="disconnected">Disconnected</string>
