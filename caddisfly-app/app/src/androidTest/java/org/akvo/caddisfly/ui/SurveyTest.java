@@ -23,6 +23,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
@@ -95,6 +96,7 @@ public class SurveyTest {
     }
 
     @Test
+    @RequiresDevice
     public void testChangeTestType() {
 
         onView(withText(R.string.calibrate)).perform(click());
@@ -117,6 +119,7 @@ public class SurveyTest {
     }
 
     @Test
+    @RequiresDevice
     public void testStartASurvey() {
 
         saveCalibration("TestValid");

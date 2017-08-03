@@ -109,7 +109,8 @@ public final class TestHelper {
         addString("electricalConductivity", "Water - Electrical Conductivity", res.getString(R.string.electricalConductivity));
         addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unnamedDataPoint));
         addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));
-        addString(TestConstant.USE_EXTERNAL_SOURCE, "Go to test", res.getString(R.string.goToText));
+        addString(TestConstant.USE_EXTERNAL_SOURCE, "Use External Source", res.getString(R.string.useExternalSource));
+        addString(TestConstant.GO_TO_TEST, "Go to test", res.getString(R.string.goToText));
         addString("next", "Next", res.getString(R.string.next));
 
         // Restore device-specific locale
@@ -182,10 +183,14 @@ public final class TestHelper {
     }
 
     public static void clickExternalSourceButton(int index) {
+        clickExternalSourceButton(index, TestConstant.GO_TO_TEST);
+    }
 
-        findButtonInScrollable(currentHashMap.get(TestConstant.USE_EXTERNAL_SOURCE));
+    public static void clickExternalSourceButton(int index, String buttonName) {
 
-        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get(TestConstant.USE_EXTERNAL_SOURCE)));
+        findButtonInScrollable(currentHashMap.get(buttonName));
+
+        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get(buttonName)));
         buttons.get(index).click();
 
         // New Android OS seems to popup a button for external app

@@ -26,6 +26,7 @@ import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
@@ -67,8 +68,8 @@ import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.saveCalibration;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
-import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.object.HasToString.hasToString;
 
 @SuppressWarnings("PMD.NcssMethodCount")
 @RunWith(AndroidJUnit4.class)
@@ -101,6 +102,7 @@ public class NavigationTest {
     }
 
     @Test
+    @RequiresDevice
     public void testNavigateAll() {
 
         saveCalibration("TestInvalid");
@@ -233,42 +235,42 @@ public class NavigationTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
-
-        try {
-            onView(withText(R.string.incorrectCalibrationCanAffect)).check(matches(isDisplayed()));
-            //Calibrate EC Warning
-            takeScreenshot();
-
-            onView(withText(R.string.cancel)).perform(click());
-
-            onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
-
-            onView(withText(R.string.warning)).check(matches(isDisplayed()));
-
-            onView(withText(R.string.calibrate)).perform(click());
-
-            //Calibrate EC
-            takeScreenshot();
-
-            onView(withId(R.id.buttonStartCalibrate)).perform(click());
-
-            //EC not found dialog
-            takeScreenshot();
-
-            onView(withId(android.R.id.button1)).perform(click());
-
-        } catch (Exception ex) {
-            String message = String.format("%s\r\n\r\n%s", mActivityRule.getActivity().getString(R.string.phoneDoesNotSupport),
-                    mActivityRule.getActivity().getString(R.string.pleaseContactSupport));
-
-            onView(withText(message)).check(matches(isDisplayed()));
-
-            //Feature not supported
-            takeScreenshot();
-
-            onView(withText(R.string.ok)).perform(click());
-        }
+//        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+//
+//        try {
+//            onView(withText(R.string.incorrectCalibrationCanAffect)).check(matches(isDisplayed()));
+//            //Calibrate EC Warning
+//            takeScreenshot();
+//
+//            onView(withText(R.string.cancel)).perform(click());
+//
+//            onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+//
+//            onView(withText(R.string.warning)).check(matches(isDisplayed()));
+//
+//            onView(withText(R.string.calibrate)).perform(click());
+//
+//            //Calibrate EC
+//            takeScreenshot();
+//
+//            onView(withId(R.id.buttonStartCalibrate)).perform(click());
+//
+//            //EC not found dialog
+//            takeScreenshot();
+//
+//            onView(withId(android.R.id.button1)).perform(click());
+//
+//        } catch (Exception ex) {
+//            String message = String.format("%s\r\n\r\n%s", mActivityRule.getActivity().getString(R.string.phoneDoesNotSupport),
+//                    mActivityRule.getActivity().getString(R.string.pleaseContactSupport));
+//
+//            onView(withText(message)).check(matches(isDisplayed()));
+//
+//            //Feature not supported
+//            takeScreenshot();
+//
+//            onView(withText(R.string.ok)).perform(click());
+//        }
 
         goToMainScreen();
 
@@ -309,6 +311,8 @@ public class NavigationTest {
 
         clickExternalSourceButton(TestConstant.NEXT);
 
+        clickExternalSourceButton(TestConstant.NEXT);
+
         clickExternalSourceButton(0);
 
         //Connect EC Sensor Screen
@@ -316,13 +320,19 @@ public class NavigationTest {
 
         mDevice.pressBack();
 
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
         // SEC
-        clickExternalSourceButton(1);
+        clickExternalSourceButton(0, TestConstant.USE_EXTERNAL_SOURCE);
 
         mDevice.pressBack();
 
         // Soil Moisture
-        clickExternalSourceButton(2);
+        clickExternalSourceButton(0);
 
         mDevice.pressBack();
 
@@ -333,6 +343,21 @@ public class NavigationTest {
         clickExternalSourceButton(TestConstant.NEXT);
 
         //Phosphate
+        clickExternalSourceButton(0, TestConstant.USE_EXTERNAL_SOURCE);
+
+        mDevice.pressBack();
+
+        mDevice.swipe(100, 300, 400, 300, 5);
+        mDevice.waitForIdle();
+        mDevice.swipe(100, 300, 400, 300, 5);
+        mDevice.waitForIdle();
+        mDevice.swipe(100, 300, 400, 300, 5);
+        mDevice.waitForIdle();
+        mDevice.swipe(100, 300, 400, 300, 5);
+        mDevice.waitForIdle();
+        mDevice.swipe(100, 300, 400, 300, 5);
+        mDevice.waitForIdle();
+
         clickExternalSourceButton(0);
 
         onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));

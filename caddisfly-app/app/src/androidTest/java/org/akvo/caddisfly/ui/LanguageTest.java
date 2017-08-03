@@ -138,9 +138,15 @@ public class LanguageTest {
 
         onView(withText(currentHashMap.get("survey"))).perform(click());
 
+        SystemClock.sleep(2000);
+
         mDevice.pressBack();
 
+        SystemClock.sleep(2000);
+
         onView(withText(currentHashMap.get("sensors"))).perform(click());
+
+        mDevice.waitForIdle();
 
         Espresso.pressBack();
 
