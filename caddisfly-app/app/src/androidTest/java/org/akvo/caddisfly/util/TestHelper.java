@@ -109,9 +109,9 @@ public final class TestHelper {
         addString("electricalConductivity", "Water - Electrical Conductivity", res.getString(R.string.electricalConductivity));
         addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unnamedDataPoint));
         addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));
-        addString(TestConstant.USE_EXTERNAL_SOURCE, "Use External Source", res.getString(R.string.useExternalSource));
-        addString(TestConstant.GO_TO_TEST, "Go to test", res.getString(R.string.goToText));
-        addString("next", "Next", res.getString(R.string.next));
+        addString(TestConstant.USE_EXTERNAL_SOURCE, "USE EXTERNAL SOURCE", res.getString(R.string.useExternalSource));
+        addString(TestConstant.GO_TO_TEST, "GO TO TEST", res.getString(R.string.goToText));
+        addString("next", "NEXT", res.getString(R.string.next));
 
         // Restore device-specific locale
         new Resources(assets, metrics, currentResources.getConfiguration());

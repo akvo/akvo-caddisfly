@@ -35,6 +35,7 @@ import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -85,17 +86,6 @@ public class MiscTest {
                 mDevice.pressBack();
             }
         }
-    }
-
-    public static boolean isEmulator() {
-        return Build.FINGERPRINT.startsWith("generic")
-                || Build.FINGERPRINT.startsWith("unknown")
-                || Build.MODEL.contains("google_sdk")
-                || Build.MODEL.contains("Emulator")
-                || Build.MODEL.contains("Android SDK built for x86")
-                || Build.MANUFACTURER.contains("Genymotion")
-                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-                || "google_sdk".equals(Build.PRODUCT);
     }
 
     @Before
@@ -335,7 +325,7 @@ public class MiscTest {
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        if (isEmulator()) {
+        if (TestUtil.isEmulator()) {
             onView(withText(R.string.errorCameraFlashRequired)).perform(click());
         }
     }

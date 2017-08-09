@@ -235,8 +235,9 @@ public class ECTest {
         clickExternalSourceButton("next");
         clickExternalSourceButton("next");
         clickExternalSourceButton("next");
+        clickExternalSourceButton("next");
+        clickExternalSourceButton("next");
 
-        clickExternalSourceButton("useExternalSource");
         clickExternalSourceButton("useExternalSource");
 
         SystemClock.sleep(6000);
