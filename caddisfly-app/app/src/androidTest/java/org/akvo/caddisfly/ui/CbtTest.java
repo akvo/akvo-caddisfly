@@ -25,11 +25,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.action.GeneralClickAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -40,6 +36,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -104,27 +101,6 @@ public class CbtTest {
         };
     }
 
-    public static ViewAction clickPercent(final float pctX, final float pctY) {
-        return new GeneralClickAction(
-                Tap.SINGLE,
-                view -> {
-
-                    final int[] screenPos = new int[2];
-                    view.getLocationOnScreen(screenPos);
-                    int w = view.getWidth();
-                    int h = view.getHeight();
-
-                    float x = w * pctX;
-                    float y = h * pctY;
-
-                    final float screenX = screenPos[0] + x;
-                    final float screenY = screenPos[1] + y;
-
-                    return new float[]{screenX, screenY};
-                },
-                Press.FINGER);
-    }
-
     @Before
     public void stubCameraIntent() {
         Instrumentation.ActivityResult result = createImageCaptureStub();
@@ -163,15 +139,15 @@ public class CbtTest {
         ViewInteraction customShapeButton = onView(
                 allOf(withId(R.id.compartments),
                         isDisplayed()));
-        customShapeButton.perform(clickPercent(0.1f, 0.5f));
+        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
 
-        customShapeButton.perform(clickPercent(0.3f, 0.5f));
+        customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f));
 
-        customShapeButton.perform(clickPercent(0.5f, 0.5f));
+        customShapeButton.perform(TestUtil.clickPercent(0.5f, 0.5f));
 
-        customShapeButton.perform(clickPercent(0.7f, 0.1f));
+        customShapeButton.perform(TestUtil.clickPercent(0.7f, 0.1f));
 
-        customShapeButton.perform(clickPercent(0.9f, 0.1f));
+        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.buttonNext), withText("Next"),

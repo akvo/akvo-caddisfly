@@ -22,6 +22,9 @@ package org.akvo.caddisfly.util;
 import android.app.Activity;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.action.GeneralClickAction;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Tap;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
 import android.support.test.uiautomator.UiObject;
@@ -154,5 +157,26 @@ public final class TestUtil {
             return false;
         }
         return true;
+    }
+
+    public static ViewAction clickPercent(final float pctX, final float pctY) {
+        return new GeneralClickAction(
+                Tap.SINGLE,
+                view -> {
+
+                    final int[] screenPos = new int[2];
+                    view.getLocationOnScreen(screenPos);
+                    int w = view.getWidth();
+                    int h = view.getHeight();
+
+                    float x = w * pctX;
+                    float y = h * pctY;
+
+                    final float screenX = screenPos[0] + x;
+                    final float screenY = screenPos[1] + y;
+
+                    return new float[]{screenX, screenY};
+                },
+                Press.FINGER);
     }
 }
