@@ -44,9 +44,9 @@ public class SelectDilutionActivity extends BaseActivity {
 
         setTitle(R.string.dilution);
 
-        Button noDilutionButton = (Button) findViewById(R.id.buttonNoDilution);
-        Button percentButton1 = (Button) findViewById(R.id.buttonDilution1);
-        Button percentButton2 = (Button) findViewById(R.id.buttonDilution2);
+        Button noDilutionButton = findViewById(R.id.buttonNoDilution);
+        Button percentButton1 = findViewById(R.id.buttonDilution1);
+        Button percentButton2 = findViewById(R.id.buttonDilution2);
 
         //todo: remove hardcoding of dilution times
         percentButton1.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 2));

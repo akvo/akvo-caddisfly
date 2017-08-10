@@ -216,7 +216,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         mCamera = cameraPreview.getCamera();
 
-        previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
+        previewLayout = findViewById(R.id.camera_preview);
 
         if (mCamera == null) {
             Toast.makeText(this.getApplicationContext(), "Could not instantiate the camera",
@@ -629,7 +629,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
                         snackbar.setActionTextColor(typedValue.data);
                         View snackView = snackbar.getView();
-                        TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                        TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
                         textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
                         textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
                         textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);

@@ -573,12 +573,12 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
             final ViewGroup nullParent = null;
             LinearLayout itemResult = (LinearLayout) inflater.inflate(R.layout.item_result, nullParent, false);
 
-            TextView textTitle = (TextView) itemResult.findViewById(R.id.text_title);
+            TextView textTitle = itemResult.findViewById(R.id.text_title);
             textTitle.setText(patchDescription);
 
-            ImageView imageResult = (ImageView) itemResult.findViewById(R.id.image_result);
+            ImageView imageResult = itemResult.findViewById(R.id.image_result);
 
-            TextView textResult = (TextView) itemResult.findViewById(R.id.text_result);
+            TextView textResult = itemResult.findViewById(R.id.text_result);
 
             if (stripBitmap != null) {
                 imageResult.setImageBitmap(stripBitmap);
@@ -586,7 +586,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
                 if (!invalid) {
 
                     if (AppPreferences.isDiagnosticMode()) {
-                        TextView textColor = (TextView) itemResult.findViewById(R.id.text_color);
+                        TextView textColor = itemResult.findViewById(R.id.text_color);
                         double[] colorValues = colorDetected.getLab().val;
                         double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR,
                                 colorValues[1] - 128, colorValues[2] - 128};

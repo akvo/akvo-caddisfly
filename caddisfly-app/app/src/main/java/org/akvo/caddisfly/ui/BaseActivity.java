@@ -89,7 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             try {
                 setSupportActionBar(toolbar);
@@ -115,7 +115,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void setTitle(CharSequence title) {
-        TextView textTitle = (TextView) findViewById(R.id.textToolbarTitle);
+        TextView textTitle = findViewById(R.id.textToolbarTitle);
         if (textTitle != null && title != null) {
             mTitle = title.toString();
             textTitle.setText(title);
@@ -124,7 +124,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public void setTitle(int titleId) {
-        TextView textTitle = (TextView) findViewById(R.id.textToolbarTitle);
+        TextView textTitle = findViewById(R.id.textToolbarTitle);
         if (textTitle != null && titleId != 0) {
             mTitle = getString(titleId);
             textTitle.setText(titleId);
@@ -144,7 +144,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.diagnostic_status));
             }
-            LinearLayout layoutTitle = (LinearLayout) findViewById(R.id.layoutTitleBar);
+            LinearLayout layoutTitle = findViewById(R.id.layoutTitleBar);
             if (layoutTitle != null) {
                 layoutTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.diagnostic));
             }
@@ -159,7 +159,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
             }
 
-            LinearLayout layoutTitle = (LinearLayout) findViewById(R.id.layoutTitleBar);
+            LinearLayout layoutTitle = findViewById(R.id.layoutTitleBar);
             if (layoutTitle != null) {
                 layoutTitle.setBackgroundColor(color);
             }

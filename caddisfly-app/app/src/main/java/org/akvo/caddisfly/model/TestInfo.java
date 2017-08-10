@@ -176,7 +176,7 @@ public class TestInfo implements Parcelable {
         this.requiresCalibration = false;
     }
 
-    protected TestInfo(Parcel in) {
+    private TestInfo(Parcel in) {
         name = in.readString();
         uuid = in.readString();
         unit = in.readString();

@@ -88,7 +88,7 @@ public class ResultDialogFragment extends DialogFragment {
 
         //display the title
         ((TextView) view.findViewById(R.id.textTitle)).setText(getArguments().getString("title", ""));
-        LinearLayout dilutionLayout = (LinearLayout) view.findViewById(R.id.dilutionLayout);
+        LinearLayout dilutionLayout = view.findViewById(R.id.dilutionLayout);
 
         String result = getArguments().getString(SensorConstants.RESULT);
 
@@ -97,7 +97,7 @@ public class ResultDialogFragment extends DialogFragment {
         if (message != null && !message.isEmpty()) {
             dilutionLayout.setVisibility(View.VISIBLE);
 
-            TextView textMessage1 = (TextView) view.findViewById(R.id.textMessage1);
+            TextView textMessage1 = view.findViewById(R.id.textMessage1);
 
             //final String title = getArguments().getString("title");
             textMessage1.setText(getString(R.string.highLevelsFound));
@@ -116,7 +116,7 @@ public class ResultDialogFragment extends DialogFragment {
 //                String.format(Locale.getDefault(), "%.2f", result));
 
         //display dilution information
-        TextView textDilution = (TextView) view.findViewById(R.id.textDilution);
+        TextView textDilution = view.findViewById(R.id.textDilution);
         int dilutionLevel = getArguments().getInt("dilution", -1);
 
         textDilution.setVisibility(View.VISIBLE);

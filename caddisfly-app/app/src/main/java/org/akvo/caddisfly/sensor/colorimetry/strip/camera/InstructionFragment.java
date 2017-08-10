@@ -93,9 +93,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
         buttonStart.setEnabled(false);
         buttonStart.setAlpha(BUTTON_START_ALPHA);
-        LinearLayout linearLayout = (LinearLayout) rootView.findViewById(R.id.layout_information);
+        LinearLayout linearLayout = rootView.findViewById(R.id.layout_information);
 
-        TextView textTitle = (TextView) rootView.findViewById(R.id.textToolbarTitle);
+        TextView textTitle = rootView.findViewById(R.id.textToolbarTitle);
         if (textTitle != null) {
             textTitle.setText(R.string.instructions);
         }

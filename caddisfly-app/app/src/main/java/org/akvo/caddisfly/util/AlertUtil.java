@@ -214,7 +214,7 @@ public final class AlertUtil {
 
         builder.setMessage(message);
 
-        ImageView image = (ImageView) alertView.findViewById(R.id.imageSample);
+        ImageView image = alertView.findViewById(R.id.imageSample);
         image.setImageBitmap(bitmap);
 
         if (positiveListener != null) {

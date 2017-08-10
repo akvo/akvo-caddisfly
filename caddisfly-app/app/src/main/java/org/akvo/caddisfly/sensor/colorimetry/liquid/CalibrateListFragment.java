@@ -99,7 +99,7 @@ public class CalibrateListFragment extends ListFragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_calibrate_list, container, false);
-        textCalibrationError = (TextView) view.findViewById(R.id.textCalibrationError);
+        textCalibrationError = view.findViewById(R.id.textCalibrationError);
         return view;
 
     }

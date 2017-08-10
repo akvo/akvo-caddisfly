@@ -72,7 +72,7 @@ public class BluetoothResultFragment extends Fragment {
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        Button buttonInstructions = (Button) view.findViewById(R.id.button_instructions);
+        Button buttonInstructions = view.findViewById(R.id.button_instructions);
         buttonInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,27 +86,27 @@ public class BluetoothResultFragment extends Fragment {
             buttonInstructions.setVisibility(View.GONE);
         }
 
-        layoutResult1 = (LinearLayout) view.findViewById(R.id.layoutResult1);
-        textResult1 = (TextView) view.findViewById(R.id.textResult1);
-        textUnit1 = (TextView) view.findViewById(R.id.textUnit1);
-        textName1 = (TextView) view.findViewById(R.id.textName1);
+        layoutResult1 = view.findViewById(R.id.layoutResult1);
+        textResult1 = view.findViewById(R.id.textResult1);
+        textUnit1 = view.findViewById(R.id.textUnit1);
+        textName1 = view.findViewById(R.id.textName1);
 
-        layoutResult2 = (LinearLayout) view.findViewById(R.id.layoutResult2);
-        textResult2 = (TextView) view.findViewById(R.id.textResult2);
-        textUnit2 = (TextView) view.findViewById(R.id.textUnit2);
-        textName2 = (TextView) view.findViewById(R.id.textName2);
+        layoutResult2 = view.findViewById(R.id.layoutResult2);
+        textResult2 = view.findViewById(R.id.textResult2);
+        textUnit2 = view.findViewById(R.id.textUnit2);
+        textName2 = view.findViewById(R.id.textName2);
 
-        layoutResult3 = (LinearLayout) view.findViewById(R.id.layoutResult3);
-        textResult3 = (TextView) view.findViewById(R.id.textResult3);
-        textUnit3 = (TextView) view.findViewById(R.id.textUnit3);
-        textName3 = (TextView) view.findViewById(R.id.textName3);
+        layoutResult3 = view.findViewById(R.id.layoutResult3);
+        textResult3 = view.findViewById(R.id.textResult3);
+        textUnit3 = view.findViewById(R.id.textUnit3);
+        textName3 = view.findViewById(R.id.textName3);
 
-        TextView textPerformTest = (TextView) view.findViewById(R.id.textPerformTest);
+        TextView textPerformTest = view.findViewById(R.id.textPerformTest);
 
-        layoutWaiting = (LinearLayout) view.findViewById(R.id.layoutWaiting);
-        layoutResult = (LinearLayout) view.findViewById(R.id.layoutResult);
+        layoutWaiting = view.findViewById(R.id.layoutWaiting);
+        layoutResult = view.findViewById(R.id.layoutResult);
 
-        mAcceptButton = (Button) view.findViewById(R.id.button_accept_result);
+        mAcceptButton = view.findViewById(R.id.button_accept_result);
 
         mAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +176,7 @@ public class BluetoothResultFragment extends Fragment {
             AlertDialog dialog;
             AlertDialog.Builder builder;
             final TextView showText = new TextView(getActivity());
-            showText.setText(testInfo.getName() + " = " + data);
+            showText.setText(String.format("%s = %s", testInfo.getName(), data));
 
             showText.setPadding(50, 20, 40, 30);
 

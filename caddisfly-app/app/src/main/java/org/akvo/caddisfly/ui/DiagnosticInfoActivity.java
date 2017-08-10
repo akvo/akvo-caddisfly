@@ -38,7 +38,7 @@ public class DiagnosticInfoActivity extends BaseActivity {
 
         setTitle("Diagnostic Information");
 
-        ListView mListView = (ListView) findViewById(R.id.listInformation);
+        ListView mListView = findViewById(R.id.listInformation);
 
         ArrayList<String> infoList = new ArrayList<>();
 

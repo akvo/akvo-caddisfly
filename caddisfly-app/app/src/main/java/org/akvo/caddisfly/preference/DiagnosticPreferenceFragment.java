@@ -249,7 +249,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
                 snackbar.setActionTextColor(typedValue.data);
                 View snackView = snackbar.getView();
-                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
                 textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
                 textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
                 textView.setTextColor(Color.WHITE);
@@ -284,7 +284,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        list = (ListView) view.findViewById(android.R.id.list);
+        list = view.findViewById(android.R.id.list);
     }
 
     @Override

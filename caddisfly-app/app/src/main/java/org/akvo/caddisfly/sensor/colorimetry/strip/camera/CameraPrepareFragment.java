@@ -93,8 +93,8 @@ public class CameraPrepareFragment extends CameraSharedFragmentBase {
 
         ButterKnife.bind(this, rootView);
 
-        PercentageMeterView exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
-        PercentageMeterView contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
+        PercentageMeterView exposureView = rootView.findViewById(R.id.quality_brightness);
+        PercentageMeterView contrastView = rootView.findViewById(R.id.quality_shadows);
 
         wrExposureView = new WeakReference<>(exposureView);
         wrContrastView = new WeakReference<>(contrastView);

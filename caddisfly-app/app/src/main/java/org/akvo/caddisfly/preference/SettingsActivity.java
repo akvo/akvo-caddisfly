@@ -102,9 +102,9 @@ public class SettingsActivity extends BaseActivity
                     .commit();
         }
 
-        mScrollView = (ScrollView) findViewById(R.id.scrollViewSettings);
+        mScrollView = findViewById(R.id.scrollViewSettings);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         try {
             setSupportActionBar(toolbar);
         } catch (Exception ignored) {

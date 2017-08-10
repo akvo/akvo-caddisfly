@@ -84,7 +84,7 @@ public class DiagnosticResultDialog extends DialogFragment {
 
         final View view = inflater.inflate(R.layout.dialog_diagnostic_result, container, false);
 
-        ListView listResults = (ListView) view.findViewById(R.id.listResults);
+        ListView listResults = view.findViewById(R.id.listResults);
         listResults.setAdapter(new ResultListAdapter());
 
         boolean allowRetry = getArguments().getBoolean("retry");
@@ -92,9 +92,9 @@ public class DiagnosticResultDialog extends DialogFragment {
 
         mIsCalibration = getArguments().getBoolean("calibration");
 
-        Button buttonCancel = (Button) view.findViewById(R.id.buttonCancel);
-        Button buttonRetry = (Button) view.findViewById(R.id.buttonRetry);
-        Button buttonOk = (Button) view.findViewById(R.id.buttonOk);
+        Button buttonCancel = view.findViewById(R.id.buttonCancel);
+        Button buttonRetry = view.findViewById(R.id.buttonRetry);
+        Button buttonOk = view.findViewById(R.id.buttonOk);
 
         //if allowRetry is true then this is an error show retry button
         if (allowRetry) {
@@ -171,9 +171,9 @@ public class DiagnosticResultDialog extends DialogFragment {
             View rowView = inflater.inflate(R.layout.row_info, parent, false);
 
             if (rowView != null) {
-                TextView textRgb = (TextView) rowView.findViewById(R.id.textRgb);
-                ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
-                TextView textSwatch = (TextView) rowView.findViewById(R.id.textSwatch);
+                TextView textRgb = rowView.findViewById(R.id.textRgb);
+                ImageView imageView = rowView.findViewById(R.id.imageView);
+                TextView textSwatch = rowView.findViewById(R.id.textSwatch);
 
                 Result result = mResults.get(position);
 
@@ -183,7 +183,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                 textSwatch.setBackgroundColor(color);
 
                 if (mIsCalibration) {
-                    TableLayout colorModelHeading = (TableLayout) rowView.findViewById(R.id.tableHeading);
+                    TableLayout colorModelHeading = rowView.findViewById(R.id.tableHeading);
                     colorModelHeading.setVisibility(View.GONE);
                 }
 
@@ -194,7 +194,7 @@ public class DiagnosticResultDialog extends DialogFragment {
 
                 textRgb.setText(String.format(Locale.getDefault(), "%d  %d  %d", r, g, b));
 
-                ListView listResults = (ListView) rowView.findViewById(R.id.listResults);
+                ListView listResults = rowView.findViewById(R.id.listResults);
 
                 if (mIsCalibration) {
                     // Hide the results table and show only the color
@@ -251,7 +251,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                     break;
             }
 
-            TextView textCalibrationSteps = (TextView) rowView.findViewById(R.id.textCalibrationSteps);
+            TextView textCalibrationSteps = rowView.findViewById(R.id.textCalibrationSteps);
             textCalibrationSteps.setText(String.format("%s step", calibrationSteps));
 
             TextView textResult = null;
@@ -261,7 +261,7 @@ public class DiagnosticResultDialog extends DialogFragment {
 
                     switch (resultDetail.getColorModel()) {
                         case LAB:
-                            textResult = (TextView) rowView.findViewById(R.id.textLabResult);
+                            textResult = rowView.findViewById(R.id.textLabResult);
                             if (resultDetail.getResult() > -1) {
                                 textResult.setText(String.format(Locale.getDefault(), "%.2f", resultDetail.getResult()));
                             } else {
@@ -272,7 +272,7 @@ public class DiagnosticResultDialog extends DialogFragment {
                             }
                             break;
                         case RGB:
-                            textResult = (TextView) rowView.findViewById(R.id.textRgbResult);
+                            textResult = rowView.findViewById(R.id.textRgbResult);
                             if (resultDetail.getResult() > -1) {
                                 textResult.setText(String.format(Locale.getDefault(), "%.2f", resultDetail.getResult()));
                             } else {
