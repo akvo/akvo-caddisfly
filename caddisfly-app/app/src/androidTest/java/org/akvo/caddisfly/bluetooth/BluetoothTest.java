@@ -34,6 +34,7 @@ import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -48,6 +49,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -57,6 +59,7 @@ import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -119,6 +122,13 @@ public class BluetoothTest {
                                 1)))
                 .atPosition(25);
         linearLayout.perform(click());
+
+        if (TestUtil.isEmulator()) {
+            onView(withText("Bluetooth not supported."))
+                    .inRoot(withDecorView(not(is(mActivityTestRule.getActivity().getWindow()
+                            .getDecorView())))).check(matches(isDisplayed()));
+            return;
+        }
 
         try {
             Thread.sleep(7000);
