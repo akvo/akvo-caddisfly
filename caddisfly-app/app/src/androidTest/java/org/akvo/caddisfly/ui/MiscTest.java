@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
@@ -175,15 +174,13 @@ public class MiscTest {
         onView(withText(R.string.calibrate)).perform(click());
 
         final Activity typeListActivity = getActivityInstance();
-        typeListActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = TypeListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
-                    method.setAccessible(true);
-                    method.invoke(typeListActivity);
-                } catch (Exception e) {
-                    assertEquals(e.getMessage(), 0, 1);
-                }
+        typeListActivity.runOnUiThread(() -> {
+            try {
+                Method method = TypeListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
+                method.setAccessible(true);
+                method.invoke(typeListActivity);
+            } catch (Exception e) {
+                assertEquals(e.getMessage(), 0, 1);
             }
         });
 
@@ -212,15 +209,13 @@ public class MiscTest {
         //onView(withId(R.id.buttonStart)).perform(click());
 
         final Activity activity = getActivityInstance();
-        activity.runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = ColorimetryLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
-                    method.setAccessible(true);
-                    method.invoke(activity);
-                } catch (Exception e) {
-                    assertEquals(e.getMessage(), 0, 1);
-                }
+        activity.runOnUiThread(() -> {
+            try {
+                Method method = ColorimetryLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
+                method.setAccessible(true);
+                method.invoke(activity);
+            } catch (Exception e) {
+                assertEquals(e.getMessage(), 0, 1);
             }
         });
 
