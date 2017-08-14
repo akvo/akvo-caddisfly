@@ -37,6 +37,8 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.util.TestConstant;
+import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -48,8 +50,10 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -62,6 +66,8 @@ import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -136,6 +142,11 @@ public class ECTest {
         relativeLayout.perform(click());
 
         SystemClock.sleep(7000);
+
+        if (TestUtil.isEmulator()){
+
+            return;
+        }
 
         onView(withText(R.string.incorrectDevice)).check(matches(isDisplayed()));
 
@@ -232,27 +243,34 @@ public class ECTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton("next");
-        clickExternalSourceButton("next");
-        clickExternalSourceButton("next");
-        clickExternalSourceButton("next");
-        clickExternalSourceButton("next");
+        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstant.NEXT);
 
         clickExternalSourceButton("useExternalSource");
 
         SystemClock.sleep(6000);
 
-        onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity")));
+        onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor!")));
+        if (TestUtil.isEmulator()){
 
-        onView(allOf(withId(R.id.textSubtitle), withText("Sensor connected")));
+            mDevice.pressBack();
 
-        onView(allOf(withId(R.id.textUnit), withText("μS/cm")));
+            return;
+        }
 
-        onView(allOf(withId(R.id.textUnit2), withText("°Celsius")));
+        onView(allOf(withId(R.id.textToolbarTitle), withText("Sensor!"))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click());
+        onView(allOf(withId(R.id.textSubtitle), withText("Sensor connected"))).check(matches(isDisplayed()));
+
+        onView(allOf(withId(R.id.textUnit), withText("μS/cm"))).check(matches(isDisplayed()));
+
+        onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
+
+        onView(withId(R.id.buttonAcceptResult)).perform(click()).check(matches(isDisplayed()));
 
     }
 }

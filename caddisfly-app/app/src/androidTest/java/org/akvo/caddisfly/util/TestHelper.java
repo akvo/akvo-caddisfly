@@ -186,15 +186,19 @@ public final class TestHelper {
         clickExternalSourceButton(index, TestConstant.GO_TO_TEST);
     }
 
-    public static void clickExternalSourceButton(int index, String buttonName) {
+    public static void clickExternalSourceButton(int index, String buttonText) {
 
-        findButtonInScrollable(currentHashMap.get(buttonName));
+        buttonText = currentHashMap.get(buttonText).toUpperCase();
 
-        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get(buttonName)));
+        findButtonInScrollable(buttonText);
+
+        List<UiObject2> buttons = mDevice.findObjects(By.text(buttonText));
         buttons.get(index).click();
 
         // New Android OS seems to popup a button for external app
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && (buttonText.equals(TestConstant.USE_EXTERNAL_SOURCE)
+                || buttonText.equals(TestConstant.GO_TO_TEST))) {
             sleep(1000);
             mDevice.findObject(By.text("Akvo Caddisfly")).click();
             sleep(1000);
@@ -208,13 +212,16 @@ public final class TestHelper {
     public static void clickExternalSourceButton(String buttonText) {
         try {
 
+            buttonText = currentHashMap.get(buttonText).toUpperCase();
+
             findButtonInScrollable(buttonText);
 
-            mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
+            mDevice.findObject(new UiSelector().text(buttonText)).click();
 
             // New Android OS seems to popup a button for external app
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && buttonText.equals(TestConstant.USE_EXTERNAL_SOURCE)) {
+                    && (buttonText.equals(TestConstant.USE_EXTERNAL_SOURCE)
+                    || buttonText.equals(TestConstant.GO_TO_TEST))) {
                 sleep(1000);
                 mDevice.findObject(By.text("Akvo Caddisfly")).click();
                 sleep(1000);

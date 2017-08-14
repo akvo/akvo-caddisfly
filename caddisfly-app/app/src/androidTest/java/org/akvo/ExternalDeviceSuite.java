@@ -1,4 +1,4 @@
-package org.akvo.caddisfly;
+package org.akvo;
 
 import org.akvo.caddisfly.sensors.ECTest;
 import org.akvo.caddisfly.survey.SurveySensorTest;

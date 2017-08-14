@@ -37,6 +37,7 @@ import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestConstant;
+import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -57,6 +58,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -80,6 +82,8 @@ import static org.akvo.caddisfly.util.TestUtil.getText;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasToString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 
 @RunWith(AndroidJUnit4.class)
@@ -141,6 +145,14 @@ public class AnalysisTest {
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
+
+        if (TestUtil.isEmulator()){
+
+            onView(withText(R.string.errorCameraFlashRequired))
+                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
+                            .getDecorView())))).check(matches(isDisplayed()));
+            return;
+        }
 
         onView(withId(R.id.menuLoad)).perform(click());
 
@@ -308,6 +320,14 @@ public class AnalysisTest {
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
+
+        if (TestUtil.isEmulator()){
+
+            onView(withText(R.string.errorCameraFlashRequired))
+                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
+                            .getDecorView())))).check(matches(isDisplayed()));
+            return;
+        }
 
         onView(withId(R.id.menuLoad)).perform(click());
 

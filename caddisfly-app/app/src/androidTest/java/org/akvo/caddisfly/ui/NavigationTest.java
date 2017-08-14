@@ -34,6 +34,7 @@ import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.TestConstant;
+import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -51,6 +52,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -68,6 +70,8 @@ import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.saveCalibration;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
 import static org.hamcrest.object.HasToString.hasToString;
 
@@ -156,6 +160,14 @@ public class NavigationTest {
         sleep(4000);
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        if (TestUtil.isEmulator()){
+
+            onView(withText(R.string.errorCameraFlashRequired))
+                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
+                            .getDecorView())))).check(matches(isDisplayed()));
+            return;
+        }
 
         onView(withId(R.id.menuLoad)).perform(click());
 
