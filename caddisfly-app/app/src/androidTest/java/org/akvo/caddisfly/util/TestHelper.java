@@ -186,9 +186,13 @@ public final class TestHelper {
         clickExternalSourceButton(index, TestConstant.GO_TO_TEST);
     }
 
-    public static void clickExternalSourceButton(int index, String buttonText) {
+    public static void clickExternalSourceButton(int index, String text) {
 
-        buttonText = currentHashMap.get(buttonText).toUpperCase();
+        String buttonText = currentHashMap.get(text);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            buttonText = buttonText.toUpperCase();
+        }
 
         findButtonInScrollable(buttonText);
 
@@ -197,8 +201,8 @@ public final class TestHelper {
 
         // New Android OS seems to popup a button for external app
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && (buttonText.equals(TestConstant.USE_EXTERNAL_SOURCE)
-                || buttonText.equals(TestConstant.GO_TO_TEST))) {
+                && (text.equals(TestConstant.USE_EXTERNAL_SOURCE)
+                || text.equals(TestConstant.GO_TO_TEST))) {
             sleep(1000);
             mDevice.findObject(By.text("Akvo Caddisfly")).click();
             sleep(1000);
@@ -209,10 +213,14 @@ public final class TestHelper {
         sleep(4000);
     }
 
-    public static void clickExternalSourceButton(String buttonText) {
+    public static void clickExternalSourceButton(String text) {
         try {
 
-            buttonText = currentHashMap.get(buttonText).toUpperCase();
+            String buttonText = currentHashMap.get(text);
+
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                buttonText = buttonText.toUpperCase();
+            }
 
             findButtonInScrollable(buttonText);
 
@@ -220,8 +228,8 @@ public final class TestHelper {
 
             // New Android OS seems to popup a button for external app
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && (buttonText.equals(TestConstant.USE_EXTERNAL_SOURCE)
-                    || buttonText.equals(TestConstant.GO_TO_TEST))) {
+                    && (text.equals(TestConstant.USE_EXTERNAL_SOURCE)
+                    || text.equals(TestConstant.GO_TO_TEST))) {
                 sleep(1000);
                 mDevice.findObject(By.text("Akvo Caddisfly")).click();
                 sleep(1000);

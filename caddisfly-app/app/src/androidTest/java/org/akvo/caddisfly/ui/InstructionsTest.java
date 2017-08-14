@@ -129,7 +129,7 @@ public class InstructionsTest {
 //        onView(withText(R.string.swirl_and_mix))
 //                .check(matches(isDisplayed()));
 
-        //onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()));
+        onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()));
 
         onView(withId(R.id.pager))
                 .perform(swipeLeft());
