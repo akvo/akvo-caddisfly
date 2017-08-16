@@ -33,10 +33,15 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import org.akvo.caddisfly.R;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import java.util.Collection;
 
@@ -44,8 +49,12 @@ import timber.log.Timber;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.hamcrest.Matchers.allOf;
 
 /**
  * Utility functions for automated testing
@@ -192,12 +201,18 @@ public final class TestUtil {
     }
 
     public static void swipeLeft() {
-        mDevice.swipe(400, 300, 100, 300, 5);
+        mDevice.waitForIdle();
+        mDevice.swipe(500, 300, 50, 300, 4);
         mDevice.waitForIdle();
     }
 
     public static void swipeRight() {
-        mDevice.swipe(100, 300, 400, 300, 5);
+        mDevice.waitForIdle();
+        if (isEmulator()) {
+            mDevice.pressBack();
+        } else {
+            mDevice.swipe(50, 300, 500, 300, 4);
+        }
         mDevice.waitForIdle();
     }
 
@@ -220,6 +235,38 @@ public final class TestUtil {
     }
 
     public static void goBack() {
+        mDevice.waitForIdle();
         goBack(1);
+    }
+
+    public static void nextPage(int times) {
+        for (int i = 0; i < times; i++) {
+            nextPage();
+        }
+    }
+
+    private static Matcher<View> childAtPosition(
+            final Matcher<View> parentMatcher, final int position) {
+
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Child at position " + position + " in parent ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                ViewParent parent = view.getParent();
+                return parent instanceof ViewGroup && parentMatcher.matches(parent)
+                        && view.equals(((ViewGroup) parent).getChildAt(position));
+            }
+        };
+    }
+
+    public static void nextPage() {
+        onView(allOf(withId(R.id.image_pageRight),
+                isDisplayed())).perform(click());
+        mDevice.waitForIdle();
     }
 }

@@ -212,16 +212,7 @@ public class CbtInstructions {
 
         onView(withContentDescription("2")).check(matches(hasDrawable()));
 
-        ViewInteraction appCompatImageView2 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView2.perform(click());
+        TestUtil.nextPage();
 
         CheckTextInTable(TestHelper.getString(mActivityTestRule.getActivity(), R.string.medium_dissolves)
                 + " " + TestHelper.getString(mActivityTestRule.getActivity(), R.string.when_medium_dissolved));
@@ -243,13 +234,21 @@ public class CbtInstructions {
 
         onView(withContentDescription("4")).check(matches(hasDrawable()));
 
-        TestUtil.swipeLeft(3);
+        if (TestUtil.isEmulator()) {
+            TestUtil.nextPage(3);
+        } else {
+            TestUtil.swipeLeft(3);
+        }
 
         CheckTextInTable(R.string.let_incubate);
 
         onView(withContentDescription("7")).check(matches(hasDrawable()));
 
-        TestUtil.swipeLeft();
+        if (TestUtil.isEmulator()) {
+            TestUtil.nextPage();
+        } else {
+            TestUtil.swipeLeft();
+        }
 
         CheckTextInTable(R.string.take_photo_of_incubated);
 

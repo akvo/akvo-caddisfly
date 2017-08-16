@@ -124,9 +124,15 @@ public class StripTestNavigation {
                         isDisplayed()));
         appCompatImageView2.perform(click());
 
-        TestUtil.swipeLeft();
+        if (TestUtil.isEmulator()) {
+            TestUtil.nextPage();
+        } else {
+            TestUtil.swipeLeft();
+        }
 
+        TestUtil.sleep(200);
         TestUtil.goBack();
+        TestUtil.sleep(500);
 
         onView(withText(R.string.shake_excess_water)).check(matches(isDisplayed()));
 

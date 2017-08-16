@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
+import android.widget.ImageView;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -15,12 +16,12 @@ import org.hamcrest.TypeSafeMatcher;
 //https://medium.com/@felipegi91_89910/thanks-daniele-bottillo-b57caf823e34
 public class DrawableMatcher extends TypeSafeMatcher<View> {
 
-    static final int EMPTY = -1;
-    static final int ANY = -2;
+    //    private static final int EMPTY = -1;
+    private static final int ANY = -2;
     private final int expectedId;
     private String resourceName;
 
-    DrawableMatcher(int expectedId) {
+    private DrawableMatcher(int expectedId) {
         super(View.class);
         this.expectedId = expectedId;
     }
@@ -29,8 +30,8 @@ public class DrawableMatcher extends TypeSafeMatcher<View> {
         return new DrawableMatcher(DrawableMatcher.ANY);
     }
 
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = null;
+    private static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap;
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
             if (bitmapDrawable.getBitmap() != null) {
@@ -70,6 +71,20 @@ public class DrawableMatcher extends TypeSafeMatcher<View> {
             backgroundBitmap = drawableToBitmap(image.getBackground());
         }
 
+        if (clazz == ImageView.class) {
+            ImageView image = (ImageView) target;
+
+            if (expectedId == ANY) {
+                return image.getDrawable() != null;
+            }
+
+            if (expectedId < 0) {
+                return image.getBackground() == null;
+            }
+            resourceBitmap = drawableToBitmap(image.getDrawable());
+            backgroundBitmap = drawableToBitmap(image.getBackground());
+        }
+
         Resources resources = target.getContext().getResources();
         Drawable expectedDrawable = resources.getDrawable(expectedId);
         resourceName = resources.getResourceEntryName(expectedId);
@@ -84,13 +99,13 @@ public class DrawableMatcher extends TypeSafeMatcher<View> {
                 (backgroundBitmap != null && backgroundBitmap.sameAs(otherBitmap));
     }
 
-    private Bitmap getBitmap(Drawable drawable) {
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
-    }
+//    private Bitmap getBitmap(Drawable drawable) {
+//        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(bitmap);
+//        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+//        drawable.draw(canvas);
+//        return bitmap;
+//    }
 
     @Override
     public void describeTo(Description description) {
