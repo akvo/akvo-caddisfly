@@ -218,7 +218,7 @@
     <string name="to_select_test">Selecting the test</string>
     <string name="test_instructions">Test Instructions</string>
 
-    <string name="cbt">Ecoli - Aquagenx CBT</string>
+    <string name="cbt">E.coli - Aquagenx CBT</string>
     <string name="setCompartmentColors">Set compartment colors</string>
 
 </resources>

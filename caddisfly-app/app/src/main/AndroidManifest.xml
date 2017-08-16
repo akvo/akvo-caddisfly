@@ -146,6 +146,7 @@
         <!-- StripTest -->
         <activity
             android:name=".sensor.colorimetry.strip.ui.BrandInfoActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".sensor.instructions.InstructionActivity"

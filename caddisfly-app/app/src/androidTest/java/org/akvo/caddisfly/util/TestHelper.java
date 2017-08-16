@@ -25,6 +25,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.StringRes;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.uiautomator.By;
@@ -81,6 +82,18 @@ public final class TestHelper {
 
     private static void addCalibration(String key, String colors) {
         CALIBRATION_HASH_MAP.put(key, colors);
+    }
+
+    public static String getString(Activity activity, @StringRes int resourceId) {
+        Resources currentResources = activity.getResources();
+        AssetManager assets = currentResources.getAssets();
+        DisplayMetrics metrics = currentResources.getDisplayMetrics();
+        Configuration config = new Configuration(currentResources.getConfiguration());
+        config.locale = new Locale(mCurrentLanguage);
+        Resources res = new Resources(assets, metrics, config);
+
+        return res.getString(resourceId);
+
     }
 
     @SuppressWarnings("deprecation")
@@ -190,7 +203,7 @@ public final class TestHelper {
 
         String buttonText = currentHashMap.get(text);
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             buttonText = buttonText.toUpperCase();
         }
 
@@ -200,7 +213,7 @@ public final class TestHelper {
         buttons.get(index).click();
 
         // New Android OS seems to popup a button for external app
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.M
                 && (text.equals(TestConstant.USE_EXTERNAL_SOURCE)
                 || text.equals(TestConstant.GO_TO_TEST))) {
             sleep(1000);
@@ -218,7 +231,7 @@ public final class TestHelper {
 
             String buttonText = currentHashMap.get(text);
 
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 buttonText = buttonText.toUpperCase();
             }
 
@@ -227,7 +240,7 @@ public final class TestHelper {
             mDevice.findObject(new UiSelector().text(buttonText)).click();
 
             // New Android OS seems to popup a button for external app
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+            if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.M
                     && (text.equals(TestConstant.USE_EXTERNAL_SOURCE)
                     || text.equals(TestConstant.GO_TO_TEST))) {
                 sleep(1000);

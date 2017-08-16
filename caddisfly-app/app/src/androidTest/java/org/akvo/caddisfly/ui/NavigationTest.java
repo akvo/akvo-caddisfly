@@ -297,11 +297,7 @@ public class NavigationTest {
         //Dilution dialog
         takeScreenshot();
 
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
-        mDevice.pressBack();
+        TestUtil.goBack(5);
 
         mActivityRule.launchActivity(new Intent());
 
@@ -310,6 +306,8 @@ public class NavigationTest {
         gotoSurveyForm();
 
         clickExternalSourceButton(1);
+
+        onView(withText(R.string.fluoride)).check(matches(isDisplayed()));
 
 //        //Calibration incomplete
         takeScreenshot();
@@ -327,6 +325,10 @@ public class NavigationTest {
 
         clickExternalSourceButton(0);
 
+//        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+
         //Connect EC Sensor Screen
         takeScreenshot();
 
@@ -338,14 +340,16 @@ public class NavigationTest {
 
         clickExternalSourceButton(TestConstant.NEXT);
 
-        // SEC
         clickExternalSourceButton(0, TestConstant.USE_EXTERNAL_SOURCE);
 
+        onView(withText(R.string.electricalConductivity)).check(matches(isDisplayed()));
+
         mDevice.pressBack();
 
-        // Soil Moisture
         clickExternalSourceButton(0);
 
+        onView(withText(R.string.electricalConductivity)).check(matches(isDisplayed()));
+
         mDevice.pressBack();
 
         clickExternalSourceButton(TestConstant.NEXT);
@@ -354,23 +358,16 @@ public class NavigationTest {
 
         clickExternalSourceButton(TestConstant.NEXT);
 
-        //Phosphate
+        //Unknown test
         clickExternalSourceButton(0, TestConstant.USE_EXTERNAL_SOURCE);
 
+        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+
         mDevice.pressBack();
 
-        mDevice.swipe(100, 300, 400, 300, 5);
-        mDevice.waitForIdle();
-        mDevice.swipe(100, 300, 400, 300, 5);
-        mDevice.waitForIdle();
-        mDevice.swipe(100, 300, 400, 300, 5);
-        mDevice.waitForIdle();
-        mDevice.swipe(100, 300, 400, 300, 5);
-        mDevice.waitForIdle();
-        mDevice.swipe(100, 300, 400, 300, 5);
-        mDevice.waitForIdle();
+        TestUtil.swipeRight(5);
 
-        clickExternalSourceButton(0);
+        clickExternalSourceButton(0); //Iron
 
         onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
 

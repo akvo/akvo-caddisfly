@@ -92,8 +92,9 @@ public class BrandInfoActivity extends BaseActivity {
 
         mUuid = getIntent().getStringExtra(Constant.UUID);
 
+        StripTest stripTest = new StripTest();
+
         if (mUuid != null) {
-            StripTest stripTest = new StripTest();
 
             // Display the brand in title
             setTitle(stripTest.getBrand(mUuid).getName());
@@ -129,11 +130,11 @@ public class BrandInfoActivity extends BaseActivity {
                     }
                 }
             }
+        }
 
-            JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
-            if (instructions == null || instructions.length() == 0) {
-                buttonInstruction.setVisibility(View.INVISIBLE);
-            }
+        JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
+        if (instructions == null || instructions.length() == 0) {
+            buttonInstruction.setVisibility(View.INVISIBLE);
         }
     }
 

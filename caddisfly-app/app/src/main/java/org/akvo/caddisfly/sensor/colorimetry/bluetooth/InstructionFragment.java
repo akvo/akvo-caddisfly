@@ -146,7 +146,7 @@ public class InstructionFragment extends Fragment {
     }
 
     @OnClick(R.id.image_pageLeft)
-    void pageLeft() {
+    public void pageLeft() {
         mViewPager.setCurrentItem(Math.max(0, mViewPager.getCurrentItem() - 1));
     }
 
@@ -157,6 +157,10 @@ public class InstructionFragment extends Fragment {
 
     public void returnToFirstPage() {
         mViewPager.setCurrentItem(0, false);
+    }
+
+    public int getCurrentPage() {
+        return mViewPager.getCurrentItem();
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {

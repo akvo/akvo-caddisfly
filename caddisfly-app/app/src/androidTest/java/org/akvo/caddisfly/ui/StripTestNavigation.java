@@ -24,25 +24,32 @@ import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.UiDevice;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
+import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -52,6 +59,16 @@ public class StripTestNavigation {
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
+    @BeforeClass
+    public static void initialize() {
+        if (mDevice == null) {
+            mDevice = UiDevice.getInstance(getInstrumentation());
+
+            for (int i = 0; i < 5; i++) {
+                mDevice.pressBack();
+            }
+        }
+    }
     @SuppressWarnings("SameParameterValue")
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
@@ -87,6 +104,10 @@ public class StripTestNavigation {
                         isDisplayed()));
         linearLayout.perform(click());
 
+        onView(withId(R.id.imageBrandLabel)).check(matches(hasDrawable()));
+
+        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
+
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.button_instructions), withText("Instructions"), isDisplayed()));
         appCompatButton2.perform(click());
@@ -103,11 +124,11 @@ public class StripTestNavigation {
                         isDisplayed()));
         appCompatImageView2.perform(click());
 
-        ViewInteraction appCompatImageView3 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        withParent(withId(R.id.layout_footer)),
-                        isDisplayed()));
-        appCompatImageView3.perform(click());
+        TestUtil.swipeLeft();
+
+        TestUtil.goBack();
+
+        onView(withText(R.string.shake_excess_water)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -115,17 +136,25 @@ public class StripTestNavigation {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
+        onView(withId(R.id.imageBrandLabel)).check(matches(hasDrawable()));
+
+        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
+
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withContentDescription("Navigate up"),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton2.perform(click());
 
+        onView(withText(R.string.selectTest)).check(matches(isDisplayed()));
+
         ViewInteraction appCompatImageButton3 = onView(
                 allOf(withContentDescription("Navigate up"),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton3.perform(click());
+
+        onView(withText(R.string.stripTest)).check(matches(isDisplayed()));
 
     }
 }

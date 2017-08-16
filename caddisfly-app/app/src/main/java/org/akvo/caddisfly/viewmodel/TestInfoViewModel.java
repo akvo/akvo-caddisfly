@@ -64,8 +64,8 @@ public class TestInfoViewModel {
 
                 } else if (text.contains("image:")) {
 
-                    String image = ILLUSTRATION_PATH +
-                            text.substring(text.indexOf(":") + 1, text.length()) + ".png";
+                    String imageName = text.substring(text.indexOf(":") + 1, text.length());
+                    String image = ILLUSTRATION_PATH + imageName + ".png";
 
                     InputStream ims = null;
                     try {
@@ -96,6 +96,8 @@ public class TestInfoViewModel {
                         llp.setMargins(0, 0, 0, 20);
                         imageView.setLayoutParams(llp);
 
+                        imageView.setContentDescription(imageName);
+
                         linearLayout.addView(imageView);
                     }
 
@@ -118,9 +120,12 @@ public class TestInfoViewModel {
                     }
 
                     String[] sentences = (text + ". ").split("\\.\\s+");
-                    for (String sentence : sentences) {
-                        rowView.append(StringUtil.toInstruction(context, testInfo, sentence.trim()));
-                        rowView.append(new SpannableString(" "));
+
+                    for (int j = 0; j < sentences.length; j++) {
+                        if (j > 0) {
+                            rowView.append(new SpannableString(" "));
+                        }
+                        rowView.append(StringUtil.toInstruction(context, testInfo, sentences[j].trim()));
                     }
 
                     LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(

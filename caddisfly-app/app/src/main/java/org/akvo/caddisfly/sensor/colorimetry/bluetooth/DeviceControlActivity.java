@@ -141,7 +141,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
 
         setTitle("Connected");
 
-        TextView textSelectTest = (TextView) findViewById(R.id.textSelectTest);
+        TextView textSelectTest = findViewById(R.id.textSelectTest);
         textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
                 testInfo.getName())));
 
@@ -152,15 +152,15 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         mBluetoothResultFragment = new BluetoothResultFragment();
         mInstructionFragment = new InstructionFragment();
 
-        layoutInstructions = (RelativeLayout) findViewById(R.id.layoutInstructions);
-        layoutWaiting = (RelativeLayout) findViewById(R.id.layoutWaiting);
+        layoutInstructions = findViewById(R.id.layoutInstructions);
+        layoutWaiting = findViewById(R.id.layoutWaiting);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.layoutInstructions, mInstructionFragment, "instructionFragment");
         ft.replace(R.id.layoutWaiting, mBluetoothResultFragment);
         ft.commit();
 
-        layoutSelectTest = (LinearLayout) findViewById(R.id.selectTestLayout);
+        layoutSelectTest = findViewById(R.id.selectTestLayout);
         findViewById(R.id.buttonTestSelected).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +168,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             }
         });
 
-        Button instructionsButton = (Button) findViewById(R.id.button_instructions);
+        Button instructionsButton = findViewById(R.id.button_instructions);
         instructionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,7 +219,11 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (layoutInstructions.getVisibility() == View.VISIBLE) {
+                showWaitingView();
+            } else {
+                onBackPressed();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -235,7 +239,11 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
             resultReceived = false;
         } else if (layoutInstructions.getVisibility() == View.VISIBLE) {
-            showWaitingView();
+            if (mInstructionFragment.getCurrentPage() == 0) {
+                showWaitingView();
+            } else {
+                mInstructionFragment.pageLeft();
+            }
         } else if (mBluetoothResultFragment.isVisible()) {
             showSelectTestView();
         } else {

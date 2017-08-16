@@ -251,7 +251,7 @@ public class BluetoothTest {
 
         onView(withId(R.id.image_pageRight)).perform(click());
 
-        onView(withText("Add exactly  reagent solution to the water sample. (Caution: Vial is filled up to the top!)"))
+        onView(withText("Add exactly 2 ml SPADNS reagent solution to the water sample. (Caution: Vial is filled up to the top!)"))
                 .check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageView2 = onView(
@@ -282,6 +282,16 @@ public class BluetoothTest {
         onView(withText("Wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*test*]"))
                 .check(matches(isDisplayed()));
 
+        TestUtil.swipeRight();
+
+        onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
+                .check(matches(isDisplayed()));
+
+        TestUtil.goBack();
+
+        onView(withText("Add exactly 2 ml SPADNS reagent solution to the water sample. (Caution: Vial is filled up to the top!)"))
+                .check(matches(isDisplayed()));
+
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
                         childAtPosition(
@@ -292,6 +302,9 @@ public class BluetoothTest {
                                 1),
                         isDisplayed()));
         appCompatImageButton.perform(click());
+
+        onView(withText("Awaiting result"))
+                .check(matches(isDisplayed()));
 
         try {
             Thread.sleep(10000);

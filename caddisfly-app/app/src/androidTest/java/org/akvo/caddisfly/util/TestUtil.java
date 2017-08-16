@@ -45,6 +45,7 @@ import timber.log.Timber;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static org.akvo.caddisfly.util.TestHelper.mDevice;
 
 /**
  * Utility functions for automated testing
@@ -118,20 +119,18 @@ public final class TestUtil {
 
     public static Activity getActivityInstance() {
         final Activity[] activity = new Activity[1];
-        getInstrumentation().runOnMainSync(new Runnable() {
-            public void run() {
-                Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance()
-                        .getActivitiesInStage(Stage.RESUMED);
-                if (resumedActivities.iterator().hasNext()) {
-                    activity[0] = (Activity) resumedActivities.iterator().next();
-                }
+        getInstrumentation().runOnMainSync(() -> {
+            Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance()
+                    .getActivitiesInStage(Stage.RESUMED);
+            if (resumedActivities.iterator().hasNext()) {
+                activity[0] = (Activity) resumedActivities.iterator().next();
             }
         });
         return activity[0];
     }
 
     @SuppressWarnings("SameParameterValue")
-    public static void findButtonInScrollable(String name) {
+    static void findButtonInScrollable(String name) {
         UiScrollable listView = new UiScrollable(new UiSelector().className(ScrollView.class.getName()));
         listView.setMaxSearchSwipes(10);
         listView.waitForExists(5000);
@@ -190,5 +189,37 @@ public final class TestUtil {
                     return new float[]{screenX, screenY};
                 },
                 Press.FINGER);
+    }
+
+    public static void swipeLeft() {
+        mDevice.swipe(400, 300, 100, 300, 5);
+        mDevice.waitForIdle();
+    }
+
+    public static void swipeRight() {
+        mDevice.swipe(100, 300, 400, 300, 5);
+        mDevice.waitForIdle();
+    }
+
+    public static void swipeRight(int times) {
+        for (int i = 0; i < times; i++) {
+            swipeRight();
+        }
+    }
+
+    public static void swipeLeft(int times) {
+        for (int i = 0; i < times; i++) {
+            swipeLeft();
+        }
+    }
+
+    public static void goBack(int times) {
+        for (int i = 0; i < times; i++) {
+            mDevice.pressBack();
+        }
+    }
+
+    public static void goBack() {
+        goBack(1);
     }
 }

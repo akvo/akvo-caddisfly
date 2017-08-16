@@ -147,6 +147,7 @@ public class InstructionDetailFragment extends Fragment {
                         final AppCompatImageView imageView = new AppCompatImageView(context);
                         imageView.setImageResource(resourceId);
                         imageView.setLayoutParams(llp);
+                        imageView.setContentDescription(imageName);
 
                         layoutInstructions.addView(imageView);
 
@@ -201,7 +202,7 @@ public class InstructionDetailFragment extends Fragment {
 
                     Spanned spanned = StringUtil.toInstruction(getContext(), testInfo, text);
 
-                    //spanned.toString().replace("%reagent1", testInfo.getReagent(0));
+//                    spanned.toString().replace("%reagent1", testInfo.getReagent(0));
 
                     if (!text.isEmpty()) {
                         textView.append(spanned);

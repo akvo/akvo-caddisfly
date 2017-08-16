@@ -34,7 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -207,11 +206,7 @@ public class TestInfo implements Parcelable {
      * Sort the swatches for this test by their result values.
      */
     private void sort() {
-        Collections.sort(swatches, new Comparator<Swatch>() {
-            public int compare(Swatch c1, Swatch c2) {
-                return Double.compare(c1.getValue(), (c2.getValue()));
-            }
-        });
+        Collections.sort(swatches, (c1, c2) -> Double.compare(c1.getValue(), (c2.getValue())));
     }
 
     public String getName() {
@@ -448,8 +443,14 @@ public class TestInfo implements Parcelable {
         }
     }
 
-    public void setReagent(String value) {
-        this.reagents.add(value);
+    public void setReagent(JSONArray value) {
+        for (int i = 0; i < value.length(); i++) {
+            try {
+                this.reagents.add(value.getString(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public Serializable getSampleQuantity() {
@@ -460,8 +461,14 @@ public class TestInfo implements Parcelable {
         this.sampleQuantity = sampleQuantity;
     }
 
-    public void setReactionTime(String value) {
-        this.reactionTimes.add(value);
+    public void setReactionTime(JSONArray value) {
+        for (int i = 0; i < value.length(); i++) {
+            try {
+                this.reactionTimes.add(value.getString(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public String getReactionTime(int index) {
@@ -472,12 +479,12 @@ public class TestInfo implements Parcelable {
         }
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public static class SubTest {

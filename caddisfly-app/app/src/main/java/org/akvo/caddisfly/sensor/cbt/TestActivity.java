@@ -128,8 +128,18 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            super.onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onBackPressed() {
-        if (instructionFragment != null && instructionFragment.isVisible() && instructionFragment.shouldPageBack()) {
+        if (instructionFragment != null && instructionFragment.isVisible()
+                && instructionFragment.shouldPageBack()) {
             instructionFragment.onBackPressed();
         } else {
             super.onBackPressed();
@@ -294,15 +304,6 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
 //    private void startTest(String uuid) {
 //        navigationController.navigateToTest(this, uuid);
 //    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     public static class IncubationTimesDialogFragment extends DialogFragment {
         @NonNull
