@@ -648,68 +648,6 @@
       ]
     },
     {
-      "name": "Water - Arsenic",
-      "subtype": "striptest",
-      "tags": ["water quality"],
-      "uuid": "7c1a377f-4156-4f4c-ad72-89433a291ca0",
-      "calibration": "16 Nov 2016",
-      "brand": "Econo-Quick 481298",
-      "groupingType": "INDIVIDUAL",
-      "illuminant": "D65-2deg",
-      "length": 72.30,
-      "height": 5.10,
-      "unit": "mm",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Arsenic",
-          "unit": "ppb",
-          "patchPos": 6.0,
-          "patchWidth": 6,
-          "timeDelay": 0,
-          "colors":[
-            {
-              "value": 0,
-              "lab": [91.96,0.44,4.62]
-            },
-            {
-              "value": 10,
-              "lab": [90.95,-1.02,8.50]
-            },
-            {
-              "value": 25,
-              "lab": [91.93,-3.16,14.18]
-            },
-            {
-              "value": 50,
-              "lab": [91.16,-5.31,26.41]
-            },
-            {
-              "value": 100,
-              "lab": [85.60,1.93,40.78]
-            },
-            {
-              "value": 200,
-              "lab": [76.25,12.30,40.53]
-            },
-            {
-              "value": 300,
-              "lab": [68.95,15.15,35.70]
-            },
-            {
-              "value": 500,
-              "lab": [61.89,14.79,30.24]
-            },
-            {
-              "value": 1000,
-              "lab": [54.23,11.06,22.64]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name": "Water - Arsenic (0 - 4000)",
       "description": "Measures arsenic levels. This is a dual range test kit - choose this test when the 0-4000 ppm range is used.",
       "subtype": "striptest",
