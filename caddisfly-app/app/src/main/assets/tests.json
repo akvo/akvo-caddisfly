@@ -768,7 +768,7 @@
       "subtype": "striptest",
       "tags": ["water quality"],
       "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
-      "calibration": "29 Sep 2016 using X-Rite i1Pro 2",
+      "calibration": "17 Aug 2017, Standards are prepared by diluting 1000 ppm Arsenic stock solution. 1 ppm Stock solution is prepared by dissolving 0.1734 gm of NaAsO2 in 1000 ml of distilled water. Further dilute 1 ml of this to 100 ml using distilled water to get 10 ppm As stock solution.",
       "brand": "EZ Arsenic High Range, HACH 2822800",
       "image": "HACH-2822800-500",
       "imageScale": "centerCrop",
@@ -789,31 +789,31 @@
           "colors":[
             {
               "value": 0,
-              "lab": [94.123,-0.922,2.181]
+              "lab": [94.45,-0.95,2.34]
             },
             {
               "value": 10,
-              "lab": [93.914,-4.498,10.313]
+              "lab": [94.16,-4.79,12.38]
             },
             {
               "value": 25,
-              "lab": [93.016,-8.063,28.930]
+              "lab": [92.70,-6.26,27.52]
             },
             {
               "value": 50,
-              "lab": [88.457,-2.156,39.327]
+              "lab": [88.65,-0.68,39.10]
             },
             {
               "value": 100,
-              "lab": [82.350,8.176,44.959]
+              "lab": [86.11,3.35,40.58]
             },
             {
               "value": 250,
-              "lab": [74.212,15.276,41.299]
+              "lab": [76.95,12.24,39.62]
             },
             {
               "value": 500,
-              "lab": [69.650,15.524,36.894]
+              "lab": [69.81,13.51,33.62]
             }
           ]
         }
