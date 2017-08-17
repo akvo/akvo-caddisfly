@@ -124,13 +124,15 @@ public class StripTestNavigation {
                         isDisplayed()));
         appCompatImageView2.perform(click());
 
+        TestUtil.sleep(3000);
+
         if (TestUtil.isEmulator()) {
             TestUtil.nextPage();
         } else {
             TestUtil.swipeLeft();
         }
 
-        TestUtil.sleep(200);
+        TestUtil.sleep(3000);
         TestUtil.goBack();
         TestUtil.sleep(500);
 
