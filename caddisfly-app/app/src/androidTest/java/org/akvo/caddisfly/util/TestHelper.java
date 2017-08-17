@@ -25,6 +25,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
+import android.support.annotation.StringRes;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.uiautomator.By;
@@ -81,6 +82,18 @@ public final class TestHelper {
 
     private static void addCalibration(String key, String colors) {
         CALIBRATION_HASH_MAP.put(key, colors);
+    }
+
+    public static String getString(Activity activity, @StringRes int resourceId) {
+        Resources currentResources = activity.getResources();
+        AssetManager assets = currentResources.getAssets();
+        DisplayMetrics metrics = currentResources.getDisplayMetrics();
+        Configuration config = new Configuration(currentResources.getConfiguration());
+        config.locale = new Locale(mCurrentLanguage);
+        Resources res = new Resources(assets, metrics, config);
+
+        return res.getString(resourceId);
+
     }
 
     @SuppressWarnings("deprecation")
@@ -186,15 +199,23 @@ public final class TestHelper {
         clickExternalSourceButton(index, TestConstant.GO_TO_TEST);
     }
 
-    public static void clickExternalSourceButton(int index, String buttonName) {
+    public static void clickExternalSourceButton(int index, String text) {
 
-        findButtonInScrollable(currentHashMap.get(buttonName));
+        String buttonText = currentHashMap.get(text);
 
-        List<UiObject2> buttons = mDevice.findObjects(By.text(currentHashMap.get(buttonName)));
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            buttonText = buttonText.toUpperCase();
+        }
+
+        findButtonInScrollable(buttonText);
+
+        List<UiObject2> buttons = mDevice.findObjects(By.text(buttonText));
         buttons.get(index).click();
 
         // New Android OS seems to popup a button for external app
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.M
+                && (text.equals(TestConstant.USE_EXTERNAL_SOURCE)
+                || text.equals(TestConstant.GO_TO_TEST))) {
             sleep(1000);
             mDevice.findObject(By.text("Akvo Caddisfly")).click();
             sleep(1000);
@@ -205,16 +226,23 @@ public final class TestHelper {
         sleep(4000);
     }
 
-    public static void clickExternalSourceButton(String buttonText) {
+    public static void clickExternalSourceButton(String text) {
         try {
+
+            String buttonText = currentHashMap.get(text);
+
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                buttonText = buttonText.toUpperCase();
+            }
 
             findButtonInScrollable(buttonText);
 
-            mDevice.findObject(new UiSelector().text(currentHashMap.get(buttonText))).click();
+            mDevice.findObject(new UiSelector().text(buttonText)).click();
 
             // New Android OS seems to popup a button for external app
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && buttonText.equals(TestConstant.USE_EXTERNAL_SOURCE)) {
+            if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.M
+                    && (text.equals(TestConstant.USE_EXTERNAL_SOURCE)
+                    || text.equals(TestConstant.GO_TO_TEST))) {
                 sleep(1000);
                 mDevice.findObject(By.text("Akvo Caddisfly")).click();
                 sleep(1000);
@@ -237,7 +265,7 @@ public final class TestHelper {
         if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
 
             UiObject addButton = mDevice.findObject(new UiSelector()
-                    .descriptionContains(currentHashMap.get("createNewDataPoint")));
+                    .resourceId("org.akvo.flow:id/add_data_point_fab"));
 
             try {
                 if (addButton.exists() && addButton.isEnabled()) {

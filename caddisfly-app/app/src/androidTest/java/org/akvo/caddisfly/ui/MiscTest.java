@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
@@ -35,6 +34,7 @@ import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -53,6 +53,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -69,6 +70,8 @@ import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.util.TestUtil.getActivityInstance;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -85,17 +88,6 @@ public class MiscTest {
                 mDevice.pressBack();
             }
         }
-    }
-
-    public static boolean isEmulator() {
-        return Build.FINGERPRINT.startsWith("generic")
-                || Build.FINGERPRINT.startsWith("unknown")
-                || Build.MODEL.contains("google_sdk")
-                || Build.MODEL.contains("Emulator")
-                || Build.MODEL.contains("Android SDK built for x86")
-                || Build.MANUFACTURER.contains("Genymotion")
-                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
-                || "google_sdk".equals(Build.PRODUCT);
     }
 
     @Before
@@ -147,6 +139,14 @@ public class MiscTest {
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
+        if (TestUtil.isEmulator()){
+
+            onView(withText(R.string.errorCameraFlashRequired))
+                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
+                            .getDecorView())))).check(matches(isDisplayed()));
+            return;
+        }
+
         onView(withId(R.id.actionSwatches)).perform(click());
 
         Espresso.pressBack();
@@ -185,21 +185,27 @@ public class MiscTest {
         onView(withText(R.string.calibrate)).perform(click());
 
         final Activity typeListActivity = getActivityInstance();
-        typeListActivity.runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = TypeListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
-                    method.setAccessible(true);
-                    method.invoke(typeListActivity);
-                } catch (Exception e) {
-                    assertEquals(e.getMessage(), 0, 1);
-                }
+        typeListActivity.runOnUiThread(() -> {
+            try {
+                Method method = TypeListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
+                method.setAccessible(true);
+                method.invoke(typeListActivity);
+            } catch (Exception e) {
+                assertEquals(e.getMessage(), 0, 1);
             }
         });
 
         onView(withId(android.R.id.button2)).perform(click());
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        if (TestUtil.isEmulator()){
+
+            onView(withText(R.string.errorCameraFlashRequired))
+                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
+                            .getDecorView())))).check(matches(isDisplayed()));
+            return;
+        }
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
 
@@ -222,15 +228,13 @@ public class MiscTest {
         //onView(withId(R.id.buttonStart)).perform(click());
 
         final Activity activity = getActivityInstance();
-        activity.runOnUiThread(new Runnable() {
-            public void run() {
-                try {
-                    Method method = ColorimetryLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
-                    method.setAccessible(true);
-                    method.invoke(activity);
-                } catch (Exception e) {
-                    assertEquals(e.getMessage(), 0, 1);
-                }
+        activity.runOnUiThread(() -> {
+            try {
+                Method method = ColorimetryLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
+                method.setAccessible(true);
+                method.invoke(activity);
+            } catch (Exception e) {
+                assertEquals(e.getMessage(), 0, 1);
             }
         });
 
@@ -247,6 +251,14 @@ public class MiscTest {
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
+
+        if (TestUtil.isEmulator()){
+
+            onView(withText(R.string.errorCameraFlashRequired))
+                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
+                            .getDecorView())))).check(matches(isDisplayed()));
+            return;
+        }
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
 
@@ -335,7 +347,7 @@ public class MiscTest {
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        if (isEmulator()) {
+        if (TestUtil.isEmulator()) {
             onView(withText(R.string.errorCameraFlashRequired)).perform(click());
         }
     }

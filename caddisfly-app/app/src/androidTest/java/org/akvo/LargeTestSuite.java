@@ -1,4 +1,4 @@
-package org.akvo.caddisfly;
+package org.akvo;
 
 import org.akvo.caddisfly.analyze.AnalysisTest;
 import org.junit.runner.RunWith;

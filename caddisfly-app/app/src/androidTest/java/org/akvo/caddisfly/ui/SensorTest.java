@@ -41,7 +41,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
@@ -106,77 +105,6 @@ public class SensorTest {
         Espresso.pressBack();
 
         Espresso.pressBack();
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        onView(withText(R.string.electricalConductivity)).perform(click());
-
-        try {
-            onView(withText(R.string.warning)).check(matches(isDisplayed()));
-
-            onView(withText(R.string.calibrate)).perform(click());
-
-            onView(withId(R.id.buttonStartCalibrate)).perform(click());
-
-            onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
-
-            String message = "The expected sensor was not found.\n\n" +
-                    "Connect the Water - Electrical Conductivity sensor.";
-
-            onView(withText(message)).check(matches(isDisplayed()));
-
-            onView(withId(android.R.id.button1)).perform(click());
-
-        } catch (Exception ex) {
-            String message = String.format("%s\r\n\r\n%s",
-                    mActivityRule.getActivity().getString(R.string.phoneDoesNotSupport),
-                    mActivityRule.getActivity().getString(R.string.pleaseContactSupport));
-
-            onView(withText(message)).check(matches(isDisplayed()));
-
-            onView(withText(R.string.ok)).perform(click());
-        }
-    }
-
-    @Test
-    @RequiresDevice
-    public void testCalibrateSensor() {
-        //onView(withId(R.id.actionSettings)).perform(click());
-
-        //onView(withText(R.string.calibrateSummary)).check(matches(isDisplayed()));
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
-        try {
-            onView(withText(R.string.warning)).check(matches(isDisplayed()));
-
-            onView(withText(R.string.calibrate)).perform(click());
-
-            onView(withId(R.id.buttonStartCalibrate)).perform(click());
-
-            onView(withText(R.string.sensorNotFound)).check(matches(isDisplayed()));
-
-            String message = "The expected sensor was not found.\n\n" +
-                    "Connect the Water - Electrical Conductivity sensor.";
-
-            onView(withText(message)).check(matches(isDisplayed()));
-
-            onView(withId(android.R.id.button1)).perform(click());
-
-        } catch (Exception ex) {
-            String message = String.format("%s\r\n\r\n%s",
-                    mActivityRule.getActivity().getString(R.string.phoneDoesNotSupport),
-                    mActivityRule.getActivity().getString(R.string.pleaseContactSupport));
-
-            onView(withText(message)).check(matches(isDisplayed()));
-
-            onView(withText(R.string.ok)).perform(click());
-        }
-
-        Espresso.pressBack();
-
-        onView(withText(R.string.calibrate)).check(matches(isDisplayed()));
 
     }
 }
