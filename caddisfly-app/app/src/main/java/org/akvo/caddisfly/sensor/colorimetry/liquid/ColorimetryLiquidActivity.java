@@ -172,8 +172,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
 
         sound = new SoundPoolPlayer(this);
 
-        textDilution = (TextView) findViewById(R.id.textDilution);
-        TextView textSubtitle = (TextView) findViewById(R.id.textSubtitle);
+        textDilution = findViewById(R.id.textDilution);
+        TextView textSubtitle = findViewById(R.id.textSubtitle);
 
         //Set up the shake detector
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);

@@ -52,7 +52,7 @@ public class SensorTypeListActivity extends BaseActivity {
 
         setTitle(R.string.selectTest);
 
-        ListView listTypes = (ListView) findViewById(R.id.list_types);
+        ListView listTypes = findViewById(R.id.list_types);
 
         final List<TestInfo> mTests = TestConfigHelper.loadTestsList();
 
@@ -166,7 +166,7 @@ public class SensorTypeListActivity extends BaseActivity {
             private final TextView textView;
 
             ViewHolder(@NonNull View v) {
-                textView = (TextView) v.findViewById(R.id.text_title);
+                textView = v.findViewById(R.id.text_title);
             }
         }
     }

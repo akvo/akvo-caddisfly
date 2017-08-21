@@ -187,7 +187,7 @@ public class CameraDialogFragment extends CameraDialog {
 
         if (opened) {
             mCameraPreview = new CameraPreview(getActivity().getBaseContext(), mCamera);
-            FrameLayout layoutCameraPreview = (FrameLayout) view.findViewById(R.id.layoutCameraPreview);
+            FrameLayout layoutCameraPreview = view.findViewById(R.id.layoutCameraPreview);
             layoutCameraPreview.addView(mCameraPreview);
 
             mCameraPreview.startCameraPreview();

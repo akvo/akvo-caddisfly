@@ -215,8 +215,8 @@ public class TestTypeListActivity extends BaseActivity {
 
             ViewHolder(@NonNull View v) {
 
-                textView = (TextView) v.findViewById(R.id.text_title);
-                textSubtitle = (TextView) v.findViewById(R.id.text_subtitle);
+                textView = v.findViewById(R.id.text_title);
+                textSubtitle = v.findViewById(R.id.text_subtitle);
             }
         }
     }

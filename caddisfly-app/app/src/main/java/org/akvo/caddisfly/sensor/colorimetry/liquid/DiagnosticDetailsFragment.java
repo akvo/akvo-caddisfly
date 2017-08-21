@@ -68,18 +68,18 @@ public class DiagnosticDetailsFragment extends DialogFragment {
 
         final View view = inflater.inflate(R.layout.dialog_diagnostic_details, container, false);
 
-        ImageView imageExtract = (ImageView) view.findViewById(R.id.imageExtract);
-        ImageView imagePhoto = (ImageView) view.findViewById(R.id.imagePhoto);
+        ImageView imageExtract = view.findViewById(R.id.imageExtract);
+        ImageView imagePhoto = view.findViewById(R.id.imagePhoto);
 
-        TextView textResult = (TextView) view.findViewById(R.id.textResult);
-        Button buttonColorExtract = (Button) view.findViewById(R.id.buttonColorExtract);
-        Button buttonSwatchColor = (Button) view.findViewById(R.id.buttonSwatchColor);
+        TextView textResult = view.findViewById(R.id.textResult);
+        Button buttonColorExtract = view.findViewById(R.id.buttonColorExtract);
+        Button buttonSwatchColor = view.findViewById(R.id.buttonSwatchColor);
 
-        TextView textExtractedRgb = (TextView) view.findViewById(R.id.textExtractedRgb);
-        TextView textSwatchRgb = (TextView) view.findViewById(R.id.textSwatchRgb);
-        TextView textDimension = (TextView) view.findViewById(R.id.textDimension);
-        TextView textDistance = (TextView) view.findViewById(R.id.textDistance);
-        TextView textQuality = (TextView) view.findViewById(R.id.textQuality);
+        TextView textExtractedRgb = view.findViewById(R.id.textExtractedRgb);
+        TextView textSwatchRgb = view.findViewById(R.id.textSwatchRgb);
+        TextView textDimension = view.findViewById(R.id.textDimension);
+        TextView textDistance = view.findViewById(R.id.textDistance);
+        TextView textQuality = view.findViewById(R.id.textQuality);
 
         imageExtract.setImageBitmap(mExtractBitmap);
         imagePhoto.setImageBitmap(mPhotoBitmap);

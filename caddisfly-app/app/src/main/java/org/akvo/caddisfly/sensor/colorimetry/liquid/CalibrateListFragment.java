@@ -103,25 +103,22 @@ public class CalibrateListFragment extends ListFragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_calibrate_list, container, false);
-        textCalibrationError = (TextView) view.findViewById(R.id.textCalibrationError);
+        textCalibrationError = view.findViewById(R.id.textCalibrationError);
 
         if (AppPreferences.isDiagnosticMode()) {
-            buttonStart = (Button) view.findViewById(R.id.buttonStart);
+            buttonStart = view.findViewById(R.id.buttonStart);
             buttonStart.setVisibility(View.VISIBLE);
 
-            buttonStart.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final Intent intent = new Intent(getActivity().getIntent());
+            buttonStart.setOnClickListener(view1 -> {
+                final Intent intent = new Intent(getActivity().getIntent());
 
-                    if (CaddisflyApp.getApp().getCurrentTestInfo().getCanUseDilution()) {
-                        intent.setClass(getContext(), SelectDilutionActivity.class);
-                    } else {
-                        intent.setClass(getContext(), ColorimetryLiquidActivity.class);
-                    }
-
-                    startActivity(intent);
+                if (CaddisflyApp.getApp().getCurrentTestInfo().getCanUseDilution()) {
+                    intent.setClass(getContext(), SelectDilutionActivity.class);
+                } else {
+                    intent.setClass(getContext(), ColorimetryLiquidActivity.class);
                 }
+
+                startActivity(intent);
             });
         }
 

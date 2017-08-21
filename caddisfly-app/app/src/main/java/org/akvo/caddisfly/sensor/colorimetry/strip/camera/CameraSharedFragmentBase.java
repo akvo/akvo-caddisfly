@@ -65,13 +65,13 @@ public abstract class CameraSharedFragmentBase extends Fragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        progressBar = view.findViewById(R.id.progressBar);
         if (progressBar != null) {
             progressBar.setMax(Constant.COUNT_QUALITY_CHECK_LIMIT);
             progressBar.setProgress(0);
         }
 
-        textSwitcher = (TextSwitcher) view.findViewById(R.id.textSwitcher);
+        textSwitcher = view.findViewById(R.id.textSwitcher);
 
         if (textSwitcher != null) {
 
@@ -84,10 +84,10 @@ public abstract class CameraSharedFragmentBase extends Fragment {
 
                     if (isFirst) {
                         isFirst = false;
-                        textView = (TextView) view.findViewById(R.id.textMessage1);
+                        textView = view.findViewById(R.id.textMessage1);
                         ((ViewGroup) textView.getParent()).removeViewAt(0);
                     } else {
-                        textView = (TextView) view.findViewById(R.id.textMessage2);
+                        textView = view.findViewById(R.id.textMessage2);
                         ((ViewGroup) textView.getParent()).removeViewAt(0);
                     }
                     return textView;

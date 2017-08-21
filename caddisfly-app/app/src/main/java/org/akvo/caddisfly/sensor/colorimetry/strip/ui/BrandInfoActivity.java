@@ -92,8 +92,9 @@ public class BrandInfoActivity extends BaseActivity {
 
         mUuid = getIntent().getStringExtra(Constant.UUID);
 
+        StripTest stripTest = new StripTest();
+
         if (mUuid != null) {
-            StripTest stripTest = new StripTest();
 
             // Display the brand in title
             setTitle(stripTest.getBrand(mUuid).getName());
@@ -129,11 +130,11 @@ public class BrandInfoActivity extends BaseActivity {
                     }
                 }
             }
+        }
 
-            JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
-            if (instructions == null || instructions.length() == 0) {
-                buttonInstruction.setVisibility(View.INVISIBLE);
-            }
+        JSONArray instructions = stripTest.getBrand(mUuid).getInstructions();
+        if (instructions == null || instructions.length() == 0) {
+            buttonInstruction.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -187,7 +188,7 @@ public class BrandInfoActivity extends BaseActivity {
 
                 snackbar.setActionTextColor(typedValue.data);
                 View snackView = snackbar.getView();
-                TextView textView = (TextView) snackView.findViewById(android.support.design.R.id.snackbar_text);
+                TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
                 textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
                 textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
                 textView.setTextColor(Color.WHITE);
@@ -206,7 +207,7 @@ public class BrandInfoActivity extends BaseActivity {
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
                     View checkBoxView = View.inflate(this, R.layout.dialog_message, null);
-                    CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
+                    CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
                     checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                         @Override

@@ -29,8 +29,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.media.ExifInterface;
 import android.support.annotation.NonNull;
+import android.support.media.ExifInterface;
 import android.text.TextUtils;
 
 import org.akvo.caddisfly.helper.FileHelper;
@@ -275,7 +275,7 @@ public final class ImageUtil {
 
         if (bitmap != null && ImageUtil.saveImage(bitmap, outFilename)) {
             ImageUtil.checkOrientation(origFilename, outFilename);// Ensure the EXIF data is not lost
-            Timber.d("Resized Image size: %d x %d", bitmap.getWidth(), bitmap.getHeight());
+//            Timber.d("Resized Image size: %d x %d", bitmap.getWidth(), bitmap.getHeight());
             return true;
         }
         return false;

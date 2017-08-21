@@ -280,13 +280,11 @@ public final class TestConfigHelper {
 
             testInfo.setSelectInstruction(item.has("selectInstruction") ? item.getString("selectInstruction") : "");
 
-            testInfo.setReagent(item.has("reagent1") ? item.getString("reagent1") : "");
-            testInfo.setReagent(item.has("reagent2") ? item.getString("reagent2") : "");
+            testInfo.setReagent(item.has("reagents") ? item.getJSONArray("reagents") : new JSONArray());
 
             testInfo.setSampleQuantity(item.has("sampleQuantity") ? item.getString("sampleQuantity") : "");
 
-            testInfo.setReactionTime(item.has("reactionTime1") ? item.getString("reactionTime1") : "");
-            testInfo.setReactionTime(item.has("reactionTime2") ? item.getString("reactionTime2") : "");
+            testInfo.setReactionTime(item.has("reactionTimes") ? item.getJSONArray("reactionTimes") : new JSONArray());
 
             testInfo.setTitle(item.has("title") ? item.getString("title") : "");
 

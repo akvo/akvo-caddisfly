@@ -141,8 +141,8 @@ public class CameraStartTestFragment extends CameraSharedFragmentBase {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_camera_start, container, false);
 
-        exposureView = (PercentageMeterView) rootView.findViewById(R.id.quality_brightness);
-        contrastView = (PercentageMeterView) rootView.findViewById(R.id.quality_shadows);
+        exposureView = rootView.findViewById(R.id.quality_brightness);
+        contrastView = rootView.findViewById(R.id.quality_shadows);
 
         //************ HACK FOR TESTING ON EMULATOR ONLY *********************
 //        TextView finishTextView = (TextView) rootView.findViewById(R.id.activity_cameraFinishText);

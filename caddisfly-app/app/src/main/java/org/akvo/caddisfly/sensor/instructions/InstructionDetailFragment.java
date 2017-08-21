@@ -47,9 +47,7 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class InstructionDetailFragment extends Fragment {
-    /**
-     * The fragment arguments for the contents to be displayed.
-     */
+
     private static final String ARG_ITEM_TEXT = "text";
     private static final String ARG_ITEM_IMAGE = "image";
     private static final String ARG_ITEM_INFO = "testInfo";

@@ -73,7 +73,7 @@ public class EditSensorIdentity extends DialogFragment {
         @SuppressLint("InflateParams")
         View view = i.inflate(R.layout.fragment_edit_sensor_identity, null);
 
-        editId = (EditText) view.findViewById(R.id.editId);
+        editId = view.findViewById(R.id.editId);
 
         editId.requestFocus();
 

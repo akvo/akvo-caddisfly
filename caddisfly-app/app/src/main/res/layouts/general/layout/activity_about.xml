@@ -125,7 +125,7 @@
             android:layout_marginStart="16dp"
             android:ellipsize="none"
             android:gravity="start"
-            android:maxLines="1"
+            android:singleLine="true"
             android:text="@string/diagnostics"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#2a007a8d"

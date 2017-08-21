@@ -65,11 +65,12 @@ public final class StringUtil {
         Spanned spanned = StringUtil.getStringResourceByName(context, text);
         builder.append(spanned);
 
-        Matcher m = Pattern.compile("\\[\\*(\\w+)\\*\\]").matcher(builder);
+        Matcher m = Pattern.compile("\\[\\*(\\w+)\\*]").matcher(builder);
 
         while (m.find()) {
 
-            int resId = context.getResources().getIdentifier("button_" + m.group(1), "drawable", context.getPackageName());
+            int resId = context.getResources().getIdentifier("button_" + m.group(1),
+                    "drawable", context.getPackageName());
 
             if (resId > 0) {
                 builder.setSpan(new CenteredImageSpan(context, resId),
@@ -103,17 +104,16 @@ public final class StringUtil {
     }
 
     public static String convertToTags(String text) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
-            result += "[*";
-            result += text.charAt(i);
-            result += "*]";
+            result.append("[*").append(text.charAt(i)).append("*]");
         }
-        return result;
+        return result.toString();
     }
 
     public static String getStringByName(Context context, String name) {
-        return context.getResources().getString(context.getResources().getIdentifier(name, "string", context.getPackageName()));
+        return context.getResources().getString(context.getResources()
+                .getIdentifier(name, "string", context.getPackageName()));
     }
 
 }

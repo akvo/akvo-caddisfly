@@ -105,11 +105,11 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             }
         };
 
-        editExpiryDate = (EditText) view.findViewById(R.id.editExpiryDate);
+        editExpiryDate = view.findViewById(R.id.editExpiryDate);
 
-        editBatchCode = (EditText) view.findViewById(R.id.editBatchCode);
+        editBatchCode = view.findViewById(R.id.editBatchCode);
 
-        editRgb = (EditText) view.findViewById(R.id.editRgb);
+        editRgb = view.findViewById(R.id.editRgb);
 
         long milliseconds = PreferencesUtil.getLong(getActivity(),
                 CaddisflyApp.getApp().getCurrentTestInfo().getId(),
@@ -171,7 +171,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             }
         });
 
-        editName = (EditText) view.findViewById(R.id.editName);
+        editName = view.findViewById(R.id.editName);
         if (!isEditing && AppPreferences.isDiagnosticMode()) {
             editName.requestFocus();
         } else {

@@ -22,6 +22,7 @@
 
     <!--Test Types-->
     <string name="fluoride">Water - Fluoride</string>
+    <string name="chromium">Water - Chromium</string>
     <string name="coliforms">Coliforms</string>
     <string name="arsenic">Water - Arsenic</string>
     <string name="freeChlorine">Water - Free Chlorine</string>
