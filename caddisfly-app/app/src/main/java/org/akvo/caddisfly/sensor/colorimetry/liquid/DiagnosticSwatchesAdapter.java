@@ -45,7 +45,7 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
     private final List<Swatch> colorArray;
 
     DiagnosticSwatchesAdapter(Activity activity, List<Swatch> colorArray) {
-        super(activity, R.layout.row_swatch, colorArray);
+        super(activity, -1, colorArray);
         this.activity = activity;
         this.colorArray = colorArray;
     }

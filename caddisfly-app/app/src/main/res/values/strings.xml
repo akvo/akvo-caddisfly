@@ -50,6 +50,7 @@
     <string name="language">Language</string>
     <string name="notSupported">Not Supported</string>
     <string name="cameraBusy">Camera Busy</string>
+    <string name="notice">Notice</string>
 
     <!--External-->
     <string name="sensor">Sensor</string>

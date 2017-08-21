@@ -20,11 +20,13 @@
 package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,6 +35,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Date;
@@ -62,6 +65,7 @@ public class CalibrateListFragment extends ListFragment {
     private Callbacks mCallbacks = DUMMY_CALLBACKS;
     private TextView textCalibrationError;
     private long mLastClickTime;
+    private Button buttonStart;
 
     public void setAdapter() {
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
@@ -100,6 +104,24 @@ public class CalibrateListFragment extends ListFragment {
 
         View view = inflater.inflate(R.layout.fragment_calibrate_list, container, false);
         textCalibrationError = view.findViewById(R.id.textCalibrationError);
+
+        if (AppPreferences.isDiagnosticMode()) {
+            buttonStart = view.findViewById(R.id.buttonStart);
+            buttonStart.setVisibility(View.VISIBLE);
+
+            buttonStart.setOnClickListener(view1 -> {
+                final Intent intent = new Intent(getActivity().getIntent());
+
+                if (CaddisflyApp.getApp().getCurrentTestInfo().getCanUseDilution()) {
+                    intent.setClass(getContext(), SelectDilutionActivity.class);
+                } else {
+                    intent.setClass(getContext(), ColorimetryLiquidActivity.class);
+                }
+
+                startActivity(intent);
+            });
+        }
+
         return view;
 
     }

@@ -172,7 +172,7 @@ public class InstructionDetailFragment extends Fragment {
                         }
                     }
 
-                }else {
+                } else {
 
                     TextView textView = new TextView(getActivity());
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
@@ -202,7 +202,7 @@ public class InstructionDetailFragment extends Fragment {
 
                     Spanned spanned = StringUtil.toInstruction(getContext(), testInfo, text);
 
-//                    spanned.toString().replace("%reagent1", testInfo.getReagent(0));
+                    //spanned.toString().replace("%reagent1", testInfo.getReagent(0));
 
                     if (!text.isEmpty()) {
                         textView.append(spanned);

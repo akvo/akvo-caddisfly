@@ -141,7 +141,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="10dp"
                     android:ellipsize="none"
-                    android:gravity="center"
+                    android:gravity="center_horizontal"
                     android:singleLine="true"
                     android:textAllCaps="true"
                     android:textColor="#9500192d"

@@ -73,6 +73,8 @@ public class MainActivity extends BaseActivity {
     private static final int AUTO_FINISH_DELAY_MILLIS = 4000;
     private static final int PERMISSION_ALL = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
+    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+            AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
     private final Handler finishOnSurveyOpenedHandler = new Handler();
 
@@ -98,9 +100,6 @@ public class MainActivity extends BaseActivity {
 
         if (!ApkHelper.isStoreVersion(this)) {
 
-            final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
-                    AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
-
             DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
             textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
 
@@ -108,7 +107,6 @@ public class MainActivity extends BaseActivity {
 
             // If app has expired then close this activity
             ApkHelper.isAppVersionExpired(this);
-
         }
     }
 

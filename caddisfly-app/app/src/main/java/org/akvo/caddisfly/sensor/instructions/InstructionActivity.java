@@ -171,7 +171,6 @@ public class InstructionActivity extends BaseActivity {
         }
     }
 
-
     private class PagerAdapter extends FragmentStatePagerAdapter {
 
         PagerAdapter(FragmentManager fm) {

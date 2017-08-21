@@ -53,7 +53,7 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
     private final boolean mDisplayDecimal;
 
     CalibrationsAdapter(@NonNull Activity activity, @NonNull Swatch[] rangeArray, boolean displayDecimal) {
-        super(activity, R.layout.row_calibrate, rangeArray);
+        super(activity, -1, rangeArray);
         this.activity = activity;
         mDisplayDecimal = displayDecimal;
     }
