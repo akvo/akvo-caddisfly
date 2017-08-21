@@ -54,7 +54,6 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.util.GregorianCalendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,12 +63,12 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity {
 
-    private static final long DAYS_IN_MILLIS = 1000 * 60 * 60 * 24;
+//    private static final long DAYS_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int AUTO_FINISH_DELAY_MILLIS = 4000;
     private static final int PERMISSION_ALL = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
-    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
-            AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
+//    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+//            AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
     private final Handler finishOnSurveyOpenedHandler = new Handler();
 

@@ -66,7 +66,7 @@ public class DiagnosticUserPreferenceFragment extends PreferenceFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        list = (ListView) view.findViewById(android.R.id.list);
+        list = view.findViewById(android.R.id.list);
     }
 
     @Override

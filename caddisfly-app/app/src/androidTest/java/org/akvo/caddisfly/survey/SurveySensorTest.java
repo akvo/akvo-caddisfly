@@ -120,7 +120,7 @@ public class SurveySensorTest {
 
         onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()));
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             return;
         }

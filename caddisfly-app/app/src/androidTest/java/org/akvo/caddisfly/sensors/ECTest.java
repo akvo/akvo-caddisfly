@@ -139,7 +139,7 @@ public class ECTest {
 
         SystemClock.sleep(7000);
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             return;
         }
@@ -251,7 +251,7 @@ public class ECTest {
 
         onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()));
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             mDevice.pressBack();
 
