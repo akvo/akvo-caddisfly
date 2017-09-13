@@ -235,8 +235,6 @@ public class ECTest {
     @RequiresDevice
     public void testSensorFromSurvey() {
 
-        onView(withId(R.id.buttonSurvey)).perform(click());
-
         gotoSurveyForm();
 
         clickExternalSourceButton(TestConstant.NEXT);

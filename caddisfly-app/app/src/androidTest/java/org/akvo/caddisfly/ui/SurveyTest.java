@@ -164,8 +164,6 @@ public class SurveyTest {
 
         goToMainScreen();
 
-        onView(withId(R.id.buttonSurvey)).perform(click());
-
         gotoSurveyForm();
 
         clickExternalSourceButton(0);

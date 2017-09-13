@@ -37,7 +37,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ApkHelper;
@@ -63,14 +62,12 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity {
 
-//    private static final long DAYS_IN_MILLIS = 1000 * 60 * 60 * 24;
-    private static final int AUTO_FINISH_DELAY_MILLIS = 4000;
+    //    private static final long DAYS_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int PERMISSION_ALL = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
-//    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+    //    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
 //            AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
-    private final Handler finishOnSurveyOpenedHandler = new Handler();
 
     @BindView(R.id.coordinatorLayout)
     View coordinatorLayout;
@@ -80,8 +77,6 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.textVersionExpiry)
     TextView textVersionExpiry;
-
-    private Runnable finishRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,31 +134,6 @@ public class MainActivity extends BaseActivity {
 //            }
 //        }
 //    }
-
-    /**
-     * Navigate to the survey
-     */
-    @OnClick(R.id.buttonSurvey)
-    void navigateToSurvey() {
-        Intent intent = getPackageManager()
-                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
-        if (intent == null) {
-            alertDependantAppNotFound();
-        } else {
-
-            finishRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    finish();
-                }
-            };
-
-            finishOnSurveyOpenedHandler.postDelayed(finishRunnable, AUTO_FINISH_DELAY_MILLIS);
-
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-    }
 
     /**
      * Navigate to the strip tests
@@ -235,9 +205,6 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        // The app is active again, stop the timer that is about to close the app
-        finishOnSurveyOpenedHandler.removeCallbacks(finishRunnable);
-
         switchLayoutForDiagnosticOrUserMode();
 
         CaddisflyApp.getApp().setAppLanguage(null, false, refreshHandler);
@@ -301,13 +268,6 @@ public class MainActivity extends BaseActivity {
         AlertUtil.showMessage(this, R.string.notSupported, message);
     }
 
-    private void alertDependantAppNotFound() {
-        String message = String.format("%s%n%n%s", getString(R.string.errorAkvoFlowRequired),
-                getString(R.string.pleaseContactSupport));
-
-        AlertUtil.showMessage(this, R.string.notFound, message);
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -333,12 +293,7 @@ public class MainActivity extends BaseActivity {
                 }
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
-                        .setAction("SETTINGS", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ApiUtil.startInstalledAppDetailsActivity(activity);
-                            }
-                        });
+                        .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(activity));
 
                 TypedValue typedValue = new TypedValue();
                 getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);

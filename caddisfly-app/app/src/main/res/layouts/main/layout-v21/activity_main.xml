@@ -40,22 +40,6 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/buttonSurvey"
-                style="@style/Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
-                android:layout_marginTop="2dp"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="@string/survey"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
-
-            <Button
                 android:id="@+id/buttonStripTest"
                 style="@style/Button"
                 android:layout_width="match_parent"

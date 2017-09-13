@@ -246,8 +246,6 @@ public class CalibrationTest {
 
         goToMainScreen();
 
-        onView(withId(R.id.buttonSurvey)).perform(click());
-
         gotoSurveyForm();
 
         clickExternalSourceButton(0);
@@ -288,8 +286,6 @@ public class CalibrationTest {
 
         goToMainScreen();
 
-        onView(withId(R.id.buttonSurvey)).perform(click());
-
         gotoSurveyForm();
 
         clickExternalSourceButton(0);
@@ -302,8 +298,6 @@ public class CalibrationTest {
 
     //@Test
     public void testIncompleteCalibration() {
-
-        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 

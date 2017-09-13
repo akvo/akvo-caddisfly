@@ -286,8 +286,6 @@ public class NavigationTest {
 
         goToMainScreen();
 
-        onView(withId(R.id.buttonSurvey)).perform(click());
-
         gotoSurveyForm();
 
         clickExternalSourceButton(0);
@@ -300,8 +298,6 @@ public class NavigationTest {
         TestUtil.goBack(5);
 
         mActivityRule.launchActivity(new Intent());
-
-        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
