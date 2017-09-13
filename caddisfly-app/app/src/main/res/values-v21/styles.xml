@@ -28,6 +28,12 @@
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
     </style>
 
+    <style name="ListButton" parent="Button">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:background">#014b86</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog" />
 
     <style name="AppTheme.Dialog.Destructive">

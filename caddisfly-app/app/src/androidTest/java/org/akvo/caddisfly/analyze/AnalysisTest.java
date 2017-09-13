@@ -146,7 +146,7 @@ public class AnalysisTest {
 
         onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             onView(withText(R.string.errorCameraFlashRequired))
                     .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
@@ -208,8 +208,6 @@ public class AnalysisTest {
                 * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         goToMainScreen();
-
-        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 
@@ -321,7 +319,7 @@ public class AnalysisTest {
 
         onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             onView(withText(R.string.errorCameraFlashRequired))
                     .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
@@ -381,8 +379,6 @@ public class AnalysisTest {
                 * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         goToMainScreen();
-
-        onView(withId(R.id.buttonSurvey)).perform(click());
 
         gotoSurveyForm();
 

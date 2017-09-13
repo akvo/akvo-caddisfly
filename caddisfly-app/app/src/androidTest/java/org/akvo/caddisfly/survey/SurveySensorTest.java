@@ -98,8 +98,6 @@ public class SurveySensorTest {
 
         goToMainScreen();
 
-        onView(withId(R.id.buttonSurvey)).perform(click());
-
         gotoSurveyForm();
 
         clickExternalSourceButton(TestConstant.NEXT);

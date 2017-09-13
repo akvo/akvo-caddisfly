@@ -37,30 +37,14 @@
             android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/buttonSurvey"
-                style="@style/Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
-                android:layout_marginTop="2dp"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="@string/survey"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
+            android:orientation="vertical"
+            android:paddingTop="1dp">
 
             <Button
                 android:id="@+id/buttonStripTest"
-                style="@style/Button"
+                style="@style/ListButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -72,10 +56,9 @@
 
             <Button
                 android:id="@+id/buttonSensors"
-                style="@style/Button"
+                style="@style/ListButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -85,12 +68,11 @@
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />
 
-          <Button
+            <Button
                 android:id="@+id/buttonBluetooth"
-                style="@style/Button"
+                style="@style/ListButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -99,13 +81,12 @@
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />
-          
+
             <Button
                 android:id="@+id/buttonCbt"
-                style="@style/Button"
+                style="@style/ListButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -117,10 +98,9 @@
 
             <Button
                 android:id="@+id/buttonCalibrate"
-                style="@style/Button"
+                style="@style/ListButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -164,7 +144,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="@dimen/text_margin_bottom"
             android:layout_marginStart="16dp"
             android:ellipsize="none"
             android:gravity="start"
