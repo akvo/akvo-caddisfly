@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -37,14 +37,14 @@
             android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="1dp">
 
             <Button
                 android:id="@+id/buttonStripTest"
-                style="@style/Button"
+                style="@style/ListButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -56,10 +56,9 @@
 
             <Button
                 android:id="@+id/buttonSensors"
-                style="@style/Button"
+                style="@style/ListButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -71,10 +70,9 @@
 
             <Button
                 android:id="@+id/buttonCalibrate"
-                style="@style/Button"
+                style="@style/ListButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="-7dp"
                 android:gravity="center_vertical|start"
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
@@ -118,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="@dimen/text_margin_bottom"
             android:layout_marginStart="16dp"
             android:ellipsize="none"
             android:gravity="start"

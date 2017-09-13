@@ -38,6 +38,10 @@
         <item name="android:minHeight">65dp</item>
     </style>
 
+    <style name="ListButton" parent="Button">
+        <item name="android:layout_marginBottom">-7dp</item>
+    </style>
+
     <style name="ActionButton" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

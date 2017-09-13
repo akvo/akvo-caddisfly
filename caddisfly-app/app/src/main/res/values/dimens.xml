@@ -38,4 +38,6 @@
     <dimen name="progressTextSize">43sp</dimen>
     <dimen name="progressSubTextSize">13sp</dimen>
 
+    <dimen name="text_margin_bottom">15dp</dimen>
+
 </resources>
