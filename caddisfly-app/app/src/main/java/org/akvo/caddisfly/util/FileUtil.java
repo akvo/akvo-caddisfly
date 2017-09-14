@@ -254,6 +254,18 @@ public final class FileUtil {
                 bos.close();
                 byteArrayOutputStream.close();
                 f.close();
+
+                // Create a no media file in the folder to prevent images showing up in Gallery app
+                File noMediaFile = new File(dir, ".nomedia");
+                if (!noMediaFile.exists()) {
+                    try {
+                        //noinspection ResultOfMethodCallIgnored
+                        noMediaFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 return file.getAbsolutePath();
             } catch (IOException e) {
                 Timber.e(e);
@@ -354,12 +366,7 @@ public final class FileUtil {
 
     public static void deleteFromInternalStorage(Context context, final String contains) throws IOException {
         File file = context.getFilesDir();
-        FilenameFilter filter = new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                return filename.contains(contains);
-            }
-        };
+        FilenameFilter filter = (dir, filename) -> filename.contains(contains);
         File[] files = file.listFiles(filter);
         if (files != null) {
             for (File f : files) {

@@ -124,11 +124,15 @@
     <string name="noData">No data</string>
 
     <!--Alerts-->
-
     <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
     <string name="cannotStartTest">Cannot start test</string>
     <string name="errorTestNotAvailable">Requested test is not available</string>
     <string name="pleaseContactSupport">Please contact technical support</string>
+    <string name="calibrationExpireSoon">Calibration expires soon. Please recalibrate.</string>
+    <plurals name="calibrationWillExpire">
+        <item quantity="one">Calibration expires in %1$s day for %2$s.</item>
+        <item quantity="other">Calibration expires in %1$s days for %2$s.</item>
+    </plurals>
 
     <!--Permission-->
     <string name="storagePermission">Storage permission is required</string>
@@ -194,8 +198,15 @@
 
     <string name="versionExpired">Version expired</string>
     <string name="thisVersionHasExpired">This version of the app has expired.</string>
+    <string name="appVersionWillExpire">App version will expire soon.</string>
+    <string name="thisIsATestVersion">If this is unexpected please contact technical support.</string>
     <string name="uninstallAndInstallFromStore">Please uninstall and then install the latest version from Play Store.</string>
+    <plurals name="appWillExpireInDays">
+        <item quantity="one">App will expire in %1$s day.</item>
+        <item quantity="other">App will expire in %1$s days.</item>
+    </plurals>
 
+    <string name="ble_not_supported">BLE is not supported</string>
     <string name="connect">Connect</string>
     <string name="connected">Connected to photometer</string>
     <string name="disconnected">Disconnected</string>
