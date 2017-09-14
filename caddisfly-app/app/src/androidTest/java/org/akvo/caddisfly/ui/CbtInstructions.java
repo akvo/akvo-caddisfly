@@ -53,6 +53,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
+import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -121,16 +122,10 @@ public class CbtInstructions {
     @Test
     @FlakyTest
     public void cbtInstructions() {
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonCbt), withText("E.coli - Aquagenx CBT"),
-                        childAtPosition(
-                                allOf(withId(R.id.mainLayout),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                4),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+
+        goToMainScreen();
+
+        onView(withText("E.coli - Aquagenx CBT")).perform(click());
 
         ViewInteraction textView = onView(
                 allOf(withText("www.aquagenx.com"),

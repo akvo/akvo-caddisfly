@@ -5986,7 +5986,7 @@
       "uuid": "80697cd1-acc9-4a15-8358-f32b4257dfaf",
       "brand": "Akvo",
       "calibrate": false,
-      "ranges": "141, 235, 470, 1413, 3000, 12880",
+      "ranges": "0, 12500",
       "hasImage": false,
       "responseFormat": "$2,$1",
       "instructions": [
@@ -6255,7 +6255,7 @@
       "deviceId": "WaterEC",
       "shortCode": "econd",
       "calibrate": false,
-      "ranges": "141, 235, 470, 1413, 3000, 12880",
+      "ranges": "0, 12500",
       "hasImage": false,
       "responseFormat": "$2,$1",
       "instructions": [
@@ -6299,7 +6299,7 @@
           "unit": ""
         },
         {
-          "name": "MPN (CFU/100ml)",
+          "name": "MPN/100ml",
           "id": "2",
           "unit": ""
         },

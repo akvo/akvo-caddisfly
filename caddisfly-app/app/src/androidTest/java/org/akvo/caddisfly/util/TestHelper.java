@@ -20,12 +20,15 @@
 package org.akvo.caddisfly.util;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.StringRes;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.uiautomator.By;
@@ -36,6 +39,7 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.util.DisplayMetrics;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -262,6 +266,14 @@ public final class TestHelper {
     }
 
     public static void gotoSurveyForm() {
+
+        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        context.startActivity(intent);
+
         if (!clickListViewItem(currentHashMap.get("unnamedDataPoint"))) {
 
             UiObject addButton = mDevice.findObject(new UiSelector()

@@ -78,16 +78,8 @@ public class InstructionsTest {
 
     @Test
     public void instructionsTest() {
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonStripTest), withText("Strip Test"),
-                        childAtPosition(
-                                allOf(withId(R.id.mainLayout),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+
+        onView(withText("Strip Test")).perform(click());
 
         ViewInteraction linearLayout1 = onView(
                 allOf(childAtPosition(
@@ -265,16 +257,7 @@ public class InstructionsTest {
 
         pressBack();
 
-        ViewInteraction button3 = onView(
-                allOf(withId(R.id.buttonStripTest),
-                        childAtPosition(
-                                allOf(withId(R.id.mainLayout),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        button3.check(matches(isDisplayed()));
+        onView(withText("Strip Test")).check(matches(isDisplayed()));
 
     }
 }

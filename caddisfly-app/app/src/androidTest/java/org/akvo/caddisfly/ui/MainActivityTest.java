@@ -61,16 +61,6 @@ public class MainActivityTest {
 
         pressBack();
 
-        onView(withText("Survey")).perform(click());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        mDevice.pressBack();
-
         onView(withText("Strip Test")).perform(click());
 
         pressBack();

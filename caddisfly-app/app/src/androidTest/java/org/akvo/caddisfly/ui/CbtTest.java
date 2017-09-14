@@ -171,7 +171,7 @@ public class CbtTest {
         textView.check(matches(withText("Unsafe")));
 
         ViewInteraction textView2 = onView(
-                allOf(withText("MPN (CFU/100ml)"),
+                allOf(withText("MPN/100ml"),
                         childAtPosition(
                                 allOf(withId(R.id.layoutResult1),
                                         childAtPosition(
@@ -179,7 +179,7 @@ public class CbtTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        textView2.check(matches(withText("MPN (CFU/100ml)")));
+        textView2.check(matches(withText("MPN/100ml")));
 
         ViewInteraction textView3 = onView(
                 allOf(withId(R.id.textResult2), withText("> 100"),
