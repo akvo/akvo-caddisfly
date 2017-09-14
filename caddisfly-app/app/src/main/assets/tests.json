@@ -608,13 +608,16 @@
       ]
     },
     {
-      "name": "Nitrate 100_Quantofix",
+      "name": "Water - Nitrate 100",
       "description": "",
       "subtype": "striptest",
-      "tags": ["water quality"],
+      "tags": [
+        "water quality"
+      ],
       "uuid": "77957656-3b72-4f0f-9507-d555f04db952",
       "calibration": "07 Jun 2017 using X-Rite i1Pro 2",
       "brand": "Quantofix 91351",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 95.20,
@@ -623,13 +626,13 @@
       "hasImage": true,
       "results": [
         {
-          "id":1,
-          "name":"Nitrate",
+          "id": 1,
+          "name": "Nitrate",
           "unit": "ppm",
           "patchPos": 4.25,
-          "patchWidth":6,
+          "patchWidth": 6,
           "timeDelay": 60,
-          "colors":[
+          "colors": [
             {
               "value": 0,
               "lab": [84.59,-0.31,2.45]
@@ -661,13 +664,13 @@
           ]
         },
         {
-          "id":2,
-          "name":"Nitrite",
+          "id": 2,
+          "name": "Nitrite",
           "unit": "ppm",
           "patchPos": 13.25,
-          "patchWidth":6,
+          "patchWidth": 6,
           "timeDelay": 60,
-          "colors":[
+          "colors": [
             {
               "value": 0,
               "lab": [86.92,-1.25,2.70]
