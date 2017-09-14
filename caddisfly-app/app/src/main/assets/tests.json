@@ -17,6 +17,7 @@
       "height": 5.2,
       "unit": "mm",
       "hasImage": true,
+      "imageScale": "fitCenter",
       "results": [
         {
           "id": 1,
@@ -109,6 +110,7 @@
       "calibration": "21 Jan 2016",
       "brand": "MERCK 1095350001 colorpHast",
       "image": "MERCK-1095350001",
+      "imageScale": "fitCenter",
       "groupingType": "GROUP",
       "illuminant": "D65-2deg",
       "length": 74.3,
@@ -483,6 +485,7 @@
       "uuid": "ac533acc-8ffc-48e1-a66e-2394f9a54050",
       "calibration": "18-11-2016 using X-Rite i1Pro 2",
       "brand": "MERCK 117985",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 74,
@@ -560,6 +563,7 @@
       "uuid": "895845dd-9990-49f3-b611-420551851acd",
       "calibration": "16 Dec 2016 using X-Rite i1Pro 2, Reagecon Buffer solutions Exp. Date: 28-06-2016",
       "brand": "HACH 27456",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 82.7,
@@ -613,6 +617,7 @@
       "uuid": "99abf0cd-4697-4880-bde0-933d32d3972c",
       "calibration": "30 Jan 2017 using X-Rite i1Pro 2",
       "brand": "Quantofix 91315",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 95,
@@ -784,6 +789,7 @@
       "uuid": "4c3a4192-c484-4329-8240-71e4c7cd2280",
       "calibration": "30 Jan 2017 using X-Rite i1Pro 2",
       "brand": "Quantofix 91321",
+      "imageScale": "fitCenter",
       "groupingType": "GROUP",
       "illuminant": "D65-2deg",
       "length": 95,
@@ -967,11 +973,19 @@
       "name": "Water - Chromium",
       "subtype": "liquid-chamber",
       "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
+      "brand": "Akvo",
       "shortCode": "chrom",
       "calibrate": "true",
       "ranges": "0,0.5,1,2,3",
       "dilutions": "0,50,20",
       "monthsValid": "3",
+      "instructions": [
+        {
+          "section": [
+            "conduct_test_per_instructions"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -989,7 +1003,7 @@
         "water quality"
       ],
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
-      "brand": "Akvo Caddisfly",
+      "brand": "Akvo",
       "shortCode": "fluor",
       "calibrate": true,
       "ranges": "0,0.5,1,1.5,2",
@@ -998,6 +1012,13 @@
       "dilutions": "0,50,20",
       "monthsValid": 12,
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "conduct_test_per_instructions"
+          ]
+        }
+      ],
       "results": [
         {
           "name": "Fluoride",
@@ -1014,12 +1035,19 @@
         "water quality"
       ],
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
-      "brand": "Akvo Caddisfly",
+      "brand": "Akvo",
       "shortCode": "chlor",
       "calibrate": true,
       "ranges": "0,0.25,0.5,0.75,1.0",
       "monthsValid": 24,
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "conduct_test_per_instructions"
+          ]
+        }
+      ],
       "results": [
         {
           "name": "Free Chlorine",
@@ -1038,6 +1066,7 @@
       "uuid": "2456d482-dbec-466c-8387-411a4093f6b6",
       "calibration": "30 Jan 2017 using X-Rite i1Pro 2",
       "brand": "HACH 2755250",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 82.5,
@@ -1225,6 +1254,7 @@
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "calibration": "23 Aug 2016 using X-Rite i1Pro 2",
       "brand": "HACH 27454",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 82.6,
@@ -1316,6 +1346,7 @@
       "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
       "calibration": "16 Dec 2016 using X-Rite i1Pro 2, Reagecon Buffer solutions Exp. Date: 28-06-2016",
       "brand": "HACH 27456",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 82.7,
@@ -1370,6 +1401,7 @@
       "calibration": "21 Jan 2016",
       "brand": "MERCK 1095350001 colorpHast",
       "image": "MERCK-1095350001",
+      "imageScale": "fitCenter",
       "groupingType": "GROUP",
       "illuminant": "D65-2deg",
       "length": 74.3,
@@ -1722,6 +1754,7 @@
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
       "calibration": "23-08-2016 using X-Rite i1Pro 2",
       "brand": "HACH 27571",
+      "imageScale": "fitCenter",
       "numPatch": 1,
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
@@ -1773,6 +1806,7 @@
       "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
       "calibration": "18-11-2016 using X-Rite i1Pro 2",
       "brand": "MERCK 117985",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 74,
@@ -1821,11 +1855,18 @@
       ],
       "deviceId": "SoilEC",
       "uuid": "80697cd1-acc9-4a15-8358-f32b4257dfaf",
-      "brand": "Akvo Caddisfly",
+      "brand": "Akvo",
       "calibrate": false,
       "ranges": "141, 235, 470, 1413, 3000, 12880",
       "hasImage": false,
       "responseFormat": "$2,$1",
+      "instructions": [
+        {
+          "section": [
+            "conduct_test_per_instructions"
+          ]
+        }
+      ],
       "results": [
         {
           "name": "Soil Electrical Conductivity",
@@ -1848,9 +1889,16 @@
       ],
       "deviceId": "Soil Moisture",
       "uuid": "0b4a0aaa-f556-4c11-a539-c4626582cca6",
-      "brand": "Akvo Caddisfly",
+      "brand": "Akvo",
       "hasImage": false,
       "responseFormat": "$1",
+      "instructions": [
+        {
+          "section": [
+            "conduct_test_per_instructions"
+          ]
+        }
+      ],
       "results": [
         {
           "name": "Soil Moisture",
@@ -1869,6 +1917,7 @@
       "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
       "calibration": "23 Dec 2015 using X-Rite i1Pro 2",
       "brand": "HACH 27450",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 82.6,
@@ -1956,6 +2005,7 @@
       "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
       "calibration": "23 Aug 2016 using X-Rite i1Pro 2",
       "brand": "HACH 2745348",
+      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "illuminant": "D65-2deg",
       "length": 82.6,
@@ -2011,13 +2061,20 @@
         "water quality"
       ],
       "uuid": "f88237b7-be3d-4fac-bbee-ab328eefcd14",
-      "brand": "Akvo Caddisfly",
+      "brand": "Akvo",
       "deviceId": "WaterEC",
       "shortCode": "econd",
       "calibrate": false,
       "ranges": "141, 235, 470, 1413, 3000, 12880",
       "hasImage": false,
       "responseFormat": "$2,$1",
+      "instructions": [
+        {
+          "section": [
+            "conduct_test_per_instructions"
+          ]
+        }
+      ],
       "results": [
         {
           "name": "Electrical Conductivity",
