@@ -77,7 +77,7 @@
                 android:minHeight="80dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                android:text="MD 610 Photometer"
+                android:text="@string/md610_tests"
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />
