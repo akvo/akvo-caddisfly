@@ -1423,9 +1423,10 @@
       ]
     },
     {
-      "name": "30 Alkalinity-m, Tablet (5 - 200 mg/l CaCO3)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 30 Alkalinity-m, Tablet (5 - 200 mg/l CaCO3)",
       "title": "Alkalinity-m",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "30",
       "tags": [
@@ -1479,9 +1480,10 @@
       ]
     },
     {
-      "name": "31 Alkalinity-m HR, Tablet (5 - 500 mg/l CaCO3)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 31 Alkalinity-m HR, Tablet (5 - 500 mg/l CaCO3)",
       "title": "Alkalinity-m HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "31",
       "tags": [
@@ -1545,9 +1547,10 @@
       ]
     },
     {
-      "name": "40 Aluminium, Tablet (0.01 - 0.3 mg/l Al)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 40 Aluminium, Tablet (0.01 - 0.3 mg/l Al)",
       "title": "Aluminium",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "40",
       "tags": [
@@ -1607,9 +1610,10 @@
       ]
     },
     {
-      "name": "60 Ammonia, Tablet (0.02 - 1 mg/l N)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 60 Ammonia, Tablet (0.02 - 1 mg/l N)",
       "title": "Ammonia",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "60",
       "tags": [
@@ -1669,9 +1673,10 @@
       ]
     },
     {
-      "name": "62 Ammonia, Powder (0.01 - 0.8 mg/l N)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 62 Ammonia, Powder (0.01 - 0.8 mg/l N)",
       "title": "Ammonia",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "62",
       "tags": [
@@ -1759,9 +1764,10 @@
       ]
     },
     {
-      "name": "65 Ammonia LR, Tube (0.02 - 2.5 mg/l N)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 65 Ammonia LR, Tube (0.02 - 2.5 mg/l N)",
       "title": "Ammonia LR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "65",
       "tags": [
@@ -1843,9 +1849,10 @@
       ]
     },
     {
-      "name": "66 Ammonia HR, Tube (1 - 50 mg/l N)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 66 Ammonia HR, Tube (1 - 50 mg/l N)",
       "title": "Ammonia HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "66",
       "tags": [
@@ -1927,9 +1934,10 @@
       ]
     },
     {
-      "name": "90 Chloride, Tablet (0.5 - 25 mg/l Cl)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 90 Chloride, Tablet (0.5 - 25 mg/l Cl)",
       "title": "Chloride",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "90",
       "tags": [
@@ -1989,9 +1997,10 @@
       ]
     },
     {
-      "name": "92 Chloride, Liquid (0.5 - 20 mg/l Cl)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 92 Chloride, Liquid (0.5 - 20 mg/l Cl)",
       "title": "Chloride",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "92",
       "tags": [
@@ -2056,9 +2065,10 @@
       ]
     },
     {
-      "name": "100 Total, Free and Combined Chlorine, Tablet (0.01 - 6 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 100 Total, Free and Combined Chlorine, Tablet (0.01 - 6 mg/l Cl2)",
       "title": "Total, Free and Combined Chlorine",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "100",
       "tags": [
@@ -2147,9 +2157,10 @@
       ]
     },
     {
-      "name": "100 Free Chlorine, Tablet (0.01 - 6 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 100 Free Chlorine, Tablet (0.01 - 6 mg/l Cl2)",
       "title": "Free Chlorine",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "100",
       "tags": [
@@ -2206,9 +2217,10 @@
       ]
     },
     {
-      "name": "103 Total, Free and Combined Chlorine HR, Tablet (0.1 - 10 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 103 Total, Free and Combined Chlorine HR, Tablet (0.1 - 10 mg/l Cl2)",
       "title": "Total, Free and Combined Chlorine HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "103",
       "tags": [
@@ -2297,9 +2309,10 @@
       ]
     },
     {
-      "name": "103 Free Chlorine HR, Tablet (0.1 - 10 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 103 Free Chlorine HR, Tablet (0.1 - 10 mg/l Cl2)",
       "title": "Free Chlorine HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "103",
       "tags": [
@@ -2356,9 +2369,10 @@
       ]
     },
     {
-      "name": "101 Total, Free and Combined Chlorine, Liquid (0.02 - 4 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 101 Total, Free and Combined Chlorine, Liquid (0.02 - 4 mg/l Cl2)",
       "title": "Total, Free and Combined Chlorine",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "101",
       "tags": [
@@ -2447,9 +2461,10 @@
       ]
     },
     {
-      "name": "101 Free Chlorine, Liquid (0.02 - 4 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 101 Free Chlorine, Liquid (0.02 - 4 mg/l Cl2)",
       "title": "Free Chlorine",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "101",
       "tags": [
@@ -2506,9 +2521,10 @@
       ]
     },
     {
-      "name": "110 Total, Free and Combined Chlorine, Powder (0.02 - 2 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 110 Total, Free and Combined Chlorine, Powder (0.02 - 2 mg/l Cl2)",
       "title": "Total, Free and Combined Chlorine",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "110",
       "tags": [
@@ -2599,9 +2615,10 @@
       ]
     },
     {
-      "name": "110 Free Chlorine, Powder (0.02 - 2 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 110 Free Chlorine, Powder (0.02 - 2 mg/l Cl2)",
       "title": "Free Chlorine",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "110",
       "tags": [
@@ -2654,9 +2671,10 @@
       ]
     },
     {
-      "name": "111 Total, Free and Combined Chlorine HR, Powder (0.1 - 8 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 111 Total, Free and Combined Chlorine HR, Powder (0.1 - 8 mg/l Cl2)",
       "title": "Total, Free and Combined Chlorine HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "111",
       "tags": [
@@ -2747,9 +2765,10 @@
       ]
     },
     {
-      "name": "111 Free Chlorine HR, Powder (0.1 - 8 mg/l Cl2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 111 Free Chlorine HR, Powder (0.1 - 8 mg/l Cl2)",
       "title": "Free Chlorine HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "111",
       "tags": [
@@ -2802,9 +2821,10 @@
       ]
     },
     {
-      "name": "125 Chromium (VI, III, Total), Powder (0.02 - 2 mg/l Cr)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 125 Chromium (VI, III, Total), Powder (0.02 - 2 mg/l Cr)",
       "title": "Chromium (VI, III, Total)",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "125",
       "tags": [
@@ -2924,9 +2944,10 @@
       ]
     },
     {
-      "name": "125 Chromium (VI), Powder (0.02 - 2 mg/l Cr)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 125 Chromium (VI), Powder (0.02 - 2 mg/l Cr)",
       "title": "Chromium (VI)",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "125",
       "tags": [
@@ -2992,9 +3013,10 @@
       ]
     },
     {
-      "name": "125 Total Chromium (III+VI), Powder (0.02 - 2 mg/l Cr)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 125 Total Chromium (III+VI), Powder (0.02 - 2 mg/l Cr)",
       "title": "Total Chromium (III+VI)",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "125",
       "tags": [
@@ -3082,9 +3104,10 @@
       ]
     },
     {
-      "name": "130 COD LR, Tube (0 - 150 mg/l O2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 130 COD LR, Tube (0 - 150 mg/l O2)",
       "title": "COD LR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "130",
       "tags": [
@@ -3152,9 +3175,10 @@
       ]
     },
     {
-      "name": "131 COD MR, Tube (0 - 1500 mg/l O2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 131 COD MR, Tube (0 - 1500 mg/l O2)",
       "title": "COD MR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "131",
       "tags": [
@@ -3222,9 +3246,10 @@
       ]
     },
     {
-      "name": "132 COD HR, Tube (0 - 15 g/l O2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 132 COD HR, Tube (0 - 15 g/l O2)",
       "title": "COD HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "132",
       "tags": [
@@ -3292,9 +3317,10 @@
       ]
     },
     {
-      "name": "170 Fluoride, Liquid (0.05 - 2 mg/l F)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 170 Fluoride, Liquid (0.05 - 2 mg/l F)",
       "title": "Fluoride",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "170",
       "tags": [
@@ -3345,9 +3371,10 @@
       ]
     },
     {
-      "name": "190 Calcium Hardness, Tablet (50 - 900 mg/l CaCO3)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 190 Calcium Hardness, Tablet (50 - 900 mg/l CaCO3)",
       "title": "Calcium Hardness",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "190",
       "tags": [
@@ -3421,9 +3448,10 @@
       ]
     },
     {
-      "name": "200 Total Hardness, Tablet (2 - 50 mg/l CaCO3)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 200 Total Hardness, Tablet (2 - 50 mg/l CaCO3)",
       "title": "Total Hardness",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "200",
       "tags": [
@@ -3476,9 +3504,10 @@
       ]
     },
     {
-      "name": "201 Total Hardness HR, Tablet (20 - 500 mg/l CaCO3)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 201 Total Hardness HR, Tablet (20 - 500 mg/l CaCO3)",
       "title": "Total Hardness HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "201",
       "tags": [
@@ -3532,9 +3561,10 @@
       ]
     },
     {
-      "name": "220 Iron, Tablet (0.02 - 1 mg/l Fe 2+/3+)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 220 Iron, Tablet (0.02 - 1 mg/l Fe 2+/3+)",
       "title": "Iron",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "220",
       "tags": [
@@ -3588,9 +3618,10 @@
       ]
     },
     {
-      "name": "222 Iron, Powder (0.02 - 1 mg/l Fe 2+/3+)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 222 Iron, Powder (0.02 - 1 mg/l Fe 2+/3+)",
       "title": "Iron",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "222",
       "tags": [
@@ -3645,9 +3676,10 @@
       ]
     },
     {
-      "name": "223 Total Iron, Powder (0.02 - 1.8 mg/l Fe)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 223 Total Iron, Powder (0.02 - 1.8 mg/l Fe)",
       "title": "Total Iron",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "223",
       "tags": [
@@ -3716,9 +3748,10 @@
       ]
     },
     {
-      "name": "225 Iron LR, Liquid (0.03 - 2 mg/l Fe 2+/3+)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 225 Iron LR, Liquid (0.03 - 2 mg/l Fe 2+/3+)",
       "title": "Iron LR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "225",
       "tags": [
@@ -3772,9 +3805,10 @@
       ]
     },
     {
-      "name": "227 Iron HR, Liquid (0.1 - 10 mg/l Fe 2+/3+)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 227 Iron HR, Liquid (0.1 - 10 mg/l Fe 2+/3+)",
       "title": "Iron HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "227",
       "tags": [
@@ -3839,9 +3873,10 @@
       ]
     },
     {
-      "name": "265 Nitrate, Tube (1 - 30 mg/l NO3)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 265 Nitrate, Tube (1 - 30 mg/l NO3)",
       "title": "Nitrate",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "265",
       "tags": [
@@ -3905,9 +3940,10 @@
       ]
     },
     {
-      "name": "260 Nitrate, Tablet and Powder (0.08 - 1 mg/l NO3)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 260 Nitrate, Tablet and Powder (0.08 - 1 mg/l NO3)",
       "title": "Nitrate",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "260",
       "tags": [
@@ -3992,9 +4028,10 @@
       ]
     },
     {
-      "name": "270 Nitrite, Tablet (0.01 - 0.5 mg/l NO2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 270 Nitrite, Tablet (0.01 - 0.5 mg/l NO2)",
       "title": "Nitrite",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "270",
       "tags": [
@@ -4048,9 +4085,10 @@
       ]
     },
     {
-      "name": "272 Nitrite LR, Powder (0.01 - 0.3 mg/l NO2)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 272 Nitrite LR, Powder (0.01 - 0.3 mg/l NO2)",
       "title": "Nitrite LR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "272",
       "tags": [
@@ -4105,9 +4143,10 @@
       ]
     },
     {
-      "name": "320 Phosphate (ortho) LR, Tablet (0.05 - 4 mg/l PO4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 320 Phosphate (ortho) LR, Tablet (0.05 - 4 mg/l PO4)",
       "title": "Phosphate (ortho) LR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "320",
       "tags": [
@@ -4167,9 +4206,10 @@
       ]
     },
     {
-      "name": "321 Phosphate (ortho) HR, Tablet (1 - 80 mg/l PO4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 321 Phosphate (ortho) HR, Tablet (1 - 80 mg/l PO4)",
       "title": "Phosphate (ortho) HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "321",
       "tags": [
@@ -4229,9 +4269,10 @@
       ]
     },
     {
-      "name": "323 Phosphate (ortho) , Powder (0.06 - 2.5 mg/l PO4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 323 Phosphate (ortho) , Powder (0.06 - 2.5 mg/l PO4)",
       "title": "Phosphate (ortho)",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "323",
       "tags": [
@@ -4286,9 +4327,10 @@
       ]
     },
     {
-      "name": "334 Phosphate LR, Liquid and Powder (0.1 - 10 mg/l PO4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 334 Phosphate LR, Liquid and Powder (0.1 - 10 mg/l PO4)",
       "title": "Phosphate LR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "334",
       "tags": [
@@ -4309,11 +4351,6 @@
         {
           "name": "Phosphate",
           "id": "1",
-          "unit": "mg/l"
-        },
-        {
-          "name": "PHOSPHATE No. 2 HR P2",
-          "id": "3",
           "unit": "mg/l"
         }
       ],
@@ -4367,9 +4404,10 @@
       ]
     },
     {
-      "name": "335 Phosphate HR, Liquid and Powder (5 - 80 mg/l PO4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 335 Phosphate HR, Liquid and Powder (5 - 80 mg/l PO4)",
       "title": "Phosphate HR",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "335",
       "tags": [
@@ -4443,9 +4481,10 @@
       ]
     },
     {
-      "name": "329 pH , Tablet (5.2 - 6.8)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 329 pH , Tablet (5.2 - 6.8)",
       "title": "pH",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "329",
       "tags": [
@@ -4496,9 +4535,10 @@
       ]
     },
     {
-      "name": "330 pH, Tablet (6.5 - 8.4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 330 pH, Tablet (6.5 - 8.4)",
       "title": "pH",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "330",
       "tags": [
@@ -4549,9 +4589,10 @@
       ]
     },
     {
-      "name": "331 pH, Liquid (6.5 - 8.4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 331 pH, Liquid (6.5 - 8.4)",
       "title": "pH",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "331",
       "tags": [
@@ -4602,9 +4643,10 @@
       ]
     },
     {
-      "name": "332 pH, Tablet (8 - 9.6)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 332 pH, Tablet (8 - 9.6)",
       "title": "pH",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "332",
       "tags": [
@@ -4655,9 +4697,10 @@
       ]
     },
     {
-      "name": "340 Potassium, Tablet (0.7 - 12 mg/l K)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 340 Potassium, Tablet (0.7 - 12 mg/l K)",
       "title": "Potassium",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "340",
       "tags": [
@@ -4708,9 +4751,10 @@
       ]
     },
     {
-      "name": "355 Sulfate, Tablet (5 - 100 mg/l SO4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 355 Sulfate, Tablet (5 - 100 mg/l SO4)",
       "title": "Sulfate",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "355",
       "tags": [
@@ -4764,9 +4808,10 @@
       ]
     },
     {
-      "name": "360 Sulfate, Powder (5 - 100 mg/l SO4)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 360 Sulfate, Powder (5 - 100 mg/l SO4)",
       "title": "Sulfate",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "360",
       "tags": [
@@ -4821,9 +4866,10 @@
       ]
     },
     {
-      "name": "384 Suspended Solids,  (0 - 750 mg/l TSS)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 384 Suspended Solids,  (0 - 750 mg/l TSS)",
       "title": "Suspended Solids",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "384",
       "tags": [
@@ -4875,9 +4921,10 @@
       ]
     },
     {
-      "name": "386 Turbidity,  (0 - 1000 FAU)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 386 Turbidity,  (0 - 1000 FAU)",
       "title": "Turbidity",
       "description": "",
+      "hasImage": false,
       "subtype": "bluetooth",
       "md610_id": "386",
       "tags": [
@@ -6280,7 +6327,7 @@
       ]
     },
     {
-      "name": "E.coli – Aquagenx CBT",
+      "name": "Water - Microbiology - Aquagenx CBT -E.coli (MPN)",
       "title": "E.coli – Aquagenx CBT",
       "description": "Aquagenx Compartment Bag Test",
       "subtype": "cbt",
