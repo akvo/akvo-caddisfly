@@ -80,12 +80,13 @@ public class TestInfo implements Parcelable {
     private String responseFormat;
     private boolean deprecated;
     private JSONArray instructions;
-    private String tintometerId;
+    private String md610Id;
     private String selectInstruction;
     private ArrayList<String> reagents;
     private Serializable sampleQuantity;
     private ArrayList<String> reactionTimes;
     private String title;
+    private String brand;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -194,7 +195,7 @@ public class TestInfo implements Parcelable {
         deviceId = in.readString();
         responseFormat = in.readString();
         deprecated = in.readByte() != 0;
-        tintometerId = in.readString();
+        md610Id = in.readString();
         selectInstruction = in.readString();
         reagents = in.createStringArrayList();
         swatches = null;
@@ -389,12 +390,12 @@ public class TestInfo implements Parcelable {
         return instructions;
     }
 
-    public String getTintometerId() {
-        return tintometerId;
+    public String getMd610Id() {
+        return md610Id;
     }
 
-    public void setTintometerId(String tintometerId) {
-        this.tintometerId = tintometerId;
+    public void setMd610Id(String md610Id) {
+        this.md610Id = md610Id;
     }
 
     public String getSelectInstruction() {
@@ -430,7 +431,7 @@ public class TestInfo implements Parcelable {
         dest.writeString(deviceId);
         dest.writeString(responseFormat);
         dest.writeByte((byte) (deprecated ? 1 : 0));
-        dest.writeString(tintometerId);
+        dest.writeString(md610Id);
         dest.writeString(selectInstruction);
         dest.writeStringList(reagents);
     }
@@ -485,6 +486,14 @@ public class TestInfo implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public static class SubTest {

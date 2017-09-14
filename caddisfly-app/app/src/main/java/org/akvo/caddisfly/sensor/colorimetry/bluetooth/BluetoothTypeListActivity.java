@@ -29,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -77,12 +76,7 @@ public class BluetoothTypeListActivity extends BaseActivity {
 
         listTypes.setAdapter(testTypesAdapter);
 
-        listTypes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startDetailActivity(mTests.get(i).getId());
-            }
-        });
+        listTypes.setOnItemClickListener((adapterView, view, i, l) -> startDetailActivity(mTests.get(i).getId()));
 
         String code = getIntent().getStringExtra("testCode");
         if (code != null && !code.isEmpty()) {
@@ -155,9 +149,13 @@ public class BluetoothTypeListActivity extends BaseActivity {
 
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.item_test_type, parent, false);
-                holder = new ViewHolder(view);
-                view.setTag(holder);
+                if (inflater != null) {
+                    view = inflater.inflate(R.layout.item_test_type, parent, false);
+                    holder = new ViewHolder(view);
+                    view.setTag(holder);
+                } else {
+                    return new View(getContext());
+                }
             } else {
                 holder = (ViewHolder) view.getTag();
             }
@@ -165,18 +163,9 @@ public class BluetoothTypeListActivity extends BaseActivity {
             TestInfo testInfo = mTestInfoArray[position];
 
             if (testInfo != null) {
-                String[] values = testInfo.getName().split(",");
-
-                holder.textView.setText(values[0]);
-                for (int i = 1; i < values.length - 1; i++) {
-                    holder.textView.append(" ");
-                    holder.textView.append(values[i].trim());
-                }
-
-                holder.textSubtitle.setText("");
-                if (values.length > 1) {
-                    holder.textSubtitle.setText(values[values.length - 1].trim());
-                }
+                holder.textView.setText(String.format("%s %s", testInfo.getMd610Id(), testInfo.getTitle()));
+                holder.textSubtitle.setText(String.format("%s, %s - %s", testInfo.getBrand(),
+                        testInfo.getRangeValues()[0], testInfo.getRangeValues()[1]));
             }
 
             return view;

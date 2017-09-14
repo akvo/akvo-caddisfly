@@ -8,7 +8,6 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -73,12 +72,9 @@ public class BluetoothResultFragment extends Fragment {
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         Button buttonInstructions = view.findViewById(R.id.button_instructions);
-        buttonInstructions.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mListener != null) {
-                    mListener.onFragmentInteraction(0);
-                }
+        buttonInstructions.setOnClickListener(view1 -> {
+            if (mListener != null) {
+                mListener.onFragmentInteraction(0);
             }
         });
 
@@ -108,22 +104,19 @@ public class BluetoothResultFragment extends Fragment {
 
         mAcceptButton = view.findViewById(R.id.button_accept_result);
 
-        mAcceptButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Build the result json to be returned
-                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        mAcceptButton.setOnClickListener(view12 -> {
+            // Build the result json to be returned
+            TestInfo testInfo1 = CaddisflyApp.getApp().getCurrentTestInfo();
 
-                Intent resultIntent = new Intent(getActivity().getIntent());
+            Intent resultIntent = new Intent(getActivity().getIntent());
 
 
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
-                resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
+            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo1, results, -1, "", null);
+            resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
-                getActivity().setResult(Activity.RESULT_OK, resultIntent);
-                getActivity().finish();
+            getActivity().setResult(Activity.RESULT_OK, resultIntent);
+            getActivity().finish();
 
-            }
         });
 
         textPerformTest.setText(StringUtil.toInstruction(getActivity(), testInfo,
@@ -132,7 +125,7 @@ public class BluetoothResultFragment extends Fragment {
         return view;
     }
 
-    private AlertDialog showError(Activity activity) {
+    private void showError(Activity activity) {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(activity);
         alertDialog.setTitle(R.string.incorrect_test_selected);
@@ -142,17 +135,11 @@ public class BluetoothResultFragment extends Fragment {
                 StringUtil.toInstruction(getActivity(), null, getString(R.string.select_correct_test))
         ));
 
-        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+        alertDialog.setPositiveButton(R.string.ok, (dialogInterface, i) -> dialogInterface.dismiss());
 
         alertDialog.setCancelable(false);
         dialog = alertDialog.create();
         dialog.show();
-        return dialog;
     }
 
     public void displayWaiting() {
@@ -183,26 +170,20 @@ public class BluetoothResultFragment extends Fragment {
             builder = new AlertDialog.Builder(getActivity());
             builder.setView(showText);
 
-            builder.setPositiveButton("Copy", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+            builder.setPositiveButton("Copy", (dialog1, which) -> {
 
-                    ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
-                    ClipData clip = ClipData.newPlainText("", showText.getText());
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", showText.getText());
+                if (clipboard != null) {
                     clipboard.setPrimaryClip(clip);
-
-                    Toast.makeText(getActivity(), "Data copied to clipboard",
-                            Toast.LENGTH_SHORT)
-                            .show();
                 }
+
+                Toast.makeText(getActivity(), "Data copied to clipboard",
+                        Toast.LENGTH_SHORT)
+                        .show();
             });
 
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            builder.setNegativeButton(R.string.cancel, (dialog12, which) -> dialog12.dismiss());
 
             dialog = builder.create();
             dialog.setTitle("Received Data");
@@ -232,7 +213,7 @@ public class BluetoothResultFragment extends Fragment {
                     testId = dataArray[i].trim();
                 }
                 if (titles[i].equals("Range")) {
-                    Matcher m = Pattern.compile("([-+]?[0-9]*\\.?[0-9]+)\\-([-+]?[0-9]*\\.?[0-9]+)\\s+(.+)\\s+(.+)").matcher(dataArray[i].trim());
+                    Matcher m = Pattern.compile("([-+]?[0-9]*\\.?[0-9]+)-([-+]?[0-9]*\\.?[0-9]+)\\s+(.+)\\s+(.+)").matcher(dataArray[i].trim());
                     if (m.find()) {
                         ranges[0] = m.group(1);
                         ranges[1] = m.group(2);
@@ -319,7 +300,7 @@ public class BluetoothResultFragment extends Fragment {
         }
 
 
-        if (dataOk && testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getTintometerId())) {
+        if (dataOk && testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getMd610Id())) {
             mAcceptButton.setVisibility(View.VISIBLE);
             crossFade();
             return true;

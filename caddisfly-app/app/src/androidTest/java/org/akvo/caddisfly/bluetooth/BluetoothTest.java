@@ -55,6 +55,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
@@ -104,6 +105,9 @@ public class BluetoothTest {
     @Test
     @RequiresDevice
     public void bluetoothTest() {
+
+        goToMainScreen();
+
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.buttonBluetooth), withText("MD 610 Photometer"),
                         childAtPosition(
@@ -111,7 +115,7 @@ public class BluetoothTest {
                                         childAtPosition(
                                                 withClassName(is("android.widget.LinearLayout")),
                                                 1)),
-                                3),
+                                2),
                         isDisplayed()));
         appCompatButton.perform(click());
 

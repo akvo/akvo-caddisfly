@@ -27,7 +27,6 @@ import android.bluetooth.BluetoothGattService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -161,20 +160,10 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         ft.commit();
 
         layoutSelectTest = findViewById(R.id.selectTestLayout);
-        findViewById(R.id.buttonTestSelected).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showWaitingView();
-            }
-        });
+        findViewById(R.id.buttonTestSelected).setOnClickListener(v -> showWaitingView());
 
         Button instructionsButton = findViewById(R.id.button_instructions);
-        instructionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog = showInstructionDialog(DeviceControlActivity.this, alertDialog);
-            }
-        });
+        instructionsButton.setOnClickListener(view -> alertDialog = showInstructionDialog(DeviceControlActivity.this, alertDialog));
 
         showSelectTestView();
     }
@@ -261,15 +250,10 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             alert.setMessage(TextUtils.concat(
                     StringUtil.toInstruction(this, testInfo,
                             String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
-                                    StringUtil.convertToTags(testInfo.getTintometerId()), testInfo.getName()))
+                                    StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getName()))
             ));
 
-            alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            alert.setPositiveButton(R.string.ok, (dialogInterface, i) -> dialogInterface.dismiss());
 
             alert.setCancelable(false);
             dialog = alert.create();
@@ -301,24 +285,18 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             dlg.setMessage("Receiving data");
             dlg.setCancelable(false);
             dlg.show();
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
+            new Handler().postDelayed(() -> {
 
-                    if (mBluetoothResultFragment.displayData(fullData)) {
+                if (mBluetoothResultFragment.displayData(fullData)) {
 
-                        resultReceived = true;
-//                        if (getSupportActionBar() != null) {
-//                            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//                        }
-
-                        setTitle("Result");
-                    } else {
-                        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-                        showSelectTestView();
-                    }
-
-                    dlg.dismiss();
+                    resultReceived = true;
+                    setTitle("Result");
+                } else {
+                    registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+                    showSelectTestView();
                 }
+
+                dlg.dismiss();
             }, RESULT_DISPLAY_DELAY);
         }
     }

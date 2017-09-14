@@ -281,7 +281,7 @@ public final class TestConfigHelper {
 
             testInfo.setIsDeprecated(item.has("deprecated") && item.getBoolean("deprecated"));
 
-            testInfo.setTintometerId(item.has("md610_id") ? item.getString("md610_id") : "");
+            testInfo.setMd610Id(item.has("md610_id") ? item.getString("md610_id") : "");
 
             testInfo.setSelectInstruction(item.has("selectInstruction") ? item.getString("selectInstruction") : "");
 
@@ -292,6 +292,8 @@ public final class TestConfigHelper {
             testInfo.setReactionTime(item.has("reactionTimes") ? item.getJSONArray("reactionTimes") : new JSONArray());
 
             testInfo.setTitle(item.has("title") ? item.getString("title") : "");
+
+            testInfo.setBrand(item.has("brand") ? item.getString("brand") : "");
 
         } catch (JSONException e) {
             Timber.e(e);
