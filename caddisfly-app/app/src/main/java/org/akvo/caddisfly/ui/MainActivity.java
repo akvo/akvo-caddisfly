@@ -37,6 +37,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.ApkHelper;
@@ -44,7 +45,10 @@ import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.sensor.cbt.TestActivity;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -53,6 +57,10 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,11 +70,10 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 public class MainActivity extends BaseActivity {
 
-    //    private static final long DAYS_IN_MILLIS = 1000 * 60 * 60 * 24;
     private static final int PERMISSION_ALL = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
-    //    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
-//            AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
+    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+            AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
 
     @BindView(R.id.coordinatorLayout)
@@ -89,51 +96,15 @@ public class MainActivity extends BaseActivity {
 
         if (!ApkHelper.isStoreVersion(this)) {
 
-//            DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
-//            textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
+            DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+            textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
 
-            textVersionExpiry.setVisibility(View.GONE);
+            textVersionExpiry.setVisibility(View.VISIBLE);
 
             // If app has expired then close this activity
-//            ApkHelper.isAppVersionExpired(this);
+            ApkHelper.isAppVersionExpired(this);
         }
     }
-
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        super.onNewIntent(intent);
-//        if (!ApkHelper.isStoreVersion(this)) {
-//            if (intent.hasExtra("appExpiryNotification")) {
-//
-//                GregorianCalendar now = new GregorianCalendar();
-//                long difference = appExpiryDate.getTimeInMillis() - now.getTimeInMillis();
-//
-//                int remainingDays = (int) (difference / DAYS_IN_MILLIS);
-//
-//                String message = String.format("%s%n%n%s%n%n%s",
-//                        String.format(getResources().getQuantityString(R.plurals.appWillExpireInDays, remainingDays), remainingDays),
-//                        getString(R.string.thisIsATestVersion),
-//                        getString(R.string.uninstallAndInstallFromStore));
-//
-//                AlertDialog.Builder builder;
-//                builder = new AlertDialog.Builder(this);
-//
-//                builder.setTitle(R.string.appName)
-//                        .setMessage(message)
-//                        .setCancelable(false);
-//
-//                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-//                        dialogInterface.dismiss();
-//                    }
-//                });
-//
-//                final AlertDialog alertDialog = builder.create();
-//                alertDialog.show();
-//            }
-//        }
-//    }
 
     /**
      * Navigate to the strip tests
@@ -156,6 +127,13 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @OnClick(R.id.buttonBluetooth)
+    void navigateToMD610Tests() {
+        final Intent intent = new Intent(getBaseContext(), BluetoothTypeListActivity.class);
+        intent.putExtra("internal", true);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.buttonSensors)
     public void navigateToSensors() {
         boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
@@ -166,6 +144,16 @@ public class MainActivity extends BaseActivity {
         } else {
             alertFeatureNotSupported();
         }
+    }
+
+    @OnClick(R.id.buttonCbt)
+    public void navigateToCbt() {
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
+        Intent intent = new Intent(getIntent());
+        intent.setClass(this, TestActivity.class);
+        intent.putExtra(Constant.UUID, SensorConstants.CBT_ID);
+        intent.setFlags(0);
+        startActivityForResult(intent, 100);
     }
 
     @OnClick(R.id.buttonCalibrate)

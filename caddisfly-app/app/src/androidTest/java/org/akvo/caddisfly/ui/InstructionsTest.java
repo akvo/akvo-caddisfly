@@ -190,15 +190,15 @@ public class InstructionsTest {
                         isDisplayed()));
         textView20.check(matches(withText("Place the test strip with the patch facing left on the black area of the Colour Reference Card and press Start.")));
 
-//        ViewInteraction imageView = onView(
-//                allOf(childAtPosition(
-//                        allOf(withId(R.id.layout_instructions),
-//                                childAtPosition(
-//                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-//                                        0)),
-//                        1),
-//                        isDisplayed()));
-//        imageView.check(matches(isDisplayed()));
+        ViewInteraction imageView = onView(
+                allOf(childAtPosition(
+                        allOf(withId(R.id.layout_instructions),
+                                childAtPosition(
+                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
+                                        0)),
+                        1),
+                        isDisplayed()));
+        imageView.check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageView5 = onView(
                 allOf(withId(R.id.image_pageRight),

@@ -214,6 +214,7 @@
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
     <string name="unknown_device">Unknown</string>
 
+    <string name="md610_tests">MD610 Tests</string>
     <string name="turnOnMd610">Switch on MD610 bluetooth</string>
     <string name="press_on_button"><![CDATA[Press [*on*]]]></string>
     <string name="press_mode_button"><![CDATA[Press [*mode*] to enter menu.]]></string>
@@ -228,5 +229,8 @@
     <string name="test_selected">Test Selected</string>
     <string name="to_select_test">Selecting the test</string>
     <string name="test_instructions">Test Instructions</string>
+
+    <string name="cbt">E.coli - Aquagenx CBT</string>
+    <string name="setCompartmentColors">Set compartment colors</string>
 
 </resources>

@@ -23,7 +23,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:stretchColumns="0">
+    android:stretchColumns="1">
 
     <TextView
         android:id="@+id/textGroup"
@@ -45,42 +45,29 @@
         android:id="@+id/typeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnCount="3"
+        android:columnCount="2"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:rowCount="1"
         tools:ignore="UselessParent">
 
-        <TextView
-            android:id="@+id/textName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dp"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:paddingTop="2dp"
-            android:textIsSelectable="false"
-            android:textSize="18sp"
-            tools:text="Contaminant" />
+        <RelativeLayout android:layout_gravity="center_vertical">
 
-        <ImageView
-            android:id="@+id/imageWarning"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@null"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:src="@drawable/ic_warning_black_24dp"
-            android:visibility="gone" />
-
-        <View
-            android:layout_width="@dimen/activity_horizontal_margin"
-            android:layout_height="1dp" />
+            <TextView
+                android:id="@+id/textName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:textIsSelectable="false"
+                android:textSize="18sp"
+                tools:text="Contaminant" />
+        </RelativeLayout>
 
     </TableRow>
 </TableLayout>

@@ -18,6 +18,36 @@
       "unit": "mm",
       "hasImage": true,
       "imageScale": "fitCenter",
+      "instructions": [
+        {
+          "section": [
+            "image:instruction_collect_sample",
+            "collect_mehlich_extraction_sample"
+          ]
+        },
+        {
+          "section": [
+            "dip_strip_into_water_and_remove",
+            "image:instruction_dip"
+          ]
+        },
+        {
+          "section": [
+            "do_not_shake_excess_water"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -119,23 +149,32 @@
       "hasImage": true,
       "instructions": [
         {
-          "text": "collect_water_sample",
-          "image": "put_gloves"
+          "section": [
+            "collect_water_sample",
+            "image:instruction_collect_sample"
+          ]
         },
         {
-          "text": "dip_strip_in_water_2_seconds",
-          "image": "instruction_dip"
+          "section": [
+            "dip_strip_in_water_2_seconds",
+            "image:instruction_dip"
+          ]
         },
         {
-          "text": "shake_excess_water"
+          "section": [
+            "shake_excess_water"
+          ]
         },
         {
-          "text": "place_strip_in_black_area",
-          "image": "instruction_place_strip"
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
-          "text": "press_start_button",
-          "image": ""
+          "section": [
+            "press_start_button"
+          ]
         }
       ],
       "results": [
@@ -536,29 +575,42 @@
       "hasImage": true,
       "instructions": [
         {
-          "text": "collect_mehlich_extraction_sample",
-          "image": "instruction_collect_sample"
+          "section": [
+            "collect_mehlich_extraction_sample",
+            "image:instruction_collect_sample"
+          ]
         },
         {
-          "text": "immerse_reaction_zone",
-          "image": "instruction_dip"
+          "section": [
+            "immerse_reaction_zone",
+            "image:instruction_dip"
+          ]
         },
         {
-          "text": "allow_excess_liquid_to_run_off"
+          "section": [
+            "allow_excess_liquid_to_run_off"
+          ]
         },
         {
-          "text": "add_reagent_k1"
+          "section": [
+            "add_reagent_k1"
+          ]
         },
         {
-          "text": "allow_excess_liquid_to_run_off"
+          "section": [
+            "allow_excess_liquid_to_run_off"
+          ]
         },
         {
-          "text": "place_strip_in_black_area",
-          "image": "instruction_place_strip"
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
         },
         {
-          "text": "press_start_button",
-          "image": ""
+          "section": [
+            "press_start_button"
+          ]
         }
       ],
       "results": [
@@ -612,6 +664,31 @@
       "height": 5,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_water_extraction_sample",
+            "image:instruction_collect_sample"
+          ]
+        },
+        {
+          "section": [
+            "do_not_shake_excess_water",
+            "image:instruction_dip"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -885,6 +962,36 @@
       "height": 12.8,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_9.6ml_sample",
+            "<!>sample_size_for_4000_range<!>"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "follow_the_instructions_for_reagents"
+          ]
+        },
+        {
+          "section": [
+            "wait_20_minutes_swirl_twice"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -940,6 +1047,36 @@
       "height": 12.8,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_50ml_sample",
+            "<!>sample_size_for_500_range<!>"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "follow_the_instructions_for_reagents"
+          ]
+        },
+        {
+          "section": [
+            "wait_20_minutes_swirl_twice"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -4802,6 +4939,55 @@
       "height": 5.1,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "<b>stage_one</b>",
+            "collect_water_sample"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "dip_strip_into_water_1_second",
+            "do_not_shake_excess_water"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        },
+        {
+          "phase": 2,
+          "section": [
+            "<b>stage_two</b>",
+            "dip_strip_move_back_forth_30_seconds",
+            "dry_off_excess_water_place_on_towel"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "phase": 2,
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "phase": 2,
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -4990,6 +5176,36 @@
       "height": 5.2,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_water_sample"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "dip_strip_into_water_and_remove"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "section": [
+            "<!>do_not_shake_excess_water<!>"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -5082,6 +5298,32 @@
       "height": 5,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_water_sample"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "dip_strip_into_water_and_remove",
+            "do_not_shake_excess_water"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -5137,6 +5379,36 @@
       "height": 5.8,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_water_sample"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "dip_strip_in_water_2_seconds"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "section": [
+            "shake_excess_water"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -5553,6 +5825,32 @@
       "height": 5.2,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_water_sample"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "dip_strip_5_seconds_and_remove",
+            "do_not_shake_excess_water"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -5604,6 +5902,46 @@
       "height": 6,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_water_sample"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "immerse_reaction_zone"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "section": [
+            "allow_excess_liquid_to_run_off"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_k1"
+          ]
+        },
+        {
+          "section": [
+            "allow_excess_liquid_to_run_off"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -5715,6 +6053,32 @@
       "height": 5.2,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_water_sample"
+          ],
+          "image": "instruction_collect_sample"
+        },
+        {
+          "section": [
+            "dip_strip_move_back_forth_30_seconds",
+            "dry_off_excess_water_place_on_towel"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -5803,6 +6167,41 @@
       "height": 5.2,
       "unit": "mm",
       "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "fill_half_with_sample"
+          ]
+        },
+        {
+          "section": [
+            "open_one_foil_and_add_powder"
+          ]
+        },
+        {
+          "section": [
+            "cap_vial_and_shake_rapidly"
+          ]
+        },
+        {
+          "section": [
+            "dip_strip_move_back_forth_15_seconds",
+            "shake_excess_water"
+          ],
+          "image": "instruction_dip"
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        },
+        {
+          "section": [
+            "press_start_button"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
