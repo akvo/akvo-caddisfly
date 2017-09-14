@@ -1344,6 +1344,7 @@
       "ranges": "0,0.5,1,2,3",
       "dilutions": "0,50,20",
       "monthsValid": "3",
+      "hasImage": true,
       "instructions": [
         {
           "section": [

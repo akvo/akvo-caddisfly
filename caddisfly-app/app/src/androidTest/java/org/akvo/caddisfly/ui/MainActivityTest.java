@@ -34,8 +34,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 
 @RunWith(AndroidJUnit4.class)
@@ -76,26 +74,6 @@ public class MainActivityTest {
         onView(withText("E.coli - Aquagenx CBT")).perform(click());
 
         pressBack();
-
-        onView(withText("Survey")).perform(click());
-
-        assertFalse(mActivityTestRule.getActivity().isFinishing());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        assertFalse(mActivityTestRule.getActivity().isFinishing());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        assertTrue(mActivityTestRule.getActivity().isFinishing());
 
     }
 }
