@@ -199,7 +199,7 @@ public class TestTypeListActivity extends BaseActivity {
                     }
 
                     holder.textView.setText(brand.getName());
-                    holder.textSubtitle.setText(brand.getBrandDescription() + ", " + ranges.toString());
+                    holder.textSubtitle.setText(String.format("%s, %s", brand.getBrandDescription(), ranges.toString()));
                 }
             }
             return view;

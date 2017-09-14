@@ -19,16 +19,21 @@
 
 package org.akvo.caddisfly.sensor.instructions;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.Spanned;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,6 +45,8 @@ import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -48,6 +55,7 @@ import timber.log.Timber;
 
 public class InstructionDetailFragment extends Fragment {
 
+    private static final String ILLUSTRATION_PATH = "images/instructions/";
     private static final String ARG_ITEM_TEXT = "text";
     private static final String ARG_ITEM_IMAGE = "image";
     private static final String ARG_ITEM_INFO = "testInfo";
@@ -85,6 +93,8 @@ public class InstructionDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction_detail, container, false);
 
+        Context context = getContext();
+
         ButterKnife.bind(this, rootView);
 
         Drawable instructionDrawable = AssetsManager.getImage(getActivity(),
@@ -96,43 +106,108 @@ public class InstructionDetailFragment extends Fragment {
             imageIllustration.setImageDrawable(instructionDrawable);
         }
 
+        WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Point size = new Point();
+        if (windowManager != null) {
+            windowManager.getDefaultDisplay().getRealSize(size);
+        }
+
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+        double divisor = 3;
+        if (displayMetrics.densityDpi > 250) {
+            divisor = 2.5;
+        }
+
+        if (size.y > displayMetrics.heightPixels) {
+            divisor += 0.3;
+        }
+
+        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (int) (displayMetrics.heightPixels / divisor));
+
+        llp.setMargins(0, 0, 0, 20);
+
+
         ArrayList<String> instructionText = getArguments().getStringArrayList(ARG_ITEM_TEXT);
         if (instructionText != null) {
 
             for (String instruction : instructionText) {
-                TextView textView = new TextView(getActivity());
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                        getResources().getDimension(R.dimen.mediumTextSize));
 
-                textView.setPadding(0, 0, 0,
-                        (int) getResources().getDimension(R.dimen.activity_vertical_margin));
+                if (instruction.contains("image:")) {
 
-                textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
-                        getResources().getDisplayMetrics()), 1.0f);
+                    String imageName = instruction.substring(instruction.indexOf(":") + 1, instruction.length());
 
-                String text = instruction;
+                    int resourceId = context.getResources().getIdentifier("drawable/in_" + imageName,
+                            "id", "org.akvo.caddisfly");
 
-                textView.setTextColor(Color.DKGRAY);
+                    if (resourceId > 0) {
 
-                if (instruction.contains("<!>")) {
-                    text = instruction.replaceAll("<!>", "");
-                    textView.setTextColor(Color.RED);
-                }
+                        final AppCompatImageView imageView = new AppCompatImageView(context);
+                        imageView.setImageResource(resourceId);
+                        imageView.setLayoutParams(llp);
+                        imageView.setContentDescription(imageName);
 
-                if (instruction.contains("<b>")) {
-                    text = text.replaceAll("<b>", "").replaceAll("</b>", "");
-                    textView.setTypeface(null, Typeface.BOLD);
-                }
+                        layoutInstructions.addView(imageView);
 
-                //text = text.replace("%reagent1", testInfo.getReagent(0));
+                    } else {
 
-                Spanned spanned = StringUtil.toInstruction(getContext(), testInfo, text);
+                        InputStream ims = null;
+                        try {
+                            ims = context.getAssets().open(ILLUSTRATION_PATH + imageName + ".png");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (ims != null) {
 
-                //spanned.toString().replace("%reagent1", testInfo.getReagent(0));
+                            ImageView imageView = new ImageView(getContext());
+                            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-                if (!text.isEmpty()) {
-                    textView.append(spanned);
-                    layoutInstructions.addView(textView);
+                            imageView.setImageDrawable(Drawable.createFromStream(ims, null));
+
+                            imageView.setLayoutParams(llp);
+
+                            layoutInstructions.addView(imageView);
+                        }
+                    }
+
+                } else {
+
+                    TextView textView = new TextView(getActivity());
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                            getResources().getDimension(R.dimen.mediumTextSize));
+
+                    textView.setPadding(0, 0, 0,
+                            (int) getResources().getDimension(R.dimen.activity_vertical_margin));
+
+                    textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
+                            getResources().getDisplayMetrics()), 1.0f);
+
+                    String text = instruction;
+
+                    textView.setTextColor(Color.DKGRAY);
+
+                    if (instruction.contains("<!>")) {
+                        text = instruction.replaceAll("<!>", "");
+                        textView.setTextColor(Color.RED);
+                    }
+
+                    if (instruction.contains("<b>")) {
+                        text = text.replaceAll("<b>", "").replaceAll("</b>", "");
+                        textView.setTypeface(null, Typeface.BOLD);
+                    }
+
+                    //text = text.replace("%reagent1", testInfo.getReagent(0));
+
+                    Spanned spanned = StringUtil.toInstruction(getContext(), testInfo, text);
+
+                    //spanned.toString().replace("%reagent1", testInfo.getReagent(0));
+
+                    if (!text.isEmpty()) {
+                        textView.append(spanned);
+                        layoutInstructions.addView(textView);
+                    }
                 }
 
             }
