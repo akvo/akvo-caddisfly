@@ -22,7 +22,6 @@ package org.akvo.caddisfly.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -221,19 +220,13 @@ public class ExternalActionActivity extends BaseActivity {
 
         AlertUtil.showAlert(this, R.string.cannotStartTest,
                 message, R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        finish();
-                    }
+                (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    finish();
                 }, null,
-                new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        dialogInterface.dismiss();
-                        finish();
-                    }
+                dialogInterface -> {
+                    dialogInterface.dismiss();
+                    finish();
                 }
         );
     }
@@ -251,31 +244,22 @@ public class ExternalActionActivity extends BaseActivity {
                 getString(R.string.doYouWantToCalibrate));
 
         AlertUtil.showAlert(this, R.string.cannotStartTest, message, R.string.calibrate,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
-                        startActivity(intent);
+                (dialogInterface, i) -> {
+                    final Intent intent = new Intent(getBaseContext(), CalibrateListActivity.class);
+                    startActivity(intent);
 
-                        activity.setResult(Activity.RESULT_CANCELED);
-                        dialogInterface.dismiss();
-                        finish();
-                    }
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        activity.setResult(Activity.RESULT_CANCELED);
-                        dialogInterface.dismiss();
-                        finish();
-                    }
+                    activity.setResult(Activity.RESULT_CANCELED);
+                    dialogInterface.dismiss();
+                    finish();
+                }, (dialogInterface, i) -> {
+                    activity.setResult(Activity.RESULT_CANCELED);
+                    dialogInterface.dismiss();
+                    finish();
                 },
-                new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        activity.setResult(Activity.RESULT_CANCELED);
-                        dialogInterface.dismiss();
-                        finish();
-                    }
+                dialogInterface -> {
+                    activity.setResult(Activity.RESULT_CANCELED);
+                    dialogInterface.dismiss();
+                    finish();
                 }
         );
     }
@@ -312,12 +296,9 @@ public class ExternalActionActivity extends BaseActivity {
 
                 if (!AppPreferences.useExternalCamera()
                         && !CameraHelper.hasFeatureCameraFlash(this, R.string.cannotStartTest,
-                        R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                finish();
-                            }
+                        R.string.ok, (dialogInterface, i) -> {
+                            dialogInterface.dismiss();
+                            finish();
                         }
                 )) {
                     return;
@@ -393,19 +374,13 @@ public class ExternalActionActivity extends BaseActivity {
 
         AlertUtil.showAlert(this, R.string.notSupported, message,
                 R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        finish();
-                    }
+                (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    finish();
                 }, null,
-                new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        dialogInterface.dismiss();
-                        finish();
-                    }
+                dialogInterface -> {
+                    dialogInterface.dismiss();
+                    finish();
                 }
         );
     }
@@ -450,19 +425,13 @@ public class ExternalActionActivity extends BaseActivity {
 
         AlertUtil.showAlert(this, R.string.cannotStartTest, message,
                 R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        finish();
-                    }
+                (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    finish();
                 }, null,
-                new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        dialogInterface.dismiss();
-                        finish();
-                    }
+                dialogInterface -> {
+                    dialogInterface.dismiss();
+                    finish();
                 }
         );
     }

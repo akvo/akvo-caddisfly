@@ -29,7 +29,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -76,12 +75,7 @@ public class SensorTypeListActivity extends BaseActivity {
 
         listTypes.setAdapter(testTypesAdapter);
 
-        listTypes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startDetailActivity(mTests.get(i).getId());
-            }
-        });
+        listTypes.setOnItemClickListener((adapterView, view, i, l) -> startDetailActivity(mTests.get(i).getId()));
     }
 
     private void startDetailActivity(String uuid) {
@@ -144,9 +138,13 @@ public class SensorTypeListActivity extends BaseActivity {
 
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.item_type, parent, false);
-                holder = new ViewHolder(view);
-                view.setTag(holder);
+                if (inflater != null) {
+                    view = inflater.inflate(R.layout.item_type, parent, false);
+                    holder = new ViewHolder(view);
+                    view.setTag(holder);
+                } else {
+                    return new View(context);
+                }
             } else {
                 holder = (ViewHolder) view.getTag();
             }

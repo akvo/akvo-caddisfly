@@ -24,7 +24,6 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -80,11 +79,11 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 //                Toast.makeText(arg0, "No USB connected", Toast.LENGTH_SHORT).show();
 //            }
 
-            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) {
+            if (UsbService.ACTION_USB_PERMISSION_NOT_GRANTED.equals(arg1.getAction())) {
                 Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) {
+            } else if (UsbService.ACTION_USB_DISCONNECTED.equals(arg1.getAction())) {
                 Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) {
+            } else if (UsbService.ACTION_USB_NOT_SUPPORTED.equals(arg1.getAction())) {
                 Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
             }
         }
@@ -101,12 +100,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     private TextView textInformation;
     private Context mContext;
     private UsbService usbService;
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            requestResult();
-        }
-    };
+    private final Runnable runnable = this::requestResult;
     private TextView textId;
     private UsbDataHandler mHandler;
     @Nullable
@@ -237,68 +231,51 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         textInformation = findViewById(R.id.textInformation);
         textId = findViewById(R.id.textId);
 
-        fabEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        fabEdit.setOnClickListener(view -> showEditDetailsDialog());
+
+        buttonStartCalibrate.setOnClickListener(view -> {
+            if (usbService.isUsbConnected()) {
+
+                final ProgressDialog connectingProgressDialog = ProgressDialog.show(mContext,
+                        getString(R.string.pleaseWait), getString(R.string.deviceConnecting), true, false);
+
+                new Handler().postDelayed(runnable, 100);
+
+                new Handler().postDelayed(() -> {
+                    if (deviceHasId) {
+                        viewAnimator.showNext();
+                        fabEdit.setVisibility(View.VISIBLE);
+                        textSubtitle.setText(R.string.verifySensorDetails);
+
+                    } else {
+                        showEditDetailsDialog();
+                    }
+                    connectingProgressDialog.dismiss();
+                }, INITIAL_DELAY_MILLIS);
+
+            } else {
+                alertSensorNotFound();
+            }
+        });
+
+        buttonNext.setOnClickListener(view -> {
+            if (deviceHasId) {
+                viewAnimator.showNext();
+                fabEdit.setVisibility(View.INVISIBLE);
+
+                displayInformation(calibrationIndex);
+            } else {
                 showEditDetailsDialog();
             }
+
         });
 
-        buttonStartCalibrate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (usbService.isUsbConnected()) {
-
-                    final ProgressDialog connectingProgressDialog = ProgressDialog.show(mContext,
-                            getString(R.string.pleaseWait), getString(R.string.deviceConnecting), true, false);
-
-                    new Handler().postDelayed(runnable, 100);
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (deviceHasId) {
-                                viewAnimator.showNext();
-                                fabEdit.setVisibility(View.VISIBLE);
-                                textSubtitle.setText(R.string.verifySensorDetails);
-
-                            } else {
-                                showEditDetailsDialog();
-                            }
-                            connectingProgressDialog.dismiss();
-                        }
-                    }, INITIAL_DELAY_MILLIS);
-
-                } else {
-                    alertSensorNotFound();
-                }
-            }
-        });
-
-        buttonNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (deviceHasId) {
-                    viewAnimator.showNext();
-                    fabEdit.setVisibility(View.INVISIBLE);
-
-                    displayInformation(calibrationIndex);
-                } else {
-                    showEditDetailsDialog();
-                }
-
-            }
-        });
-
-        buttonFinishCalibrate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (usbService.isUsbConnected()) {
-                    calibratePoint(calibrationPoints, calibrationIndex);
-                    calibrationIndex++;
-                } else {
-                    alertSensorNotFound();
-                }
+        buttonFinishCalibrate.setOnClickListener(view -> {
+            if (usbService.isUsbConnected()) {
+                calibratePoint(calibrationPoints, calibrationIndex);
+                calibrationIndex++;
+            } else {
+                alertSensorNotFound();
             }
         });
     }
@@ -317,12 +294,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
                 .setMessage(spanned)
                 .setCancelable(false);
 
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                finish();
-            }
+        builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+            finish();
         });
 
         final AlertDialog alertDialog = builder.create();
@@ -379,35 +353,26 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
         progressHandler.postDelayed(progressRunnable, 100);
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(() -> {
 
-            @Override
-            public void run() {
+            String requestCommand = "SET POINT" + calibrationIndex + " " + calibrations[index] + LINE_FEED;
 
-                String requestCommand = "SET POINT" + calibrationIndex + " " + calibrations[index] + LINE_FEED;
+            usbService.write(requestCommand.getBytes(StandardCharsets.UTF_8));
 
-                usbService.write(requestCommand.getBytes(StandardCharsets.UTF_8));
+            (new Handler()).postDelayed(() -> {
 
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
+                if (calibrationIndex > 5) {
 
-                        if (calibrationIndex > 5) {
+                    AlertUtil.showAlert(mContext, R.string.calibrationSuccessful,
+                            R.string.sensorCalibrated, (dialogInterface, i) -> {
+                                dialogInterface.dismiss();
+                                finish();
+                            }, null, null);
 
-                            AlertUtil.showAlert(mContext, R.string.calibrationSuccessful,
-                                    R.string.sensorCalibrated, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                            finish();
-                                        }
-                                    }, null, null);
-
-                        } else {
-                            displayInformation(calibrationIndex);
-                        }
-                    }
-                }, 1000);
-            }
+                } else {
+                    displayInformation(calibrationIndex);
+                }
+            }, 1000);
         }, CALIBRATION_DELAY_MILLIS);
     }
 
@@ -443,20 +408,17 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
         final ProgressDialog savingProgressDialog = ProgressDialog.show(mContext,
                 getString(R.string.pleaseWait), getString(R.string.saving), true, false);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                String getIdRequest = "GET ID" + LINE_FEED;
-                usbService.write(getIdRequest.getBytes(StandardCharsets.UTF_8));
+        new Handler().postDelayed(() -> {
+            String getIdRequest = "GET ID" + LINE_FEED;
+            usbService.write(getIdRequest.getBytes(StandardCharsets.UTF_8));
 
-                displayInformation(calibrationIndex);
+            displayInformation(calibrationIndex);
 
-                savingProgressDialog.dismiss();
+            savingProgressDialog.dismiss();
 
-                if (viewAnimator.getDisplayedChild() == 0) {
-                    viewAnimator.showNext();
-                    fabEdit.setVisibility(View.VISIBLE);
-                }
+            if (viewAnimator.getDisplayedChild() == 0) {
+                viewAnimator.showNext();
+                fabEdit.setVisibility(View.VISIBLE);
             }
         }, SAVING_DELAY_MILLIS);
 

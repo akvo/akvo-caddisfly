@@ -19,12 +19,12 @@
 
 package org.akvo.caddisfly.sensor.ec;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -32,7 +32,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.text.Spanned;
 import android.util.SparseArray;
 import android.view.MenuItem;
@@ -117,15 +116,15 @@ public class SensorActivity extends BaseActivity {
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-            if (arg1.getAction().equals(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)) {
+            if (UsbService.ACTION_USB_PERMISSION_NOT_GRANTED.equals(arg1.getAction())) {
                 Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
-            } else if (arg1.getAction().equals(UsbService.ACTION_NO_USB)) {
+            } else if (UsbService.ACTION_NO_USB.equals(arg1.getAction())) {
                 displayNotConnectedView();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_DISCONNECTED)) {
+            } else if (UsbService.ACTION_USB_DISCONNECTED.equals(arg1.getAction())) {
                 Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
-            } else if (arg1.getAction().equals(UsbService.ACTION_USB_NOT_SUPPORTED)) {
+            } else if (UsbService.ACTION_USB_NOT_SUPPORTED.equals(arg1.getAction())) {
                 Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
                 displayNotConnectedView();
             }
@@ -156,17 +155,6 @@ public class SensorActivity extends BaseActivity {
     };
     private int identityCheck = 0;
     private int deviceStatus = 0;
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (deviceStatus == 1) {
-                requestResult();
-                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
-            } else {
-                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
-            }
-        }
-    };
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
@@ -194,6 +182,17 @@ public class SensorActivity extends BaseActivity {
                     }
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
+            }
+        }
+    };
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (deviceStatus == 1) {
+                requestResult();
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+            } else {
+                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
             }
         }
     };
@@ -306,12 +305,9 @@ public class SensorActivity extends BaseActivity {
                     .setMessage(spanned)
                     .setCancelable(false);
 
-            builder.setNegativeButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                    finish();
-                }
+            builder.setNegativeButton(R.string.ok, (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+                finish();
             });
 
             alertDialog = builder.create();
@@ -362,6 +358,7 @@ public class SensorActivity extends BaseActivity {
         }
     }
 
+    @SuppressLint("ShowToast")
     private void displayResult(String value) {
 
         String tempValue = value;
@@ -424,14 +421,12 @@ public class SensorActivity extends BaseActivity {
 
             if (AppPreferences.getShowDebugMessages()) {
                 final String finalValue = tempValue;
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        if (debugToast == null) {
-                            debugToast = Toast.makeText(getBaseContext(), finalValue, Toast.LENGTH_LONG);
-                        }
-                        debugToast.setText(finalValue);
-                        debugToast.show();
+                runOnUiThread(() -> {
+                    if (debugToast == null) {
+                        debugToast = Toast.makeText(getBaseContext(), finalValue, Toast.LENGTH_LONG);
                     }
+                    debugToast.setText(finalValue);
+                    debugToast.show();
                 });
             }
 

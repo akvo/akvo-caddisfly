@@ -29,7 +29,6 @@ import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -37,8 +36,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -116,15 +113,13 @@ public class CalibrateListActivity extends BaseActivity
                 startActivity(intent);
                 return true;
             case R.id.menuLoad:
-                Handler.Callback callback = new Handler.Callback() {
-                    public boolean handleMessage(Message msg) {
-                        CalibrateListFragment fragment = (CalibrateListFragment)
-                                getSupportFragmentManager()
-                                        .findFragmentById(R.id.fragmentCalibrateList);
-                        fragment.setAdapter();
-                        loadDetails();
-                        return true;
-                    }
+                Handler.Callback callback = msg -> {
+                    CalibrateListFragment fragment = (CalibrateListFragment)
+                            getSupportFragmentManager()
+                                    .findFragmentById(R.id.fragmentCalibrateList);
+                    fragment.setAdapter();
+                    loadDetails();
+                    return true;
                 };
                 loadCalibration(this, callback);
                 return true;
@@ -237,11 +232,7 @@ public class CalibrateListActivity extends BaseActivity
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         fabEditCalibration.setEnabled(false);
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                fabEditCalibration.setEnabled(true);
-            }
-        }, FREEZE_BUTTON_DELAY_MILLIS);
+        (new Handler()).postDelayed(() -> fabEditCalibration.setEnabled(true), FREEZE_BUTTON_DELAY_MILLIS);
 
         //Show edit calibration details dialog if required
         Long expiryDate = PreferencesUtil.getLong(this, currentTestInfo.getId(), R.string.calibrationExpiryDateKey);
@@ -362,12 +353,7 @@ public class CalibrateListActivity extends BaseActivity
                 }
 
                 builder.setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(@NonNull DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }
+                        (dialog, which) -> dialog.dismiss()
                 );
 
                 builder.setAdapter(arrayAdapter,
@@ -397,12 +383,7 @@ public class CalibrateListActivity extends BaseActivity
                                 } catch (Exception ex) {
                                     AlertUtil.showError(context, R.string.error, getString(R.string.errorLoadingFile),
                                             null, R.string.ok,
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(@NonNull DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
-                                                }
-                                            }, null, null);
+                                            (dialog1, which1) -> dialog1.dismiss(), null, null);
                                 }
                             }
 
@@ -410,34 +391,24 @@ public class CalibrateListActivity extends BaseActivity
                 );
 
                 final AlertDialog alertDialog = builder.create();
-                alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface dialogInterface) {
-                        final ListView listView = alertDialog.getListView();
-                        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                            @Override
-                            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                final int position = i;
+                alertDialog.setOnShowListener(dialogInterface -> {
+                    final ListView listView = alertDialog.getListView();
+                    listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                        final int position = i;
 
-                                AlertUtil.askQuestion(context, R.string.delete,
-                                        R.string.deleteConfirm, R.string.delete, R.string.cancel, true,
-                                        new DialogInterface.OnClickListener() {
-                                            @SuppressWarnings("unchecked")
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                String fileName = listFiles[position].getName();
-                                                FileUtil.deleteFile(path, fileName);
-                                                ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
-                                                listAdapter.remove(listAdapter.getItem(position));
-                                                alertDialog.dismiss();
-                                                Toast.makeText(context, R.string.deleted, Toast.LENGTH_SHORT).show();
-                                            }
-                                        }, null);
-                                return true;
-                            }
-                        });
+                        AlertUtil.askQuestion(context, R.string.delete,
+                                R.string.deleteConfirm, R.string.delete, R.string.cancel, true,
+                                (dialogInterface1, i1) -> {
+                                    String fileName = listFiles[position].getName();
+                                    FileUtil.deleteFile(path, fileName);
+                                    ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
+                                    listAdapter.remove(listAdapter.getItem(position));
+                                    alertDialog.dismiss();
+                                    Toast.makeText(context, R.string.deleted, Toast.LENGTH_SHORT).show();
+                                }, null);
+                        return true;
+                    });
 
-                    }
                 });
                 alertDialog.show();
             } else {

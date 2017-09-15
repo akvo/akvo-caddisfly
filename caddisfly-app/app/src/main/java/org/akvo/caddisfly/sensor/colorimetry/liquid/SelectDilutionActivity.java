@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -52,26 +51,11 @@ public class SelectDilutionActivity extends BaseActivity {
         percentButton1.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 2));
         percentButton2.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 5));
 
-        noDilutionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startTest(0);
-            }
-        });
+        noDilutionButton.setOnClickListener(view -> startTest(0));
 
-        percentButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startTest(1);
-            }
-        });
+        percentButton1.setOnClickListener(view -> startTest(1));
 
-        percentButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startTest(2);
-            }
-        });
+        percentButton2.setOnClickListener(view -> startTest(2));
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
         ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getTitle());
