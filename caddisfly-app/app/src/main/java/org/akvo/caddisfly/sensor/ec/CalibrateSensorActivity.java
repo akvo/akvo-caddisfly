@@ -226,9 +226,9 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
 
         fabEdit = findViewById(R.id.fabEdit);
 
-        if (!mCurrentTestInfo.getName().isEmpty()) {
+        if (!mCurrentTestInfo.getTitle().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    mCurrentTestInfo.getName());
+                    mCurrentTestInfo.getTitle());
         }
 
         calibrationPoints = mCurrentTestInfo.getRangeValues();
@@ -306,7 +306,7 @@ public class CalibrateSensorActivity extends BaseActivity implements EditSensorI
     private void alertSensorNotFound() {
 
         String message = String.format("%s<br/><br/>%s", getString(R.string.expectedDeviceNotFound),
-                getString(R.string.connectCorrectSensor, mCurrentTestInfo.getName()));
+                getString(R.string.connectCorrectSensor, mCurrentTestInfo.getTitle()));
 
         Spanned spanned = StringUtil.fromHtml(message);
 

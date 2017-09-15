@@ -291,7 +291,8 @@ public final class TestConfigHelper {
 
             testInfo.setReactionTime(item.has("reactionTimes") ? item.getJSONArray("reactionTimes") : new JSONArray());
 
-            testInfo.setTitle(item.has("title") ? item.getString("title") : "");
+            String title = item.has("title") ? item.getString("title") : "";
+            testInfo.setTitle(title.isEmpty() ? name : title);
 
             testInfo.setBrand(item.has("brand") ? item.getString("brand") : "");
 
@@ -352,7 +353,7 @@ public final class TestConfigHelper {
         try {
 
             resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
-            resultJson.put(SensorConstants.NAME, testInfo.getName());
+            resultJson.put(SensorConstants.NAME, testInfo.getTitle());
             resultJson.put(SensorConstants.UUID, testInfo.getId());
 
 

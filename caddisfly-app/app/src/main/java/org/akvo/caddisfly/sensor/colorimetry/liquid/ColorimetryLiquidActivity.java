@@ -245,7 +245,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             wakeLock = pm
                     .newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP
                             | PowerManager.ON_AFTER_RELEASE, "CameraSensorWakeLock");
-            wakeLock.acquire();
+            wakeLock.acquire(10000);
         }
     }
 
@@ -352,7 +352,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         }
 
         //set the title to the test contaminant name
-        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName());
+        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getTitle());
 
         if (testInfo.getId().isEmpty()) {
             alertCouldNotLoadConfig();
@@ -709,7 +709,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
                             PreferencesUtil.getInt(this, R.string.totalSuccessfulTestsKey, 0) + 1);
 
                 } else {
-                    String title = CaddisflyApp.getApp().getCurrentTestInfo().getName();
+                    String title = CaddisflyApp.getApp().getCurrentTestInfo().getTitle();
 
                     String message = EMPTY_STRING;
                     if (mHighLevelsFound && mDilutionLevel < 2) {
@@ -873,7 +873,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
         if (mHighLevelsFound && !isCalibration) {
             mCameraFragment.dismiss();
             sound.playShortResource(R.raw.beep_long);
-            String title = CaddisflyApp.getApp().getCurrentTestInfo().getName();
+            String title = CaddisflyApp.getApp().getCurrentTestInfo().getTitle();
 
             String message;
             //todo: remove hard coding of dilution levels

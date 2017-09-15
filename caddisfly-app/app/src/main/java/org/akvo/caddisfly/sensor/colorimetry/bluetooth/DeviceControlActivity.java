@@ -61,7 +61,8 @@ import timber.log.Timber;
  * communicates with {@code BluetoothLeService}, which in turn interacts with the
  * Bluetooth LE API.
  */
-public class DeviceControlActivity extends BaseActivity implements BluetoothResultFragment.OnFragmentInteractionListener {
+public class DeviceControlActivity extends BaseActivity
+        implements BluetoothResultFragment.OnFragmentInteractionListener {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
@@ -108,7 +109,8 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
                 invalidateOptionsMenu();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 //updateConnectionState(R.string.disconnected);
-                Toast.makeText(DeviceControlActivity.this, "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DeviceControlActivity.this,
+                        "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
 //                invalidateOptionsMenu();
                 finish();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
@@ -142,7 +144,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
 
         TextView textSelectTest = findViewById(R.id.textSelectTest);
         textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
-                testInfo.getName())));
+                testInfo.getTitle())));
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
@@ -163,7 +165,8 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
         findViewById(R.id.buttonTestSelected).setOnClickListener(v -> showWaitingView());
 
         Button instructionsButton = findViewById(R.id.button_instructions);
-        instructionsButton.setOnClickListener(view -> alertDialog = showInstructionDialog(DeviceControlActivity.this, alertDialog));
+        instructionsButton.setOnClickListener(view -> alertDialog =
+                showInstructionDialog(DeviceControlActivity.this, alertDialog));
 
         showSelectTestView();
     }
@@ -250,7 +253,7 @@ public class DeviceControlActivity extends BaseActivity implements BluetoothResu
             alert.setMessage(TextUtils.concat(
                     StringUtil.toInstruction(this, testInfo,
                             String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
-                                    StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getName()))
+                                    StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getTitle()))
             ));
 
             alert.setPositiveButton(R.string.ok, (dialogInterface, i) -> dialogInterface.dismiss());

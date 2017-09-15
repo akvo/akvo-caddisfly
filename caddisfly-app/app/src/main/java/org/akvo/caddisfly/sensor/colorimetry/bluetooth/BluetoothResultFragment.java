@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -25,8 +26,8 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
@@ -111,7 +112,8 @@ public class BluetoothResultFragment extends Fragment {
             Intent resultIntent = new Intent(getActivity().getIntent());
 
 
-            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo1, results, -1, "", null);
+            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo1,
+                    results, -1, "", null);
             resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
             getActivity().setResult(Activity.RESULT_OK, resultIntent);
@@ -120,7 +122,14 @@ public class BluetoothResultFragment extends Fragment {
         });
 
         textPerformTest.setText(StringUtil.toInstruction(getActivity(), testInfo,
-                String.format(getString(R.string.perform_test), testInfo.getName())));
+                String.format(getString(R.string.perform_test), testInfo.getTitle())));
+
+        if (AppPreferences.isDiagnosticMode()) {
+            LinearLayout layoutTitle = view.findViewById(R.id.layoutTitleBar);
+            if (layoutTitle != null) {
+                layoutTitle.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
+            }
+        }
 
         return view;
     }
@@ -131,7 +140,8 @@ public class BluetoothResultFragment extends Fragment {
         alertDialog.setTitle(R.string.incorrect_test_selected);
 
         alertDialog.setMessage(TextUtils.concat(
-                StringUtil.toInstruction(getActivity(), null, getString(R.string.data_does_not_match) + "<br /><br />"),
+                StringUtil.toInstruction(getActivity(),
+                        null, getString(R.string.data_does_not_match) + "<br /><br />"),
                 StringUtil.toInstruction(getActivity(), null, getString(R.string.select_correct_test))
         ));
 
@@ -159,11 +169,11 @@ public class BluetoothResultFragment extends Fragment {
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         // Display data received for diagnostics
-        if (PreferencesUtil.getBoolean(getActivity(), R.string.diagnosticModeKey2, false)) {
+        if (AppPreferences.showBluetoothData()) {
             AlertDialog dialog;
             AlertDialog.Builder builder;
             final TextView showText = new TextView(getActivity());
-            showText.setText(String.format("%s = %s", testInfo.getName(), data));
+            showText.setText(String.format("%s = %s", testInfo.getTitle(), data));
 
             showText.setPadding(50, 20, 40, 30);
 
@@ -213,10 +223,13 @@ public class BluetoothResultFragment extends Fragment {
                     testId = dataArray[i].trim();
                 }
                 if (titles[i].equals("Range")) {
-                    Matcher m = Pattern.compile("([-+]?[0-9]*\\.?[0-9]+)-([-+]?[0-9]*\\.?[0-9]+)\\s+(.+)\\s+(.+)").matcher(dataArray[i].trim());
+                    Matcher m =
+                            Pattern.compile("([-+]?[0-9]*\\.?[0-9]+)-([-+]?[0-9]*\\.?[0-9]+)\\s+(.+)\\s+(.+)")
+                                    .matcher(dataArray[i].trim());
                     if (m.find()) {
                         ranges[0] = m.group(1);
                         ranges[1] = m.group(2);
+                        ranges[0] = "null";
                         unit = m.group(3);
                         //String formula = m.group(4);
                     }
@@ -243,8 +256,20 @@ public class BluetoothResultFragment extends Fragment {
                         if (isText) {
                             if (ranges.length > 1) {
                                 if (result.equalsIgnoreCase("underrange")) {
+                                    try {
+                                        //noinspection ResultOfMethodCallIgnored
+                                        Double.parseDouble(ranges[0]);
+                                    } catch (Exception e) {
+                                        ranges[0] = String.valueOf(testInfo.getRangeValues()[0]);
+                                    }
                                     result = "<" + ranges[0];
                                 } else if (result.equalsIgnoreCase("overrange")) {
+                                    try {
+                                        //noinspection ResultOfMethodCallIgnored
+                                        Double.parseDouble(ranges[1]);
+                                    } catch (Exception e) {
+                                        ranges[1] = String.valueOf(testInfo.getRangeValues()[1]);
+                                    }
                                     result = ">" + ranges[1];
                                 } else if (result.equalsIgnoreCase("???")) {
                                     result = "";

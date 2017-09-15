@@ -100,4 +100,9 @@ public final class AppPreferences {
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreTimeDelaysKey, false);
     }
 
+    public static boolean showBluetoothData() {
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showBlueToothDataKey, false);
+
+    }
 }

@@ -39,6 +39,9 @@
         <CheckBoxPreference
             android:key="@string/noSoundKey"
             android:title="@string/noSound" />
+        <CheckBoxPreference
+            android:key="@string/showBlueToothDataKey"
+            android:title="@string/showBluetoothData" />
         <EditTextPreference
             android:defaultValue="5"
             android:dialogMessage="A number from 1 to 5"

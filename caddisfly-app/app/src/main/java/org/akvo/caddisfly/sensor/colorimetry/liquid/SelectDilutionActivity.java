@@ -74,7 +74,7 @@ public class SelectDilutionActivity extends BaseActivity {
         });
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getName());
+        ((TextView) findViewById(R.id.textTitle)).setText(testInfo.getTitle());
     }
 
     private void startTest(int dilution) {

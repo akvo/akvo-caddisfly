@@ -2217,158 +2217,6 @@
       ]
     },
     {
-      "name": "Water - Colorimetry - Lovibond MD610 - 103 Total, Free and Combined Chlorine HR, Tablet (0.1 - 10 mg/l Cl2)",
-      "title": "Total, Free and Combined Chlorine HR",
-      "description": "",
-      "hasImage": false,
-      "subtype": "bluetooth",
-      "md610_id": "103",
-      "tags": [
-        "water quality"
-      ],
-      "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
-      "shortCode": "103TC",
-      "brand": "Lovibond",
-      "reagents": [
-        "DPD No. 1 HR",
-        "DPD No. 3 HR tablet"
-      ],
-      "sampleQuantity": "10",
-      "reactionTimes": [
-        2
-      ],
-      "ranges": "0.1,10",
-      "results": [
-        {
-          "name": "Free Chlorine",
-          "id": "1",
-          "md610_id": "free Cl2",
-          "unit": "mg/l"
-        },
-        {
-          "name": "Combined Chlorine",
-          "id": "2",
-          "md610_id": "comb. Cl2",
-          "unit": "mg/l"
-        },
-        {
-          "name": "Total Chlorine",
-          "id": "3",
-          "md610_id": "total Cl2",
-          "unit": "mg/l"
-        }
-      ],
-      "selectInstruction": "select_diff_test_instruction",
-      "instructions": [
-        {
-          "section": [
-            "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
-          ]
-        },
-        {
-          "section": [
-            "remove_vial_leave_drops"
-          ]
-        },
-        {
-          "section": [
-            "add_reagent_1_tablet"
-          ]
-        },
-        {
-          "section": [
-            "add_water_till_10ml"
-          ]
-        },
-        {
-          "section": [
-            "close_and_swirl_vial_dissolve_tablet"
-          ]
-        },
-        {
-          "section": [
-            "wipe_place_align_vial"
-          ]
-        },
-        {
-          "section": [
-            "remove_vial"
-          ]
-        },
-        {
-          "section": [
-            "add_reagent_2_tablet"
-          ]
-        },
-        {
-          "section": [
-            "wipe_place_align_vial_wait_1"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Water - Colorimetry - Lovibond MD610 - 103 Free Chlorine HR, Tablet (0.1 - 10 mg/l Cl2)",
-      "title": "Free Chlorine HR",
-      "description": "",
-      "hasImage": false,
-      "subtype": "bluetooth",
-      "md610_id": "103",
-      "tags": [
-        "water quality"
-      ],
-      "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
-      "shortCode": "103FC",
-      "brand": "Lovibond",
-      "reagents": [
-        "DPD No. 1 HR"
-      ],
-      "sampleQuantity": "10",
-      "ranges": "0.1,10",
-      "results": [
-        {
-          "name": "Free Chlorine",
-          "id": "1",
-          "unit": "mg/l"
-        }
-      ],
-      "selectInstruction": "select_free_test_instruction",
-      "instructions": [
-        {
-          "section": [
-            "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
-          ]
-        },
-        {
-          "section": [
-            "remove_vial_leave_drops"
-          ]
-        },
-        {
-          "section": [
-            "add_reagent_1_tablet"
-          ]
-        },
-        {
-          "section": [
-            "add_water_till_10ml"
-          ]
-        },
-        {
-          "section": [
-            "close_and_swirl_vial_dissolve_tablet"
-          ]
-        },
-        {
-          "section": [
-            "wipe_place_align_vial"
-          ]
-        }
-      ]
-    },
-    {
       "name": "Water - Colorimetry - Lovibond MD610 - 101 Total, Free and Combined Chlorine, Liquid (0.02 - 4 mg/l Cl2)",
       "title": "Total, Free and Combined Chlorine",
       "description": "",
@@ -2511,6 +2359,158 @@
         {
           "section": [
             "close_swirl_mix"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Water - Colorimetry - Lovibond MD610 - 103 Total, Free and Combined Chlorine HR, Tablet (0.1 - 10 mg/l Cl2)",
+      "title": "Total, Free and Combined Chlorine HR",
+      "description": "",
+      "hasImage": false,
+      "subtype": "bluetooth",
+      "md610_id": "103",
+      "tags": [
+        "water quality"
+      ],
+      "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
+      "shortCode": "103TC",
+      "brand": "Lovibond",
+      "reagents": [
+        "DPD No. 1 HR",
+        "DPD No. 3 HR tablet"
+      ],
+      "sampleQuantity": "10",
+      "reactionTimes": [
+        2
+      ],
+      "ranges": "0.1,10",
+      "results": [
+        {
+          "name": "Free Chlorine",
+          "id": "1",
+          "md610_id": "free Cl2",
+          "unit": "mg/l"
+        },
+        {
+          "name": "Combined Chlorine",
+          "id": "2",
+          "md610_id": "comb. Cl2",
+          "unit": "mg/l"
+        },
+        {
+          "name": "Total Chlorine",
+          "id": "3",
+          "md610_id": "total Cl2",
+          "unit": "mg/l"
+        }
+      ],
+      "selectInstruction": "select_diff_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning_10ml"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial_leave_drops"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_water_till_10ml"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Water - Colorimetry - Lovibond MD610 - 103 Free Chlorine HR, Tablet (0.1 - 10 mg/l Cl2)",
+      "title": "Free Chlorine HR",
+      "description": "",
+      "hasImage": false,
+      "subtype": "bluetooth",
+      "md610_id": "103",
+      "tags": [
+        "water quality"
+      ],
+      "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
+      "shortCode": "103FC",
+      "brand": "Lovibond",
+      "reagents": [
+        "DPD No. 1 HR"
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.1,10",
+      "results": [
+        {
+          "name": "Free Chlorine",
+          "id": "1",
+          "unit": "mg/l"
+        }
+      ],
+      "selectInstruction": "select_free_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning_10ml"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial_leave_drops"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_water_till_10ml"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet"
           ]
         },
         {

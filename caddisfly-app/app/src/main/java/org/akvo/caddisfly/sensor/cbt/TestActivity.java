@@ -48,15 +48,15 @@ import java.util.UUID;
 
 public class TestActivity extends BaseActivity implements CompartmentBagFragment.OnFragmentInteractionListener {
 
-    public static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_TAKE_PHOTO = 1;
     private static final String MESSAGE_TWO_LINE_FORMAT = "%s%n%n%s";
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
-    String[] permissions = {Manifest.permission.CAMERA,
+    private final String[] permissions = {Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    CbtInstructionFragment instructionFragment;
-    String mCurrentPhotoPath;
-    String imageFileName = "";
+    private CbtInstructionFragment instructionFragment;
+    private String mCurrentPhotoPath;
+    private String imageFileName = "";
     // track if the call was made internally or from an external app
     private boolean mIsExternalAppCall = false;
     // old versions of the survey app does not expect image in result
@@ -111,7 +111,7 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (mTestInfo != null) {
-            setTitle(mTestInfo.getTitle() == null ? mTestInfo.getName() : mTestInfo.getTitle());
+            setTitle(mTestInfo.getTitle());
         }
     }
 

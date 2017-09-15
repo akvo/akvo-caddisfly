@@ -154,7 +154,7 @@ public class SensorTypeListActivity extends BaseActivity {
             TestInfo testInfo = mTestInfoArray[position];
 
             if (testInfo != null) {
-                holder.textView.setText(testInfo.getName());
+                holder.textView.setText(testInfo.getTitle());
             }
 
             return view;

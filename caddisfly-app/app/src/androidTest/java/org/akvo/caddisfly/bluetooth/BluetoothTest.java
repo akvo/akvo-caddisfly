@@ -173,31 +173,6 @@ public class BluetoothTest {
             e.printStackTrace();
         }
 
-//        ViewInteraction appCompatButton4 = onView(
-//                allOf(withId(R.id.buttonTestSelected), withText("Test Selected"),
-//                        childAtPosition(
-//                                allOf(withId(R.id.selectTestLayout),
-//                                        childAtPosition(
-//                                                withClassName(is("android.widget.RelativeLayout")),
-//                                                1)),
-//                                3),
-//                        isDisplayed()));
-//        appCompatButton4.perform(click());
-//
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        mDevice.pressBack();
-//
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.button_instructions), withText("Instructions"),
                         childAtPosition(
@@ -220,21 +195,9 @@ public class BluetoothTest {
                         isDisplayed()));
         appCompatButton6.perform(click());
 
-        ViewInteraction appCompatButton7 = onView(
-                allOf(withId(R.id.buttonTestSelected), withText("Test Selected"),
-                        childAtPosition(
-                                allOf(withId(R.id.selectTestLayout),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                3),
-                        isDisplayed()));
-        appCompatButton7.perform(click());
+        onView(withText(R.string.test_selected)).perform(click());
 
-        ViewInteraction appCompatButton8 = onView(
-                allOf(withId(R.id.button_instructions),
-                        isDisplayed()));
-        appCompatButton8.perform(click());
+        onView(withText("Test Instructions")).perform(click());
 
         onView(withText(R.string.fill_vial_24_with_10ml_sample_zero))
                 .check(matches(isDisplayed()));

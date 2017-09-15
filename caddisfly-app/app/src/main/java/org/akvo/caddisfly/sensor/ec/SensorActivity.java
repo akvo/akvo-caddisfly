@@ -291,12 +291,12 @@ public class SensorActivity extends BaseActivity {
 
         buttonAcceptResult.setVisibility(View.INVISIBLE);
 
-        if (mCurrentTestInfo != null && !mCurrentTestInfo.getName().isEmpty()) {
+        if (mCurrentTestInfo != null && !mCurrentTestInfo.getTitle().isEmpty()) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    mCurrentTestInfo.getName());
+                    mCurrentTestInfo.getTitle());
 
             String message = String.format("%s<br/><br/>%s", getString(R.string.expectedDeviceNotFound),
-                    getString(R.string.connectCorrectSensor, mCurrentTestInfo.getName()));
+                    getString(R.string.connectCorrectSensor, mCurrentTestInfo.getTitle()));
             Spanned spanned = StringUtil.fromHtml(message);
 
             AlertDialog.Builder builder;

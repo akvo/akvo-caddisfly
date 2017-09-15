@@ -88,6 +88,7 @@
     <string name="legalInformation">Legal Information</string>
 
     <string name="selectTest">Select Test</string>
+    <string name="awaitingResult">Awaiting result</string>
     <string name="calibrationDetails">Calibration Details</string>
 
     <string name="customTests">Custom tests</string>

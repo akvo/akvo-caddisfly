@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="sans-serif-light"
-                android:text="Awaiting result"
+                android:text="@string/awaitingResult"
                 android:textColor="#fff"
                 android:textSize="30sp" />
 
@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:layout_marginTop="40dp"
+            android:visibility="gone"
             android:indeterminate="true" />
 
         <Button

@@ -164,7 +164,7 @@ public class ExternalActionActivity extends BaseActivity {
                 alertTestTypeNotSupported();
             } else {
                 ((TextView) findViewById(R.id.textTitle)).setText(
-                        CaddisflyApp.getApp().getCurrentTestInfo().getName());
+                        CaddisflyApp.getApp().getCurrentTestInfo().getTitle());
 
                 String[] permissions = {};
                 if (CaddisflyApp.getApp().getCurrentTestInfo().requiresCameraFlash()) {
@@ -246,7 +246,7 @@ public class ExternalActionActivity extends BaseActivity {
         final Activity activity = this;
 
         String message = getString(R.string.errorCalibrationIncomplete,
-                CaddisflyApp.getApp().getCurrentTestInfo().getName());
+                CaddisflyApp.getApp().getCurrentTestInfo().getTitle());
         message = String.format(MESSAGE_TWO_LINE_FORMAT, message,
                 getString(R.string.doYouWantToCalibrate));
 

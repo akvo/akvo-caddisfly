@@ -164,7 +164,7 @@ public class CalibrateListActivity extends BaseActivity
             finish();
             return;
         }
-        textTitle.setText(testInfo.getName());
+        textTitle.setText(testInfo.getTitle());
 
         if (AppPreferences.isDiagnosticMode()) {
             fabEditCalibration.setBackgroundTintList(

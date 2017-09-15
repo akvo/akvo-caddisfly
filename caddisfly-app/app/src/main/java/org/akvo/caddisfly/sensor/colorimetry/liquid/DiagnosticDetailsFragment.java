@@ -109,10 +109,10 @@ public class DiagnosticDetailsFragment extends DialogFragment {
                 textQuality.setText(String.format(Locale.getDefault(), "Q: %.0f%%", photoColor.getQuality()));
 
                 if (result > -1) {
-                    textResult.setText(String.format(Locale.getDefault(), "%s : %.2f %s", currentTestInfo.getName(),
+                    textResult.setText(String.format(Locale.getDefault(), "%s : %.2f %s", currentTestInfo.getTitle(),
                             result, currentTestInfo.getUnit()));
                 } else {
-                    textResult.setText(String.format("%s", currentTestInfo.getName()));
+                    textResult.setText(String.format("%s", currentTestInfo.getTitle()));
                 }
 
                 buttonColorExtract.setBackgroundColor(color);
