@@ -606,11 +606,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -681,11 +676,6 @@
           "section": [
             "place_strip_clr",
             "image:place_clr"
-          ]
-        },
-        {
-          "section": [
-            "press_start_button"
           ]
         }
       ],
@@ -985,11 +975,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -1069,11 +1054,6 @@
           "section": [
             "place_strip_clr",
             "image:place_clr"
-          ]
-        },
-        {
-          "section": [
-            "press_start_button"
           ]
         }
       ],
@@ -5009,11 +4989,6 @@
           ]
         },
         {
-          "section": [
-            "press_start_button"
-          ]
-        },
-        {
           "phase": 2,
           "section": [
             "<b>stage_two</b>",
@@ -5027,12 +5002,6 @@
           "section": [
             "place_strip_clr",
             "image:place_clr"
-          ]
-        },
-        {
-          "phase": 2,
-          "section": [
-            "press_start_button"
           ]
         }
       ],
@@ -5247,11 +5216,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -5365,11 +5329,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -5449,11 +5408,6 @@
           "section": [
             "place_strip_clr",
             "image:place_clr"
-          ]
-        },
-        {
-          "section": [
-            "press_start_button"
           ]
         }
       ],
@@ -5892,11 +5846,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -5982,11 +5931,6 @@
           "section": [
             "place_strip_clr",
             "image:place_clr"
-          ]
-        },
-        {
-          "section": [
-            "press_start_button"
           ]
         }
       ],
@@ -6120,11 +6064,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -6243,11 +6182,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -6349,7 +6283,7 @@
         {
           "name": "MPN/100ml",
           "id": "2",
-          "unit": ""
+          "unit": "MPN/100ml"
         },
         {
           "name": "Upper 95% Confidence Interval",

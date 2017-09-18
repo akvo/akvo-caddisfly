@@ -41,20 +41,6 @@
             android:paddingTop="1dp">
 
             <Button
-                android:id="@+id/buttonStripTest"
-                style="@style/ListButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="@string/stripTest"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
-
-            <Button
                 android:id="@+id/buttonSensors"
                 style="@style/ListButton"
                 android:layout_width="match_parent"
@@ -64,6 +50,20 @@
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
                 android:text="@string/sensors"
+                android:textAlignment="viewStart"
+                android:textColor="?longButtonText"
+                android:theme="?longButtonStyle" />
+
+            <Button
+                android:id="@+id/buttonStripTest"
+                style="@style/ListButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:minHeight="80dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:text="@string/stripTest"
                 android:textAlignment="viewStart"
                 android:textColor="?longButtonText"
                 android:theme="?longButtonStyle" />

@@ -116,10 +116,10 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                 try {
                     for (int i = 0; i < instructions.length(); i++) {
 
-                        JSONObject object = instructions.getJSONObject(i);
-                        Object item = instructions.getJSONObject(i).get("text");
+                        JSONObject instruction = instructions.getJSONObject(i);
+                        Object item = instruction.get("section");
 
-                        if ((object.has("phase") ? object.getInt("phase") : 1) == phase) {
+                        if ((instruction.has("phase") ? instruction.getInt("phase") : 1) == phase) {
                             JSONArray jsonArray;
 
                             if (item instanceof JSONArray) {
@@ -131,7 +131,9 @@ public class InstructionFragment extends CameraSharedFragmentBase {
                             }
 
                             for (int j = 0; j < jsonArray.length(); j++) {
-                                showInstruction(linearLayout, jsonArray.getString(j), Typeface.NORMAL);
+                                if (!jsonArray.getString(j).startsWith("image:")) {
+                                    showInstruction(linearLayout, jsonArray.getString(j), Typeface.NORMAL);
+                                }
                             }
                         }
                     }
@@ -142,14 +144,12 @@ public class InstructionFragment extends CameraSharedFragmentBase {
 
         }
 
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                buttonStart.setEnabled(true);
-                AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
-                buttonStart.setAlpha(1f);
-                animation.setDuration(ANIMATION_DURATION_MILLIS);
-                buttonStart.startAnimation(animation);
-            }
+        (new Handler()).postDelayed(() -> {
+            buttonStart.setEnabled(true);
+            AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
+            buttonStart.setAlpha(1f);
+            animation.setDuration(ANIMATION_DURATION_MILLIS);
+            buttonStart.startAnimation(animation);
         }, BUTTON_ENABLE_DELAY);
 
 

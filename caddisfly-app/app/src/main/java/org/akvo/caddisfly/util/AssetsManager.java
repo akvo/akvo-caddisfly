@@ -57,7 +57,7 @@ public final class AssetsManager {
         String path = context.getResources().getString(R.string.instruction_images);
         try {
 
-            InputStream ims = context.getAssets().open(path + "/" + imageName.toLowerCase(Locale.US) + ".png");
+            InputStream ims = context.getAssets().open(path + "/" + imageName.toLowerCase(Locale.US) + ".webp");
 
             return Drawable.createFromStream(ims, null);
 

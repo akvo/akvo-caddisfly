@@ -65,7 +65,7 @@ public class TestInfoViewModel {
                 } else if (text.contains("image:")) {
 
                     String imageName = text.substring(text.indexOf(":") + 1, text.length());
-                    String image = ILLUSTRATION_PATH + imageName + ".png";
+                    String image = ILLUSTRATION_PATH + imageName + ".webp";
 
                     InputStream ims = null;
                     try {

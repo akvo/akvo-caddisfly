@@ -155,7 +155,7 @@ public class InstructionDetailFragment extends Fragment {
 
                         InputStream ims = null;
                         try {
-                            ims = context.getAssets().open(ILLUSTRATION_PATH + imageName + ".png");
+                            ims = context.getAssets().open(ILLUSTRATION_PATH + imageName + ".webp");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
