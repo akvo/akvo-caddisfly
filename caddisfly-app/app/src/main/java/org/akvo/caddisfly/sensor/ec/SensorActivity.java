@@ -78,7 +78,6 @@ public class SensorActivity extends BaseActivity {
     private static final String LINE_FEED = "\r\n";
     private static final String EMPTY_STRING = "";
 
-    private final StringBuilder mReadData = new StringBuilder();
     private final Handler handler = new Handler();
     private final SparseArray<String> results = new SparseArray<>();
 
@@ -155,6 +154,17 @@ public class SensorActivity extends BaseActivity {
     };
     private int identityCheck = 0;
     private int deviceStatus = 0;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (deviceStatus == 1) {
+                requestResult();
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+            } else {
+                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
+            }
+        }
+    };
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
@@ -182,17 +192,6 @@ public class SensorActivity extends BaseActivity {
                     }
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
-            }
-        }
-    };
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (deviceStatus == 1) {
-                requestResult();
-                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
-            } else {
-                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
             }
         }
     };
@@ -348,7 +347,6 @@ public class SensorActivity extends BaseActivity {
 
     private void displayNotConnectedView() {
         if (!isFinishing()) {
-            mReadData.setLength(0);
             progressWait.setVisibility(View.GONE);
             layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
             imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);

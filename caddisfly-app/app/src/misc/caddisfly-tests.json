@@ -555,19 +555,6 @@
       ]
     },
     {
-      "name": "Water - Colorimetry - Lovibond MD610 - 292 Dissolved Oxygen, Vacu-vials® (10 - 800 μg/l  O2)",
-      "brand": "Lovibond",
-      "uuid": "15198865-9397-417e-b7e0-b59b2eb197fc",
-      "hasImage": false,
-      "results": [
-        {
-          "name": "Dissolved Oxygen",
-          "id": "1",
-          "unit": "μg/l"
-        }
-      ]
-    },
-    {
       "name": "Water - Colorimetry - Lovibond MD610 - 320 Phosphate (ortho) LR, Tablet (0.05 - 4 mg/l PO4)",
       "brand": "Lovibond",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",

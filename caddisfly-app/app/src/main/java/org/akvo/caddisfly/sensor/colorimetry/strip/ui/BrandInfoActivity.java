@@ -21,7 +21,6 @@ package org.akvo.caddisfly.sensor.colorimetry.strip.ui;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -37,7 +36,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,7 +67,8 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class BrandInfoActivity extends BaseActivity {
 
     private static final int PERMISSION_ALL = 1;
-    private static final String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private static final String[] PERMISSIONS = {Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
 
     @BindView(R.id.button_instructions)
@@ -176,12 +175,7 @@ public class BrandInfoActivity extends BaseActivity {
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, getString(R.string.cameraAndStoragePermissions),
                                 Snackbar.LENGTH_LONG)
-                        .setAction("SETTINGS", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ApiUtil.startInstalledAppDetailsActivity(activity);
-                            }
-                        });
+                        .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(activity));
 
                 TypedValue typedValue = new TypedValue();
                 getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
@@ -208,33 +202,24 @@ public class BrandInfoActivity extends BaseActivity {
 
                     View checkBoxView = View.inflate(this, R.layout.dialog_message, null);
                     CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
-                    checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            PreferencesUtil.setBoolean(getBaseContext(), R.string.showMinMegaPixelDialogKey, !isChecked);
-                        }
-                    });
+                    checkBox.setOnCheckedChangeListener((buttonView, isChecked)
+                            -> PreferencesUtil.setBoolean(getBaseContext(), R.string.showMinMegaPixelDialogKey, !isChecked));
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(R.string.warning);
                     builder.setMessage(R.string.camera_not_good)
                             .setView(checkBoxView)
                             .setCancelable(false)
-                            .setPositiveButton(R.string.continue_anyway, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                            .setPositiveButton(R.string.continue_anyway, (dialog, id) -> {
 
-                                    Intent intent = new Intent(getIntent());
-                                    intent.setClass(getBaseContext(), CameraActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    startActivityForResult(intent, 100);
-                                }
+                                Intent intent = new Intent(getIntent());
+                                intent.setClass(getBaseContext(), CameraActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivityForResult(intent, 100);
                             })
-                            .setNegativeButton(R.string.stop_test, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                    finish();
-                                }
+                            .setNegativeButton(R.string.stop_test, (dialog, id) -> {
+                                dialog.dismiss();
+                                finish();
                             }).show();
 
                 } else {
