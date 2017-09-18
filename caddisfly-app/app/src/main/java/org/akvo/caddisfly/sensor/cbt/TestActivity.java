@@ -6,29 +6,30 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.databinding.ActivityTestBinding;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.MpnValue;
@@ -36,6 +37,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PermissionsDelegate;
 import org.akvo.caddisfly.util.StringUtil;
@@ -43,41 +45,32 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 public class TestActivity extends BaseActivity implements CompartmentBagFragment.OnFragmentInteractionListener {
 
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private static final String MESSAGE_TWO_LINE_FORMAT = "%s%n%n%s";
-    private final WeakRefHandler handler = new WeakRefHandler(this);
+    private static final float SNACK_BAR_LINE_SPACING = 1.4f;
+
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
     private final String[] permissions = {Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private CoordinatorLayout coordinatorLayout;
     private CbtInstructionFragment instructionFragment;
     private String mCurrentPhotoPath;
     private String imageFileName = "";
-    // track if the call was made internally or from an external app
-    private boolean mIsExternalAppCall = false;
-    // old versions of the survey app does not expect image in result
-    private boolean mCallerExpectsImageInResult = true;
-    // the test type requested
-    @Nullable
-    private String mTestTypeUuid;
-    // the language requested by the external app
-    private String mExternalAppLanguageCode;
     private boolean hasPermissions;
     private TestInfo mTestInfo;
     private String mResult = "00000";
-
     private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityTestBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.activity_test);
+        DataBindingUtil.setContentView(this, R.layout.activity_test);
+
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         hasPermissions = permissionsDelegate.hasPermissions(permissions);
 
@@ -102,8 +95,24 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
+        if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
             startTest();
+        } else {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, getString(R.string.cameraAndStoragePermissions),
+                            Snackbar.LENGTH_LONG)
+                    .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(this));
+
+            TypedValue typedValue = new TypedValue();
+            getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+            snackbar.setActionTextColor(typedValue.data);
+            View snackView = snackbar.getView();
+            TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
+            textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
         }
     }
 
@@ -282,29 +291,6 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
         finish();
     }
 
-    @NonNull
-    @Deprecated
-    private String getTestName(@NonNull String title) {
-
-        String tempTitle = title;
-        //ensure we have short name to display as title
-        if (title.length() > 0) {
-            if (title.length() > 30) {
-                tempTitle = title.substring(0, 30);
-            }
-            if (title.contains("-")) {
-                tempTitle = title.substring(0, title.indexOf("-")).trim();
-            }
-        } else {
-            tempTitle = getString(R.string.error);
-        }
-        return tempTitle;
-    }
-
-//    private void startTest(String uuid) {
-//        navigationController.navigateToTest(this, uuid);
-//    }
-
     public static class IncubationTimesDialogFragment extends DialogFragment {
         @NonNull
         @SuppressLint("InflateParams")
@@ -321,25 +307,4 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
             return builder.create();
         }
     }
-
-    /**
-     * Handler to restart the app after language has been changed.
-     */
-    private static class WeakRefHandler extends Handler {
-        @NonNull
-        private final WeakReference<Activity> ref;
-
-        WeakRefHandler(Activity ref) {
-            this.ref = new WeakReference<>(ref);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            Activity f = ref.get();
-            if (f != null) {
-                f.recreate();
-            }
-        }
-    }
-
 }

@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.util;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
@@ -59,25 +58,10 @@ public class PermissionsDelegate {
     }
 
     public boolean resultGranted(int requestCode,
-                                 String[] permissions,
                                  int[] grantResults) {
 
-        if (requestCode != REQUEST_CODE) {
-            return false;
-        }
+        return requestCode == REQUEST_CODE && grantResults.length >= 1
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED;
 
-        if (grantResults.length < 1) {
-            return false;
-        }
-        if (!(permissions[0].equals(Manifest.permission.CAMERA))) {
-            return false;
-        }
-
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-
-        requestPermissions(permissions);
-        return false;
     }
 }
