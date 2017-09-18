@@ -991,7 +991,7 @@
     },
     {
       "name": "Water - Sensors - Caddisfly - Electrical Conductivity,  (0 - 12500)",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "uuid": "f88237b7-be3d-4fac-bbee-ab328eefcd14",
       "hasImage": false,
       "results": [
@@ -1009,7 +1009,7 @@
     },
     {
       "name": "Soil - Sensors - Caddisfly - Electrical Conductivity,  (us/cm)",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "uuid": "80697cd1-acc9-4a15-8358-f32b4257dfaf",
       "hasImage": false,
       "results": [
@@ -1027,7 +1027,7 @@
     },
     {
       "name": "Soil - Sensors - Caddisfly - Moisture (VWC)",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "uuid": "0b4a0aaa-f556-4c11-a539-c4626582cca6",
       "hasImage": false,
       "results": [
@@ -1040,7 +1040,7 @@
     },
     {
       "name": "Water - Colorimetry - Caddisfly - Fluoride (0 – 2 mg/l F)",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
       "hasImage": true,
       "results": [
@@ -1053,7 +1053,7 @@
     },
     {
       "name": "Water - Colorimetry - Caddisfly - Free Chlorine (0 – 3 mg/l Cl2)",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
       "hasImage": true,
       "results": [
@@ -1066,7 +1066,7 @@
     },
     {
       "name": "Water - Colorimetry - Caddisfly - Chromium",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
       "hasImage": true,
       "results": [

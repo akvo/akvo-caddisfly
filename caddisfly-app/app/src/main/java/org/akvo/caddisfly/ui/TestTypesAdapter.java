@@ -31,6 +31,10 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
  * Adapter to list the various contaminant test types
  */
@@ -66,6 +70,20 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
         } else {
             rowView.findViewById(R.id.textGroup).setVisibility(View.GONE);
             ((TextView) rowView.findViewById(R.id.textName)).setText(testInfo.getTitle());
+
+            String range = "";
+
+            if (testInfo.getRangeValues().length > 1) {
+
+                NumberFormat nf = new DecimalFormat("##.###");
+
+                range = String.format(Locale.US, ", %s - %s",
+                        nf.format(testInfo.getRangeValues()[0]),
+                        nf.format(testInfo.getRangeValues()[testInfo.getRangeValues().length - 1]));
+            }
+
+            ((TextView) rowView.findViewById(R.id.text_subtitle))
+                    .setText(String.format("%s%s", testInfo.getBrand(), range));
         }
 
         return rowView;

@@ -41,7 +41,10 @@ import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class BluetoothTypeListActivity extends BaseActivity {
 
@@ -164,8 +167,20 @@ public class BluetoothTypeListActivity extends BaseActivity {
 
             if (testInfo != null) {
                 holder.textView.setText(String.format("%s %s", testInfo.getMd610Id(), testInfo.getTitle()));
-                holder.textSubtitle.setText(String.format("%s, %s - %s", testInfo.getBrand(),
-                        testInfo.getRangeValues()[0], testInfo.getRangeValues()[1]));
+
+                String range = "";
+
+                if (testInfo.getRangeValues().length > 1) {
+
+                    NumberFormat nf = new DecimalFormat("##.###");
+
+                    range = String.format(Locale.US, ", %s - %s",
+                            nf.format(testInfo.getRangeValues()[0]),
+                            nf.format(testInfo.getRangeValues()[testInfo.getRangeValues().length - 1]));
+                }
+
+                holder.textSubtitle.setText(String.format("%s%s", testInfo.getBrand(), range));
+
             }
 
             return view;

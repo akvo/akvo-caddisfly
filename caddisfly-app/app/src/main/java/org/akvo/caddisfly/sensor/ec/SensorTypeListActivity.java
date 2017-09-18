@@ -41,6 +41,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 import java.util.List;
+import java.util.Locale;
 
 public class SensorTypeListActivity extends BaseActivity {
 
@@ -139,7 +140,7 @@ public class SensorTypeListActivity extends BaseActivity {
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 if (inflater != null) {
-                    view = inflater.inflate(R.layout.item_type, parent, false);
+                    view = inflater.inflate(R.layout.item_test_type, parent, false);
                     holder = new ViewHolder(view);
                     view.setTag(holder);
                 } else {
@@ -153,6 +154,15 @@ public class SensorTypeListActivity extends BaseActivity {
 
             if (testInfo != null) {
                 holder.textView.setText(testInfo.getTitle());
+
+                String range = "";
+
+                if (testInfo.getRangeValues().length > 1) {
+                    range = String.format(Locale.US, ", %.0f - %.0f",
+                            testInfo.getRangeValues()[0], testInfo.getRangeValues()[1]);
+                }
+
+                holder.subTitle.setText(String.format("%s%s", testInfo.getBrand(), range));
             }
 
             return view;
@@ -162,9 +172,11 @@ public class SensorTypeListActivity extends BaseActivity {
 
             @NonNull
             private final TextView textView;
+            private final TextView subTitle;
 
             ViewHolder(@NonNull View v) {
                 textView = v.findViewById(R.id.text_title);
+                subTitle = v.findViewById(R.id.text_subtitle);
             }
         }
     }

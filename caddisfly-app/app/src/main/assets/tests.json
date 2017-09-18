@@ -1318,7 +1318,7 @@
       "name": "Water - Chromium",
       "subtype": "liquid-chamber",
       "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "shortCode": "chrom",
       "calibrate": "true",
       "ranges": "0,0.5,1,2,3",
@@ -1349,7 +1349,7 @@
         "water quality"
       ],
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "shortCode": "fluor",
       "calibrate": true,
       "ranges": "0,0.5,1,1.5,2",
@@ -1381,7 +1381,7 @@
         "water quality"
       ],
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "shortCode": "chlor",
       "calibrate": true,
       "ranges": "0,0.25,0.5,0.75,1.0",
@@ -5976,7 +5976,7 @@
       ],
       "deviceId": "SoilEC",
       "uuid": "80697cd1-acc9-4a15-8358-f32b4257dfaf",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "calibrate": false,
       "ranges": "0, 12500",
       "hasImage": false,
@@ -6010,7 +6010,7 @@
       ],
       "deviceId": "Soil Moisture",
       "uuid": "0b4a0aaa-f556-4c11-a539-c4626582cca6",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "hasImage": false,
       "responseFormat": "$1",
       "instructions": [
@@ -6227,13 +6227,13 @@
     },
     {
       "name": "Water - Electrical Conductivity",
-      "description": "Electrical Conductivity of water. 0 - 20.000 μS/cm",
+      "description": "Electrical Conductivity of water. 0 - 12500 μS/cm",
       "subtype": "sensor",
       "tags": [
         "water quality"
       ],
       "uuid": "f88237b7-be3d-4fac-bbee-ab328eefcd14",
-      "brand": "Akvo",
+      "brand": "Caddisfly",
       "deviceId": "WaterEC",
       "shortCode": "econd",
       "calibrate": false,
