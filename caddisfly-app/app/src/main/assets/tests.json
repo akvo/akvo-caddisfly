@@ -6283,7 +6283,7 @@
         {
           "name": "MPN/100ml",
           "id": "2",
-          "unit": "MPN/100ml"
+          "unit": ""
         },
         {
           "name": "Upper 95% Confidence Interval",
