@@ -213,6 +213,7 @@
     <string name="disconnected">Disconnected</string>
     <string name="title_devices">BLE Device Scan</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+    <string name="location_permission">Location permission is required for bluetooth connection</string>
     <string name="unknown_device">Unknown</string>
 
     <string name="turnOnMd610">Switch on MD610 bluetooth</string>
