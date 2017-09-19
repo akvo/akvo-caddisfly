@@ -148,7 +148,7 @@ public class BrandInfoActivity extends BaseActivity {
 
     @OnClick(R.id.button_instructions)
     public void showInstructions() {
-        Intent intent = new Intent(getBaseContext(), InstructionActivity.class);
+        Intent intent = new Intent(this, InstructionActivity.class);
         intent.putExtra(Constant.UUID, mUuid);
         startActivity(intent);
     }

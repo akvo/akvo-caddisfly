@@ -72,8 +72,6 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
-        hasPermissions = permissionsDelegate.hasPermissions(permissions);
-
         fragmentManager = getSupportFragmentManager();
 
         // Add list fragment if this is first creation
@@ -88,6 +86,12 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
                         .add(R.id.fragment_container, fragment, "TestInfoFragment").commit();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hasPermissions = permissionsDelegate.hasPermissions(permissions);
     }
 
     @Override

@@ -22,9 +22,13 @@ package org.akvo.caddisfly.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.v7.view.menu.ActionMenuItemView;
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.cbt.TestActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
@@ -34,6 +38,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowPackageManager;
 
 import static junit.framework.Assert.assertEquals;
@@ -48,6 +53,35 @@ public class MainTest {
     public void titleIsCorrect() {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
         assertTrue(activity.getTitle().toString().equals("Akvo Caddisfly"));
+
+        TextView textView = activity.findViewById(R.id.textToolbarTitle);
+        assertTrue(textView.getText().toString().equals("Akvo Caddisfly"));
+
+    }
+
+    @Test
+    public void onCreate_shouldInflateTheMenu() throws Exception {
+        Activity activity = Robolectric.setupActivity(MainActivity.class);
+
+        Toolbar toolbar = activity.findViewById(R.id.toolbar);
+        ShadowActivity shadowActivity = shadowOf(activity);
+        shadowActivity.onCreateOptionsMenu(toolbar.getMenu());
+        assertTrue(shadowActivity.getOptionsMenu().hasVisibleItems());
+        assertEquals(shadowActivity.getOptionsMenu().findItem(R.id.actionSettings).isVisible(), true);
+    }
+
+    @Test
+    public void onClick_Settings() throws Exception {
+        Activity activity = Robolectric.setupActivity(MainActivity.class);
+
+        ActionMenuItemView button = activity.findViewById(R.id.actionSettings);
+
+        button.performClick();
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+        if (intent.getComponent() != null) {
+            assertEquals(SettingsActivity.class.getCanonicalName(),
+                    intent.getComponent().getClassName());
+        }
     }
 
     @Test
