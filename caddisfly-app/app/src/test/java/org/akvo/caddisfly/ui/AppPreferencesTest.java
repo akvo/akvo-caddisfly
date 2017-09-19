@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.support.annotation.StringRes;
 
-import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -29,16 +28,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import static junit.framework.Assert.assertEquals;
 
-@SuppressWarnings("unused")
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23)
 public class AppPreferencesTest {
 
     private static final boolean DEFAULT_FALSE = false;

@@ -1,0 +1,131 @@
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly.
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package org.akvo.caddisfly.ui;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.widget.Button;
+
+import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.cbt.TestActivity;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadows.ShadowPackageManager;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static org.robolectric.Shadows.shadowOf;
+
+@RunWith(RobolectricTestRunner.class)
+public class MainTest {
+
+    @Test
+    public void titleIsCorrect() {
+        Activity activity = Robolectric.setupActivity(MainActivity.class);
+        assertTrue(activity.getTitle().toString().equals("Akvo Caddisfly"));
+    }
+
+    @Test
+    public void sensors() throws Exception {
+        Activity activity = Robolectric.setupActivity(MainActivity.class);
+
+        Button button = activity.findViewById(R.id.buttonSensors);
+
+        button.performClick();
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+
+        assertNull(intent);
+
+        ShadowPackageManager pm = shadowOf(RuntimeEnvironment.application.getPackageManager());
+        pm.setSystemFeature(PackageManager.FEATURE_USB_HOST, true);
+
+        button.performClick();
+        intent = shadowOf(activity).getNextStartedActivity();
+        if (intent.getComponent() != null) {
+            assertEquals(SensorTypeListActivity.class.getCanonicalName(),
+                    intent.getComponent().getClassName());
+        }
+    }
+
+    @Test
+    public void stripTest() throws Exception {
+        Activity activity = Robolectric.setupActivity(MainActivity.class);
+
+        Button button = activity.findViewById(R.id.buttonStripTest);
+
+        button.performClick();
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+        if (intent.getComponent() != null) {
+            assertEquals(TestTypeListActivity.class.getCanonicalName(),
+                    intent.getComponent().getClassName());
+        }
+    }
+
+    @Test
+    public void md610() throws Exception {
+        Activity activity = Robolectric.setupActivity(MainActivity.class);
+
+        Button button = activity.findViewById(R.id.buttonBluetooth);
+
+        button.performClick();
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+        if (intent.getComponent() != null) {
+            assertEquals(BluetoothTypeListActivity.class.getCanonicalName(),
+                    intent.getComponent().getClassName());
+        }
+    }
+
+    @Test
+    public void cbt() throws Exception {
+        Activity activity = Robolectric.setupActivity(MainActivity.class);
+
+        Button button = activity.findViewById(R.id.buttonCbt);
+
+        button.performClick();
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+        if (intent.getComponent() != null) {
+            assertEquals(TestActivity.class.getCanonicalName(),
+                    intent.getComponent().getClassName());
+        }
+    }
+
+    @Test
+    public void clickingCalibrate() throws Exception {
+        Activity activity = Robolectric.setupActivity(MainActivity.class);
+
+        Button button = activity.findViewById(R.id.buttonCalibrate);
+
+        button.performClick();
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+        if (intent.getComponent() != null) {
+            assertEquals(TypeListActivity.class.getCanonicalName(),
+                    intent.getComponent().getClassName());
+        }
+    }
+
+}

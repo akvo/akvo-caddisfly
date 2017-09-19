@@ -1,29 +1,8 @@
-/*
- * Copyright (C) Stichting Akvo (Akvo Foundation)
- *
- * This file is part of Akvo Caddisfly.
- *
- * Akvo Caddisfly is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Akvo Caddisfly is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
- */
-
 package org.akvo.caddisfly.ui;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.ColorInfo;
@@ -35,23 +14,12 @@ import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 
-@SuppressWarnings("unused")
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 23)
-public class MainActivityTest {
-
-    @Test
-    public void titleIsCorrect() {
-        Activity activity = Robolectric.setupActivity(MainActivity.class);
-        assertTrue(activity.getTitle().toString().equals("Akvo Caddisfly"));
-    }
+public class ColorTest {
 
     @Test
     public void testGetResultValue() {
