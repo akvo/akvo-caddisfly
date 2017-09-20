@@ -82,8 +82,13 @@ class TestTypesAdapter extends ArrayAdapter<TestInfo> {
                         nf.format(testInfo.getRangeValues()[testInfo.getRangeValues().length - 1]));
             }
 
+            String subtitleExtra = "";
+            if (!testInfo.getSubtitleExtra().isEmpty()) {
+                subtitleExtra = ", " + testInfo.getSubtitleExtra();
+            }
+
             ((TextView) rowView.findViewById(R.id.text_subtitle))
-                    .setText(String.format("%s%s", testInfo.getBrand(), range));
+                    .setText(String.format("%s%s%s", testInfo.getBrand(), range, subtitleExtra));
         }
 
         return rowView;

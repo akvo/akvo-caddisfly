@@ -87,6 +87,7 @@ public class TestInfo implements Parcelable {
     private ArrayList<String> reactionTimes;
     private String title;
     private String brand;
+    private String subtitleExtra;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -494,6 +495,14 @@ public class TestInfo implements Parcelable {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public void setSubtitleExtra(String subtitleExtra) {
+        this.subtitleExtra = subtitleExtra;
+    }
+
+    public String getSubtitleExtra() {
+        return subtitleExtra;
     }
 
     public static class SubTest {

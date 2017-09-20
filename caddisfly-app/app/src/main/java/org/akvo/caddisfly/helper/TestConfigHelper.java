@@ -289,6 +289,8 @@ public final class TestConfigHelper {
 
             testInfo.setBrand(item.has("brand") ? item.getString("brand") : "");
 
+            testInfo.setSubtitleExtra(item.has("subtitleExtra") ? item.getString("subtitleExtra") : "");
+
         } catch (JSONException e) {
             Timber.e(e);
         }

@@ -1322,6 +1322,7 @@
       "shortCode": "chrom",
       "calibrate": "true",
       "ranges": "0,0.5,1,2,3",
+      "subtitleExtra": "(upto 15 with dilution)",
       "dilutions": "0,50,20",
       "monthsValid": "3",
       "hasImage": true,
@@ -1353,6 +1354,7 @@
       "shortCode": "fluor",
       "calibrate": true,
       "ranges": "0,0.5,1,1.5,2",
+      "subtitleExtra": "(upto 10 with dilution)",
       "defaultColors": "FD13AB,FE217C,F53A48,E75D28,D36B0B",
       "hueTrend": 1,
       "dilutions": "0,50,20",
@@ -1375,7 +1377,7 @@
     },
     {
       "name": "Water - Free Chlorine",
-      "description": "Measures Free chlorine in water. 0 - 1 mg/l",
+      "description": "Measures Free chlorine in water. 0 - 3 mg/l",
       "subtype": "liquid-chamber",
       "tags": [
         "water quality"
@@ -1384,7 +1386,7 @@
       "brand": "Caddisfly",
       "shortCode": "chlor",
       "calibrate": true,
-      "ranges": "0,0.25,0.5,0.75,1.0",
+      "ranges": "0,0.5,1.0,1.5,2.0,2.5,3.0",
       "monthsValid": 24,
       "hasImage": true,
       "instructions": [
@@ -5978,7 +5980,7 @@
       "uuid": "80697cd1-acc9-4a15-8358-f32b4257dfaf",
       "brand": "Caddisfly",
       "calibrate": false,
-      "ranges": "0, 12500",
+      "ranges": "50, 12800",
       "hasImage": false,
       "responseFormat": "$2,$1",
       "instructions": [
@@ -6011,6 +6013,7 @@
       "deviceId": "Soil Moisture",
       "uuid": "0b4a0aaa-f556-4c11-a539-c4626582cca6",
       "brand": "Caddisfly",
+      "ranges": "0, 100",
       "hasImage": false,
       "responseFormat": "$1",
       "instructions": [
