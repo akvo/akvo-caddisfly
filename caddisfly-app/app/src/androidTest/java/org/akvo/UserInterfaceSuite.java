@@ -6,7 +6,7 @@ import org.akvo.caddisfly.ui.DiagnosticTest;
 import org.akvo.caddisfly.ui.LanguageTest;
 import org.akvo.caddisfly.ui.MiscTest;
 import org.akvo.caddisfly.ui.NavigationTest;
-import org.akvo.caddisfly.ui.SensorsTest;
+import org.akvo.caddisfly.ui.SensorsUiTest;
 import org.akvo.caddisfly.ui.StripTestNavigation;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -18,7 +18,7 @@ import org.junit.runners.Suite;
         LanguageTest.class,
         MiscTest.class,
         NavigationTest.class,
-        SensorsTest.class,
+        SensorsUiTest.class,
         StripTestNavigation.class,
         SurveySensorTest.class})
 public class UserInterfaceSuite {
