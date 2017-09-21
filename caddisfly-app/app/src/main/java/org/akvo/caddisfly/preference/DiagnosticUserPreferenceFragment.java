@@ -21,7 +21,6 @@ package org.akvo.caddisfly.preference;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -31,7 +30,6 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ListViewUtil;
-import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,15 +46,6 @@ public class DiagnosticUserPreferenceFragment extends PreferenceFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        Preference themePreference = findPreference(getString(R.string.selectedThemeKey));
-        if (themePreference != null) {
-            themePreference.setOnPreferenceChangeListener((preference, o) -> {
-                PreferencesUtil.setBoolean(getActivity(), R.string.themeChangedKey, true);
-                return true;
-            });
-        }
-
         return inflater.inflate(R.layout.card_row, container, false);
     }
 

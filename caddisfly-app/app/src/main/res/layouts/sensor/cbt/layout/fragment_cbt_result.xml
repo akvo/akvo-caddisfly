@@ -24,7 +24,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:minWidth="400dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -115,14 +114,13 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
-
     </LinearLayout>
 
     <Button
         android:id="@+id/buttonAcceptResult"
         style="@style/Button"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="@dimen/view_gutter_bottom"
         android:onClick="onClickAcceptResult"
         android:text="@string/acceptResult"
         android:theme="?primaryButtonStyle" />

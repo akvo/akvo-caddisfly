@@ -160,7 +160,7 @@ public class CbtUiTest {
         appCompatButton3.perform(click());
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.textResult), withText("Unsafe"),
+                allOf(withId(R.id.textResult), withText("Very High Risk"),
                         childAtPosition(
                                 allOf(withId(R.id.layoutResult),
                                         childAtPosition(
@@ -168,18 +168,7 @@ public class CbtUiTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Unsafe")));
-
-        ViewInteraction textView2 = onView(
-                allOf(withText("MPN/100ml"),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult1),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        textView2.check(matches(withText("MPN/100ml")));
+        textView.check(matches(withText("Very High Risk")));
 
         ViewInteraction textView3 = onView(
                 allOf(withId(R.id.textResult2), withText("> 100"),
@@ -188,20 +177,20 @@ public class CbtUiTest {
                                         childAtPosition(
                                                 IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
                                                 1)),
-                                1),
+                                0),
                         isDisplayed()));
         textView3.check(matches(withText("> 100")));
 
-        ViewInteraction textView4 = onView(
-                allOf(withText("Upper 95% Confidence Interval"),
+        ViewInteraction textView2 = onView(
+                allOf(withText("MPN/100ml"),
                         childAtPosition(
                                 allOf(withId(R.id.layoutResult1),
                                         childAtPosition(
                                                 IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
                                                 1)),
-                                2),
+                                1),
                         isDisplayed()));
-        textView4.check(matches(withText("Upper 95% Confidence Interval")));
+        textView2.check(matches(withText("MPN/100ml")));
 
         ViewInteraction textView5 = onView(
                 allOf(withId(R.id.textResult3), withText("9435.1"),
@@ -209,10 +198,21 @@ public class CbtUiTest {
                                 allOf(withId(R.id.layoutResult1),
                                         childAtPosition(
                                                 IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                1)),
-                                3),
+                                                2)),
+                                2),
                         isDisplayed()));
         textView5.check(matches(withText("9435.1")));
+
+        ViewInteraction textView4 = onView(
+                allOf(withText("Upper 95% Confidence Interval"),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutResult1),
+                                        childAtPosition(
+                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
+                                                2)),
+                                3),
+                        isDisplayed()));
+        textView4.check(matches(withText("Upper 95% Confidence Interval")));
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.buttonAcceptResult),

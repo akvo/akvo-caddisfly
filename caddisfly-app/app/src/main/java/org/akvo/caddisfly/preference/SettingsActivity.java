@@ -134,11 +134,6 @@ public class SettingsActivity extends BaseActivity
             PreferencesUtil.setBoolean(this, R.string.refreshKey, true);
             recreate();
         }
-
-        if (getApplicationContext().getString(R.string.selectedThemeKey).equals(s)) {
-            finish();
-        }
-
     }
 
     @Override

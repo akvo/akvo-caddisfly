@@ -32,17 +32,12 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
  * The base activity with common functions
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    private static final String THEME_BLUE = "Blue";
-    private static final String THEME_BLUE_ORANGE = "BlueOrange";
-    private static final String THEME_ORANGE_BLUE = "OrangeBlue";
-    private static final String THEME_FLOW = "Flow";
     private String mTitle;
 
     @Override
@@ -55,25 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void updateTheme() {
 
-        String theme = PreferencesUtil.getString(this, getString(R.string.selectedThemeKey), "Orange");
-
-        switch (theme) {
-            case THEME_BLUE:
-                setTheme(R.style.AppTheme_Blue);
-                break;
-            case THEME_BLUE_ORANGE:
-                setTheme(R.style.AppTheme_BlueOrange);
-                break;
-            case THEME_ORANGE_BLUE:
-                setTheme(R.style.AppTheme_OrangeBlue);
-                break;
-            case THEME_FLOW:
-                setTheme(R.style.AppTheme_Flow);
-                break;
-            default:
-                setTheme(R.style.AppTheme_Orange);
-                break;
-        }
+        setTheme(R.style.AppTheme_Orange);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

@@ -28,10 +28,9 @@
     <dimen name="flow_toolbar_height">52dp</dimen>
     <dimen name="flow_toolbar_margin">-5dp</dimen>
 
-    <!-- StripTest -->
-    <dimen name="quality_check_view_height">36dp</dimen>
     <dimen name="titleTextSize">19sp</dimen>
     <dimen name="mediumTextSize">16sp</dimen>
+    <dimen name="default_text_size">16sp</dimen>
 
     <dimen name="snackBarHeight">100dp</dimen>
 
@@ -39,5 +38,13 @@
     <dimen name="progressSubTextSize">13sp</dimen>
 
     <dimen name="text_margin_bottom">15dp</dimen>
+
+    <!--CBT-->
+    <dimen name="cbt_shapes_height">280dp</dimen>
+    <dimen name="view_gutter_bottom">20dp</dimen>
+    <dimen name="cbt_shapes_text_size">22sp</dimen>
+
+    <!-- StripTest -->
+    <dimen name="quality_check_view_height">36dp</dimen>
 
 </resources>

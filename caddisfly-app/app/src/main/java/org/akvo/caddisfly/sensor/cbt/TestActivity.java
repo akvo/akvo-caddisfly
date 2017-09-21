@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
@@ -22,6 +23,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.SparseArray;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -184,7 +186,12 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
     }
 
     private void startTest() {
-        Toast.makeText(this, "Take a photo of the compartment bag", Toast.LENGTH_LONG).show();
+
+        new Handler().postDelayed(() -> {
+            Toast toast = Toast.makeText(this, R.string.take_photo_of_cbt, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER, 0, 190);
+            toast.show();
+        }, 1000);
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent

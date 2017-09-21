@@ -57,7 +57,7 @@ public class StripsTest {
     public void testCount() throws Exception {
         Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
         ListView listView = activity.findViewById(R.id.list_types);
-        assertSame(19, listView.getCount());
+        assertSame(20, listView.getCount());
         assertEquals("Water - Total Iron",
                 ((StripTest.Brand) listView.getAdapter().getItem(18)).getName());
         assertEquals("Water - Total Iron",

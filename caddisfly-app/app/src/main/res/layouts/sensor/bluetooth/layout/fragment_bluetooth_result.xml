@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:gravity="center_horizontal"
                 android:textColor="#555"
                 android:textSize="25sp"

@@ -11,24 +11,25 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.akvo.caddisfly.R;
+
 public class CustomShapeButton extends View {
 
-    final Path mPath = new Path();
-    final Path markerPath = new Path();
-    final Paint fillPaint = new Paint();
-    final Paint fillSelectPaint = new Paint();
-    final Paint greenPaint = new Paint();
-    final Paint greenSelectPaint = new Paint();
-    final Paint strokePaint = new Paint();
-    final Paint markerPaint = new Paint();
-    final Paint textPaint = new Paint();
+    private final Path mPath = new Path();
+    private final Path markerPath = new Path();
+    private final Paint fillPaint = new Paint();
+    private final Paint fillSelectPaint = new Paint();
+    private final Paint greenPaint = new Paint();
+    private final Paint greenSelectPaint = new Paint();
+    private final Paint strokePaint = new Paint();
+    private final Paint markerPaint = new Paint();
+    private final Paint textPaint = new Paint();
 
-    int fillLine;
-    int colWidth;
-    int bottom;
-    int bottom3;
-    int bottom2;
-    int bottom1;
+    private int colWidth;
+    private int bottom;
+    private int bottom3;
+    private int bottom2;
+    private int bottom1;
     private boolean area1 = false;
     private boolean area2 = false;
     private boolean area3 = false;
@@ -67,7 +68,8 @@ public class CustomShapeButton extends View {
         textPaint.setStyle(Paint.Style.FILL);
         textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setColor(Color.rgb(30, 30, 30));
-        textPaint.setTextSize(45);
+        int sizeInPx = context.getResources().getDimensionPixelSize(R.dimen.cbt_shapes_text_size);
+        textPaint.setTextSize(sizeInPx);
     }
 
     @Override
@@ -136,7 +138,7 @@ public class CustomShapeButton extends View {
         super.onDraw(canvas);
 
         int lineTop = 60;
-        fillLine = 80;
+        int fillLine = 80;
         int left = 0;
         colWidth = (getWidth() / 5);
         int halfWidth = colWidth / 2;
@@ -195,7 +197,7 @@ public class CustomShapeButton extends View {
         canvas.drawText("2", colWidth - 10, bottom3 + ((bottom - bottom3) / 2), textPaint);
         canvas.drawText("3", (colWidth * 3) + 20, fillLine + (bottom - bottom2), textPaint);
         canvas.drawText("4", halfWidth - 10 + colWidth * 3, fillLine + (bottom2 / 2) - 20, textPaint);
-        canvas.drawText("5", halfWidth - 10 + colWidth * 4, fillLine + (bottom1 / 2) - 20, textPaint);
+        canvas.drawText("5", halfWidth - 10 + colWidth * 4, fillLine + (bottom1 / 2) - 26, textPaint);
 
     }
 
