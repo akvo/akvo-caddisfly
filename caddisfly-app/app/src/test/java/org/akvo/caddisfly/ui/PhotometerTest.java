@@ -26,8 +26,8 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.ec.SensorActivity;
-import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -43,53 +43,44 @@ import static junit.framework.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-public class SensorsTest {
+public class PhotometerTest {
 
     @Test
     public void titleIsCorrect() {
 
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "Select Test");
     }
 
     @Test
-    public void sensorCount() throws Exception {
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
+    public void testCount() throws Exception {
+        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
         ListView listView = activity.findViewById(R.id.list_types);
-        assertSame(3, listView.getCount());
-        assertEquals("Soil - Electrical Conductivity",
-                ((TestInfo) listView.getAdapter().getItem(0)).getTitle());
-        assertEquals("Soil - Electrical Conductivity",
-                ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
+        assertSame(52, listView.getCount());
+        assertEquals("Fluoride",
+                ((TestInfo) listView.getAdapter().getItem(25)).getTitle());
+        assertEquals("170 Fluoride",
+                ((TextView) listView.getChildAt(25).findViewById(R.id.text_title)).getText());
     }
-
 
     @Test
     public void sensorTitles() throws Exception {
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
         ListView listView = activity.findViewById(R.id.list_types);
 
-        assertEquals("Soil - Electrical Conductivity",
-                ((TestInfo) listView.getAdapter().getItem(0)).getTitle());
-        assertEquals("Soil - Electrical Conductivity",
-                ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
-
-        assertEquals("Soil - Moisture",
-                ((TestInfo) listView.getAdapter().getItem(1)).getTitle());
-        assertEquals("Soil - Moisture",
-                ((TextView) listView.getChildAt(1).findViewById(R.id.text_title)).getText());
-
-        assertEquals("Water - Electrical Conductivity",
-                ((TestInfo) listView.getAdapter().getItem(2)).getTitle());
-        assertEquals("Water - Electrical Conductivity",
-                ((TextView) listView.getChildAt(2).findViewById(R.id.text_title)).getText());
+        for (int i = 0; i < listView.getCount(); i++) {
+            TestInfo testInfo = ((TestInfo) listView.getAdapter().getItem(0));
+            String title = String.format("%s %s", testInfo.getMd610Id(), testInfo.getTitle());
+            assertEquals(title,
+                    ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
+        }
     }
 
     @Test
-    public void clickSensorItem() {
+    public void clickTest() {
 
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
         ListView listView = activity.findViewById(R.id.list_types);
 
         ShadowListView list = shadowOf(listView);
@@ -97,7 +88,7 @@ public class SensorsTest {
 
         Intent intent = shadowOf(activity).getNextStartedActivity();
         if (intent.getComponent() != null) {
-            assertEquals(SensorActivity.class.getCanonicalName(),
+            assertEquals(DeviceScanActivity.class.getCanonicalName(),
                     intent.getComponent().getClassName());
         }
     }
@@ -105,7 +96,7 @@ public class SensorsTest {
     @Test
     public void clickHome() {
 
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
 
         ShadowActivity shadowActivity = Shadows.shadowOf(activity);
         shadowActivity.clickMenuItem(android.R.id.home);

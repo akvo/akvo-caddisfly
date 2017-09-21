@@ -41,8 +41,8 @@ import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowToast;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -56,7 +56,7 @@ public class CbtTest {
 
         Activity activity = Robolectric.setupActivity(TestActivity.class);
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
-        assertTrue(textView.getText().toString().equals("E.coli – Aquagenx CBT"));
+        assertEquals(textView.getText(), "E.coli – Aquagenx CBT");
     }
 
     @Test

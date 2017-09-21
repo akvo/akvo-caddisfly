@@ -72,6 +72,7 @@ public class SensorTypeListActivity extends BaseActivity {
 
         //set the adapter with tests list
         TestTypesAdapter testTypesAdapter = new TestTypesAdapter(this,
+                R.layout.item_test_type,
                 mTests.toArray(new TestInfo[mTests.size()]));
 
         listTypes.setAdapter(testTypesAdapter);
@@ -115,15 +116,16 @@ public class SensorTypeListActivity extends BaseActivity {
     static class TestTypesAdapter extends ArrayAdapter<TestInfo> {
 
         private final TestInfo[] mTestInfoArray;
+        private final int resource;
         @NonNull
         private final Context context;
 
-        TestTypesAdapter(@NonNull Activity activity, TestInfo[] testInfoArray) {
-            super(activity, R.layout.row_calibrate, testInfoArray);
+        TestTypesAdapter(@NonNull Activity activity, int resource, TestInfo[] testInfoArray) {
+            super(activity, resource, testInfoArray);
             context = activity;
+            this.resource = resource;
             mTestInfoArray = testInfoArray.clone();
         }
-
 
         @Override
         public int getCount() {
@@ -140,7 +142,7 @@ public class SensorTypeListActivity extends BaseActivity {
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 if (inflater != null) {
-                    view = inflater.inflate(R.layout.item_test_type, parent, false);
+                    view = inflater.inflate(resource, parent, false);
                     holder = new ViewHolder(view);
                     view.setTag(holder);
                 } else {
