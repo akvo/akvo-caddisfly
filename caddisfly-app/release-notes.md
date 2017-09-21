@@ -358,7 +358,7 @@ v0.51 alpha
 
 v0.50 alpha
 -----------
-1. dilution message if fluoride level is above 1.8 ppm
+1. dilution message if fluoride level is above 1.8 mg/l
 2. attempt to focus camera at infinity
 
 v0.49 alpha
@@ -457,7 +457,7 @@ v0.33 alpha
 3. calibration error will now reset the color to null
 4. display brightness value for calibration and test images
 5. user app: welcome dialog if calibration not done
-6. user app: ppm values for calibration changed to color names
+6. user app: mg/l values for calibration changed to color names
 
 v0.32 alpha
 -----------

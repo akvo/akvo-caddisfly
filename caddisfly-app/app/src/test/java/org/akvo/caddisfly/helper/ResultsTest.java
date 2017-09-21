@@ -52,7 +52,7 @@ public class ResultsTest {
         String json = resultJson.toString().replaceAll("(\"testDate\":\").*?\"", "$1today\"");
         json = json.replaceAll("(\"appVersion\":\").*?\"", "$1version\"");
 
-        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Water - Fluoride\",\"uuid\":\"f0f3c1dd-89af-49f1-83e7-bcc31c3006cf\",\"result\":[{\"name\":\"Fluoride\",\"unit\":\"ppm\",\"id\":1,\"value\":\"> 2.0\"}],\"testDate\":\"today\",\"user\":{\"backDropDetection\":true,\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 6.0.1_r3 (23)\",\"country\":\"US\",\"language\":\"en\"}}";
+        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Water - Fluoride\",\"uuid\":\"f0f3c1dd-89af-49f1-83e7-bcc31c3006cf\",\"result\":[{\"name\":\"Fluoride\",\"unit\":\"mg/l\",\"id\":1,\"value\":\"> 2.0\"}],\"testDate\":\"today\",\"user\":{\"backDropDetection\":true,\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 6.0.1_r3 (23)\",\"country\":\"US\",\"language\":\"en\"}}";
 
         assertEquals(expectedJson, json);
     }

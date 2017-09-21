@@ -136,7 +136,7 @@
                 android:layout_marginTop="-10dp"
                 android:textColor="#444"
                 android:textSize="17sp"
-                tools:text="ppm" />
+                tools:text="mg/l" />
 
             <View
                 android:layout_width="match_parent"
@@ -183,7 +183,7 @@
                 android:layout_marginTop="-10dp"
                 android:textColor="#444"
                 android:textSize="17sp"
-                tools:text="ppm" />
+                tools:text="mg/l" />
 
             <View
                 android:layout_width="match_parent"
@@ -230,7 +230,7 @@
                 android:layout_marginTop="-10dp"
                 android:textColor="#444"
                 android:textSize="17sp"
-                tools:text="ppm" />
+                tools:text="mg/l" />
 
             <View
                 android:layout_width="match_parent"

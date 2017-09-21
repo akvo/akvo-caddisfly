@@ -211,7 +211,7 @@ public class NavigationTest {
 
         onView(withText(R.string.save)).perform(click());
 
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+        onView(withText("2" + dfs.getDecimalSeparator() + "00 mg/l")).perform(click());
 
         //onView(withId(R.id.buttonStart)).perform(click());
 

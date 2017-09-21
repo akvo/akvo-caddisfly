@@ -202,7 +202,7 @@ public class AnalysisTest {
         onView(withText(R.string.save)).perform(click());
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 ppm")).perform(click());
+        onView(withText("2" + dfs.getDecimalSeparator() + "00 mg/l")).perform(click());
 
         sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
                 * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
@@ -373,7 +373,7 @@ public class AnalysisTest {
         onView(withText(R.string.save)).perform(click());
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("1" + dfs.getDecimalSeparator() + "50 ppm")).perform(click());
+        onView(withText("1" + dfs.getDecimalSeparator() + "50 mg/l")).perform(click());
 
         sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
                 * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);

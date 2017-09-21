@@ -73,7 +73,7 @@
         android:layout_marginTop="-40dp"
         android:textColor="#333"
         android:textSize="20sp"
-        tools:text="ppm" />
+        tools:text="mg/l" />
 
     <Button
         android:id="@+id/buttonOk"

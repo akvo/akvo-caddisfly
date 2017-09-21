@@ -116,7 +116,7 @@ public class SurveyTest {
         }
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("0" + dfs.getDecimalSeparator() + "00 ppm")).check(matches(isDisplayed()));
+        onView(withText("0" + dfs.getDecimalSeparator() + "00 mg/l")).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 
@@ -126,7 +126,7 @@ public class SurveyTest {
 
         onView(withText(currentHashMap.get("chlorine"))).perform(click());
 
-        onView(withText("0" + dfs.getDecimalSeparator() + "50 ppm")).check(matches(isDisplayed()));
+        onView(withText("0" + dfs.getDecimalSeparator() + "50 mg/l")).check(matches(isDisplayed()));
 
     }
 
