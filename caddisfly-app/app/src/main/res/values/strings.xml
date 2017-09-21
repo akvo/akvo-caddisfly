@@ -196,11 +196,11 @@
     <string name="uninstallAndInstallFromStore">Please uninstall and then install the latest version from Play Store.</string>
 
     <!--Bluetooth-->
-    <string name="nearbyDevices">Nearby devices</string>
-    <string name="connectToYourDevice">Connect to your device</string>
-    <string name="checkBluetoothTurnedOn">Check that MD610 and its bluetooth are both turned on</string>
-    <string name="toTurnMD610On">To turn MD610 on:</string>
-    <string name="toTurnBluetoothOn">To turn bluetooth on:</string>
+    <string name="nearby_devices">Nearby devices</string>
+    <string name="connect_device">Connect to your device</string>
+    <string name="check_bluetooth_turned_on">Check that MD610 and its bluetooth are both turned on</string>
+    <string name="to_turn_md610_on">To turn MD610 on:</string>
+    <string name="to_turn_bluetooth_on">To turn bluetooth on:</string>
     <string name="connect">Connect</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
     <string name="location_permission">Location permission is required for bluetooth connection</string>

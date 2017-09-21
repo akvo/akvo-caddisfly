@@ -402,6 +402,7 @@ public class CalibrateListActivity extends BaseActivity
                                     String fileName = listFiles[position].getName();
                                     FileUtil.deleteFile(path, fileName);
                                     ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
+                                    //noinspection unchecked
                                     listAdapter.remove(listAdapter.getItem(position));
                                     alertDialog.dismiss();
                                     Toast.makeText(context, R.string.deleted, Toast.LENGTH_SHORT).show();

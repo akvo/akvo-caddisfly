@@ -28,7 +28,7 @@
         android:layout_marginTop="10dp"
         android:paddingEnd="22dp"
         android:paddingStart="22dp"
-        android:text="@string/checkBluetoothTurnedOn"
+        android:text="@string/check_bluetooth_turned_on"
         android:textSize="17sp" />
 
     <ScrollView
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="15dp"
-                android:text="@string/toTurnMD610On"
+                android:text="@string/to_turn_md610_on"
                 android:textColor="#444"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="@string/toTurnBluetoothOn"
+                android:text="@string/to_turn_bluetooth_on"
                 android:textColor="#444"
                 android:textSize="20sp"
                 android:textStyle="bold" />

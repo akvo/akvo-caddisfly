@@ -211,10 +211,6 @@ public class TestInfo implements Parcelable {
         Collections.sort(swatches, (c1, c2) -> Double.compare(c1.getValue(), (c2.getValue())));
     }
 
-    public String getName() {
-        return name;
-    }
-
     public TestType getType() {
         return testType;
     }
@@ -497,12 +493,12 @@ public class TestInfo implements Parcelable {
         this.brand = brand;
     }
 
-    public void setSubtitleExtra(String subtitleExtra) {
-        this.subtitleExtra = subtitleExtra;
-    }
-
     public String getSubtitleExtra() {
         return subtitleExtra;
+    }
+
+    public void setSubtitleExtra(String subtitleExtra) {
+        this.subtitleExtra = subtitleExtra;
     }
 
     public static class SubTest {
