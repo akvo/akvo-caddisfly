@@ -20,7 +20,6 @@
 package org.akvo.caddisfly.sensor.colorimetry.strip.camera;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -202,11 +201,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         cameraScheduledExecutorService = new CameraScheduledExecutorService();
 
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                startCameraPreview();
-            }
-        }, 0);
+        (new Handler()).postDelayed(this::startCameraPreview, 0);
     }
 
 
@@ -536,12 +531,7 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
     @Override
     public void showError(final String message) {
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                currentFragment.showError(message);
-            }
-        };
+        Runnable runnable = () -> currentFragment.showError(message);
         handler.post(runnable);
     }
 
@@ -574,18 +564,8 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
 
         AlertDialog alertDialog = AlertUtil.showAlert(this, title,
                 R.string.tryTestingInAWellLitArea, R.string.ok,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                }, null, null);
-        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                finish();
-            }
-        });
+                (dialogInterface, i) -> dialogInterface.dismiss(), null, null);
+        alertDialog.setOnDismissListener(dialogInterface -> finish());
     }
 
     @Override
@@ -596,84 +576,79 @@ public class CameraActivity extends BaseActivity implements CameraViewListener {
             return;
         }
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
+        Runnable runnable = () -> {
 
-                timerCountdown.setProgress(value, (int) max);
+            timerCountdown.setProgress(value, (int) max);
 
-                if (value > 0) {
-                    timerCountdown.setVisibility(View.VISIBLE);
+            if (value > 0) {
+                timerCountdown.setVisibility(View.VISIBLE);
 
-                    // if long time left turn off the camera preview
-                    if (value > LONG_TIME && !mCameraPaused) {
-                        mCameraPaused = true;
-                        if (cameraPreview != null) {
-                            cameraPreview.setVisibility(View.INVISIBLE);
-                        }
-                        stopPreview();
-
-                        (new Handler()).postDelayed(new Runnable() {
-                            public void run() {
-                                finderPatternIndicatorView.clearPatterns();
-                                finderPatternIndicatorView.invalidate();
-                            }
-                        }, 100);
-
-                        snackbar = Snackbar
-                                .make(mainLayout, getString(R.string.you_can_set_phone_aside),
-                                        Snackbar.LENGTH_INDEFINITE);
-
-                        TypedValue typedValue = new TypedValue();
-                        getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-
-                        snackbar.setActionTextColor(typedValue.data);
-                        View snackView = snackbar.getView();
-                        TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
-                        textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
-                        textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
-                        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                        textView.setTextColor(Color.WHITE);
-                        snackbar.show();
+                // if long time left turn off the camera preview
+                if (value > LONG_TIME && !mCameraPaused) {
+                    mCameraPaused = true;
+                    if (cameraPreview != null) {
+                        cameraPreview.setVisibility(View.INVISIBLE);
                     }
+                    stopPreview();
 
-                    // start the camera preview again in last few seconds
-                    if (value <= Constant.GET_READY_SECONDS && mCameraPaused) {
-                        mCameraPaused = false;
-                        if (cameraPreview != null) {
-                            finderPatternIndicatorView.setVisibility(View.VISIBLE);
-                            cameraPreview.setVisibility(View.VISIBLE);
-                        }
-                        mCamera.startPreview();
+                    (new Handler()).postDelayed(() -> {
+                        finderPatternIndicatorView.clearPatterns();
+                        finderPatternIndicatorView.invalidate();
+                    }, 100);
 
-                        playReadySound();
+                    snackbar = Snackbar
+                            .make(mainLayout, getString(R.string.you_can_set_phone_aside),
+                                    Snackbar.LENGTH_INDEFINITE);
 
-                        snackbar.dismiss();
-                    }
+                    TypedValue typedValue = new TypedValue();
+                    getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+                    snackbar.setActionTextColor(typedValue.data);
+                    View snackView = snackbar.getView();
+                    TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
+                    textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
+                    textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    textView.setTextColor(Color.WHITE);
+                    snackbar.show();
                 }
 
-                if (timerCountdown.getAnimation() == null && value <= 3 && value > 0) {
-                    AlphaAnimation animation = new AlphaAnimation(1f, 0);
-                    animation.setDuration(PROGRESS_FADE_DURATION_MILLIS);
-                    animation.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-                            // Nothing to do here
-                        }
+                // start the camera preview again in last few seconds
+                if (value <= Constant.GET_READY_SECONDS && mCameraPaused) {
+                    mCameraPaused = false;
+                    if (cameraPreview != null) {
+                        finderPatternIndicatorView.setVisibility(View.VISIBLE);
+                        cameraPreview.setVisibility(View.VISIBLE);
+                    }
+                    mCamera.startPreview();
 
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            timerCountdown.setAnimation(null);
-                            timerCountdown.setVisibility(View.INVISIBLE);
-                        }
+                    playReadySound();
 
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-                            // Nothing to do here
-                        }
-                    });
-                    timerCountdown.startAnimation(animation);
+                    snackbar.dismiss();
                 }
+            }
+
+            if (timerCountdown.getAnimation() == null && value <= 3 && value > 0) {
+                AlphaAnimation animation = new AlphaAnimation(1f, 0);
+                animation.setDuration(PROGRESS_FADE_DURATION_MILLIS);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Nothing to do here
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        timerCountdown.setAnimation(null);
+                        timerCountdown.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Nothing to do here
+                    }
+                });
+                timerCountdown.startAnimation(animation);
             }
         };
         handler.post(runnable);

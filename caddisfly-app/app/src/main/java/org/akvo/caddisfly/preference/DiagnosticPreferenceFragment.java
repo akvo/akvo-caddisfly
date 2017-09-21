@@ -22,7 +22,6 @@ package org.akvo.caddisfly.preference;
 import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -91,13 +90,11 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     private void setupStartStripTestPreference() {
         final Preference startStripTestPreference = findPreference("startStripTest");
         if (startStripTestPreference != null) {
-            startStripTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    final Intent intent = new Intent(getActivity(), TestTypeListActivity.class);
-                    intent.putExtra("internal", true);
-                    startActivity(intent);
-                    return true;
-                }
+            startStripTestPreference.setOnPreferenceClickListener(preference -> {
+                final Intent intent = new Intent(getActivity(), TestTypeListActivity.class);
+                intent.putExtra("internal", true);
+                startActivity(intent);
+                return true;
             });
         }
     }
@@ -105,13 +102,11 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     private void setupStartTestPreference() {
         final Preference startTestPreference = findPreference("startTest");
         if (startTestPreference != null) {
-            startTestPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    final Intent intent = new Intent(getActivity(), TypeListActivity.class);
-                    intent.putExtra("runTest", true);
-                    startActivity(intent);
-                    return true;
-                }
+            startTestPreference.setOnPreferenceClickListener(preference -> {
+                final Intent intent = new Intent(getActivity(), TypeListActivity.class);
+                intent.putExtra("runTest", true);
+                startActivity(intent);
+                return true;
             });
         }
     }
@@ -123,28 +118,25 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
             sampleTimesPreference.setSummary(sampleTimesPreference.getText());
 
-            sampleTimesPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+            sampleTimesPreference.setOnPreferenceChangeListener((preference, newValue) -> {
 
-                    Object value = newValue;
-                    try {
+                Object value = newValue;
+                try {
 
-                        if (Integer.parseInt(String.valueOf(value)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
-                            value = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
-                        }
-
-                        if (Integer.parseInt(String.valueOf(value)) < 1) {
-                            value = 1;
-                        }
-
-                    } catch (Exception e) {
+                    if (Integer.parseInt(String.valueOf(value)) > ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT) {
                         value = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
                     }
-                    sampleTimesPreference.setText(String.valueOf(value));
-                    sampleTimesPreference.setSummary(String.valueOf(value));
-                    return false;
+
+                    if (Integer.parseInt(String.valueOf(value)) < 1) {
+                        value = 1;
+                    }
+
+                } catch (Exception e) {
+                    value = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
                 }
+                sampleTimesPreference.setText(String.valueOf(value));
+                sampleTimesPreference.setSummary(String.valueOf(value));
+                return false;
             });
         }
     }
@@ -152,23 +144,21 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     private void setupCameraPreviewPreference() {
         final Preference cameraPreviewPreference = findPreference("cameraPreview");
         if (cameraPreviewPreference != null) {
-            cameraPreviewPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference preference) {
-                    if (getFragmentManager().findFragmentByTag("diagnosticPreviewFragment") == null) {
+            cameraPreviewPreference.setOnPreferenceClickListener(preference -> {
+                if (getFragmentManager().findFragmentByTag("diagnosticPreviewFragment") == null) {
 
-                        String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        if (AppPreferences.useExternalCamera()) {
-                            permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-                        }
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !ApiUtil.hasPermissions(getActivity(), permissions)) {
-                            requestPermissions(permissions, PERMISSION_ALL);
-                        } else {
-                            startPreview();
-                        }
+                    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    if (AppPreferences.useExternalCamera()) {
+                        permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
                     }
-                    return true;
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !ApiUtil.hasPermissions(getActivity(), permissions)) {
+                        requestPermissions(permissions, PERMISSION_ALL);
+                    } else {
+                        startPreview();
+                    }
                 }
+                return true;
             });
         }
     }
@@ -179,27 +169,24 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
         if (distancePreference != null) {
             distancePreference.setSummary(distancePreference.getText());
 
-            distancePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+            distancePreference.setOnPreferenceChangeListener((preference, newValue) -> {
 
-                    Object value = newValue;
-                    try {
-                        if (Integer.parseInt(String.valueOf(value)) > MAX_TOLERANCE) {
-                            value = MAX_TOLERANCE;
-                        }
-
-                        if (Integer.parseInt(String.valueOf(value)) < 1) {
-                            value = 1;
-                        }
-
-                    } catch (Exception e) {
-                        value = ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
+                Object value = newValue;
+                try {
+                    if (Integer.parseInt(String.valueOf(value)) > MAX_TOLERANCE) {
+                        value = MAX_TOLERANCE;
                     }
-                    distancePreference.setText(String.valueOf(value));
-                    distancePreference.setSummary(String.valueOf(value));
-                    return false;
+
+                    if (Integer.parseInt(String.valueOf(value)) < 1) {
+                        value = 1;
+                    }
+
+                } catch (Exception e) {
+                    value = ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
                 }
+                distancePreference.setText(String.valueOf(value));
+                distancePreference.setSummary(String.valueOf(value));
+                return false;
             });
         }
     }
@@ -237,12 +224,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 }
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
-                        .setAction("SETTINGS", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ApiUtil.startInstalledAppDetailsActivity(getActivity());
-                            }
-                        });
+                        .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(getActivity()));
 
                 TypedValue typedValue = new TypedValue();
                 getActivity().getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
@@ -262,12 +244,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     private boolean isCameraAvailable() {
         Camera camera = null;
         try {
-            camera = CameraHelper.getCamera(getActivity(), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            camera = CameraHelper.getCamera(getActivity(), (dialogInterface, i) -> dialogInterface.dismiss());
 
             if (camera != null) {
                 return true;

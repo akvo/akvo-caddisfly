@@ -571,83 +571,84 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
             LayoutInflater inflater = (LayoutInflater) ResultActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             final ViewGroup nullParent = null;
-            LinearLayout itemResult = (LinearLayout) inflater.inflate(R.layout.item_result, nullParent, false);
+            LinearLayout itemResult = null;
+            if (inflater != null) {
+                itemResult = (LinearLayout) inflater.inflate(R.layout.item_result, nullParent, false);
+                TextView textTitle = itemResult.findViewById(R.id.text_title);
 
-            TextView textTitle = itemResult.findViewById(R.id.text_title);
-            textTitle.setText(patchDescription);
+                textTitle.setText(patchDescription);
+                ImageView imageResult = itemResult.findViewById(R.id.image_result);
+                TextView textResult = itemResult.findViewById(R.id.text_result);
 
-            ImageView imageResult = itemResult.findViewById(R.id.image_result);
+                if (stripBitmap != null) {
+                    imageResult.setImageBitmap(stripBitmap);
 
-            TextView textResult = itemResult.findViewById(R.id.text_result);
+                    if (!invalid) {
 
-            if (stripBitmap != null) {
-                imageResult.setImageBitmap(stripBitmap);
+                        if (AppPreferences.isDiagnosticMode()) {
+                            TextView textColor = itemResult.findViewById(R.id.text_color);
+                            double[] colorValues = colorDetected.getLab().val;
+                            double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR,
+                                    colorValues[1] - 128, colorValues[2] - 128};
 
-                if (!invalid) {
+                            String calibrationInfo = PreferencesUtil.getString(getBaseContext(), Constant.CALIBRATION_INFO, "");
 
-                    if (AppPreferences.isDiagnosticMode()) {
-                        TextView textColor = itemResult.findViewById(R.id.text_color);
-                        double[] colorValues = colorDetected.getLab().val;
-                        double[] labPoint = new double[]{colorValues[0] / LAB_COLOR_NORMAL_DIVISOR,
-                                colorValues[1] - 128, colorValues[2] - 128};
+                            String distanceInfo = PreferencesUtil.getString(
+                                    CaddisflyApp.getApp().getApplicationContext(), Constant.DISTANCE_INFO + id, "");
 
-                        String calibrationInfo = PreferencesUtil.getString(getBaseContext(), Constant.CALIBRATION_INFO, "");
+                            textColor.setText(String.format(Locale.US, "Lab: %.2f, %.2f, %.2f%nDistance: %s%n%s%n",
+                                    labPoint[0], labPoint[1], labPoint[2], distanceInfo, calibrationInfo));
+                            textColor.setVisibility(View.VISIBLE);
 
-                        String distanceInfo = PreferencesUtil.getString(
-                                CaddisflyApp.getApp().getApplicationContext(), Constant.DISTANCE_INFO + id, "");
+                            String diagnosticInfo = PreferencesUtil.getString(
+                                    CaddisflyApp.getApp().getApplicationContext(), Constant.DIAGNOSTIC_INFO, "");
 
-                        textColor.setText(String.format(Locale.US, "Lab: %.2f, %.2f, %.2f%nDistance: %s%n%s%n",
-                                labPoint[0], labPoint[1], labPoint[2], distanceInfo, calibrationInfo));
-                        textColor.setVisibility(View.VISIBLE);
+                            String resultJson = String.format(Locale.getDefault(), "\"type\" : \"%s\",", patchDescription);
 
-                        String diagnosticInfo = PreferencesUtil.getString(
-                                CaddisflyApp.getApp().getApplicationContext(), Constant.DIAGNOSTIC_INFO, "");
+                            resultJson += String.format(Locale.getDefault(), "\"color\" : \"%s\",", colorDetected.getLab());
 
-                        String resultJson = String.format(Locale.getDefault(), "\"type\" : \"%s\",", patchDescription);
+                            resultJson += String.format(Locale.getDefault(), "\"result\" : \"%.2f\",", resultValue);
 
-                        resultJson += String.format(Locale.getDefault(), "\"color\" : \"%s\",", colorDetected.getLab());
+                            resultJson += String.format(Locale.getDefault(), "\"version\" : \"%s\",", CaddisflyApp.getAppVersion());
 
-                        resultJson += String.format(Locale.getDefault(), "\"result\" : \"%.2f\",", resultValue);
+                            resultJson += String.format(Locale.getDefault(), "\"phone\" : \"%s\",", Build.MODEL);
 
-                        resultJson += String.format(Locale.getDefault(), "\"version\" : \"%s\",", CaddisflyApp.getAppVersion());
+                            resultJson += String.format(Locale.getDefault(), "\"colorCard\" : \"%s\",",
+                                    String.valueOf(CalibrationCard.getMostFrequentVersionNumber()));
 
-                        resultJson += String.format(Locale.getDefault(), "\"phone\" : \"%s\",", Build.MODEL);
+                            diagnosticInfo = diagnosticInfo.replace("{Result}", resultJson);
 
-                        resultJson += String.format(Locale.getDefault(), "\"colorCard\" : \"%s\",",
-                                String.valueOf(CalibrationCard.getMostFrequentVersionNumber()));
+                            File path = FileHelper.getFilesDir(FileHelper.FileType.CARD, "");
+                            FileUtil.saveToFile(path, new SimpleDateFormat("yyyy-MM-dd HH-mm", Locale.US)
+                                            .format(Calendar.getInstance().getTimeInMillis())
+                                            + "_" + id + "_" + Build.MODEL.replace("_", "-") + "_CC"
+                                            + String.valueOf(CalibrationCard.getMostFrequentVersionNumber()) + ".json",
+                                    diagnosticInfo);
+                        }
 
-                        diagnosticInfo = diagnosticInfo.replace("{Result}", resultJson);
+                        if (resultValue > -1) {
 
-                        File path = FileHelper.getFilesDir(FileHelper.FileType.CARD, "");
-                        FileUtil.saveToFile(path, new SimpleDateFormat("yyyy-MM-dd HH-mm", Locale.US)
-                                        .format(Calendar.getInstance().getTimeInMillis())
-                                        + "_" + id + "_" + Build.MODEL.replace("_", "-") + "_CC"
-                                        + String.valueOf(CalibrationCard.getMostFrequentVersionNumber()) + ".json",
-                                diagnosticInfo);
-                    }
-
-                    if (resultValue > -1) {
-
-                        if (resultValue < 1.0) {
-                            textResult.setText(String.format(Locale.getDefault(), "%.2f %s", resultValue, unit));
+                            if (resultValue < 1.0) {
+                                textResult.setText(String.format(Locale.getDefault(), "%.2f %s", resultValue, unit));
+                            } else {
+                                textResult.setText(String.format(Locale.getDefault(), "%.1f %s", resultValue, unit));
+                            }
                         } else {
-                            textResult.setText(String.format(Locale.getDefault(), "%.1f %s", resultValue, unit));
+                            textResult.setText(R.string.no_result);
+                            invalid = true;
                         }
                     } else {
                         textResult.setText(R.string.no_result);
-                        invalid = true;
                     }
                 } else {
-                    textResult.setText(R.string.no_result);
+                    if (!patches.get(patchNum).getFormula().isEmpty()) {
+                        finalResultPatch = patches.get(patchNum);
+                        finalResultTextView = textResult;
+                    } else {
+                        textTitle.append("\n\n" + getResources().getString(R.string.no_data));
+                    }
+                    invalid = true;
                 }
-            } else {
-                if (!patches.get(patchNum).getFormula().isEmpty()) {
-                    finalResultPatch = patches.get(patchNum);
-                    finalResultTextView = textResult;
-                } else {
-                    textTitle.append("\n\n" + getResources().getString(R.string.no_data));
-                }
-                invalid = true;
             }
 
             layoutResults.addView(itemResult);

@@ -407,6 +407,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     mBluetoothLeScanner.stopScan(mScanCallback);
                 } else {
+                    //noinspection deprecation
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
                 }
 
@@ -437,6 +438,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
                 progressBar.setVisibility(View.VISIBLE);
             } else {
+                //noinspection deprecation
                 mBluetoothAdapter.startLeScan(mLeScanCallback);
             }
         } else {

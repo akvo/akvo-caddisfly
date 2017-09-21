@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -93,12 +92,9 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 if (hasOtg) {
                     AlertUtil.askQuestion(this, R.string.warning, R.string.incorrectCalibrationCanAffect,
                             R.string.calibrate, R.string.cancel, true,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    final Intent intent = new Intent(getBaseContext(), CalibrateSensorActivity.class);
-                                    startActivity(intent);
-                                }
+                            (dialogInterface, i) -> {
+                                final Intent intent = new Intent(getBaseContext(), CalibrateSensorActivity.class);
+                                startActivity(intent);
                             }, null);
                 } else {
                     alertFeatureNotSupported();
@@ -149,12 +145,7 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
                 }
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
-                        .setAction("SETTINGS", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ApiUtil.startInstalledAppDetailsActivity(activity);
-                            }
-                        });
+                        .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(activity));
 
                 TypedValue typedValue = new TypedValue();
                 getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);

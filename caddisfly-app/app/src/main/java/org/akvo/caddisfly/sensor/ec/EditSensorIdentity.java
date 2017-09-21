@@ -23,7 +23,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -79,24 +78,22 @@ public class EditSensorIdentity extends DialogFragment {
 
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        if (imm != null) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.sensorDetails)
                 .setPositiveButton(R.string.save,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                closeKeyboard(context, editId);
-                                dismiss();
-                            }
+                        (dialog, whichButton) -> {
+                            closeKeyboard(context, editId);
+                            dismiss();
                         }
                 )
                 .setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                closeKeyboard(context, editId);
-                                dismiss();
-                            }
+                        (dialog, whichButton) -> {
+                            closeKeyboard(context, editId);
+                            dismiss();
                         }
                 );
 
@@ -162,7 +159,9 @@ public class EditSensorIdentity extends DialogFragment {
     private void closeKeyboard(Context context, EditText input) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+        }
     }
 
     public interface OnFragmentInteractionListener {

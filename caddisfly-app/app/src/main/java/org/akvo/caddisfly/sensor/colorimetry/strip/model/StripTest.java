@@ -31,7 +31,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import timber.log.Timber;
@@ -240,22 +239,12 @@ public class StripTest {
 
                                     case GROUP:
                                         // sort by position of the patches on the strip
-                                        Collections.sort(patches, new Comparator<Patch>() {
-                                            @Override
-                                            public int compare(Patch lhs, Patch rhs) {
-                                                return Double.compare(lhs.getPosition(), rhs.getPosition());
-                                            }
-                                        });
+                                        Collections.sort(patches, (lhs, rhs) -> Double.compare(lhs.getPosition(), rhs.getPosition()));
                                         break;
                                     case INDIVIDUAL:
                                     default:
                                         // sort by time delay for analyzing each patch
-                                        Collections.sort(patches, new Comparator<Patch>() {
-                                            @Override
-                                            public int compare(final Patch lhs, final Patch rhs) {
-                                                return Double.compare(lhs.timeDelay, rhs.timeDelay);
-                                            }
-                                        });
+                                        Collections.sort(patches, (lhs, rhs) -> Double.compare(lhs.timeDelay, rhs.timeDelay));
                                         break;
                                 }
 
@@ -280,12 +269,7 @@ public class StripTest {
 
             // sort after moving to new list so that the order of original list is not changed
             List<Patch> newList = new ArrayList<>(patches);
-            Collections.sort(newList, new Comparator<Patch>() {
-                @Override
-                public int compare(Patch lhs, Patch rhs) {
-                    return Double.compare(lhs.getPosition(), rhs.getPosition());
-                }
-            });
+            Collections.sort(newList, (lhs, rhs) -> Double.compare(lhs.getPosition(), rhs.getPosition()));
             return newList;
         }
 

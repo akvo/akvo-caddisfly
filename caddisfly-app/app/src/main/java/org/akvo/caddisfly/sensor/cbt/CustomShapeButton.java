@@ -13,15 +13,15 @@ import android.view.View;
 
 public class CustomShapeButton extends View {
 
-    Path mPath = new Path();
-    Path markerPath = new Path();
-    Paint fillPaint = new Paint();
-    Paint fillSelectPaint = new Paint();
-    Paint greenPaint = new Paint();
-    Paint greenSelectPaint = new Paint();
-    Paint strokePaint = new Paint();
-    Paint markerPaint = new Paint();
-    Paint textPaint = new Paint();
+    final Path mPath = new Path();
+    final Path markerPath = new Path();
+    final Paint fillPaint = new Paint();
+    final Paint fillSelectPaint = new Paint();
+    final Paint greenPaint = new Paint();
+    final Paint greenSelectPaint = new Paint();
+    final Paint strokePaint = new Paint();
+    final Paint markerPaint = new Paint();
+    final Paint textPaint = new Paint();
 
     int fillLine;
     int colWidth;

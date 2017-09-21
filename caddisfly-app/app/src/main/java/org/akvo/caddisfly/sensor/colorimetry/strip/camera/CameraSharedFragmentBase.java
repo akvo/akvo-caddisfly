@@ -94,12 +94,9 @@ public abstract class CameraSharedFragmentBase extends Fragment {
                 }
             });
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (isAdded()) {
-                        textSwitcher.setText(getString(R.string.detecting_color_card));
-                    }
+            new Handler().postDelayed(() -> {
+                if (isAdded()) {
+                    textSwitcher.setText(getString(R.string.detecting_color_card));
                 }
             }, INITIAL_DELAY_MILLIS);
         }

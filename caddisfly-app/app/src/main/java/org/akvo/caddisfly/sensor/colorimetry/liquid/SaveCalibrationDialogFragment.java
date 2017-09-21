@@ -33,7 +33,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -92,17 +91,12 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         @SuppressLint("InflateParams")
         View view = i.inflate(R.layout.fragment_save_calibration, null);
 
-        final DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                String date = new SimpleDateFormat("dd MMM yyyy", Locale.US).format(calendar.getTime());
-                editExpiryDate.setText(date);
-            }
+        final DatePickerDialog.OnDateSetListener onDateSetListener = (view13, year, monthOfYear, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            String date = new SimpleDateFormat("dd MMM yyyy", Locale.US).format(calendar.getTime());
+            editExpiryDate.setText(date);
         };
 
         editExpiryDate = view.findViewById(R.id.editExpiryDate);
@@ -153,22 +147,16 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         date.set(Calendar.MILLISECOND, date.getMaximum(Calendar.MILLISECOND));
         datePickerDialog.getDatePicker().setMaxDate(date.getTimeInMillis());
 
-        editExpiryDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b) {
-                    closeKeyboard(getContext(), editBatchCode);
-                    datePickerDialog.show();
-                }
-            }
-        });
-
-        editExpiryDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        editExpiryDate.setOnFocusChangeListener((view12, b) -> {
+            if (b) {
                 closeKeyboard(getContext(), editBatchCode);
                 datePickerDialog.show();
             }
+        });
+
+        editExpiryDate.setOnClickListener(view1 -> {
+            closeKeyboard(getContext(), editBatchCode);
+            datePickerDialog.show();
         });
 
         editName = view.findViewById(R.id.editName);
@@ -181,24 +169,22 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        if (imm != null) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.calibrationDetails)
                 .setPositiveButton(R.string.save,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                closeKeyboard(context, editName);
-                                dismiss();
-                            }
+                        (dialog, whichButton) -> {
+                            closeKeyboard(context, editName);
+                            dismiss();
                         }
                 )
                 .setNegativeButton(R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                closeKeyboard(context, editName);
-                                dismiss();
-                            }
+                        (dialog, whichButton) -> {
+                            closeKeyboard(context, editName);
+                            dismiss();
                         }
                 );
 
@@ -231,14 +217,11 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                             if (file.exists()) {
                                 AlertUtil.askQuestion(context, R.string.fileAlreadyExists,
                                         R.string.doYouWantToOverwrite, R.string.overwrite, R.string.cancel, true,
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface, int i) {
-                                                saveCalibrationDetails(path);
-                                                saveDetails(testCode);
-                                                closeKeyboard(context, editName);
-                                                dismiss();
-                                            }
+                                        (dialogInterface, i) -> {
+                                            saveCalibrationDetails(path);
+                                            saveDetails(testCode);
+                                            closeKeyboard(context, editName);
+                                            dismiss();
                                         }, null
                                 );
                             } else {
@@ -317,11 +300,13 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         try {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
 
-            View view = getActivity().getCurrentFocus();
-            if (view != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                View view = getActivity().getCurrentFocus();
+                if (view != null) {
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
             }
         } catch (Exception e) {
             Timber.e(e);

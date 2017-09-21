@@ -122,12 +122,9 @@ public class CameraDialogFragment extends CameraDialog {
                     getString(R.string.tryRestarting));
 
             AlertUtil.showError(getActivity(), R.string.cameraBusy,
-                    message, null, R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                            dismiss();
-                        }
+                    message, null, R.string.ok, (dialogInterface, i) -> {
+                        dialogInterface.dismiss();
+                        dismiss();
                     }, null, null);
         }
     }
@@ -146,12 +143,7 @@ public class CameraDialogFragment extends CameraDialog {
         mSamplingDelay = delay;
 
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                takePicture();
-            }
-        }, delay);
+        handler.postDelayed(this::takePicture, delay);
     }
 
     private void takePicture() {
@@ -474,12 +466,7 @@ public class CameraDialogFragment extends CameraDialog {
                     try {
                         camera.startPreview();
                         final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                takePicture();
-                            }
-                        }, mSamplingDelay);
+                        handler.postDelayed(CameraDialogFragment.this::takePicture, mSamplingDelay);
                     } catch (Exception e) {
                         Timber.e(e);
                     }

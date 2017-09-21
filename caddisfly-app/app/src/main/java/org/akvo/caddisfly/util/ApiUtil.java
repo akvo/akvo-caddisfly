@@ -21,7 +21,6 @@ package org.akvo.caddisfly.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -116,13 +115,10 @@ public final class ApiUtil {
     public static boolean isCameraInUse(Context context, @Nullable final Activity activity) {
         Camera camera = null;
         try {
-            camera = CameraHelper.getCamera(context, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                    if (activity != null) {
-                        activity.finish();
-                    }
+            camera = CameraHelper.getCamera(context, (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+                if (activity != null) {
+                    activity.finish();
                 }
             });
 

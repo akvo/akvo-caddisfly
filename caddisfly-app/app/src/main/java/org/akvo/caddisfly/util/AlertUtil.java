@@ -73,12 +73,7 @@ public final class AlertUtil {
                                    @Nullable DialogInterface.OnClickListener cancelListener) {
 
         if (cancelListener == null) {
-            cancelListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            };
+            cancelListener = (dialogInterface, i) -> dialogInterface.dismiss();
         }
 
         showAlert(context, context.getString(title), context.getString(message), okButtonText,
@@ -158,12 +153,7 @@ public final class AlertUtil {
         if (positiveListener != null) {
             builder.setPositiveButton(okButtonText, positiveListener);
         } else if (negativeListener == null) {
-            builder.setNegativeButton(okButtonText, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+            builder.setNegativeButton(okButtonText, (dialogInterface, i) -> dialogInterface.dismiss());
         }
 
         if (negativeListener != null) {

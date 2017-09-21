@@ -70,20 +70,14 @@ public class ResultDialogFragment extends DialogFragment {
 
         final View view = inflater.inflate(R.layout.fragment_result, container, false);
 
-        view.findViewById(R.id.buttonOk).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ResultDialogListener listener = (ResultDialogListener) getActivity();
-                listener.onSuccessFinishDialog(true);
-            }
+        view.findViewById(R.id.buttonOk).setOnClickListener(view12 -> {
+            ResultDialogListener listener = (ResultDialogListener) getActivity();
+            listener.onSuccessFinishDialog(true);
         });
 
-        view.findViewById(R.id.buttonDilutionTest).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ResultDialogListener listener = (ResultDialogListener) getActivity();
-                listener.onSuccessFinishDialog(false);
-            }
+        view.findViewById(R.id.buttonDilutionTest).setOnClickListener(view1 -> {
+            ResultDialogListener listener = (ResultDialogListener) getActivity();
+            listener.onSuccessFinishDialog(false);
         });
 
         //display the title

@@ -22,7 +22,6 @@ package org.akvo.caddisfly.helper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -69,13 +68,10 @@ public final class ApkHelper {
                         .setMessage(message)
                         .setCancelable(false);
 
-                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                        activity.startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
-                        activity.finish();
-                    }
+                builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
+                    activity.finish();
                 });
 
                 final AlertDialog alertDialog = builder.create();

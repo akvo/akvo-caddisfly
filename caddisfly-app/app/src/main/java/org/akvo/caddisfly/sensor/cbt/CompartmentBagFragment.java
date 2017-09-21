@@ -70,26 +70,21 @@ public class CompartmentBagFragment extends BaseFragment {
 
         customShapeButton.setKey(mKey);
 
-        customShapeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mKey = customShapeButton.getKey();
+        customShapeButton.setOnClickListener(v -> {
+            mKey = customShapeButton.getKey();
 
-                if (mListener != null) {
-                    mListener.onFragmentInteraction(mKey);
-                }
+            if (mListener != null) {
+                mListener.onFragmentInteraction(mKey);
             }
         });
 
         final Button buttonNext = view.findViewById(R.id.buttonNext);
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                buttonNext.setEnabled(true);
-                AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
-                buttonNext.setAlpha(1f);
-                animation.setDuration(ANIMATION_DURATION_MILLIS);
-                buttonNext.startAnimation(animation);
-            }
+        (new Handler()).postDelayed(() -> {
+            buttonNext.setEnabled(true);
+            AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
+            buttonNext.setAlpha(1f);
+            animation.setDuration(ANIMATION_DURATION_MILLIS);
+            buttonNext.startAnimation(animation);
         }, BUTTON_ENABLE_DELAY);
 
         buttonNext.setEnabled(false);

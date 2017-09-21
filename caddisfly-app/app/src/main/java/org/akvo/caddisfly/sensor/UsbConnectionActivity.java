@@ -58,21 +58,17 @@ public class UsbConnectionActivity extends Activity {
         progressDialog.show();
 
         //just a fixed delay so the progress is visible
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                progressDialog.setMessage(getString(R.string.deviceConnected));
-                //dismiss after the second message
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
-                        try {
-                            progressDialog.dismiss();
-                        } catch (Exception ignored) {
+        (new Handler()).postDelayed(() -> {
+            progressDialog.setMessage(getString(R.string.deviceConnected));
+            //dismiss after the second message
+            (new Handler()).postDelayed(() -> {
+                try {
+                    progressDialog.dismiss();
+                } catch (Exception ignored) {
 
-                        }
-                        finish();
-                    }
-                }, 1000);
-            }
+                }
+                finish();
+            }, 1000);
         }, 1000);
 
     }

@@ -24,7 +24,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,20 +50,14 @@ public class DeviceConnectDialog extends DialogFragment {
         View newFileView = inflater.inflate(R.layout.dialog_device_instructions, null);
         builder.setView(newFileView);
 
-        builder.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                InterfaceCommunicator listener = (InterfaceCommunicator) getActivity();
-                listener.sendRequestCode(Activity.RESULT_OK);
-            }
+        builder.setPositiveButton(R.string.retry, (dialog, which) -> {
+            InterfaceCommunicator listener = (InterfaceCommunicator) getActivity();
+            listener.sendRequestCode(Activity.RESULT_OK);
         });
 
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                InterfaceCommunicator listener = (InterfaceCommunicator) getActivity();
-                listener.sendRequestCode(Activity.RESULT_CANCELED);
-            }
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> {
+            InterfaceCommunicator listener = (InterfaceCommunicator) getActivity();
+            listener.sendRequestCode(Activity.RESULT_CANCELED);
         });
 
         return builder.create();

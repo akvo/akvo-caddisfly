@@ -39,9 +39,10 @@
         android:id="@android:id/list"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_above="@+id/buttonStart"
         android:layout_below="@+id/textCalibrationError"
         android:clickable="true"
-        android:layout_above="@+id/buttonStart"
+        android:focusable="true"
         tools:listitem="@layout/row_calibrate" />
 
     <Button

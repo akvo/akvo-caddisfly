@@ -72,111 +72,94 @@ public class DiagnosticPreviewFragment extends DialogFragment implements CameraD
 
         final DiagnosticPreviewFragment currentDialog = this;
 
-        mCameraDialog.setPictureTakenObserver(new CameraDialogFragment.PictureTaken() {
-            @Override
-            public void onPictureTaken(@NonNull byte[] bytes, boolean completed) {
+        mCameraDialog.setPictureTakenObserver((bytes, completed) -> {
 
-                sound.playShortResource(R.raw.beep);
+            sound.playShortResource(R.raw.beep);
 
-                mCameraDialog.dismiss();
+            mCameraDialog.dismiss();
 
-                Bitmap bitmap = ImageUtil.getBitmap(bytes);
+            Bitmap bitmap = ImageUtil.getBitmap(bytes);
 
-                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                int rotation;
-                switch (display.getRotation()) {
-                    case Surface.ROTATION_0:
-                        rotation = SensorConstants.DEGREES_90;
-                        break;
-                    case Surface.ROTATION_180:
-                        rotation = SensorConstants.DEGREES_270;
-                        break;
-                    case Surface.ROTATION_270:
-                        rotation = 180;
-                        break;
-                    case Surface.ROTATION_90:
-                    default:
-                        rotation = 0;
-                        break;
-                }
-
-                bitmap = ImageUtil.rotateImage(bitmap, rotation);
-
-                TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-                Bitmap croppedBitmap;
-
-                if (testInfo.isUseGrayScale()) {
-                    croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                            ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
-
-                    if (croppedBitmap != null) {
-                        croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
-                    }
-                } else {
-                    croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                            ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
-                }
-
-                DiagnosticDetailsFragment diagnosticDetailsFragment =
-                        DiagnosticDetailsFragment.newInstance(
-                                croppedBitmap,
-                                bitmap, bitmap.getWidth() + " x " + bitmap.getHeight());
-
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-                Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
-                if (fragment != null) {
-                    ft.remove(fragment);
-                }
-
-                diagnosticDetailsFragment.setCancelable(true);
-                diagnosticDetailsFragment.show(ft, "resultDialog");
-                currentDialog.dismiss();
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            int rotation;
+            switch (display.getRotation()) {
+                case Surface.ROTATION_0:
+                    rotation = SensorConstants.DEGREES_90;
+                    break;
+                case Surface.ROTATION_180:
+                    rotation = SensorConstants.DEGREES_270;
+                    break;
+                case Surface.ROTATION_270:
+                    rotation = 180;
+                    break;
+                case Surface.ROTATION_90:
+                default:
+                    rotation = 0;
+                    break;
             }
+
+            bitmap = ImageUtil.rotateImage(bitmap, rotation);
+
+            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+
+            Bitmap croppedBitmap;
+
+            if (testInfo.isUseGrayScale()) {
+                croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, false);
+
+                if (croppedBitmap != null) {
+                    croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+                }
+            } else {
+                croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
+                        ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT, true);
+            }
+
+            DiagnosticDetailsFragment diagnosticDetailsFragment =
+                    DiagnosticDetailsFragment.newInstance(
+                            croppedBitmap,
+                            bitmap, bitmap.getWidth() + " x " + bitmap.getHeight());
+
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+            Fragment fragment = getFragmentManager().findFragmentByTag("resultDialog");
+            if (fragment != null) {
+                ft.remove(fragment);
+            }
+
+            diagnosticDetailsFragment.setCancelable(true);
+            diagnosticDetailsFragment.show(ft, "resultDialog");
+            currentDialog.dismiss();
         });
 
         getChildFragmentManager().beginTransaction()
                 .add(R.id.layoutContainer, mCameraDialog)
                 .commit();
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCameraDialog.takePictureSingle();
-            }
-        });
+        view.setOnClickListener(view1 -> mCameraDialog.takePictureSingle());
 
         //in diagnostic mode allow user to long press or place device face down to to run a quick test
         //Set up the shake detector
         mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        final Sensor accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        final Sensor accelerometer;
+        if (mSensorManager != null) {
+            accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-        mShakeDetector = new ShakeDetector(new ShakeDetector.OnShakeListener() {
-            @Override
-            public void onShake() {
+            mShakeDetector = new ShakeDetector(() -> {
                 // Nothing to do here
-            }
-        }, new ShakeDetector.OnNoShakeListener() {
-            @Override
-            public void onNoShake() {
+            }, () -> {
                 unregisterShakeDetector();
                 final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCameraDialog.takePictureSingle();
-                    }
-                }, ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
-            }
-        });
+                handler.postDelayed(() -> mCameraDialog.takePictureSingle(), ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING);
+            });
 
-        mShakeDetector.setMinShakeAcceleration(5);
-        mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
+            mShakeDetector.setMinShakeAcceleration(5);
+            mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
 
-        mSensorManager.registerListener(mShakeDetector, accelerometer,
-                SensorManager.SENSOR_DELAY_UI);
-
+            mSensorManager.registerListener(mShakeDetector, accelerometer,
+                    SensorManager.SENSOR_DELAY_UI);
+        }
         return view;
     }
 

@@ -52,11 +52,8 @@ public class CalibrateListFragment extends ListFragment {
      * A dummy implementation of the interface that does nothing.
      * Used only when this fragment is not attached to an activity.
      */
-    private static final Callbacks DUMMY_CALLBACKS = new Callbacks() {
-        @Override
-        public void onItemSelected(int id) {
-            // Nothing to do here
-        }
+    private static final Callbacks DUMMY_CALLBACKS = id -> {
+        // Nothing to do here
     };
     private static final long MIN_DELAY_MILLIS = 1000;
     /**
@@ -65,7 +62,6 @@ public class CalibrateListFragment extends ListFragment {
     private Callbacks mCallbacks = DUMMY_CALLBACKS;
     private TextView textCalibrationError;
     private long mLastClickTime;
-    private Button buttonStart;
 
     public void setAdapter() {
         TestInfo currentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
@@ -106,7 +102,7 @@ public class CalibrateListFragment extends ListFragment {
         textCalibrationError = view.findViewById(R.id.textCalibrationError);
 
         if (AppPreferences.isDiagnosticMode()) {
-            buttonStart = view.findViewById(R.id.buttonStart);
+            Button buttonStart = view.findViewById(R.id.buttonStart);
             buttonStart.setVisibility(View.VISIBLE);
 
             buttonStart.setOnClickListener(view1 -> {

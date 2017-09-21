@@ -33,7 +33,7 @@ public class TestInfoViewModel {
 
     private static final String ILLUSTRATION_PATH = "images/instructions/";
     private static TestInfo testInfo;
-    public ObservableField<TestInfo> test = new ObservableField<>();
+    public final ObservableField<TestInfo> test = new ObservableField<>();
 
     @BindingAdapter("content")
     public static void setContent(LinearLayout linearLayout, JSONObject instruction) {

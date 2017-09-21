@@ -51,12 +51,9 @@ public class DiagnosticUserPreferenceFragment extends PreferenceFragment {
 
         Preference themePreference = findPreference(getString(R.string.selectedThemeKey));
         if (themePreference != null) {
-            themePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object o) {
-                    PreferencesUtil.setBoolean(getActivity(), R.string.themeChangedKey, true);
-                    return true;
-                }
+            themePreference.setOnPreferenceChangeListener((preference, o) -> {
+                PreferencesUtil.setBoolean(getActivity(), R.string.themeChangedKey, true);
+                return true;
             });
         }
 

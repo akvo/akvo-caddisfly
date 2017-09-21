@@ -102,24 +102,18 @@ public class DiagnosticResultDialog extends DialogFragment {
             buttonCancel.setVisibility(View.VISIBLE);
             buttonRetry.setVisibility(View.VISIBLE);
             buttonOk.setVisibility(View.GONE);
-            buttonCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            buttonCancel.setOnClickListener(view13 -> {
 
-                    DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(false, true, "", mIsCalibration);
+                DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
+                listener.onFinishDiagnosticResultDialog(false, true, "", mIsCalibration);
 
-                }
             });
 
-            buttonRetry.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            buttonRetry.setOnClickListener(view12 -> {
 
-                    DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(true, false, "", mIsCalibration);
+                DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
+                listener.onFinishDiagnosticResultDialog(true, false, "", mIsCalibration);
 
-                }
             });
         } else {
             final String result = getArguments().getString(SensorConstants.RESULT);
@@ -133,14 +127,11 @@ public class DiagnosticResultDialog extends DialogFragment {
             buttonRetry.setVisibility(View.GONE);
             buttonOk.setVisibility(View.VISIBLE);
 
-            buttonOk.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            buttonOk.setOnClickListener(view1 -> {
 
-                    DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
-                    listener.onFinishDiagnosticResultDialog(false, false, result, mIsCalibration);
+                DiagnosticResultDialogListener listener = (DiagnosticResultDialogListener) getActivity();
+                listener.onFinishDiagnosticResultDialog(false, false, result, mIsCalibration);
 
-                }
             });
         }
         return view;

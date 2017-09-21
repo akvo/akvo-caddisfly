@@ -13,8 +13,8 @@ import android.widget.TextView;
 import org.akvo.caddisfly.R;
 
 public class RowView extends TableRow {
-    TextView textNumber;
-    TextView textPara;
+    final TextView textNumber;
+    final TextView textPara;
 
     public RowView(Context context, AttributeSet attrs) {
         super(context);
