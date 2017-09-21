@@ -161,7 +161,7 @@
     <string name="possibly_safe">Intermediate Risk / Possibly Safe</string>
     <string name="possibly_unsafe">High Risk / Possibly Unsafe</string>
     <string name="probably_unsafe">High Risk / Probably Unsafe</string>
-    <string name="unsafe">Unsafe</string>
+    <string name="unsafe">Very High Risk / Unsafe</string>
     <string name="mpn">MPN/100ml</string>
     <string name="confidenceInterval">Upper 95&#37; Confidence Interval</string>
 

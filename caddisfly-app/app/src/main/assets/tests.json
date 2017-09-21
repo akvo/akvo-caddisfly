@@ -6229,6 +6229,90 @@
       ]
     },
     {
+      "name": "Water - Total Iron",
+      "description": "Standards are prepared by diluting 1000 ppm Iron stock solution. 1000 ppm Stock solution is prepared by dissolving 4.9783 gm of FeSO4.7H2O in 1000 ml of distilled water.",
+      "subtype": "striptest",
+      "tags": [
+        "water quality"
+      ],
+      "uuid": "5c90472e-9c06-4c7c-9f62-4c5cbcf6b1c1",
+      "calibration": "07 Jun 2017 using X-Rite i1Pro 2",
+      "brand": "Quantofix 91344",
+      "imageScale": "fitCenter",
+      "groupingType": "INDIVIDUAL",
+      "illuminant": "D65-2deg",
+      "length": 95.5,
+      "height": 5.5,
+      "unit": "mm",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "collect_sample_strip",
+            "image:collect_sample"
+          ]
+        },
+        {
+          "section": [
+            "dip_sample_1s",
+            "image:dip_sample_1"
+          ]
+        },
+        {
+          "section": [
+            "shake_excess_water_off",
+            "image:shake_excess"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Total Iron",
+          "unit": "mg/l",
+          "patchPos": 4.6,
+          "patchWidth": 5,
+          "timeDelay": 60,
+          "colors": [
+            {
+              "value": 0,
+              "lab": [84.69,-0.52,-3.11]
+            },
+            {
+              "value": 2,
+              "lab": [79.60,1.89,-10.16]
+            },
+            {
+              "value": 5,
+              "lab": [73.67,5.15,-17.58]
+            },
+            {
+              "value": 10,
+              "lab": [66.44,9.79,-26.10]
+            },
+            {
+              "value": 25,
+              "lab": [53.65,18.48,-37.87]
+            },
+            {
+              "value": 50,
+              "lab": [45.01,25.05,-44.70]
+            },
+            {
+              "value": 100,
+              "lab": [41.75,25.29,-44.11]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Water - Electrical Conductivity",
       "description": "Electrical Conductivity of water. 0 - 12500 μS/cm",
       "subtype": "sensor",

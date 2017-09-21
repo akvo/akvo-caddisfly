@@ -76,6 +76,7 @@ public class CbtResultFragment extends BaseFragment {
         TextView textResult3 = view.findViewById(R.id.textResult3);
         LinearLayout layoutResult = view.findViewById(R.id.layoutResult);
         LinearLayout layoutResult1 = view.findViewById(R.id.layoutResult1);
+        LinearLayout layoutResult2 = view.findViewById(R.id.layoutResult2);
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
 
@@ -84,29 +85,33 @@ public class CbtResultFragment extends BaseFragment {
         textResult.setText(results[0].trim());
         if (results.length > 1) {
             textResult1.setText(results[1].trim());
-        }else{
-            textResult1.setVisibility(View.GONE);
         }
 
         if (Double.parseDouble(mpnValue.getConfidence()) > 9000) {
-            layoutResult1.setBackgroundColor(Color.rgb(210, 23, 23));
-            layoutResult.setBackgroundColor(Color.rgb(191, 3, 3));
+            layoutResult.setBackgroundColor(Color.rgb(210, 23, 23));
+            layoutResult1.setBackgroundColor(Color.rgb(191, 3, 3));
+            layoutResult2.setBackgroundColor(Color.rgb(210, 23, 23));
             textResult.setTextColor(Color.WHITE);
         } else if (Double.parseDouble(mpnValue.getConfidence()) > 100) {
             layoutResult.setBackgroundColor(Color.rgb(190, 70, 6));
             layoutResult1.setBackgroundColor(Color.rgb(180, 63, 30));
+            layoutResult2.setBackgroundColor(Color.rgb(190, 70, 6));
         } else if (Double.parseDouble(mpnValue.getConfidence()) > 50) {
             layoutResult.setBackgroundColor(Color.rgb(186, 133, 16));
             layoutResult1.setBackgroundColor(Color.rgb(196, 143, 10));
+            layoutResult2.setBackgroundColor(Color.rgb(186, 133, 16));
         } else if (Double.parseDouble(mpnValue.getConfidence()) > 10) {
             layoutResult.setBackgroundColor(Color.rgb(176, 173, 30));
             layoutResult1.setBackgroundColor(Color.rgb(186, 163, 20));
+            layoutResult2.setBackgroundColor(Color.rgb(176, 173, 30));
         } else if (Double.parseDouble(mpnValue.getConfidence()) > 3) {
             layoutResult.setBackgroundColor(Color.rgb(142, 163, 20));
             layoutResult1.setBackgroundColor(Color.rgb(150, 153, 20));
+            layoutResult2.setBackgroundColor(Color.rgb(142, 163, 20));
         } else {
             layoutResult.setBackgroundColor(Color.rgb(84, 183, 30));
             layoutResult1.setBackgroundColor(Color.rgb(94, 173, 20));
+            layoutResult2.setBackgroundColor(Color.rgb(84, 183, 30));
         }
 
         textResult2.setText(mpnValue.getMpn());

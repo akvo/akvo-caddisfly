@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textColor="#fff9f9"
-            android:textSize="37sp"
+            android:textSize="42sp"
             tools:text="> 100" />
 
         <TextView
@@ -85,6 +85,16 @@
             android:textColor="#ccececec"
             android:textSize="15sp"
             android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutResult2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#c20f0f"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingTop="20dp">
 
         <TextView
             android:id="@+id/textResult3"
