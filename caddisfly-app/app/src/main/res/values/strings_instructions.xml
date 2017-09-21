@@ -163,7 +163,7 @@
     <string name="probably_unsafe">High Risk / Probably Unsafe</string>
     <string name="unsafe">Unsafe</string>
     <string name="mpn">MPN/100ml</string>
-    <string name="confidenceInterval">Upper 95%% Confidence Interval</string>
+    <string name="confidenceInterval">Upper 95&#37; Confidence Interval</string>
 
     <string name="put_on_gloves">Put on plastic gloves</string>
     <string name="collect_100ml_water_sample">Collect <b>100 ml</b> water sample with bottle or Thio Bag.</string>

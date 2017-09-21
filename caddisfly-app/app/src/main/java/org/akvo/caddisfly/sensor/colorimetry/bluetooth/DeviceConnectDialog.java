@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -47,6 +48,7 @@ public class DeviceConnectDialog extends DialogFragment {
         builder.setTitle("MD610 not found");
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
+        @SuppressLint("InflateParams")
         View newFileView = inflater.inflate(R.layout.dialog_device_instructions, null);
         builder.setView(newFileView);
 

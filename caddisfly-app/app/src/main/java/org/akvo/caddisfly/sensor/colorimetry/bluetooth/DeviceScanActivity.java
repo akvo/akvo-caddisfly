@@ -194,10 +194,10 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         layoutInfo = findViewById(R.id.layout_bluetooth_info);
 
         textTitle = findViewById(R.id.textTitle);
-        textTitle.setText("Scanning...");
+        textTitle.setText(R.string.scanning);
 
         textSubtitle = findViewById(R.id.textSubtitle);
-        textSubtitle.setText("Searching for bluetooth devices");
+        textSubtitle.setText(R.string.searching_for_device);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
     }
@@ -491,8 +491,8 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 layoutInfo.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
 
-                textTitle.setText("Nearby devices");
-                textSubtitle.setText("Connect to your device");
+                textTitle.setText(R.string.nearby_devices);
+                textSubtitle.setText(R.string.connect_device);
             }
         }
 
@@ -545,7 +545,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             BluetoothDevice device = mLeDevices.get(position);
             final String deviceName = device.getName();
             if (deviceName != null && deviceName.length() > 0) {
-                viewHolder.deviceName.setText("MD610 Photometer");
+                viewHolder.deviceName.setText(R.string.md610_photometer);
             } else {
                 viewHolder.deviceName.setText(R.string.unknown_device);
             }

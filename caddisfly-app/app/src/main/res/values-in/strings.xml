@@ -113,7 +113,6 @@
     <string name="stop_test">Hentikan uji coba</string>
     <string name="noData">Tidak ada data</string>
     <!--Alerts-->
-    <string name="errorAkvoFlowRequired">Mohon pasang aplikasi Akvo Flow</string>
     <string name="cannotStartTest">Tidak dapat memulai uji coba</string>
     <string name="errorTestNotAvailable">Uji coba yang diminta tidak tersedia</string>
     <string name="pleaseContactSupport">Mohon hubungi bantuan teknisi</string>
