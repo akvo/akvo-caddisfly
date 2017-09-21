@@ -18,7 +18,7 @@
   -->
 
 <!--Strings used for diagnostics, automated and unit tests-->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="UnusedResources,MissingTranslation">
 
     <!--Test Types-->
     <string name="fluoride">Water - Fluoride</string>

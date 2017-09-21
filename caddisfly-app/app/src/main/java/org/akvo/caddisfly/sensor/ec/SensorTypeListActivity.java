@@ -120,6 +120,7 @@ public class SensorTypeListActivity extends BaseActivity {
         @NonNull
         private final Context context;
 
+        @SuppressWarnings("SameParameterValue")
         TestTypesAdapter(@NonNull Activity activity, int resource, TestInfo[] testInfoArray) {
             super(activity, resource, testInfoArray);
             context = activity;

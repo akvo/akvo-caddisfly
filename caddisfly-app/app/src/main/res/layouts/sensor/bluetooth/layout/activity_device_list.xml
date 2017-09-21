@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="sans-serif-light"
-                android:text="Nearby devices"
+                android:text="@string/nearbyDevices"
                 android:textColor="#fff"
                 android:textSize="30sp" />
 
@@ -55,7 +55,7 @@
                 android:id="@+id/textSubtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Connect to your device"
+                android:text="@string/connectToYourDevice"
                 android:textColor="#d6f6fdf6"
                 android:textSize="16sp" />
 

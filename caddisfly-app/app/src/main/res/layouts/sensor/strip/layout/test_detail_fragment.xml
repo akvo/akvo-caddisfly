@@ -76,7 +76,7 @@
                 android:layout_marginBottom="45dp"
                 android:layout_marginStart="5sp"
                 android:onClick="onSiteLinkClick"
-                android:text="www.aquagenx.com"
+                android:text="@string/aquagenx_link"
                 android:textColor="#006384" />
 
         </FrameLayout>

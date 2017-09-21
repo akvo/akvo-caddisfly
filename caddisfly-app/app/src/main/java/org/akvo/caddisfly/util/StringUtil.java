@@ -87,14 +87,14 @@ public final class StringUtil {
         }
 
         // Set sample quantity in the string
-        Matcher m1 = Pattern.compile("%samplequantity").matcher(builder);
+        Matcher m1 = Pattern.compile("%sampleQuantity").matcher(builder);
         while (m1.find()) {
             builder.replace(m1.start(), m1.end(), testInfo.getSampleQuantity().toString());
         }
 
         // Set reaction time in the string
         for (int i = 1; i < 5; i++) {
-            Matcher m2 = Pattern.compile("%reactiontime" + i).matcher(builder);
+            Matcher m2 = Pattern.compile("%reactionTime" + i).matcher(builder);
             while (m2.find()) {
                 builder.replace(m2.start(), m2.end(), testInfo.getReactionTime(i - 1));
             }

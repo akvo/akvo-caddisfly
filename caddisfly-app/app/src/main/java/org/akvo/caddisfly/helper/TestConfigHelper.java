@@ -453,6 +453,7 @@ public final class TestConfigHelper {
         return null;
     }
 
+    @SuppressWarnings("SameParameterValue")
     @Nullable
     private static String getUuidByShortCode(String shortCode, String filename) {
         // Load the pre-configured tests from the app

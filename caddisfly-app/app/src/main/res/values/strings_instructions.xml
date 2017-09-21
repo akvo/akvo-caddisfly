@@ -86,11 +86,11 @@
     <string name="fill_vial_24_with_10ml_deionized_water">Fill one clean vial (24 mm Ø) with <b>10 ml of deionised water (this is the blank)</b>.</string>
     <string name="fill_vial_24_with_10ml_sample">Fill another clean vial (24 mm Ø) with <b>10 ml of the water sample (this is the sample)</b></string>
     <string name="add_water_till_10ml">Add water sample to the 10 ml mark in the vial</string>
-    <string name="add_sample_exact">Add <b>exactly %samplequantity ml of the water sample</b> to the prepared vial. Caution: Vial is filled up to the top!</string>
+    <string name="add_sample_exact">Add <b>exactly %sampleQuantity ml of the water sample</b> to the prepared vial. Caution: Vial is filled up to the top!</string>
     <string name="remove_vial">Remove the vial from the sample chamber.</string>
     <string name="remove_vial_leave_drops">Remove the vial from the sample chamber and empty it, leaving a few drops remaining in the vial.</string>
     <string name="remove_vial_empty">Remove the vial from the sample chamber and empty the vial</string>
-    <string name="remove_vial_empty_fill">Remove the vial from the sample chamber, empty the vial, rinse vial and cap several times and then fill the vial with %samplequantity ml of the water sample.</string>
+    <string name="remove_vial_empty_fill">Remove the vial from the sample chamber, empty the vial, rinse vial and cap several times and then fill the vial with %sampleQuantity ml of the water sample.</string>
     <string name="add_reagent_1_tablet">Add <b>one %reagent1 tablet</b> straight from the foil to the water sample and crush the tablet using a clean stirring rod</string>
     <string name="add_reagent_2_tablet">Add <b>one %reagent2 tablet</b> straight from the foil to the water sample and crush the tablet using a clean stirring rod</string>
     <string name="add_reagent_1_powder_1vial">Add the contents of <b>one %reagent1 powder pack</b> straight from the foil to the vial.</string>
@@ -117,14 +117,14 @@
     <string name="close_gently_swirl_tablet">Close the vial tightly with the cap and swirl gently (do not shake heavily!) several times until the tablet is dissolved</string>
     <string name="close_swirl_vigorously">Close the tube tightly with the cap and swirl vigorously for one minute.</string>
     <string name="wipe_place_align_vial">Wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*test*]</string>
-    <string name="wipe_place_align_vial_wait_1">Wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*test*]. Wait for a <b>reaction time of %reactiontime1 minutes</b>.</string>
-    <string name="wipe_place_align_vial_wait_2">Wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*test*]. Wait for a <b>reaction time of %reactiontime2 minutes</b>.</string>
+    <string name="wipe_place_align_vial_wait_1">Wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*test*]. Wait for a <b>reaction time of %reactionTime1 minutes</b>.</string>
+    <string name="wipe_place_align_vial_wait_2">Wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*test*]. Wait for a <b>reaction time of %reactionTime2 minutes</b>.</string>
     <string name="wipe_place_align_prepared_vial_zero">Wipe the outside of the prepared vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*zero*] to perform <b>zero test</b></string>
     <string name="wipe_place_align_vial_blank_zero">Wipe the outside of the vial (blank), hold vial at the lid and place vial (blank) in the chamber. Align arrow marks and press [*zero*] to perform <b>zero test</b></string>
-    <string name="wipe_place_align_vial_blank_zero_wait">Wipe the outside of the vial (blank), hold vial at the lid and place vial (blank) in the chamber. Align arrow marks and press [*zero*] to perform <b>zero test</b>. Wait for a <b>reaction period of %reactiontime1 minutes</b>.</string>
+    <string name="wipe_place_align_vial_blank_zero_wait">Wipe the outside of the vial (blank), hold vial at the lid and place vial (blank) in the chamber. Align arrow marks and press [*zero*] to perform <b>zero test</b>. Wait for a <b>reaction period of %reactionTime1 minutes</b>.</string>
     <string name="wipe_place_align_vial_sample_test">Wipe the outside of the vial (the sample), hold vial at the lid and place vial (the sample) in the chamber. Align arrow marks and press [*test*]</string>
-    <string name="press_enter_wait_1">Press [*enter*] and wait for a <b>reaction period of %reactiontime1 minutes</b></string>
-    <string name="press_enter_wait_2">Press [*enter*] and wait for a <b>reaction period of %reactiontime2 minutes</b></string>
+    <string name="press_enter_wait_1">Press [*enter*] and wait for a <b>reaction period of %reactionTime1 minutes</b></string>
+    <string name="press_enter_wait_2">Press [*enter*] and wait for a <b>reaction period of %reactionTime2 minutes</b></string>
     <string name="remix">Remix the solution</string>
     <string name="insert_13mm_adapter">Insert the adapter for 13 mm Ø round vials.</string>
     <string name="insert_16mm_adapter">Insert the adapter for 16 mm Ø vials</string>
@@ -142,18 +142,18 @@
     <string name="specific_260">1. Stand the tube upright and after the reducing agent has settled to the bottom, gently invert it three to four times so as to complete the flocculation of the reducing agent. Then let the tube stand for a further 2 minutes.
 2. Open the tube and wipe around the top of the tube with a clean tissue to remove any residuals of the reducing agent.
 3. Carefully decant <b>10 ml of the treated solution</b> into the vial (24 mm Ø) used for zeroing, ensuring that no reducing agent is carried over.</string>
-    <string name="vacuvial_blank">Place the blank in the sample chamber. The blank is part of the test kit. Press [*zero*] to perform <b>zero test</b></string>
-    <string name="vacuvial_remove_blank">Remove the blank from the sample chamber. Water should flow through the special sample container for several minutes to remove any air bubbles sticking at the surface. The water must flow from the bottom to the top.</string>
-    <string name="vacuvial_break">When the sample container is bubble-free press one Vacu-vial<sup>®</sup> into the lower edge of the sample container. The Vacu-vial<sup>®</sup> breaks at the neck and the vial fills automatically. A small volume of inert gas remains in the Vacu-vial</string>
-    <string name="vacuvial_remove">1. Remove the Vacu-vial<sup>®</sup> point downwards from the sample container immediately (within 5 seconds).
+    <string name="vacu_vial_blank">Place the blank in the sample chamber. The blank is part of the test kit. Press [*zero*] to perform <b>zero test</b></string>
+    <string name="vacu_vial_remove_blank">Remove the blank from the sample chamber. Water should flow through the special sample container for several minutes to remove any air bubbles sticking at the surface. The water must flow from the bottom to the top.</string>
+    <string name="vacu_vial_break">When the sample container is bubble-free press one Vacu-vial<sup>®</sup> into the lower edge of the sample container. The Vacu-vial<sup>®</sup> breaks at the neck and the vial fills automatically. A small volume of inert gas remains in the Vacu-vial</string>
+    <string name="vacu_vial_remove">1. Remove the Vacu-vial<sup>®</sup> point downwards from the sample container immediately (within 5 seconds).
 2. The Vacu-vial<sup>®</sup> is closed with one finger (covered with a glove) to prevent entry of air. Invert the vial several times. Dry the outside of the vial.</string>
-    <string name="vacuvial_test">Place the Vacu-vial<sup>®</sup> in the sample chamber and press [*test*]</string>
+    <string name="vacu_vial_test">Place the Vacu-vial<sup>®</sup> in the sample chamber and press [*test*]</string>
     <string name="phosphate_syringe">Fill a clean 20 ml syringe with <b>approx. 14 ml water sample.</b></string>
     <string name="phosphate_discharge">Connect the syringe to the filtration assembly (using a GF/C filter) and discharge the syringe to waste, down to the 10 ml mark.</string>
     <string name="phosphate_fill_vial_test">Fill vial (24 mm Ø) with <b>10 ml of your sample</b> from the syringe, wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*zero*] to perform <b>zero test</b></string>
     <string name="blend_tss">Blend approx. 500 ml of the water sample (e.g. in a blender) at high speed for 2 minutes.</string>
-    <string name="stirr_tss">Stir the blended water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
-    <string name="stirr_fau">Stir the water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
+    <string name="stir_blended_water">Stir the blended water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
+    <string name="stir_water_sample">Stir the water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
 
     <string name="view_results">View results</string>
     <string name="low_risk_safe">Low Risk / Safe</string>
@@ -163,7 +163,7 @@
     <string name="probably_unsafe">High Risk / Probably Unsafe</string>
     <string name="unsafe">Unsafe</string>
     <string name="mpn">MPN/100ml</string>
-    <string name="confidenceInterval">Upper 95% Confidence Interval</string>
+    <string name="confidenceInterval">Upper 95%% Confidence Interval</string>
 
     <string name="put_on_gloves">Put on plastic gloves</string>
     <string name="collect_100ml_water_sample">Collect <b>100 ml</b> water sample with bottle or Thio Bag.</string>

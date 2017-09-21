@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity {
 
     private static final int PERMISSION_ALL = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
-    final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+    private final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
             AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
 

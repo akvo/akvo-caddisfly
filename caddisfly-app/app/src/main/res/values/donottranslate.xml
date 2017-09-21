@@ -39,6 +39,13 @@
     <string name="hsv">HSV</string>
     <string name="saveImages">Save images and data</string>
 
+    <string name="aquagenx_link">www.aquagenx.com</string>
+
+    <string name="number_1">1.</string>
+    <string name="number_2">2.</string>
+    <string name="number_3">3.</string>
+    <string name="number_4">4.</string>
+
     <!--paths to assets-->
     <string name="striptest_images">images/striptest</string>
     <string name="instruction_images">images/instructions</string>
@@ -69,7 +76,6 @@
     <string name="useExternalCameraKey">useExternalCamera</string>
     <string name="useFlashModeKey">useFlashMode</string>
 
-    showBlueToothData
     <string name="showBlueToothDataKey">showBlueToothData</string>
     <string name="ignoreTimeDelaysKey">ignoreTimeDelays</string>
     <string name="cameraMegaPixelsKey">cameraMegaPixels</string>
