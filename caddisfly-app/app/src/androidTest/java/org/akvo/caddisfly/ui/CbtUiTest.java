@@ -192,27 +192,38 @@ public class CbtUiTest {
                         isDisplayed()));
         textView2.check(matches(withText("MPN/100ml")));
 
-        ViewInteraction textView5 = onView(
+        ViewInteraction textView4 = onView(
                 allOf(withId(R.id.textResult3), withText("9435.1"),
                         childAtPosition(
-                                allOf(withId(R.id.layoutResult1),
+                                allOf(withId(R.id.layoutResult2),
                                         childAtPosition(
                                                 IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
                                                 2)),
-                                2),
+                                0),
                         isDisplayed()));
-        textView5.check(matches(withText("9435.1")));
+        textView4.check(matches(withText("9435.1")));
 
-        ViewInteraction textView4 = onView(
+        ViewInteraction textView5 = onView(
                 allOf(withText("Upper 95% Confidence Interval"),
                         childAtPosition(
-                                allOf(withId(R.id.layoutResult1),
+                                allOf(withId(R.id.layoutResult2),
                                         childAtPosition(
                                                 IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
                                                 2)),
-                                3),
+                                1),
                         isDisplayed()));
-        textView4.check(matches(withText("Upper 95% Confidence Interval")));
+        textView5.check(matches(withText("Upper 95% Confidence Interval")));
+
+        ViewInteraction textView6 = onView(
+                allOf(withId(R.id.textResult1), withText("Unsafe"),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutResult),
+                                        childAtPosition(
+                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        textView6.check(matches(withText("Unsafe")));
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.buttonAcceptResult),
@@ -220,7 +231,7 @@ public class CbtUiTest {
                                 childAtPosition(
                                         withId(R.id.fragment_container),
                                         0),
-                                2),
+                                3),
                         isDisplayed()));
         button.check(matches(isDisplayed()));
 
@@ -230,7 +241,7 @@ public class CbtUiTest {
                                 childAtPosition(
                                         withId(R.id.fragment_container),
                                         0),
-                                2),
+                                3),
                         isDisplayed()));
         appCompatButton4.perform(click());
 

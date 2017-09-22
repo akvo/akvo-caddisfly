@@ -39,7 +39,11 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.ShadowToast;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
@@ -96,6 +100,15 @@ public class CbtTest {
         controller.resume();
 
         button.performClick();
+
+        CountDownLatch latch = new CountDownLatch(1);
+        try {
+            latch.await(1, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo("Take a photo of the compartment bag"));
 
