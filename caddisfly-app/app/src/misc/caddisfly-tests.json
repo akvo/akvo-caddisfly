@@ -1034,6 +1034,19 @@
       ]
     },
     {
+      "name": "Water - Test Strips - Quantofix - Total Iron (0 - 100 mg/l Fe 2+/3+)",
+      "uuid": "5c90472e-9c06-4c7c-9f62-4c5cbcf6b1c1",
+      "brand": "Quantofix 91344",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Total Iron",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Sensors - Caddisfly - Electrical Conductivity, (0 - 12500)",
       "uuid": "f88237b7-be3d-4fac-bbee-ab328eefcd14",
       "brand": "Caddisfly",
