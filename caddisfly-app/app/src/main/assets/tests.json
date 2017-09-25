@@ -41,11 +41,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -150,7 +145,7 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample",
+            "collect_water_extraction_sample",
             "image:instruction_collect_sample"
           ]
         },
@@ -169,11 +164,6 @@
           "section": [
             "place_strip_clr",
             "image:place_clr"
-          ]
-        },
-        {
-          "section": [
-            "press_start_button"
           ]
         }
       ],
@@ -511,11 +501,6 @@
             "place_strip_clr",
             "image:place_clr"
           ]
-        },
-        {
-          "section": [
-            "press_start_button"
-          ]
         }
       ],
       "results": [
@@ -668,6 +653,7 @@
         },
         {
           "section": [
+            "dip_strip_into_water_and_remove",
             "do_not_shake_excess_water",
             "image:instruction_dip"
           ]
