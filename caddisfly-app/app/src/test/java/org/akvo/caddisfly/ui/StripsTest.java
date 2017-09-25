@@ -65,7 +65,7 @@ public class StripsTest {
     }
 
     @Test
-    public void sensorTitles() throws Exception {
+    public void testTitles() throws Exception {
         Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
         ListView listView = activity.findViewById(R.id.list_types);
 

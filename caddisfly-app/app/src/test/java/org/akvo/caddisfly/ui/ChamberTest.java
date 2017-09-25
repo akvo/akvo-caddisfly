@@ -19,23 +19,32 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowListView;
+import org.robolectric.shadows.ShadowPackageManager;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
+import static junit.framework.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -73,39 +82,38 @@ public class ChamberTest {
         }
     }
 
-//    @Test
-//    public void clickTest() {
-//
-//        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-//
-//        ActivityController controller = Robolectric.buildActivity(TypeListActivity.class).create().start();
-//        Activity activity = (Activity) controller.get();
-//
-//        // Activity activity = Robolectric.setupActivity(TypeListActivity.class);
-//        ListView listView = activity.findViewById(android.R.id.list);
-//
-//        ShadowListView list = shadowOf(listView);
-//        assertTrue(list.performItemClick(1));
-//
-//        Intent intent = shadowOf(activity).getNextStartedActivity();
-//        assertNull(intent);
-//
-//        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
-//        application.grantPermissions(permissions);
-//        controller.resume();
-//
-//        ShadowPackageManager pm = shadowOf(RuntimeEnvironment.application.getPackageManager());
-//        pm.setSystemFeature(PackageManager.FEATURE_CAMERA, true);
-//        pm.setSystemFeature(PackageManager.FEATURE_CAMERA_FLASH, true);
-//
-//        assertTrue(list.performItemClick(1));
-//
-//        intent = shadowOf(activity).getNextStartedActivity();
-//        if (intent.getComponent() != null) {
-//            assertEquals(CalibrateListActivity.class.getCanonicalName(),
-//                    intent.getComponent().getClassName());
-//        }
-//    }
+    @Test
+    public void clickTest() {
+
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        ActivityController controller = Robolectric.buildActivity(TypeListActivity.class).create().start();
+        Activity activity = (Activity) controller.get();
+
+        ListView listView = activity.findViewById(android.R.id.list);
+
+        ShadowListView list = shadowOf(listView);
+        assertTrue(list.performItemClick(1));
+
+        Intent intent = shadowOf(activity).getNextStartedActivity();
+        assertNull(intent);
+
+        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
+        application.grantPermissions(permissions);
+        controller.resume();
+
+        ShadowPackageManager pm = shadowOf(RuntimeEnvironment.application.getPackageManager());
+        pm.setSystemFeature(PackageManager.FEATURE_CAMERA, true);
+        pm.setSystemFeature(PackageManager.FEATURE_CAMERA_FLASH, true);
+
+        assertTrue(list.performItemClick(1));
+
+        intent = shadowOf(activity).getNextStartedActivity();
+        if (intent.getComponent() != null) {
+            assertEquals(CalibrateListActivity.class.getCanonicalName(),
+                    intent.getComponent().getClassName());
+        }
+    }
 
     @Test
     public void clickHome() {
