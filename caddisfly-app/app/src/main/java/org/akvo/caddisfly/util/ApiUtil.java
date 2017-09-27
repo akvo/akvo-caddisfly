@@ -75,12 +75,16 @@ public final class ApiUtil {
 
             if (hasFlash) {
                 p = camera.getParameters();
-                if (p.getSupportedFlashModes() == null) {
-                    hasFlash = false;
-                } else {
-                    if (p.getSupportedFlashModes().size() == 1 && p.getSupportedFlashModes().get(0).equals("off")) {
+                try {
+                    if (p.getSupportedFlashModes() == null) {
                         hasFlash = false;
+                    } else {
+                        if (p.getSupportedFlashModes().size() == 1 && p.getSupportedFlashModes().get(0).equals("off")) {
+                            hasFlash = false;
+                        }
                     }
+                } catch (Exception e) {
+                    // do nothing
                 }
             }
         } finally {

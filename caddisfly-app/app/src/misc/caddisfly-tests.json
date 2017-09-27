@@ -825,8 +825,21 @@
       ]
     },
     {
-      "name": "Water - Colorimetry - Caddisfly - Free Chlorine (0 - 3 mg/l Cl2)",
+      "name": "Water - Colorimetry - Caddisfly - Free Chlorine (0 - 1 mg/l Cl2)",
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
+      "brand": "Caddisfly",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Free Chlorine",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Colorimetry - Caddisfly - Free Chlorine (0 - 3 mg/l Cl2)",
+      "uuid": "a2413119-38eb-4959-92ee-cc169fdbb0fc",
       "brand": "Caddisfly",
       "hasImage": true,
       "results": [

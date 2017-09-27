@@ -19,22 +19,27 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowListView;
+import org.robolectric.shadows.ShadowPackageManager;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -43,52 +48,69 @@ import static junit.framework.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-public class StripsTest {
+public class ChamberTest {
 
     @Test
     public void titleIsCorrect() {
 
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(TypeListActivity.class);
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "Select Test");
     }
 
     @Test
     public void testCount() throws Exception {
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
-        assertSame(20, listView.getCount());
-        assertEquals("Water - Total Iron",
-                ((StripTest.Brand) listView.getAdapter().getItem(18)).getName());
-        assertEquals("Water - Total Iron",
-                ((TextView) listView.getChildAt(18).findViewById(R.id.text_title)).getText());
+        Activity activity = Robolectric.setupActivity(TypeListActivity.class);
+        ListView listView = activity.findViewById(android.R.id.list);
+        assertSame(3, listView.getCount());
+        assertEquals("Water - Fluoride",
+                ((TestInfo) listView.getAdapter().getItem(1)).getTitle());
+        assertEquals("Water - Fluoride",
+                ((TextView) listView.getChildAt(1).findViewById(R.id.textName)).getText());
     }
 
     @Test
     public void testTitles() throws Exception {
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
+        Activity activity = Robolectric.setupActivity(TypeListActivity.class);
+        ListView listView = activity.findViewById(android.R.id.list);
 
         for (int i = 0; i < listView.getCount(); i++) {
-            StripTest.Brand brand = ((StripTest.Brand) listView.getAdapter().getItem(0));
-            String title = brand.getName();
+            TestInfo testInfo = ((TestInfo) listView.getAdapter().getItem(0));
+            String title = testInfo.getTitle();
             assertEquals(title,
-                    ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
+                    ((TextView) listView.getChildAt(0).findViewById(R.id.textName)).getText());
         }
     }
 
     @Test
     public void clickTest() {
 
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        ActivityController controller = Robolectric.buildActivity(TypeListActivity.class).create().start();
+        Activity activity = (Activity) controller.get();
+
+        ListView listView = activity.findViewById(android.R.id.list);
 
         ShadowListView list = shadowOf(listView);
         assertTrue(list.performItemClick(1));
 
         Intent intent = shadowOf(activity).getNextStartedActivity();
+        assertNull(intent);
+
+        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
+        application.grantPermissions(permissions);
+        controller.resume();
+
+        ShadowPackageManager pm = shadowOf(RuntimeEnvironment.application.getPackageManager());
+        pm.setSystemFeature(PackageManager.FEATURE_CAMERA, true);
+        pm.setSystemFeature(PackageManager.FEATURE_CAMERA_FLASH, true);
+
+        assertTrue(list.performItemClick(1));
+
+        intent = shadowOf(activity).getNextStartedActivity();
         if (intent.getComponent() != null) {
-            assertEquals(BrandInfoActivity.class.getCanonicalName(),
+            assertEquals(CalibrateListActivity.class.getCanonicalName(),
                     intent.getComponent().getClassName());
         }
     }
@@ -96,7 +118,7 @@ public class StripsTest {
     @Test
     public void clickHome() {
 
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(TypeListActivity.class);
 
         ShadowActivity shadowActivity = Shadows.shadowOf(activity);
         shadowActivity.clickMenuItem(android.R.id.home);
