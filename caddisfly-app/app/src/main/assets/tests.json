@@ -1363,12 +1363,41 @@
     },
     {
       "name": "Water - Free Chlorine",
-      "description": "Measures Free chlorine in water. 0 - 3 mg/l",
+      "description": "Measures Free chlorine in water. 0 - 1 mg/l",
       "subtype": "liquid-chamber",
       "tags": [
         "water quality"
       ],
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
+      "brand": "Caddisfly",
+      "shortCode": "chlor",
+      "calibrate": true,
+      "ranges": "0,0.25,0.5,0.75,1.0",
+      "monthsValid": 24,
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "conduct_test_per_instructions"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "name": "Free Chlorine",
+          "id": 1,
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Free Chlorine",
+      "description": "Measures Free chlorine in water. 0 - 3 mg/l",
+      "subtype": "liquid-chamber",
+      "tags": [
+        "water quality"
+      ],
+      "uuid": "a2413119-38eb-4959-92ee-cc169fdbb0fc",
       "brand": "Caddisfly",
       "shortCode": "chlor",
       "calibrate": true,
