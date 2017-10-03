@@ -79,7 +79,7 @@ public class TestInfo implements Parcelable {
     private String deviceId;
     private String responseFormat;
     private boolean deprecated;
-    private JSONArray instructions;
+    private JSONArray instructions = new JSONArray();
     private String md610Id;
     private String selectInstruction;
     private ArrayList<String> reagents;

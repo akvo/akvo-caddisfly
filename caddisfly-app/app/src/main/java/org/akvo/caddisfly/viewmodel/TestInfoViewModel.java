@@ -38,7 +38,6 @@ public class TestInfoViewModel {
     @BindingAdapter("content")
     public static void setContent(LinearLayout linearLayout, JSONObject instruction) {
 
-
         Context context = linearLayout.getContext();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 
@@ -98,6 +97,9 @@ public class TestInfoViewModel {
 
                         imageView.setContentDescription(imageName);
 
+                        // set an id for the view to be able to find it for unit testing
+                        imageView.setId(i);
+
                         linearLayout.addView(imageView);
                     }
 
@@ -134,6 +136,9 @@ public class TestInfoViewModel {
 
                     llp.setMargins(0, 0, 0, 20);
                     textView.setLayoutParams(llp);
+
+                    // set an id for the view to be able to find it for unit testing
+                    rowView.setId(i);
 
                     linearLayout.addView(rowView);
                 }
