@@ -124,14 +124,21 @@ public class StripTestNavigation {
                         isDisplayed()));
         appCompatImageView2.perform(click());
 
-
         TestUtil.nextPage();
 
         TestUtil.goBack();
 
-        TestUtil.sleep(500);
+        onView(withId(R.id.imageBrandLabel)).check(matches(hasDrawable()));
 
-        onView(withText(R.string.shake_excess_water)).check(matches(isDisplayed()));
+        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.button_instructions)).perform(click());
+
+        TestUtil.nextPage();
+
+        TestUtil.nextPage();
+
+        TestUtil.nextPage();
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
@@ -139,9 +146,6 @@ public class StripTestNavigation {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        onView(withId(R.id.imageBrandLabel)).check(matches(hasDrawable()));
-
-        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withContentDescription("Navigate up"),

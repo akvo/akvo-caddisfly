@@ -157,15 +157,7 @@ public class BluetoothTest {
             e.printStackTrace();
         }
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.button_connect), withText("Connect"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        0),
-                                1),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
+        onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
 
         try {
             Thread.sleep(2000);
@@ -256,8 +248,24 @@ public class BluetoothTest {
 
         TestUtil.goBack();
 
+        onView(withText("Awaiting result"))
+                .check(matches(isDisplayed()));
+
+        onView(withText("Test Instructions")).perform(click());
+
+        onView(withText(R.string.fill_vial_24_with_10ml_sample_zero))
+                .check(matches(isDisplayed()));
+
+        TestUtil.nextPage();
+
+        onView(withText(R.string.remove_vial))
+                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.image_pageRight)).perform(click());
+
         onView(withText("Add exactly 2 ml SPADNS reagent solution to the water sample. (Caution: Vial is filled up to the top!)"))
                 .check(matches(isDisplayed()));
+
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),

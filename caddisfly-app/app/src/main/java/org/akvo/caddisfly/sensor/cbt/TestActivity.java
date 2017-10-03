@@ -58,7 +58,6 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
     private final String[] permissions = {Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private CoordinatorLayout coordinatorLayout;
-    private CbtInstructionFragment instructionFragment;
     private String mCurrentPhotoPath;
     private String imageFileName = "";
     private boolean hasPermissions;
@@ -132,7 +131,7 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
 
     public void onInstructionsClick(View view) {
 
-        instructionFragment = CbtInstructionFragment.forProduct(mTestInfo);
+        CbtInstructionFragment instructionFragment = CbtInstructionFragment.forProduct(mTestInfo);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -149,16 +148,6 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (instructionFragment != null && instructionFragment.isVisible()
-                && instructionFragment.shouldPageBack()) {
-            instructionFragment.onBackPressed();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     public void onClickIncubationTimes(View view) {

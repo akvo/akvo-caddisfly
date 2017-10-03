@@ -231,11 +231,7 @@ public class DeviceControlActivity extends BaseActivity
             registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
             resultReceived = false;
         } else if (layoutInstructions.getVisibility() == View.VISIBLE) {
-            if (mInstructionFragment.getCurrentPage() == 0) {
-                showWaitingView();
-            } else {
-                mInstructionFragment.pageLeft();
-            }
+            showWaitingView();
         } else if (mBluetoothResultFragment.isVisible()) {
             showSelectTestView();
         } else {

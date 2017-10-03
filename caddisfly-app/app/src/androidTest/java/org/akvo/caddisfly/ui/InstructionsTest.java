@@ -192,17 +192,6 @@ public class InstructionsTest {
                         isDisplayed()));
         imageView.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView5 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                2)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView5.perform(click());
-
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
                         childAtPosition(

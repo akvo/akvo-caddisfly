@@ -233,16 +233,7 @@ public class CbtInstructions {
 
         onView(withContentDescription("3")).check(matches(hasDrawable()));
 
-        ViewInteraction appCompatImageView3 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView3.perform(click());
+        TestUtil.nextPage();
 
         CheckTextInTable(R.string.label_compartment_bag);
 
@@ -254,23 +245,29 @@ public class CbtInstructions {
 
         onView(withContentDescription("7")).check(matches(hasDrawable()));
 
-        if (TestUtil.isEmulator()) {
-            TestUtil.nextPage();
-        } else {
-            TestUtil.swipeLeft();
-        }
+        TestUtil.nextPage();
 
         CheckTextInTable(R.string.take_photo_of_incubated);
 
         onView(withContentDescription("8")).check(matches(hasDrawable()));
 
-        TestUtil.swipeRight();
+        mDevice.pressBack();
 
-        CheckTextInTable(R.string.let_incubate);
+        onView(withId(R.id.button_instructions)).perform(click());
 
-        TestUtil.swipeRight(3);
+        CheckTextInTable(R.string.put_on_gloves);
 
-        CheckTextInTable(R.string.label_compartment_bag);
+        CheckTextInTable(R.string.open_growth_medium_sachet);
+
+        onView(withContentDescription("1")).check(matches(hasDrawable()));
+
+        TestUtil.nextPage();
+
+        CheckTextInTable(R.string.dissolve_medium_in_sample);
+
+        onView(withContentDescription("2")).check(matches(hasDrawable()));
+
+        TestUtil.nextPage();
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
