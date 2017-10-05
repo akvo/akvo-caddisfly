@@ -56,15 +56,4 @@
 
     <string name="read_instructions">Lire les instructions</string>
 
-    <string name="low_risk_safe">Low Risk / Safe</string>
-    <string name="probably_safe">Intermediate Risk / Probably Safe</string>
-    <string name="possibly_safe">Intermediate Risk / Possibly Safe</string>
-    <string name="possibly_unsafe">High Risk / Possibly Unsafe</string>
-    <string name="probably_unsafe">High Risk / Probably Unsafe</string>
-    <string name="unsafe">Unsafe</string>
-
-    <string name="mpn">MPN/100ml</string>
-    <string name="confidenceInterval">Upper 95&#37; Confidence Interval</string>
-    <string name="take_photo_of_cbt">Take a photo of the compartment bag</string>
-
 </resources>
