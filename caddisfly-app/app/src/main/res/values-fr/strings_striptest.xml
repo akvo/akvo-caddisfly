@@ -32,9 +32,23 @@
     <string name="add_6_drops_po4_2">Ajoutez <b>6 gouttes</b> du <b>réactif PO4-2</b> dans le plus petit contenant.</string>
     <string name="dip_sample_15s">Plongez la bandelette de test dans l\'échantillon pendant <b>15 secondes</b> et rétirez.</string>
     <string name="dip_container_15s">Plongez la bandelette de test dans le plus petit tube pendant <b>15 secondes</b> et rétirez.</string>
-    <string name="collect_sample_strip">Collectez votre échantillon d\'eau</string>
     <string name="dip_sample_1s">Plongez la bandelette de test dans l\'échantillon pendant <b>1 seconde</b> et retirez.</string>
+    <string name="as_ins_1">Insérez une bandelette de test dans le capuchon, de sorte que le rembourrage recouvre complètement la petite ouverture. Fermez le rabat et appuyez pour fixer.</string>
+    <string name="as_ins_2">Remplissez le bidon avec un échantillon jusqu\' à la ligne de remplissage (50 ml).</string>
+    <string name="as_ins_3">Ajoutez un <b>Réactif #1</b> et un <b>Réactif #2</b> des sachets en poudre à l\'échantillon. Si une odeur d\'oeufs pourris est détectée après l\'ajout du réactif #1, alors le sulfure est présent à niveaux interférents, <b>[a]cliquez ici[/a]</b> pour voir comment éliminer le sulfure avant de poursuivre la procédure du test.</string>
+    <string name="as_ins_4">Fermez immédiatement le bidon. Remuez en continu pendant 60 secondes. <b>Ne secouez pas ni balancez ni laisser passer l\'échantillon sur la bandelette.</b></string>
+    <string name="as_ins_5">Patientez 20 minutes. Remuez deux pendant la période de la réaction</string>
+    <string name="as_ins_6">Retirez immédiatement la bandelette de test du capuchon et placez la tourné vers la <b>gauche </b> sur la carte colorimétrique de référence et appuyez sur <b>Démarrer</b>.</string>
+    <string name="as_ins_7">Remplissez le flacon de mesure carré jusqu\'au sommet avec un échantillon (9,6 ml). Versez l\'échantillon dans la bidon.</string>
+    <string name="as_safety">DANGER: Les gaz d\'hydrogène et d\'arsine sont générés pendant le test. Travaillez dans un endroit bien aéré loin des flammes et d\'autres sources d\'inflammation. Examinez les fiches de données de sécurité pour des informations sûres sur la manipulation, le stockage et l\'élimination.</string>
 
+    <string name="as_remove_sulfide">Effectuez les étapes suivantes pour éliminer le sulfure avant le début de la procédure du test:</string>
+    <string name="as_remove_sulfide_1">Déchirez un petit morceau de coton et formez une balle de la taille d\'un pois.</string>
+    <string name="as_remove_sulfide_2">Imbibez le coton avec quelques gouttes d\'acétate de plomb. Pressez pour enlever l\'excès de liquide du coton, laissant l\'humidité.</string>
+    <string name="as_remove_sulfide_3">Appuyez sur la boule de coton imbibée pour la faire entrer dans la petite ouverture du capuchon du bidon. Rassurez-vous que le coton est bien en place et qu\'il y a de l\'espace restant entre le coton et la surface supérieure du capuchon.</string>
+    <string name="as_remove_sulfide_4">Insérez la bandelette de test comme indiqué à l\'étape 1 du test 0–500 ou 0–4000 ppb de la procédure et continuez le test.</string>
+    <string name="as_remove_sulfide_note">Remarque: L\'acétate de plomb ne doit pas être en contact avec la bandelette de test!</string>
+    <string name="as_remove_sulfide_wear_gloves">Portez toujours des gants ou lavez vous bien les mains après avoir manipulé de l\'acétate de plomb.</string>
 
     <!--Soil-->
     <string name="sample_size_for_500_range">This sample size is for the range 0 – 500 ppb</string>

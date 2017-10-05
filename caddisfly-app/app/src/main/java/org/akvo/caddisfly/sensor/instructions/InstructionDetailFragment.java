@@ -26,8 +26,10 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -198,18 +200,15 @@ public class InstructionDetailFragment extends Fragment {
                         textView.setTypeface(null, Typeface.BOLD);
                     }
 
-                    //text = text.replace("%reagent1", testInfo.getReagent(0));
-
-                    Spanned spanned = StringUtil.toInstruction(getContext(), testInfo, text);
-
-                    //spanned.toString().replace("%reagent1", testInfo.getReagent(0));
+                    Spanned spanned = StringUtil.toInstruction((AppCompatActivity) getActivity(), testInfo, text);
 
                     if (!text.isEmpty()) {
                         textView.append(spanned);
+                        textView.setMovementMethod(LinkMovementMethod.getInstance());
+
                         layoutInstructions.addView(textView);
                     }
                 }
-
             }
         }
 

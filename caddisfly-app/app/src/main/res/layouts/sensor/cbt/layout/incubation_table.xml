@@ -81,6 +81,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#eee"
             android:clickable="false"
             android:columnCount="3"
             android:focusable="false"
@@ -89,7 +90,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#eee"
                 android:padding="7dp"
                 android:paddingEnd="20dp"
                 android:paddingStart="10dp"
@@ -104,7 +104,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:background="#eee"
                 android:paddingBottom="7dp"
                 android:paddingEnd="0dp"
                 android:paddingStart="14dp"
@@ -121,6 +120,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#eee"
             android:clickable="false"
             android:columnCount="2"
             android:focusable="false"
@@ -129,7 +129,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#eee"
                 android:padding="7dp"
                 android:paddingEnd="0dp"
                 android:paddingStart="10dp"
@@ -144,7 +143,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:background="#eee"
                 android:paddingBottom="7dp"
                 android:paddingEnd="0dp"
                 android:paddingStart="14dp"
@@ -161,6 +159,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#eee"
             android:clickable="false"
             android:columnCount="2"
             android:focusable="false"
@@ -169,7 +168,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#eee"
                 android:padding="7dp"
                 android:paddingEnd="0dp"
                 android:paddingStart="10dp"
@@ -184,7 +182,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:background="#eee"
                 android:paddingBottom="7dp"
                 android:paddingEnd="0dp"
                 android:paddingStart="14dp"
@@ -201,6 +198,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#eee"
             android:clickable="false"
             android:columnCount="2"
             android:focusable="false"
@@ -209,7 +207,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#eee"
+                android:maxWidth="100dp"
                 android:padding="7dp"
                 android:paddingEnd="0dp"
                 android:paddingStart="10dp"
@@ -225,7 +223,6 @@
                 android:id="@+id/button_instructions"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:background="#eee"
                 android:onClick="onClickIncubationTimes"
                 android:paddingBottom="7dp"
                 android:paddingEnd="0dp"

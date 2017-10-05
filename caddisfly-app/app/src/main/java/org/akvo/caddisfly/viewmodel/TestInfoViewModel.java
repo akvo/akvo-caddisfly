@@ -6,6 +6,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -127,7 +128,7 @@ public class TestInfoViewModel {
                         if (j > 0) {
                             rowView.append(new SpannableString(" "));
                         }
-                        rowView.append(StringUtil.toInstruction(context, testInfo, sentences[j].trim()));
+                        rowView.append(StringUtil.toInstruction((AppCompatActivity) context, testInfo, sentences[j].trim()));
                     }
 
                     LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(

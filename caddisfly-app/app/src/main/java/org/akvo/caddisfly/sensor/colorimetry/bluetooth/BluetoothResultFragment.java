@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -121,7 +122,7 @@ public class BluetoothResultFragment extends Fragment {
 
         });
 
-        textPerformTest.setText(StringUtil.toInstruction(getActivity(), testInfo,
+        textPerformTest.setText(StringUtil.toInstruction((AppCompatActivity) getActivity(), testInfo,
                 String.format(getString(R.string.perform_test), testInfo.getTitle())));
 
         if (AppPreferences.isDiagnosticMode()) {
@@ -140,9 +141,9 @@ public class BluetoothResultFragment extends Fragment {
         alertDialog.setTitle(R.string.incorrect_test_selected);
 
         alertDialog.setMessage(TextUtils.concat(
-                StringUtil.toInstruction(getActivity(),
+                StringUtil.toInstruction((AppCompatActivity) getActivity(),
                         null, getString(R.string.data_does_not_match) + "<br /><br />"),
-                StringUtil.toInstruction(getActivity(), null, getString(R.string.select_correct_test))
+                StringUtil.toInstruction((AppCompatActivity) getActivity(), null, getString(R.string.select_correct_test))
         ));
 
         alertDialog.setPositiveButton(R.string.ok, (dialogInterface, i) -> dialogInterface.dismiss());
