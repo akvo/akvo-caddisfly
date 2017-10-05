@@ -5,8 +5,8 @@
       "name": "Soil - Electrical Conductivity",
       "description": "Electrical conductivity of soil",
       "subtype": "sensor",
-      "deviceId": "SoilEC",
       "uuid": "80697cd1-acc9-4a15-8358-f32b4257dfaf",
+      "deviceId": "SoilEC",
       "brand": "Caddisfly",
       "ranges": "50,12800",
       "responseFormat": "$2,$1",
@@ -30,8 +30,8 @@
       "name": "Soil - Moisture",
       "description": "Moisture content of soil",
       "subtype": "sensor",
-      "deviceId": "Soil Moisture",
       "uuid": "0b4a0aaa-f556-4c11-a539-c4626582cca6",
+      "deviceId": "Soil Moisture",
       "brand": "Caddisfly",
       "ranges": "0,100",
       "responseFormat": "$1",
@@ -51,9 +51,9 @@
       "description": "Electrical Conductivity of water. 0 - 12500 μS/cm",
       "subtype": "sensor",
       "uuid": "f88237b7-be3d-4fac-bbee-ab328eefcd14",
-      "brand": "Caddisfly",
       "deviceId": "WaterEC",
       "shortCode": "ECOND",
+      "brand": "Caddisfly",
       "ranges": "0,12500",
       "responseFormat": "$2,$1",
       "instructions": [
@@ -305,7 +305,6 @@
         {
           "id": 1,
           "name": "pH",
-          "unit": "pH",
           "patchPos": 4.5,
           "patchWidth": 6.05,
           "timeDelay": 0,
@@ -375,7 +374,6 @@
         {
           "id": 2,
           "name": "pH",
-          "unit": "pH",
           "patchPos": 10.55,
           "patchWidth": 6.05,
           "timeDelay": 0,
@@ -444,7 +442,6 @@
         },
         {
           "id": 3,
-          "unit": "pH",
           "name": "pH",
           "patchPos": 16.6,
           "patchWidth": 6.05,
@@ -515,7 +512,6 @@
         {
           "id": 4,
           "name": "pH",
-          "unit": "pH",
           "patchPos": 22.65,
           "patchWidth": 6.05,
           "timeDelay": 0,
@@ -861,24 +857,41 @@
       "instructions": [
         {
           "section": [
-            "collect_9.6ml_sample",
-            "<!>sample_size_for_4000_range<!>"
-          ],
-          "image": "instruction_collect_sample"
-        },
-        {
-          "section": [
-            "follow_the_instructions_for_reagents"
+            "as_safety"
           ]
         },
         {
           "section": [
-            "wait_20_minutes_swirl_twice"
+            "as_ins_1",
+            "image:as_1"
           ]
         },
         {
           "section": [
-            "place_strip_clr",
+            "as_ins_7",
+            "image:as_5"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_3",
+            "image:as_3"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_4",
+            "image:as_4"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_5"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_6",
             "image:place_clr"
           ]
         }
@@ -937,24 +950,41 @@
       "instructions": [
         {
           "section": [
-            "collect_50ml_sample",
-            "<!>sample_size_for_500_range<!>"
-          ],
-          "image": "instruction_collect_sample"
-        },
-        {
-          "section": [
-            "follow_the_instructions_for_reagents"
+            "as_safety"
           ]
         },
         {
           "section": [
-            "wait_20_minutes_swirl_twice"
+            "as_ins_1",
+            "image:as_1"
           ]
         },
         {
           "section": [
-            "place_strip_clr",
+            "as_ins_2",
+            "image:as_2"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_3",
+            "image:as_3"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_4",
+            "image:as_4"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_5"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_6",
             "image:place_clr"
           ]
         }
@@ -1016,7 +1046,7 @@
       "instructions": [
         {
           "section": [
-            "collect_sample_strip",
+            "collect_water_sample",
             "image:collect_sample"
           ]
         },
@@ -1229,16 +1259,16 @@
         {
           "section": [
             "<b>stage_one</b>",
-            "collect_water_sample"
-          ],
-          "image": "instruction_collect_sample"
+            "collect_water_sample",
+            "image:collect_sample"
+          ]
         },
         {
           "section": [
-            "dip_strip_into_water_1_second",
-            "do_not_shake_excess_water"
-          ],
-          "image": "instruction_dip"
+            "dip_sample_1s",
+            "do_not_shake_excess_water",
+            "image:dip_sample_1"
+          ]
         },
         {
           "section": [
@@ -1252,8 +1282,7 @@
             "<b>stage_two</b>",
             "dip_strip_move_back_forth_30_seconds",
             "dry_off_excess_water_place_on_towel"
-          ],
-          "image": "instruction_dip"
+          ]
         },
         {
           "phase": 2,
@@ -1450,19 +1479,15 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample"
-          ],
-          "image": "instruction_collect_sample"
+            "collect_water_sample",
+            "image:collect_sample"
+          ]
         },
         {
           "section": [
-            "dip_strip_into_water_and_remove"
-          ],
-          "image": "instruction_dip"
-        },
-        {
-          "section": [
-            "<!>do_not_shake_excess_water<!>"
+            "dip_strip_into_water_and_remove ",
+            "do_not_shake_excess_water",
+            "image:dip_sample_remove"
           ]
         },
         {
@@ -1563,7 +1588,7 @@
       "instructions": [
         {
           "section": [
-            "collect_sample_strip",
+            "collect_water_sample",
             "image:collect_sample"
           ]
         },
@@ -1681,16 +1706,16 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample"
-          ],
-          "image": "instruction_collect_sample"
+            "collect_water_sample",
+            "image:collect_sample"
+          ]
         },
         {
           "section": [
             "dip_strip_into_water_and_remove",
-            "do_not_shake_excess_water"
-          ],
-          "image": "instruction_dip"
+            "do_not_shake_excess_water",
+            "image:dip_sample_1"
+          ]
         },
         {
           "section": [
@@ -1753,19 +1778,20 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample"
-          ],
-          "image": "instruction_collect_sample"
+            "collect_water_sample",
+            "image:collect_sample"
+          ]
         },
         {
           "section": [
-            "dip_strip_in_water_2_seconds"
-          ],
-          "image": "instruction_dip"
+            "dip_strip_in_water_2_seconds",
+            "image:dip_sample_2"
+          ]
         },
         {
           "section": [
-            "shake_excess_water"
+            "shake_excess_water_off",
+            "image:shake_excess"
           ]
         },
         {
@@ -2186,16 +2212,16 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample"
-          ],
-          "image": "instruction_collect_sample"
+            "collect_water_sample",
+            "image:collect_sample"
+          ]
         },
         {
           "section": [
-            "dip_strip_5_seconds_and_remove",
-            "do_not_shake_excess_water"
-          ],
-          "image": "instruction_dip"
+            "dip_sample_5s",
+            "do_not_shake_excess_water",
+            "image:dip_sample_5"
+          ]
         },
         {
           "section": [
@@ -2253,15 +2279,15 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample"
-          ],
-          "image": "instruction_collect_sample"
+            "collect_water_sample",
+            "image:collect_sample"
+          ]
         },
         {
           "section": [
-            "immerse_reaction_zone"
-          ],
-          "image": "instruction_dip"
+            "immerse_reaction_zone",
+            "image:dip_sample_1"
+          ]
         },
         {
           "section": [
@@ -2270,7 +2296,8 @@
         },
         {
           "section": [
-            "add_reagent_k1"
+            "add_reagent_k1",
+            "image:add_k_1"
           ]
         },
         {
@@ -2334,16 +2361,16 @@
       "instructions": [
         {
           "section": [
-            "collect_water_sample"
-          ],
-          "image": "instruction_collect_sample"
+            "collect_water_sample",
+            "image:collect_sample"
+          ]
         },
         {
           "section": [
             "dip_strip_move_back_forth_30_seconds",
-            "dry_off_excess_water_place_on_towel"
-          ],
-          "image": "instruction_dip"
+            "dry_off_excess_water_place_on_towel",
+            "image:dip_sample_30_back_forward"
+          ]
         },
         {
           "section": [
@@ -2439,25 +2466,33 @@
       "instructions": [
         {
           "section": [
-            "fill_half_with_sample"
+            "fill_half_with_sample",
+            "image:collect_sample_half.svg"
           ]
         },
         {
           "section": [
-            "open_one_foil_and_add_powder"
+            "open_one_foil_and_add_powder",
+            "image:add_1_powder"
           ]
         },
         {
           "section": [
-            "cap_vial_and_shake_rapidly"
+            "cap_vial_and_shake_rapidly",
+            "image:cap_vial_shake_5"
           ]
         },
         {
           "section": [
             "dip_strip_move_back_forth_15_seconds",
-            "shake_excess_water"
-          ],
-          "image": "instruction_dip"
+            "image:dip_sample_15_back_forward"
+          ]
+        },
+        {
+          "section": [
+            "shake_excess_water_off",
+            "image:shake_excess"
+          ]
         },
         {
           "section": [
@@ -2523,7 +2558,7 @@
       "instructions": [
         {
           "section": [
-            "collect_sample_strip",
+            "collect_water_sample",
             "image:collect_sample"
           ]
         },

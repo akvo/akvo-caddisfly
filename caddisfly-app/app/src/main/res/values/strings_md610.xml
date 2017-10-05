@@ -38,11 +38,11 @@
     <string name="to_select_test">Selecting the test</string>
     <string name="test_instructions">Test Instructions</string>
 
-    <string name="select_test_instruction">Press [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and then press [*enter*]</string>
-    <string name="select_diff_test_instruction">Press [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and press [*enter*]. Select <b>\'diff\'</b> and then press [*enter*]</string>
-    <string name="select_free_test_instruction">Press [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test [*enter*]. Select <b>\'free\'</b> and then press [*enter*]</string>
-    <string name="select_Cr_VI_test_instruction">Press [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test [*enter*]. Select <b>\'Cr(VI)\'</b> and then press [*enter*]</string>
-    <string name="select_Cr_III_VI_test_instruction">Press [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test. Select <b>\'Cr(III+VI)\'</b> and then press [*enter*]</string>
+    <string name="select_test_instruction"><![CDATA[Press and hold [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and then press [*enter*]]]></string>
+    <string name="select_diff_test_instruction"><![CDATA[Press and hold [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and press [*enter*]. Select <b>\'diff\'</b> and then press [*enter*]]]></string>
+    <string name="select_free_test_instruction"><![CDATA[Press and hold [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and press [*enter*]. Select <b>\'free\'</b> and then press [*enter*]]]></string>
+    <string name="select_Cr_VI_test_instruction"><![CDATA[Press and hold [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and press [*enter*]. Select <b>\'Cr(VI)\'</b> and then press [*enter*]]]></string>
+    <string name="select_Cr_III_VI_test_instruction"><![CDATA[Press and hold [*shift*] + <b>%1$s</b> to select <b>%2$s</b> test and press [*enter*]. Select <b>\'Cr(III+VI)\'</b> and then press [*enter*]]]></string>
     <string name="fill_vial_10_with_5ml_sample_zero">Fill vial (10 mm Ø) with <b>5 ml of your sample</b>, wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*zero*] to perform <b>zero test</b></string>
     <string name="fill_vial_16_with_10ml_sample">Fill a clean vial (16 mm Ø) with <b>10 ml of water sample</b>.</string>
     <string name="fill_2nd_vial_16_with_10ml_sample">Fill a second clean vial (16 mm Ø) with <b>10 ml of the water sample</b>.</string>

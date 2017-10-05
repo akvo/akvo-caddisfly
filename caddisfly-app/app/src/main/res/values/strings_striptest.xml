@@ -41,7 +41,6 @@
     <string name="add_6_drops_po4_2">Add <b>6 drops</b> of the <b>PO4-2 Reagent</b> to the smaller container.</string>
     <string name="dip_sample_15s">Dip the test strip into the sample for <b>15 seconds</b> and remove.</string>
     <string name="dip_container_15s">Dip the test strip into the smaller tube for <b>15 seconds</b> and remove.</string>
-    <string name="collect_sample_strip">Collect your water sample.</string>
     <string name="dip_sample_1s">Dip the test strip into the sample for <b>1 second</b> and remove.</string>
     <string name="as_ins_1">Insert a test strip into the cap so the pad completely covers the small opening. Close the flap and press to secure.</string>
     <string name="as_ins_2">Fill the reaction bottle with sample to the fill line (50 mL).</string>

@@ -20,16 +20,16 @@
 
 <resources>
 
-    <string name="select_test_instruction">Appuyez sur * [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test, puis appuyez sur [*entrer*]</string>
-    <string name="select_diff_test_instruction">Appuyez sur [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test et appuyez sur [*entrer*]. Sélectionnez <b>\'diff\'</b> puis appuyez sur [*entrer*]</string>
-    <string name="select_free_test_instruction">Appuyez sur [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test [*entrer*]. sélectionnez <b>\'gratuit\'</b> puis appuyez sur [*entrer*]</string>
-    <string name="select_Cr_VI_test_instruction">Appuyez sur [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test [*entrer*]. Sélectionnez <b>\'Cr(VI)\'</b> puis appuyez sur [*entrer*]</string>
-    <string name="select_Cr_III_VI_test_instruction">Appuyez sur [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test. Sélectionnez <b>\'Cr(III+VI)\'</b> puis appuyez sur [*entrer*]</string>
-    <string name="fill_vial_10_with_5ml_sample_zero">Remplissez le flacon de (10 mm Ø) avec <b>5 ml de votre échantillon d\'eau</b>, essuyez l\'extérieur du flacon,maintenez le capuchon du flacon et mettez le dans la chambre de l\'appareil. Alignez les flèches et appuyez sur [*zéro*] pour effectuer le <b>test zéro</b></string>
+    <string name="select_test_instruction"><![CDATA[Appuyez sur * [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test, puis appuyez sur [*enter*]]]></string>
+    <string name="select_diff_test_instruction"><![CDATA[Appuyez sur [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test et appuyez sur [*enter*]. Sélectionnez <b>\'diff\'</b> puis appuyez sur [*enter*]]]></string>
+    <string name="select_free_test_instruction"><![CDATA[Appuyez sur [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test [*enter*]. sélectionnez <b>\'gratuit\'</b> puis appuyez sur [*enter*]]]></string>
+    <string name="select_Cr_VI_test_instruction"><![CDATA[Appuyez sur [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test [*enter*]. Sélectionnez <b>\'Cr(VI)\'</b> puis appuyez sur [*enter*]]]></string>
+    <string name="select_Cr_III_VI_test_instruction"><![CDATA[Appuyez sur [*shift*] + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test. Sélectionnez <b>\'Cr(III+VI)\'</b> puis appuyez sur [*enter*]]]></string>
+    <string name="fill_vial_10_with_5ml_sample_zero">Remplissez le flacon de (10 mm Ø) avec <b>5 ml de votre échantillon d\'eau</b>, essuyez l\'extérieur du flacon,maintenez le capuchon du flacon et mettez le dans la chambre de l\'appareil. Alignez les flèches et appuyez sur [*zero*] pour effectuer le <b>test zéro</b></string>
     <string name="fill_vial_16_with_10ml_sample">Remplissez un flacon propre de (16 mm Ø) avec <b>10 ml d\'échantillon d\'eau </b>.</string>
     <string name="fill_2nd_vial_16_with_10ml_sample">Remplissez un deuxième flacon propre de (16 mm Ø) avec <b>10 ml de l\'échantillon d\'eau</b>.</string>
-    <string name="fill_vial_24_with_10ml_sample_zero">Remplissez le flacon de (24 mm Ø) avec <b>10 ml de votre échantillon d\'eau </b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le dans le tube. Alignez les flèches et appuyez sur [*zéro*] pour effectuer le <b>test zéro</b></string>
-    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero">Verser <b>1 ml d’échantillon</b> et <b> 9 ml d’eau déminéralisée</b> dans une cuvette propre de 24 mm et fermer le couvercle de la cuvette, essuyez l\'extérieur du flacon, fermez le flacon et mettez le flacon dans la chambre. Aligner le tube dans la chambre de l\'appareil en tenant compte de la flèche marquée et appuyez sur [*zéro*] pour effectuer le <b>test zéro</b></string>
+    <string name="fill_vial_24_with_10ml_sample_zero">Remplissez le flacon de (24 mm Ø) avec <b>10 ml de votre échantillon d\'eau </b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le dans le tube. Alignez les flèches et appuyez sur [*zero*] pour effectuer le <b>test zéro</b></string>
+    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero">Verser <b>1 ml d’échantillon</b> et <b> 9 ml d’eau déminéralisée</b> dans une cuvette propre de 24 mm et fermer le couvercle de la cuvette, essuyez l\'extérieur du flacon, fermez le flacon et mettez le flacon dans la chambre. Aligner le tube dans la chambre de l\'appareil en tenant compte de la flèche marquée et appuyez sur [*zero*] pour effectuer le <b>test zéro</b></string>
     <string name="fill_vial_24_with_10ml_deionized_water">Remplissez un flacon propre de (24 mm Ø) avec <b>10 ml d\'eau déminéralisée ( celui-ci est le vide)</b>.</string>
     <string name="fill_vial_24_with_10ml_sample">Remplissez un autre flacon propre de (24 mm Ø) avec <b>10 ml de l\'échantillon d\'eau (celui-ci est l\'échantillon)</b></string>
     <string name="add_water_till_10ml">Ajoutez l\'échantillon d\'eau jusqu\'au trait de 10 ml marqué sur le flacon</string>
