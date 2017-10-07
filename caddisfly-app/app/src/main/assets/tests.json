@@ -73,12 +73,10 @@
       "name": "Soil - Nitrogen",
       "subtype": "striptest",
       "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",
-      "calibration": "23 Aug 2016 using X-Rite i1Pro 2",
       "brand": "HACH 27454",
       "groupingType": "INDIVIDUAL",
       "length": 82.6,
       "height": 5.2,
-      "unit": "mm",
       "hasImage": true,
       "imageScale": "fitCenter",
       "instructions": [
@@ -191,13 +189,11 @@
       "name": "Soil - pH",
       "subtype": "striptest",
       "uuid": "895845dd-9990-49f3-b611-420551851acd",
-      "calibration": "16 Dec 2016 using X-Rite i1Pro 2, Reagecon Buffer solutions Exp. Date: 28-06-2016",
       "brand": "HACH 27456",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 82.7,
       "height": 5,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -260,14 +256,12 @@
       "name": "Soil - pH (0 - 14)",
       "subtype": "striptest",
       "uuid": "e4d8a391-6ee4-4bd5-8e90-321bbbd9876b",
-      "calibration": "21 Jan 2016",
       "brand": "MERCK 1095350001 colorpHast",
       "image": "MERCK-1095350001",
       "imageScale": "fitCenter",
       "groupingType": "GROUP",
       "length": 74.3,
       "height": 5.8,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -300,7 +294,6 @@
           "name": "pH",
           "patchPos": 4.5,
           "patchWidth": 6.05,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -369,7 +362,6 @@
           "name": "pH",
           "patchPos": 10.55,
           "patchWidth": 6.05,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -438,7 +430,6 @@
           "name": "pH",
           "patchPos": 16.6,
           "patchWidth": 6.05,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -507,7 +498,6 @@
           "name": "pH",
           "patchPos": 22.65,
           "patchWidth": 6.05,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -577,12 +567,10 @@
       "name": "Soil - Phosphorous",
       "subtype": "striptest",
       "uuid": "7cb666ea-7913-4511-9ae4-18f78e67aa09",
-      "calibration": "07-12-2016 using X-Rite i1Pro 2",
       "brand": "Quantofix 91320",
       "groupingType": "INDIVIDUAL",
       "length": 95.2,
       "height": 5.5,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -663,13 +651,11 @@
       "name": "Soil - Potassium",
       "subtype": "striptest",
       "uuid": "ac533acc-8ffc-48e1-a66e-2394f9a54050",
-      "calibration": "18-11-2016 using X-Rite i1Pro 2",
       "brand": "MERCK 117985",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 74,
       "height": 6,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -744,13 +730,11 @@
       "name": "Water - Ammonium",
       "subtype": "striptest",
       "uuid": "99abf0cd-4697-4880-bde0-933d32d3972c",
-      "calibration": "30 Jan 2017 using X-Rite i1Pro 2",
       "brand": "Quantofix 91315",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 95,
       "height": 5.5,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -835,14 +819,12 @@
       "name": "Water - Arsenic (0 - 4000)",
       "subtype": "striptest",
       "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
-      "calibration": "12 Jan 2016",
       "brand": "EZ Arsenic High Range, HACH 2822800",
       "image": "HACH-2822800-4000",
       "imageScale": "centerCrop",
       "groupingType": "INDIVIDUAL",
       "length": 82.3,
       "height": 12.8,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -893,7 +875,6 @@
           "unit": "ug/l",
           "patchPos": 5.5,
           "patchWidth": 3,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -927,14 +908,12 @@
       "name": "Water - Arsenic (0 - 500)",
       "subtype": "striptest",
       "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
-      "calibration": "17 Aug 2017, Standards are prepared by diluting 1000 ppm Arsenic stock solution. 1 ppm Stock solution is prepared by dissolving 0.1734 gm of NaAsO2 in 1000 ml of distilled water. Further dilute 1 ml of this to 100 ml using distilled water to get 10 ppm As stock solution.",
       "brand": "EZ Arsenic High Range, HACH 2822800",
       "image": "HACH-2822800-500",
       "imageScale": "centerCrop",
       "groupingType": "INDIVIDUAL",
       "length": 82.3,
       "height": 12.8,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -985,7 +964,6 @@
           "unit": "ug/l",
           "patchPos": 6.2,
           "patchWidth": 3,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -1023,13 +1001,11 @@
       "name": "Water - Chloride",
       "subtype": "striptest",
       "uuid": "4c3a4192-c484-4329-8240-71e4c7cd2280",
-      "calibration": "30 Jan 2017 using X-Rite i1Pro 2",
       "brand": "Quantofix 91321",
       "imageScale": "fitCenter",
       "groupingType": "GROUP",
       "length": 95,
       "height": 5.5,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -1234,13 +1210,11 @@
       "name": "Water - Chlorine, Hardness, Alkalinity, pH",
       "subtype": "striptest",
       "uuid": "2456d482-dbec-466c-8387-411a4093f6b6",
-      "calibration": "30 Jan 2017 using X-Rite i1Pro 2",
       "brand": "HACH 2755250",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 82.5,
       "height": 5.1,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -1453,13 +1427,11 @@
       "name": "Water - Nitrate - N & Nitrite - N",
       "subtype": "striptest",
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
-      "calibration": "23 Aug 2016 using X-Rite i1Pro 2",
       "brand": "HACH 27454",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 82.6,
       "height": 5.2,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -1561,13 +1533,11 @@
       "name": "Water - Nitrate 100",
       "subtype": "striptest",
       "uuid": "77957656-3b72-4f0f-9507-d555f04db952",
-      "calibration": "07 Jun 2017 using X-Rite i1Pro 2",
       "brand": "Quantofix 91351",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 95.20,
       "height": 5.5,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -1678,13 +1648,11 @@
       "name": "Water - pH",
       "subtype": "striptest",
       "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
-      "calibration": "16 Dec 2016 using X-Rite i1Pro 2, Reagecon Buffer solutions Exp. Date: 28-06-2016",
       "brand": "HACH 27456",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 82.7,
       "height": 5,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -1747,14 +1715,12 @@
       "name": "Water - pH (0 - 14)",
       "subtype": "striptest",
       "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
-      "calibration": "21 Jan 2016",
       "brand": "MERCK 1095350001 colorpHast",
       "image": "MERCK-1095350001",
       "imageScale": "fitCenter",
       "groupingType": "GROUP",
       "length": 74.3,
       "height": 5.8,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -1786,10 +1752,8 @@
         {
           "id": 1,
           "name": "pH",
-          "unit": "pH",
           "patchPos": 4.5,
           "patchWidth": 6.05,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -1856,10 +1820,8 @@
         {
           "id": 2,
           "name": "pH",
-          "unit": "pH",
           "patchPos": 10.55,
           "patchWidth": 6.05,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -1925,11 +1887,9 @@
         },
         {
           "id": 3,
-          "unit": "pH",
           "name": "pH",
           "patchPos": 16.6,
           "patchWidth": 6.05,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -1996,10 +1956,8 @@
         {
           "id": 4,
           "name": "pH",
-          "unit": "pH",
           "patchPos": 22.65,
           "patchWidth": 6.05,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -2069,12 +2027,10 @@
       "name": "Water - Phosphate",
       "subtype": "striptest",
       "uuid": "39e7ea7e-9884-407d-a99a-ac3b4d9c9599",
-      "calibration": "07-12-2016 using X-Rite i1Pro 2",
       "brand": "Quantofix 91320",
       "groupingType": "INDIVIDUAL",
       "length": 95.2,
       "height": 5.5,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -2179,14 +2135,12 @@
       "name": "Water - Phosphate",
       "subtype": "striptest",
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
-      "calibration": "23-08-2016 using X-Rite i1Pro 2",
       "brand": "HACH 27571",
       "imageScale": "fitCenter",
       "numPatch": 1,
       "groupingType": "INDIVIDUAL",
       "length": 82.6,
       "height": 5.2,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -2246,13 +2200,11 @@
       "name": "Water - Potassium",
       "subtype": "striptest",
       "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
-      "calibration": "18-11-2016 using X-Rite i1Pro 2",
       "brand": "MERCK 117985",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 74,
       "height": 6,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -2327,13 +2279,11 @@
       "name": "Water - Total & Free Chlorine",
       "subtype": "striptest",
       "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
-      "calibration": "23 Dec 2015 using X-Rite i1Pro 2",
       "brand": "HACH 27450",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 82.6,
       "height": 5.2,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -2431,13 +2381,11 @@
       "name": "Water - Total Iron",
       "subtype": "striptest",
       "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
-      "calibration": "23 Aug 2016 using X-Rite i1Pro 2",
       "brand": "HACH 2745348",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 82.6,
       "height": 5.2,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -2480,7 +2428,7 @@
       "results": [
         {
           "id": 1,
-          "name": "Total iron",
+          "name": "Total Iron",
           "unit": "mg/l",
           "patchPos": 3.3,
           "patchWidth": 6,
@@ -2520,16 +2468,13 @@
     },
     {
       "name": "Water - Total Iron",
-      "description": "Standards are prepared by diluting 1000 ppm Iron stock solution. 1000 ppm Stock solution is prepared by dissolving 4.9783 gm of FeSO4.7H2O in 1000 ml of distilled water.",
       "subtype": "striptest",
       "uuid": "5c90472e-9c06-4c7c-9f62-4c5cbcf6b1c1",
-      "calibration": "07 Jun 2017 using X-Rite i1Pro 2",
       "brand": "Quantofix 91344",
       "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
       "length": 95.5,
       "height": 5.5,
-      "unit": "mm",
       "hasImage": true,
       "instructions": [
         {
@@ -2617,7 +2562,7 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_alligning"
+            "image:correct_filling_aligning"
           ]
         },
         {
@@ -2672,7 +2617,7 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_alligning"
+            "image:correct_filling_aligning"
           ]
         },
         {
@@ -2738,7 +2683,7 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_alligning"
+            "image:correct_filling_aligning"
           ]
         },
         {
@@ -2800,7 +2745,7 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_alligning"
+            "image:correct_filling_aligning"
           ]
         },
         {
@@ -3123,7 +3068,7 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_alligning"
+            "image:correct_filling_aligning"
           ]
         },
         {
@@ -3185,7 +3130,7 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_alligning"
+            "image:correct_filling_aligning"
           ]
         },
         {
@@ -3254,47 +3199,55 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_alligning"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial_leave_drops"
+            "remove_vial_leave_drops",
+            "image:take_out_vial_leave_drops"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_water_till_10ml"
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet"
+            "add_reagent_2_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -3335,32 +3288,38 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero"
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial_leave_drops"
+            "remove_vial_leave_drops",
+            "image:take_out_vial_leave_drops"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_water_till_10ml"
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -3392,47 +3351,56 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero"
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial_empty"
+            "remove_vial_empty",
+            "image:take_out_vial_leave_drops"
           ]
         },
         {
           "section": [
-            "add_reagent_1_liquid"
+            "add_reagent_1_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "add_water_till_10ml"
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_2_liquid"
+            "add_reagent_2_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -3474,32 +3442,37 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial_empty"
+            "remove_vial_empty",
+            "image:take_out_vial_leave_drops"
           ]
         },
         {
           "section": [
-            "add_reagent_1_liquid"
+            "add_reagent_1_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "add_water_till_10ml"
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -3532,47 +3505,55 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial_leave_drops"
+            "remove_vial_leave_drops",
+            "image:take_out_vial_leave_drops"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_water_till_10ml"
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet"
+            "add_reagent_2_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -3614,32 +3595,37 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial_leave_drops"
+            "remove_vial_leave_drops",
+            "image:take_out_vial_leave_drops"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_water_till_10ml"
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -3672,12 +3658,13 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
@@ -3688,17 +3675,20 @@
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         },
         {
           "section": [
-            "remove_vial_empty_fill"
+            "remove_vial_empty_fill",
+            "image:take_out_vial_fill"
           ]
         },
         {
@@ -3709,12 +3699,14 @@
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -3756,12 +3748,13 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
@@ -3772,12 +3765,14 @@
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -3810,49 +3805,55 @@
         {
           "section": [
             "fill_vial_10_with_5ml_sample_zero",
-            "image:correct_filling_aligning_5ml"
+            "image:fill_vial_5"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial_5"
           ]
         },
         {
           "section": [
             "add_two_reagent_1_powder_1vial",
-            "image:add_powder"
+            "image:add_2_powder_5"
           ]
         },
         {
           "section": [
-            "close_invert_mix"
+            "close_invert_mix",
+            "image:close_invert_mix_5"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_5"
           ]
         },
         {
           "section": [
-            "remove_vial_empty_fill"
+            "remove_vial_empty_fill",
+            "image:take_out_vial_fill"
           ]
         },
         {
           "section": [
-            "add_reagent_2_powder_1vial",
-            "image:add_powder"
+            "add_two_reagent_2_powder_1vial",
+            "image:add_2_powder_5"
           ]
         },
         {
           "section": [
-            "close_invert_mix"
+            "close_invert_mix",
+            "image:close_invert_mix_5"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_5"
           ]
         }
       ],
@@ -3894,28 +3895,31 @@
         {
           "section": [
             "fill_vial_10_with_5ml_sample_zero",
-            "image:correct_filling_aligning_5ml"
+            "image:fill_vial_5"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial_5"
           ]
         },
         {
           "section": [
             "add_two_reagent_1_powder_1vial",
-            "image:add_powder"
+            "image:add_2_powder_5"
           ]
         },
         {
           "section": [
-            "close_invert_mix"
+            "close_invert_mix",
+            "image:close_invert_mix_5"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_5"
           ]
         }
       ],
@@ -3948,81 +3952,92 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_16_with_10ml_sample"
+            "fill_vial_16_with_10ml_sample",
+            "image:fill_vial_16_10"
           ]
         },
         {
           "section": [
             "add_reagent_1_powder_1vial",
-            "image:add_powder"
+            "image:add_powder_1_vial_16"
           ]
         },
         {
           "section": [
-            "close_invert_mix"
+            "close_invert_mix",
+            "image:close_swirl_16"
           ]
         },
         {
           "section": [
-            "heat_120_100"
+            "heat_120_100",
+            "image:heat_thermoreactor"
           ]
         },
         {
           "section": [
-            "remove_cool"
+            "remove_cool",
+            "image:remove_thermoreactor"
           ]
         },
         {
           "section": [
             "insert_16mm_adapter",
-            "image:16mm_adapter"
+            "image:16_mm_adapter"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero"
+            "wipe_place_align_prepared_vial_zero",
+            "image:place_vial_test_16"
           ]
         },
         {
           "section": [
-            "remove_vial"
-          ]
-        },
-        {
-          "section": [
-            "add_reagent_2_powder_1vial",
-            "image:add_powder"
-          ]
-        },
-        {
-          "section": [
-            "close_swirl_mix"
-          ]
-        },
-        {
-          "section": [
-            "wipe_place_align_vial_wait_1"
-          ]
-        },
-        {
-          "section": [
-            "fill_2nd_vial_16_with_10ml_sample"
+            "remove_vial",
+            "image:take_out_vial_16"
           ]
         },
         {
           "section": [
             "add_reagent_2_powder_1vial",
-            "image:add_powder"
+            "image:add_powder_1_vial_16"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_16"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_2"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test_16"
+          ]
+        },
+        {
+          "section": [
+            "fill_2nd_vial_16_with_10ml_sample",
+            "image:fill_vial_16_10"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_powder_1vial",
+            "image:add_powder_1_vial_16"
+          ]
+        },
+        {
+          "section": [
+            "close_swirl_mix",
+            "image:close_swirl_16"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_2",
+            "image:place_vial_test_16"
           ]
         }
       ],
@@ -4064,38 +4079,43 @@
         {
           "section": [
             "insert_16mm_adapter",
-            "image:16mm_adapter"
+            "image:16_mm_adapter"
           ]
         },
         {
           "section": [
-            "fill_vial_16_with_10ml_sample"
+            "fill_vial_16_with_10ml_sample",
+            "image:fill_vial_16_10"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero"
+            "wipe_place_align_prepared_vial_zero",
+            "image:place_vial_test_16"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial_16"
           ]
         },
         {
           "section": [
             "add_reagent_1_powder_1vial",
-            "image:add_powder"
+            "image:add_powder_1_vial_16"
           ]
         },
         {
           "section": [
-            "close_invert_mix"
+            "close_invert_mix",
+            "image:close_swirl_16"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test_16"
           ]
         }
       ],
@@ -4127,60 +4147,68 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_16_with_10ml_sample"
+            "fill_vial_16_with_10ml_sample",
+            "image:fill_vial_16_10"
           ]
         },
         {
           "section": [
             "add_reagent_1_powder_1vial",
-            "image:add_powder"
+            "image:add_powder_1_vial_16"
           ]
         },
         {
           "section": [
-            "close_invert_mix"
+            "close_invert_mix",
+            "image:close_swirl_16"
           ]
         },
         {
           "section": [
-            "heat_120_100"
+            "heat_120_100",
+            "image:heat_thermoreactor"
           ]
         },
         {
           "section": [
-            "remove_cool"
+            "remove_cool",
+            "image:remove_thermoreactor"
           ]
         },
         {
           "section": [
             "insert_16mm_adapter",
-            "image:16mm_adapter"
+            "image:16_mm_adapter"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero"
+            "wipe_place_align_prepared_vial_zero",
+            "image:place_vial_test_16"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial_16"
           ]
         },
         {
           "section": [
             "add_reagent_2_powder_1vial",
-            "image:add_powder"
+            "image:add_powder_1_vial_16"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_16"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test_16"
           ]
         }
       ],
@@ -4205,47 +4233,55 @@
         {
           "section": [
             "insert_16mm_adapter",
-            "image:16mm_adapter"
+            "image:16_mm_adapter"
           ]
         },
         {
           "section": [
-            "reaction_tube_2ml_blank"
+            "reaction_tube_2ml_blank",
+            "image:16_mm_tube_blank"
           ]
         },
         {
           "section": [
-            "reaction_tube_2ml_sample"
+            "reaction_tube_2ml_sample",
+            "image:16_mm_tube_sample"
           ]
         },
         {
           "section": [
-            "close_invert_mix_hot"
+            "close_invert_mix_hot",
+            "image:close_swirl_16_hot"
           ]
         },
         {
           "section": [
-            "heat_120_150"
+            "heat_120_150",
+            "image:heat_thermoreactor"
           ]
         },
         {
           "section": [
-            "remove_cool_60"
+            "remove_cool_60",
+            "image:remove_thermoreactor"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero"
+            "wipe_place_align_vial_blank_zero",
+            "image:place_vial_test_16"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial_16"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test"
+            "wipe_place_align_vial_sample_test",
+            "image:place_vial_test_16"
           ]
         }
       ],
@@ -4270,47 +4306,55 @@
         {
           "section": [
             "insert_16mm_adapter",
-            "image:16mm_adapter"
+            "image:16_mm_adapter"
           ]
         },
         {
           "section": [
-            "reaction_tube_2ml_blank"
+            "reaction_tube_2ml_blank",
+            "image:16_mm_tube_blank"
           ]
         },
         {
           "section": [
-            "reaction_tube_2ml_sample"
+            "reaction_tube_2ml_sample",
+            "image:16_mm_tube_sample"
           ]
         },
         {
           "section": [
-            "close_invert_mix_hot"
+            "close_invert_mix_hot",
+            "image:close_swirl_16_hot"
           ]
         },
         {
           "section": [
-            "heat_120_150"
+            "heat_120_150",
+            "image:heat_thermoreactor"
           ]
         },
         {
           "section": [
-            "remove_cool_60"
+            "remove_cool_60",
+            "image:remove_thermoreactor"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero"
+            "wipe_place_align_vial_blank_zero",
+            "image:place_vial_test_16"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial_16"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test"
+            "wipe_place_align_vial_sample_test",
+            "image:place_vial_test_16"
           ]
         }
       ],
@@ -4335,47 +4379,55 @@
         {
           "section": [
             "insert_16mm_adapter",
-            "image:16mm_adapter"
+            "image:16_mm_adapter"
           ]
         },
         {
           "section": [
-            "reaction_tube_1_fifth_ml_blank"
+            "reaction_tube_1_fifth_ml_blank",
+            "image:16_mm_tube_blank"
           ]
         },
         {
           "section": [
-            "reaction_tube_1_fifth_ml_sample"
+            "reaction_tube_1_fifth_ml_sample",
+            "image:16_mm_tube_sample"
           ]
         },
         {
           "section": [
-            "close_invert_mix_hot"
+            "close_invert_mix_hot",
+            "image:close_swirl_16_hot"
           ]
         },
         {
           "section": [
-            "heat_120_150"
+            "heat_120_150",
+            "image:heat_thermoreactor"
           ]
         },
         {
           "section": [
-            "remove_cool_60"
+            "remove_cool_60",
+            "image:remove_thermoreactor"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero"
+            "wipe_place_align_vial_blank_zero",
+            "image:place_vial_test_16"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial_16"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test"
+            "wipe_place_align_vial_sample_test",
+            "image:place_vial_test_16"
           ]
         }
       ],
@@ -4403,27 +4455,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_liquid_exact_ml"
+            "add_reagent_1_liquid_exact_ml",
+            "image:add_liquid_24_exact"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4454,47 +4510,55 @@
         {
           "section": [
             "fill_vial_24_with_10ml_deionized_water",
-            "image:correct_filling_aligning_10ml"
+            "image:fill_vial_24_10_blank"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero_wait"
+            "wipe_place_align_vial_blank_zero_wait",
+            "image:place_vial_blank"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_sample_exact"
+            "add_sample_exact",
+            "image:add_liquid_24_exact"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4524,27 +4588,32 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero"
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4575,27 +4644,31 @@
         {
           "section": [
             "fill_vial_24_with_1ml_sample_9ml_deionized_water_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4626,27 +4699,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4677,12 +4754,13 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
@@ -4693,12 +4771,14 @@
         },
         {
           "section": [
-            "close_and_mix_powder"
+            "close_and_mix_powder",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4728,12 +4808,14 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_deionized_water"
+            "fill_vial_24_with_10ml_deionized_water",
+            "image:fill_vial_24_10_blank"
           ]
         },
         {
           "section": [
-            "fill_vial_24_with_10ml_sample"
+            "fill_vial_24_with_10ml_sample",
+            "image:fill_vial_24_10_sample"
           ]
         },
         {
@@ -4744,7 +4826,8 @@
         },
         {
           "section": [
-            "close_and_mix_powder"
+            "close_and_mix_powder",
+            "image:close_swirl_tablet"
           ]
         },
         {
@@ -4754,17 +4837,20 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero"
+            "wipe_place_align_vial_blank_zero",
+            "image:place_vial_blank"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test"
+            "wipe_place_align_vial_sample_test",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4795,27 +4881,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_liquid"
+            "add_reagent_1_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4847,37 +4937,43 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_liquid"
+            "add_reagent_1_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "close_swirl_mix_purple"
+            "close_swirl_mix_purple",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_liquid"
+            "add_reagent_2_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -4908,37 +5004,43 @@
         {
           "section": [
             "insert_16mm_adapter",
-            "image:16mm_adapter"
+            "image:16_mm_adapter"
           ]
         },
         {
           "section": [
-            "reaction_tube_1ml_sample"
+            "reaction_tube_1ml_sample",
+            "image:16_mm_tube_blank"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero"
+            "wipe_place_align_prepared_vial_zero",
+            "image:place_vial_test_16"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial_16"
           ]
         },
         {
           "section": [
-            "add_reagent_1_powder_1vial"
+            "add_reagent_1_powder_1vial",
+            "image:add_powder_1_vial_16"
           ]
         },
         {
           "section": [
-            "close_invert_gently_mix"
+            "close_invert_gently_mix",
+            "image:close_swirl_16"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test_16"
           ]
         }
       ],
@@ -4970,37 +5072,43 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "fill_nitrate_test_tube"
+            "fill_nitrate_test_tube",
+            "image:fill_nitrate_tube"
           ]
         },
         {
           "section": [
-            "add_spoon_nitrate_test_powder"
+            "add_spoon_nitrate_test_powder",
+            "image:add_1_spoon"
           ]
         },
         {
           "section": [
-            "close_swirl_vigorously"
+            "close_swirl_vigorously",
+            "image:swirl_mix_nitrate_tube"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet_nitrate_tube"
           ]
         },
         {
           "section": [
-            "close_swirl_vigorously"
+            "close_swirl_vigorously",
+            "image:swirl_mix_nitrate_tube"
           ]
         },
         {
@@ -5010,17 +5118,20 @@
         },
         {
           "section": [
-            "add_reagent_2_tablet"
+            "add_reagent_2_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5051,27 +5162,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5102,12 +5217,13 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
@@ -5118,12 +5234,14 @@
         },
         {
           "section": [
-            "close_and_mix_powder"
+            "close_and_mix_powder",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5155,32 +5273,37 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet"
+            "add_reagent_2_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5212,32 +5335,37 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet"
+            "add_reagent_2_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5268,12 +5396,13 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
@@ -5284,12 +5413,14 @@
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5297,77 +5428,6 @@
         {
           "id": 1,
           "name": "Phosphate (ortho)",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
-      "name": "Phosphate LR",
-      "subtype": "bluetooth",
-      "md610_id": "334",
-      "uuid": "78db84dc-ea94-45bd-a985-1ccfe1157994",
-      "brand": "Lovibond",
-      "reagents": [
-        "50 drops KS80 (CRP)",
-        "KP119 (Ascorbic Acid)"
-      ],
-      "sampleQuantity": "10",
-      "reactionTimes": [
-        10
-      ],
-      "ranges": "0.1,10",
-      "selectInstruction": "select_test_instruction",
-      "instructions": [
-        {
-          "section": [
-            "phosphate_syringe"
-          ]
-        },
-        {
-          "section": [
-            "phosphate_discharge"
-          ]
-        },
-        {
-          "section": [
-            "phosphate_fill_vial_test"
-          ]
-        },
-        {
-          "section": [
-            "remove_vial"
-          ]
-        },
-        {
-          "section": [
-            "add_reagent_1_liquid"
-          ]
-        },
-        {
-          "section": [
-            "close_invert_mix"
-          ]
-        },
-        {
-          "section": [
-            "add_spoon_KP119_test_powder"
-          ]
-        },
-        {
-          "section": [
-            "close_invert_mix_dissolve"
-          ]
-        },
-        {
-          "section": [
-            "wipe_place_align_vial_wait_1"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "Phosphate",
           "unit": "mg/l"
         }
       ]
@@ -5401,37 +5461,44 @@
         },
         {
           "section": [
-            "phosphate_fill_vial_test"
+            "phosphate_fill_vial_test",
+            "image:place_vial_test_syringe"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_liquid"
+            "add_reagent_1_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "close_invert_mix"
+            "close_invert_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_liquid"
+            "add_reagent_2_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "close_invert_mix"
+            "close_invert_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5459,27 +5526,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5506,27 +5577,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5553,27 +5628,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_liquid"
+            "add_reagent_1_liquid",
+            "image:add_liquid"
           ]
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5600,27 +5679,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5647,27 +5730,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5698,27 +5785,31 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet"
+            "add_reagent_1_tablet",
+            "image:add_tablet"
           ]
         },
         {
           "section": [
-            "close_and_swirl_vial_dissolve_tablet"
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5749,12 +5840,13 @@
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero",
-            "image:correct_filling_aligning_10ml"
+            "image:correct_filling_aligning"
           ]
         },
         {
           "section": [
-            "remove_vial"
+            "remove_vial",
+            "image:take_out_vial"
           ]
         },
         {
@@ -5765,12 +5857,14 @@
         },
         {
           "section": [
-            "close_swirl_mix"
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1"
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5799,27 +5893,32 @@
         },
         {
           "section": [
-            "fill_vial_24_with_10ml_deionized_water"
+            "fill_vial_24_with_10ml_deionized_water",
+            "image:fill_vial_24_10_blank"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero"
+            "wipe_place_align_prepared_vial_zero",
+            "image:place_vial_blank.svg"
           ]
         },
         {
           "section": [
-            "remove_vial_empty"
+            "remove_vial_empty",
+            "image:take_out_vial_leave_drops"
           ]
         },
         {
           "section": [
-            "stir_blended_water"
+            "stir_blended_water",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
@@ -5843,27 +5942,32 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_deionized_water"
+            "fill_vial_24_with_10ml_deionized_water",
+            "image:fill_vial_24_10_blank"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero"
+            "wipe_place_align_prepared_vial_zero",
+            "image:place_vial_blank"
           ]
         },
         {
           "section": [
-            "stir_water_sample"
+            "stir_water_sample",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "close_swirl_gently"
+            "close_swirl_gently",
+            "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial"
+            "wipe_place_align_vial",
+            "image:place_vial_test"
           ]
         }
       ],
