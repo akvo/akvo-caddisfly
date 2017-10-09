@@ -113,20 +113,22 @@ public class InstructionScreenTest {
 
         List<TestInfo> testList = TestConfigHelper.loadTestsList();
 
-        int index = 29;
+        int index = 0;
         int bluetoothIndex = 23;
         for (int i = bluetoothIndex + index; i < 100; i++) {
 
             if (testList.get(i).getType() == TestType.BLUETOOTH) {
 
                 String id = testList.get(i).getId();
-                id = id.substring(id.lastIndexOf("-") + 1, id.length());
+//                if ("".contains(id)) {
 
-                int pages = navigateToTest(index, id);
+                    id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-                navigateToTest(index, id);
+                    int pages = navigateToTest(index, id);
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+                    jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+
+//                }
 
                 index++;
             }
