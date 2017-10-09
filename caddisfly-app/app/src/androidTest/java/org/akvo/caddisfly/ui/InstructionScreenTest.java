@@ -29,14 +29,13 @@ import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import org.akvo.caddisfly.helper.TestConfigHelper;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -44,6 +43,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.File;
+import java.util.List;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
@@ -68,6 +68,7 @@ import static org.hamcrest.Matchers.is;
 public class InstructionScreenTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
+    private StringBuilder jsArrayString = new StringBuilder();
 
     @BeforeClass
     public static void initialize() {
@@ -78,25 +79,6 @@ public class InstructionScreenTest {
                 mDevice.pressBack();
             }
         }
-    }
-
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
     }
 
     @Before
@@ -129,16 +111,36 @@ public class InstructionScreenTest {
 
         onView(withText("MD 610 Photometer")).perform(click());
 
-        for (int i = 0; i < 1; i++) {
-            navigateToTest(i);
+        List<TestInfo> testList = TestConfigHelper.loadTestsList();
+
+        int index = 29;
+        int bluetoothIndex = 23;
+        for (int i = bluetoothIndex + index; i < 100; i++) {
+
+            if (testList.get(i).getType() == TestType.BLUETOOTH) {
+
+                String id = testList.get(i).getId();
+                id = id.substring(id.lastIndexOf("-") + 1, id.length());
+
+                int pages = navigateToTest(index, id);
+
+                navigateToTest(index, id);
+
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+
+                index++;
+            }
         }
+
+        Log.d("Caddisfly", jsArrayString.toString());
+
     }
 
-    private void navigateToTest(int index) {
+    private int navigateToTest(int index, String id) {
 
         DataInteraction linearLayout = onData(anything())
                 .inAdapterView(allOf(withId(R.id.list_types),
-                        childAtPosition(
+                        TestUtil.childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
                                 1)))
                 .atPosition(index);
@@ -151,38 +153,38 @@ public class InstructionScreenTest {
 //            return;
 //        }
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        TestUtil.sleep(5000);
 
         onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        TestUtil.sleep(2000);
 
         onView(withText(R.string.test_selected)).perform(click());
 
         onView(withText("Test Instructions")).perform(click());
 
-        for (int i = 0; i < 10; i++) {
+        int pages = 0;
+        for (int i = 0; i < 17; i++) {
+            pages++;
 
             try {
-                takeScreenshot(index, i);
+                takeScreenshot(id, i);
 
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
+                TestUtil.sleep(600);
                 Espresso.pressBack();
+                TestUtil.sleep(600);
                 Espresso.pressBack();
+                TestUtil.sleep(600);
                 Espresso.pressBack();
+                TestUtil.sleep(600);
                 Espresso.pressBack();
+                TestUtil.sleep(600);
                 break;
             }
         }
+        return pages;
     }
 }

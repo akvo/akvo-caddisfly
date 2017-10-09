@@ -186,10 +186,16 @@ public final class TestHelper {
         }
     }
 
-    public static void takeScreenshot(int index, int page) {
+    public static void takeScreenshot(String name, int page) {
         if (TAKE_SCREENSHOTS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            File path = new File(Environment.getExternalStorageDirectory().getPath()
-                    + "/Akvo Caddisfly/screenshots/screen-" + index + "-" + page + "-" + mCurrentLanguage + ".png");
+            File path;
+            if (page < 0){
+                path = new File(Environment.getExternalStorageDirectory().getPath()
+                        + "/Akvo Caddisfly/screenshots/" + name  + "-" + mCurrentLanguage + ".png");
+            }else {
+                path = new File(Environment.getExternalStorageDirectory().getPath()
+                        + "/Akvo Caddisfly/screenshots/" + name + "-" + page + "-" + mCurrentLanguage + ".png");
+            }
             mDevice.takeScreenshot(path, 0.2f, 40);
         }
     }

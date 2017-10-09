@@ -20,6 +20,8 @@
 package org.akvo.caddisfly.ui;
 
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.FlakyTest;
@@ -38,6 +40,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,7 +57,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.util.TestHelper.loadData;
+import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
+import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -74,6 +81,18 @@ public class CbtInstructions {
                 mDevice.pressBack();
             }
         }
+    }
+
+    @Before
+    public void setUp() {
+
+        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
+        prefs.edit().clear().apply();
+
+        resetLanguage();
     }
 
     private static void CheckTextInTable(@StringRes int resourceId) {
@@ -289,5 +308,44 @@ public class CbtInstructions {
                                 0),
                         isDisplayed()));
         button1.check(matches(isDisplayed()));
+    }
+
+
+    @Test
+    @FlakyTest
+    public void cbtInstructionsAll() {
+
+        goToMainScreen();
+
+        onView(withText("E.coli - Aquagenx CBT")).perform(click());
+
+        takeScreenshot("ed4db0fd3386", -1);
+
+//        ViewInteraction appCompatButton2 = onView(
+//                allOf(withId(R.id.button_instructions), withText("Instructions"),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withClassName(is("android.widget.LinearLayout")),
+//                                        1),
+//                                1),
+//                        isDisplayed()));
+//        appCompatButton2.perform(click());
+//
+//        for (int i = 0; i < 17; i++) {
+//
+//            try {
+//                takeScreenshot("ed4db0fd3386", i);
+//
+//                onView(withId(R.id.image_pageRight)).perform(click());
+//
+//            } catch (Exception e) {
+//                TestUtil.sleep(600);
+//                Espresso.pressBack();
+//                TestUtil.sleep(600);
+//                Espresso.pressBack();
+//                break;
+//            }
+//        }
+
     }
 }
