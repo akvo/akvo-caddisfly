@@ -75,10 +75,9 @@
       "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",
       "brand": "HACH 27454",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.6,
       "height": 5.2,
-      "hasImage": true,
-      "imageScale": "fitCenter",
       "instructions": [
         {
           "section": [
@@ -115,9 +114,9 @@
           "id": 2,
           "name": "Nitrate Nitrogen",
           "unit": "mg/l",
+          "timeDelay": 60,
           "patchPos": 3.3,
           "patchWidth": 6,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -153,9 +152,9 @@
           "id": 3,
           "name": "Nitrite Nitrogen",
           "unit": "mg/l",
+          "timeDelay": 30,
           "patchPos": 16.8,
           "patchWidth": 6,
-          "timeDelay": 30,
           "colors": [
             {
               "value": 0,
@@ -190,11 +189,10 @@
       "subtype": "striptest",
       "uuid": "895845dd-9990-49f3-b611-420551851acd",
       "brand": "HACH 27456",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.7,
       "height": 5,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -220,9 +218,9 @@
         {
           "id": 1,
           "name": "pH",
+          "timeDelay": 15,
           "patchPos": 3.6,
           "patchWidth": 6,
-          "timeDelay": 15,
           "colors": [
             {
               "value": 4,
@@ -258,11 +256,10 @@
       "uuid": "e4d8a391-6ee4-4bd5-8e90-321bbbd9876b",
       "brand": "MERCK 1095350001 colorpHast",
       "image": "MERCK-1095350001",
-      "imageScale": "fitCenter",
       "groupingType": "GROUP",
+      "hasImage": true,
       "length": 74.3,
       "height": 5.8,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -569,9 +566,9 @@
       "uuid": "7cb666ea-7913-4511-9ae4-18f78e67aa09",
       "brand": "Quantofix 91320",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 95.2,
       "height": 5.5,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -615,9 +612,9 @@
           "name": "Phosphorous",
           "unit": "mg/l",
           "formula": "((%1$f * 0.326138) * 5)",
+          "timeDelay": 60,
           "patchPos": 5,
           "patchWidth": 6,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -652,11 +649,10 @@
       "subtype": "striptest",
       "uuid": "ac533acc-8ffc-48e1-a66e-2394f9a54050",
       "brand": "MERCK 117985",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 74,
       "height": 6,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -698,9 +694,9 @@
           "name": "Potassium",
           "unit": "mg/l",
           "formula": "(%1$f * 5)",
+          "timeDelay": 60,
           "patchPos": 4.5,
           "patchWidth": 7,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -731,11 +727,10 @@
       "subtype": "striptest",
       "uuid": "99abf0cd-4697-4880-bde0-933d32d3972c",
       "brand": "Quantofix 91315",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 95,
       "height": 5.5,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -781,7 +776,6 @@
           "unit": "mg/l",
           "patchPos": 4.5,
           "patchWidth": 6,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -823,9 +817,9 @@
       "image": "HACH-2822800-4000",
       "imageScale": "centerCrop",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.3,
       "height": 12.8,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -912,9 +906,9 @@
       "image": "HACH-2822800-500",
       "imageScale": "centerCrop",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.3,
       "height": 12.8,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -1002,11 +996,10 @@
       "subtype": "striptest",
       "uuid": "4c3a4192-c484-4329-8240-71e4c7cd2280",
       "brand": "Quantofix 91321",
-      "imageScale": "fitCenter",
       "groupingType": "GROUP",
+      "hasImage": true,
       "length": 95,
       "height": 5.5,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -1211,11 +1204,10 @@
       "subtype": "striptest",
       "uuid": "2456d482-dbec-466c-8387-411a4093f6b6",
       "brand": "HACH 2755250",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.5,
       "height": 5.1,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -1242,7 +1234,8 @@
           "section": [
             "<b>stage_two</b>",
             "dip_strip_move_back_forth_30_seconds",
-            "dry_off_excess_water_place_on_towel"
+            "dry_off_excess_water_place_on_towel",
+            "image:dip_sample_30_back_forward"
           ]
         },
         {
@@ -1428,11 +1421,10 @@
       "subtype": "striptest",
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "brand": "HACH 27454",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.6,
       "height": 5.2,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -1534,11 +1526,10 @@
       "subtype": "striptest",
       "uuid": "77957656-3b72-4f0f-9507-d555f04db952",
       "brand": "Quantofix 91351",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
-      "length": 95.20,
-      "height": 5.5,
       "hasImage": true,
+      "length": 95.2,
+      "height": 5.5,
       "instructions": [
         {
           "section": [
@@ -1649,11 +1640,10 @@
       "subtype": "striptest",
       "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
       "brand": "HACH 27456",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.7,
       "height": 5,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -1679,9 +1669,9 @@
         {
           "id": 1,
           "name": "pH",
+          "timeDelay": 15,
           "patchPos": 3.6,
           "patchWidth": 6,
-          "timeDelay": 15,
           "colors": [
             {
               "value": 4,
@@ -1717,11 +1707,10 @@
       "uuid": "c2669bb7-ad63-4a69-a16a-798b81d2b019",
       "brand": "MERCK 1095350001 colorpHast",
       "image": "MERCK-1095350001",
-      "imageScale": "fitCenter",
       "groupingType": "GROUP",
+      "hasImage": true,
       "length": 74.3,
       "height": 5.8,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -2029,9 +2018,9 @@
       "uuid": "39e7ea7e-9884-407d-a99a-ac3b4d9c9599",
       "brand": "Quantofix 91320",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 95.2,
       "height": 5.5,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -2136,12 +2125,10 @@
       "subtype": "striptest",
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
       "brand": "HACH 27571",
-      "imageScale": "fitCenter",
-      "numPatch": 1,
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.6,
       "height": 5.2,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -2201,11 +2188,10 @@
       "subtype": "striptest",
       "uuid": "a18118e7-6382-4d16-b5fb-55f97cd99083",
       "brand": "MERCK 117985",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 74,
       "height": 6,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -2249,7 +2235,6 @@
           "unit": "mg/l",
           "patchPos": 4.5,
           "patchWidth": 7,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -2280,11 +2265,10 @@
       "subtype": "striptest",
       "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
       "brand": "HACH 27450",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.6,
       "height": 5.2,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -2313,7 +2297,6 @@
           "unit": "mg/l",
           "patchPos": 3.3,
           "patchWidth": 6,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -2347,7 +2330,6 @@
           "unit": "mg/l",
           "patchPos": 17.2,
           "patchWidth": 6,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -2382,11 +2364,10 @@
       "subtype": "striptest",
       "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
       "brand": "HACH 2745348",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 82.6,
       "height": 5.2,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -2432,7 +2413,6 @@
           "unit": "mg/l",
           "patchPos": 3.3,
           "patchWidth": 6,
-          "timeDelay": 0,
           "colors": [
             {
               "value": 0,
@@ -2471,11 +2451,10 @@
       "subtype": "striptest",
       "uuid": "5c90472e-9c06-4c7c-9f62-4c5cbcf6b1c1",
       "brand": "Quantofix 91344",
-      "imageScale": "fitCenter",
       "groupingType": "INDIVIDUAL",
+      "hasImage": true,
       "length": 95.5,
       "height": 5.5,
-      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -2507,9 +2486,9 @@
           "id": 1,
           "name": "Total Iron",
           "unit": "mg/l",
+          "timeDelay": 60,
           "patchPos": 4.6,
           "patchWidth": 5,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -5900,7 +5879,7 @@
         {
           "section": [
             "wipe_place_align_prepared_vial_zero",
-            "image:place_vial_blank.svg"
+            "image:place_vial_blank"
           ]
         },
         {
@@ -6043,6 +6022,12 @@
             "13.change_colors_to_match. click_compartments_to_change",
             "image:8"
           ]
+        },
+        {
+          "section": [
+            "14.clean_cbt",
+            "image:9"
+          ]
         }
       ],
       "results": [
@@ -6065,13 +6050,13 @@
       "name": "Water - Chromium",
       "subtype": "liquid-chamber",
       "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
-      "brand": "Caddisfly",
       "shortCode": "CHROM",
+      "brand": "Caddisfly",
       "calibrate": true,
       "ranges": "0,0.5,1,2,3",
       "subtitleExtra": "(upto 15 with dilution)",
       "dilutions": "0,50,20",
-      "monthsValid": "3",
+      "monthsValid": 3,
       "hasImage": true,
       "instructions": [
 
@@ -6100,7 +6085,66 @@
       "monthsValid": 12,
       "hasImage": true,
       "instructions": [
-
+        {
+          "section": [
+            "bc_rinse",
+            "image:bc_rinse"
+          ]
+        },
+        {
+          "section": [
+            "bc_fill",
+            "image:bc_fill"
+          ]
+        },
+        {
+          "section": [
+            "bc_add_capsule",
+            "image:bc_add_capsule"
+          ]
+        },
+        {
+          "section": [
+            "bc_screw",
+            "image:bc_screw"
+          ]
+        },
+        {
+          "section": [
+            "bc_shake",
+            "image:bc_shake"
+          ]
+        },
+        {
+          "section": [
+            "bc_wipe_bottom",
+            "image:bc_wipe_bottom"
+          ]
+        },
+        {
+          "section": [
+            "bc_wipe_camera",
+            "image:bc_wipe_camera"
+          ]
+        },
+        {
+          "section": [
+            "bc_place_chamber",
+            "image:bc_place_chamber"
+          ]
+        },
+        {
+          "section": [
+            "bc_select_dilution",
+            "image:bc_select_dilution"
+          ]
+        },
+        {
+          "section": [
+            "bc_place_phone",
+            "image:bc_place_phone"
+          ]
+        }
       ],
       "results": [
         {
@@ -6121,7 +6165,60 @@
       "monthsValid": 24,
       "hasImage": true,
       "instructions": [
-
+        {
+          "section": [
+            "bc_rinse",
+            "image:bc_rinse"
+          ]
+        },
+        {
+          "section": [
+            "bc_frc_1",
+            "image:bc_frc_1"
+          ]
+        },
+        {
+          "section": [
+            "bc_frc_2",
+            "image:bc_fill"
+          ]
+        },
+        {
+          "section": [
+            "bc_srew",
+            "image:bc_srew_frc"
+          ]
+        },
+        {
+          "section": [
+            "bc_shake",
+            "image:bc_shake"
+          ]
+        },
+        {
+          "section": [
+            "bc_wipe_bottom",
+            "image:bc_wipe_bottom"
+          ]
+        },
+        {
+          "section": [
+            "bc_wipe_camera",
+            "image:bc_wipe_camera"
+          ]
+        },
+        {
+          "section": [
+            "bc_place_chamber",
+            "image:bc_place_chamber"
+          ]
+        },
+        {
+          "section": [
+            "bc_place_phone",
+            "image:bc_place_phone"
+          ]
+        }
       ],
       "results": [
         {
@@ -6141,7 +6238,60 @@
       "monthsValid": 24,
       "hasImage": true,
       "instructions": [
-
+        {
+          "section": [
+            "bc_rinse",
+            "image:bc_rinse"
+          ]
+        },
+        {
+          "section": [
+            "bc_frc_1",
+            "image:bc_frc_1"
+          ]
+        },
+        {
+          "section": [
+            "bc_frc_2",
+            "image:bc_fill"
+          ]
+        },
+        {
+          "section": [
+            "bc_srew",
+            "image:bc_srew_frc"
+          ]
+        },
+        {
+          "section": [
+            "bc_shake",
+            "image:bc_shake"
+          ]
+        },
+        {
+          "section": [
+            "bc_wipe_bottom",
+            "image:bc_wipe_bottom"
+          ]
+        },
+        {
+          "section": [
+            "bc_wipe_camera",
+            "image:bc_wipe_camera"
+          ]
+        },
+        {
+          "section": [
+            "bc_place_chamber",
+            "image:bc_place_chamber"
+          ]
+        },
+        {
+          "section": [
+            "bc_place_phone",
+            "image:bc_place_phone"
+          ]
+        }
       ],
       "results": [
         {

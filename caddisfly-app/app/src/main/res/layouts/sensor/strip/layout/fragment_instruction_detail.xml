@@ -42,5 +42,6 @@
         android:adjustViewBounds="true"
         android:contentDescription="@null"
         android:scaleType="fitCenter"
-        tools:src="@android:drawable/ic_menu_gallery" />
+        tools:src="@drawable/in_take_out_vial" />
+
 </LinearLayout>

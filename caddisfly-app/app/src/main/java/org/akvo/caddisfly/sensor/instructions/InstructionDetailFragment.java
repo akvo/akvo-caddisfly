@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
@@ -36,12 +37,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.ReagentLabel;
 import org.akvo.caddisfly.util.AssetsManager;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONArray;
@@ -50,6 +53,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -131,7 +136,6 @@ public class InstructionDetailFragment extends Fragment {
 
         llp.setMargins(0, 0, 0, 20);
 
-
         ArrayList<String> instructionText = getArguments().getStringArrayList(ARG_ITEM_TEXT);
         if (instructionText != null) {
 
@@ -171,6 +175,7 @@ public class InstructionDetailFragment extends Fragment {
                             imageView.setLayoutParams(llp);
 
                             layoutInstructions.addView(imageView);
+
                         }
                     }
 
@@ -207,6 +212,27 @@ public class InstructionDetailFragment extends Fragment {
                         textView.setMovementMethod(LinkMovementMethod.getInstance());
 
                         layoutInstructions.addView(textView);
+
+                        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+                        Spanned spanned2 = StringUtil.getStringResourceByName(context, text);
+                        builder.append(spanned2);
+
+                        // Set reagent in the string
+                        for (int i = 1; i < 5; i++) {
+                            Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
+                            while (m1.find()) {
+                                ReagentLabel reagentLabel = new ReagentLabel(context, null);
+                                if (testInfo != null) {
+                                    reagentLabel.setReagentName(testInfo.getReagent(i - 1));
+                                }
+
+                                reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
+                                        LinearLayout.LayoutParams.MATCH_PARENT,
+                                        250));
+                                layoutInstructions.addView(reagentLabel);
+                            }
+                        }
                     }
                 }
             }
