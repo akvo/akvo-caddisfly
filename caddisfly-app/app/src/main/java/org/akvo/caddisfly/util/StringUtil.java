@@ -98,14 +98,15 @@ public final class StringUtil {
             while (m1.find()) {
                 try {
                     String name = testInfo.getReagent(i - 1).getString("name");
-                    String code = testInfo.getReagent(i - 1).getString("code");
-                    if (!code.isEmpty()) {
-                        name = String.format("%s (%s)", name, code);
+                    if(testInfo.getReagent(i - 1).has("code")) {
+                        String code = testInfo.getReagent(i - 1).getString("code");
+                        if (!code.isEmpty()) {
+                            name = String.format("%s (%s)", name, code);
+                        }
                     }
-
                     builder.replace(m1.start(), m1.end(), name);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    throw new IllegalStateException("Reagent error: " + e.getMessage());
                 }
             }
         }

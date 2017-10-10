@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 import org.akvo.caddisfly.R;
@@ -74,7 +75,6 @@ public class ReagentLabel extends View {
         blueTextPaint.setStyle(Paint.Style.FILL);
         blueTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         blueTextPaint.setColor(Color.rgb(12, 68, 150));
-        blueTextPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.md610_label_reagent));
 
         redTextPaint.setStyle(Paint.Style.FILL);
         redTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
@@ -94,13 +94,21 @@ public class ReagentLabel extends View {
             imageWidth = (int) (getMeasuredWidth() * 0.2);
             imageHeight = (343 * imageWidth) / 440;
 
-
             subtitleTop = margin + titleHeight + margin + titleHeight;
 
-            line1Top = margin + subtitleTop + margin + (margin /2);
+            line1Top = margin + subtitleTop + margin + (margin / 2);
 
             line2Top = margin + line1Top + margin;
 
+            for (int i = 22; i >= 10; i--) {
+
+                blueTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                        i, getResources().getDisplayMetrics()));
+                float width = blueTextPaint.measureText(reagentName);
+                if (width < getMeasuredWidth() - margin - margin) {
+                    break;
+                }
+            }
         }
     }
 

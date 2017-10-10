@@ -48,7 +48,6 @@
     <dimen name="md610_label_title">19sp</dimen>
     <dimen name="md610_label_superscript">15sp</dimen>
     <dimen name="md610_label_subtitle">15sp</dimen>
-    <dimen name="md610_label_reagent">22sp</dimen>
     <dimen name="md610_label_reagent_code">21sp</dimen>
 
     <!-- StripTest -->

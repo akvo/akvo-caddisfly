@@ -155,11 +155,11 @@ public class InstructionScreenTest {
 //            return;
 //        }
 
-        TestUtil.sleep(5000);
-
-        onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
-
-        TestUtil.sleep(2000);
+//        TestUtil.sleep(5000);
+//
+//        onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
+//
+//        TestUtil.sleep(2000);
 
         onView(withText(R.string.test_selected)).perform(click());
 
@@ -175,15 +175,15 @@ public class InstructionScreenTest {
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestUtil.sleep(600);
+                TestUtil.sleep(300);
                 Espresso.pressBack();
-                TestUtil.sleep(600);
+                TestUtil.sleep(300);
                 Espresso.pressBack();
-                TestUtil.sleep(600);
+                TestUtil.sleep(300);
                 Espresso.pressBack();
-                TestUtil.sleep(600);
-                Espresso.pressBack();
-                TestUtil.sleep(600);
+                TestUtil.sleep(300);
+//                Espresso.pressBack();
+//                TestUtil.sleep(600);
                 break;
             }
         }

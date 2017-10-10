@@ -344,7 +344,7 @@ public class DeviceControlActivity extends BaseActivity
 
         TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
-        setTitle(testInfo.getTitle().replace(" and ", " & "));
+        setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getTitle()));
     }
 
     private void showSelectTestView() {

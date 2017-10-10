@@ -226,14 +226,14 @@ public class InstructionDetailFragment extends Fragment {
                                     String code = testInfo.getReagent(i - 1).getString("code");
                                     if (!code.isEmpty()) {
                                         ReagentLabel reagentLabel = new ReagentLabel(context, null);
-                                        if (testInfo != null) {
-                                            reagentLabel.setReagentName(testInfo.getReagent(i - 1).getString("name"));
-                                            reagentLabel.setReagentCode(code);
-                                        }
 
                                         reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
                                                 LinearLayout.LayoutParams.MATCH_PARENT,
                                                 250));
+
+                                        reagentLabel.setReagentName(testInfo.getReagent(i - 1).getString("name"));
+                                        reagentLabel.setReagentCode(code);
+
                                         layoutInstructions.addView(reagentLabel);
                                     }
                                 } catch (JSONException e) {

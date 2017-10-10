@@ -3180,7 +3180,7 @@
       ]
     },
     {
-      "name": "Total, Free and Combined Chlorine",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "100",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
@@ -3340,7 +3340,7 @@
       ]
     },
     {
-      "name": "Total, Free and Combined Chlorine",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "101",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
@@ -3497,7 +3497,7 @@
       ]
     },
     {
-      "name": "Total, Free and Combined Chlorine HR",
+      "name": "Total, Free & Combined Chlorine HR",
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
@@ -3657,7 +3657,7 @@
       ]
     },
     {
-      "name": "Total, Free and Combined Chlorine",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "110",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
@@ -3808,7 +3808,7 @@
       ]
     },
     {
-      "name": "Total, Free and Combined Chlorine HR",
+      "name": "Total, Free & Combined Chlorine HR",
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
