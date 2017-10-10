@@ -194,7 +194,7 @@ public final class TestConfigHelper {
                     case "bluetooth":
                         type = TestType.BLUETOOTH;
                         break;
-                    case "liquid-chamber":
+                    case "backcase":
                         type = TestType.COLORIMETRIC_LIQUID;
                         break;
                     case "strip":

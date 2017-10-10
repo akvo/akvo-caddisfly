@@ -59,7 +59,7 @@
       "results": [
         {
           "id": 1,
-          "name": "Electrical Conductivity",
+          "name": "Water Electrical Conductivity",
           "unit": "μS/cm"
         },
         {
@@ -1031,9 +1031,9 @@
           "id": 1,
           "name": "Chloride",
           "unit": "mg/l",
+          "timeDelay": 60,
           "patchPos": 4.25,
           "patchWidth": 6,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -1251,9 +1251,9 @@
           "id": 1,
           "name": "Total Chlorine",
           "unit": "mg/l",
+          "timeDelay": 35,
           "patchPos": 3,
           "patchWidth": 6,
-          "timeDelay": 35,
           "phase": 2,
           "colors": [
             {
@@ -1286,9 +1286,9 @@
           "id": 2,
           "name": "Free Chlorine",
           "unit": "mg/l",
+          "timeDelay": 35,
           "patchPos": 17,
           "patchWidth": 6,
-          "timeDelay": 35,
           "phase": 2,
           "colors": [
             {
@@ -1321,9 +1321,9 @@
           "id": 3,
           "name": "Total Hardness",
           "unit": "gpg",
+          "timeDelay": 30,
           "patchPos": 30.5,
           "patchWidth": 6,
-          "timeDelay": 30,
           "colors": [
             {
               "value": 0,
@@ -1355,9 +1355,9 @@
           "id": 4,
           "name": "Total Alkalinity",
           "unit": "mg/l",
+          "timeDelay": 30,
           "patchPos": 44,
           "patchWidth": 6,
-          "timeDelay": 30,
           "colors": [
             {
               "value": 0,
@@ -1388,9 +1388,9 @@
         {
           "id": 5,
           "name": "pH",
+          "timeDelay": 30,
           "patchPos": 57,
           "patchWidth": 6,
-          "timeDelay": 30,
           "colors": [
             {
               "value": 6.2,
@@ -1451,9 +1451,9 @@
           "id": 1,
           "name": "Nitrate Nitrogen",
           "unit": "mg/l",
+          "timeDelay": 60,
           "patchPos": 3.3,
           "patchWidth": 6,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -1489,9 +1489,9 @@
           "id": 2,
           "name": "Nitrite Nitrogen",
           "unit": "mg/l",
+          "timeDelay": 30,
           "patchPos": 16.8,
           "patchWidth": 6,
-          "timeDelay": 30,
           "colors": [
             {
               "value": 0,
@@ -1561,9 +1561,9 @@
           "id": 1,
           "name": "Nitrate",
           "unit": "mg/l",
+          "timeDelay": 60,
           "patchPos": 4.25,
           "patchWidth": 6,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -1599,9 +1599,9 @@
           "id": 2,
           "name": "Nitrite",
           "unit": "mg/l",
+          "timeDelay": 60,
           "patchPos": 13.25,
           "patchWidth": 6,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -2088,9 +2088,9 @@
           "id": 1,
           "name": "Phosphate",
           "unit": "mg/l",
+          "timeDelay": 60,
           "patchPos": 5,
           "patchWidth": 6,
-          "timeDelay": 60,
           "colors": [
             {
               "value": 0,
@@ -2155,9 +2155,9 @@
           "id": 1,
           "name": "Phosphate",
           "unit": "mg/l",
+          "timeDelay": 45,
           "patchPos": 3.3,
           "patchWidth": 6,
-          "timeDelay": 45,
           "colors": [
             {
               "value": 0,
@@ -6130,7 +6130,7 @@
     },
     {
       "name": "Water - Chromium",
-      "subtype": "liquid-chamber",
+      "subtype": "backcase",
       "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
       "shortCode": "CHROM",
       "brand": "Caddisfly",
@@ -6154,7 +6154,7 @@
     },
     {
       "name": "Water - Fluoride",
-      "subtype": "liquid-chamber",
+      "subtype": "backcase",
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
       "shortCode": "FLUOR",
       "brand": "Caddisfly",
@@ -6238,7 +6238,7 @@
     },
     {
       "name": "Water - Free Chlorine",
-      "subtype": "liquid-chamber",
+      "subtype": "backcase",
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
       "shortCode": "CHLOR",
       "brand": "Caddisfly",
@@ -6312,7 +6312,7 @@
     },
     {
       "name": "Water - Free Chlorine",
-      "subtype": "liquid-chamber",
+      "subtype": "backcase",
       "uuid": "a2413119-38eb-4959-92ee-cc169fdbb0fc",
       "brand": "Caddisfly",
       "calibrate": true,
