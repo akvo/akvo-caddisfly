@@ -57,6 +57,7 @@
     <string name="remove_vial_empty">Remove the vial from the sample chamber and <b>empty the vial</b></string>
     <string name="remove_vial_empty_fill">Remove the vial from the sample chamber, <b>empty the vial</b>, rinse vial and cap several times and then fill the vial with <b>%sampleQuantity ml</b> of the water sample.</string>
     <string name="add_reagent_1_tablet">Add <b>one %reagent1 tablet</b> straight from the foil to the water sample and crush the tablet using a clean stirring rod</string>
+    <string name="add_reagent_1_tablet_no_crush">Add <b>one %reagent1 tablet</b> straight from the foil to the water sample.</string>
     <string name="add_reagent_2_tablet">Add <b>one %reagent2 tablet</b> straight from the foil to the water sample and crush the tablet using a clean stirring rod</string>
     <string name="add_reagent_1_powder_1vial">Add the contents of <b>one %reagent1 powder pack</b> straight from the foil to the vial.</string>
     <string name="add_reagent_2_powder_1vial">Add the contents of <b>one %reagent2 powder pack</b> straight from the foil to the vial.</string>

@@ -39,6 +39,7 @@
     <string name="remove_vial_empty">Rétirez le tube d\'échantillon de la chambre et videz le flacon</string>
     <string name="remove_vial_empty_fill">Rétirez le tube de la chambre d\'échantillon, videz le tube, rincez le flacon et le couvercle plusieurs fois, puis remplissez le tube avec <b>%sampleQuantity ml</b> de l\'échantillon d\'eau</string>
     <string name="add_reagent_1_tablet">Ajoutez <b>une pastille %reagent1</b> directement de la plaquette à l\'échantillon d\'eau et écrassez le comprimé en utilisant une tige de mélange propre</string>
+    <string name="add_reagent_1_tablet_no_crush">Ajoutez <b>une pastille %reagent1</b> directement de la plaquette à l\'échantillon d\'eau.</string>
     <string name="add_reagent_2_tablet">Ajoutez <b>une pastille %reagent2</b> directement de la plaquette à l\'échantillon d\'eau et écrassez le comprimé en utilisant une tige de mélange propre</string>
     <string name="add_reagent_1_powder_1vial">Ajoutez le contenu d\' <b>paquet de poudre %reagent1</b> directement de la feuille au flacon.</string>
     <string name="add_reagent_2_powder_1vial">Ajoutez le contenu d\' <b>paquet de poudre %reagent2</b> directement de la feuille au flacon.</string>
