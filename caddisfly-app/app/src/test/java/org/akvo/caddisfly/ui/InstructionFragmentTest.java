@@ -23,11 +23,13 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.cbt.CbtInstructionFragment;
 import org.akvo.caddisfly.sensor.cbt.RowView;
+import org.akvo.caddisfly.sensor.cbt.TestActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -53,7 +55,7 @@ public class InstructionFragmentTest {
     public void testInstruction() {
         TestInfo testInfo = TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
         Fragment fragment = CbtInstructionFragment.forProduct(testInfo);
-        startVisibleFragment(fragment);
+        startVisibleFragment(fragment, TestActivity.class, R.id.fragment_container);
 
         assertNotNull(fragment);
 

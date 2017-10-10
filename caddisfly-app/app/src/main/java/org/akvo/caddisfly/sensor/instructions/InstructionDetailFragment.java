@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.instructions;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -227,9 +228,11 @@ public class InstructionDetailFragment extends Fragment {
                                     if (!code.isEmpty()) {
                                         ReagentLabel reagentLabel = new ReagentLabel(context, null);
 
+                                        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+
                                         reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
                                                 LinearLayout.LayoutParams.MATCH_PARENT,
-                                                250));
+                                                (int) (height * 0.2)));
 
                                         reagentLabel.setReagentName(testInfo.getReagent(i - 1).getString("name"));
                                         reagentLabel.setReagentCode(code);

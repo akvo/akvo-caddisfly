@@ -64,6 +64,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -304,7 +305,7 @@ public class InstructionsTest {
 
         goToMainScreen();
 
-        onView(withText("Strip Test")).perform(click());
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.stripTest))).perform(click());
 
         List<TestInfo> testList = TestConfigHelper.loadTestsList();
 
@@ -313,14 +314,16 @@ public class InstructionsTest {
         for (int i = firstTestIndex + index; i < 30; i++) {
 
             if (testList.get(i).getType() == TestType.COLORIMETRIC_STRIP) {
-                String id = testList.get(i).getId();
-                id = id.substring(id.lastIndexOf("-") + 1, id.length());
+//                if (testList.get(i).getTitle().startsWith("Soil")) {
+                    String id = testList.get(i).getId();
+                    id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-                int pages = navigateToTest(index, id);
+                    int pages = navigateToTest(index, id);
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+                    jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
-                index++;
+                    index++;
+//                }
             }
         }
 
@@ -346,7 +349,7 @@ public class InstructionsTest {
 
         mDevice.waitForIdle();
 
-        onView(withText("Instructions")).perform(click());
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {

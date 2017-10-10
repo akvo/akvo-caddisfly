@@ -1,6 +1,7 @@
 package org.akvo.caddisfly.sensor.colorimetry.bluetooth;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -18,10 +19,11 @@ public class ReagentLabel extends View {
     private final Paint strokePaint = new Paint();
     private final Paint titleTextPaint = new Paint();
     private final Paint superscriptTextPaint = new Paint();
+    private final Paint superscript2TextPaint = new Paint();
     private final Paint subtitleTextPaint = new Paint();
     private final Paint blueTextPaint = new Paint();
     private final Paint redTextPaint = new Paint();
-    private final float titleHeight;
+    private float titleHeight;
     private Rect rect1;
 
     private float titleWidth;
@@ -30,12 +32,11 @@ public class ReagentLabel extends View {
     private float subtitleWidth;
     private float subtitleCharWidth;
 
-
     private float margin;
     private int imageMargin;
     private int imageWidth;
     private int imageHeight;
-    private float subtitleTop;
+    private float subtitleY;
     private float subtitleHeight;
     private float line1Top;
     private float line2Top;
@@ -46,31 +47,25 @@ public class ReagentLabel extends View {
     public ReagentLabel(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+
         // stroke
         strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setColor(Color.rgb(0, 0, 0));
-        strokePaint.setStrokeWidth(10);
+        strokePaint.setColor(Color.rgb(40, 40, 40));
+        strokePaint.setStrokeWidth((float) Math.min(10, height * 0.005));
 
         titleTextPaint.setStyle(Paint.Style.FILL);
         titleTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         titleTextPaint.setColor(Color.rgb(30, 30, 30));
         titleTextPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.md610_label_title));
-        titleWidth = titleTextPaint.measureText("Lovibond");
-        titleCharWidth = titleTextPaint.measureText("W");
-        titleHeight = titleTextPaint.measureText("W");
 
         superscriptTextPaint.setStyle(Paint.Style.FILL);
         superscriptTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         superscriptTextPaint.setColor(Color.rgb(0, 0, 0));
-        superscriptTextPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.md610_label_superscript));
 
         subtitleTextPaint.setStyle(Paint.Style.FILL);
         subtitleTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         subtitleTextPaint.setColor(Color.rgb(0, 0, 0));
-        subtitleTextPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.md610_label_subtitle));
-        subtitleWidth = subtitleTextPaint.measureText("Tintometer");
-        subtitleCharWidth = titleTextPaint.measureText("W");
-        subtitleHeight = titleTextPaint.measureText("W");
 
         blueTextPaint.setStyle(Paint.Style.FILL);
         blueTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
@@ -79,7 +74,6 @@ public class ReagentLabel extends View {
         redTextPaint.setStyle(Paint.Style.FILL);
         redTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         redTextPaint.setColor(Color.rgb(240, 0, 9));
-        redTextPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.md610_label_reagent_code));
 
     }
 
@@ -94,14 +88,30 @@ public class ReagentLabel extends View {
             imageWidth = (int) (getMeasuredWidth() * 0.2);
             imageHeight = (343 * imageWidth) / 440;
 
-            subtitleTop = margin + titleHeight + margin + titleHeight;
+            int baseHeight = 22;
+            for (int i = baseHeight; i >= 10; i--) {
+                baseHeight = i;
+                titleTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                        i, getResources().getDisplayMetrics()));
 
-            line1Top = margin + subtitleTop + margin + (margin / 2);
+                float width = titleTextPaint.measureText("Lovibond® Water Testing");
+                if (width < getMeasuredWidth() - imageWidth - margin - margin) {
+                    break;
+                }
+            }
 
-            line2Top = margin + line1Top + margin;
+            superscriptTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    baseHeight - 2, getResources().getDisplayMetrics()));
+            
+            subtitleTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    baseHeight - 3, getResources().getDisplayMetrics()));
 
-            for (int i = 22; i >= 10; i--) {
+            superscript2TextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    baseHeight - 3, getResources().getDisplayMetrics()));
 
+            for (int i = baseHeight + 1; i >= 10; i--) {
+
+                baseHeight = i;
                 blueTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                         i, getResources().getDisplayMetrics()));
                 float width = blueTextPaint.measureText(reagentName);
@@ -109,9 +119,26 @@ public class ReagentLabel extends View {
                     break;
                 }
             }
+
+            redTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
+                    baseHeight + 1, getResources().getDisplayMetrics()));
+
+            titleWidth = titleTextPaint.measureText("Lovibond");
+            titleCharWidth = titleTextPaint.measureText("W");
+            titleHeight = titleTextPaint.measureText("W");
+
+            subtitleWidth = subtitleTextPaint.measureText("Tintometer");
+            subtitleCharWidth = titleTextPaint.measureText("W");
+            subtitleHeight = titleTextPaint.measureText("W");
+
+            subtitleY = imageHeight + imageMargin - (imageMargin * 0.3f);
+
+            line1Top = margin + subtitleY + margin + (margin / 2);
+
+            line2Top = margin + line1Top + margin;
+
         }
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -124,9 +151,9 @@ public class ReagentLabel extends View {
         canvas.drawText("®", margin + titleWidth, margin + (titleHeight / 2), superscriptTextPaint);
         canvas.drawText("Water Testing", margin + titleWidth + titleCharWidth, margin + titleHeight, titleTextPaint);
 
-        canvas.drawText("Tintometer", margin, subtitleTop, subtitleTextPaint);
-        canvas.drawText("®", margin + subtitleWidth, subtitleTop - (subtitleHeight / 3), superscriptTextPaint);
-        canvas.drawText("Group", margin + subtitleWidth + subtitleCharWidth, subtitleTop, subtitleTextPaint);
+        canvas.drawText("Tintometer", margin, subtitleY, subtitleTextPaint);
+        canvas.drawText("®", margin + subtitleWidth, subtitleY - (subtitleHeight / 3), superscript2TextPaint);
+        canvas.drawText("Group", margin + subtitleWidth + subtitleCharWidth, subtitleY, subtitleTextPaint);
 
         canvas.drawText(reagentName.toUpperCase(), margin, line1Top, blueTextPaint);
 

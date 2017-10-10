@@ -57,7 +57,7 @@ public class PhotometerTest {
     public void testCount() throws Exception {
         Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
         ListView listView = activity.findViewById(R.id.list_types);
-        assertSame(52, listView.getCount());
+        assertSame(51, listView.getCount());
         assertEquals("Fluoride",
                 ((TestInfo) listView.getAdapter().getItem(25)).getTitle());
         assertEquals("170 Fluoride",
