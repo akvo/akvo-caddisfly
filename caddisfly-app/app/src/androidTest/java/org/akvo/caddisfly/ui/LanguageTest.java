@@ -77,7 +77,7 @@ public class LanguageTest {
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, TestType.COLORIMETRIC_LIQUID,
-                new String[]{}, new String[]{}, new String[]{}, null, null, null));
+                new String[]{}, new String[]{}, new String[]{}, null, null, null, null));
     }
 
     @Test

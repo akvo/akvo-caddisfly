@@ -23,6 +23,7 @@ package org.akvo.caddisfly.ui;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
+import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.FlakyTest;
 import android.support.test.rule.ActivityTestRule;
@@ -321,31 +322,31 @@ public class CbtInstructions {
 
         takeScreenshot("ed4db0fd3386", -1);
 
-//        ViewInteraction appCompatButton2 = onView(
-//                allOf(withId(R.id.button_instructions), withText("Instructions"),
-//                        childAtPosition(
-//                                childAtPosition(
-//                                        withClassName(is("android.widget.LinearLayout")),
-//                                        1),
-//                                1),
-//                        isDisplayed()));
-//        appCompatButton2.perform(click());
-//
-//        for (int i = 0; i < 17; i++) {
-//
-//            try {
-//                takeScreenshot("ed4db0fd3386", i);
-//
-//                onView(withId(R.id.image_pageRight)).perform(click());
-//
-//            } catch (Exception e) {
-//                TestUtil.sleep(600);
-//                Espresso.pressBack();
-//                TestUtil.sleep(600);
-//                Espresso.pressBack();
-//                break;
-//            }
-//        }
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.button_instructions), withText("Instructions"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
+
+        for (int i = 0; i < 17; i++) {
+
+            try {
+                takeScreenshot("ed4db0fd3386", i);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
+                TestUtil.sleep(600);
+                Espresso.pressBack();
+                TestUtil.sleep(600);
+                Espresso.pressBack();
+                break;
+            }
+        }
 
     }
 }

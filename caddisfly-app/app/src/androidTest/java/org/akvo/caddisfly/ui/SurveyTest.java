@@ -94,7 +94,7 @@ public class SurveyTest {
         prefs.edit().clear().apply();
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null,
-                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null, null));
+                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null, null, null));
 
         resetLanguage();
     }
