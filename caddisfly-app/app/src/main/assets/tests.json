@@ -4561,12 +4561,6 @@
         },
         {
           "section": [
-            "remove_vial",
-            "image:take_out_vial"
-          ]
-        },
-        {
-          "section": [
             "wipe_place_align_vial_blank_zero_wait",
             "image:place_vial_blank"
           ]
@@ -4858,7 +4852,7 @@
         {
           "section": [
             "add_reagent_1_powder_2vials",
-            "image:add_powder"
+            "image:add_powder_2_vials_24"
           ]
         },
         {
