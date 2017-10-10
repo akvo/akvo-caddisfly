@@ -41,6 +41,7 @@
     <string name="take_photo_of_incubated">Prenez une photo de l\'échantillon incubé.</string>
     <string name="change_colors_to_match">Changez les couleurs sur l\'écran du téléphone pour les faire correspondre aux couleurs de l\'échantillon dans les compartiments du sac.</string>
     <string name="click_compartments_to_change">Cliquez sur les compartiments pour changer de couleur.</string>
+    <string name="clean_cbt">Après avoir comptabilisé les résultats du test: ouvrez le sac et ajoutez 3 comprimés de chlore au sommet du sac. Agitez le sac jusqu\'à la dissolution des comprimés de chlore. Laissez  reposer pendant 45 minutes. Après les 45 minutes, versez le contenu du liquide dans un évier, une toilette ou un trou dans le sol et retirez en toute sécurité le sac vide. Conservez la pince en plastique pour une réutilisation.</string>
 
     <string name="temperature">Température</string>
     <string name="incubation_time">Temps d\'incubation</string>

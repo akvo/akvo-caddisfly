@@ -222,15 +222,24 @@ public class InstructionDetailFragment extends Fragment {
                         for (int i = 1; i < 5; i++) {
                             Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
                             while (m1.find()) {
-                                ReagentLabel reagentLabel = new ReagentLabel(context, null);
-                                if (testInfo != null) {
-                                    reagentLabel.setReagentName(testInfo.getReagent(i - 1));
+                                try {
+                                    String code = testInfo.getReagent(i - 1).getString("code");
+                                    if (!code.isEmpty()) {
+                                        ReagentLabel reagentLabel = new ReagentLabel(context, null);
+                                        if (testInfo != null) {
+                                            reagentLabel.setReagentName(testInfo.getReagent(i - 1).getString("name"));
+                                            reagentLabel.setReagentCode(code);
+                                        }
+
+                                        reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
+                                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                                250));
+                                        layoutInstructions.addView(reagentLabel);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
 
-                                reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
-                                        LinearLayout.LayoutParams.MATCH_PARENT,
-                                        250));
-                                layoutInstructions.addView(reagentLabel);
                             }
                         }
                     }

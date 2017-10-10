@@ -253,11 +253,16 @@ public final class TestConfigHelper {
                 defaultColorsArray = defaultColors.split(",");
             }
 
+            JSONArray reagentsArray = null;
+            if (item.has("reagents")) {
+                reagentsArray = item.getJSONArray("reagents");
+            }
+
             // get uuid
             String uuid = item.getString(SensorConstants.UUID);
 
             testInfo = new TestInfo(name, type, rangesArray,
-                    defaultColorsArray, dilutionsArray, uuid, resultsArray, instructionsArray);
+                    defaultColorsArray, dilutionsArray, uuid, reagentsArray, resultsArray, instructionsArray);
 
             testInfo.setHueTrend(item.has("hueTrend") ? item.getInt("hueTrend") : 0);
 
@@ -278,11 +283,11 @@ public final class TestConfigHelper {
 
             testInfo.setSelectInstruction(item.has("selectInstruction") ? item.getString("selectInstruction") : "");
 
-            testInfo.setReagent(item.has("reagents") ? item.getJSONArray("reagents") : new JSONArray());
+            //testInfo.setReagent(item.has("reagents") ? item.getJSONArray("reagents") : new JSONArray());
 
             testInfo.setSampleQuantity(item.has("sampleQuantity") ? item.getString("sampleQuantity") : "");
 
-            testInfo.setReactionTime(item.has("reactionTimes") ? item.getJSONArray("reactionTimes") : new JSONArray());
+            //testInfo.setReactionTime(item.has("reactionTimes") ? item.getJSONArray("reactionTimes") : new JSONArray());
 
             String title = item.has("title") ? item.getString("title") : "";
             testInfo.setTitle(title.isEmpty() ? name : title);

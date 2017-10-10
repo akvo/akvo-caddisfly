@@ -49,6 +49,7 @@
     <string name="take_photo_of_incubated">Take photo of the incubated sample.</string>
     <string name="change_colors_to_match">Change the colours in the interface to match the colours of the sample in the bag compartments.</string>
     <string name="click_compartments_to_change">Click the compartments to change colour.</string>
+    <string name="clean_cbt">After having scored the testing results: open the bag and add 3 chlorine tablets to top of bag. Agitate bag until chlorine tablets dissolve. Let bag stand for 45 minutes. After 45 minutes, pour liquid contents into a sink, toilet or hole in the ground and safely dispose of the empty bag. Retain plastic clip for reuse.</string>
 
     <string name="low_risk_safe">Low Risk / Safe</string>
     <string name="probably_safe">Intermediate Risk / Probably Safe</string>

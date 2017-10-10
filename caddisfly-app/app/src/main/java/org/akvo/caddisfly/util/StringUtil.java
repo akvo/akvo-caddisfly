@@ -40,6 +40,7 @@ import android.view.View;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.widget.CenteredImageSpan;
+import org.json.JSONException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -95,7 +96,17 @@ public final class StringUtil {
         for (int i = 1; i < 5; i++) {
             Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
             while (m1.find()) {
-                builder.replace(m1.start(), m1.end(), testInfo.getReagent(i - 1));
+                try {
+                    String name = testInfo.getReagent(i - 1).getString("name");
+                    String code = testInfo.getReagent(i - 1).getString("code");
+                    if (!code.isEmpty()) {
+                        name = String.format("%s (%s)", name, code);
+                    }
+
+                    builder.replace(m1.start(), m1.end(), name);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -109,7 +120,11 @@ public final class StringUtil {
         for (int i = 1; i < 5; i++) {
             Matcher m2 = Pattern.compile("%reactionTime" + i).matcher(builder);
             while (m2.find()) {
-                builder.replace(m2.start(), m2.end(), testInfo.getReactionTime(i - 1));
+                try {
+                    builder.replace(m2.start(), m2.end(), testInfo.getReagent(i - 1).getString("reactionTime"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

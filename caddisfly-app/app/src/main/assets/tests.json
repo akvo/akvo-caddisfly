@@ -2529,12 +2529,13 @@
       "uuid": "85e9bea2-8538-4759-a46a-46459783c2d3",
       "brand": "Lovibond",
       "reagents": [
-        "ALKA-M-PHOTOMETER (513210BT)"
+        {
+          "name": "ALKA-M-PHOTOMETER",
+          "code": "513210BT",
+          "reactionTime": 0
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        0
-      ],
       "ranges": "5,200",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -2584,12 +2585,13 @@
       "uuid": "403af73f-377f-42ea-bba3-f9c88cfe97d2",
       "brand": "Lovibond",
       "reagents": [
-        "ALKA-M-HR PHOTOMETER (513240BT)"
+        {
+          "name": "ALKA-M-HR PHOTOMETER",
+          "code": "513240BT",
+          "reactionTime": 1
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        1
-      ],
       "ranges": "5,500",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -2649,13 +2651,17 @@
       "uuid": "76defb64-592f-405c-b491-77ffa76fbad8",
       "brand": "Lovibond",
       "reagents": [
-        "ALUMINIUM No. 1 (515460BT)",
-        "ALUMINIUM No. 2 (515470BT)"
+        {
+          "name": "ALUMINIUM No. 1",
+          "code": "515460BT",
+          "reactionTime": 5
+        },
+        {
+          "name": "ALUMINIUM No. 2",
+          "code": "515470BT"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "0.01,0.3",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -2711,13 +2717,17 @@
       "uuid": "f0d60451-a220-4113-821d-3a658167cc9f",
       "brand": "Lovibond",
       "reagents": [
-        "AMMONIA No. 1 (512580BT)",
-        "AMMONIA No. 2 (512590BT)"
+        {
+          "name": "AMMONIA No. 1",
+          "code": "512580BT",
+          "reactionTime": 10
+        },
+        {
+          "name": "AMMONIA No. 2",
+          "code": "512590BT"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        10
-      ],
       "ranges": "0.02,1",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -2773,14 +2783,16 @@
       "uuid": "538ab4d3-706b-4c5e-93a9-adb5c13b1be9",
       "brand": "Lovibond",
       "reagents": [
-        "Vario Ammonia Salicylate F10 (Vario Ammonia Salicylate F5)",
-        "Vario Ammonia Cyanurate F10 (Vario Ammonia Salicylate F5)"
+        {
+          "name": "Vario Ammonia Salicylate F10 (Vario Ammonia Salicylate F5)",
+          "reactionTime": 3
+        },
+        {
+          "name": "Vario Ammonia Cyanurate F10 (Vario Ammonia Salicylate F5)",
+          "reactionTime": 15
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        3,
-        15
-      ],
       "ranges": "0.01,0.8",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -2864,13 +2876,15 @@
       "uuid": "3221bdba-8898-4ae2-958f-5f6a1f949c8f",
       "brand": "Lovibond",
       "reagents": [
-        "Vario Ammonia Salicylate F5",
-        "Vario Ammonia Cyanurate F5"
+        {
+          "name": "Vario Ammonia Salicylate F5",
+          "reactionTime": 20
+        },
+        {
+          "name": "Vario Ammonia Cyanurate F5"
+        }
       ],
       "sampleQuantity": "2",
-      "reactionTimes": [
-        20
-      ],
       "ranges": "0.02,2.5",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -2949,13 +2963,15 @@
       "uuid": "17ca9214-23d4-49bf-99cc-c0463db03a90",
       "brand": "Lovibond",
       "reagents": [
-        "Vario Ammonia Salicylate F5",
-        "Vario Ammonia Cyanurate F5"
+        {
+          "name": "Vario Ammonia Salicylate F5",
+          "reactionTime": 20
+        },
+        {
+          "name": "Vario Ammonia Cyanurate F5"
+        }
       ],
       "sampleQuantity": "0.1",
-      "reactionTimes": [
-        20
-      ],
       "ranges": "1,50",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -3034,13 +3050,17 @@
       "uuid": "4f8fcb4b-35f6-40df-aa1c-c3f4a96352d4",
       "brand": "Lovibond",
       "reagents": [
-        "CHLORIDE T1 (515910BT)",
-        "CHLORIDE T2 (515920BT)"
+        {
+          "name": "CHLORIDE T1",
+          "code": "515910BT",
+          "reactionTime": 2
+        },
+        {
+          "name": "CHLORIDE T2",
+          "code": "515920BT"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        2
-      ],
       "ranges": "0.5,25",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -3096,13 +3116,15 @@
       "uuid": "e2849dba-6486-4ceb-b5fd-58472d61fe5e",
       "brand": "Lovibond",
       "reagents": [
-        "20 drops KS251 (Chloride Reagent A)",
-        "20 drops KS253 (Chloride Reagent B)"
+        {
+          "name": "20 drops KS251 (Chloride Reagent A)",
+          "reactionTime": 5
+        },
+        {
+          "name": "20 drops KS253 (Chloride Reagent B)"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "0.5,20",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -3165,13 +3187,17 @@
       "shortCode": "100TC",
       "brand": "Lovibond",
       "reagents": [
-        "DPD No. 1 (511050BT)",
-        "DPD No. 3 (511080BT)"
+        {
+          "name": "DPD No. 1",
+          "code": "511050BT",
+          "reactionTime": 2
+        },
+        {
+          "name": "DPD No. 3",
+          "code": "511080BT"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        2
-      ],
       "ranges": "0.01,6",
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
@@ -3259,7 +3285,10 @@
       "shortCode": "100FC",
       "brand": "Lovibond",
       "reagents": [
-        "DPD No. 1 (511050BT)"
+        {
+          "name": "DPD No. 1",
+          "code": "511050BT"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "0.01,6",
@@ -3318,13 +3347,15 @@
       "shortCode": "101TC",
       "brand": "Lovibond",
       "reagents": [
-        "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
-        "3 drops of DPD 3 solution"
+        {
+          "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
+          "reactionTime": 2
+        },
+        {
+          "name": "3 drops of DPD 3 solution"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        2
-      ],
       "ranges": "0.02,4",
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
@@ -3412,7 +3443,9 @@
       "shortCode": "101FC",
       "brand": "Lovibond",
       "reagents": [
-        "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution"
+        {
+          "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,4",
@@ -3471,13 +3504,17 @@
       "shortCode": "103TC",
       "brand": "Lovibond",
       "reagents": [
-        "DPD No. 1 HR (511500BT)",
-        "DPD No. 3 HR (511590BT)"
+        {
+          "name": "DPD No. 1 HR",
+          "code": "511500BT",
+          "reactionTime": 2
+        },
+        {
+          "name": "DPD No. 3 HR",
+          "code": "511590BT"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        2
-      ],
       "ranges": "0.1,10",
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
@@ -3565,7 +3602,10 @@
       "shortCode": "103FC",
       "brand": "Lovibond",
       "reagents": [
-        "DPD No. 1 HR (511500BT)"
+        {
+          "name": "DPD No. 1 HR",
+          "code": "511500BT"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "0.1,10",
@@ -3624,13 +3664,15 @@
       "shortCode": "110TC",
       "brand": "Lovibond",
       "reagents": [
-        "VARIO Chlorine FREE-DPD/F10",
-        "VARIO Chlorine TOTAL-DPD /F10"
+        {
+          "name": "VARIO Chlorine FREE-DPD/F10",
+          "reactionTime": 3
+        },
+        {
+          "name": "VARIO Chlorine TOTAL-DPD/F10"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        3
-      ],
       "ranges": "0.02,2",
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
@@ -3718,7 +3760,9 @@
       "shortCode": "110FC",
       "brand": "Lovibond",
       "reagents": [
-        "VARIO Chlorine FREE-DPD/F10"
+        {
+          "name": "VARIO Chlorine FREE-DPD/F10"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,2",
@@ -3771,13 +3815,15 @@
       "shortCode": "111TC",
       "brand": "Lovibond",
       "reagents": [
-        "VARIO Chlorine FREE-DPD/F10",
-        "VARIO Chlorine TOTAL-DPD /F10"
+        {
+          "name": "VARIO Chlorine FREE-DPD/F10",
+          "reactionTime": 3
+        },
+        {
+          "name": "VARIO Chlorine TOTAL-DPD/F10"
+        }
       ],
       "sampleQuantity": "5",
-      "reactionTimes": [
-        3
-      ],
       "ranges": "0.1,8",
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
@@ -3865,7 +3911,9 @@
       "shortCode": "111FC",
       "brand": "Lovibond",
       "reagents": [
-        "VARIO Chlorine FREE-DPD/F10"
+        {
+          "name": "VARIO Chlorine FREE-DPD/F10"
+        }
       ],
       "sampleQuantity": "5",
       "ranges": "0.1,8",
@@ -3918,14 +3966,16 @@
       "shortCode": "125CH",
       "brand": "Lovibond",
       "reagents": [
-        "PERSULF.RGT FOR CR",
-        "CHROMIUM HEXAVALENT"
+        {
+          "name": "PERSULF.RGT FOR CR",
+          "reactionTime": 5
+        },
+        {
+          "name": "CHROMIUM HEXAVALENT",
+          "reactionTime": 5
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5,
-        5
-      ],
       "ranges": "0.02,2",
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
@@ -4046,12 +4096,12 @@
       "shortCode": "125VI",
       "brand": "Lovibond",
       "reagents": [
-        "CHROMIUM HEXAVALENT"
+        {
+          "name": "CHROMIUM HEXAVALENT",
+          "reactionTime": 5
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "0.02,2",
       "selectInstruction": "select_Cr_VI_test_instruction",
       "instructions": [
@@ -4114,13 +4164,15 @@
       "shortCode": "125TC",
       "brand": "Lovibond",
       "reagents": [
-        "PERSULF.RGT FOR CR",
-        "CHROMIUM HEXAVALENT"
+        {
+          "name": "PERSULF.RGT FOR CR",
+          "reactionTime": 5
+        },
+        {
+          "name": "CHROMIUM HEXAVALENT"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "0.02,2",
       "selectInstruction": "select_Cr_III_VI_test_instruction",
       "instructions": [
@@ -4425,7 +4477,9 @@
       "uuid": "d839537b-8106-44e8-953a-6060e4dbe59d",
       "brand": "Lovibond",
       "reagents": [
-        "2 ml SPADNS"
+        {
+          "name": "2 ml SPADNS"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "0.05,2",
@@ -4477,12 +4531,13 @@
       "uuid": "3e7c94de-1963-4b59-b196-de40aa126a24",
       "brand": "Lovibond",
       "reagents": [
-        "CALCHECK (515650)"
+        {
+          "name": "CALCHECK",
+          "code": "515650",
+          "reactionTime": 2
+        }
       ],
       "sampleQuantity": "2",
-      "reactionTimes": [
-        2
-      ],
       "ranges": "50,900",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -4556,12 +4611,13 @@
       "uuid": "d4d57975-5e87-4ba9-b9d1-09ec2eb8f500",
       "brand": "Lovibond",
       "reagents": [
-        "HARDCHECK P (515660BT)"
+        {
+          "name": "HARDCHECK P",
+          "code": "515660BT",
+          "reactionTime": 5
+        }
       ],
       "sampleQuantity": "1",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "2,50",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -4611,12 +4667,13 @@
       "uuid": "5d82d3a3-cfb3-40fb-a739-49e308b0f9b4",
       "brand": "Lovibond",
       "reagents": [
-        "HARDCHECK P (515660BT)"
+        {
+          "name": "HARDCHECK P",
+          "code": "515660BT",
+          "reactionTime": 5
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "20,500",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -4666,12 +4723,13 @@
       "uuid": "ac65e12d-632a-439d-b841-383b1b9b7026",
       "brand": "Lovibond",
       "reagents": [
-        "IRON LR (515370BT)"
+        {
+          "name": "IRON LR",
+          "code": "515370BT",
+          "reactionTime": 5
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "0.02,1",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -4721,12 +4779,12 @@
       "uuid": "7a9457b0-96c2-487d-b3d3-c52c50fb2279",
       "brand": "Lovibond",
       "reagents": [
-        "Vario Ferro F10"
+        {
+          "name": "Vario Ferro F10",
+          "reactionTime": 3
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        3
-      ],
       "ranges": "0.02,1",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -4776,12 +4834,12 @@
       "uuid": "928f2cf7-7c98-4707-af3b-2e12e0d2d46b",
       "brand": "Lovibond",
       "reagents": [
-        "Vario IRON TPTZ F10"
+        {
+          "name": "Vario IRON TPTZ F10",
+          "reactionTime": 3
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        3
-      ],
       "ranges": "0.02,1.8",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -4848,12 +4906,12 @@
       "uuid": "1f704c37-9dbe-4ca7-a3da-00adc1e5fa0b",
       "brand": "Lovibond",
       "reagents": [
-        "10 drops KS61 (Ferrozine/Thioglycolate)"
+        {
+          "name": "10 drops KS61 (Ferrozine/Thioglycolate)",
+          "reactionTime": 5
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "0.03,2",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -4903,13 +4961,15 @@
       "uuid": "bdcf8941-f7df-4c04-9242-fc8a5b3af672",
       "brand": "Lovibond",
       "reagents": [
-        "10 drops KS63 (Thioglycolate)",
-        "10 drops KS160 (Total Harness Buffer)"
+        {
+          "name": "10 drops KS63 (Thioglycolate)",
+          "reactionTime": 15
+        },
+        {
+          "name": "10 drops KS160 (Total Hardness Buffer)"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        15
-      ],
       "ranges": "0.1,10",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -4971,12 +5031,12 @@
       "uuid": "a213cf40-7cb8-4828-872e-25bf2b8b12aa",
       "brand": "Lovibond",
       "reagents": [
-        "Vario Nitrate Chromotropic"
+        {
+          "name": "Vario Nitrate Chromotropic",
+          "reactionTime": 5
+        }
       ],
       "sampleQuantity": "1",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "1,30",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5038,13 +5098,15 @@
       "uuid": "252298b1-5c2b-4b7d-9385-cc25d617725d",
       "brand": "Lovibond",
       "reagents": [
-        "NITRATE TEST",
-        "NITRITE LR"
+        {
+          "name": "NITRATE TEST",
+          "reactionTime": 10
+        },
+        {
+          "name": "NITRITE LR"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        10
-      ],
       "ranges": "0.08,1",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5129,12 +5191,13 @@
       "uuid": "22963cac-e81d-43db-a84b-e71c27a3dd60",
       "brand": "Lovibond",
       "reagents": [
-        "NITRITE LR (512310BT)"
+        {
+          "name": "NITRITE LR",
+          "code": "512310BT",
+          "reactionTime": 10
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        10
-      ],
       "ranges": "0.01,0.5",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5184,12 +5247,12 @@
       "uuid": "1ad51f5d-bfea-4a49-8797-efd899d7f484",
       "brand": "Lovibond",
       "reagents": [
-        "Vario Nitri 3"
+        {
+          "name": "Vario Nitri 3",
+          "reactionTime": 20
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        20
-      ],
       "ranges": "0.01,0.3",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5239,13 +5302,17 @@
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
       "brand": "Lovibond",
       "reagents": [
-        "PHOSPHATE LR No. 1 (513040BT)",
-        "PHOSPHATE LR No. 2 (513050BT)"
+        {
+          "name": "PHOSPHATE LR No. 1",
+          "code": "513040BT",
+          "reactionTime": 10
+        },
+        {
+          "name": "PHOSPHATE LR No. 2",
+          "code": "513050BT"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        10
-      ],
       "ranges": "0.05,4",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5301,13 +5368,17 @@
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
       "brand": "Lovibond",
       "reagents": [
-        "PHOSPHATE No. 1 HR",
-        "PHOSPHATE No. 2 HR"
+        {
+          "name": "PHOSPHATE HR P1",
+          "code": "515810BT",
+          "reactionTime": 10
+        },
+        {
+          "name": "PHOSPHATE HR P2",
+          "code": "515820BT"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        10
-      ],
       "ranges": "1,80",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5363,12 +5434,12 @@
       "uuid": "ef94c4fc-be81-4a25-b879-7c0ab18efe43",
       "brand": "Lovibond",
       "reagents": [
-        "VARIO Phosphate Rgt. F10"
+        {
+          "name": "VARIO Phosphate Rgt. F10",
+          "reactionTime": 2
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        2
-      ],
       "ranges": "0.06,2.5",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5418,13 +5489,15 @@
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
       "brand": "Lovibond",
       "reagents": [
-        "25 drops KS228 (Ammonium Molybdate)",
-        "25 drops of KS229 (Ammonium Metavanadate)"
+        {
+          "name": "25 drops KS228 (Ammonium Molybdate)",
+          "reactionTime": 10
+        },
+        {
+          "name": "25 drops of KS229 (Ammonium Metavanadate)"
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        10
-      ],
       "ranges": "5,80",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5496,7 +5569,10 @@
       "uuid": "58bd3f92-7092-4bfa-ac4a-1f3f24b85b6c",
       "brand": "Lovibond",
       "reagents": [
-        "BROMOCRESOLPURPLE PHOTOMETER"
+        {
+          "name": "BROMOCRESOLPURPLE PHOTOMETER",
+          "code": "515700BT"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "5.2,6.8",
@@ -5547,7 +5623,10 @@
       "uuid": "6b6e9183-215f-4dc2-94a9-68444b1ec0df",
       "brand": "Lovibond",
       "reagents": [
-        "PHENOL RED PHOTOMETER"
+        {
+          "name": "PHENOL RED PHOTOMETER",
+          "code": "511770BT"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "6.5,8.4",
@@ -5598,7 +5677,9 @@
       "uuid": "976a33ff-a5cd-4a21-98ed-f07cd94f018e",
       "brand": "Lovibond",
       "reagents": [
-        "6 drops of PHENOL RED solution"
+        {
+          "name": "6 drops of PHENOL RED solution"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "6.5,8.4",
@@ -5649,7 +5730,10 @@
       "uuid": "635fe6af-b66b-48b4-aa62-0b6a8db0a493",
       "brand": "Lovibond",
       "reagents": [
-        "THYMOLBLUE PHOTOMETER"
+        {
+          "name": "THYMOLBLUE PHOTOMETER",
+          "code": "515710"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "8,9.6",
@@ -5700,7 +5784,10 @@
       "uuid": "6b485134-e6e5-4db1-88b3-d96ff081e629",
       "brand": "Lovibond",
       "reagents": [
-        "Potassium T"
+        {
+          "name": "Potassium T",
+          "code": "515670"
+        }
       ],
       "sampleQuantity": "10",
       "ranges": "0.7,12",
@@ -5752,12 +5839,13 @@
       "uuid": "4275391e-1498-4623-a068-e3f40dea8c29",
       "brand": "Lovibond",
       "reagents": [
-        "Sulfate T"
+        {
+          "name": "Sulfate T",
+          "code": "515450BT",
+          "reactionTime": 2
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        2
-      ],
       "ranges": "5,100",
       "selectInstruction": "select_test_instruction",
       "instructions": [
@@ -5807,12 +5895,12 @@
       "uuid": "64248882-405c-4ec2-b433-5977bf505ffb",
       "brand": "Lovibond",
       "reagents": [
-        "VARIO Sulpha 4/ F10"
+        {
+          "name": "VARIO Sulpha 4/F10",
+          "reactionTime": 5
+        }
       ],
       "sampleQuantity": "10",
-      "reactionTimes": [
-        5
-      ],
       "ranges": "5,100",
       "selectInstruction": "select_test_instruction",
       "instructions": [

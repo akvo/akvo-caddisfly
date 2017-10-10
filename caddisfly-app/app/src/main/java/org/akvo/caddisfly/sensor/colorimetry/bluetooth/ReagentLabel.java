@@ -40,6 +40,7 @@ public class ReagentLabel extends View {
     private float line2Top;
 
     private String reagentName;
+    private String reagentCode;
 
     public ReagentLabel(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -121,7 +122,7 @@ public class ReagentLabel extends View {
 
         canvas.drawText(reagentName.toUpperCase(), margin, line1Top, blueTextPaint);
 
-        canvas.drawText(reagentName, margin, line2Top, redTextPaint);
+        canvas.drawText(reagentCode, margin, line2Top, redTextPaint);
 
         Drawable d = getResources().getDrawable(R.drawable.lovibond_logo);
         d.setBounds(getMeasuredWidth() - imageMargin - imageWidth, imageMargin,
@@ -133,4 +134,9 @@ public class ReagentLabel extends View {
     public void setReagentName(String reagentName) {
         this.reagentName = reagentName;
     }
+
+    public void setReagentCode(String reagentCode) {
+        this.reagentCode = reagentCode;
+    }
+
 }
