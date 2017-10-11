@@ -18,7 +18,6 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-
     <!--Common-->
     <string name="ok">OK</string>
     <string name="retry">Retry</string>
@@ -51,6 +50,8 @@
     <string name="notSupported">Not Supported</string>
     <string name="cameraBusy">Camera Busy</string>
     <string name="runTest">Run Test</string>
+    <string name="stage_one">Stage 1:</string>
+    <string name="stage_two">Stage 2:</string>
 
     <!--External-->
     <string name="sensor">Sensor</string>
@@ -174,33 +175,22 @@
     <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
     <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
     <string name="highLevelRecommendation">Due to high level of contamination, it is recommended to test with dilution</string>
+    <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
 
     <!--StripTest-->
     <string name="error_calibrating">Calibration failed</string>
-    <string name="error_cut_out_strip">No strip found</string>
-    <string name="no_data">No data for patch</string>
-    <string name="start_camera_instruction">Place strip in black area of the colour card &amp; hold camera above it to analyse.</string>
-    <string name="prepare_camera_instruction">Don\'t take sample yet. Hold camera above colour card and adjust position until check succeeds.</string>
-    <string name="you_can_set_phone_aside">You can set the phone aside until the countdown progress reaches green.</string>
-    <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
     <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nFor best results, at least 8 megapixel camera required.</string>
     <string name="qualityCheckFailed">Quality check failed</string>
-    <string name="tryTestingInAWellLitArea">Place the colour card in an area with good light and no shadows and try again.</string>
     <string name="shadows_detected">Shadows/reflections detected</string>
     <string name="better_light_required">Better light required</string>
-    <string name="color_card_not_found">Colour card not found</string>
-    <string name="correctThePhoneTilt">Hold the phone level with colour card</string>
 
     <string name="versionExpired">Version expired</string>
     <string name="thisVersionHasExpired">This version of the app has expired.</string>
     <string name="uninstallAndInstallFromStore">Please uninstall and then install the latest version from Play Store.</string>
 
     <!--Bluetooth-->
-    <string name="md610_photometer">MD 610 Photometer</string>
     <string name="nearby_devices">Nearby devices</string>
     <string name="connect_device">Connect to your device</string>
-    <string name="check_bluetooth_turned_on">Check that MD610 and its bluetooth are both turned on</string>
-    <string name="to_turn_md610_on">To turn MD 610 on:</string>
     <string name="to_turn_bluetooth_on">To turn bluetooth on:</string>
     <string name="connect">Connect</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
@@ -209,24 +199,6 @@
     <string name="scanning">Scanning…</string>
     <string name="searching_for_device">Searching for bluetooth devices</string>
 
-    <!--CBT-->
-    <string name="below25Degrees">Below 25 °C</string>
-
-    <string name="press_on_button"><![CDATA[Press [*on*]]]></string>
-    <string name="press_mode_button"><![CDATA[Press [*mode*] to enter menu.]]></string>
-    <string name="select_bluetooth"><![CDATA[Press [*down*] to scroll to Bluetooth and press [*enter*]]]></string>
-    <string name="turn_bluetooth_on"><![CDATA[Press [*shift*] + [*1*] to turn bluetooth on.]]></string>
-    <string name="escape_to_menu"><![CDATA[Press [*enter*] and [*esc*] to return to main menu.]]></string>
-    <string name="perform_test"><![CDATA[Perform <b>%1$s</b> test on MD 610 and press [*f3*] when ready.]]></string>
-    <string name="select_correct_test"><![CDATA[Select the correct test and try again.]]></string>
-    <string name="data_does_not_match">Received data does not match the expected test type.</string>
-    <string name="incorrect_test_selected">Incorrect test selected</string>
-    <string name="select_test"><![CDATA[Select <b>%1$s</b> test on MD610]]></string>
-    <string name="test_selected">Test Selected</string>
-    <string name="to_select_test">Selecting the test</string>
-    <string name="test_instructions">Test Instructions</string>
-
-    <string name="cbt">E.coli - Aquagenx CBT</string>
-    <string name="setCompartmentColors">Set compartment colors</string>
+    <string name="view_results">View results</string>
 
 </resources>

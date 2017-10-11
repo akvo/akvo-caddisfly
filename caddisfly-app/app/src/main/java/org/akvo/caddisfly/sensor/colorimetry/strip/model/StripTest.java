@@ -223,7 +223,7 @@ public class StripTest {
 
                                     int id = patchObj.getInt("id");
                                     String patchName = patchObj.getString("name");
-                                    String unit = patchObj.getString("unit");
+                                    String unit = patchObj.has("unit") ? patchObj.getString("unit") : "";
                                     String formula = patchObj.has("formula") ? patchObj.getString("formula") : "";
                                     double patchPos = patchObj.has("patchPos") ? patchObj.getDouble("patchPos") : 0;
                                     int patchWidth = patchObj.has("patchWidth") ? patchObj.getInt("patchWidth") : 0;

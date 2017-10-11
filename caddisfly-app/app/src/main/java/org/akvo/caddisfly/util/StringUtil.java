@@ -19,14 +19,28 @@
 
 package org.akvo.caddisfly.util;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.style.ClickableSpan;
+import android.text.style.UnderlineSpan;
+import android.view.LayoutInflater;
+import android.view.View;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.widget.CenteredImageSpan;
+import org.json.JSONException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,7 +72,7 @@ public final class StringUtil {
         return result;
     }
 
-    public static SpannableStringBuilder toInstruction(Context context, TestInfo testInfo, String text) {
+    public static SpannableStringBuilder toInstruction(AppCompatActivity context, TestInfo testInfo, String text) {
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
 
@@ -82,7 +96,18 @@ public final class StringUtil {
         for (int i = 1; i < 5; i++) {
             Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
             while (m1.find()) {
-                builder.replace(m1.start(), m1.end(), testInfo.getReagent(i - 1));
+                try {
+                    String name = testInfo.getReagent(i - 1).getString("name");
+                    if(testInfo.getReagent(i - 1).has("code")) {
+                        String code = testInfo.getReagent(i - 1).getString("code");
+                        if (!code.isEmpty()) {
+                            name = String.format("%s (%s)", name, code);
+                        }
+                    }
+                    builder.replace(m1.start(), m1.end(), name);
+                } catch (JSONException e) {
+                    throw new IllegalStateException("Reagent error: " + e.getMessage());
+                }
             }
         }
 
@@ -96,8 +121,36 @@ public final class StringUtil {
         for (int i = 1; i < 5; i++) {
             Matcher m2 = Pattern.compile("%reactionTime" + i).matcher(builder);
             while (m2.find()) {
-                builder.replace(m2.start(), m2.end(), testInfo.getReactionTime(i - 1));
+                try {
+                    builder.replace(m2.start(), m2.end(), testInfo.getReagent(i - 1).getString("reactionTime"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+        }
+
+        if (builder.toString().contains("[a]")) {
+
+            int startIndex = builder.toString().indexOf("[a]");
+            builder.replace(startIndex, startIndex + 3, "");
+            int endIndex = builder.toString().indexOf("[/a]");
+            builder.replace(endIndex, endIndex + 4, "");
+
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View textView) {
+                    DialogFragment newFragment = new SulfideDialogFragment();
+                    newFragment.show(context.getSupportFragmentManager(), "sulfideDialog");
+                }
+
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
+            builder.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new UnderlineSpan(), startIndex, endIndex, 0);
         }
 
         return builder;
@@ -114,6 +167,23 @@ public final class StringUtil {
     public static String getStringByName(Context context, String name) {
         return context.getResources().getString(context.getResources()
                 .getIdentifier(name, "string", context.getPackageName()));
+    }
+
+    public static class SulfideDialogFragment extends DialogFragment {
+        @NonNull
+        @SuppressLint("InflateParams")
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+
+            builder.setView(inflater.inflate(R.layout.dialog_sulfide_instruction, null))
+                    // Add action buttons
+                    .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+
+
+            return builder.create();
+        }
     }
 
 }

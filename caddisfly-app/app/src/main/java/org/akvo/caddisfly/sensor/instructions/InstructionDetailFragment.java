@@ -20,26 +20,32 @@
 package org.akvo.caddisfly.sensor.instructions;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.colorimetry.bluetooth.ReagentLabel;
 import org.akvo.caddisfly.util.AssetsManager;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONArray;
@@ -48,6 +54,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -129,7 +137,6 @@ public class InstructionDetailFragment extends Fragment {
 
         llp.setMargins(0, 0, 0, 20);
 
-
         ArrayList<String> instructionText = getArguments().getStringArrayList(ARG_ITEM_TEXT);
         if (instructionText != null) {
 
@@ -169,6 +176,7 @@ public class InstructionDetailFragment extends Fragment {
                             imageView.setLayoutParams(llp);
 
                             layoutInstructions.addView(imageView);
+
                         }
                     }
 
@@ -198,18 +206,47 @@ public class InstructionDetailFragment extends Fragment {
                         textView.setTypeface(null, Typeface.BOLD);
                     }
 
-                    //text = text.replace("%reagent1", testInfo.getReagent(0));
-
-                    Spanned spanned = StringUtil.toInstruction(getContext(), testInfo, text);
-
-                    //spanned.toString().replace("%reagent1", testInfo.getReagent(0));
+                    Spanned spanned = StringUtil.toInstruction((AppCompatActivity) getActivity(), testInfo, text);
 
                     if (!text.isEmpty()) {
                         textView.append(spanned);
+                        textView.setMovementMethod(LinkMovementMethod.getInstance());
+
                         layoutInstructions.addView(textView);
+
+                        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+                        Spanned spanned2 = StringUtil.getStringResourceByName(context, text);
+                        builder.append(spanned2);
+
+                        // Set reagent in the string
+                        for (int i = 1; i < 5; i++) {
+                            Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
+                            while (m1.find()) {
+                                try {
+                                    String code = testInfo.getReagent(i - 1).getString("code");
+                                    if (!code.isEmpty()) {
+                                        ReagentLabel reagentLabel = new ReagentLabel(context, null);
+
+                                        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+                                        reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
+                                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                                (int) (height * 0.2)));
+
+                                        reagentLabel.setReagentName(testInfo.getReagent(i - 1).getString("name"));
+                                        reagentLabel.setReagentCode(code);
+
+                                        layoutInstructions.addView(reagentLabel);
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
                     }
                 }
-
             }
         }
 

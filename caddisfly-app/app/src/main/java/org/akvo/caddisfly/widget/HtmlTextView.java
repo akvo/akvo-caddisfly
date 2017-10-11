@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.widget;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
@@ -45,6 +46,6 @@ public class HtmlTextView extends AppCompatTextView {
     }
 
     private void init(Context context) {
-        setText(StringUtil.toInstruction(context, null, getText().toString()));
+        setText(StringUtil.toInstruction((AppCompatActivity) context, null, getText().toString()));
     }
 }

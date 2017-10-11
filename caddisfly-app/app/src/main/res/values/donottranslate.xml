@@ -107,4 +107,7 @@
     <string name="fileSaved">File saved</string>
     <string name="calibrationLoaded">%1$s loaded</string>
 
+    <!--CBT-->
+    <string name="mpn">MPN/100ml</string>
+
 </resources>

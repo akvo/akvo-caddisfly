@@ -17,30 +17,37 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?android:attr/textAppearanceLarge"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:textIsSelectable="true"
-    tools:context=".sensor.instructions.InstructionDetailFragment">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/layout_instructions"
+        style="?android:attr/textAppearanceLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12sp"
         android:orientation="vertical"
-        android:textSize="17sp" />
+        android:padding="16dp"
+        android:textIsSelectable="true"
+        tools:context=".sensor.instructions.InstructionDetailFragment">
 
-    <ImageView
-        android:id="@+id/image_illustration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:contentDescription="@null"
-        android:scaleType="fitCenter"
-        tools:src="@android:drawable/ic_menu_gallery" />
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12sp"
+            android:orientation="vertical"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/image_illustration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/in_take_out_vial" />
+
+    </LinearLayout>
+</ScrollView>

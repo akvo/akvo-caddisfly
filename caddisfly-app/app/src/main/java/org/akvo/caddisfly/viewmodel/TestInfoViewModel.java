@@ -6,6 +6,7 @@ import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -37,7 +38,6 @@ public class TestInfoViewModel {
 
     @BindingAdapter("content")
     public static void setContent(LinearLayout linearLayout, JSONObject instruction) {
-
 
         Context context = linearLayout.getContext();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -98,6 +98,9 @@ public class TestInfoViewModel {
 
                         imageView.setContentDescription(imageName);
 
+                        // set an id for the view to be able to find it for unit testing
+                        imageView.setId(i);
+
                         linearLayout.addView(imageView);
                     }
 
@@ -125,7 +128,7 @@ public class TestInfoViewModel {
                         if (j > 0) {
                             rowView.append(new SpannableString(" "));
                         }
-                        rowView.append(StringUtil.toInstruction(context, testInfo, sentences[j].trim()));
+                        rowView.append(StringUtil.toInstruction((AppCompatActivity) context, testInfo, sentences[j].trim()));
                     }
 
                     LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
@@ -134,6 +137,9 @@ public class TestInfoViewModel {
 
                     llp.setMargins(0, 0, 0, 20);
                     textView.setLayoutParams(llp);
+
+                    // set an id for the view to be able to find it for unit testing
+                    rowView.setId(i);
 
                     linearLayout.addView(rowView);
                 }

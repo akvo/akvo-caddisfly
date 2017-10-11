@@ -95,14 +95,6 @@ public class CbtInstructionFragment extends Fragment {
                 mBinding.viewPager.getCurrentItem() + 1));
     }
 
-    public void onBackPressed() {
-        onClickLeft();
-    }
-
-    public boolean shouldPageBack() {
-        return mBinding.viewPager.getCurrentItem() > 0;
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */

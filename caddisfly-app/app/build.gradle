@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 200
-        versionName "1.0.0 Beta 9.0"
+        versionCode 201
+        versionName "1.0.0 Beta 9.1"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         applicationVariants.all { variant ->
@@ -122,7 +122,11 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.8.0'
+
+    // robolectric
     testImplementation 'org.robolectric:robolectric:3.4.2'
+    testImplementation "org.robolectric:shadows-support-v4:3.4-rc2"
+
     androidTestImplementation 'com.android.support.test:rules:1.0.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

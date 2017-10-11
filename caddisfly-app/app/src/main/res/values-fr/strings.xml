@@ -96,4 +96,6 @@
     <string name="prepare_camera_instruction">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>
     <string name="next">Suivant</string>
 
+    <string name="view_results">Voir les résultats</string>
+
 </resources>

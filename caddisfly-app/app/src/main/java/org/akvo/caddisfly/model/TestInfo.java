@@ -79,28 +79,26 @@ public class TestInfo implements Parcelable {
     private String deviceId;
     private String responseFormat;
     private boolean deprecated;
-    private JSONArray instructions;
+    private JSONArray instructions = new JSONArray();
+    private JSONArray reagents = new JSONArray();
     private String md610Id;
     private String selectInstruction;
-    private ArrayList<String> reagents;
     private Serializable sampleQuantity;
-    private ArrayList<String> reactionTimes;
     private String title;
     private String brand;
     private String subtitleExtra;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
-                    String uuid, JSONArray resultsArray, JSONArray instructionsArray) {
+                    String uuid, JSONArray reagentsArray, JSONArray resultsArray, JSONArray instructionsArray) {
         this.name = name;
         this.testType = testType;
         this.uuid = uuid;
         swatches = new ArrayList<>();
         dilutions = new ArrayList<>();
-        reagents = new ArrayList<>();
-        reactionTimes = new ArrayList<>();
 
         instructions = instructionsArray;
+        reagents = reagentsArray;
 
         rangeValues = new double[swatchArray.length];
 
@@ -198,7 +196,6 @@ public class TestInfo implements Parcelable {
         deprecated = in.readByte() != 0;
         md610Id = in.readString();
         selectInstruction = in.readString();
-        reagents = in.createStringArrayList();
         swatches = null;
         testType = null;
         dilutions = null;
@@ -430,25 +427,17 @@ public class TestInfo implements Parcelable {
         dest.writeByte((byte) (deprecated ? 1 : 0));
         dest.writeString(md610Id);
         dest.writeString(selectInstruction);
-        dest.writeStringList(reagents);
     }
 
-    public String getReagent(int index) {
-        if (reagents.size() > index) {
-            return reagents.get(index);
-        } else {
-            return "";
-        }
-    }
-
-    public void setReagent(JSONArray value) {
-        for (int i = 0; i < value.length(); i++) {
-            try {
-                this.reagents.add(value.getString(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
+    public JSONObject getReagent(int index) {
+        try {
+            if (reagents.get(index) != null) {
+                return reagents.getJSONObject(index);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     public Serializable getSampleQuantity() {
@@ -457,24 +446,6 @@ public class TestInfo implements Parcelable {
 
     public void setSampleQuantity(Serializable sampleQuantity) {
         this.sampleQuantity = sampleQuantity;
-    }
-
-    public void setReactionTime(JSONArray value) {
-        for (int i = 0; i < value.length(); i++) {
-            try {
-                this.reactionTimes.add(value.getString(i));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public String getReactionTime(int index) {
-        if (reactionTimes.size() > index) {
-            return reactionTimes.get(index);
-        } else {
-            return "";
-        }
     }
 
     public String getTitle() {

@@ -51,11 +51,11 @@ public class RowView extends TableRow {
         textNumber.setText(s);
     }
 
-    public void setParagraph(String s) {
-        textPara.setText(s);
-    }
-
     public void append(Spanned s) {
         textPara.append(s);
+    }
+
+    public String getString() {
+        return textPara.getText().toString();
     }
 }

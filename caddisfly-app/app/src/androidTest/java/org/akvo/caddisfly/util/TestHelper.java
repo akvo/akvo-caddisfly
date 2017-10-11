@@ -68,6 +68,7 @@ public final class TestHelper {
 
     private static final Map<String, String> STRING_HASH_MAP_EN = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_FR = new HashMap<>();
+    private static final Map<String, String> STRING_HASH_MAP_IN = new HashMap<>();
     private static final Map<String, String> CALIBRATION_HASH_MAP = new HashMap<>();
     private static final boolean TAKE_SCREENSHOTS = false;
     public static Map<String, String> currentHashMap;
@@ -79,9 +80,14 @@ public final class TestHelper {
     private TestHelper() {
     }
 
-    private static void addString(String key, String englishText, String frenchText) {
-        STRING_HASH_MAP_EN.put(key, englishText);
-        STRING_HASH_MAP_FR.put(key, frenchText);
+    private static void addString(String key, String... values) {
+        STRING_HASH_MAP_EN.put(key, values[0]);
+        STRING_HASH_MAP_FR.put(key, values[1]);
+        if (values.length > 2) {
+            STRING_HASH_MAP_IN.put(key, values[2]);
+        } else {
+            STRING_HASH_MAP_IN.put(key, values[0]);
+        }
     }
 
     private static void addCalibration(String key, String colors) {
@@ -104,10 +110,11 @@ public final class TestHelper {
     public static void loadData(Activity activity, String languageCode) {
         mCurrentLanguage = languageCode;
 
-        String testLanguage = "fr";
+        String testLanguage = languageCode;
 
         STRING_HASH_MAP_EN.clear();
         STRING_HASH_MAP_FR.clear();
+        STRING_HASH_MAP_IN.clear();
         CALIBRATION_HASH_MAP.clear();
 
         Resources currentResources = activity.getResources();
@@ -117,7 +124,7 @@ public final class TestHelper {
         config.locale = new Locale(testLanguage);
         Resources res = new Resources(assets, metrics, config);
 
-        addString(TestConstant.LANGUAGE, "English", "Français");
+        addString(TestConstant.LANGUAGE, "English", "Français", "Bahasa Indonesia");
         addString("otherLanguage", "Français", "English");
         addString(TestConstant.FLUORIDE, "Water - Fluoride", res.getString(R.string.fluoride));
         addString("chlorine", "Water - Free Chlorine", res.getString(R.string.freeChlorine));
@@ -173,6 +180,8 @@ public final class TestHelper {
 
         if ("en".equals(languageCode)) {
             currentHashMap = STRING_HASH_MAP_EN;
+        } else if ("in".equals(languageCode)) {
+            currentHashMap = STRING_HASH_MAP_IN;
         } else {
             currentHashMap = STRING_HASH_MAP_FR;
         }
@@ -185,6 +194,21 @@ public final class TestHelper {
             mDevice.takeScreenshot(path, 0.5f, 60);
         }
     }
+
+    public static void takeScreenshot(String name, int page) {
+        if (TAKE_SCREENSHOTS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            File path;
+            if (page < 0) {
+                path = new File(Environment.getExternalStorageDirectory().getPath()
+                        + "/Akvo Caddisfly/screenshots/" + name + "-" + mCurrentLanguage + ".png");
+            } else {
+                path = new File(Environment.getExternalStorageDirectory().getPath()
+                        + "/Akvo Caddisfly/screenshots/" + name + "-" + page + "-" + mCurrentLanguage + ".png");
+            }
+            mDevice.takeScreenshot(path, 0.2f, 40);
+        }
+    }
+
 
     public static void goToMainScreen() {
 

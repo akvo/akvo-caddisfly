@@ -162,15 +162,6 @@ public class InstructionActivity extends BaseActivity {
         mViewPager.setCurrentItem(Math.min(fragments.size() - 1, mViewPager.getCurrentItem() + 1));
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mViewPager.getCurrentItem() == 0) {
-            super.onBackPressed();
-        } else {
-            mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-        }
-    }
-
     private class PagerAdapter extends FragmentStatePagerAdapter {
 
         PagerAdapter(FragmentManager fm) {

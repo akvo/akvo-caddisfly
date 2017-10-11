@@ -94,7 +94,7 @@ public class SurveyTest {
         prefs.edit().clear().apply();
 
         CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null,
-                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null, null));
+                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null, null, null));
 
         resetLanguage();
     }
@@ -124,7 +124,9 @@ public class SurveyTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get("chlorine"))).perform(click());
+//        onView(withText(currentHashMap.get("chlorine"))).perform(click());
+
+        onView(withText("Caddisfly, 0 - 1")).perform(click());
 
         onView(withText("0" + dfs.getDecimalSeparator() + "50 mg/l")).check(matches(isDisplayed()));
 
