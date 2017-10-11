@@ -594,19 +594,6 @@
       ]
     },
     {
-      "name": "Water - Colorimetry - Lovibond MD610 - 334 Phosphate LR, Liquid and Powder (0.1 - 10 mg/l PO4)",
-      "uuid": "78db84dc-ea94-45bd-a985-1ccfe1157994",
-      "brand": "Lovibond",
-      "hasImage": false,
-      "results": [
-        {
-          "id": 1,
-          "name": "Phosphate",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
       "name": "Water - Colorimetry - Lovibond MD610 - 335 Phosphate HR, Liquid and Powder (5 - 80 mg/l PO4)",
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
       "brand": "Lovibond",
