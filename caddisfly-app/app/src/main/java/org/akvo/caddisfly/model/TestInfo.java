@@ -87,6 +87,8 @@ public class TestInfo implements Parcelable {
     private String title;
     private String brand;
     private String subtitleExtra;
+    private String imageScale;
+    private String brandUrl;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -470,6 +472,22 @@ public class TestInfo implements Parcelable {
 
     public void setSubtitleExtra(String subtitleExtra) {
         this.subtitleExtra = subtitleExtra;
+    }
+
+    public void setImageScale(String imageScale) {
+        this.imageScale = imageScale;
+    }
+
+    public String getImageScale() {
+        return imageScale;
+    }
+
+    public void setBrandUrl(String brandUrl) {
+        this.brandUrl = brandUrl;
+    }
+
+    public String getBrandUrl() {
+        return brandUrl;
     }
 
     public static class SubTest {

@@ -50,7 +50,7 @@ public final class AppConfig {
     /**
      * The sound volume for the beeps and other sound effects.
      */
-    public static final float SOUND_EFFECTS_VOLUME = 0.99f;
+    public static final float SOUND_EFFECTS_VOLUME = 0.01f;
 
     private AppConfig() {
     }

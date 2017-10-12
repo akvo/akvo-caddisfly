@@ -47,8 +47,7 @@ import org.akvo.caddisfly.sensor.cbt.TestActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryTestActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
@@ -321,14 +320,7 @@ public class ExternalActionActivity extends BaseActivity {
                     return;
                 }
 
-                final Intent intent = new Intent();
-                intent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
-                if (caddisflyApp.getCurrentTestInfo().getCanUseDilution()) {
-                    intent.setClass(context, SelectDilutionActivity.class);
-                } else {
-                    intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
-                }
-
+                final Intent intent = new Intent(getBaseContext(), ColorimetryTestActivity.class);
                 intent.putExtra(Constant.UUID, uuid);
                 intent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                 startActivityForResult(intent, REQUEST_TEST);
@@ -358,7 +350,7 @@ public class ExternalActionActivity extends BaseActivity {
 
                 TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
                 final Intent cbtIntent = new Intent(getBaseContext(), TestActivity.class);
-                cbtIntent.putExtra("internal", true);
+                cbtIntent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
                 startActivityForResult(cbtIntent, REQUEST_TEST);
                 break;
             default:
