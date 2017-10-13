@@ -21,6 +21,7 @@ package org.akvo.caddisfly.sensor.colorimetry.liquid;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -181,9 +182,10 @@ public class ColorimetryTestActivity extends BaseActivity implements Compartment
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-            }
+        if (resultCode == RESULT_OK && requestCode == REQUEST_TEST) {
+            Intent intent = new Intent(data);
+            this.setResult(Activity.RESULT_OK, intent);
+            finish();
         }
     }
 
