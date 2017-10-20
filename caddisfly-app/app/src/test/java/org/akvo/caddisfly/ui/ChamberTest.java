@@ -25,16 +25,19 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryTestActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity;
 import org.akvo.caddisfly.util.FileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -217,7 +220,7 @@ public class ChamberTest {
 
             saveCalibration("_AutoBackup");
 
-            controller.restart();
+            controller.resume();
 
             Intent nextIntent = shadowOf(activity).getNextStartedActivity();
             if (nextIntent.getComponent() != null) {
@@ -236,4 +239,34 @@ public class ChamberTest {
 
     }
 
+    @Test
+    public void testExternalTestStart() {
+
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.FLUORIDE_ID);
+
+        Intent intent = new Intent();
+        intent.putExtra("testInfo", new TestInfo());
+        ActivityController controller = Robolectric.buildActivity(ColorimetryTestActivity.class).withIntent(intent).create();
+        Activity activity = (Activity) controller.get();
+
+        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
+        application.grantPermissions(permissions);
+
+        ShadowPackageManager pm = shadowOf(RuntimeEnvironment.application.getPackageManager());
+        pm.setSystemFeature(PackageManager.FEATURE_CAMERA, true);
+        pm.setSystemFeature(PackageManager.FEATURE_CAMERA_FLASH, true);
+
+        controller.resume();
+
+        Button button = activity.findViewById(R.id.button_prepare);
+        button.performClick();
+
+        Intent nextIntent = shadowOf(activity).getNextStartedActivity();
+        if (nextIntent.getComponent() != null) {
+            assertEquals(SelectDilutionActivity.class.getCanonicalName(),
+                    nextIntent.getComponent().getClassName());
+        }
+
+    }
 }
