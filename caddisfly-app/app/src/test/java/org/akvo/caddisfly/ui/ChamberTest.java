@@ -21,14 +21,21 @@ package org.akvo.caddisfly.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryTestActivity;
+import org.akvo.caddisfly.util.FileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -37,9 +44,12 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowAlertDialog;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowListView;
 import org.robolectric.shadows.ShadowPackageManager;
+
+import java.io.File;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -50,9 +60,28 @@ import static org.robolectric.Shadows.shadowOf;
 @RunWith(RobolectricTestRunner.class)
 public class ChamberTest {
 
+    private static final String CADDISFLY_RESOURCE_ID = "caddisflyResourceUuid";
+    private static final String CADDISFLY_QUESTION_ID = "questionId";
+    private static final String CADDISFLY_QUESTION_TITLE = "questionTitle";
+    private static final String CADDISFLY_LANGUAGE = "language";
+
+    public static void saveCalibration(String name) {
+
+        String file = "0.0=255  38  186\n"
+                + "0.5=255  51  129\n"
+                + "1.0=255  59  89\n"
+                + "1.5=255  62  55\n"
+                + "2.0=255  81  34\n";
+
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, SensorConstants.FLUORIDE_ID);
+
+        FileUtil.saveToFile(path, name, file);
+
+
+    }
+
     @Test
     public void titleIsCorrect() {
-
         Activity activity = Robolectric.setupActivity(TypeListActivity.class);
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "Select Test");
@@ -125,6 +154,86 @@ public class ChamberTest {
         Intent intent = shadowOf(activity).getNextStartedActivity();
 
         assertNull(intent);
+    }
+
+    @Test
+    public void textExternalWithoutPermission() {
+
+        Intent intent = new Intent(AppConfig.FLOW_ACTION_CADDISFLY);
+
+        Bundle data = new Bundle();
+        data.putString(CADDISFLY_RESOURCE_ID, SensorConstants.FLUORIDE_ID);
+        data.putString(CADDISFLY_QUESTION_ID, "123");
+        data.putString(CADDISFLY_QUESTION_TITLE, "Fluoride");
+        data.putString(CADDISFLY_LANGUAGE, "en");
+
+        intent.putExtras(data);
+        intent.setType("text/plain");
+
+        ActivityController controller = Robolectric.buildActivity(ExternalActionActivity.class).withIntent(intent).create();
+
+        controller.start();
+
+        AlertDialog alert1 = ShadowAlertDialog.getLatestAlertDialog();
+        assertNull(alert1);
+
+    }
+
+    @Test
+    public void testFromExternalActivity() {
+        testExternalActivity(false);
+        testExternalActivity(true);
+    }
+
+    private void testExternalActivity(boolean setCalibration) {
+
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        Intent intent = new Intent(AppConfig.FLOW_ACTION_CADDISFLY);
+
+        Bundle data = new Bundle();
+        data.putString(CADDISFLY_RESOURCE_ID, SensorConstants.FLUORIDE_ID);
+        data.putString(CADDISFLY_QUESTION_ID, "123");
+        data.putString(CADDISFLY_QUESTION_TITLE, "Fluoride");
+        data.putString(CADDISFLY_LANGUAGE, "en");
+
+        intent.putExtras(data);
+        intent.setType("text/plain");
+
+        ActivityController controller = Robolectric.buildActivity(ExternalActionActivity.class).withIntent(intent).create();
+        Activity activity = (Activity) controller.get();
+
+        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
+        application.grantPermissions(permissions);
+
+        ShadowPackageManager pm = shadowOf(RuntimeEnvironment.application.getPackageManager());
+        pm.setSystemFeature(PackageManager.FEATURE_CAMERA, true);
+        pm.setSystemFeature(PackageManager.FEATURE_CAMERA_FLASH, true);
+
+        controller.start();
+
+        if (setCalibration) {
+            controller.stop();
+
+            saveCalibration("_AutoBackup");
+
+            controller.restart();
+
+            Intent nextIntent = shadowOf(activity).getNextStartedActivity();
+            if (nextIntent.getComponent() != null) {
+                assertEquals(ColorimetryTestActivity.class.getCanonicalName(),
+                        nextIntent.getComponent().getClassName());
+            }
+        } else {
+
+            AlertDialog alert = ShadowAlertDialog.getLatestAlertDialog();
+            ShadowAlertDialog sAlert = shadowOf(alert);
+
+            assertEquals(sAlert.getTitle().toString(), activity.getString(R.string.cannotStartTest));
+
+            assertTrue(sAlert.getMessage().toString().contains(activity.getString(R.string.doYouWantToCalibrate)));
+        }
+
     }
 
 }
