@@ -182,10 +182,6 @@ public class StripTest {
 
                     JSONObject strip;
 
-                    JSONObject instructionObj = new JSONObject(AssetsManager.getInstance()
-                            .loadJSONFromAsset("test-instruction.json"));
-                    JSONArray instructionsJson = instructionObj.getJSONArray(TESTS);
-
                     for (int i = 0; i < stripsJson.length(); i++) {
                         strip = stripsJson.getJSONObject(i);
                         if (strip.getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
@@ -204,16 +200,6 @@ public class StripTest {
 
                                 if (strip.has("instructions")) {
                                     instructions = strip.getJSONArray("instructions");
-                                } else {
-                                    if (instructionsJson != null) {
-                                        for (int j = 0; j < instructionsJson.length(); j++) {
-                                            JSONObject instructionObject = instructionsJson.getJSONObject(j);
-                                            if (instructionObject.getString(SensorConstants.UUID).equalsIgnoreCase(uuid)) {
-                                                instructions = instructionObject.getJSONArray("instructions");
-                                                break;
-                                            }
-                                        }
-                                    }
                                 }
 
                                 JSONArray patchesArray = strip.getJSONArray("results");
