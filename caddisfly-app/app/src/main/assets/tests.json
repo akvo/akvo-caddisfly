@@ -6256,7 +6256,7 @@
         {
           "section": [
             "bc_frc_1",
-            "image:bc_frc_1"
+            "image:bc_add_powder"
           ]
         },
         {
@@ -6267,8 +6267,8 @@
         },
         {
           "section": [
-            "bc_srew",
-            "image:bc_srew_frc"
+            "bc_screw",
+            "image:bc_screw_frc"
           ]
         },
         {
@@ -6329,7 +6329,7 @@
         {
           "section": [
             "bc_frc_1",
-            "image:bc_frc_1"
+            "image:bc_add_powder"
           ]
         },
         {

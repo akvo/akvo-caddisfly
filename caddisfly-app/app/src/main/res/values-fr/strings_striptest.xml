@@ -49,7 +49,7 @@
     <string name="as_ins_1">Insérez une bandelette de test dans le capuchon, de sorte que le rembourrage recouvre complètement la petite ouverture. Fermez le rabat et appuyez pour fixer.</string>
     <string name="as_ins_2">Remplissez le bidon avec un échantillon jusqu\' à la ligne de remplissage (50 ml).</string>
     <string name="as_ins_3">Ajoutez un <b>Réactif #1</b> et un <b>Réactif #2</b> des sachets en poudre à l\'échantillon. Si une odeur d\'oeufs pourris est détectée après l\'ajout du réactif #1, alors le sulfure est présent à
- niveaux interférents, <b>[a]cliquez ici[/a]</b> pour voir comment éliminer le sulfure avant de poursuivre la procédure du test.</string>
+ niveaux interférents, <b>[a topic=sulfide]cliquez ici[/a]</b> pour voir comment éliminer le sulfure avant de poursuivre la procédure du test.</string>
     <string name="as_ins_4">Fermez immédiatement le bidon. Remuez en continu pendant 60 secondes. <b>Ne secouez pas ni balancez ni laisser passer l\'échantillon sur la bandelette.</b></string>
     <string name="as_ins_5">Patientez 20 minutes. Remuez deux pendant la période de la réaction</string>
     <string name="as_ins_6">Retirez immédiatement la bandelette de test du capuchon et placez la tourné vers la <b>gauche</b> sur la carte colorimétrique de référence et appuyez sur <b>Démarrer</b>.</string>

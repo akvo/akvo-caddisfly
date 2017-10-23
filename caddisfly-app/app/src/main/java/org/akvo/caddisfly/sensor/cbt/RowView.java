@@ -3,6 +3,7 @@ package org.akvo.caddisfly.sensor.cbt;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,7 +39,7 @@ public class RowView extends TableRow {
 
         textPara = (TextView) tableRow.getChildAt(1);
 //        String paragraph = a.getString(R.styleable.RowView_paragraph);
-
+        textPara.setMovementMethod(LinkMovementMethod.getInstance());
         a.recycle();
 
     }

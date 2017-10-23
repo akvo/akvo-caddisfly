@@ -277,6 +277,8 @@ public final class TestConfigHelper {
             //if calibrate not specified then default to false otherwise use specified value
             testInfo.setRequiresCalibration(item.has("calibrate") && item.getBoolean("calibrate"));
 
+            testInfo.setImageScale(item.has("imageScale") ? item.getString("imageScale") : "");
+
             testInfo.setIsDeprecated(item.has("deprecated") && item.getBoolean("deprecated"));
 
             testInfo.setMd610Id(item.has("md610_id") ? item.getString("md610_id") : "");
@@ -286,6 +288,8 @@ public final class TestConfigHelper {
             //testInfo.setReagent(item.has("reagents") ? item.getJSONArray("reagents") : new JSONArray());
 
             testInfo.setSampleQuantity(item.has("sampleQuantity") ? item.getString("sampleQuantity") : "");
+
+            testInfo.setBrandUrl(item.has("brandUrl") ? item.getString("brandUrl") : "");
 
             //testInfo.setReactionTime(item.has("reactionTimes") ? item.getJSONArray("reactionTimes") : new JSONArray());
 

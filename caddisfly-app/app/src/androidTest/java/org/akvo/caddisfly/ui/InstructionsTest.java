@@ -20,8 +20,6 @@
 package org.akvo.caddisfly.ui;
 
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
@@ -39,6 +37,8 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -64,13 +64,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
@@ -118,9 +121,9 @@ public class InstructionsTest {
 
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
-        prefs.edit().clear().apply();
+//        SharedPreferences prefs =
+//                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
+//        prefs.edit().clear().apply();
 
         resetLanguage();
     }
@@ -301,6 +304,88 @@ public class InstructionsTest {
 
     @Test
     @RequiresDevice
+    public void testInstructionsBackcase() {
+
+        goToMainScreen();
+
+        gotoSurveyForm();
+
+        clickExternalSourceButton(0);
+
+        sleep(1000);
+
+        mDevice.waitForIdle();
+
+        TestUtil.sleep(1000);
+
+        String id = SensorConstants.FLUORIDE_ID.substring(
+                SensorConstants.FLUORIDE_ID.lastIndexOf("-") + 1, SensorConstants.FLUORIDE_ID.length());
+
+        takeScreenshot(id, -1);
+
+        mDevice.waitForIdle();
+
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+
+        for (int i = 0; i < 17; i++) {
+
+            try {
+                takeScreenshot(id, i);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
+                TestUtil.sleep(600);
+                Espresso.pressBack();
+                break;
+            }
+        }
+    }
+
+    @Test
+    @RequiresDevice
+    public void testInstructionsBackcase2() {
+
+        goToMainScreen();
+
+        gotoSurveyForm();
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(0);
+
+        sleep(1000);
+
+        mDevice.waitForIdle();
+
+        TestUtil.sleep(1000);
+
+        String id = SensorConstants.FREE_CHLORINE_ID.substring(
+                SensorConstants.FREE_CHLORINE_ID.lastIndexOf("-") + 1, SensorConstants.FREE_CHLORINE_ID.length());
+
+        takeScreenshot(id, -1);
+
+        mDevice.waitForIdle();
+
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+
+        for (int i = 0; i < 17; i++) {
+
+            try {
+                takeScreenshot(id, i);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
+                TestUtil.sleep(600);
+                Espresso.pressBack();
+                break;
+            }
+        }
+    }
+
+    @Test
+    @RequiresDevice
     public void testInstructionsAll() {
 
         goToMainScreen();
@@ -315,14 +400,14 @@ public class InstructionsTest {
 
             if (testList.get(i).getType() == TestType.COLORIMETRIC_STRIP) {
 //                if (testList.get(i).getTitle().startsWith("Soil")) {
-                    String id = testList.get(i).getId();
-                    id = id.substring(id.lastIndexOf("-") + 1, id.length());
+                String id = testList.get(i).getId();
+                id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-                    int pages = navigateToTest(index, id);
+                int pages = navigateToTest(index, id);
 
-                    jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
-                    index++;
+                index++;
 //                }
             }
         }
