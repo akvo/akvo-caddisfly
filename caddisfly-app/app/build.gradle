@@ -28,15 +28,10 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 201
-        versionName "1.0.0 Beta 9.1"
+        versionCode 202
+        versionName "1.0.0 Beta 9.2"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        applicationVariants.all { variant ->
-            def productFlavor = variant.productFlavors[0] != null ? "${variant.productFlavors[0].name.capitalize()}" : ""
-            def buildType = "${variant.buildType.name.capitalize()}"
-            tasks["compile${productFlavor}${buildType}UnitTestSources"].dependsOn(tasks["merge${productFlavor}${buildType}Assets"])
-        }
     }
 
     dataBinding {
@@ -72,24 +67,6 @@ android {
 //            zipAlignEnabled true
 //        }
 //    }
-
-    sourceSets {
-        main {
-            res.srcDirs =
-                    [
-                            'src/main/res/layouts/main',
-                            'src/main/res/layouts/sensor/bluetooth',
-                            'src/main/res/layouts/sensor/liquid',
-                            'src/main/res/layouts/sensor/strip',
-                            'src/main/res/layouts/sensor/ec',
-                            'src/main/res/layouts/sensor/cbt',
-                            'src/main/res/layouts/diagnostic',
-                            'src/main/res/layouts/general',
-                            'src/main/res/layouts',
-                            'src/main/res'
-                    ]
-        }
-    }
 
     packagingOptions {
         exclude 'LICENSE.txt'
