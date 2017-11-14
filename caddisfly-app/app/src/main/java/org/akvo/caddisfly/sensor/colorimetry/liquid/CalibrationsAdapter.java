@@ -39,6 +39,7 @@ import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ColorUtil;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,6 +49,8 @@ import java.util.Locale;
 class CalibrationsAdapter extends ArrayAdapter<Swatch> {
 
     private static final float SMALL_FONT_SIZE = .6f;
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00##");
+
     @NonNull
     private final Activity activity;
     private final boolean mDisplayDecimal;
@@ -78,9 +81,11 @@ class CalibrationsAdapter extends ArrayAdapter<Swatch> {
         //display unit value
         Spannable word;
         if (mDisplayDecimal) {
-            word = new SpannableString(String.format(Locale.getDefault(), "%.2f ", swatch.getValue()));
+            word = new SpannableString(String.format(Locale.getDefault(), "%s ",
+                    DECIMAL_FORMAT.format(swatch.getValue())));
         } else {
-            word = new SpannableString(String.format(Locale.getDefault(), "%.0f ", swatch.getValue()));
+            word = new SpannableString(String.format(Locale.getDefault(), "%.0f ",
+                    swatch.getValue()));
         }
         textName.setText(word);
 
