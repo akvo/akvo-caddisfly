@@ -1151,6 +1151,45 @@
           "unit": ""
         }
       ]
+    },
+    {
+      "name": "Z - Trial - Colorimetry - Caddisfly - pH (4 - 10)",
+      "uuid": "4d3a7d6d-2f11-49de-9f7f-9e21e840df93",
+      "brand": "Caddisfly",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "pH",
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": "Z - Trial - Colorimetry - Caddisfly - Nitrate (0 - 100 mg/l)",
+      "uuid": "fcf39bd6-0e37-4523-9cba-19870d2192f8",
+      "brand": "Caddisfly",
+      "hasImage": true,
+      "results": [
+        {
+          "name": "Nitrate",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
+    },
+    {
+      "name": "Z - Trial - Colorimetry - Caddisfly - Phosphate (0 - 2 mg/l)",
+      "uuid": "6fbe9952-7199-4c9d-8664-977236176cc9",
+      "brand": "Caddisfly",
+      "hasImage": true,
+      "results": [
+        {
+          "name": "Phosphate",
+          "id": 1,
+          "unit": "ppm"
+        }
+      ]
     }
   ]
 }
