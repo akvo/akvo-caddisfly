@@ -73,6 +73,7 @@ import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -103,6 +104,8 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final int MAX_SHAKE_DURATION_2 = 3000;
     private static final int DELAY_MILLIS = 500;
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00##");
+
     private final Handler delayHandler = new Handler();
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -150,9 +153,11 @@ public class ColorimetryLiquidActivity extends BaseActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (mIsCalibration && getSupportActionBar() != null) {
-            String subTitle = String.format(Locale.getDefault(), "%s %.2f %s",
+
+            String subTitle = String.format(Locale.getDefault(), "%s %s %s",
                     getString(R.string.calibrate),
-                    mSwatchValue, CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
+                    DECIMAL_FORMAT.format(mSwatchValue),
+                    CaddisflyApp.getApp().getCurrentTestInfo().getUnit());
             textDilution.setText(subTitle);
         }
     }

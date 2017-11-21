@@ -292,6 +292,10 @@ public class CalibrationTest {
 
         sleep(2000);
 
+        onView(withId(R.id.button_prepare)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.button_prepare)).perform(click());
+
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
     }

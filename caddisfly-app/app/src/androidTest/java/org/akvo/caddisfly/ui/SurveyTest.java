@@ -170,6 +170,10 @@ public class SurveyTest {
 
         clickExternalSourceButton(0);
 
+        onView(withId(R.id.button_prepare)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.button_prepare)).perform(click());
+
         onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
 
         onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));

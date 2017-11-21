@@ -20,8 +20,6 @@
 package org.akvo.caddisfly.ui;
 
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
@@ -39,6 +37,8 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -64,13 +64,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
@@ -118,9 +121,9 @@ public class InstructionsTest {
 
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
-        prefs.edit().clear().apply();
+//        SharedPreferences prefs =
+//                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
+//        prefs.edit().clear().apply();
 
         resetLanguage();
     }
@@ -300,6 +303,224 @@ public class InstructionsTest {
     }
 
     @Test
+    public void ironStripTestInstructions() {
+
+        goToMainScreen();
+
+        gotoSurveyForm();
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(0);
+
+        sleep(1000);
+
+        mDevice.waitForIdle();
+
+        TestUtil.sleep(1000);
+
+        onView(withText("Water - Total Iron"))
+                .check(matches(isDisplayed()));
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.button_instructions), withText("Instructions"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.coordinatorLayout),
+                                        0),
+                                3),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
+
+        onView(withText(R.string.fill_half_with_sample))
+                .check(matches(isDisplayed()));
+
+        onView(withText("Water - Total Iron"))
+                .check(matches(isDisplayed()));
+
+        ViewInteraction appCompatImageView = onView(
+                allOf(withId(R.id.image_pageRight),
+                        childAtPosition(
+                                allOf(withId(R.id.layout_footer),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                2)),
+                                2),
+                        isDisplayed()));
+        appCompatImageView.perform(click());
+
+        onView(withText(R.string.open_one_foil_and_add_powder))
+                .check(matches(isDisplayed()));
+
+        onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.pager))
+                .perform(swipeLeft());
+
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Navigate up"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction imageView2 = onView(
+                allOf(withId(R.id.imageBrandLabel),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.coordinatorLayout),
+                                        0),
+                                1),
+                        isDisplayed()));
+        imageView2.check(matches(isDisplayed()));
+
+        ViewInteraction button = onView(
+                allOf(withId(R.id.button_prepare),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.coordinatorLayout),
+                                        0),
+                                2),
+                        isDisplayed()));
+        button.check(matches(isDisplayed()));
+
+        ViewInteraction button2 = onView(
+                allOf(withId(R.id.button_instructions),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.coordinatorLayout),
+                                        0),
+                                3),
+                        isDisplayed()));
+        button2.check(matches(isDisplayed()));
+        button2.perform(click());
+
+        pressBack();
+
+        ViewInteraction imageView3 = onView(
+                allOf(withId(R.id.imageBrandLabel),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.coordinatorLayout),
+                                        0),
+                                1),
+                        isDisplayed()));
+        imageView3.check(matches(isDisplayed()));
+
+        ViewInteraction button1 = onView(
+                allOf(withId(R.id.button_prepare),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.coordinatorLayout),
+                                        0),
+                                2),
+                        isDisplayed()));
+        button1.check(matches(isDisplayed()));
+
+        ViewInteraction appCompatImageButton2 = onView(
+                allOf(withContentDescription("Navigate up"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("android.support.constraint.ConstraintLayout")),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        appCompatImageButton2.perform(click());
+
+    }
+
+    @Test
+    @RequiresDevice
+    public void testInstructionsBackcase() {
+
+        goToMainScreen();
+
+        gotoSurveyForm();
+
+        clickExternalSourceButton(0);
+
+        sleep(1000);
+
+        mDevice.waitForIdle();
+
+        TestUtil.sleep(1000);
+
+        String id = SensorConstants.FLUORIDE_ID.substring(
+                SensorConstants.FLUORIDE_ID.lastIndexOf("-") + 1, SensorConstants.FLUORIDE_ID.length());
+
+        takeScreenshot(id, -1);
+
+        mDevice.waitForIdle();
+
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+
+        for (int i = 0; i < 17; i++) {
+
+            try {
+                takeScreenshot(id, i);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
+                TestUtil.sleep(600);
+                Espresso.pressBack();
+                break;
+            }
+        }
+    }
+
+    @Test
+    @RequiresDevice
+    public void testInstructionsBackcase2() {
+
+        goToMainScreen();
+
+        gotoSurveyForm();
+
+        clickExternalSourceButton(TestConstant.NEXT);
+
+        clickExternalSourceButton(0);
+
+        sleep(1000);
+
+        mDevice.waitForIdle();
+
+        TestUtil.sleep(1000);
+
+        String id = SensorConstants.FREE_CHLORINE_ID.substring(
+                SensorConstants.FREE_CHLORINE_ID.lastIndexOf("-") + 1, SensorConstants.FREE_CHLORINE_ID.length());
+
+        takeScreenshot(id, -1);
+
+        mDevice.waitForIdle();
+
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+
+        for (int i = 0; i < 17; i++) {
+
+            try {
+                takeScreenshot(id, i);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
+                TestUtil.sleep(600);
+                Espresso.pressBack();
+                break;
+            }
+        }
+    }
+
+    @Test
     @RequiresDevice
     public void testInstructionsAll() {
 
@@ -315,14 +536,14 @@ public class InstructionsTest {
 
             if (testList.get(i).getType() == TestType.COLORIMETRIC_STRIP) {
 //                if (testList.get(i).getTitle().startsWith("Soil")) {
-                    String id = testList.get(i).getId();
-                    id = id.substring(id.lastIndexOf("-") + 1, id.length());
+                String id = testList.get(i).getId();
+                id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-                    int pages = navigateToTest(index, id);
+                int pages = navigateToTest(index, id);
 
-                    jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
-                    index++;
+                index++;
 //                }
             }
         }

@@ -57,7 +57,7 @@
     <string name="dip_sample_1s">Dip the test strip into the sample for <b>1 second</b> and remove.</string>
     <string name="as_ins_1">Insert a test strip into the cap so the pad completely covers the small opening. Close the flap and press to secure.</string>
     <string name="as_ins_2">Fill the reaction bottle with sample to the fill line (50 mL).</string>
-    <string name="as_ins_3">Add one <b>Reagent #1</b> and one <b>Reagent #2</b> powder pillow to the sample. If a rotten egg smell is detected after adding reagent #1, sulfide is present at interfering levels, <b>[a]click here[/a]</b> to see how to remove sulfide before continuing the test procedure.</string>
+    <string name="as_ins_3">Add one <b>Reagent #1</b> and one <b>Reagent #2</b> powder pillow to the sample. If a rotten egg smell is detected after adding reagent #1, sulfide is present at interfering levels, <b>[a topic=sulfide]click here[/a]</b> to see how to remove sulfide before continuing the test procedure.</string>
     <string name="as_ins_4">Immediately attach the cap to the reaction bottle. Swirl continuously for 60 seconds. <b>Do not shake or invert or allow sample to get on the strip.</b></string>
     <string name="as_ins_5">Wait 20 minutes. Swirl twice during the reaction period.</string>
     <string name="as_ins_6">Remove the test strip and immediately from the cap and place the test strip facing <b>left</b> on the Colour Reference Card and press <b>Start</b>.</string>

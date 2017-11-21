@@ -98,7 +98,7 @@ public final class StringUtil {
             while (m1.find()) {
                 try {
                     String name = testInfo.getReagent(i - 1).getString("name");
-                    if(testInfo.getReagent(i - 1).has("code")) {
+                    if (testInfo.getReagent(i - 1).has("code")) {
                         String code = testInfo.getReagent(i - 1).getString("code");
                         if (!code.isEmpty()) {
                             name = String.format("%s (%s)", name, code);
@@ -129,28 +129,41 @@ public final class StringUtil {
             }
         }
 
-        if (builder.toString().contains("[a]")) {
+        if (builder.toString().contains("[a topic=")) {
 
-            int startIndex = builder.toString().indexOf("[a]");
-            builder.replace(startIndex, startIndex + 3, "");
-            int endIndex = builder.toString().indexOf("[/a]");
-            builder.replace(endIndex, endIndex + 4, "");
+            int startIndex = builder.toString().indexOf("[a topic=");
 
-            ClickableSpan clickableSpan = new ClickableSpan() {
-                @Override
-                public void onClick(View textView) {
-                    DialogFragment newFragment = new SulfideDialogFragment();
-                    newFragment.show(context.getSupportFragmentManager(), "sulfideDialog");
-                }
+            String topic;
+            Pattern p = Pattern.compile("\\[a topic=(.*?)\\]");
+            Matcher m3 = p.matcher(builder);
+            if (m3.find()) {
+                topic = m3.group(1);
+                builder.replace(m3.start(), m3.end(), "");
+                int endIndex = builder.toString().indexOf("[/a]");
+                builder.replace(endIndex, endIndex + 4, "");
 
-                @Override
-                public void updateDrawState(TextPaint ds) {
-                    super.updateDrawState(ds);
-                    ds.setUnderlineText(false);
-                }
-            };
-            builder.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            builder.setSpan(new UnderlineSpan(), startIndex, endIndex, 0);
+                String finalTopic = topic;
+                ClickableSpan clickableSpan = new ClickableSpan() {
+                    @Override
+                    public void onClick(View textView) {
+                        if (finalTopic.equalsIgnoreCase("sulfide")) {
+                            DialogFragment newFragment = new SulfideDialogFragment();
+                            newFragment.show(context.getSupportFragmentManager(), "sulfideDialog");
+                        } else {
+                            DialogFragment newFragment = new DilutionDialogFragment();
+                            newFragment.show(context.getSupportFragmentManager(), "dilutionDialog");
+                        }
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        super.updateDrawState(ds);
+                        ds.setUnderlineText(false);
+                    }
+                };
+                builder.setSpan(clickableSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.setSpan(new UnderlineSpan(), startIndex, endIndex, 0);
+            }
         }
 
         return builder;
@@ -178,6 +191,23 @@ public final class StringUtil {
             LayoutInflater inflater = getActivity().getLayoutInflater();
 
             builder.setView(inflater.inflate(R.layout.dialog_sulfide_instruction, null))
+                    // Add action buttons
+                    .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
+
+
+            return builder.create();
+        }
+    }
+
+    public static class DilutionDialogFragment extends DialogFragment {
+        @NonNull
+        @SuppressLint("InflateParams")
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+
+            builder.setView(inflater.inflate(R.layout.dialog_dilution_instruction, null))
                     // Add action buttons
                     .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
 

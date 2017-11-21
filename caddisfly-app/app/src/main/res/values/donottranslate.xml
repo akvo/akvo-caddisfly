@@ -45,9 +45,11 @@
     <string name="number_2">2.</string>
     <string name="number_3">3.</string>
     <string name="number_4">4.</string>
+    <string name="number_5">5.</string>
+    <string name="number_6">5.</string>
 
     <!--paths to assets-->
-    <string name="striptest_images">images/striptest</string>
+    <string name="striptest_images">images/brand</string>
     <string name="instruction_images">images/instructions</string>
 
     <!--Keys-->

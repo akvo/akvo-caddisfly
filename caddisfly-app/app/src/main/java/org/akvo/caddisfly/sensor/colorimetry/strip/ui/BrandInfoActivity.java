@@ -211,11 +211,7 @@ public class BrandInfoActivity extends BaseActivity {
                             .setView(checkBoxView)
                             .setCancelable(false)
                             .setPositiveButton(R.string.continue_anyway, (dialog, id) -> {
-
-                                Intent intent = new Intent(getIntent());
-                                intent.setClass(getBaseContext(), CameraActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivityForResult(intent, 100);
+                                startStripMeasureActivity();
                             })
                             .setNegativeButton(R.string.stop_test, (dialog, id) -> {
                                 dialog.dismiss();
@@ -223,20 +219,21 @@ public class BrandInfoActivity extends BaseActivity {
                             }).show();
 
                 } else {
-                    Intent intent = new Intent(getIntent());
-                    intent.setClass(this, CameraActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivityForResult(intent, 100);
+                    startStripMeasureActivity();
                 }
             } catch (Exception e) {
                 Timber.e(e);
             }
         } else {
-            Intent intent = new Intent(getIntent());
-            intent.setClass(this, CameraActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivityForResult(intent, 100);
+            startStripMeasureActivity();
         }
+    }
+
+    private void startStripMeasureActivity(){
+        Intent intent = new Intent(getIntent());
+        intent.setClass(this, CameraActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivityForResult(intent, 100);
     }
 
     @Override
