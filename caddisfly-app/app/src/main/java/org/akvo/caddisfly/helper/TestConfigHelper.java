@@ -129,7 +129,6 @@ public final class TestConfigHelper {
             loadTests(tests, FileUtil.loadTextFromFile(file), R.string.customTests);
         }
 
-
         return tests;
     }
 
@@ -161,7 +160,9 @@ public final class TestConfigHelper {
                     TestInfo testInfo = loadTest(item);
 
                     //Create TestInfo object
-                    tests.add(testInfo);
+                    if (testInfo != null) {
+                        tests.add(testInfo);
+                    }
 
                 } catch (JSONException e) {
                     Timber.e(e);

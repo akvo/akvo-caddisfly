@@ -33,6 +33,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
@@ -109,7 +110,7 @@ public class NavigationTest {
     @RequiresDevice
     public void testNavigateAll() {
 
-        saveCalibration("TestInvalid");
+        saveCalibration("TestInvalid", SensorConstants.FLUORIDE_ID);
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
 
@@ -215,7 +216,7 @@ public class NavigationTest {
 
         //onView(withId(R.id.buttonStart)).perform(click());
 
-        saveCalibration("TestValid");
+        saveCalibration("TestValid", SensorConstants.FLUORIDE_ID);
 
         goToMainScreen();
 

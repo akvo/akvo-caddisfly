@@ -69,6 +69,11 @@ public class TypeListActivity extends BaseActivity implements TypeListFragment.O
 
     @Override
     public void onFragmentInteraction(TestInfo testInfo) {
+
+        if (testInfo.getId().isEmpty()){
+            return;
+        }
+
         CaddisflyApp.getApp().loadTestConfigurationByUuid(testInfo.getId());
 
         switch (testInfo.getType()) {

@@ -42,7 +42,6 @@ import android.util.DisplayMetrics;
 import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.sensor.SensorConstants;
 import org.hamcrest.Matchers;
 
 import java.io.File;
@@ -178,6 +177,14 @@ public final class TestHelper {
                 + "1.5=254  0  0\n"
                 + "2.0=224  0  0\n");
 
+        addCalibration("TestValidChlorine", "0.0=255  38  186\n"
+                + "0.5=255  51  129\n"
+                + "1.0=255  59  89\n"
+                + "1.5=255  62  55\n"
+                + "2.0=255  81  34\n"
+                + "2.5=255  101  24\n"
+                + "3.0=255  121  14\n");
+
         if ("en".equals(languageCode)) {
             currentHashMap = STRING_HASH_MAP_EN;
         } else if ("in".equals(languageCode)) {
@@ -283,8 +290,8 @@ public final class TestHelper {
         }
     }
 
-    public static void saveCalibration(String name) {
-        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, SensorConstants.FLUORIDE_ID);
+    public static void saveCalibration(String name, String id) {
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, id);
 
         FileUtil.saveToFile(path, name, CALIBRATION_HASH_MAP.get(name));
     }
