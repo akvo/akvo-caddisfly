@@ -192,7 +192,7 @@ public class TestInfoViewModel {
     @BindingAdapter("imageScale")
     public static void setImageScale(ImageView imageView, String scaleType) {
         if (scaleType != null) {
-            imageView.setScaleType(scaleType.equals("centerCrop")
+            imageView.setScaleType("centerCrop".equals(scaleType)
                     ? ImageView.ScaleType.CENTER_CROP : ImageView.ScaleType.FIT_CENTER);
         }
     }
@@ -206,13 +206,13 @@ public class TestInfoViewModel {
         if (name != null) {
             Context context = imageView.getContext();
             try {
-                name = name.replace(" ", "-");
-                if (name.contains(".xml")) {
+                String imageName = name.replace(" ", "-");
+                if (imageName.contains(".xml")) {
                     //final XmlResourceParser parser = context.getAssets().openXmlResourceParser(name);
                     //Drawable drawable = VectorDrawableCompat.createFromXml(context.getResources(), parser);
 
                     AssetManager assManager = context.getAssets();
-                    InputStream is = assManager.open(name);
+                    InputStream is = assManager.open(imageName);
                     XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                     factory.setNamespaceAware(true);
                     XmlPullParser xpp = factory.newPullParser();
@@ -221,7 +221,7 @@ public class TestInfoViewModel {
 
                     imageView.setImageDrawable(drawable);
                 } else {
-                    InputStream ims = context.getAssets().open(name);
+                    InputStream ims = context.getAssets().open(imageName);
                     imageView.setImageDrawable(Drawable.createFromStream(ims, null));
                     //imageView.setBackground(Drawable.createFromStream(ims, null));
                 }

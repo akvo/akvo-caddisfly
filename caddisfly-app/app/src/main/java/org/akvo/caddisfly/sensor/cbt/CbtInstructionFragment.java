@@ -108,9 +108,6 @@ public class CbtInstructionFragment extends Fragment {
         FragmentInstructionCbtBinding fragmentInstructionBinding;
         JSONObject instruction;
 
-        public PlaceholderFragment() {
-        }
-
         /**
          * Returns a new instance of this fragment for the given section
          * number.

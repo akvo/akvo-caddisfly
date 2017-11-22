@@ -43,14 +43,13 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.cbt.CbtInstructionFragment;
-import org.akvo.caddisfly.sensor.cbt.CompartmentBagFragment;
 import org.akvo.caddisfly.sensor.cbt.TestInfoFragment;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PermissionsDelegate;
 
-public class ColorimetryTestActivity extends BaseActivity implements CompartmentBagFragment.OnFragmentInteractionListener {
+public class ColorimetryTestActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
@@ -61,7 +60,6 @@ public class ColorimetryTestActivity extends BaseActivity implements Compartment
     private CoordinatorLayout coordinatorLayout;
     private boolean hasPermissions;
     private TestInfo mTestInfo;
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +69,7 @@ public class ColorimetryTestActivity extends BaseActivity implements Compartment
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         // Add list fragment if this is first creation
         if (savedInstanceState == null) {
@@ -188,12 +186,6 @@ public class ColorimetryTestActivity extends BaseActivity implements Compartment
             finish();
         }
     }
-
-    @Override
-    public void onFragmentInteraction(String key) {
-
-    }
-
 
     public static class IncubationTimesDialogFragment extends DialogFragment {
         @NonNull

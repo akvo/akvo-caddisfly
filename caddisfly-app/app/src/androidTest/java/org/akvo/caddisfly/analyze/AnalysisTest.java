@@ -129,6 +129,10 @@ public class AnalysisTest {
     @RequiresDevice
     public void testFreeChlorine() {
         saveCalibration("TestValidChlorine", SensorConstants.FREE_CHLORINE_ID_2);
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed()));
     }
 
     @Test

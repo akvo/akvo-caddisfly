@@ -40,10 +40,6 @@ public class CompartmentBagFragment extends BaseFragment {
     private OnFragmentInteractionListener mListener;
     private String mKey = "00000";
 
-    public CompartmentBagFragment() {
-        // Required empty public constructor
-    }
-
     public static CompartmentBagFragment newInstance(String key) {
         CompartmentBagFragment fragment = new CompartmentBagFragment();
         Bundle args = new Bundle();

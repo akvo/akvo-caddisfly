@@ -60,7 +60,7 @@ public class MainTest {
     }
 
     @Test
-    public void onCreate_shouldInflateTheMenu() throws Exception {
+    public void onCreateShouldInflateTheMenu() throws Exception {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         Toolbar toolbar = activity.findViewById(R.id.toolbar);
@@ -71,7 +71,7 @@ public class MainTest {
     }
 
     @Test
-    public void onClick_Settings() throws Exception {
+    public void onClickSettings() throws Exception {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         ActionMenuItemView button = activity.findViewById(R.id.actionSettings);
