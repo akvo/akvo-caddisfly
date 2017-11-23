@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 
 public class TestInfoViewModel {
 
-    public static final String BRAND_IMAGE_PATH = "images/brand/";
+    private static final String BRAND_IMAGE_PATH = "images/brand/";
     private static final String ILLUSTRATION_PATH = "images/instructions/";
     private static TestInfo testInfo;
     public final ObservableField<TestInfo> test = new ObservableField<>();
