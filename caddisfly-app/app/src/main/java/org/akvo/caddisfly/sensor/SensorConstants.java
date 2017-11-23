@@ -51,6 +51,7 @@ public final class SensorConstants {
     public static final String USER = "user";
     public static final String SHORT_CODE = "shortCode";
     public static final String FREE_CHLORINE_ID = "c3535e72-ff77-4225-9f4a-41d3288780c6";
+    public static final String FREE_CHLORINE_ID_2 = "a2413119-38eb-4959-92ee-cc169fdbb0fc";
     public static final String FLUORIDE_ID = "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf";
     public static final String CBT_ID = "e40d4764-e73f-46dd-a598-ed4db0fd3386";
 

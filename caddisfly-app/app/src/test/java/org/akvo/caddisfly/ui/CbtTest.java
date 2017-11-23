@@ -26,8 +26,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import junit.framework.Assert;
-
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -76,7 +74,7 @@ public class CbtTest {
         ViewPager viewPager = activity.findViewById(R.id.viewPager);
 
         assertNotNull(viewPager);
-        Assert.assertEquals(viewPager.getVisibility(), View.VISIBLE);
+        assertEquals(viewPager.getVisibility(), View.VISIBLE);
 
     }
 

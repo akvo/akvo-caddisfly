@@ -43,7 +43,6 @@ public class AppPreferencesTest {
     public void checkPlaySound() {
 
         String methodName = "isSoundOff";
-        boolean defaultValue = false;
 
         checkDiagnosticPreference(R.string.noSoundKey, DEFAULT_FALSE, methodName, true);
 
@@ -66,7 +65,6 @@ public class AppPreferencesTest {
     public void checkDebugMessagesKey() {
 
         String methodName = "getShowDebugMessages";
-        boolean defaultValue = false;
 
         checkDiagnosticPreference(R.string.showDebugMessagesKey, DEFAULT_FALSE, methodName, true);
 

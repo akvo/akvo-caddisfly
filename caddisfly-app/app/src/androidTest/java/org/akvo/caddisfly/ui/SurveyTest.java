@@ -32,6 +32,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -136,7 +137,7 @@ public class SurveyTest {
     @RequiresDevice
     public void testStartASurvey() {
 
-        saveCalibration("TestValid");
+        saveCalibration("TestValid", SensorConstants.FLUORIDE_ID);
 
         onView(withId(R.id.actionSettings)).perform(click());
 

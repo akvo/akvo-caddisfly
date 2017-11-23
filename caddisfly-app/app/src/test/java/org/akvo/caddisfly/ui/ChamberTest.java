@@ -44,7 +44,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
@@ -130,7 +129,7 @@ public class ChamberTest {
         Intent intent = shadowOf(activity).getNextStartedActivity();
         assertNull(intent);
 
-        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
+        ShadowApplication application = shadowOf(activity.getApplication());
         application.grantPermissions(permissions);
         controller.resume();
 
@@ -152,7 +151,7 @@ public class ChamberTest {
 
         Activity activity = Robolectric.setupActivity(TypeListActivity.class);
 
-        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
+        ShadowActivity shadowActivity = shadowOf(activity);
         shadowActivity.clickMenuItem(android.R.id.home);
         Intent intent = shadowOf(activity).getNextStartedActivity();
 
@@ -184,11 +183,11 @@ public class ChamberTest {
 
     @Test
     public void testFromExternalActivity() {
-        testExternalActivity(false);
-        testExternalActivity(true);
+        assertTrue(testExternalActivity(false));
+        assertTrue(testExternalActivity(true));
     }
 
-    private void testExternalActivity(boolean setCalibration) {
+    private boolean testExternalActivity(boolean setCalibration) {
 
         String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -206,7 +205,7 @@ public class ChamberTest {
         ActivityController controller = Robolectric.buildActivity(ExternalActionActivity.class).withIntent(intent).create();
         Activity activity = (Activity) controller.get();
 
-        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
+        ShadowApplication application = shadowOf(activity.getApplication());
         application.grantPermissions(permissions);
 
         ShadowPackageManager pm = shadowOf(RuntimeEnvironment.application.getPackageManager());
@@ -237,6 +236,7 @@ public class ChamberTest {
             assertTrue(sAlert.getMessage().toString().contains(activity.getString(R.string.doYouWantToCalibrate)));
         }
 
+        return true;
     }
 
     @Test
@@ -250,7 +250,7 @@ public class ChamberTest {
         ActivityController controller = Robolectric.buildActivity(ColorimetryTestActivity.class).withIntent(intent).create();
         Activity activity = (Activity) controller.get();
 
-        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
+        ShadowApplication application = shadowOf(activity.getApplication());
         application.grantPermissions(permissions);
 
         ShadowPackageManager pm = shadowOf(RuntimeEnvironment.application.getPackageManager());

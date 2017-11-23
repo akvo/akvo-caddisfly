@@ -32,7 +32,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowListView;
 
@@ -98,7 +97,7 @@ public class StripsTest {
 
         Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
 
-        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
+        ShadowActivity shadowActivity = shadowOf(activity);
         shadowActivity.clickMenuItem(android.R.id.home);
         Intent intent = shadowOf(activity).getNextStartedActivity();
 

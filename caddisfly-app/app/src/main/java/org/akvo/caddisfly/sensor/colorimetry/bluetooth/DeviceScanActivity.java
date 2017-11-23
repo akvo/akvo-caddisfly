@@ -315,7 +315,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         layoutInfo.setVisibility(View.VISIBLE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
                 if (snackbar == null || !snackbar.isShownOrQueued()) {
                     requestPermissions(PERMISSIONS, PERMISSION_ALL);
                 }
