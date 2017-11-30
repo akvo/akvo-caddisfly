@@ -47,8 +47,8 @@ import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.cbt.TestActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -151,7 +151,7 @@ public class MainActivity extends BaseActivity {
         CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
         Intent intent = new Intent(getIntent());
         intent.setClass(this, TestActivity.class);
-        intent.putExtra(Constant.UUID, SensorConstants.CBT_ID);
+        intent.putExtra(Constants.UUID, SensorConstants.CBT_ID);
         intent.setFlags(0);
         startActivityForResult(intent, 100);
     }

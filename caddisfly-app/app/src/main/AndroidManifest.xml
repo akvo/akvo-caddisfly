@@ -145,6 +145,11 @@
 
         <!-- StripTest -->
         <activity
+            android:name=".sensor.colorimetry.stripv2.ui.StripMeasureActivity"
+            android:screenOrientation="nosensor" />
+        <activity android:name=".sensor.colorimetry.stripv2.ui.TestTypeListActivity"
+            android:screenOrientation="nosensor"/>
+        <activity
             android:name=".sensor.colorimetry.strip.ui.BrandInfoActivity"
             android:launchMode="singleTop"
             android:screenOrientation="nosensor" />
@@ -177,6 +182,9 @@
         <activity
             android:name=".sensor.colorimetry.liquid.ColorimetryTestActivity"
             android:screenOrientation="nosensor" />
+
+        <activity android:name=".sensor.colorimetry.BrandInfoActivity"
+            android:screenOrientation="nosensor"/>
 
         <service
             android:name=".sensor.colorimetry.bluetooth.BluetoothLeService"

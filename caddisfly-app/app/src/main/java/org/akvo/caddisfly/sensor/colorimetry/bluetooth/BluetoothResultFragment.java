@@ -114,7 +114,7 @@ public class BluetoothResultFragment extends Fragment {
 
 
             JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo1,
-                    results, -1, "", null);
+                    results, null, -1, "", null);
             resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
             getActivity().setResult(Activity.RESULT_OK, resultIntent);

@@ -281,7 +281,7 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
         results.put(2, mpnValue.getMpn());
         results.put(3, mpnValue.getConfidence());
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(mTestInfo, results, -1,
+        JSONObject resultJson = TestConfigHelper.getJsonResult(mTestInfo, results, null, -1,
                 imageFileName, StripTest.GroupType.INDIVIDUAL);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);

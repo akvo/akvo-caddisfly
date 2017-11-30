@@ -44,13 +44,13 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.cbt.TestActivity;
+import org.akvo.caddisfly.sensor.colorimetry.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryTestActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -136,7 +136,7 @@ public class ExternalActionActivity extends BaseActivity {
 
                 if (code.equalsIgnoreCase("strip")) {
                     final Intent colorimetricStripIntent = new Intent(this, TestTypeListActivity.class);
-                    colorimetricStripIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
+                    colorimetricStripIntent.putExtra(Constants.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                     startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
                     return;
                 }
@@ -283,8 +283,8 @@ public class ExternalActionActivity extends BaseActivity {
                     final Intent bluetoothIntent = new Intent();
                     bluetoothIntent.putExtra(SensorConstants.IS_EXTERNAL_ACTION, mIsExternalAppCall);
                     bluetoothIntent.setClass(getBaseContext(), DeviceScanActivity.class);
-                    bluetoothIntent.putExtra(Constant.UUID, uuid);
-                    bluetoothIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
+                    bluetoothIntent.putExtra(Constants.UUID, uuid);
+                    bluetoothIntent.putExtra(Constants.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                     startActivityForResult(bluetoothIntent, REQUEST_TEST);
                 } else {
                     alertFeatureNotSupported();
@@ -321,16 +321,16 @@ public class ExternalActionActivity extends BaseActivity {
                 }
 
                 final Intent intent = new Intent(getBaseContext(), ColorimetryTestActivity.class);
-                intent.putExtra(Constant.UUID, uuid);
-                intent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
+                intent.putExtra(Constants.UUID, uuid);
+                intent.putExtra(Constants.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                 startActivityForResult(intent, REQUEST_TEST);
 
                 break;
             case COLORIMETRIC_STRIP:
 
                 final Intent colorimetricStripIntent = new Intent(context, BrandInfoActivity.class);
-                colorimetricStripIntent.putExtra(Constant.UUID, uuid);
-                colorimetricStripIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
+                colorimetricStripIntent.putExtra(Constants.UUID, uuid);
+                colorimetricStripIntent.putExtra(Constants.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                 startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
 
                 break;
@@ -340,7 +340,7 @@ public class ExternalActionActivity extends BaseActivity {
                 boolean hasOtg = getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
                     final Intent sensorIntent = new Intent(context, SensorActivity.class);
-                    sensorIntent.putExtra(Constant.UUID, uuid);
+                    sensorIntent.putExtra(Constants.UUID, uuid);
                     startActivityForResult(sensorIntent, REQUEST_TEST);
                 } else {
                     alertFeatureNotSupported();

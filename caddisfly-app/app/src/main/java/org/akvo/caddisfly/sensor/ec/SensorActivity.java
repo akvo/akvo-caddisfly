@@ -324,7 +324,7 @@ public class SensorActivity extends BaseActivity {
 
         Intent resultIntent = new Intent(getIntent());
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, EMPTY_STRING, null);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, EMPTY_STRING, null);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
         // TODO: Remove this when obsolete

@@ -350,7 +350,8 @@ public final class TestConfigHelper {
      * @param groupingType   type of grouping
      * @return the result in json format
      */
-    public static JSONObject getJsonResult(TestInfo testInfo, SparseArray<String> results, int color,
+    public static JSONObject getJsonResult(TestInfo testInfo, SparseArray<String> results,
+                                           SparseArray<String> brackets, int color,
                                            String resultImageUrl, StripTest.GroupType groupingType) {
 
         JSONObject resultJson = new JSONObject();
@@ -370,8 +371,14 @@ public final class TestConfigHelper {
                 subTestJson.put(SensorConstants.ID, subTest.getId());
 
                 // If a result exists for the sub test id then add it
-                if (results.size() >= subTest.getId()) {
-                    subTestJson.put(SensorConstants.VALUE, results.get(subTest.getId()));
+                int id = subTest.getId();
+                if (results.size() >= id) {
+                    subTestJson.put(SensorConstants.VALUE, results.get(id));
+
+                    // if there is a bracket result, include it.
+                    if (brackets != null && brackets.get(id) != null) {
+                        subTestJson.put(SensorConstants.BRACKET, brackets.get(id));
+                    }
                 }
 
                 if (color > -1) {

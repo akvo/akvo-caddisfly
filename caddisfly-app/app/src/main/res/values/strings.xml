@@ -106,6 +106,8 @@
 
     <!--StripTest-->
     <string name="brightness">Brightness</string>
+    <string name="measure_instruction">Put strip on black area with colour patches to the left. Hold camera above colour card until measurement is complete.</string>
+    <string name="imageQuality">Image quality</string>
     <string name="instructions">Instructions</string>
     <string name="shadows">Shadows</string>
     <string name="prepare_test">Prepare for test</string>

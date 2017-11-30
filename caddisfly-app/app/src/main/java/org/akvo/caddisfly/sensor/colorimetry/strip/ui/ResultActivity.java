@@ -160,7 +160,7 @@ public class ResultActivity extends BaseActivity implements DetectStripListener 
         // get information on the strip test from JSON
         StripTest.Brand brand = stripTest.getBrand(testInfo.getId());
 
-        JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, results, -1,
+        JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, results, null, -1,
                 resultImageUrl, brand.getGroupingType());
 
         intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());

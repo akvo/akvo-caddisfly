@@ -791,7 +791,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             SparseArray<String> results = new SparseArray<>();
             results.put(testInfo.getSubTests().get(0).getId(), resultText);
 
-            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, color,
+            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, color,
                     resultImageUrl, null);
 
             resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
