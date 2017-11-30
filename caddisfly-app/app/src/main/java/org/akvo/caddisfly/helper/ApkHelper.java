@@ -26,8 +26,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;

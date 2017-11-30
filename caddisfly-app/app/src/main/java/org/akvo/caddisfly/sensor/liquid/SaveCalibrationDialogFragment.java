@@ -38,8 +38,11 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.dao.CalibrationDao;
+import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.FileUtil;
@@ -60,12 +63,16 @@ import timber.log.Timber;
  */
 public class SaveCalibrationDialogFragment extends DialogFragment {
 
+    private static final String ARG_TEST_INFO = "testInfo";
     private final Calendar calendar = Calendar.getInstance();
+    TestInfo mTestInfo;
     private EditText editName = null;
     private EditText editBatchCode = null;
     private EditText editExpiryDate;
     private EditText editRgb;
     private boolean isEditing = false;
+
+    private OnCalibrationDetailsSavedListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -73,17 +80,29 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
      *
      * @return A new instance of fragment SaveCalibrationDialogFragment.
      */
-    public static SaveCalibrationDialogFragment newInstance(boolean isEdit) {
-        SaveCalibrationDialogFragment saveCalibrationDialogFragment = new SaveCalibrationDialogFragment();
-        saveCalibrationDialogFragment.isEditing = isEdit;
-        return saveCalibrationDialogFragment;
+    public static SaveCalibrationDialogFragment newInstance(TestInfo testInfo, boolean isEdit) {
+        SaveCalibrationDialogFragment fragment = new SaveCalibrationDialogFragment();
+        fragment.isEditing = isEdit;
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_TEST_INFO, testInfo);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mTestInfo = getArguments().getParcelable(ARG_TEST_INFO);
+        }
     }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
+        String testCode = mTestInfo.getUuid();
         final Context context = getActivity();
 
         LayoutInflater i = getActivity().getLayoutInflater();
@@ -106,7 +125,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         editRgb = view.findViewById(R.id.editRgb);
 
         long milliseconds = PreferencesUtil.getLong(getActivity(),
-                CaddisflyApp.getApp().getCurrentTestInfo().getId(),
+                mTestInfo.getUuid(),
                 R.string.calibrationExpiryDateKey);
         if (milliseconds > new Date().getTime()) {
 
@@ -140,21 +159,21 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         date.set(Calendar.SECOND, date.getMinimum(Calendar.SECOND));
         date.set(Calendar.MILLISECOND, date.getMinimum(Calendar.MILLISECOND));
         datePickerDialog.getDatePicker().setMinDate(date.getTimeInMillis());
-        date.add(Calendar.MONTH, CaddisflyApp.getApp().getCurrentTestInfo().getMonthsValid());
+        date.add(Calendar.MONTH, mTestInfo.getMonthsValid());
         date.set(Calendar.HOUR_OF_DAY, date.getMaximum(Calendar.HOUR_OF_DAY));
         date.set(Calendar.MINUTE, date.getMaximum(Calendar.MINUTE));
         date.set(Calendar.SECOND, date.getMaximum(Calendar.SECOND));
         date.set(Calendar.MILLISECOND, date.getMaximum(Calendar.MILLISECOND));
         datePickerDialog.getDatePicker().setMaxDate(date.getTimeInMillis());
 
-        editExpiryDate.setOnFocusChangeListener((view12, b) -> {
+        editExpiryDate.setOnFocusChangeListener((view1, b) -> {
             if (b) {
                 closeKeyboard(getContext(), editBatchCode);
                 datePickerDialog.show();
             }
         });
 
-        editExpiryDate.setOnClickListener(view1 -> {
+        editExpiryDate.setOnClickListener(view12 -> {
             closeKeyboard(getContext(), editBatchCode);
             datePickerDialog.show();
         });
@@ -169,9 +188,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
         InputMethodManager imm = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        }
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.calibrationDetails)
@@ -206,7 +223,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 public void onClick(View v) {
                     if (formEntryValid()) {
 
-                        final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
+                        final String testCode = mTestInfo.getUuid();
 
                         if (!editName.getText().toString().trim().isEmpty()) {
 
@@ -239,16 +256,17 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                 }
 
                 void saveDetails(String testCode) {
-                    PreferencesUtil.setLong(context, testCode,
-                            R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
 
-                    PreferencesUtil.setString(context, testCode,
-                            R.string.batchNumberKey, editBatchCode.getText().toString().trim());
+                    CalibrationDetail calibrationDetail = new CalibrationDetail();
+                    calibrationDetail.uid = testCode;
+                    calibrationDetail.date = Calendar.getInstance().getTimeInMillis();
+                    calibrationDetail.expiry = calendar.getTimeInMillis();
+                    calibrationDetail.batchNumber = editBatchCode.getText().toString().trim();
 
-                    PreferencesUtil.setString(context, testCode,
-                            R.string.ledRgbKey, editRgb.getText().toString().trim());
+                    CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
+                    dao.insert(calibrationDetail);
 
-                    ((CalibrationDetailsSavedListener) getActivity()).onCalibrationDetailsSaved();
+                    mListener.onCalibrationDetailsSaved();
                 }
 
                 private boolean formEntryValid() {
@@ -277,13 +295,12 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private void saveCalibrationDetails(File path) {
         final Context context = getContext();
 
-        final String testCode = CaddisflyApp.getApp().getCurrentTestInfo().getId();
+        final String testCode = mTestInfo.getUuid();
 
-        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context,
+        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context, mTestInfo,
                 testCode, editBatchCode.getText().toString().trim(),
                 Calendar.getInstance().getTimeInMillis(),
-                calendar.getTimeInMillis(), editRgb.getText().toString(),
-                !PreferencesUtil.getBoolean(context, R.string.noBackdropDetectionKey, false));
+                calendar.getTimeInMillis(), editRgb.getText().toString());
 
         FileUtil.saveToFile(path, editName.getText().toString().trim(), calibrationDetails);
 
@@ -300,13 +317,11 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         try {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+            imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
 
-                View view = getActivity().getCurrentFocus();
-                if (view != null) {
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         } catch (Exception e) {
             Timber.e(e);
@@ -325,7 +340,18 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         closeKeyboard(getActivity(), editBatchCode);
     }
 
-    public interface CalibrationDetailsSavedListener {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnCalibrationDetailsSavedListener) {
+            mListener = (OnCalibrationDetailsSavedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnCalibrationDetailsSavedListener");
+        }
+    }
+
+    public interface OnCalibrationDetailsSavedListener {
         void onCalibrationDetailsSaved();
     }
 }

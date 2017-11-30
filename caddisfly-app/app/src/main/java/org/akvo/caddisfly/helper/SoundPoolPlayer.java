@@ -25,8 +25,8 @@ import android.media.SoundPool;
 import android.support.annotation.RawRes;
 import android.util.SparseIntArray;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.preference.AppPreferences;
 
 /**
@@ -62,6 +62,7 @@ public class SoundPoolPlayer {
         mSounds.put(R.raw.futurebeep2, this.mPlayer.load(context, R.raw.futurebeep2, 1));
 
     }
+
     /**
      * Play a short sound effect
      *

@@ -22,26 +22,18 @@ package org.akvo.caddisfly.model;
 import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.StringRes;
 
-import org.akvo.caddisfly.sensor.SensorConstants;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
+import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.helper.SwatchHelper;
+import org.akvo.caddisfly.util.ColorUtil;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import timber.log.Timber;
-
-/**
- * Model to hold test configuration information.
- */
 public class TestInfo implements Parcelable {
 
     public static final Creator<TestInfo> CREATOR = new Creator<TestInfo>() {
@@ -55,399 +47,304 @@ public class TestInfo implements Parcelable {
             return new TestInfo[size];
         }
     };
-    private static final double RESULT_ERROR_MARGIN = 0.2;
-    private final String name;
-    private final String uuid;
-    private final List<Swatch> swatches;
-    private final TestType testType;
-    private final List<Integer> dilutions;
-    private final List<SubTest> subTests = new ArrayList<>();
-    private String unit;
-    private boolean requiresCalibration;
-    private boolean allInteger = true;
-    private boolean mIsDirty;
-    private int monthsValid = 12;
+    @SerializedName("reagents")
+    @Expose
+    private List<Reagent> reagents = null;
+    @SerializedName("isGroup")
+    @Expose
     private boolean isGroup;
-    @StringRes
-    private int groupName;
-    private String batchNumber;
-    private long calibrationDate;
-    private long expiryDate;
-    private boolean useGrayScale;
-    private int hueTrend;
-    private double[] rangeValues;
-    private String deviceId;
-    private String responseFormat;
-    private boolean deprecated;
-    private JSONArray instructions = new JSONArray();
-    private JSONArray reagents = new JSONArray();
-    private String md610Id;
-    private String selectInstruction;
-    private Serializable sampleQuantity;
-    private String title;
+    @SerializedName("group")
+    @Expose
+    private String group;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("description")
+    @Expose
+    private String description;
+    @SerializedName("subtype")
+    @Expose
+    private TestType subtype;
+    @SerializedName("tags")
+    @Expose
+    private List<String> tags = null;
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
+    @SerializedName("calibration")
+    @Expose
+    private String calibration;
+    @SerializedName("brand")
+    @Expose
     private String brand;
-    private String subtitleExtra;
-    private String imageScale;
+    @SerializedName("brandUrl")
+    @Expose
     private String brandUrl;
-
-    public TestInfo(String name, TestType testType, String[] swatchArray,
-                    String[] defaultColorsArray, String[] dilutionsArray,
-                    String uuid, JSONArray reagentsArray, JSONArray resultsArray, JSONArray instructionsArray) {
-        this.name = name;
-        this.testType = testType;
-        this.uuid = uuid;
-        swatches = new ArrayList<>();
-        dilutions = new ArrayList<>();
-
-        instructions = instructionsArray;
-        reagents = reagentsArray;
-
-        rangeValues = new double[swatchArray.length];
-
-        for (int i = 0; i < swatchArray.length; i++) {
-
-            String range = swatchArray[i];
-            int defaultColor = Color.TRANSPARENT;
-            if (defaultColorsArray.length > i) {
-                String hexColor = defaultColorsArray[i].trim();
-                if (!hexColor.contains("#")) {
-                    hexColor = "#" + hexColor;
-                }
-                defaultColor = Color.parseColor(hexColor);
-            }
-
-            Swatch swatch = new Swatch((Double.valueOf(range) * 10) / 10f,
-                    Color.TRANSPARENT, defaultColor);
-
-            if (allInteger && swatch.getValue() % 1 != 0) {
-                allInteger = false;
-            }
-            addSwatch(swatch);
-
-            rangeValues[i] = Double.valueOf(range);
-        }
-
-        if (swatches.size() > 0) {
-            Swatch previousSwatch = swatches.get(0);
-            Swatch swatch;
-            for (int i = 1; i < swatches.size(); i++) {
-                swatch = swatches.get(i);
-                int redDifference = Color.red(swatch.getDefaultColor()) - Color.red(previousSwatch.getDefaultColor());
-                int greenDifference = Color.green(swatch.getDefaultColor()) - Color.green(previousSwatch.getDefaultColor());
-                int blueDifference = Color.blue(swatch.getDefaultColor()) - Color.blue(previousSwatch.getDefaultColor());
-
-                swatch.setRedDifference(redDifference);
-                swatch.setGreenDifference(greenDifference);
-                swatch.setBlueDifference(blueDifference);
-
-                previousSwatch = swatch;
-            }
-        }
-
-        for (String dilution : dilutionsArray) {
-            addDilution(Integer.parseInt(dilution));
-        }
-
-        if (resultsArray != null) {
-            for (int ii = 0; ii < resultsArray.length(); ii++) {
-                try {
-                    JSONObject patchObj = resultsArray.getJSONObject(ii);
-                    subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"),
-                            patchObj.has("unit") ? patchObj.getString("unit") : "",
-                            patchObj.has("timeDelay") ? patchObj.getInt("timeDelay") : 0,
-                            patchObj.has("md610_id") ? patchObj.getString("md610_id") : ""));
-                } catch (JSONException e) {
-                    Timber.e(e);
-                }
-            }
-        }
-
-        if (subTests.size() > 0) {
-            this.unit = subTests.get(0).getUnit();
-        }
-    }
+    @SerializedName("groupingType")
+    @Expose
+    private GroupType groupingType;
+    @SerializedName("illuminant")
+    @Expose
+    private String illuminant;
+    @SerializedName("length")
+    @Expose
+    private Double length;
+    @SerializedName("height")
+    @Expose
+    private Double height;
+    @SerializedName("unit")
+    @Expose
+    private String unit;
+    @SerializedName("hasImage")
+    @Expose
+    private Boolean hasImage;
+    @SerializedName("useBackCase")
+    @Expose
+    private Boolean useBackCase;
+    @SerializedName("displayResults")
+    @Expose
+    private List<Result> displayResults = null;
+    @SerializedName("results")
+    @Expose
+    private List<Result> results = null;
+    @SerializedName("shortCode")
+    @Expose
+    private String shortCode;
+    @SerializedName("calibrate")
+    @Expose
+    private Boolean calibrate;
+    @SerializedName("ranges")
+    @Expose
+    private String ranges;
+    @SerializedName("defaultColors")
+    @Expose
+    private String defaultColors;
+    @SerializedName("hueTrend")
+    @Expose
+    private Integer hueTrend;
+    @SerializedName("dilutions")
+    @Expose
+    private List<Integer> dilutions = new ArrayList<>();
+    @SerializedName("monthsValid")
+    @Expose
+    private Integer monthsValid;
+    @SerializedName("title")
+    @Expose
+    private String title;
+    @SerializedName("md610_id")
+    @Expose
+    private String md610Id;
+    @SerializedName("sampleQuantity")
+    @Expose
+    private String sampleQuantity;
+    @SerializedName("selectInstruction")
+    @Expose
+    private String selectInstruction;
+    @SerializedName("instructions")
+    @Expose
+    private List<Instruction> instructions = null;
+    @SerializedName("image")
+    @Expose
+    private String image;
+    @SerializedName("numPatch")
+    @Expose
+    private Integer numPatch;
+    @SerializedName("deviceId")
+    @Expose
+    private String deviceId;
+    @SerializedName("responseFormat")
+    @Expose
+    private String responseFormat;
+    @SerializedName("imageScale")
+    @Expose
+    private String imageScale;
+    private List<Calibration> calibrations;
+    private int dilution = 1;
+    private List<Swatch> swatches = new ArrayList<>();
 
     public TestInfo() {
-        name = null;
-        testType = TestType.COLORIMETRIC_LIQUID;
-        this.uuid = "";
-        this.unit = "";
-        swatches = new ArrayList<>();
-        dilutions = new ArrayList<>();
-        this.requiresCalibration = false;
     }
 
-    private TestInfo(Parcel in) {
-        name = in.readString();
-        uuid = in.readString();
-        unit = in.readString();
-        requiresCalibration = in.readByte() != 0;
-        allInteger = in.readByte() != 0;
-        mIsDirty = in.readByte() != 0;
-        monthsValid = in.readInt();
+    public TestInfo(String groupName) {
+        group = groupName;
+        isGroup = true;
+    }
+
+    protected TestInfo(Parcel in) {
         isGroup = in.readByte() != 0;
-        groupName = in.readInt();
-        batchNumber = in.readString();
-        calibrationDate = in.readLong();
-        expiryDate = in.readLong();
-        useGrayScale = in.readByte() != 0;
-        hueTrend = in.readInt();
-        rangeValues = in.createDoubleArray();
+        group = in.readString();
+        name = in.readString();
+        subtype = TestType.valueOf(in.readString());
+        description = in.readString();
+        tags = in.createStringArrayList();
+        reagents = new ArrayList<>();
+        in.readTypedList(reagents, Reagent.CREATOR);
+        uuid = in.readString();
+        calibration = in.readString();
+
+        calibrations = new ArrayList<>();
+        in.readTypedList(calibrations, Calibration.CREATOR);
+
+        swatches = new ArrayList<>();
+        in.readTypedList(swatches, Swatch.CREATOR);
+
+        brand = in.readString();
+        brandUrl = in.readString();
+        String tmpGroupingType = in.readString();
+        if (!tmpGroupingType.equalsIgnoreCase("null")) {
+            groupingType = GroupType.valueOf(tmpGroupingType);
+        }
+        illuminant = in.readString();
+        if (in.readByte() == 0) {
+            length = null;
+        } else {
+            length = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            height = null;
+        } else {
+            height = in.readDouble();
+        }
+        unit = in.readString();
+        byte tmpHasImage = in.readByte();
+        hasImage = tmpHasImage == 0 ? null : tmpHasImage == 1;
+        byte tmpUseBackCase = in.readByte();
+        useBackCase = tmpUseBackCase == 0 ? null : tmpUseBackCase == 1;
+        shortCode = in.readString();
+        byte tmpCalibrate = in.readByte();
+        calibrate = tmpCalibrate == 0 ? null : tmpCalibrate == 1;
+        ranges = in.readString();
+        defaultColors = in.readString();
+        if (in.readByte() == 0) {
+            hueTrend = null;
+        } else {
+            hueTrend = in.readInt();
+        }
+        in.readList(this.dilutions, (java.lang.Integer.class.getClassLoader()));
+        if (in.readByte() == 0) {
+            monthsValid = null;
+        } else {
+            monthsValid = in.readInt();
+        }
+        title = in.readString();
+        md610Id = in.readString();
+        sampleQuantity = in.readString();
+
+        results = new ArrayList<>();
+        in.readTypedList(results, Result.CREATOR);
+
+        displayResults = new ArrayList<>();
+        in.readTypedList(displayResults, Result.CREATOR);
+
+        instructions = new ArrayList<>();
+        in.readTypedList(instructions, Instruction.CREATOR);
+        selectInstruction = in.readString();
+        image = in.readString();
+        imageScale = in.readString();
+        if (in.readByte() == 0) {
+            numPatch = null;
+        } else {
+            numPatch = in.readInt();
+        }
         deviceId = in.readString();
         responseFormat = in.readString();
-        deprecated = in.readByte() != 0;
-        md610Id = in.readString();
-        selectInstruction = in.readString();
-        swatches = null;
-        testType = null;
-        dilutions = null;
     }
 
-    /**
-     * Sort the swatches for this test by their result values.
-     */
-    private void sort() {
-        Collections.sort(swatches, (c1, c2) -> Double.compare(c1.getValue(), (c2.getValue())));
+    public boolean getUseBackCase() {
+        return useBackCase == null ? false : useBackCase;
     }
 
-    public TestType getType() {
-        return testType;
-    }
-
-    public String getId() {
-        return uuid;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public List<Swatch> getSwatches() {
-        //ensure that swatches is always sorted
-        if (mIsDirty) {
-            mIsDirty = false;
-            sort();
-        }
-        return swatches;
-    }
-
-    public double getDilutionRequiredLevel() {
-        Swatch swatch = swatches.get(swatches.size() - 1);
-        return swatch.getValue() - RESULT_ERROR_MARGIN;
-    }
-
-    public void addSwatch(Swatch value) {
-        swatches.add(value);
-        mIsDirty = true;
-    }
-
-    public Swatch getSwatch(int position) {
-        return swatches.get(position);
-    }
-
-    private void addDilution(int dilution) {
-        dilutions.add(dilution);
-    }
-
-    public boolean getCanUseDilution() {
-        return dilutions.size() > 1;
-    }
-
-    /**
-     * Gets if this test type requires calibration.
-     *
-     * @return true if calibration required
-     */
-    public boolean getRequiresCalibration() {
-        return requiresCalibration;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    public void setRequiresCalibration(boolean value) {
-        requiresCalibration = value;
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean requiresCameraFlash() {
-        return testType == TestType.COLORIMETRIC_LIQUID;
-    }
-
-    public int getMonthsValid() {
-        return monthsValid;
-    }
-
-    public void setMonthsValid(int monthsValid) {
-        this.monthsValid = monthsValid;
-    }
-
-    public boolean hasDecimalPlace() {
-        return !allInteger;
-    }
-
-    public List<SubTest> getSubTests() {
-        return subTests;
-    }
-
-    public boolean isGroup() {
+    public boolean getIsGroup() {
         return isGroup;
     }
 
-    @SuppressWarnings("SameParameterValue")
-    public void setGroup(boolean group) {
-        isGroup = group;
+    public String getGroup() {
+        return group;
     }
 
-    public int getGroupName() {
-        return groupName;
+    public String getName() {
+        return name;
     }
 
-    public void setGroupName(@StringRes int groupName) {
-        this.groupName = groupName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getBatchNumber() {
-        return batchNumber;
+    public TestType getSubtype() {
+        return subtype;
     }
 
-    public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
+    public String getUuid() {
+        return uuid;
     }
 
-    public long getCalibrationDate() {
-        return calibrationDate;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setCalibrationDate(long calibrationDate) {
-        this.calibrationDate = calibrationDate;
+    public String getRanges() {
+        return ranges;
     }
 
-    public long getExpiryDate() {
-        return expiryDate;
+    public List<Integer> getDilutions() {
+        return dilutions;
     }
 
-    public void setExpiryDate(long expiryDate) {
-        this.expiryDate = expiryDate;
+    public String getMinMaxRange() {
+
+        if (results != null && results.size() > 0) {
+            StringBuilder minMaxRange = new StringBuilder();
+            for (Result result : results) {
+                if (result.getColors() != null && result.getColors().size() > 0) {
+                    int valueCount = result.getColors().size();
+                    if (minMaxRange.length() > 0) {
+                        minMaxRange.append(", ");
+                    }
+                    if (result.getColors().size() > 0) {
+                        minMaxRange.append(String.format(Locale.US, "%.0f - %.0f",
+                                result.getColors().get(0).getValue(),
+                                result.getColors().get(valueCount - 1).getValue()));
+                    }
+                    if (groupingType == GroupType.GROUP) {
+                        break;
+                    }
+                } else {
+                    if (ranges != null) {
+                        String[] rangeArray = ranges.split(",");
+                        if (rangeArray.length > 1) {
+                            return rangeArray[0].trim() + " - " + rangeArray[rangeArray.length - 1].trim();
+                        } else {
+                            return "";
+                        }
+                    } else {
+                        return "";
+                    }
+                }
+            }
+            return minMaxRange.toString();
+        }
+        return "";
     }
 
-    public String getCalibrationDateString() {
-        return new SimpleDateFormat(SensorConstants.DATE_TIME_FORMAT, Locale.US).format(calibrationDate);
-    }
-
-    public String getExpiryDateString() {
-        return new SimpleDateFormat(SensorConstants.DATE_FORMAT, Locale.US)
-                .format(Calendar.getInstance().getTime());
-    }
-
-    public boolean isUseGrayScale() {
-        return useGrayScale;
-    }
-
-    public void setUseGrayScale(boolean useGrayScale) {
-        this.useGrayScale = useGrayScale;
-    }
-
-    public int getHueTrend() {
-        return hueTrend;
-    }
-
-    public void setHueTrend(int hueTrend) {
-        this.hueTrend = hueTrend;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public double[] getRangeValues() {
-        return rangeValues.clone();
-    }
-
-    public String getResponseFormat() {
-        return responseFormat;
-    }
-
-    public void setResponseFormat(String responseFormat) {
-        this.responseFormat = responseFormat;
-    }
-
-    public boolean getIsDeprecated() {
-        return deprecated;
-    }
-
-    public void setIsDeprecated(boolean value) {
-        this.deprecated = value;
-    }
-
-    public JSONArray getInstructions() {
-        return instructions;
-    }
 
     public String getMd610Id() {
         return md610Id;
     }
 
-    public void setMd610Id(String md610Id) {
-        this.md610Id = md610Id;
+    public String getBrandUrl() {
+        return brandUrl;
     }
 
-    public String getSelectInstruction() {
-        return selectInstruction;
+    public GroupType getGroupingType() {
+        return groupingType;
     }
 
-    public void setSelectInstruction(String selectInstruction) {
-        this.selectInstruction = selectInstruction;
+    public Double getHeight() {
+        return height;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(uuid);
-        dest.writeString(unit);
-        dest.writeByte((byte) (requiresCalibration ? 1 : 0));
-        dest.writeByte((byte) (allInteger ? 1 : 0));
-        dest.writeByte((byte) (mIsDirty ? 1 : 0));
-        dest.writeInt(monthsValid);
-        dest.writeByte((byte) (isGroup ? 1 : 0));
-        dest.writeInt(groupName);
-        dest.writeString(batchNumber);
-        dest.writeLong(calibrationDate);
-        dest.writeLong(expiryDate);
-        dest.writeByte((byte) (useGrayScale ? 1 : 0));
-        dest.writeInt(hueTrend);
-        dest.writeDoubleArray(rangeValues);
-        dest.writeString(deviceId);
-        dest.writeString(responseFormat);
-        dest.writeByte((byte) (deprecated ? 1 : 0));
-        dest.writeString(md610Id);
-        dest.writeString(selectInstruction);
-    }
-
-    public JSONObject getReagent(int index) {
-        try {
-            if (reagents.get(index) != null) {
-                return reagents.getJSONObject(index);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public Serializable getSampleQuantity() {
-        return sampleQuantity;
-    }
-
-    public void setSampleQuantity(Serializable sampleQuantity) {
-        this.sampleQuantity = sampleQuantity;
+    public void setHeight(Double height) {
+        this.height = height;
     }
 
     public String getTitle() {
@@ -458,71 +355,206 @@ public class TestInfo implements Parcelable {
         this.title = title;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getSampleQuantity() {
+        return sampleQuantity;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public List<Instruction> getInstructions() {
+        return instructions;
     }
 
-    public String getSubtitleExtra() {
-        return subtitleExtra;
+    public void setInstructions(List<Instruction> instructions) {
+        this.instructions = instructions;
     }
 
-    public void setSubtitleExtra(String subtitleExtra) {
-        this.subtitleExtra = subtitleExtra;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageScale(String imageScale) {
-        this.imageScale = imageScale;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getImageScale() {
         return imageScale;
     }
 
-    public void setBrandUrl(String brandUrl) {
-        this.brandUrl = brandUrl;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public String getBrandUrl() {
-        return brandUrl;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeByte((byte) (isGroup ? 1 : 0));
+        parcel.writeString(group);
+        parcel.writeString(name);
+        parcel.writeString(subtype.name());
+        parcel.writeString(description);
+        parcel.writeStringList(tags);
+        parcel.writeTypedList(reagents);
+        parcel.writeString(uuid);
+        parcel.writeString(calibration);
+        parcel.writeTypedList(calibrations);
+        parcel.writeTypedList(swatches);
+        parcel.writeString(brand);
+        parcel.writeString(brandUrl);
+        parcel.writeString(String.valueOf(groupingType));
+        parcel.writeString(illuminant);
+        if (length == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(length);
+        }
+        if (height == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(height);
+        }
+        parcel.writeString(unit);
+        parcel.writeByte((byte) (hasImage == null ? 0 : hasImage ? 1 : 2));
+        parcel.writeByte((byte) (useBackCase == null ? 0 : useBackCase ? 1 : 2));
+        parcel.writeString(shortCode);
+        parcel.writeByte((byte) (calibrate == null ? 0 : calibrate ? 1 : 2));
+        parcel.writeString(ranges);
+        parcel.writeString(defaultColors);
+        if (hueTrend == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(hueTrend);
+        }
+        parcel.writeList(dilutions);
+        if (monthsValid == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(monthsValid);
+        }
+        parcel.writeString(title);
+        parcel.writeString(md610Id);
+        parcel.writeString(sampleQuantity);
+        parcel.writeTypedList(results);
+        parcel.writeTypedList(displayResults);
+        parcel.writeTypedList(instructions);
+        parcel.writeString(selectInstruction);
+        parcel.writeString(image);
+        parcel.writeString(imageScale);
+        if (numPatch == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeInt(numPatch);
+        }
+        parcel.writeString(deviceId);
+        parcel.writeString(responseFormat);
     }
 
-    public static class SubTest {
-        private final int id;
-        private final String desc;
-        private final String unit;
-        private final int timeDelay;
-        private final String md610Id;
-
-        SubTest(int id, String desc, String unit, int timeDelay, String md610Id) {
-            this.id = id;
-            this.desc = desc;
-            this.unit = unit;
-            this.timeDelay = timeDelay * 1000;
-            this.md610Id = md610Id;
+    public Reagent getReagent(int i) {
+        if (reagents != null && reagents.size() > i) {
+            return reagents.get(i);
+        } else {
+            return new Reagent();
         }
+    }
 
-        public int getId() {
-            return id;
-        }
+    public List<Result> Results() {
+        return results;
+    }
 
-        public String getDesc() {
-            return desc;
-        }
+    public boolean requiresCameraFlash() {
+        return false;
+    }
 
-        public String getUnit() {
-            return unit;
-        }
+    public String getSelectInstruction() {
+        return selectInstruction;
+    }
 
-        public int getTimeDelay() {
-            return timeDelay;
-        }
+    public double getStripLength() {
+        return length;
+    }
 
-        public String getMd610Id() {
-            return md610Id;
+    public List<Calibration> getCalibrations() {
+        return calibrations;
+    }
+
+    public void setCalibrations(List<Calibration> calibrations) {
+        this.calibrations = calibrations;
+        this.swatches.clear();
+        for (Calibration calibration : calibrations) {
+            Swatch swatch = new Swatch(calibration.value, calibration.color, Color.TRANSPARENT);
+            swatches.add(swatch);
         }
+        swatches = SwatchHelper.generateGradient(swatches, ColorUtil.ColorModel.RGB);
+
+//
+//        if (results.get(0).getColors() != null) {
+//            for (int i = 0; i < results.get(0).getColors().size(); i++) {
+//
+//                Swatch swatch = new Swatch((results.get(0).getColors().get(i).getValue() * 10) / 10f,
+//                        Color.TRANSPARENT, Color.TRANSPARENT);
+//
+//                swatches.add(swatch);
+//            }
+//        }
+//
+//
+//        for (Swatch swatch :
+//                swatches) {
+//            swatch.setColor(calibrations.hashCode());
+//        }
+    }
+
+    public int getDilution() {
+        return dilution;
+    }
+
+    public void setDilution(int dilution) {
+        if (dilution < 1) {
+            dilution = 1;
+        }
+        this.dilution = dilution;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public String getResponseFormat() {
+        return responseFormat;
+    }
+
+    public List<Swatch> getSwatches() {
+        return swatches;
+    }
+
+    public void setSwatches(List<Swatch> swatches) {
+        this.swatches = swatches;
+    }
+
+    public Integer getMonthsValid() {
+        return monthsValid;
+    }
+
+    public void setMonthsValid(Integer monthsValid) {
+        this.monthsValid = monthsValid;
+    }
+
+    public Integer getHueTrend() {
+        return hueTrend;
+    }
+
+    public Boolean getHasImage() {
+        return hasImage;
+    }
+
+    public double getMaxDilution() {
+        return dilutions.get(dilutions.size() - 1);
+    }
+
+    public List<Result> getDisplayResults() {
+        return displayResults;
     }
 }

@@ -80,7 +80,7 @@ public final class ImageUtil {
      * @return the cropped bitmap
      */
     @SuppressWarnings("SameParameterValue")
-    public static Bitmap getCroppedBitmap(@NonNull Bitmap bitmap, int length, boolean detectBackdrop) {
+    public static Bitmap getCroppedBitmap(@NonNull Bitmap bitmap, int length) {
 
         int[] pixels = new int[length * length];
 
@@ -89,7 +89,6 @@ public final class ImageUtil {
         Point point;
 
         point = new Point(centerX, centerY);
-
         bitmap.getPixels(pixels, 0, length,
                 point.x - (length / 2),
                 point.y - (length / 2),

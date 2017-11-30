@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly.
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="testInfoViewModel"
+            type="org.akvo.caddisfly.viewmodel.TestInfoViewModel" />
+
+        <variable
+            name="binding"
+            type="org.akvo.caddisfly.ui.BindingAdapters" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/layoutTitleBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:orientation="vertical"
+            android:paddingBottom="20dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="20dp"
+            app:background="@{testInfoViewModel.test.name}"
+            tools:background="?attr/colorPrimary">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@{testInfoViewModel.test.name}"
+                android:textColor="#fff"
+                android:textSize="30sp"
+                tools:text="Contaminant" />
+
+            <TextView
+                android:id="@+id/textSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#d6f6fdf6"
+                android:textSize="16sp"
+                tools:text="Batch Name Number" />
+
+            <TextView
+                android:id="@+id/textSubtitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#d6f6fdf6"
+                android:textSize="16sp"
+                tools:text="22-Dec-2015" />
+
+            <TextView
+                android:id="@+id/textSubtitle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#d6f6fdf6"
+                android:textSize="16sp"
+                tools:text="22-Dec-2015" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabEditCalibration"
+            style="@style/floating_action_button_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/layoutTitleBar"
+            android:layout_alignParentEnd="true"
+            android:onClick="onEditCalibration"
+            android:src="@android:drawable/ic_menu_edit"
+            app:backgroundTint="?primaryButtonColor"
+            app:borderWidth="0dp"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/textCalibrationError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutTitleBar"
+            android:background="@color/error_background"
+            android:drawableStart="@drawable/ic_warning_black_24dp"
+            android:gravity="center_vertical"
+            android:padding="6dp"
+            android:textSize="16sp"
+            app:checkValidity="@{testInfoViewModel.test}" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/calibrationList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textCalibrationError"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/fragment_item" />
+
+        <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/buttonStart"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_margin="@dimen/fab_margin"-->
+            <!--android:onClick="runTestClick"-->
+            <!--android:visibility="visible" />-->
+    </RelativeLayout>
+
+</layout>

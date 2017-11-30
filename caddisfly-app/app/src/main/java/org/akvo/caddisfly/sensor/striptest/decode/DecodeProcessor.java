@@ -5,9 +5,9 @@ import android.os.HandlerThread;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.BitMatrix;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.BitMatrixCreator;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPattern;
@@ -393,7 +393,7 @@ public class DecodeProcessor {
         float[] stripArea = StriptestHandler.getCalCardData().getStripArea();
         DecodeData decodeData = StriptestHandler.getDecodeData();
         PerspectiveTransform cardToImageTransform = decodeData.getCardToImageTransform();
-        StripTest.Brand brand = decodeData.getStripBrand();
+        TestInfo testInfo = decodeData.getTestInfo();
 
         float[] illum = decodeData.getIllumData();
         RealMatrix calMatrix = decodeData.getCalMatrix();
@@ -517,7 +517,7 @@ public class DecodeProcessor {
 
         // get out strip
         float ratioPixelPerMm = widthPixels / widthMm;
-        float[][][] result = ImageUtils.detectStrip(XYZ, widthPixels, heightPixels, brand, ratioPixelPerMm);
+        float[][][] result = ImageUtils.detectStrip(XYZ, widthPixels, heightPixels, testInfo.getStripLength(), ratioPixelPerMm);
 
         // store image in decodeData object
         // NOTE: the image has been transposed in the detectStrip method, so here the rows

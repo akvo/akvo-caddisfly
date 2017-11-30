@@ -26,6 +26,7 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.TestConfigHelper;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
@@ -80,7 +81,7 @@ public class BluetoothResultFragment extends Fragment {
             }
         });
 
-        if (testInfo.getInstructions() == null || testInfo.getInstructions().length() < 1) {
+        if (testInfo.getInstructions() == null || testInfo.getInstructions().size() < 1) {
             buttonInstructions.setVisibility(View.GONE);
         }
 
@@ -114,7 +115,7 @@ public class BluetoothResultFragment extends Fragment {
 
 
             JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo1,
-                    results, null, -1, "", null);
+                    results, null, -1, "");
             resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
             getActivity().setResult(Activity.RESULT_OK, resultIntent);
@@ -261,7 +262,8 @@ public class BluetoothResultFragment extends Fragment {
                                         //noinspection ResultOfMethodCallIgnored
                                         Double.parseDouble(ranges[0]);
                                     } catch (Exception e) {
-                                        ranges[0] = String.valueOf(testInfo.getRangeValues()[0]);
+                                        //todo fix this
+//                                        ranges[0] = String.valueOf(testInfo.getRangeValues()[0]);
                                     }
                                     result = "<" + ranges[0];
                                 } else if (result.equalsIgnoreCase("overrange")) {
@@ -269,7 +271,8 @@ public class BluetoothResultFragment extends Fragment {
                                         //noinspection ResultOfMethodCallIgnored
                                         Double.parseDouble(ranges[1]);
                                     } catch (Exception e) {
-                                        ranges[1] = String.valueOf(testInfo.getRangeValues()[1]);
+                                        //todo fix this
+//                                        ranges[1] = String.valueOf(testInfo.getRangeValues()[1]);
                                     }
                                     result = ">" + ranges[1];
                                 } else if (result.equalsIgnoreCase("???")) {
@@ -282,24 +285,24 @@ public class BluetoothResultFragment extends Fragment {
                             }
                         }
 
-                        if (testInfo.getSubTests().size() > 1) {
+                        if (testInfo.Results().size() > 1) {
 
-                            for (TestInfo.SubTest subTest : testInfo.getSubTests()) {
+                            for (Result subTest : testInfo.Results()) {
                                 if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
 
                                     if (subTest.getId() == 1) {
                                         layoutResult1.setVisibility(View.VISIBLE);
-                                        textName1.setText(subTest.getDesc());
+                                        textName1.setText(subTest.getName());
                                         textUnit1.setText(subTest.getUnit());
                                         textResult1.setText(result);
                                     } else if (subTest.getId() == 2) {
                                         layoutResult2.setVisibility(View.VISIBLE);
-                                        textName2.setText(subTest.getDesc());
+                                        textName2.setText(subTest.getName());
                                         textUnit2.setText(subTest.getUnit());
                                         textResult2.setText(result);
                                     } else if (subTest.getId() == 3) {
                                         layoutResult3.setVisibility(View.VISIBLE);
-                                        textName3.setText(subTest.getDesc());
+                                        textName3.setText(subTest.getName());
                                         textUnit3.setText(subTest.getUnit());
                                         textResult3.setText(result);
                                     }
@@ -309,15 +312,15 @@ public class BluetoothResultFragment extends Fragment {
                             }
                         } else {
                             layoutResult1.setVisibility(View.VISIBLE);
-                            textName1.setText(testInfo.getSubTests().get(0).getDesc());
+                            textName1.setText(testInfo.Results().get(0).getName());
                             textResult1.setText(result);
-                            textUnit1.setText(testInfo.getSubTests().get(0).getUnit());
+                            textUnit1.setText(testInfo.Results().get(0).getName());
                             results.put(1, result);
                         }
 
                     }
 
-                    if (results.size() < 1 || resultCount != testInfo.getSubTests().size()) {
+                    if (results.size() < 1 || resultCount != testInfo.Results().size()) {
                         dataOk = false;
                     }
                     break;

@@ -1,7 +1,6 @@
 package org.akvo.caddisfly.sensor.striptest.utils;
 
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPattern;
 import org.apache.commons.math3.fitting.PolynomialCurveFitter;
 import org.apache.commons.math3.fitting.WeightedObservedPoint;
@@ -53,7 +52,7 @@ public class ImageUtils {
     // returns cut-out and rotated resulting strip as mat
     // TODO handle no-strip case
     @SuppressWarnings("UnusedParameters")
-    public static float[][][] detectStrip(float[][][] image, int width, int height, StripTest.Brand brand, double ratioPixelPerMm) {
+    public static float[][][] detectStrip(float[][][] image, int width, int height, double stripLength, double ratioPixelPerMm) {
         // we need to check if there is a strip on the black area. We
         // combine this with computing a first approximation of line through length of the strip,
         // as we go through all the points anyway.
@@ -203,8 +202,7 @@ public class ImageUtils {
         }
 
         //use known length of strip to determine right side
-        double stripLengthMm = brand.getStripLength();
-        double posRight = posLeft + (stripLengthMm * ratioPixelPerMm);
+        double posRight = posLeft + (stripLength * ratioPixelPerMm);
 
         found = false;
 
@@ -222,7 +220,7 @@ public class ImageUtils {
         // then ignore the first method above and determine the left position by second method only
         if (Math.abs(posRightTemp - posRight) > 3) {
             // use known length of strip to determine left side
-            posLeft = posRightTemp - (stripLengthMm * ratioPixelPerMm);
+            posLeft = posRightTemp - (stripLength * ratioPixelPerMm);
             posRight = posRightTemp;
         }
 

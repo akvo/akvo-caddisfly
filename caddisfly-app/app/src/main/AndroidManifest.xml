@@ -65,7 +65,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ExternalActionActivity">
+        <activity
+            android:name=".ui.TestActivity"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="org.akvo.flow.action.externalsource" />
 
@@ -82,6 +84,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.TestListActivity"
+            android:screenOrientation="nosensor" />
+        <activity
             android:name=".preference.SettingsActivity"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="nosensor" />
@@ -90,38 +95,55 @@
             android:noHistory="true"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
+
         <activity
-            android:name=".sensor.usb.SensorTypeListActivity"
+            android:name=".ui.DiagnosticInfoActivity"
+            android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
+
+        <!--USB Sensor-->
+
         <activity
             android:name=".sensor.usb.SensorActivity"
             android:screenOrientation="nosensor" />
+
+        <!--end USB Sensor-->
+
+        <!-- StripTest -->
+
         <activity
-            android:name=".sensor.liquid.ColorimetryLiquidActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:parentActivityName=".sensor.liquid.CalibrateListActivity"
+            android:name=".sensor.striptest.ui.StripMeasureActivity"
             android:screenOrientation="nosensor" />
+
         <activity
-            android:name=".sensor.liquid.CalibrateListActivity"
-            android:parentActivityName=".ui.TypeListActivity"
-            android:screenOrientation="nosensor"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".sensor.liquid.DiagnosticSwatchActivity"
-            android:parentActivityName=".sensor.liquid.CalibrateListActivity"
+            android:name=".sensor.striptest.ui.ResultActivity"
             android:screenOrientation="nosensor" />
+
+        <!-- end StripTest -->
+
+
+        <!--Bluetooth-->
+
         <activity
-            android:name=".sensor.usb.CalibrateSensorActivity"
-            android:parentActivityName=".ui.TypeListActivity"
-            android:screenOrientation="nosensor"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
-        <activity
-            android:name=".sensor.liquid.SelectDilutionActivity"
+            android:name=".sensor.bluetooth.DeviceControlActivity"
             android:screenOrientation="nosensor" />
+
         <activity
-            android:name=".ui.TypeListActivity"
-            android:configChanges="keyboardHidden|orientation"
+            android:name=".sensor.bluetooth.DeviceScanActivity"
             android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".sensor.liquid.ChamberTestActivity"
+            android:screenOrientation="nosensor" />
+
+        <service
+            android:name=".sensor.bluetooth.BluetoothLeService"
+            android:enabled="true" />
+
+        <!--end Bluetooth-->
+
+        <!--USB-->
+
         <activity
             android:name=".sensor.UsbConnectionActivity"
             android:autoRemoveFromRecents="true"
@@ -135,45 +157,12 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
-        <activity
-            android:name=".ui.DiagnosticInfoActivity"
-            android:parentActivityName=".preference.SettingsActivity"
-            android:screenOrientation="nosensor" />
 
-        <!-- StripTest -->
-        <activity
-            android:name=".sensor.striptest.ui.StripMeasureActivity"
-            android:screenOrientation="nosensor" />
-        <activity android:name=".sensor.striptest.ui.TestTypeListActivity"
-            android:screenOrientation="nosensor"/>
-        <!-- end StripTest -->
-
-        <activity
-            android:name=".sensor.bluetooth.BluetoothTypeListActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.bluetooth.DeviceScanActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.bluetooth.DeviceControlActivity"
-            android:screenOrientation="nosensor" />
-
-        <activity
-            android:name=".sensor.cbt.TestActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.liquid.ColorimetryTestActivity"
-            android:screenOrientation="nosensor" />
-
-        <activity android:name=".sensor.BrandInfoActivity"
-            android:screenOrientation="nosensor"/>
-
-        <service
-            android:name=".sensor.bluetooth.BluetoothLeService"
-            android:enabled="true" />
         <service
             android:name=".usb.UsbService"
             android:enabled="true" />
+
+        <!--end USB-->
 
         <provider
             android:name="android.support.v4.content.FileProvider"

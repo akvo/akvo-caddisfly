@@ -19,6 +19,8 @@
 
 package org.akvo.caddisfly.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * The different types of testing methods
  */
@@ -27,28 +29,33 @@ public enum TestType {
      * Liquid reagent is mixed with sample and color is analysed from the resulting
      * color change in the solution
      */
+    @SerializedName("backcase")
     COLORIMETRIC_LIQUID,
 
     /**
      * Strip paper is dipped into the sample and color is analysed from the resulting
      * color change on the strip paper
      */
+    @SerializedName("striptest")
     COLORIMETRIC_STRIP,
 
     /**
      * External sensors connected to the phone/device
      */
+    @SerializedName("sensor")
     SENSOR,
 
     /**
      * External bluetooth testing device
      */
+    @SerializedName("bluetooth")
     BLUETOOTH,
 
     /**
-     * Compartment Bag Test
+     * Aquagenx CBT
      */
-    CBT
+    @SerializedName("cbt")
+    CBT,
 
 }
 

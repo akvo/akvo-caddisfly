@@ -48,10 +48,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="40dp"
-                android:adjustViewBounds="true"
+                android:adjustViewBounds="false"
                 android:contentDescription="@null"
-                android:scaleType="centerCrop"
-                app:imageUrl="@{testInfo.brand}" />
+                android:cropToPadding="false"
+                android:scaleType="fitCenter"
+                app:imageScale="@{testInfo.imageScale}"
+                app:imageUrl="@{testInfo.image == null ? testInfo.brand : testInfo.image}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -103,7 +105,7 @@
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="@{testInfo.instructions == null || testInfo.instructions.length &lt; 1 ? View.INVISIBLE : View.VISIBLE}" />
+                android:visibility="@{testInfo.instructions == null || testInfo.instructions.size() &lt; 1 ? View.INVISIBLE : View.VISIBLE}" />
 
         </LinearLayout>
     </LinearLayout>

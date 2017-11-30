@@ -39,8 +39,8 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.util.DisplayMetrics;
 
-import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.hamcrest.Matchers;
 

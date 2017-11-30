@@ -2,6 +2,7 @@ package org.akvo.caddisfly.sensor.striptest.models;
 
 import android.media.Image;
 
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPattern;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPatternInfo;
@@ -40,9 +41,9 @@ public class DecodeData {
     private Map<String, int[]> calibrationPatchRGB;
     private float[] illumData;
     private RealMatrix calMatrix;
-    private StripTest.Brand stripBrand;
     private Map<Integer, float[][][]> stripImageMap;
     private int stripPixelWidth;
+    private TestInfo testInfo;
 
     public DecodeData() {
         this.versionNumberMap = new HashMap<>();
@@ -253,14 +254,13 @@ public class DecodeData {
         this.calMatrix = calMatrix;
     }
 
-    public StripTest.Brand getStripBrand() {
-        return stripBrand;
+    public TestInfo getTestInfo() {
+        return testInfo;
     }
 
-    public void setStripBrand(StripTest.Brand stripBrand) {
-        this.stripBrand = stripBrand;
+    public void setTestInfo(TestInfo testInfo) {
+        this.testInfo = testInfo;
     }
-
 
     public int getStripPixelWidth() {
         return stripPixelWidth;

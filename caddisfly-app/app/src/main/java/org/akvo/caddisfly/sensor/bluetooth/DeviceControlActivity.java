@@ -47,6 +47,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.ui.InstructionFragment;
 import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.List;
@@ -332,7 +333,6 @@ public class DeviceControlActivity extends BaseActivity
             showSelectTestView();
 
         } else {
-            mInstructionFragment.returnToFirstPage();
             showInstructionsView();
         }
     }

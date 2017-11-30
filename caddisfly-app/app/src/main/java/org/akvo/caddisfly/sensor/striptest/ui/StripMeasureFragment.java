@@ -65,7 +65,7 @@ public class StripMeasureFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.v2fragment_strip_measure, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_strip_measure, container, false);
         exposureView = rootView.findViewById(R.id.quality_brightness);
 
         return rootView;

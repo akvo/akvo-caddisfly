@@ -25,7 +25,10 @@ import android.graphics.drawable.Drawable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.Constants;
+import org.akvo.caddisfly.helper.FileHelper;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
@@ -40,8 +43,25 @@ public final class AssetsManager {
     private static AssetsManager assetsManager;
     private final AssetManager manager;
 
-    private AssetsManager() {
+    private String json;
+    private String experimentalJson;
+    private String customJson;
+
+    public AssetsManager() {
         this.manager = CaddisflyApp.getApp().getApplicationContext().getAssets();
+
+        json = loadJSONFromAsset(Constants.TESTS_META_FILENAME);
+
+//        experimentalJson = loadJSONFromAsset("experimental_tests.json");
+
+//        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG),
+//                Constants.TESTS_META_FILENAME);
+//        experimentalJson = FileUtil.loadTextFromFile(file);
+
+        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
+                Constants.TESTS_META_FILENAME);
+        customJson = FileUtil.loadTextFromFile(file);
+
     }
 
     public static AssetsManager getInstance() {
@@ -65,6 +85,32 @@ public final class AssetsManager {
         }
         return null;
     }
+
+//    /**
+//     * Read file from asset directory
+//     *
+//     * @param context  current activity
+//     * @param fileName file to read
+//     * @return content of the file, string format
+//     */
+//    private String readFromAsset(final Context context, final String fileName) {
+//        String text = "";
+//        try {
+//            InputStream is = context.getAssets().open(fileName);
+//
+//            int size = is.available();
+//
+//            // Read the entire asset into a local byte buffer.
+//            byte[] buffer = new byte[size];
+//            //noinspection ResultOfMethodCallIgnored
+//            is.read(buffer);
+//            is.close();
+//            text = new String(buffer, "UTF-8");
+//        } catch (IOException e) {
+//            Timber.e(e);
+//        }
+//        return text;
+//    }
 
     public String loadJSONFromAsset(String fileName) {
         String json;
@@ -95,4 +141,17 @@ public final class AssetsManager {
         }
         return json;
     }
+
+    public String getJson() {
+        return json;
+    }
+
+    public String getExperimentalJson() {
+        return experimentalJson;
+    }
+
+    public String getCustomJson() {
+        return customJson;
+    }
+
 }

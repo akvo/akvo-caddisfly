@@ -1,6 +1,7 @@
 package org.akvo.caddisfly.sensor.striptest.models;
 
-import org.akvo.caddisfly.sensor.striptest.models.StripTest.Brand.Patch;
+
+import org.akvo.caddisfly.model.Result;
 
 /**
  * Created by markwestra on 03/08/2017
@@ -15,7 +16,7 @@ public class PatchResult {
     private String bracket;
     private int index;
     private String unit;
-    private Patch patch;
+    private Result patch;
     private float[][][] image;
 
     // constructor
@@ -87,11 +88,11 @@ public class PatchResult {
         this.unit = unit;
     }
 
-    public Patch getPatch() {
+    public Result getPatch() {
         return patch;
     }
 
-    public void setPatch(Patch patch) {
+    public void setPatch(Result patch) {
         this.patch = patch;
     }
 

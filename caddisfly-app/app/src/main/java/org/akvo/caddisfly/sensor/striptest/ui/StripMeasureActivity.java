@@ -29,10 +29,12 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
+import org.akvo.caddisfly.model.Result;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraPreview;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
 import org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView;
@@ -66,13 +68,10 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
     private FrameLayout previewLayout;
     private SoundPoolPlayer sound;
     private WeakReference<StripMeasureActivity> mActivity;
-    //    private int previewFormat = -1;
-//    private int previewWidth = 0;
-//    private int previewHeight = 0;
-    private String uuid;
+    private TestInfo testInfo;
     private StripMeasureFragment stripMeasureFragment;
     private InstructionFragment instructionsFragment;
-    private List<StripTest.Brand.Patch> patches;
+    private List<Result> patches;
     // CameraOperationsManager wraps the camera API
     private CameraOperationsManager mCameraOpsManager;
 
@@ -86,7 +85,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
         sound = new SoundPoolPlayer(this);
 
-        setContentView(R.layout.v2activity_strip_measure);
+        setContentView(R.layout.activity_strip_measure);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -101,12 +100,12 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
     @Override
     public void onResume() {
         super.onResume();
-        uuid = getIntent().getStringExtra(Constants.UUID);
 
-        StripTest stripTest = new StripTest();
-        if (uuid != null && stripTest.getBrand(uuid) != null) {
-            setTitle(stripTest.getBrand(uuid).getName());
-            patches = stripTest.getBrand(uuid).getPatches();
+        testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+
+        if (testInfo != null && testInfo.getUuid() != null) {
+            setTitle(testInfo.getName());
+            patches = testInfo.Results();
         } else {
             finish();
         }
@@ -121,7 +120,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         // The camera and the decoder get their own thread.
         if (mStriptestHandler == null) {
             mStriptestHandler = new StriptestHandler(this, getApplicationContext(),
-                    mCameraOpsManager, mFinderPatternIndicatorView, stripTest.getBrand(uuid));
+                    mCameraOpsManager, mFinderPatternIndicatorView, testInfo);
         }
 
         mCameraOpsManager.setStriptestHandler(mStriptestHandler);
@@ -132,7 +131,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         Set<Integer> timeLapseSet = new HashSet<>();
         double currentPatch = -1;
         for (int i = 0; i < patches.size(); i++) {
-            double nextPatch = patches.get(i).getTimeLapse();
+            double nextPatch = patches.get(i).getTimeDelay();
             if (nextPatch - currentPatch > 0.001) {
                 timeLapseSet.add((int) Math.round(nextPatch));
                 currentPatch = nextPatch;
@@ -188,7 +187,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
     @Override
     public void moveToInstructions() {
-        instructionsFragment = InstructionFragment.newInstance(uuid);
+        instructionsFragment = InstructionFragment.newInstance(testInfo);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.layout_instructionLayout, instructionsFragment)
                 .commit();

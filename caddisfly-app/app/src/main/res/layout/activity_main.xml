@@ -16,155 +16,178 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
-
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/coordinatorLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?primaryBackgroundStyle"
-        android:orientation="vertical">
-
-        <include layout="@layout/toolbar" />
+        tools:context=".ui.MainActivity">
 
         <LinearLayout
-            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="1dp">
+            android:background="?primaryBackgroundStyle"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonSensors"
-                style="@style/ListButton"
+            <include layout="@layout/toolbar" />
+
+            <LinearLayout
+                android:id="@+id/mainLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="@string/sensors"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="1dp">
 
-            <Button
-                android:id="@+id/buttonStripTest"
-                style="@style/ListButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="@string/stripTest"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
-
-            <Button
-                android:id="@+id/buttonBluetooth"
-                style="@style/ListButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="@string/md610_photometer"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
-
-            <Button
-                android:id="@+id/buttonCbt"
-                style="@style/ListButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="@string/cbt"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
-
-            <Button
-                android:id="@+id/buttonCalibrate"
-                style="@style/ListButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|start"
-                android:minHeight="80dp"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
-                android:text="@string/calibrate"
-                android:textAlignment="viewStart"
-                android:textColor="?longButtonText"
-                android:theme="?longButtonStyle" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textVersionExpiry"
+                <Button
+                    android:id="@+id/buttonSensors"
+                    style="@style/ListButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="10dp"
-                    android:ellipsize="none"
-                    android:gravity="center_horizontal"
-                    android:singleLine="true"
-                    android:textAllCaps="true"
-                    android:textColor="#d8001c29"
-                    android:textSize="12dp"
-                    tools:ignore="SpUsage"
-                    tools:text="Version expires: 15 Jan 2018" />
-            </RelativeLayout>
+                    android:gravity="center_vertical|start"
+                    android:minHeight="80dp"
+                    android:onClick="onSensorsClick"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:text="@string/sensors"
+                    android:textAlignment="viewStart"
+                    android:textColor="?longButtonText"
+                    android:theme="?longButtonStyle" />
+
+                <!--<Button-->
+                <!--android:id="@+id/buttonMeters"-->
+                <!--style="@style/ListButton"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center_vertical|start"-->
+                <!--android:minHeight="80dp"-->
+                <!--android:onClick="onMetersClick"-->
+                <!--android:paddingEnd="16dp"-->
+                <!--android:paddingStart="16dp"-->
+                <!--android:text="@string/meters"-->
+                <!--android:textAlignment="viewStart"-->
+                <!--android:textColor="?longButtonText"-->
+                <!--android:theme="?longButtonStyle" />-->
+
+                <Button
+                    android:id="@+id/buttonStripTest"
+                    style="@style/ListButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+                    android:minHeight="80dp"
+                    android:onClick="onStripTestsClick"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:text="@string/stripTest"
+                    android:textAlignment="viewStart"
+                    android:textColor="?longButtonText"
+                    android:theme="?longButtonStyle" />
+
+                <Button
+                    android:id="@+id/buttonBluetooth"
+                    style="@style/ListButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+                    android:minHeight="80dp"
+                    android:onClick="onBluetoothDeviceClick"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:text="@string/md610_photometer"
+                    android:textAlignment="viewStart"
+                    android:textColor="?longButtonText"
+                    android:theme="?longButtonStyle" />
+
+                <Button
+                    android:id="@+id/buttonCbt"
+                    style="@style/ListButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+                    android:minHeight="80dp"
+                    android:onClick="onCbtClick"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:text="@string/cbt"
+                    android:textAlignment="viewStart"
+                    android:textColor="?longButtonText"
+                    android:theme="?longButtonStyle" />
+
+                <Button
+                    android:id="@+id/buttonCalibrate"
+                    style="@style/ListButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|start"
+                    android:minHeight="80dp"
+                    android:onClick="onCalibrateClick"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:text="@string/calibrate"
+                    android:textAlignment="viewStart"
+                    android:textColor="?longButtonText"
+                    android:theme="?longButtonStyle" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/textVersionExpiry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="10dp"
+                        android:ellipsize="none"
+                        android:gravity="center_horizontal"
+                        android:singleLine="true"
+                        android:textAllCaps="true"
+                        android:textColor="#d8001c29"
+                        android:textSize="12dp"
+                        tools:ignore="SpUsage"
+                        tools:text="Version expires: 15 Jan 2018" />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/layoutDiagnostics"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:visibility="visible">
-
-        <TextView
-            android:id="@+id/textDiagnostics"
+        <RelativeLayout
+            android:id="@+id/layoutDiagnostics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/text_margin_bottom"
-            android:layout_marginStart="16dp"
-            android:ellipsize="none"
-            android:gravity="start"
-            android:singleLine="true"
-            android:text="@string/diagnostics"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#2a01a2bc"
-            android:textSize="46dp"
-            tools:ignore="SpUsage" />
+            android:paddingBottom="16dp"
+            android:visibility="visible">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fabDisableDiagnostics"
-            style="@style/floating_action_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textDiagnostics"
-            android:layout_alignParentEnd="true"
-            android:src="@android:drawable/ic_menu_revert"
-            app:backgroundTint="@color/diagnostic"
-            tools:ignore="RelativeOverlap" />
-    </RelativeLayout>
-</android.support.design.widget.CoordinatorLayout>
+            <TextView
+                android:id="@+id/textDiagnostics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/text_margin_bottom"
+                android:layout_marginStart="16dp"
+                android:ellipsize="none"
+                android:gravity="start"
+                android:singleLine="true"
+                android:text="@string/diagnostics"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#2a01a2bc"
+                android:textSize="46dp"
+                tools:ignore="SpUsage" />
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabDisableDiagnostics"
+                style="@style/floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textDiagnostics"
+                android:layout_alignParentEnd="true"
+                android:onClick="onDisableDiagnosticsClick"
+                android:src="@android:drawable/ic_menu_revert"
+                app:backgroundTint="@color/diagnostic"
+                tools:ignore="RelativeOverlap" />
+        </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

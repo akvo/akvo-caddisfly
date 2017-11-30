@@ -40,7 +40,6 @@ import android.view.View;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.widget.CenteredImageSpan;
-import org.json.JSONException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -79,7 +78,7 @@ public final class StringUtil {
         Spanned spanned = StringUtil.getStringResourceByName(context, text);
         builder.append(spanned);
 
-        Matcher m = Pattern.compile("\\[\\*(\\w+)\\*]").matcher(builder);
+        Matcher m = Pattern.compile("\\(\\*(\\w+)\\*\\)").matcher(builder);
 
         while (m.find()) {
 
@@ -96,36 +95,26 @@ public final class StringUtil {
         for (int i = 1; i < 5; i++) {
             Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
             while (m1.find()) {
-                try {
-                    String name = testInfo.getReagent(i - 1).getString("name");
-                    if (testInfo.getReagent(i - 1).has("code")) {
-                        String code = testInfo.getReagent(i - 1).getString("code");
-                        if (!code.isEmpty()) {
-                            name = String.format("%s (%s)", name, code);
-                        }
-                    }
-                    builder.replace(m1.start(), m1.end(), name);
-                } catch (JSONException e) {
-                    throw new IllegalStateException("Reagent error: " + e.getMessage());
+                String name = testInfo.getReagent(i - 1).name;
+                String code = testInfo.getReagent(i - 1).code;
+                if (!code.isEmpty()) {
+                    name = String.format("%s (%s)", name, code);
                 }
+                builder.replace(m1.start(), m1.end(), name);
             }
         }
 
         // Set sample quantity in the string
         Matcher m1 = Pattern.compile("%sampleQuantity").matcher(builder);
         while (m1.find()) {
-            builder.replace(m1.start(), m1.end(), testInfo.getSampleQuantity().toString());
+            builder.replace(m1.start(), m1.end(), testInfo.getSampleQuantity());
         }
 
         // Set reaction time in the string
         for (int i = 1; i < 5; i++) {
             Matcher m2 = Pattern.compile("%reactionTime" + i).matcher(builder);
             while (m2.find()) {
-                try {
-                    builder.replace(m2.start(), m2.end(), testInfo.getReagent(i - 1).getString("reactionTime"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                builder.replace(m2.start(), m2.end(), testInfo.getReagent(i - 1).reactionTime.toString());
             }
         }
 
@@ -172,7 +161,7 @@ public final class StringUtil {
     public static String convertToTags(String text) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < text.length(); i++) {
-            result.append("[*").append(text.charAt(i)).append("*]");
+            result.append("(*").append(text.charAt(i)).append("*)");
         }
         return result.toString();
     }

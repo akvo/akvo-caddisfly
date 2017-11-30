@@ -20,7 +20,79 @@
 
 <resources>
 
-    <string name="fill_vial_24_with_10ml_sample_zero">Remplissez le flacon de (24 mm Ø) avec <b>10 ml de votre échantillon d\'eau</b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le dans le tube. Alignez les flèches et appuyez sur [*zero*] pour effectuer le <b>test zéro</b></string>
+    <string name="select_test_instruction"><![CDATA[Appuyez sur * (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test, puis appuyez sur (*enter*)]]></string>
+    <string name="select_diff_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test et appuyez sur (*enter*). Sélectionnez <b>\'diff\'</b> puis appuyez sur (*enter*)]]></string>
+    <string name="select_free_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test (*enter*). sélectionnez <b>\'gratuit\'</b> puis appuyez sur (*enter*)]]></string>
+    <string name="select_Cr_VI_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test (*enter*). Sélectionnez <b>\'Cr(VI)\'</b> puis appuyez sur (*enter*)]]></string>
+    <string name="select_Cr_III_VI_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test. Sélectionnez <b>\'Cr(III+VI)\'</b> puis appuyez sur (*enter*)]]></string>
+    <string name="fill_vial_10_with_5ml_sample_zero">Remplissez le flacon de (10 mm Ø) avec <b>5 ml de votre échantillon d\'eau</b>, essuyez l\'extérieur du flacon,maintenez le capuchon du flacon et mettez le dans la chambre de l\'appareil. Alignez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="fill_vial_16_with_10ml_sample">Remplissez un flacon propre de (16 mm Ø) avec <b>10 ml d\'échantillon d\'eau</b>.</string>
+    <string name="fill_2nd_vial_16_with_10ml_sample">Remplissez un deuxième flacon propre de (16 mm Ø) avec <b>10 ml de l\'échantillon d\'eau</b>.</string>
+    <string name="fill_vial_24_with_10ml_sample_zero">Remplissez le flacon de (24 mm Ø) avec <b>10 ml de votre échantillon d\'eau</b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le dans le tube. Alignez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero">Remplissez le flacon de (24 mm Ø) avec <b>1 ml de votre échantillon  d\'eau </b> et <b>9 ml d\'eau déminéralisée</b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le flacon dans la chambre. Aligner le tube dans la chambre de l\'appareil en tenant compte de la flèche marquée et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="fill_vial_24_with_10ml_deionized_water">Remplissez un flacon propre de (24 mm Ø) avec <b>10 ml d\'eau déminéralisée (celui-ci est la cuvette de calibrage)</b>.</string>
+    <string name="fill_vial_24_with_10ml_sample">Remplissez un autre flacon propre de (24 mm Ø) avec <b>10 ml de l\'échantillon d\'eau (celui-ci est l\'échantillon)</b></string>
+    <string name="add_water_till_10ml">Ajoutez l\'échantillon d\'eau jusqu\'au trait de 10 ml marqué sur le flacon</string>
+    <string name="add_sample_exact">Ajoutez <b>exactement %sampleQuantity d\'échantillon d\'eau</b> au flacon préparé. Avertissement: Le flacon doit être rempli jusqu\'au sommet!</string>
     <string name="remove_vial">Rétirez le tube d\'echantillon de la chambre.</string>
+    <string name="remove_vial_leave_drops">Rétirez le tube de la chambre d\'echantillon et videz le, laissez un peu de gouttes dans le flacon</string>
+    <string name="remove_vial_empty">Rétirez le tube d\'échantillon de la chambre et videz le flacon</string>
+    <string name="remove_vial_empty_fill">Rétirez le tube de la chambre d\'échantillon, videz le tube, rincez le flacon et le couvercle plusieurs fois, puis remplissez le tube avec <b>%sampleQuantity ml</b> de l\'échantillon d\'eau</string>
+    <string name="add_reagent_1_tablet">Ajoutez <b>une pastille %reagent1</b> directement de la plaquette à l\'échantillon d\'eau et écrassez le comprimé en utilisant une tige de mélange propre</string>
+    <string name="add_reagent_1_tablet_no_crush">Ajoutez <b>une pastille %reagent1</b> directement de la plaquette à l\'échantillon d\'eau.</string>
+    <string name="add_reagent_2_tablet">Ajoutez <b>une pastille %reagent2</b> directement de la plaquette à l\'échantillon d\'eau et écrassez le comprimé en utilisant une tige de mélange propre</string>
+    <string name="add_reagent_1_powder_1vial">Ajoutez le contenu d\' <b>paquet de poudre %reagent1</b> directement de la feuille au flacon.</string>
+    <string name="add_reagent_2_powder_1vial">Ajoutez le contenu d\' <b>paquet de poudre %reagent2</b> directement de la feuille au flacon.</string>
+    <string name="add_reagent_1_powder_2vials">Ajoutez le contenu d\' <b>paquet de poudre %reagent1</b> directement de la feuille vers chaque flacon.</string>
+    <string name="add_reagent_2_powder_2vials">Ajoutez le contenu d\' <b>paquet de poudre %reagent2</b> directement de la feuille vers chaque flacon.</string>
+    <string name="add_two_reagent_1_powder_1vial">Ajoutez les contenus de <b>deux (!) paquets de poudre du %reagent1</b> directement de la feuille dans l\'échantillon d\'eau.</string>
+    <string name="add_two_reagent_2_powder_1vial">Ajoutez les contenus de <b>deux (!) paquets de poudre du %reagent2</b> directement de la feuille dans l\'échantillon d\'eau.</string>
+    <string name="add_reagent_1_liquid">Remplissez le flacon de gouttes de la même taille en maintenant la bouteille verticalement tout en serrant lentement: <b>%reagent1</b></string>
+    <string name="add_reagent_2_liquid">Remplissez le flacon avec des gouttes de la même taille en maintenant la bouteille verticalement tout en serrant lentement: <b>%reagent2</b></string>
+    <string name="add_reagent_1_liquid_exact_ml">Ajoutez <b>exactement %reagent1 à l\'échantillon d\'eau</b> au flacon préparé. (Avertissement: Le flacon doit être rempli jusqu\'au sommet!)</string>
+    <string name="fill_nitrate_test_tube">Remplissez le tube du test de Nitrate avec <b>20 ml de l\'échantillon d\'eau</b>.</string>
+    <string name="add_spoon_nitrate_test_powder">Ajoutez <b>une cuillèrée de la poudre du test de Nitrate</b>.</string>
+    <string name="close_swirl_mix">Fermez fermement le flacon avec la fermeture et secouez très bien le mélange du contenu</string>
+    <string name="close_swirl_gently">Fermez fermement le flacon avec la fermeture et secouez délicatement plusieurs fois.</string>
+    <string name="close_swirl_mix_purple">Fermez fermement le flacon avec la fermeture et secouez très bien le mélange du contenu. Attendez jusqu\'à ce que <font color="#2C2A74">devienne violet</font> avant de continuer</string>
+    <string name="close_invert_mix">Fermez fermement le flacon avec la fermeture et balancez plusieurs fois pour mélanger les contenus.</string>
+    <string name="close_invert_gently_mix">Fermez fermement le flacon avec la fermeture et balancez délicatement plusieurs fois pour mélanger le contenu.</string>
+    <string name="close_invert_mix_hot">Fermez fermement le flacon avec la fermeture. Balancez délicatement plusieurs fois pour mélanger le contenu. <b>(Avertissement: le flacon se chauffera pendant le mélange!)</b></string>
+    <string name="close_and_swirl_vial_dissolve_tablet">Fermez fermement le flacon avec la fermeture et secouez plusieurs fois jusqu\'à ce que le comprimé se dissoude</string>
+    <string name="close_and_mix_powder">Fermez les flacons avec les fermetures et secouez pour mélanger le contenu.</string>
+    <string name="close_and_shake_powder">Fermez fermement le(s) flacon(s) avec la/les fermeture(s) et sécouez soigneusement jusqu\'à ce que le réactif se dissoude complètement</string>
+    <string name="close_gently_swirl_tablet">Refermer le couvercle de la cuvette et mélanger le contenu en agitant jusqu’à dissolution complète de la pastille (ne secouez pas brutalement!).</string>
+    <string name="close_swirl_vigorously">Fermez soigneusement le flacon avec la fermeture et secouez vigoureusement pendant une minute</string>
+    <string name="wipe_place_align_vial">Essuyez l\'extérieur du flacon, maintenez le capuchon du flacon et mettez le flacon dans la chambre de l\'appareil. Aligner le tube selon la flèche marquée sur l\'appareil et appuyez sur (*test*)</string>
+    <string name="wipe_place_align_vial_wait_1">Essuyez l\'extérieur du flacon, retirez le flacon qui est dans la chambre et placez le flacon d\'echantillon dans la chambre. Alignez le selon les flèches et appuyez sur (*test*). Attendez un <b>temps de réaction de %reactionTime1 minute</b>.</string>
+    <string name="wipe_place_align_vial_wait_2">Essuyez l\'extérieur du flacon, retirez le flacon qui est dans la chambre et placez le flacon d\'echantillon dans la chambre . Alignez le selon les flèches et appuyez sur (*test*). Attendez un <b>temps de réaction de %reactionTime2 minutes</b>.</string>
+    <string name="wipe_place_align_prepared_vial_zero">Essuyez l\'extérieur du flacon, maintenez le capuchon du flacon et mettez le flacon dans la chambre de l\'appareil. Suivez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="wipe_place_align_vial_blank_zero">Essuyez l\'extérieur du flacon (cuvette de calibrage), maintenez le capuchon du flacon et mettez le flacon (cuvette de calibrage).) dans la chambre de l\'appareil. Alignez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="wipe_place_align_vial_blank_zero_wait">Essuyez l\'extérieur du flacon (cuvette de calibrage), maintenez le capuchon du flacon et mettez le flacon (cuvette de calibrage) dans la chambre de l\'appareil. Suivez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b>. Patientez pour une période de <b>réaction de %reactionTime1 minute</b>.</string>
+    <string name="wipe_place_align_vial_sample_test">Essuyez l\'extérieur du flacon (l\'échantillon), maintenez le capuchon du flacon et mettez le flacon (l\'échantillon) dans la chambre de l\'appareil. Suivez les flèches et appuyez sur (*test*)</string>
+    <string name="press_enter_wait_1">Appuyez sur (*enter*) et patientez pour une période de <b>%reactionTime1 minute</b></string>
+    <string name="press_enter_wait_2">Appuyez sur (*enter*) et patientez pour une période de <b>réaction de %reactionTime2 minute</b></string>
+    <string name="remix">Remixez la solution</string>
+    <string name="insert_16mm_adapter">Insérez l\'adaptateur pour 16 mm Ø flacons ronds.</string>
+    <string name="reaction_tube_1ml_sample">Ouvrez un flacon de réaction à couvercle blanc et ajoutez <b>1 ml de l\'échantillon d\'eau</b>. Fermez soigneusement le capuchon.</string>
+    <string name="reaction_tube_2ml_blank">Ouvrez un flacon de réaction à couvercle blanc et ajoutez <b>2 ml d\'eau déminéralisée</b> (ceci est la cuvette de calibrage).</string>
+    <string name="reaction_tube_2ml_sample">Ouvrez un autre flacon de réaction à couvercle blanc et ajoutez <b>2 ml de l\'échantillon d\'eau</b> (ceci est l\'échantillon).</string>
+    <string name="reaction_tube_1_tenth_ml_blank">Ouvrez un flacon de réaction à couvercle blanc et ajoutez <b>0.1 ml d\'eau déminéralisée</b> (ceci est la cuvette de calibrage).</string>
+    <string name="reaction_tube_1_tenth_ml_sample">Ouvrez un autre flacon de réaction à couvercle blanc et ajoutez <b>0.1 ml de l\'échantillon d\'eau</b> (ceci est l\'échantillon).</string>
+    <string name="reaction_tube_1_fifth_ml_blank">Ouvrez un flacon de réaction à couvercle blanc et ajoutez <b>0.2 ml d\'eau déminéralisée</b> (ceci est la cuvette de calibrage).</string>
+    <string name="reaction_tube_1_fifth_ml_sample">Ouvrez un autre flacon de réaction à couvercle blanc et ajoutez <b>0.2 ml de l\'échantillon d\'eau</b> (ceci est l\'échantillon).</string>
+    <string name="heat_120_100">Chauffez le flacon pendant <b>120 minutes</b> dans un thermoréacteur préchauffé à une temperature de <b>100°C</b></string>
+    <string name="heat_120_150">Chauffez les flacons pendant <b>120 minutes</b> dans un thermoréacteur préchauffé à une temperature de <b>150°C</b>. (Attention: les flacons sont chauds!)</string>
+    <string name="remove_cool">Rétirez le flacon du thermoréacteur. <b>(Attention: les flacons sont chauds!)</b>. Balancez le flacon et laissez refroidir à température ambiante. Ne mettez pas les flacons chauds dans la chambre d\'échantillonnage de l\'appareil.</string>
+    <string name="remove_cool_60"><b>(Attention: les flacons sont chauds!)</b> Rétirez les tubes du bloc chauffant et laissez-les refroidir à 60°C ou moins. Mélangez le contenu en balancant soigneusement chaque tube plusieurs fois pendant qu\'ils sont encore chauds. Ensuite, laissez les tubes refroidir à température ambiante avant de mesurer. <b>Ne mettez pas les flacons chauds dans la chambre d\'échantillonnage de l\'appareil</b>.</string>
+    <string name="specific_260">1. tenez le tube verticalement et après que l\'agent réducteur s\'est installé vers le bas, inversez doucement trois à quatre fois afin de compléter la floculation de l\'agent réducteur. Ensuite, laissez le tube reposer pendant encore 2 minutes.
+2. Ouvrez le tube et essuyez le haut du tube avec un tissu propre pour éliminer les résidus de l\'agent réducteur.
+3. Renversez soigneusement <b>10 ml de la solution traitée</b> dans le flacon (24 mm Ø) utilisé pour la réduction à zéro, en veillant à ce qu\'aucun agent réducteur ne soit transporté.</string>
+    <string name="phosphate_syringe">Remplissez une seringue propre de 20 ml avec <b>environ 14 ml.</b> d\'eau de l\'échantillon</string>
+    <string name="phosphate_discharge">Connectez la seringue à l\'ensemble de filtration (à l\'aide d\'un filtre GF/C) et déchargez la seringue aux déchets, jusqu\'au de 10 ml.</string>
+    <string name="phosphate_fill_vial_test">Remplissez le flacon de (24 mm Ø) avec <b>10 ml de votre échantillon</b> à l\'aide de la seringue, essuyez l\'extérieur du flacon, maintenez le couvercle du flacon et mettez le flacon dans la chambre de l\'appareil. Suivez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="blend_tss">Mélanger env. 500 ml de l\'échantillon d\'eau (par exemple dans un mélangeur) à grande vitesse pendant 2 minutes.</string>
+    <string name="stir_blended_water">Remuez l\'échantillon d\'eau incorporeré. Rincez immédiatement le flacon de l\'échantillon d\'eau et remplissez le avec <b>10 ml d\'échantillon d\'eau.</b></string>
+    <string name="stir_water_sample">Remuez l\'échantillon d\'eau. Rincez immédiatement le flacon de l\'échantillon d\'eau et remplissez le avec <b>10 ml d\'échantillon d\'eau.</b></string>
 
 </resources>

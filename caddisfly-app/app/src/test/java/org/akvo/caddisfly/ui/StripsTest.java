@@ -25,8 +25,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest;
-import org.akvo.caddisfly.sensor.striptest.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.TestTypeListActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;

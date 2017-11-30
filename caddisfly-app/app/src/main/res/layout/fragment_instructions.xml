@@ -16,54 +16,64 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    <data>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/layout_footer"
-        android:layout_below="@id/toolbar" />
+        <variable
+            name="callback"
+            type="org.akvo.caddisfly.ui.InstructionFragment" />
+
+    </data>
 
     <RelativeLayout
-        android:id="@+id/layout_footer"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/image_pageLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/button_arrow_left_selector"
-            android:visibility="invisible" />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/layout_footer"
+            android:layout_below="@id/toolbar" />
 
-        <org.akvo.caddisfly.sensor.striptest.widget.PageIndicatorView
-            android:id="@+id/pager_indicator"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/layout_footer"
+            android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_centerHorizontal="true" />
+            android:layout_alignParentBottom="true">
 
-        <ImageView
-            android:id="@+id/image_pageRight"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/button_arrow_right_selector" />
+            <ImageView
+                android:id="@+id/image_pageLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/button_arrow_left_selector"
+                android:visibility="invisible" />
+
+            <org.akvo.caddisfly.widget.PageIndicatorView
+                android:id="@+id/pager_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/image_pageRight"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/button_arrow_right_selector" />
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</layout>

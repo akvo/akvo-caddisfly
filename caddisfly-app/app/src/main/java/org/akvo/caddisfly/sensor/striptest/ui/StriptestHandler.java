@@ -25,12 +25,12 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.TextSwitcher;
 
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardException;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPatternInfo;
 import org.akvo.caddisfly.sensor.striptest.utils.CalibrationCardUtils;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
@@ -83,7 +83,7 @@ public final class StriptestHandler extends Handler {
     private Context context;
 
     StriptestHandler(Context context1, Context context, CameraOperationsManager cameraOpsManager,
-                     FinderPatternIndicatorView finderPatternIndicatorView, StripTest.Brand brand) {
+                     FinderPatternIndicatorView finderPatternIndicatorView, TestInfo testInfo) {
         if (StripMeasureActivity.DEBUG) {
             Log.d(TAG, "in constructor striptestHandler");
         }
@@ -97,7 +97,7 @@ public final class StriptestHandler extends Handler {
             mDecodeProcessor = new DecodeProcessor(this);
         }
         mDecodeData = new DecodeData();
-        mDecodeData.setStripBrand(brand);
+        mDecodeData.setTestInfo(testInfo);
         mCalCardData = new CalibrationCardData();
         this.context = context;
     }

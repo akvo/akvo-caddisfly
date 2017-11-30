@@ -19,18 +19,17 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.databinding.ActivityAboutBinding;
 import org.akvo.caddisfly.preference.AppPreferences;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 /**
  * Activity to display info about the app.
@@ -39,22 +38,16 @@ public class AboutActivity extends BaseActivity {
 
     private static final int CHANGE_MODE_MIN_CLICKS = 10;
 
-    /**
-     * To display version number.
-     */
-    @BindView(R.id.textVersion)
-    TextView textVersion;
-
     private int clickCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
 
-        ButterKnife.bind(this);
+        ActivityAboutBinding b =
+                DataBindingUtil.setContentView(this, R.layout.activity_about);
 
-        textVersion.setText(CaddisflyApp.getAppVersion());
+        b.textVersion.setText(CaddisflyApp.getAppVersion());
 
         setTitle(R.string.about);
     }
@@ -62,8 +55,7 @@ public class AboutActivity extends BaseActivity {
     /**
      * Displays legal information.
      */
-    @OnClick(R.id.textLinkSoftwareNotices)
-    public void showSoftwareNotices() {
+    public void onSoftwareNoticesClick(View view) {
         NoticesDialogFragment dialog = NoticesDialogFragment.newInstance();
         dialog.show(getFragmentManager(), "NoticesDialog");
     }
@@ -71,8 +63,7 @@ public class AboutActivity extends BaseActivity {
     /**
      * Disables diagnostic mode.
      */
-    @OnClick(R.id.fabDisableDiagnostics)
-    public void disableDiagnosticsMode() {
+    public void disableDiagnosticsMode(View view) {
         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
                 Toast.LENGTH_SHORT).show();
 
@@ -84,10 +75,9 @@ public class AboutActivity extends BaseActivity {
     }
 
     /**
-     * Turn on diagnostic mode if user clicks on version text CHANGE_MODE_MIN_CLICKS times.
+     * Turn on diagnostic mode if user clicks on version section CHANGE_MODE_MIN_CLICKS times.
      */
-    @OnClick(R.id.textVersion)
-    public void switchToDiagnosticMode() {
+    public void switchToDiagnosticMode(View view) {
         if (!AppPreferences.isDiagnosticMode()) {
             clickCount++;
 
@@ -121,5 +111,12 @@ public class AboutActivity extends BaseActivity {
                 findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
             }
         }
+
+        final TestListViewModel viewModel =
+                ViewModelProviders.of(this).get(TestListViewModel.class);
+
+        viewModel.clearTests();
+
     }
+
 }

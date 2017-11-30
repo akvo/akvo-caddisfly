@@ -22,12 +22,14 @@ package org.akvo.caddisfly.sensor.usb;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -36,23 +38,20 @@ import android.text.Spanned;
 import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.databinding.ActivitySensorBinding;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
 import org.akvo.caddisfly.util.StringUtil;
+import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
@@ -61,9 +60,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import timber.log.Timber;
 
 /**
@@ -80,37 +76,7 @@ public class SensorActivity extends BaseActivity {
 
     private final Handler handler = new Handler();
     private final SparseArray<String> results = new SparseArray<>();
-
-    @BindView(R.id.buttonAcceptResult)
-    Button buttonAcceptResult;
-
-    @BindView(R.id.textSubtitle)
-    TextView textSubtitle;
-
-    @BindView(R.id.textSubtitle2)
-    TextView textSubtitle2;
-
-    @BindView(R.id.progressWait)
-    ProgressBar progressWait;
-
-    @BindView(R.id.textResult)
-    TextView textResult;
-
-    @BindView(R.id.textResult2)
-    TextView textResult2;
-
-    @BindView(R.id.textUnit)
-    TextView textUnit;
-
-    @BindView(R.id.textUnit2)
-    TextView textUnit2;
-
-    @BindView(R.id.imageUsbConnection)
-    ImageView imageUsbConnection;
-
-    @BindView(R.id.layoutResult)
-    LinearLayout layoutResult;
-
+    ActivitySensorBinding b;
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
@@ -130,7 +96,7 @@ public class SensorActivity extends BaseActivity {
         }
     };
     private AlertDialog alertDialog;
-    private TestInfo mCurrentTestInfo;
+    private TestInfo testInfo;
     private Toast debugToast;
     private boolean mIsInternal = false;
     private String mReceivedData = EMPTY_STRING;
@@ -142,8 +108,8 @@ public class SensorActivity extends BaseActivity {
             usbService = ((UsbService.UsbBinder) arg1).getService();
             usbService.setHandler(mHandler);
             if (usbService.isUsbConnected()) {
-                imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
-                progressWait.setVisibility(View.VISIBLE);
+                b.imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+                b.progressWait.setVisibility(View.VISIBLE);
             }
         }
 
@@ -154,6 +120,17 @@ public class SensorActivity extends BaseActivity {
     };
     private int identityCheck = 0;
     private int deviceStatus = 0;
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (deviceStatus == 1) {
+                requestResult();
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+            } else {
+                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
+            }
+        }
+    };
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
@@ -175,23 +152,12 @@ public class SensorActivity extends BaseActivity {
                     alertDialog.dismiss();
                     break;
                 default:
-                    progressWait.setVisibility(View.GONE);
+                    b.progressWait.setVisibility(View.GONE);
                     if (!alertDialog.isShowing()) {
                         alertDialog.show();
                     }
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
-            }
-        }
-    };
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (deviceStatus == 1) {
-                requestResult();
-                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
-            } else {
-                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
             }
         }
     };
@@ -273,28 +239,32 @@ public class SensorActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_sensor);
+        b = DataBindingUtil.setContentView(this, R.layout.activity_sensor);
 
-        ButterKnife.bind(this);
+        final TestInfoViewModel viewModel =
+                ViewModelProviders.of(this).get(TestInfoViewModel.class);
+
+        testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+
+        //        model.setTest(testInfo);
+
+        b.setTestInfoViewModel(viewModel);
 
         final Intent intent = getIntent();
-        String mUuid = intent.getStringExtra(Constants.UUID);
-        CaddisflyApp.getApp().loadTestConfigurationByUuid(mUuid);
-        mCurrentTestInfo = CaddisflyApp.getApp().getCurrentTestInfo();
 
         mIsInternal = intent.getBooleanExtra("internal", false);
         mHandler = new MyHandler(this);
 
-        textSubtitle.setText(R.string.deviceConnectSensor);
+        b.textSubtitle.setText(R.string.deviceConnectSensor);
 
-        buttonAcceptResult.setVisibility(View.INVISIBLE);
+        b.buttonAcceptResult.setVisibility(View.INVISIBLE);
 
-        if (mCurrentTestInfo != null && !mCurrentTestInfo.getTitle().isEmpty()) {
+        if (testInfo != null && testInfo.getUuid() != null) {
             ((TextView) findViewById(R.id.textTitle)).setText(
-                    mCurrentTestInfo.getTitle());
+                    testInfo.getName());
 
             String message = String.format("%s<br/><br/>%s", getString(R.string.expectedDeviceNotFound),
-                    getString(R.string.connectCorrectSensor, mCurrentTestInfo.getTitle()));
+                    getString(R.string.connectCorrectSensor, testInfo.getName()));
             Spanned spanned = StringUtil.fromHtml(message);
 
             AlertDialog.Builder builder;
@@ -311,30 +281,9 @@ public class SensorActivity extends BaseActivity {
 
             alertDialog = builder.create();
         }
-        progressWait.setVisibility(View.VISIBLE);
+        b.progressWait.setVisibility(View.VISIBLE);
 
     }
-
-
-    @OnClick(R.id.buttonAcceptResult)
-    void acceptResult() {
-
-        // Build the result json to be returned
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-        Intent resultIntent = new Intent(getIntent());
-
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, EMPTY_STRING, null);
-        resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-
-        // TODO: Remove this when obsolete
-        // Backward compatibility. Return plain text result
-        resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(1));
-
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -347,12 +296,12 @@ public class SensorActivity extends BaseActivity {
 
     private void displayNotConnectedView() {
         if (!isFinishing()) {
-            progressWait.setVisibility(View.GONE);
-            layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
-            imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
-            buttonAcceptResult.setVisibility(View.GONE);
-            textSubtitle.setText(R.string.deviceConnectSensor);
-            textSubtitle2.setText("");
+            b.progressWait.setVisibility(View.GONE);
+            b.layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+            b.imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
+            b.buttonAcceptResult.setVisibility(View.GONE);
+            b.textSubtitle.setText(R.string.deviceConnectSensor);
+            b.textSubtitle2.setText("");
         }
     }
 
@@ -385,18 +334,18 @@ public class SensorActivity extends BaseActivity {
             // if device not yet validated then check if device id is ok
             if (deviceStatus == 0) {
                 if (tempValue.contains(" ")) {
-                    if (tempValue.startsWith(mCurrentTestInfo.getDeviceId())) {
+                    if (tempValue.startsWith(testInfo.getDeviceId())) {
 
                         Pattern p = Pattern.compile(".*\\s(\\d+)");
                         deviceStatus = 1;
                         Matcher m = p.matcher(tempValue);
                         if (m.matches()) {
-                            textSubtitle.setText(String.format("Sensor ID: %s", m.group(1)));
+                            b.textSubtitle.setText(String.format("Sensor ID: %s", m.group(1)));
                         } else {
-                            textSubtitle.setText(tempValue);
+                            b.textSubtitle.setText(tempValue);
                         }
 
-                        progressWait.setVisibility(View.VISIBLE);
+                        b.progressWait.setVisibility(View.VISIBLE);
                         hideNotConnectedView();
                         deviceStatus = 1;
                     } else {
@@ -428,10 +377,10 @@ public class SensorActivity extends BaseActivity {
                 });
             }
 
-            if (resultArray.length == mCurrentTestInfo.getResponseFormat().split(",").length) {
+            if (resultArray.length == testInfo.getResponseFormat().split(",").length) {
 
                 // use the response format to display the results in test id order
-                String responseFormat = mCurrentTestInfo.getResponseFormat().replace("$", EMPTY_STRING)
+                String responseFormat = testInfo.getResponseFormat().replace("$", EMPTY_STRING)
                         .replace(" ", EMPTY_STRING).replace(",", EMPTY_STRING).trim();
                 results.clear();
 
@@ -450,47 +399,64 @@ public class SensorActivity extends BaseActivity {
                 }
 
                 // display the results
-                if (mCurrentTestInfo.getSubTests().size() > 0 && results.size() > 0
+                if (testInfo.Results().size() > 0 && results.size() > 0
                         && !results.get(1).equals(EMPTY_STRING)) {
-                    textResult.setText(results.get(1));
-                    textUnit.setText(mCurrentTestInfo.getSubTests().get(0).getUnit());
-                    textResult.setVisibility(View.VISIBLE);
-                    textUnit.setVisibility(View.VISIBLE);
-                    progressWait.setVisibility(View.GONE);
-                    buttonAcceptResult.setVisibility(View.VISIBLE);
+                    b.textResult.setText(results.get(1));
+                    b.textUnit.setText(testInfo.Results().get(0).getUnit());
+                    b.textResult.setVisibility(View.VISIBLE);
+                    b.textUnit.setVisibility(View.VISIBLE);
+                    b.progressWait.setVisibility(View.GONE);
+                    b.buttonAcceptResult.setVisibility(View.VISIBLE);
                 } else {
-                    textResult.setText(EMPTY_STRING);
-                    textUnit.setText(EMPTY_STRING);
-                    textResult.setVisibility(View.INVISIBLE);
-                    textUnit.setVisibility(View.INVISIBLE);
-                    progressWait.setVisibility(View.VISIBLE);
-                    buttonAcceptResult.setVisibility(View.GONE);
-                    textSubtitle2.setText(R.string.dipSensorInSample);
+                    b.textResult.setText(EMPTY_STRING);
+                    b.textUnit.setText(EMPTY_STRING);
+                    b.textResult.setVisibility(View.INVISIBLE);
+                    b.textUnit.setVisibility(View.INVISIBLE);
+                    b.progressWait.setVisibility(View.VISIBLE);
+                    b.buttonAcceptResult.setVisibility(View.GONE);
+                    b.textSubtitle2.setText(R.string.dipSensorInSample);
                 }
 
-                if (mCurrentTestInfo.getSubTests().size() > 1 && results.size() > 1) {
-                    textResult2.setText(results.get(2));
-                    textUnit2.setText(mCurrentTestInfo.getSubTests().get(1).getUnit());
-                    textResult2.setVisibility(View.VISIBLE);
-                    textUnit2.setVisibility(View.VISIBLE);
+                if (testInfo.Results().size() > 1 && results.size() > 1) {
+                    b.textResult2.setText(results.get(2));
+                    b.textUnit2.setText(testInfo.Results().get(1).getUnit());
+                    b.textResult2.setVisibility(View.VISIBLE);
+                    b.textUnit2.setVisibility(View.VISIBLE);
                 } else {
-                    textResult2.setVisibility(View.GONE);
-                    textUnit2.setVisibility(View.GONE);
+                    b.textResult2.setVisibility(View.GONE);
+                    b.textUnit2.setVisibility(View.GONE);
                 }
 
                 // if test is not via survey then do not show the accept button
                 if (mIsInternal) {
-                    buttonAcceptResult.setVisibility(View.GONE);
+                    b.buttonAcceptResult.setVisibility(View.GONE);
                 }
 
-                layoutResult.animate().alpha(1f).setDuration(ANIMATION_DURATION);
+                b.layoutResult.animate().alpha(1f).setDuration(ANIMATION_DURATION);
                 hideNotConnectedView();
             }
         }
     }
 
     private void hideNotConnectedView() {
-        imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+        b.imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
+    }
+
+    public void onClickAcceptResult(View view) {
+        // Build the result json to be returned
+
+        Intent resultIntent = new Intent(getIntent());
+
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, EMPTY_STRING);
+        resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
+
+        // TODO: Remove this when obsolete
+        // Backward compatibility. Return plain text result
+        resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(1));
+
+        setResult(Activity.RESULT_OK, resultIntent);
+
+        finish();
     }
 
     /*

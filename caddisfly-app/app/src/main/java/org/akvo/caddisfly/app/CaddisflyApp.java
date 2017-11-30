@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.app;
 
 import android.app.Application;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -31,24 +32,21 @@ import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.SwatchHelper;
-import org.akvo.caddisfly.helper.TestConfigHelper;
-import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 import timber.log.Timber;
 
 public class CaddisflyApp extends Application {
 
+    private static final String DATABASE_NAME = "calibration";
     private static CaddisflyApp app; // Singleton
     private TestInfo mCurrentTestInfo = new TestInfo();
+    static CalibrationDatabase database;
 
     /**
      * Gets the singleton app object.
@@ -113,67 +111,18 @@ public class CaddisflyApp extends Application {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
+
+        app = this;
+
+        database = Room.databaseBuilder(getApplicationContext(),
+                CalibrationDatabase.class, DATABASE_NAME)
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
     }
 
-    /**
-     * Initialize the current test by loading the configuration and calibration information.
-     */
-    public void initializeCurrentTest() {
-        if (mCurrentTestInfo == null || mCurrentTestInfo.getUnit().isEmpty()) {
-            setDefaultTest();
-        } else {
-            loadTestConfigurationByUuid(mCurrentTestInfo.getId());
-        }
-    }
-
-    /**
-     * Select the first test type in the configuration file as the current test.
-     */
-    public void setDefaultTest() {
-
-        List<TestInfo> tests;
-        tests = TestConfigHelper.loadTestsList();
-        if (tests.size() > 0) {
-            mCurrentTestInfo = tests.get(0);
-            if (mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
-                loadCalibratedSwatches(mCurrentTestInfo);
-            }
-        }
-    }
-
-    /**
-     * Load the test configuration for the given uuid.
-     *
-     * @param uuid the uuid of the test
-     */
-    public void loadTestConfigurationByUuid(String uuid) {
-
-        mCurrentTestInfo = TestConfigHelper.loadTestByUuid(uuid);
-
-        if (mCurrentTestInfo != null && mCurrentTestInfo.getType() == TestType.COLORIMETRIC_LIQUID) {
-            loadCalibratedSwatches(mCurrentTestInfo);
-
-            if (SwatchHelper.getCalibratedSwatchCount(mCurrentTestInfo.getSwatches()) == 0) {
-                try {
-                    SwatchHelper.loadCalibrationFromFile(getBaseContext(), "_AutoBackup");
-                } catch (Exception ignored) {
-                }
-            }
-        }
-    }
-
-    /**
-     * Load any user calibrated swatches.
-     *
-     * @param testInfo The type of test
-     */
-    public void loadCalibratedSwatches(TestInfo testInfo) {
-
-        final Context context = getApplicationContext();
-        for (Swatch swatch : testInfo.getSwatches()) {
-            String key = String.format(Locale.US, "%s-%.2f", testInfo.getId(), swatch.getValue());
-            swatch.setColor(PreferencesUtil.getInt(context, key, 0));
-        }
+    public CalibrationDatabase getDB() {
+        return database;
     }
 
     /**

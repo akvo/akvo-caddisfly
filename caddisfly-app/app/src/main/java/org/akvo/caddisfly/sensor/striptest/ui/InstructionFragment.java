@@ -37,14 +37,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest;
-import org.akvo.caddisfly.sensor.striptest.utils.Constants;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.StringUtil;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import timber.log.Timber;
+import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -61,25 +59,19 @@ public class InstructionFragment extends Fragment {
     }
 
     @NonNull
-    public static InstructionFragment newInstance(String uuid, int phase) {
+    public static InstructionFragment newInstance(TestInfo testInfo) {
         InstructionFragment fragment = new InstructionFragment();
         Bundle args = new Bundle();
-        args.putString(Constants.UUID, uuid);
-        args.putInt(Constants.PHASE, phase);
+        args.putParcelable(ConstantKey.TEST_INFO, testInfo);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @NonNull
-    public static InstructionFragment newInstance(String uuid) {
-        return newInstance(uuid, 1);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.v2fragment_instruction, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
         final Button buttonStart = rootView.findViewById(R.id.button_start);
         buttonStart.setEnabled(false);
         buttonStart.setAlpha(BUTTON_START_ALPHA);
@@ -92,62 +84,40 @@ public class InstructionFragment extends Fragment {
 
         if (getArguments() != null) {
 
-            String uuid = getArguments().getString(Constants.UUID);
-            int phase = getArguments().getInt(Constants.PHASE);
+            TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+            int phase = getArguments().getInt(ConstantKey.PHASE);
 
-            StripTest stripTest = new StripTest();
-            JSONArray instructions = stripTest.getBrand(uuid).getInstructions();
+            if (testInfo != null) {
+                List<Instruction> instructions = testInfo.getInstructions();
+                if (phase == 1) {
+                    showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
+                }
 
-            if (phase == 1) {
-                showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
-            }
+                if (instructions != null) {
+                    for (int i = 0; i < instructions.size(); i++) {
+                        Instruction instruction = instructions.get(i);
+                        List<String> section = instruction.section;
 
-            if (instructions != null) {
-                try {
-                    for (int i = 0; i < instructions.length(); i++) {
-                        JSONObject instruction = instructions.getJSONObject(i);
-                        Object item = instruction.get("section");
-
-                        if ((instruction.has("phase") ? instruction.getInt("phase") : 1) == phase) {
-                            JSONArray jsonArray;
-
-                            if (item instanceof JSONArray) {
-                                jsonArray = (JSONArray) item;
-                            } else {
-                                String text = (String) item;
-                                jsonArray = new JSONArray();
-                                jsonArray.put(text);
-                            }
-
-                            for (int j = 0; j < jsonArray.length(); j++) {
-                                if (!jsonArray.getString(j).startsWith("image:")) {
-                                    showInstruction(linearLayout, jsonArray.getString(j), Typeface.NORMAL);
+                        if ((instruction.phase > 1 ? instruction.phase : 1) == phase) {
+                            for (int j = 0; j < section.size(); j++) {
+                                if (!section.get(j).startsWith("image:")) {
+                                    showInstruction(linearLayout, section.get(j), Typeface.NORMAL);
                                 }
                             }
                         }
                     }
-                } catch (JSONException e) {
-                    Timber.e(e);
                 }
             }
-
         }
 
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.moveToStripMeasurement();
-            }
-        });
+        buttonStart.setOnClickListener(v -> mListener.moveToStripMeasurement());
 
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                buttonStart.setEnabled(true);
-                AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
-                buttonStart.setAlpha(1f);
-                animation.setDuration(ANIMATION_DURATION_MILLIS);
-                buttonStart.startAnimation(animation);
-            }
+        (new Handler()).postDelayed(() -> {
+            buttonStart.setEnabled(true);
+            AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
+            buttonStart.setAlpha(1f);
+            animation.setDuration(ANIMATION_DURATION_MILLIS);
+            buttonStart.startAnimation(animation);
         }, BUTTON_ENABLE_DELAY);
 
 

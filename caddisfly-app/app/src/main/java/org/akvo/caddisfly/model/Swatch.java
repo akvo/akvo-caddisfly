@@ -19,18 +19,48 @@
 
 package org.akvo.caddisfly.model;
 
-public class Swatch implements Cloneable {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Swatch implements Cloneable, Parcelable {
+    @SuppressWarnings("unused")
+    public static final Creator<Swatch> CREATOR = new Creator<Swatch>() {
+        @Override
+        public Swatch createFromParcel(Parcel in) {
+            return new Swatch(in);
+        }
+
+        @Override
+        public Swatch[] newArray(int size) {
+            return new Swatch[size];
+        }
+    };
     private final double value;
     private final int defaultColor;
     private int color;
-    private int redDifference;
-    private int greenDifference;
-    private int blueDifference;
 
     public Swatch(double value, int color, int defaultColor) {
         this.value = value;
         this.color = color;
         this.defaultColor = defaultColor;
+    }
+
+    protected Swatch(Parcel in) {
+        value = in.readDouble();
+        defaultColor = in.readInt();
+        color = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(value);
+        dest.writeInt(defaultColor);
+        dest.writeInt(color);
     }
 
     public double getValue() {
@@ -45,35 +75,8 @@ public class Swatch implements Cloneable {
         this.color = color;
     }
 
-    public int getDefaultColor() {
-        return defaultColor;
-    }
-
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
-
-    public int getRedDifference() {
-        return redDifference;
-    }
-
-    public void setRedDifference(int redDifference) {
-        this.redDifference = redDifference;
-    }
-
-    public int getGreenDifference() {
-        return greenDifference;
-    }
-
-    public void setGreenDifference(int greenDifference) {
-        this.greenDifference = greenDifference;
-    }
-
-    public int getBlueDifference() {
-        return blueDifference;
-    }
-
-    public void setBlueDifference(int blueDifference) {
-        this.blueDifference = blueDifference;
-    }
 }
+

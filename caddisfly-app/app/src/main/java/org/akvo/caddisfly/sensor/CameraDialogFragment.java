@@ -48,7 +48,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import timber.log.Timber;
 
 
@@ -90,8 +89,6 @@ public class CameraDialogFragment extends CameraDialog {
                              Bundle savedInstanceState) {
 
         final View view = inflater.inflate(R.layout.fragment_camera, container, false);
-
-        ButterKnife.bind(this, view);
 
         // Create preview and set it as the content
         if (!safeCameraOpenInView(view)) {

@@ -7,11 +7,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Typeface;
 
-import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.model.ColorItem;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class BitmapUtils {
 
     // creates image for a strip consisting of one or more individual patches
     // creates individual parts of the result image, and concatenates them
-    public static Bitmap createResultImageSingle(PatchResult patchResult, StripTest.Brand brand) {
+    public static Bitmap createResultImageSingle(PatchResult patchResult, TestInfo brand) {
         Bitmap triangle = createTriangleBitmap(patchResult, brand);
         Bitmap strip = createStripBitmap(patchResult);
         Bitmap colourDrop = createColourDropBitmapSingle(patchResult);
@@ -119,7 +117,7 @@ public class BitmapUtils {
         Canvas canvas = new Canvas(resultImage);
         String unit = patchResult.getPatch().getUnit();
         String valueString = createValueUnitString(patchResult.getValue(), unit);
-        valueString = patchResult.getPatch().getDesc() + ": " + valueString + "  " + patchResult.getBracket();
+        valueString = patchResult.getPatch().getName() + ": " + valueString + "  " + patchResult.getBracket();
 
         // create paint
         Paint blackText = new Paint();
@@ -160,11 +158,11 @@ public class BitmapUtils {
     // ----------------------------------------- individual ----------------------------------------
 
     // create bitmap with a black triangle that indicates the position of the patch for this measurement.
-    public static Bitmap createTriangleBitmap(PatchResult patchResult, StripTest.Brand brand) {
-        float patchPos = (float) patchResult.getPatch().getPosition();
+    public static Bitmap createTriangleBitmap(PatchResult patchResult, TestInfo brand) {
+        double patchPos = patchResult.getPatch().getPatchPos();
         float stripWidth = (float) brand.getStripLength();
 
-        float xPos = (patchPos / stripWidth) * IMG_WIDTH;
+        float xPos = (float) ((patchPos / stripWidth) * IMG_WIDTH);
         Bitmap result = Bitmap.createBitmap(IMG_WIDTH, TRIANGLE_HEIGHT, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
 
@@ -197,8 +195,8 @@ public class BitmapUtils {
         int[] rgb = ColorUtils.XYZtoRGBint(xyz);
 
         // compute central location of marker, using the index of the matched colour
-        JSONArray colors = patchResult.getPatch().getColors();
-        int numColors = colors.length();
+        List<ColorItem> colors = patchResult.getPatch().getColors();
+        int numColors = colors.size();
         int blockWidth = Math.round((IMG_WIDTH - (numColors - 1) * COLOR_BAR_HGAP) / numColors);
         int xrange = IMG_WIDTH - blockWidth;
         int totIndex = ResultUtils.INTERPOLATION_NUMBER * (numColors - 1) + 1;
@@ -226,28 +224,24 @@ public class BitmapUtils {
     public static Bitmap createColourBarsBitmapSingle(PatchResult patchResult) {
         Bitmap result = Bitmap.createBitmap(IMG_WIDTH, COLOR_BAR_HEIGHT + VAL_BAR_HEIGHT, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(result);
-        JSONArray colors = patchResult.getPatch().getColors();
-        int numColors = colors.length();
+        List<ColorItem> colors = patchResult.getPatch().getColors();
+        int numColors = colors.size();
 
         int[][] rgbCols = new int[numColors][3];
         float[] values = new float[numColors];
         float[] lab = new float[3];
         int[] rgb;
 
-        try {
-            // get lab colours and turn them to RGB
-            for (int i = 0; i < numColors; i++) {
-                JSONArray patchColorValues = colors.getJSONObject(i).getJSONArray(SensorConstants.LAB);
-                lab[0] = (float) patchColorValues.getDouble(0);
-                lab[1] = (float) patchColorValues.getDouble(1);
-                lab[2] = (float) patchColorValues.getDouble(2);
+        // get lab colours and turn them to RGB
+        for (int i = 0; i < numColors; i++) {
+            List<Double> patchColorValues = colors.get(i).getLab();
+            lab[0] = patchColorValues.get(0).floatValue();
+            lab[1] = patchColorValues.get(1).floatValue();
+            lab[2] = patchColorValues.get(2).floatValue();
 
-                rgb = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
-                rgbCols[i] = rgb;
-                values[i] = (float) colors.getJSONObject(i).getDouble(SensorConstants.VALUE);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            rgb = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
+            rgbCols[i] = rgb;
+            values[i] = colors.get(i).getValue().floatValue();
         }
 
         // create paints
@@ -289,8 +283,8 @@ public class BitmapUtils {
         }
 
         // compute central location of marker, using the index of the matched colour
-        JSONArray colors = patchResultList.get(0).getPatch().getColors();
-        int numColors = colors.length();
+        List<ColorItem> colors = patchResultList.get(0).getPatch().getColors();
+        int numColors = colors.size();
         int blockWidth = Math.round((IMG_WIDTH - (numColors - 1) * COLOR_BAR_HGAP) / numColors);
         int halfBlockWidth = blockWidth / 2;
         int xrange = IMG_WIDTH - blockWidth;
@@ -332,8 +326,8 @@ public class BitmapUtils {
 
     // creates bitmap with colour blocks and values.
     public static Bitmap createColourBarsBitmapGroup(List<PatchResult> patchResultList) {
-        JSONArray colors = patchResultList.get(0).getPatch().getColors();
-        int numColors = colors.length();
+        List<ColorItem> colors = patchResultList.get(0).getPatch().getColors();
+        int numColors = colors.size();
         int numPatches = patchResultList.size();
         int[][][] rgbCols = new int[numPatches][numColors][3];
         float[] values = new float[numColors];
@@ -341,24 +335,19 @@ public class BitmapUtils {
         int[] rgb;
 
         // get colors from json, and turn them into sRGB
-        try {
-            for (int j = 0; j < numPatches; j++) {
-                colors = patchResultList.get(j).getPatch().getColors();
-                // get lab colours and turn them to RGB
-                for (int i = 0; i < numColors; i++) {
-                    JSONArray patchColorValues = colors.getJSONObject(i).getJSONArray(SensorConstants.LAB);
-                    lab[0] = (float) patchColorValues.getDouble(0);
-                    lab[1] = (float) patchColorValues.getDouble(1);
-                    lab[2] = (float) patchColorValues.getDouble(2);
+        for (int j = 0; j < numPatches; j++) {
+            colors = patchResultList.get(j).getPatch().getColors();
+            // get lab colours and turn them to RGB
+            for (int i = 0; i < numColors; i++) {
+                List<Double> patchColorValues = colors.get(i).getLab();
+                lab[0] = patchColorValues.get(0).floatValue();
+                lab[1] = patchColorValues.get(1).floatValue();
+                lab[2] = patchColorValues.get(2).floatValue();
 
-                    rgb = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
-                    rgbCols[j][i] = rgb;
-                    values[i] = (float) colors.getJSONObject(i).getDouble(SensorConstants.VALUE);
-                }
+                rgb = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
+                rgbCols[j][i] = rgb;
+                values[i] = colors.get(i).getValue().floatValue();
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
         // create empty bitmap

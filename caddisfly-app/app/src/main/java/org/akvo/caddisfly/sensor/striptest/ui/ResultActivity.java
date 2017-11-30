@@ -35,21 +35,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.helper.TestConfigHelper;
+import org.akvo.caddisfly.model.ColorItem;
+import org.akvo.caddisfly.model.GroupType;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
 import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest.Brand.Patch;
 import org.akvo.caddisfly.sensor.striptest.utils.ColorUtils;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.akvo.caddisfly.sensor.striptest.utils.ResultUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.MathUtil;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -73,13 +73,14 @@ import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.roundSignifi
 public class ResultActivity extends BaseActivity {
     private static final int IMG_WIDTH = 500;
     private static DecodeData mDecodeData;
-    private final SparseArray<String> results = new SparseArray<>();
+    private final SparseArray<String> resultStringValues = new SparseArray<>();
     private final SparseArray<String> brackets = new SparseArray<>();
     private Button buttonSave;
     private Button buttonCancel;
     private Bitmap totalImage;
     private String totalImageUrl;
     private LinearLayout layout;
+    private TestInfo testInfo;
 
     public static void setDecodeData(DecodeData decodeData) {
         mDecodeData = decodeData;
@@ -88,7 +89,7 @@ public class ResultActivity extends BaseActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.v2activity_result);
+        setContentView(R.layout.activity_strip_result);
         setTitle(R.string.result);
 
         buttonSave = findViewById(R.id.button_save);
@@ -109,24 +110,7 @@ public class ResultActivity extends BaseActivity {
                 totalImageUrl = "";
             }
 
-
-            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-            // get information on the strip test from JSON
-            StripTest stripTest = new StripTest();
-            StripTest.Brand brand = stripTest.getBrand(testInfo.getId());
-
-            // adaptation to avoid strip / strip v2 type problem
-            org.akvo.caddisfly.sensor.striptest.models.StripTest.GroupType grpType;
-            StripTest.GroupType groupType = brand.getGroupingType();
-            if (groupType.equals(StripTest.GroupType.GROUP)) {
-                grpType = org.akvo.caddisfly.sensor.striptest.models.StripTest.GroupType.GROUP;
-            } else {
-                grpType = org.akvo.caddisfly.sensor.striptest.models.StripTest.GroupType.INDIVIDUAL;
-            }
-
-            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, results, brackets, -1,
-                    totalImageUrl, grpType);
+            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, resultStringValues, brackets, -1, totalImageUrl);
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
             setResult(RESULT_OK, intent);
@@ -157,30 +141,27 @@ public class ResultActivity extends BaseActivity {
         layout = findViewById(R.id.layout_results);
         layout.removeAllViews();
 
-        // get information on the strip test from JSON
-        StripTest stripTest = new StripTest();
-        Intent intent = getIntent();
-        String uuid = intent.getStringExtra(Constants.UUID);
-        StripTest.Brand brand = stripTest.getBrand(uuid);
+        testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
 
-        List<PatchResult> patchResultList = computeResults(brand);
-        showResults(patchResultList, brand);
+        List<PatchResult> patchResultList = computeResults(testInfo);
+        showResults(patchResultList, testInfo);
     }
 
-    private List<PatchResult> computeResults(StripTest.Brand brand) {
+    private List<PatchResult> computeResults(TestInfo testInfo) {
         totalImageUrl = UUID.randomUUID().toString() + ".png";
 
         // get the images for the patches
         Map<Integer, float[][][]> patchImageMap = mDecodeData.getStripImageMap();
 
+        // todo check order of patches
         // for display purposes sort the patches by physical position on the strip
-        List<Patch> patches = brand.getPatchesSortedByPosition();
+        List<Result> results = testInfo.Results();
 
         // compute XYZ colours of patches and store as lab and xyz
         List<PatchResult> patchResultList = new ArrayList<>();
-        for (Patch patch : patches) {
+        for (Result patch : results) {
             PatchResult patchResult = new PatchResult(patch.getId());
-            int delay = (int) patch.getTimeLapse();
+            int delay = patch.getTimeDelay();
 
             // check if we have the corresponding image
             if (!patchImageMap.containsKey(delay)) {
@@ -197,7 +178,7 @@ public class ResultActivity extends BaseActivity {
             }
 
             patchResult.setImage(img);
-            float[] xyz = getPatchColour(patchImageMap.get(delay), patch, brand);
+            float[] xyz = getPatchColour(patchImageMap.get(delay), patch, testInfo);
             float[] lab = ColorUtils.XYZtoLAB(xyz);
             patchResult.setXyz(xyz);
             patchResult.setLab(lab);
@@ -213,8 +194,8 @@ public class ResultActivity extends BaseActivity {
         int index;
         String bracket;
 
-        if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
-            float[] result = ResultUtils.calculateResultGroup(patchResultList, patches);
+        if (testInfo.getGroupingType() == GroupType.GROUP) {
+            float[] result = ResultUtils.calculateResultGroup(patchResultList, testInfo.Results());
             index = (int) result[0];
             value = result[1];
             bracket = createBracket(result[2], result[3]);
@@ -226,14 +207,14 @@ public class ResultActivity extends BaseActivity {
             patchResultList.get(0).setIndex(index);
             patchResultList.get(0).setBracket(bracket);
 
-            results.put(patchResultList.get(0).getId(),
+            resultStringValues.put(patchResultList.get(0).getId(),
                     Float.isNaN(value) ? ""
                             : String.valueOf(roundSignificant(value)));
             brackets.put(patchResultList.get(0).getId(), bracket);
         } else {
             for (PatchResult patchResult : patchResultList) {
                 // get colours from strip json description for this patch
-                JSONArray colors = patchResult.getPatch().getColors();
+                List<ColorItem> colors = patchResult.getPatch().getColors();
                 float[] result = ResultUtils.calculateResultSingle(patchResult.getLab(), colors);
                 index = (int) result[0];
                 value = result[1];
@@ -247,7 +228,7 @@ public class ResultActivity extends BaseActivity {
                 patchResult.setBracket(bracket);
 
                 // Put the result into results list
-                results.put(patchResult.getPatch().getId(),
+                resultStringValues.put(patchResult.getPatch().getId(),
                         Float.isNaN(value) ? ""
                                 : String.valueOf(roundSignificant(value)));
                 brackets.put(patchResultList.get(0).getId(), bracket);
@@ -259,20 +240,20 @@ public class ResultActivity extends BaseActivity {
     // displays results and creates image to send to database
     // if patchResultList is null, it means that the strip was not found.
     // In that case, we show a default error image.
-    private void showResults(List<PatchResult> patchResultList, StripTest.Brand brand) {
+    private void showResults(List<PatchResult> patchResultList, TestInfo testInfo) {
         // create empty result image to which everything is concatenated
         totalImage = Bitmap.createBitmap(IMG_WIDTH, 1, Bitmap.Config.ARGB_8888);
 
         // create and display view with results
         // here, the total result image is also created
-        createView(brand, patchResultList);
+        createView(testInfo, patchResultList);
 
         // show buttons
         buttonSave.setVisibility(View.VISIBLE);
         buttonCancel.setVisibility(View.VISIBLE);
     }
 
-    private void createView(StripTest.Brand brand, List<PatchResult> patchResultList) {
+    private void createView(TestInfo testInfo, List<PatchResult> patchResultList) {
         // create view in case the strip was not found
         if (patchResultList == null) {
             String patchDescription = "Strip not detected";
@@ -280,10 +261,10 @@ public class ResultActivity extends BaseActivity {
             inflateView(patchDescription, "", resultImage);
         }
         // else create view in case the strip is of type GROUP
-        else if (brand.getGroupingType() == StripTest.GroupType.GROUP) {
+        else if (testInfo.getGroupingType() == GroupType.GROUP) {
             PatchResult patchResult = patchResultList.get(0);
 
-            String patchDescription = patchResult.getPatch().getDesc();
+            String patchDescription = patchResult.getPatch().getName();
             String unit = patchResult.getPatch().getUnit();
             String valueString = createValueUnitString(patchResult.getValue(), unit);
 
@@ -297,12 +278,12 @@ public class ResultActivity extends BaseActivity {
             // create view in case the strip is of type INDIVIDUAL
             for (PatchResult patchResult : patchResultList) {
                 // create strings for description, unit, and value
-                String patchDescription = patchResult.getPatch().getDesc();
+                String patchDescription = patchResult.getPatch().getName();
                 String unit = patchResult.getPatch().getUnit();
                 String valueString = createValueUnitString(patchResult.getValue(), unit);
 
                 // create image to display on screen
-                Bitmap resultImage = createResultImageSingle(patchResult, brand);
+                Bitmap resultImage = createResultImageSingle(patchResult, testInfo);
                 inflateView(patchDescription, valueString, resultImage);
 
                 Bitmap valueImage = createValueBitmap(patchResult);
@@ -317,7 +298,7 @@ public class ResultActivity extends BaseActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout itemResult;
         if (inflater != null) {
-            itemResult = (LinearLayout) inflater.inflate(R.layout.v2item_result, null, false);
+            itemResult = (LinearLayout) inflater.inflate(R.layout.item_result, null, false);
             TextView textTitle = itemResult.findViewById(R.id.text_title);
             textTitle.setText(patchDescription);
 
@@ -331,14 +312,14 @@ public class ResultActivity extends BaseActivity {
     }
 
     // measure the average colour of a single patch.
-    private float[] getPatchColour(float[][][] img, Patch patch, StripTest.Brand brand) {
+    private float[] getPatchColour(float[][][] img, Result patch, TestInfo brand) {
         // pixels per mm on the strip image
         double stripRatio = mDecodeData.getStripPixelWidth() / brand.getStripLength();
 
-        double x = patch.getPosition() * stripRatio;
-        double y = 0.5 * patch.getWidth() * stripRatio;
+        double x = patch.getPatchPos() * stripRatio;
+        double y = 0.5 * patch.getPatchWidth() * stripRatio;
 
-        double halfSize = 0.5 * Constants.STRIP_WIDTH_FRACTION * patch.getWidth();
+        double halfSize = 0.5 * Constants.STRIP_WIDTH_FRACTION * patch.getPatchWidth();
         int tlx = (int) Math.round(x - halfSize);
         int tly = (int) Math.round(y - halfSize);
         int brx = (int) Math.round(x + halfSize);

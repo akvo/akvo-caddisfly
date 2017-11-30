@@ -3,16 +3,12 @@ package org.akvo.caddisfly.sensor.striptest.utils;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.model.ColorItem;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
-import org.akvo.caddisfly.sensor.striptest.models.StripTest.Brand.Patch;
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.List;
 import java.util.Locale;
-
-import timber.log.Timber;
 
 /**
  * Created by markwestra on 03/08/2017
@@ -20,7 +16,7 @@ import timber.log.Timber;
 public class ResultUtils {
     public static final int INTERPOLATION_NUMBER = 10;
 
-    public static float[] calculateResultSingle(@Nullable float[] colorValues, @NonNull JSONArray colors) {
+    public static float[] calculateResultSingle(@Nullable float[] colorValues, @NonNull List<ColorItem> colors) {
         double[][] interpolTable = createInterpolTable(colors);
 
         // determine closest value
@@ -58,7 +54,7 @@ public class ResultUtils {
         }
     }
 
-    public static float[] calculateResultGroup(List<PatchResult> patchResultList, @NonNull List<Patch> patches) {
+    public static float[] calculateResultGroup(List<PatchResult> patchResultList, @NonNull List<Result> patches) {
         float[][] colorsValueLab = new float[patches.size()][3];
         double[][][] interpolTables = new double[patches.size()][][];
 
@@ -67,7 +63,7 @@ public class ResultUtils {
             PatchResult patchResult = patchResultList.get(p);
             colorsValueLab[p] = patchResult.getLab();
 
-            JSONArray colors = patches.get(p).getColors();
+            List<ColorItem> colors = patches.get(p).getColors();
 
             // create interpol table for this patch
             interpolTables[p] = createInterpolTable(colors);
@@ -109,59 +105,62 @@ public class ResultUtils {
         }
     }
 
-    private static double[][] createInterpolTable(@NonNull JSONArray colors) {
-        JSONArray patchColorValues;
+    private static double[][] createInterpolTable(@NonNull List<ColorItem> colors) {
         double resultPatchValueStart, resultPatchValueEnd;
         double[] pointStart;
         double[] pointEnd;
         double lInter, aInter, bInter, vInter;
-        double[][] interpolTable = new double[(colors.length() - 1) * INTERPOLATION_NUMBER + 1][4];
+        double[][] interpolTable = new double[(colors.size() - 1) * INTERPOLATION_NUMBER + 1][4];
         int count = 0;
 
-        for (int i = 0; i < colors.length() - 1; i++) {
-            try {
-                patchColorValues = colors.getJSONObject(i).getJSONArray(SensorConstants.LAB);
-                resultPatchValueStart = colors.getJSONObject(i).getDouble(SensorConstants.VALUE);
-                pointStart = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
+        for (int i = 0; i < colors.size() - 1; i++) {
 
-                patchColorValues = colors.getJSONObject(i + 1).getJSONArray(SensorConstants.LAB);
-                resultPatchValueEnd = colors.getJSONObject(i + 1).getDouble(SensorConstants.VALUE);
-                pointEnd = new double[]{patchColorValues.getDouble(0), patchColorValues.getDouble(1), patchColorValues.getDouble(2)};
+            List<Double> colorStart = colors.get(i).getLab();
+            resultPatchValueStart = colors.get(i).getValue();
+            pointStart = new double[]{colorStart.get(0), colorStart.get(1), colorStart.get(2)};
 
-                double lStart = pointStart[0];
-                double aStart = pointStart[1];
-                double bStart = pointStart[2];
+            List<Double> colorEnd = colors.get(i + 1).getLab();
+            resultPatchValueEnd = colors.get(i + 1).getValue();
+            pointEnd = new double[]{colorEnd.get(0), colorEnd.get(1), colorEnd.get(2)};
 
-                double dL = (pointEnd[0] - pointStart[0]) / INTERPOLATION_NUMBER;
-                double da = (pointEnd[1] - pointStart[1]) / INTERPOLATION_NUMBER;
-                double db = (pointEnd[2] - pointStart[2]) / INTERPOLATION_NUMBER;
-                double dV = (resultPatchValueEnd - resultPatchValueStart) / INTERPOLATION_NUMBER;
+            double lStart = pointStart[0];
+            double aStart = pointStart[1];
+            double bStart = pointStart[2];
 
-                // create 10 interpolation points, including the start point,
-                // but excluding the end point
+            double dL = (pointEnd[0] - pointStart[0]) / INTERPOLATION_NUMBER;
+            double da = (pointEnd[1] - pointStart[1]) / INTERPOLATION_NUMBER;
+            double db = (pointEnd[2] - pointStart[2]) / INTERPOLATION_NUMBER;
+            double dV = (resultPatchValueEnd - resultPatchValueStart) / INTERPOLATION_NUMBER;
 
-                for (int ii = 0; ii < INTERPOLATION_NUMBER; ii++) {
-                    lInter = lStart + ii * dL;
-                    aInter = aStart + ii * da;
-                    bInter = bStart + ii * db;
-                    vInter = resultPatchValueStart + ii * dV;
+            // create 10 interpolation points, including the start point,
+            // but excluding the end point
+            for (int ii = 0; ii < INTERPOLATION_NUMBER; ii++) {
+                lInter = lStart + ii * dL;
+                aInter = aStart + ii * da;
+                bInter = bStart + ii * db;
+                vInter = resultPatchValueStart + ii * dV;
 
-                    interpolTable[count][0] = lInter;
-                    interpolTable[count][1] = aInter;
-                    interpolTable[count][2] = bInter;
-                    interpolTable[count][3] = vInter;
-                    count++;
-                }
-
-                // add final point
-                patchColorValues = colors.getJSONObject(colors.length() - 1).getJSONArray(SensorConstants.LAB);
-                interpolTable[count][0] = patchColorValues.getDouble(0);
-                interpolTable[count][1] = patchColorValues.getDouble(1);
-                interpolTable[count][2] = patchColorValues.getDouble(2);
-                interpolTable[count][3] = colors.getJSONObject(colors.length() - 1).getDouble(SensorConstants.VALUE);
-            } catch (JSONException e) {
-                Timber.e(e);
+                interpolTable[count][0] = lInter;
+                interpolTable[count][1] = aInter;
+                interpolTable[count][2] = bInter;
+                interpolTable[count][3] = vInter;
+                count++;
             }
+
+            // add final point
+            List<Double> patchColorValues = colors.get(colors.size() - 1).getLab();
+            interpolTable[count][0] = patchColorValues.get(0);
+            interpolTable[count][1] = patchColorValues.get(1);
+            interpolTable[count][2] = patchColorValues.get(2);
+            interpolTable[count][3] = colors.get(colors.size() - 1).getValue();
+
+
+//                // add final point
+//                patchColorValues = colors.getJSONObject(colors.length() - 1).getJSONArray(SensorConstants.LAB);
+//                interpolTable[count][0] = patchColorValues.getDouble(0);
+//                interpolTable[count][1] = patchColorValues.getDouble(1);
+//                interpolTable[count][2] = patchColorValues.getDouble(2);
+//                interpolTable[count][3] = colors.getJSONObject(colors.length() - 1).getDouble(SensorConstants.VALUE);
         }
         return interpolTable;
     }
