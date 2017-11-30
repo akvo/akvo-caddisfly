@@ -36,7 +36,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 
 /**
  * Countdown timer view.
@@ -181,7 +181,7 @@ public class TimerView extends View {
 
     private void drawProgress(float progress, float max) {
         mCircleSweepAngle = (progress * 360) / max;
-        mCircleFinishAngle = (Constant.GET_READY_SECONDS * 360) / max;
+        mCircleFinishAngle = (Constants.GET_READY_SECONDS * 360) / max;
         invalidate();
     }
 

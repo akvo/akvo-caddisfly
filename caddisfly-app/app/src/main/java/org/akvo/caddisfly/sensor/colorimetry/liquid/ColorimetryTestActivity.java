@@ -44,7 +44,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.cbt.CbtInstructionFragment;
 import org.akvo.caddisfly.sensor.cbt.TestInfoFragment;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PermissionsDelegate;
@@ -171,8 +171,8 @@ public class ColorimetryTestActivity extends BaseActivity {
             intent.setClass(getBaseContext(), ColorimetryLiquidActivity.class);
         }
 
-        intent.putExtra(Constant.UUID, mTestInfo.getId());
-        intent.putExtra(Constant.SEND_IMAGE_IN_RESULT, true);
+        intent.putExtra(Constants.UUID, mTestInfo.getId());
+        intent.putExtra(Constants.SEND_IMAGE_IN_RESULT, true);
         startActivityForResult(intent, REQUEST_TEST);
 
     }

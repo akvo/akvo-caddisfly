@@ -37,7 +37,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 import java.util.List;
@@ -82,7 +82,7 @@ public class SensorTypeListActivity extends BaseActivity {
 
     private void startDetailActivity(String uuid) {
         final Intent intent = new Intent(getBaseContext(), SensorActivity.class);
-        intent.putExtra(Constant.UUID, uuid);
+        intent.putExtra(Constants.UUID, uuid);
         intent.putExtra("internal", true);
         startActivity(intent);
     }

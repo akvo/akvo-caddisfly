@@ -38,7 +38,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 
 import java.text.DecimalFormat;
@@ -96,7 +96,7 @@ public class BluetoothTypeListActivity extends BaseActivity {
         CaddisflyApp.getApp().loadTestConfigurationByUuid(uuid);
 
         final Intent intent = new Intent(getBaseContext(), DeviceScanActivity.class);
-        intent.putExtra(Constant.UUID, uuid);
+        intent.putExtra(Constants.UUID, uuid);
         intent.putExtra("internal", true);
         startActivityForResult(intent, 100);
 

@@ -32,9 +32,9 @@ import android.widget.ImageView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
-import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.widget.PageIndicatorView;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +77,7 @@ public class InstructionActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        StripTest.Brand brand = (new StripTest()).getBrand(getIntent().getStringExtra(Constant.UUID));
+        StripTest.Brand brand = (new StripTest()).getBrand(getIntent().getStringExtra(Constants.UUID));
 
         setTitle(brand.getName());
 

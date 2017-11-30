@@ -33,7 +33,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.widget.PageIndicatorView;
 import org.akvo.caddisfly.sensor.instructions.InstructionDetailFragment;
 import org.json.JSONArray;
 import org.json.JSONException;

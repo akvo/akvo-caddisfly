@@ -123,9 +123,6 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.strip.ui.TestTypeListActivity"
-            android:screenOrientation="nosensor" />
-        <activity
             android:name=".sensor.UsbConnectionActivity"
             android:autoRemoveFromRecents="true"
             android:screenOrientation="nosensor"
@@ -149,21 +146,6 @@
             android:screenOrientation="nosensor" />
         <activity android:name=".sensor.colorimetry.stripv2.ui.TestTypeListActivity"
             android:screenOrientation="nosensor"/>
-        <activity
-            android:name=".sensor.colorimetry.strip.ui.BrandInfoActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.instructions.InstructionActivity"
-            android:parentActivityName=".sensor.colorimetry.strip.ui.BrandInfoActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.colorimetry.strip.camera.CameraActivity"
-            android:screenOrientation="nosensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".sensor.colorimetry.strip.ui.ResultActivity"
-            android:screenOrientation="nosensor" />
         <!-- end StripTest -->
 
         <activity

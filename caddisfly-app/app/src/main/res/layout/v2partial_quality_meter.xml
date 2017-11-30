@@ -18,7 +18,6 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_qualityMeter"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentStart="true"
@@ -40,7 +39,6 @@
             android:layout_height="@dimen/quality_check_view_height" />
 
         <TextView
-            android:id="@+id/text_brightness"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"

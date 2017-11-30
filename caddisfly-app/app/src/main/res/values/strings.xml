@@ -50,8 +50,6 @@
     <string name="notSupported">Not Supported</string>
     <string name="cameraBusy">Camera Busy</string>
     <string name="runTest">Run Test</string>
-    <string name="stage_one">Stage 1:</string>
-    <string name="stage_two">Stage 2:</string>
 
     <!--External-->
     <string name="sensor">Sensor</string>
@@ -105,27 +103,19 @@
     <string name="testWithDilution">Test with Dilution</string>
 
     <!--StripTest-->
-    <string name="brightness">Brightness</string>
     <string name="measure_instruction">Put strip on black area with colour patches to the left. Hold camera above colour card until measurement is complete.</string>
     <string name="imageQuality">Image quality</string>
     <string name="instructions">Instructions</string>
-    <string name="shadows">Shadows</string>
     <string name="prepare_test">Prepare for test</string>
-    <string name="taking_photo">Taking photo</string>
-    <string name="waiting_for">Waiting for %s</string>
     <string name="success_quality_checks">Success! Quality check passed</string>
     <string name="prepareForCalibration">Prepare for calibration</string>
     <string name="stripTest">Strip Test</string>
-    <string name="no_result">No result</string>
     <string name="continue_anyway">Continue anyway</string>
-    <string name="just_a_moment">Just a moment…</string>
     <string name="checking_quality">Checking light quality</string>
     <string name="seconds">Sec.</string>
     <string name="detecting_color_card">Looking for colour card</string>
-    <string name="ready_for_photo">Ready for photo</string>
     <string name="do_not_show_again">Do not show again</string>
     <string name="stop_test">Stop test</string>
-    <string name="noData">No data</string>
 
     <!--Alerts-->
     <string name="cannotStartTest">Cannot start test</string>
@@ -180,11 +170,7 @@
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
 
     <!--StripTest-->
-    <string name="error_calibrating">Calibration failed</string>
     <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nFor best results, at least 8 megapixel camera required.</string>
-    <string name="qualityCheckFailed">Quality check failed</string>
-    <string name="shadows_detected">Shadows/reflections detected</string>
-    <string name="better_light_required">Better light required</string>
 
     <string name="versionExpired">Version expired</string>
     <string name="thisVersionHasExpired">This version of the app has expired.</string>
@@ -200,7 +186,5 @@
     <string name="unknown_device">Unknown</string>
     <string name="scanning">Scanning…</string>
     <string name="searching_for_device">Searching for bluetooth devices</string>
-
-    <string name="view_results">View results</string>
 
 </resources>

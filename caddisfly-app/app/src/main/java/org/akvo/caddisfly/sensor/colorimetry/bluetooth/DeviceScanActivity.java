@@ -76,7 +76,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 
@@ -232,7 +232,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             return;
         }
         final Intent intent = new Intent(DeviceScanActivity.this, DeviceControlActivity.class);
-        intent.putExtra(Constant.UUID, getIntent().getStringExtra(Constant.UUID));
+        intent.putExtra(Constants.UUID, getIntent().getStringExtra(Constants.UUID));
 
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());

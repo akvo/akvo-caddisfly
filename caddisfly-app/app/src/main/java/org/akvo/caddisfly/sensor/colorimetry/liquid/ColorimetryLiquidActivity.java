@@ -60,7 +60,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -779,7 +779,7 @@ public class ColorimetryLiquidActivity extends BaseActivity
             resultIntent.putExtra(SensorConstants.COLOR, color);
 
             String resultImageUrl = EMPTY_STRING;
-            if (getIntent().getBooleanExtra(Constant.SEND_IMAGE_IN_RESULT, false)) {
+            if (getIntent().getBooleanExtra(Constants.SEND_IMAGE_IN_RESULT, false)) {
                 // Save photo taken during the test
                 resultImageUrl = UUID.randomUUID().toString() + ".png";
                 String path = FileUtil.writeBitmapToExternalStorage(mCroppedBitmap, "/result-images", resultImageUrl);

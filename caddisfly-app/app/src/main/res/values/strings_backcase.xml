@@ -19,19 +19,6 @@
 
 <resources>
 
-    <string name="bc_frc_1">Fill the special mixing chamber with 10 ml of the water sample and add one sachet reagent. Close the mixing chamber with the lid and shake to mix the contents.</string>
-    <string name="bc_frc_2">Fill the testing chamber (with the mixed solution of reagent and sample) to the brim.</string>
-    <string name="bc_rinse">Rinse the empty test chamber <b>twice</b> with the sample to remove any traces of previous solutions.</string>
-    <string name="bc_fill">Fill the test chamber to the brim with the sample.</string>
-    <string name="bc_add_capsule">Remove the black plug from the reagent capsule, insert the capsule into the inner chamber as shown.</string>
-    <string name="bc_screw">Screw the lid onto the test chamber until it is tightly shut.</string>
-    <string name="bc_shake">Shake the sample several times.</string>
-    <string name="bc_wipe_bottom">Wipe the transparent bottom of the test chamber (lens diffuser) dry with tissue.</string>
-    <string name="bc_wipe_camera">Wipe the phone camera lens dry with tissue.</string>
-    <string name="bc_place_chamber">Match the grooves on the smartphone to the test chamber and twist to lock in position.</string>
-    <string name="bc_select_dilution">If this is your first test, press <b>\'No Dilution\'</b>. If a previous test indicated the need for dilution then read the instructions <b>[a topic=dilution]here[/a]</b></string>
-    <string name="bc_place_phone">Place the phone face down on a level surface and leave it undisturbed for about a minute. You should get a result after 6 beeps, click \'accept result\' to go back to your survey.</string>
-
     <string name="bc_dilution_1">Rinse the mixing chamber with deionised water.</string>
     <string name="bc_dilution_2">Empty the test chamber and fill it with the deionised water.</string>
     <string name="bc_dilution_3">Invert the lid and fit it over the inner chamber, aligning the bump on the cap and the inner chamber of the test chamber.</string>

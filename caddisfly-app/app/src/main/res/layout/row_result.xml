@@ -63,7 +63,6 @@
             tools:text="1.0" />
 
         <TextView
-            android:id="@+id/textHsvResult"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="17sp"

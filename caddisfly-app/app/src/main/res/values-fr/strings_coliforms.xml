@@ -21,27 +21,15 @@
 <resources>
 
     <string name="put_on_gloves">Portez des gants en plastique</string>
-    <string name="collect_100ml_water_sample">Collectez <b>100 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
-    <string name="avoid_touching_with_bare_hands">Évitez de toucher l\'intérieur de la bouteille, du couvercle ou du sac Thio avec les mains nues.</string>
     <string name="open_growth_medium_sachet">Ouvrez le petit sachet de forme carré et ajoutez le bourgeon du sachet directement dans l\'échantillon d\'eau</string>
     <string name="dissolve_medium_in_sample">Dissoudre le bourgeon dans l\'échantillon pendant 10 à 12 minutes maximum en remuant périodiquement la bouteille ou en pressant le bourrelet d\'essai dans le sac Thio pour favoriser la libération du milieu de son support en plastique</string>
     <string name="medium_dissolves">Le bourgeon se dissout à partir de son support en plastique.</string>
     <string name="when_medium_dissolved">Lorsque le bourgeon est complètement dissous, le support plastique devient blanc ou presque blanc.</string>
     <string name="label_compartment_bag">Étiqueter le sac de compartiment avec un marqueur permanent avant de le remplir.</string>
-    <string name="tear_perforated_seam">Retirer la couture perforée qui se trouve au dessus du sac.</string>
-    <string name="rub_sides_of_compartment">Frottez les côtés au sommet de chaque compartiment pour ouvrir le sac, utilisez les languettes blanches en haut du sac pour garder le sac ouvert en versant l\'echantillon dans les compartiments du sac.</string>
-    <string name="slowly_pour_sample_into_bag">Verser lentement l\'échantillon dans le sac en inclinant doucement et en serrant le sac pour repartir l\'échantillon dans les cinq compartiments.</string>
-    <string name="fill_evenly_across_bag"><b>Remplissez uniformément le sac jusqu\'à la ligne de remplissage noir</b>.</string>
-    <string name="leave_test_bud_carrier">Laisser le bourrelets /Bourgeon d\'essai dans la bouteille ou dans le sac Thio pendant le remplissage des compartiments.</string>
-    <string name="attach_seal_clip">Fixez la pince d\'étanchéité sur le sac au-dessus de la ligne de remplissage et en dessous des ouvertures supérieures des compartiments.</string>
-    <string name="snap_rod_shaped">Insérez la partie en forme de tige dans la pince de l\'autre côté du sac dans la tige en forme de U pour la verrouiller sur le sac.</string>
-    <string name="roll_fold_bag">Après avoir pincé, le sac peut être maintenu verticalement ou horizontalement.</string>
-    <string name="close_top_of_bag">Fermez le haut du sac avec le joint jaune "Whirl-Pak", puis roulez le sac vers le joint d\'étanchéité <b>(étape 1)</b> et pliez les extrémités jaunes <b>(étape 2)</b> .</string>
     <string name="let_incubate">Laissez l\'échantillon incuber, selon la température ambiante:</string>
     <string name="take_photo_of_incubated">Prenez une photo de l\'échantillon incubé.</string>
     <string name="change_colors_to_match">Changez les couleurs sur l\'écran du téléphone pour les faire correspondre aux couleurs de l\'échantillon dans les compartiments du sac.</string>
     <string name="click_compartments_to_change">Cliquez sur les compartiments pour changer de couleur.</string>
-    <string name="clean_cbt">Après avoir comptabilisé les résultats du test: ouvrez le sac et ajoutez 3 comprimés de chlore au sommet du sac. Agitez le sac jusqu\'à la dissolution des comprimés de chlore. Laissez  reposer pendant 45 minutes. Après les 45 minutes, versez le contenu du liquide dans un évier, une toilette ou un trou dans le sol et retirez en toute sécurité le sac vide. Conservez la pince en plastique pour une réutilisation.</string>
 
     <string name="temperature">Température</string>
     <string name="incubation_time">Temps d\'incubation</string>

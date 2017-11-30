@@ -41,9 +41,9 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.CameraHelper;
-import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest;
 import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.StripMeasureActivity;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 import org.akvo.caddisfly.sensor.instructions.InstructionActivity;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -85,7 +85,7 @@ public class BrandInfoActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        mUuid = getIntent().getStringExtra(Constant.UUID);
+        mUuid = getIntent().getStringExtra(Constants.UUID);
 
         StripTest stripTest = new StripTest();
 
@@ -145,7 +145,7 @@ public class BrandInfoActivity extends BaseActivity {
     @OnClick(R.id.button_instructions)
     public void showInstructions() {
         Intent intent = new Intent(this, InstructionActivity.class);
-        intent.putExtra(Constant.UUID, mUuid);
+        intent.putExtra(Constants.UUID, mUuid);
         startActivity(intent);
     }
 
@@ -192,7 +192,7 @@ public class BrandInfoActivity extends BaseActivity {
         if (PreferencesUtil.getBoolean(this, R.string.showMinMegaPixelDialogKey, true)) {
             try {
 
-                if (CameraHelper.getMaxSupportedMegaPixelsByCamera(this) < Constant.MIN_CAMERA_MEGA_PIXELS) {
+                if (CameraHelper.getMaxSupportedMegaPixelsByCamera(this) < Constants.MIN_CAMERA_MEGA_PIXELS) {
 
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 

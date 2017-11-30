@@ -20,11 +20,7 @@
 <resources>
 
     <string name="errorTestFailed">Color does not match any calibrated colors. Check chamber placement</string>
-    <string name="start_camera_instruction">Place the strip in the black area on the color card and hold camera above the card to analyze.</string>
     <string name="prepare_camera_instruction">Don\'t take sample yet. Hold camera above color card and adjust position until check succeeds.</string>
-    <string name="tryTestingInAWellLitArea">Place the color card in an area with good light and no shadows and try again.</string>
     <string name="detecting_color_card">Looking for color card</string>
-    <string name="color_card_not_found">Color card not found</string>
-    <string name="correctThePhoneTilt">Hold the phone level with color card</string>
 
 </resources>

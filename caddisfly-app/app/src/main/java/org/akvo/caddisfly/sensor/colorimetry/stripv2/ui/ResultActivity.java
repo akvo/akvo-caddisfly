@@ -117,12 +117,12 @@ public class ResultActivity extends BaseActivity {
             StripTest.Brand brand = stripTest.getBrand(testInfo.getId());
 
             // adaptation to avoid strip / strip v2 type problem
-            org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest.GroupType grpType;
+            org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest.GroupType grpType;
             StripTest.GroupType groupType = brand.getGroupingType();
             if (groupType.equals(StripTest.GroupType.GROUP)) {
-                grpType = org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest.GroupType.GROUP;
+                grpType = org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest.GroupType.GROUP;
             } else {
-                grpType = org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest.GroupType.INDIVIDUAL;
+                grpType = org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest.GroupType.INDIVIDUAL;
             }
 
             JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, results, brackets, -1,

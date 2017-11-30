@@ -25,9 +25,6 @@
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="toolbar_margin">0dp</dimen>
 
-    <dimen name="flow_toolbar_height">52dp</dimen>
-    <dimen name="flow_toolbar_margin">-5dp</dimen>
-
     <dimen name="titleTextSize">19sp</dimen>
     <dimen name="mediumTextSize">16sp</dimen>
     <dimen name="default_text_size">16sp</dimen>
@@ -46,9 +43,6 @@
 
     <!--md610-->
     <dimen name="md610_label_title">19sp</dimen>
-    <dimen name="md610_label_superscript">15sp</dimen>
-    <dimen name="md610_label_subtitle">15sp</dimen>
-    <dimen name="md610_label_reagent_code">21sp</dimen>
 
     <!-- StripTest -->
     <dimen name="quality_check_view_height">36dp</dimen>

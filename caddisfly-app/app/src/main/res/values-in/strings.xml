@@ -91,27 +91,17 @@
     <string name="ecSensorId">Identitas Sensor EC</string>
     <string name="testWithDilution">Uji coba dengan Pengenceran</string>
     <!--StripTest-->
-    <string name="brightness">Tingkat kecerahan</string>
     <string name="instructions">Instruksi</string>
-    <string name="shadows">Bayangan</string>
     <string name="prepare_test">Mempersiapkan uji coba</string>
-    <string name="taking_photo">Mengambil foto</string>
-    <string name="waiting_for">Menunggu selama %s</string>
     <string name="success_quality_checks">Sukses ! Pemeriksaan kualitas terlewati</string>
-    <string name="stage_one">Tahap 1:</string>
-    <string name="stage_two">Tahap 2:</string>
     <string name="prepareForCalibration">Persiapkan kalibrasi</string>
     <string name="stripTest">Uji Coba Kepingan</string>
-    <string name="no_result">Tidak ada hasil</string>
     <string name="continue_anyway">Lanjutkan saja</string>
-    <string name="just_a_moment">Tunggu sebentar…</string>
     <string name="checking_quality">Memeriksa kualitas cahaya</string>
     <string name="seconds">Detik</string>
     <string name="detecting_color_card">Mencari kartu warna</string>
-    <string name="ready_for_photo">Siap untuk mengambil foto</string>
     <string name="do_not_show_again">Jangan tampilkan lagi</string>
     <string name="stop_test">Hentikan uji coba</string>
-    <string name="noData">Tidak ada data</string>
     <!--Alerts-->
     <string name="cannotStartTest">Tidak dapat memulai uji coba</string>
     <string name="errorTestNotAvailable">Uji coba yang diminta tidak tersedia</string>
@@ -158,17 +148,7 @@
     <string name="orderFreshBatch">Mohon menggunakan bahan reaksi yang baru dan kalibrasi ulang</string>
     <string name="highLevelRecommendation">Dikarenakan kontaminasi level tinggi, direkomendasikan untuk uji coba dengan pengenceran</string>
     <!--StripTest-->
-    <string name="error_calibrating">Kalibrasi gagal</string>
-    <string name="error_cut_out_strip">Tidak ditemukan kepingan</string>
-    <string name="no_data">Tidak ada data untuk tempelan</string>
-    <string name="start_camera_instruction">Tempatkan kepingan di area hitam pada kartu warna dan tahan kamera handphone diatas kartu warna untuk memulai proses analisa</string>
     <string name="prepare_camera_instruction">Jangan mengambil sampel dahulu. Tahan kamera diatas kartu warna dan sesuaikan posisi sampai proses pemeriksaan sukses.</string>
-    <string name="you_can_set_phone_aside">Anda dapat menggerakan handphone sampai proses hitung mundur mencapai warna hijau</string>
     <string name="prepareSolutionsForCalibration">Persiapkan 6 solusi dengan menggunakan nilai EC ini</string>
     <string name="camera_not_good">Kamera tidak memenuhi untuk persyaratan minimal.\n\nUntuk hasil terbaik, setidaknya gunakan kamera dengan resolusi 8 megapixel</string>
-    <string name="qualityCheckFailed">Pemeriksaan kualitas gagal</string>
-    <string name="tryTestingInAWellLitArea">Tempatkan kartu warna di area dengan pencahayaan yang baik dan tidak ada bayangan dan coba lagi.</string>
-    <string name="shadows_detected">Terdeteksi bayangan/pantulan</string>
-    <string name="better_light_required">Dibutuhkan pencahayaan yang lebih baik</string>
-    <string name="color_card_not_found">Kartu warna tidak dapat ditemukan</string>
 </resources>

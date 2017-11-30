@@ -25,9 +25,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.model.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.BrandInfoActivity;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.TestTypeListActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;

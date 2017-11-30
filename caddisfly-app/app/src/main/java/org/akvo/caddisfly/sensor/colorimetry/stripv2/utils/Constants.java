@@ -36,7 +36,7 @@ public final class Constants {
 //    public static final String DIAGNOSTIC_INFO = "diagnostic_info_key";
 //    public static final String CALIBRATION_INFO = "calibration_info_key";
 //    public static final String DISTANCE_INFO = "distance_info_key";
-//    public static final int MIN_CAMERA_MEGA_PIXELS = 5;
+    public static final int MIN_CAMERA_MEGA_PIXELS = 5;
 //    public static final int TIMEOUT_PREPARE = 20000;
 //    public static final int TIMEOUT_PREPARE_EXTEND = 10000;
 //    public static final String ERROR = "org.akvo.caddisfly.error";

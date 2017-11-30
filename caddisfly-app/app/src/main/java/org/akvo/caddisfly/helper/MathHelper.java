@@ -19,7 +19,7 @@
 
 package org.akvo.caddisfly.helper;
 
-import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
+import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
 
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_180;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_90;
@@ -36,12 +36,12 @@ public final class MathHelper {
         float degrees = 0f;
 
         // if the horizontal tilt is too large, indicate it
-        if (Math.abs(tiltValues[0] - 1) > Constant.MAX_TILT_DIFF) {
+        if (Math.abs(tiltValues[0] - 1) > Constants.MAX_TILT_DIFF) {
             degrees = tiltValues[0] - 1 < 0 ? -DEGREES_90 : DEGREES_90;
         }
 
         // if the vertical tilt is too large, indicate it
-        if (Math.abs(tiltValues[1] - 1) > Constant.MAX_TILT_DIFF) {
+        if (Math.abs(tiltValues[1] - 1) > Constants.MAX_TILT_DIFF) {
             degrees = tiltValues[1] - 1 < 0 ? DEGREES_180 : 1;
         }
         return degrees;

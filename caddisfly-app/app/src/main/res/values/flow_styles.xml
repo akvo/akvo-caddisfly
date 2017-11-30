@@ -17,15 +17,6 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <style name="Flow.Dialog" parent="Theme.AppCompat.Light.Dialog" />
-
-    <style name="Flow.Dialog.Destructive" />
-
-    <style name="Flow.ListView" parent="@android:style/Widget.ListView">
-        <item name="android:cacheColorHint">@android:color/transparent</item>
-        <item name="android:divider">@color/white</item>
-    </style>
+<resources>
 
 </resources>

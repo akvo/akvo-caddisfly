@@ -86,16 +86,9 @@
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
 
     <!--Strip Test-->
-    <string name="error_calibrating">Erreur calibrage</string>
-    <string name="error_cut_out_strip">Pas de bande trouvee.</string>
-    <string name="brightness">Lumiere</string>
-    <string name="no_data">Pas de donnees pour patch no.</string>
     <string name="instructions">Instructions</string>
-    <string name="shadows">Ombres</string>
     <string name="prepare_test">Preparez test</string>
     <string name="prepare_camera_instruction">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>
     <string name="next">Suivant</string>
-
-    <string name="view_results">Voir les résultats</string>
 
 </resources>

@@ -55,8 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="2dp"
-            tools:context=".sensor.colorimetry.strip.ui.TestTypeListActivity">
+            android:paddingBottom="2dp">
 
             <TextView
                 android:id="@+id/textName"
@@ -65,8 +64,8 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:paddingBottom="5sp"
-                android:textIsSelectable="false"
                 android:paddingTop="10sp"
+                android:textIsSelectable="false"
                 android:textSize="18sp"
                 tools:text="Contaminant" />
 
