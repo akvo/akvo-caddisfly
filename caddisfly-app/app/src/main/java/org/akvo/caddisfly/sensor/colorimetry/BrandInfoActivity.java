@@ -41,9 +41,9 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.CameraHelper;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.StripMeasureActivity;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.models.StripTest;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.StripMeasureActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.utils.Constants;
 import org.akvo.caddisfly.sensor.instructions.InstructionActivity;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;

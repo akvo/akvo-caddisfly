@@ -44,7 +44,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.DiagnosticPreviewFragment;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.ui.TypeListActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ListViewUtil;

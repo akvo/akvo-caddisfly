@@ -76,7 +76,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 

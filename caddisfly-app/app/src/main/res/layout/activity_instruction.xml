@@ -52,7 +52,7 @@
             android:src="@drawable/button_arrow_left_selector"
             android:visibility="invisible" />
 
-        <org.akvo.caddisfly.sensor.colorimetry.stripv2.widget.PageIndicatorView
+        <org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView
             android:id="@+id/pager_indicator"
             android:layout_width="wrap_content"
             android:layout_height="48dp"

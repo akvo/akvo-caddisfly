@@ -142,9 +142,9 @@
 
         <!-- StripTest -->
         <activity
-            android:name=".sensor.colorimetry.stripv2.ui.StripMeasureActivity"
+            android:name=".sensor.colorimetry.strip.ui.StripMeasureActivity"
             android:screenOrientation="nosensor" />
-        <activity android:name=".sensor.colorimetry.stripv2.ui.TestTypeListActivity"
+        <activity android:name=".sensor.colorimetry.strip.ui.TestTypeListActivity"
             android:screenOrientation="nosensor"/>
         <!-- end StripTest -->
 

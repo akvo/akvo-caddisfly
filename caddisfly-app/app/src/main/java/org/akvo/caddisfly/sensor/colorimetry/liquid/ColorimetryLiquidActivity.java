@@ -60,7 +60,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.CameraDialog;
 import org.akvo.caddisfly.sensor.CameraDialogFragment;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;

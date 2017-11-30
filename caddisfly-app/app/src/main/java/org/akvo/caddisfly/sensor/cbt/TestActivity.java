@@ -37,7 +37,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest;
+import org.akvo.caddisfly.sensor.colorimetry.strip.models.StripTest;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ImageUtil;

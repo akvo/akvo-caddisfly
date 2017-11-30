@@ -32,7 +32,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.models.StripTest;
+import org.akvo.caddisfly.sensor.colorimetry.strip.models.StripTest;
 import org.akvo.caddisfly.util.AssetsManager;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;

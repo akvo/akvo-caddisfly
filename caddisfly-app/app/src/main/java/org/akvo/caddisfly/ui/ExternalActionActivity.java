@@ -49,8 +49,8 @@ import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryTestActivity;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.TestTypeListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.utils.Constants;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;

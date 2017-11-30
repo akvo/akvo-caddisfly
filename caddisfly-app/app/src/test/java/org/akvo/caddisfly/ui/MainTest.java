@@ -31,7 +31,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.sensor.cbt.TestActivity;
 import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;

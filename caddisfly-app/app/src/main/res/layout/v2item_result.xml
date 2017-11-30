@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/background_white_black_line_bottom"
     android:orientation="vertical"
-    tools:context=".sensor.colorimetry.stripv2.ui.ResultActivity">
+    tools:context=".sensor.colorimetry.strip.ui.ResultActivity">
 
     <TextView
         android:id="@+id/text_title"

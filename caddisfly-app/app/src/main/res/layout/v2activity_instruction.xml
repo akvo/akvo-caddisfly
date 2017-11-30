@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".sensor.colorimetry.stripv2.instructions.InstructionActivity">
+    tools:context=".sensor.colorimetry.strip.instructions.InstructionActivity">
 
     <include layout="@layout/toolbar" />
 
@@ -52,7 +52,7 @@
             android:src="@drawable/button_arrow_left_selector"
             android:visibility="invisible" />
 
-        <org.akvo.caddisfly.sensor.colorimetry.stripv2.widget.PageIndicatorView
+        <org.akvo.caddisfly.sensor.colorimetry.strip.widget.PageIndicatorView
             android:id="@+id/pager_indicator"
             android:layout_width="wrap_content"
             android:layout_height="48dp"

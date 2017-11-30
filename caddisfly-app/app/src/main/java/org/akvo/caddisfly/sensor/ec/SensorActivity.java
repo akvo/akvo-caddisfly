@@ -49,7 +49,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.colorimetry.stripv2.utils.Constants;
+import org.akvo.caddisfly.sensor.colorimetry.strip.utils.Constants;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.usb.UsbService;
 import org.akvo.caddisfly.util.StringUtil;

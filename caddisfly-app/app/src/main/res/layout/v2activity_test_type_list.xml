@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".sensor.colorimetry.stripv2.ui.TestTypeListActivity">
+    tools:context=".sensor.colorimetry.strip.ui.TestTypeListActivity">
 
     <include layout="@layout/toolbar" />
 
