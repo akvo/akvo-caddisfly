@@ -23,7 +23,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.SelectDilutionActivity">
+    tools:context=".sensor.liquid.SelectDilutionActivity">
 
     <include layout="@layout/toolbar" />
 

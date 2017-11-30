@@ -25,7 +25,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:textIsSelectable="true"
-    tools:context=".sensor.colorimetry.strip.instructions.InstructionDetailFragment">
+    tools:context=".sensor.striptest.instructions.InstructionDetailFragment">
 
     <LinearLayout
         android:id="@+id/layout_instructions"

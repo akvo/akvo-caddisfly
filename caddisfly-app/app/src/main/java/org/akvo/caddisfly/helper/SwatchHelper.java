@@ -32,7 +32,7 @@ import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.Swatch;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.sensor.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.DateUtil;

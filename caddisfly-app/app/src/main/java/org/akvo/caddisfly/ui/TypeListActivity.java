@@ -38,9 +38,9 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidActivity;
-import org.akvo.caddisfly.sensor.ec.CalibrateSensorActivity;
+import org.akvo.caddisfly.sensor.liquid.CalibrateListActivity;
+import org.akvo.caddisfly.sensor.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.sensor.usb.CalibrateSensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 

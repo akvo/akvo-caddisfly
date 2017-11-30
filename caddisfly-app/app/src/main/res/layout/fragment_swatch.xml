@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".sensor.colorimetry.liquid.DiagnosticSwatchActivity">
+    tools:context=".sensor.liquid.DiagnosticSwatchActivity">
 
     <ListView
         android:id="@android:id/list"

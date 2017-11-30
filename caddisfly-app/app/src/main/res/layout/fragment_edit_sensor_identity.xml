@@ -25,7 +25,7 @@
     android:paddingEnd="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="4dp"
-    tools:context="org.akvo.caddisfly.sensor.ec.EditSensorIdentity">
+    tools:context="org.akvo.caddisfly.sensor.usb.EditSensorIdentity">
 
 
     <TextView

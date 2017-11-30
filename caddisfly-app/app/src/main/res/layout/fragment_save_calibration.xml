@@ -25,7 +25,7 @@
     android:paddingEnd="@dimen/activity_horizontal_margin"
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="4dp"
-    tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.SaveCalibrationDialogFragment">
+    tools:context=".sensor.liquid.SaveCalibrationDialogFragment">
 
     <EditText
         android:id="@+id/editName"

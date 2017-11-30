@@ -19,7 +19,7 @@
 
 package org.akvo.caddisfly.helper;
 
-import org.akvo.caddisfly.sensor.colorimetry.strip.utils.Constants;
+import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_180;
 import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_90;

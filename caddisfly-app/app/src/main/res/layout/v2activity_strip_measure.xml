@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true" />
 
-        <org.akvo.caddisfly.sensor.colorimetry.strip.widget.FinderPatternIndicatorView
+        <org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView
             android:id="@+id/finder_indicator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

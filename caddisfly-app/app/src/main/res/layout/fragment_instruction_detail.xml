@@ -30,7 +30,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         android:textIsSelectable="true"
-        tools:context=".sensor.instructions.InstructionDetailFragment">
+        tools:context=".ui.instructions.InstructionDetailFragment">
 
         <LinearLayout
             android:id="@+id/layout_instructions"

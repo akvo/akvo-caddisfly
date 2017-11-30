@@ -36,7 +36,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.colorimetry.strip.utils.Constants;
+import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 
 /**
  * Countdown timer view.

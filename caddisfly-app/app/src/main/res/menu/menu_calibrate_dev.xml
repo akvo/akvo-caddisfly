@@ -20,7 +20,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".sensor.colorimetry.liquid.CalibrateListActivity">
+    tools:context=".sensor.liquid.CalibrateListActivity">
     <item
         android:id="@+id/menuSave"
         android:enabled="true"

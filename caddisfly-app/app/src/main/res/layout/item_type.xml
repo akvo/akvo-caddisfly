@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    tools:context=".sensor.ec.SensorTypeListActivity">
+    tools:context=".sensor.usb.SensorTypeListActivity">
 
     <TextView
         android:id="@+id/text_title"

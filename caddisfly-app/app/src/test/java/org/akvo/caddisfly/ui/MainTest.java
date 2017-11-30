@@ -29,10 +29,10 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.SettingsActivity;
+import org.akvo.caddisfly.sensor.bluetooth.BluetoothTypeListActivity;
 import org.akvo.caddisfly.sensor.cbt.TestActivity;
-import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
-import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
+import org.akvo.caddisfly.sensor.striptest.ui.TestTypeListActivity;
+import org.akvo.caddisfly.sensor.usb.SensorTypeListActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;

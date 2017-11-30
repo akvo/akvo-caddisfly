@@ -1,6 +1,6 @@
 package org.akvo.caddisfly.util.detector;
 
-import org.akvo.caddisfly.sensor.colorimetry.strip.utils.Constants;
+import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

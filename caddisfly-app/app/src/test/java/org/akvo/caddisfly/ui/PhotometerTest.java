@@ -26,8 +26,8 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.colorimetry.bluetooth.BluetoothTypeListActivity;
-import org.akvo.caddisfly.sensor.colorimetry.bluetooth.DeviceScanActivity;
+import org.akvo.caddisfly.sensor.bluetooth.BluetoothTypeListActivity;
+import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;

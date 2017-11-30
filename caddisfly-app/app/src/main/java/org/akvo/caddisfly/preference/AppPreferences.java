@@ -21,7 +21,7 @@ package org.akvo.caddisfly.preference;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.sensor.colorimetry.liquid.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.sensor.liquid.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**

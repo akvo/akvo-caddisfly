@@ -26,8 +26,8 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.ec.SensorActivity;
-import org.akvo.caddisfly.sensor.ec.SensorTypeListActivity;
+import org.akvo.caddisfly.sensor.usb.SensorActivity;
+import org.akvo.caddisfly.sensor.usb.SensorTypeListActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;

@@ -91,32 +91,32 @@
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.ec.SensorTypeListActivity"
+            android:name=".sensor.usb.SensorTypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.ec.SensorActivity"
+            android:name=".sensor.usb.SensorActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.liquid.ColorimetryLiquidActivity"
+            android:name=".sensor.liquid.ColorimetryLiquidActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
+            android:parentActivityName=".sensor.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.liquid.CalibrateListActivity"
+            android:name=".sensor.liquid.CalibrateListActivity"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".sensor.colorimetry.liquid.DiagnosticSwatchActivity"
-            android:parentActivityName=".sensor.colorimetry.liquid.CalibrateListActivity"
+            android:name=".sensor.liquid.DiagnosticSwatchActivity"
+            android:parentActivityName=".sensor.liquid.CalibrateListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.ec.CalibrateSensorActivity"
+            android:name=".sensor.usb.CalibrateSensorActivity"
             android:parentActivityName=".ui.TypeListActivity"
             android:screenOrientation="nosensor"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
-            android:name=".sensor.colorimetry.liquid.SelectDilutionActivity"
+            android:name=".sensor.liquid.SelectDilutionActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.TypeListActivity"
@@ -142,34 +142,34 @@
 
         <!-- StripTest -->
         <activity
-            android:name=".sensor.colorimetry.strip.ui.StripMeasureActivity"
+            android:name=".sensor.striptest.ui.StripMeasureActivity"
             android:screenOrientation="nosensor" />
-        <activity android:name=".sensor.colorimetry.strip.ui.TestTypeListActivity"
+        <activity android:name=".sensor.striptest.ui.TestTypeListActivity"
             android:screenOrientation="nosensor"/>
         <!-- end StripTest -->
 
         <activity
-            android:name=".sensor.colorimetry.bluetooth.BluetoothTypeListActivity"
+            android:name=".sensor.bluetooth.BluetoothTypeListActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.bluetooth.DeviceScanActivity"
+            android:name=".sensor.bluetooth.DeviceScanActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.bluetooth.DeviceControlActivity"
+            android:name=".sensor.bluetooth.DeviceControlActivity"
             android:screenOrientation="nosensor" />
 
         <activity
             android:name=".sensor.cbt.TestActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.colorimetry.liquid.ColorimetryTestActivity"
+            android:name=".sensor.liquid.ColorimetryTestActivity"
             android:screenOrientation="nosensor" />
 
-        <activity android:name=".sensor.colorimetry.BrandInfoActivity"
+        <activity android:name=".sensor.BrandInfoActivity"
             android:screenOrientation="nosensor"/>
 
         <service
-            android:name=".sensor.colorimetry.bluetooth.BluetoothLeService"
+            android:name=".sensor.bluetooth.BluetoothLeService"
             android:enabled="true" />
         <service
             android:name=".usb.UsbService"

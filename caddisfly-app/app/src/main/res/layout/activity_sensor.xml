@@ -23,7 +23,7 @@
     android:layout_height="match_parent"
     android:background="?primaryBackgroundStyle"
     android:keepScreenOn="true"
-    tools:context=".sensor.ec.SensorActivity"
+    tools:context=".sensor.usb.SensorActivity"
     tools:ignore="Overdraw">
 
     <include layout="@layout/toolbar" />

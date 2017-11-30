@@ -74,12 +74,12 @@
 
     <fragment
         android:id="@+id/fragmentCalibrateList"
-        android:name="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListFragment"
+        android:name="org.akvo.caddisfly.sensor.liquid.CalibrateListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layoutTitleBar"
         android:layout_marginTop="10dp"
-        tools:context="org.akvo.caddisfly.sensor.colorimetry.liquid.CalibrateListActivity"
+        tools:context=".sensor.liquid.CalibrateListActivity"
         tools:layout="@layout/fragment_calibrate_list" />
 
     <android.support.design.widget.FloatingActionButton
