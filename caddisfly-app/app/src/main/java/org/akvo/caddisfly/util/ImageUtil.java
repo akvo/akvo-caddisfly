@@ -34,8 +34,6 @@ import android.support.media.ExifInterface;
 import android.text.TextUtils;
 
 import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.helper.ImageHelper;
-import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -90,14 +88,7 @@ public final class ImageUtil {
         int centerY = bitmap.getHeight() / 2;
         Point point;
 
-        if (!detectBackdrop || AppPreferences.getNoBackdropDetection()) {
-            point = new Point(centerX, centerY);
-        } else {
-            point = ImageHelper.getCenter(bitmap);
-            if (point == null) {
-                return null;
-            }
-        }
+        point = new Point(centerX, centerY);
 
         bitmap.getPixels(pixels, 0, length,
                 point.x - (length / 2),

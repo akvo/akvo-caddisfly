@@ -69,9 +69,6 @@ import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONObject;
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -107,18 +104,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00##");
 
     private final Handler delayHandler = new Handler();
-    private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
-        @Override
-        public void onManagerConnected(int status) {
-            switch (status) {
-                case LoaderCallbackInterface.SUCCESS:
-                    break;
-                default:
-                    super.onManagerConnected(status);
-                    break;
-            }
-        }
-    };
     private double mResult;
     private Bitmap mCroppedBitmap;
     private boolean mIsCalibration;
@@ -142,12 +127,6 @@ public class ColorimetryLiquidActivity extends BaseActivity
     //reference to last dialog opened so it can be dismissed on activity getting destroyed
     private AlertDialog alertDialogToBeDestroyed;
     private int mResultNumber;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
-    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

@@ -18,4 +18,3 @@
  */
 
 include ':app'
-include ':openCVLibrary310'
