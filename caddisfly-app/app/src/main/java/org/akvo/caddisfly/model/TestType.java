@@ -46,6 +46,11 @@ public enum TestType {
     BLUETOOTH,
 
     /**
+     * Tests which require the user to input the results manually
+     */
+    MANUAL,
+
+    /**
      * Compartment Bag Test
      */
     CBT

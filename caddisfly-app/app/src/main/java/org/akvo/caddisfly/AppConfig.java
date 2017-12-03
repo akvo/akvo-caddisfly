@@ -28,9 +28,9 @@ public final class AppConfig {
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
-    public static final int APP_EXPIRY_DAY = 1;
-    public static final int APP_EXPIRY_MONTH = 12;
-    public static final int APP_EXPIRY_YEAR = 2017;
+    public static final int APP_EXPIRY_DAY = 20;
+    public static final int APP_EXPIRY_MONTH = 2;
+    public static final int APP_EXPIRY_YEAR = 2018;
 
     /**
      * To launch Flow app.
@@ -51,6 +51,8 @@ public final class AppConfig {
      * The sound volume for the beeps and other sound effects.
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;
+
+    public static final String FILE_PROVIDER_AUTHORITY_URI = "org.akvo.caddisfly.fileprovider";
 
     private AppConfig() {
     }

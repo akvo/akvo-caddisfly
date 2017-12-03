@@ -201,4 +201,26 @@
 
     <string name="view_results">View results</string>
 
+    <!--Manual-->
+    <string name="enter_measured_value">Enter the measured value</string>
+    <string name="us_cm">μS/cm</string>
+    <string name="ms_cm">ms/cm</string>
+    <string name="select_unit">Select unit</string>
+    <string name="submitResult">Submit Result</string>
+
+    <string name="sd_on">Press briefly [*sd_on_off*] to turn device on.</string>
+    <string name="sd_50_dip_sample">Remove protective cap, rinse the electrode with distilled water and immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Stir the sensor gently while it is in the sample. Press briefly [*sd_on_off*] to freeze / unfreeze the measurement.</string>
+    <string name="sd_fill_photo_fill_in">Take a photo of the screen with the measurement and fill in the measurement value.</string>
+    <string name="sd_turn_off">Press and hold [*sd_on_off*] (3 sec.) to turn the instrument off.</string>
+    <string name="sd_rinse">Rinse the sensor with distilled water (never touch the electrode with anything) and place the protective cap back. Make sure the protective cap is filled with KCL solution.</string>
+    <string name="sd_maintenance">Always store the electrode in the protective cap with KCL solution. Regularly check the calibration of the device and recalibrate if necessary,. For calibration instructions: see the product manual in the box.</string>
+    <string name="fill_turbidity_tube">Connect the turbidity tubes and fill the tube with the water sample until you cannot see the black circle at the yellow bottom anymore.</string>
+    <string name="empty_turbidity_tube">Empty the tube with small intervals until you can see the black circle at the yellow bottom again and read out the turbidity on the side of the tube.</string>
+    <string name="fill_in_value_turbidity_tube">Fill in the obtained turbidity value in the app.</string>
+    <string name="clean_turbidity_tube">Empty the tube completely, clean if necessary, disconnect tubes and store them.</string>
+    <string name="sd_70_dip_sample">Remove protective cap, rinse the sensor with the sample water and immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Press briefly [*sd_on_off*] to freeze / unfreeze the measurement.</string>
+    <string name="sd_70_rinse">Rinse the sensor with distilled water (never touch the electrode with anything) and place the protective cap back.</string>
+    <string name="sd_70_maintenance">Regularly check the calibration of the device and recalibrate if necessary. For calibration instructions: see the product manual in the box.</string>
+
+
 </resources>

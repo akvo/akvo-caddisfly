@@ -6382,6 +6382,145 @@
           "unit": "mg/l"
         }
       ]
+    },
+    {
+      "name": "Lovibond SD 50 pH meter",
+      "subtype": "manual",
+      "uuid": "dbd058b6-29ed-4c7f-8b11-fcdae725a518",
+      "brand": "Lovibond SD 50",
+      "imageScale": "centerCrop",
+      "ranges": "0,14",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "sd_on"
+          ]
+        },
+        {
+          "section": [
+            "sd_50_dip_sample",
+            "image:sd_50_dip_sample"
+          ]
+        },
+        {
+          "section": [
+            "sd_fill_photo_fill_in"
+          ]
+        },
+        {
+          "section": [
+            "sd_turn_off"
+          ]
+        },
+        {
+          "section": [
+            "sd_rinse"
+          ]
+        },
+        {
+          "section": [
+            "sd_maintenance"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "pH"
+        }
+      ]
+    },
+    {
+      "name": "Lovibond SD 70 Conductivity meter",
+      "subtype": "manual",
+      "uuid": "578c5768-273d-455f-ba12-57a6ced96c17",
+      "brand": "Lovibond SD 70",
+      "imageScale": "centerCrop",
+      "ranges": "0,20000",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "sd_on"
+          ]
+        },
+        {
+          "section": [
+            "sd_70_dip_sample",
+            "image:sd_70_dip_sample"
+          ]
+        },
+        {
+          "section": [
+            "sd_fill_photo_fill_in"
+          ]
+        },
+        {
+          "section": [
+            "sd_turn_off"
+          ]
+        },
+        {
+          "section": [
+            "sd_70_rinse"
+          ]
+        },
+        {
+          "section": [
+            "sd_70_maintenance"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Electrical Conductivity",
+          "unit": "μS/cm",
+          "unitChoice": "μS/cm,mS/cm"
+        }
+      ]
+    },
+    {
+      "name": "DelAgua Turbidity Tube",
+      "subtype": "manual",
+      "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
+      "brand": "DelAgua Turbidity Tube",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "undefined",
+      "ranges": "5,2000",
+      "hasImage": false,
+      "instructions": [
+        {
+          "section": [
+            "fill_turbidity_tube",
+            "image:fill_turbidity_tube"
+          ]
+        },
+        {
+          "section": [
+            "empty_turbidity_tube",
+            "image:empty_turbidity_tube"
+          ]
+        },
+        {
+          "section": [
+            "fill_in_value_turbidity_tube"
+          ]
+        },
+        {
+          "section": [
+            "clean_turbidity_tube"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Turbidity",
+          "unit": "NTU"
+        }
+      ]
     }
   ]
 }

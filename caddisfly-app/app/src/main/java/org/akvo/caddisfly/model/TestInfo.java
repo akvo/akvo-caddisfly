@@ -89,6 +89,8 @@ public class TestInfo implements Parcelable {
     private String subtitleExtra;
     private String imageScale;
     private String brandUrl;
+    private boolean hasImage;
+    private String image;
 
     public TestInfo(String name, TestType testType, String[] swatchArray,
                     String[] defaultColorsArray, String[] dilutionsArray,
@@ -152,10 +154,16 @@ public class TestInfo implements Parcelable {
             for (int ii = 0; ii < resultsArray.length(); ii++) {
                 try {
                     JSONObject patchObj = resultsArray.getJSONObject(ii);
-                    subTests.add(new SubTest(patchObj.getInt("id"), patchObj.getString("name"),
+
+                    SubTest subTest = new SubTest(patchObj.getInt("id"), patchObj.getString("name"),
                             patchObj.has("unit") ? patchObj.getString("unit") : "",
                             patchObj.has("timeDelay") ? patchObj.getInt("timeDelay") : 0,
-                            patchObj.has("md610_id") ? patchObj.getString("md610_id") : ""));
+                            patchObj.has("md610_id") ? patchObj.getString("md610_id") : "");
+
+                    subTest.setUnitChoice(patchObj.has("unitChoice") ? patchObj.getString("unitChoice") : "");
+
+                    subTests.add(subTest);
+
                 } catch (JSONException e) {
                     Timber.e(e);
                 }
@@ -490,12 +498,33 @@ public class TestInfo implements Parcelable {
         return brandUrl;
     }
 
+    public boolean getHasImage() {
+        return hasImage;
+    }
+
+    public boolean isHasImage() {
+        return hasImage;
+    }
+
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public static class SubTest {
         private final int id;
         private final String desc;
         private final String unit;
         private final int timeDelay;
         private final String md610Id;
+        private String unitChoice = "";
 
         SubTest(int id, String desc, String unit, int timeDelay, String md610Id) {
             this.id = id;
@@ -523,6 +552,14 @@ public class TestInfo implements Parcelable {
 
         public String getMd610Id() {
             return md610Id;
+        }
+
+        public String getUnitChoice() {
+            return unitChoice;
+        }
+
+        public void setUnitChoice(String unitChoice) {
+            this.unitChoice = unitChoice;
         }
     }
 }

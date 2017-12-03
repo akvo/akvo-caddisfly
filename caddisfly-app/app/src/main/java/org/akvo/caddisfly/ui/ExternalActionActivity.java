@@ -41,6 +41,7 @@ import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.cbt.TestActivity;
@@ -52,6 +53,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
+import org.akvo.caddisfly.sensor.meter.ManualTestActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -277,7 +279,9 @@ public class ExternalActionActivity extends BaseActivity {
         Context context = this;
         CaddisflyApp caddisflyApp = CaddisflyApp.getApp();
 
-        switch (caddisflyApp.getCurrentTestInfo().getType()) {
+        TestInfo testInfo = caddisflyApp.getCurrentTestInfo();
+
+        switch (testInfo.getType()) {
             case BLUETOOTH:
                 if (this.getPackageManager().hasSystemFeature(FEATURE_BLUETOOTH_LE)) {
                     final Intent bluetoothIntent = new Intent();
@@ -333,6 +337,14 @@ public class ExternalActionActivity extends BaseActivity {
                 colorimetricStripIntent.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
                 startActivityForResult(colorimetricStripIntent, REQUEST_TEST);
 
+                break;
+            case MANUAL:
+                final Intent intent2 = new Intent(context, ManualTestActivity.class);
+                intent2.putExtra(Constant.UUID, uuid);
+                if (testInfo.getHasImage()) {
+                    intent2.putExtra(Constant.SEND_IMAGE_IN_RESULT, mCallerExpectsImageInResult);
+                }
+                startActivityForResult(intent2, REQUEST_TEST);
                 break;
             case SENSOR:
 

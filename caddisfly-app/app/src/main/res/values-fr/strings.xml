@@ -98,4 +98,18 @@
 
     <string name="view_results">Voir les résultats</string>
 
+    <string name="sd_on">Appuyer brièvement [*sd_on_off*] pour allumer l\'appareil</string>
+    <string name="sd_50_dip_sample">Retirer cache de protection et rincez l\'électrode avec de l\'eau distillée. Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Agiter le capteur doucement pendant qu\'il est dans l\'échantillon. Appuyer brièvement sur [*sd_on_off*] pour geler/valider la valeur mesurée.</string>
+    <string name="sd_fill_photo_fill_in">Prenez une photo de l\'écran avec la valeur de mesure et remplissez la valeur de mesure</string>
+    <string name="sd_turn_off">Appuyer sur [*sd_on_off*] pendant 3 s pour éteindre l\'appareil.</string>
+    <string name="sd_rinse">Rincez le l\'électrode avec de l\'eau distillée (ne touchez jamais l\'électrode avec quoi que ce soit) et replacez le cache de protection. Assurez-vous que le capuchon de protection est rempli de solution KCL</string>
+    <string name="sd_maintenance">Toujours stocker l\'électrode dans le capuchon de protection avec la solution KCL. Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
+    <string name="fill_turbidity_tube">Connectez les tubes et remplissez le tube avec l\'échantillon d\'eau jusqu\'à ce que vous ne puissiez plus voir le cercle noir au fond jaune.</string>
+    <string name="empty_turbidity_tube">Emmettez le tube avec de petits intervalles jusqu\'à ce que vous puissiez voir à nouveau le cercle noir au fond jaune et lire la turbidité sur le côté du tube.</string>
+    <string name="fill_in_value_turbidity_tube">Écrivez la valeur de turbidité obtenue dans l\'application.</string>
+    <string name="clean_turbidity_tube">Videz complètement le tube, nettoyez-le si nécessaire, déconnectez les tubes et rangez-les.</string>
+    <string name="sd_70_dip_sample">Retirer cache de protection et rincez l\'électrode l\'échantillon d\'eau. Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Appuyer brièvement sur [*sd_on_off*] pour geler/valider la valeur mesurée.</string>
+    <string name="sd_70_rinse">Rincez le l\'électrode avec de l\'eau distillée (ne touchez jamais l\'électrode avec quoi que ce soit) et replacez le cache de protection.</string>
+    <string name="sd_70_maintenance">Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
+
 </resources>

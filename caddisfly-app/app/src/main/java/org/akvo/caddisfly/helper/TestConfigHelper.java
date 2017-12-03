@@ -198,6 +198,9 @@ public final class TestConfigHelper {
                     case "backcase":
                         type = TestType.COLORIMETRIC_LIQUID;
                         break;
+                    case "manual":
+                        type = TestType.MANUAL;
+                        break;
                     case "strip":
                     case "striptest":
                         type = TestType.COLORIMETRIC_STRIP;
@@ -297,9 +300,15 @@ public final class TestConfigHelper {
             String title = item.has("title") ? item.getString("title") : "";
             testInfo.setTitle(title.isEmpty() ? name : title);
 
-            testInfo.setBrand(item.has("brand") ? item.getString("brand") : "");
+            String brand = item.has("brand") ? item.getString("brand") : "";
+            testInfo.setBrand(brand);
+
+            testInfo.setImage(item.has("image") ? item.getString("image") :
+                    brand.replace(" ", "-"));
 
             testInfo.setSubtitleExtra(item.has("subtitleExtra") ? item.getString("subtitleExtra") : "");
+
+            testInfo.setHasImage(item.has("hasImage") && item.getBoolean("hasImage"));
 
         } catch (JSONException e) {
             Timber.e(e);

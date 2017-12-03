@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.akvo.caddisfly.AppConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
@@ -201,7 +202,7 @@ public class TestActivity extends BaseActivity implements CompartmentBagFragment
                     photoURI = Uri.fromFile(photoFile);
                 } else {
                     photoURI = FileProvider.getUriForFile(this,
-                            "org.akvo.caddisfly.fileprovider",
+                            AppConfig.FILE_PROVIDER_AUTHORITY_URI,
                             photoFile);
                 }
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
