@@ -27,4 +27,8 @@ public final class TestConstant {
     public static final String GO_TO_TEST = "goToTest";
     public static final String NEXT = "next";
 
+
+    public static final int TESTS_TOTAL_COUNT = 82;
+
+
 }

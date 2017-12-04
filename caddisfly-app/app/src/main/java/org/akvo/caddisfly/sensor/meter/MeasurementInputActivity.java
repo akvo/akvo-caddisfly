@@ -124,7 +124,7 @@ public class MeasurementInputActivity extends BaseActivity {
                         hideSoftKeyboard(editResult);
                         Intent intent = new Intent(getIntent());
 
-                        intent.putExtra(SensorConstants.RESPONSE, editResult.getText().toString());
+                        intent.putExtra(SensorConstants.RESPONSE, String.valueOf(resultFloat));
                         setResult(RESULT_OK, intent);
                         finish();
                     }
