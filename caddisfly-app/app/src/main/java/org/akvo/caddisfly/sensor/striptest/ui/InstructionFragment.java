@@ -71,7 +71,7 @@ public class InstructionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_strip_instruction, container, false);
         final Button buttonStart = rootView.findViewById(R.id.button_start);
         buttonStart.setEnabled(false);
         buttonStart.setAlpha(BUTTON_START_ALPHA);
@@ -85,24 +85,19 @@ public class InstructionFragment extends Fragment {
         if (getArguments() != null) {
 
             TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
-            int phase = getArguments().getInt(ConstantKey.PHASE);
 
             if (testInfo != null) {
                 List<Instruction> instructions = testInfo.getInstructions();
-                if (phase == 1) {
-                    showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
-                }
+                showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
 
                 if (instructions != null) {
                     for (int i = 0; i < instructions.size(); i++) {
                         Instruction instruction = instructions.get(i);
                         List<String> section = instruction.section;
 
-                        if ((instruction.phase > 1 ? instruction.phase : 1) == phase) {
-                            for (int j = 0; j < section.size(); j++) {
-                                if (!section.get(j).startsWith("image:")) {
-                                    showInstruction(linearLayout, section.get(j), Typeface.NORMAL);
-                                }
+                        for (int j = 0; j < section.size(); j++) {
+                            if (!section.get(j).startsWith("image:")) {
+                                showInstruction(linearLayout, section.get(j), Typeface.NORMAL);
                             }
                         }
                     }

@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
@@ -74,10 +75,6 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
     private List<Result> patches;
     // CameraOperationsManager wraps the camera API
     private CameraOperationsManager mCameraOpsManager;
-
-    public CameraOperationsManager getCameraOpsManager() {
-        return mCameraOpsManager;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -132,7 +129,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         double currentPatch = -1;
         for (int i = 0; i < patches.size(); i++) {
             double nextPatch = patches.get(i).getTimeDelay();
-            if (nextPatch - currentPatch > 0.001) {
+            if (Math.abs(nextPatch - currentPatch) > 0.001) {
                 timeLapseSet.add((int) Math.round(nextPatch));
                 currentPatch = nextPatch;
             }
@@ -218,6 +215,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         // move to results activity
         Intent resultIntent = new Intent(getIntent());
         resultIntent.setClass(this, ResultActivity.class);
+        resultIntent.putExtra(ConstantKey.TEST_INFO, testInfo);
         resultIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         startActivity(resultIntent);
         ResultActivity.setDecodeData(StriptestHandler.getDecodeData());
@@ -290,5 +288,14 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
             mFinderPatternIndicatorView.setMeasure(w, (int) Math.round(w * Constants.CROP_FINDER_PATTERN_FACTOR));
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

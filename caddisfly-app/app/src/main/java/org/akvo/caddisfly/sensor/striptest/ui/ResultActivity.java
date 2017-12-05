@@ -262,6 +262,10 @@ public class ResultActivity extends BaseActivity {
         }
         // else create view in case the strip is of type GROUP
         else if (testInfo.getGroupingType() == GroupType.GROUP) {
+
+            // handle any calculated result to be displayed
+            displayCalculatedResults(testInfo, patchResultList);
+
             PatchResult patchResult = patchResultList.get(0);
 
             String patchDescription = patchResult.getPatch().getName();
@@ -276,6 +280,10 @@ public class ResultActivity extends BaseActivity {
             totalImage = concatTwoBitmaps(valueImage, resultImage);
         } else {
             // create view in case the strip is of type INDIVIDUAL
+
+            // handle any calculated result to be displayed
+            displayCalculatedResults(testInfo, patchResultList);
+
             for (PatchResult patchResult : patchResultList) {
                 // create strings for description, unit, and value
                 String patchDescription = patchResult.getPatch().getName();
@@ -350,6 +358,52 @@ public class ResultActivity extends BaseActivity {
         }
         // if we didn't have a formula, return the unchanged value.
         return value;
+    }
+
+    /**
+     * When result item does not have a patch but exists solely to display a calculated result
+     *
+     * @param testInfo - the test info
+     * @param patchResultList - results for the patches
+     */
+    private void displayCalculatedResults(TestInfo testInfo, List<PatchResult> patchResultList) {
+        // if testInfo has a displayResult items
+        if (testInfo.getDisplayResults() != null) {
+            for (Result displayResult : testInfo.getDisplayResults()) {
+
+                // if displayResult formula exists then calculate and display
+                if (!displayResult.getFormula().isEmpty()) {
+                    String patchDescription = displayResult.getName();
+                    String unit = displayResult.getUnit();
+
+                    Object[] results;
+                    if (testInfo.getGroupingType() == GroupType.GROUP) {
+                        results = new Object[1];
+                        results[0] = patchResultList.get(0).getValue();
+                    } else {
+
+                        // get all the other results for this test
+                        results = new Object[patchResultList.size()];
+                        for (int i = 0; i < patchResultList.size(); i++) {
+                            results[i] = patchResultList.get(i).getValue();
+                        }
+                    }
+
+                    double calculatedResult;
+                    try {
+                        calculatedResult = MathUtil.eval(String.format(Locale.US,
+                                displayResult.getFormula(), results));
+                    } catch (Exception e) {
+                        inflateView(patchDescription, createValueUnitString(
+                                -1, unit), null);
+                        return;
+                    }
+
+                    inflateView(patchDescription, createValueUnitString(
+                            (float) calculatedResult, unit), null);
+                }
+            }
+        }
     }
 
     private String createBracket(float left, float right) {

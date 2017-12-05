@@ -24,5 +24,5 @@ public class Constants {
 
     public static final float MAX_TILT_DIFF = 0.03f;
 
-    public static final int MIN_CAMERA_MEGA_PIXELS = 25;
+    public static final int MIN_CAMERA_MEGA_PIXELS = 5;
 }
