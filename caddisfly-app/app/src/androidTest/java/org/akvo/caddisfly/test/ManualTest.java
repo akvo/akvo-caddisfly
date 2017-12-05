@@ -32,6 +32,7 @@ import android.provider.MediaStore;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
@@ -65,6 +66,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
@@ -146,7 +148,7 @@ public class ManualTest {
     }
 
     @Test
-    public void runManualTest() {
+    public void runManualTurbidityTest() {
 
         gotoSurveyForm();
 
@@ -291,16 +293,7 @@ public class ManualTest {
                         isDisplayed()));
         appCompatButton5.perform(click());
 
-//        ViewInteraction textView8 = onView(
-//                allOf(withId(org.akvo.flow.R.id.result_text_view), withText("Turbidity: 1234 NTU"),
-//                        childAtPosition(
-//                                allOf(withId(org.akvo.flow.R.id.results_recycler_view),
-//                                        childAtPosition(
-//                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-//                                                1)),
-//                                0),
-//                        isDisplayed()));
-//        textView8.check(matches(withText("Turbidity: 1234 NTU")));
+        assertNotNull(mDevice.findObject(By.text("Turbidity: 1234.0 NTU")));
 
     }
 
@@ -459,17 +452,7 @@ public class ManualTest {
 
         onView(withText("Submit Result")).perform(click());
 
-
-//        ViewInteraction textView8 = onView(
-//                allOf(withId(org.akvo.flow.R.id.result_text_view), withText("Turbidity: 1234 NTU"),
-//                        childAtPosition(
-//                                allOf(withId(org.akvo.flow.R.id.results_recycler_view),
-//                                        childAtPosition(
-//                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-//                                                1)),
-//                                0),
-//                        isDisplayed()));
-//        textView8.check(matches(withText("Turbidity: 1234 NTU")));
+        assertNotNull(mDevice.findObject(By.text("pH: 12.0 ")));
 
     }
 
@@ -627,6 +610,8 @@ public class ManualTest {
 
         onView(withText("Submit Result")).perform(click());
 
+        assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
+
         clickExternalSourceButton(2, TestConstant.GO_TO_TEST);
 
         SystemClock.sleep(3000);
@@ -653,16 +638,7 @@ public class ManualTest {
 
         onView(withText("Submit Result")).perform(click());
 
-//        ViewInteraction textView8 = onView(
-//                allOf(withId(org.akvo.flow.R.id.result_text_view), withText("Turbidity: 1234 NTU"),
-//                        childAtPosition(
-//                                allOf(withId(org.akvo.flow.R.id.results_recycler_view),
-//                                        childAtPosition(
-//                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-//                                                1)),
-//                                0),
-//                        isDisplayed()));
-//        textView8.check(matches(withText("Turbidity: 1234 NTU")));
+        assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
 
     }
 }
