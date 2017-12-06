@@ -316,9 +316,9 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-                if (snackbar == null || !snackbar.isShownOrQueued()) {
-                    requestPermissions(PERMISSIONS, PERMISSION_ALL);
-                }
+            if (snackbar == null || !snackbar.isShownOrQueued()) {
+                requestPermissions(PERMISSIONS, PERMISSION_ALL);
+            }
         } else {
             scanLeDevice(true);
         }
@@ -396,61 +396,65 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             if (!mBluetoothAdapter.isEnabled()) {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            }
+            } else {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mBluetoothLeScanner == null) {
-                return;
-            }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && mBluetoothLeScanner == null) {
+                    return;
+                }
 
-            runnable = () -> {
-                mScanning = false;
+                runnable = () -> {
+                    mScanning = false;
+                    if (mBluetoothAdapter.isEnabled()) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            mBluetoothLeScanner.stopScan(mScanCallback);
+                        } else {
+                            //noinspection deprecation
+                            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                        }
+                    }
+
+                    if (!isDestroyed() && !isFinishing()) {
+                        if (mLeDeviceListAdapter.getCount() < 1) {
+                            deviceList.setVisibility(View.GONE);
+                            layoutInfo.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            showInstructionDialog();
+                        }
+                    }
+                };
+
+                // Stops scanning after a pre-defined scan period.
+                mHandler.postDelayed(runnable, SCAN_PERIOD);
+
+                mScanning = true;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mBluetoothLeScanner.stopScan(mScanCallback);
+
+                    ScanFilter filter = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(GattAttributes.LOVIBOND_SERVICE)).build();
+
+                    List<ScanFilter> scanFilters = new ArrayList<>();
+                    scanFilters.add(filter);
+
+                    ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_BALANCED).build();
+
+                    mBluetoothLeScanner.startScan(scanFilters, settings, mScanCallback);
+
+                    progressBar.setVisibility(View.VISIBLE);
                 } else {
                     //noinspection deprecation
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    mBluetoothAdapter.startLeScan(mLeScanCallback);
                 }
-
-                if (!isDestroyed() && !isFinishing()) {
-                    if (mLeDeviceListAdapter.getCount() < 1) {
-                        deviceList.setVisibility(View.GONE);
-                        layoutInfo.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
-                        showInstructionDialog();
-                    }
-                }
-            };
-
-            // Stops scanning after a pre-defined scan period.
-            mHandler.postDelayed(runnable, SCAN_PERIOD);
-
-            mScanning = true;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-                ScanFilter filter = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(GattAttributes.LOVIBOND_SERVICE)).build();
-
-                List<ScanFilter> scanFilters = new ArrayList<>();
-                scanFilters.add(filter);
-
-                ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_BALANCED).build();
-
-                mBluetoothLeScanner.startScan(scanFilters, settings, mScanCallback);
-
-                progressBar.setVisibility(View.VISIBLE);
-            } else {
-                //noinspection deprecation
-                mBluetoothAdapter.startLeScan(mLeScanCallback);
             }
         } else {
             mScanning = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                if (mBluetoothAdapter.getState() == BluetoothAdapter.STATE_ON) {
-                    mBluetoothLeScanner.stopScan(mScanCallback);
+            if (mBluetoothAdapter.isEnabled()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (mBluetoothAdapter.getState() == BluetoothAdapter.STATE_ON) {
+                        mBluetoothLeScanner.stopScan(mScanCallback);
+                    }
+                } else {
+                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
                 }
-            } else {
-                mBluetoothAdapter.stopLeScan(mLeScanCallback);
             }
-
         }
     }
 
@@ -533,10 +537,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
                 Button buttonConnect = view.findViewById(R.id.button_connect);
 
-                buttonConnect.setOnClickListener(v -> {
-                    Timber.e("clicked " + position);
-                    connectToDevice(position);
-                });
+                buttonConnect.setOnClickListener(v -> connectToDevice(position));
 
             } else {
                 viewHolder = (ViewHolder) view.getTag();

@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensor.meter;
+package org.akvo.caddisfly.sensor.manual;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -219,30 +219,32 @@ public class InstructionDetailFragment extends Fragment {
                         Spanned spanned2 = StringUtil.getStringResourceByName(context, text);
                         builder.append(spanned2);
 
-                        // Set reagent in the string
-                        for (int i = 1; i < 5; i++) {
-                            Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
-                            while (m1.find()) {
-                                try {
-                                    String code = testInfo.getReagent(i - 1).getString("code");
-                                    if (!code.isEmpty()) {
-                                        ReagentLabel reagentLabel = new ReagentLabel(context, null);
+                        if (testInfo != null) {
+                            // Set reagent in the string
+                            for (int i = 1; i < 5; i++) {
+                                Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
+                                while (m1.find()) {
+                                    try {
+                                        String code = testInfo.getReagent(i - 1).getString("code");
+                                        if (!code.isEmpty()) {
+                                            ReagentLabel reagentLabel = new ReagentLabel(context, null);
 
-                                        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+                                            int height = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-                                        reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
-                                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                                (int) (height * 0.2)));
+                                            reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
+                                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                                    (int) (height * 0.2)));
 
-                                        reagentLabel.setReagentName(testInfo.getReagent(i - 1).getString("name"));
-                                        reagentLabel.setReagentCode(code);
+                                            reagentLabel.setReagentName(testInfo.getReagent(i - 1).getString("name"));
+                                            reagentLabel.setReagentCode(code);
 
-                                        layoutInstructions.addView(reagentLabel);
+                                            layoutInstructions.addView(reagentLabel);
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
 
+                                }
                             }
                         }
                     }

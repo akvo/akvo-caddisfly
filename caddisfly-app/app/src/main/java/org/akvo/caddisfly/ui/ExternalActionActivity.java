@@ -53,7 +53,7 @@ import org.akvo.caddisfly.sensor.colorimetry.strip.ui.BrandInfoActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.ui.TestTypeListActivity;
 import org.akvo.caddisfly.sensor.colorimetry.strip.util.Constant;
 import org.akvo.caddisfly.sensor.ec.SensorActivity;
-import org.akvo.caddisfly.sensor.meter.ManualTestActivity;
+import org.akvo.caddisfly.sensor.manual.ManualTestActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;

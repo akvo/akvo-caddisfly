@@ -178,11 +178,11 @@
             android:name=".sensor.colorimetry.liquid.ColorimetryTestActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.meter.MeasurementInputActivity"
+            android:name=".sensor.manual.MeasurementInputActivity"
             android:screenOrientation="nosensor" />
-        <activity android:name=".sensor.meter.ManualTestActivity"
+        <activity android:name=".sensor.manual.ManualTestActivity"
             android:screenOrientation="nosensor"/>
-        <activity android:name=".sensor.meter.InstructionActivity"
+        <activity android:name=".sensor.manual.InstructionActivity"
             android:screenOrientation="nosensor"/>
 
         <service

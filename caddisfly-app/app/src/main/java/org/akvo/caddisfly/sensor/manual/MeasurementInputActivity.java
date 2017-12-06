@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensor.meter;
+package org.akvo.caddisfly.sensor.manual;
 
 import android.content.Context;
 import android.content.Intent;
@@ -80,6 +80,7 @@ public class MeasurementInputActivity extends BaseActivity {
         } else {
             unitRadioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
                 radioValidation.setError(null);
+                editResult.setError(null);
                 editResult.setActivated(true);
                 editResult.requestFocus();
             });

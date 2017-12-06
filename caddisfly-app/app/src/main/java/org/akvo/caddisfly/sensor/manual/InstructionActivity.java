@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensor.meter;
+package org.akvo.caddisfly.sensor.manual;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
