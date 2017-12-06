@@ -22,7 +22,6 @@ package org.akvo.caddisfly.ui;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.StringRes;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.FlakyTest;
@@ -63,6 +62,7 @@ import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.CheckTextInTable;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -84,42 +84,6 @@ public class CbtInstructions {
         }
     }
 
-    @Before
-    public void setUp() {
-
-        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
-
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
-    }
-
-    private static void CheckTextInTable(@StringRes int resourceId) {
-        ViewInteraction textView3 = onView(
-                allOf(withText(resourceId),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textView3.check(matches(withText(resourceId)));
-    }
-
-    private static void CheckTextInTable(String text) {
-        ViewInteraction textView3 = onView(
-                allOf(withText(text),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textView3.check(matches(withText(text)));
-    }
-
     private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
@@ -137,6 +101,18 @@ public class CbtInstructions {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+    @Before
+    public void setUp() {
+
+        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
+        prefs.edit().clear().apply();
+
+        resetLanguage();
     }
 
     @Test

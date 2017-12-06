@@ -177,6 +177,13 @@
         <activity
             android:name=".sensor.colorimetry.liquid.ColorimetryTestActivity"
             android:screenOrientation="nosensor" />
+        <activity
+            android:name=".sensor.manual.MeasurementInputActivity"
+            android:screenOrientation="nosensor" />
+        <activity android:name=".sensor.manual.ManualTestActivity"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".sensor.manual.InstructionActivity"
+            android:screenOrientation="nosensor"/>
 
         <service
             android:name=".sensor.colorimetry.bluetooth.BluetoothLeService"

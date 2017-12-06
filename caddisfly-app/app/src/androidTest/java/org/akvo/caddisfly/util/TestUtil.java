@@ -21,8 +21,10 @@ package org.akvo.caddisfly.util;
 
 import android.app.Activity;
 import android.os.Build;
+import android.support.annotation.StringRes;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.GeneralClickAction;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Tap;
@@ -42,6 +44,7 @@ import org.akvo.caddisfly.R;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 
 import java.util.Collection;
 
@@ -50,9 +53,11 @@ import timber.log.Timber;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 
@@ -269,4 +274,29 @@ public final class TestUtil {
                 isDisplayed())).perform(click());
         mDevice.waitForIdle();
     }
+
+    public static void CheckTextInTable(@StringRes int resourceId) {
+        ViewInteraction textView3 = onView(
+                allOf(withText(resourceId),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
+                                        0),
+                                1),
+                        isDisplayed()));
+        textView3.check(matches(withText(resourceId)));
+    }
+
+    public static void CheckTextInTable(String text) {
+        ViewInteraction textView3 = onView(
+                allOf(withText(text),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
+                                        0),
+                                1),
+                        isDisplayed()));
+        textView3.check(matches(withText(text)));
+    }
+
 }
