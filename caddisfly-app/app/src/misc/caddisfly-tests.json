@@ -1153,6 +1153,44 @@
       ]
     },
     {
+      "name": "Water - Lovibond SD 50 pH (0 - 14)",
+      "uuid": "dbd058b6-29ed-4c7f-8b11-fcdae725a518",
+      "brand": "Lovibond",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "pH"
+        }
+      ]
+    },
+    {
+      "name": "Water - Lovibond SD 70 Electrical Conductivity, (0 - 20000 μS/cm)",
+      "uuid": "578c5768-273d-455f-ba12-57a6ced96c17",
+      "brand": "Lovibond",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Electrical Conductivity",
+          "unit": "μS/cm"
+        }
+      ]
+    },
+    {
+      "name": "Water - DelAgua Turbidity Tube, (0 - 2000 NTU)",
+      "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
+      "brand": "DelAgua",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Turbidity",
+          "unit": "NTU"
+        }
+      ]
+    },
+    {
       "name": "Z - Trial - Colorimetry - Caddisfly - pH (4 - 10)",
       "uuid": "4d3a7d6d-2f11-49de-9f7f-9e21e840df93",
       "brand": "Caddisfly",
