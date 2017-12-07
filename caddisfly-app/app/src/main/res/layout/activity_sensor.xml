@@ -33,22 +33,21 @@
 
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?primaryBackgroundStyle"
         android:keepScreenOn="true"
+        android:orientation="vertical"
         tools:context=".sensor.ec.SensorActivity"
         tools:ignore="Overdraw">
 
-        <include layout="@layout/toolbar"
-            android:id="@+id/appBar"/>
+        <include layout="@layout/toolbar" />
 
         <LinearLayout
             android:id="@+id/layoutTitleBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/appBar"
             android:background="?colorPrimary"
             android:orientation="vertical"
             android:paddingBottom="20dp"
@@ -84,100 +83,100 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageUsbConnection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layoutTitleBar"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:alpha="0"
-            android:contentDescription="@string/deviceConnectSensor"
-            android:paddingBottom="24dp"
-            android:src="@drawable/usb" />
-
-        <ProgressBar
-            android:id="@+id/progressWait"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layoutTitleBar"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
-            android:indeterminate="true"
-            android:indeterminateTint="?progressTint"
-            android:indeterminateTintMode="src_in"
-            android:visibility="gone"
-            tools:ignore="UnusedAttribute" />
-
-        <LinearLayout
-            android:id="@+id/layoutResult"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/layoutTitleBar"
-            android:layout_marginTop="20dp"
-            android:alpha="0"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:visibility="visible">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/textResult"
+            <ImageView
+                android:id="@+id/imageUsbConnection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?android:textColorSecondaryInverse"
-                android:textSize="70sp"
-                tools:text="20000" />
+                android:layout_centerInParent="true"
+                android:layout_marginTop="20dp"
+                android:alpha="0"
+                android:contentDescription="@string/deviceConnectSensor"
+                android:paddingBottom="24dp"
+                android:src="@drawable/usb" />
 
-            <TextView
-                android:id="@+id/textUnit"
-                android:layout_width="wrap_content"
+            <ProgressBar
+                android:id="@+id/progressWait"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-12dp"
-                android:alpha="0.4"
-                android:shadowColor="#cccccc"
-                android:shadowRadius="1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?android:textColorSecondaryInverse"
-                tools:text="μS/cm" />
+                android:layout_centerInParent="true"
+                android:layout_marginTop="70dp"
+                android:indeterminate="true"
+                android:indeterminateTint="?progressTint"
+                android:indeterminateTintMode="src_in"
+                android:visibility="visible"
+                tools:ignore="UnusedAttribute" />
 
-            <TextView
-                android:id="@+id/textResult2"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutResult"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:alpha="0.9"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?android:textColorSecondaryInverse"
-                android:textSize="60sp"
-                android:visibility="gone"
-                tools:text="24" />
+                android:layout_marginTop="20dp"
+                android:alpha="0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:visibility="visible">
 
-            <TextView
-                android:id="@+id/textUnit2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-12dp"
-                android:alpha="0.4"
-                android:shadowColor="#3c4a5b"
-                android:shadowRadius="1"
-                android:text="@string/celsius"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?android:textColorSecondaryInverse"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/textResult"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="?android:textColorSecondaryInverse"
+                    android:textSize="70sp"
+                    tools:text="20000" />
 
-            <Button
-                android:id="@+id/buttonAcceptResult"
-                style="@style/Button"
-                android:onClick="onClickAcceptResult"
-                android:layout_marginTop="33dp"
-                android:text="@string/acceptResult"
-                android:theme="?primaryButtonStyle"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/textUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-12dp"
+                    android:alpha="0.4"
+                    android:shadowColor="#cccccc"
+                    android:shadowRadius="1"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:textColorSecondaryInverse"
+                    tools:text="μS/cm" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/textResult2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:alpha="0.9"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="?android:textColorSecondaryInverse"
+                    android:textSize="60sp"
+                    android:visibility="gone"
+                    tools:text="24" />
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/textUnit2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-12dp"
+                    android:alpha="0.4"
+                    android:shadowColor="#3c4a5b"
+                    android:shadowRadius="1"
+                    android:text="@string/celsius"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:textColorSecondaryInverse"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/buttonAcceptResult"
+                    style="@style/Button"
+                    android:layout_marginTop="33dp"
+                    android:onClick="onClickAcceptResult"
+                    android:text="@string/acceptResult"
+                    android:theme="?primaryButtonStyle"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
 </layout>
