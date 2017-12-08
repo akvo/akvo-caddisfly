@@ -31,11 +31,13 @@ import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardException;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
+import org.akvo.caddisfly.sensor.striptest.models.TimeDelayDetail;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPatternInfo;
 import org.akvo.caddisfly.sensor.striptest.utils.CalibrationCardUtils;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class StriptestHandler extends Handler {
@@ -54,7 +56,8 @@ public final class StriptestHandler extends Handler {
     public static DecodeData mDecodeData;
     private static CalibrationCardData mCalCardData;
     private static State mState;
-    private List<Integer> mPatchTimeLapses;
+    private List<TimeDelayDetail> mPatchTimeDelaysUnfiltered;
+    private List<TimeDelayDetail> mPatchTimeDelays = new ArrayList<>();
     private String TAG = "Caddisfly - handler";
     // camera manager instance
     private CameraOperationsManager mCameraOpsManager;
@@ -81,6 +84,8 @@ public final class StriptestHandler extends Handler {
     private int numPatches;
     private boolean captureNextImage;
     private Context context;
+    private int currentTestStage = 1;
+    private int totalTestStages = 1;
 
     StriptestHandler(Context context1, Context context, CameraOperationsManager cameraOpsManager,
                      FinderPatternIndicatorView finderPatternIndicatorView, TestInfo testInfo) {
@@ -118,8 +123,8 @@ public final class StriptestHandler extends Handler {
         mFragment = fragment;
     }
 
-    public void setTestData(List<Integer> timeLapses) {
-        mPatchTimeLapses = timeLapses;
+    public void setTestData(List<TimeDelayDetail> timeDelays) {
+        mPatchTimeDelaysUnfiltered = timeDelays;
     }
 
     public void setStatus(State state) {
@@ -143,7 +148,16 @@ public final class StriptestHandler extends Handler {
 
                 startTimeMillis = System.currentTimeMillis();
                 nextPatch = 0;
-                numPatches = mPatchTimeLapses.size();
+                mPatchTimeDelays.clear();
+                for (TimeDelayDetail timeDelayDetail : mPatchTimeDelaysUnfiltered) {
+                    // get only the patches that have to be analyzed at the current stage
+                    if (timeDelayDetail.getTestStage() == currentTestStage) {
+                        mPatchTimeDelays.add(timeDelayDetail);
+                    }
+
+                    totalTestStages = Math.max(timeDelayDetail.getTestStage(), totalTestStages);
+                }
+                numPatches = mPatchTimeDelays.size();
 
                 captureNextImage = false;
 
@@ -156,13 +170,13 @@ public final class StriptestHandler extends Handler {
                 }
 
                 // update timer
-                int secondsLeft = mPatchTimeLapses.get(nextPatch) - timeElapsedSeconds();
+                int secondsLeft = mPatchTimeDelays.get(nextPatch).getTimeDelay() - timeElapsedSeconds();
                 if (mState.equals(State.MEASURE) && secondsLeft > Constants.MIN_SHOW_TIMER_SECONDS) {
                     mListener.showTimer();
                 }
 
                 mListener.updateTimer(secondsLeft);
-                if (timeElapsedSeconds() > mPatchTimeLapses.get(nextPatch)) {
+                if (timeElapsedSeconds() > mPatchTimeDelays.get(nextPatch).getTimeDelay()) {
                     captureNextImage = true;
                 }
 
@@ -390,8 +404,8 @@ public final class StriptestHandler extends Handler {
 
                 if (mState.equals(State.PREPARE) && successCount > Constants.COUNT_QUALITY_CHECK_LIMIT) {
                     if (mState.equals(StriptestHandler.State.PREPARE)) {
-                        mCameraOpsManager.stopAutoFocus();
-                        mListener.moveToInstructions();
+                        mCameraOpsManager.stopAutofocus();
+                        mListener.moveToInstructions(currentTestStage);
                         break;
                     }
                 }
@@ -399,7 +413,7 @@ public final class StriptestHandler extends Handler {
                 if (mState.equals(State.MEASURE) && captureNextImage && quality > Constants.CALIB_PERCENTAGE_LIMIT) {
                     captureNextImage = false;
 
-                    mDecodeProcessor.storeImageData(mPatchTimeLapses.get(nextPatch));
+                    mDecodeProcessor.storeImageData(mPatchTimeDelays.get(nextPatch).getTimeDelay());
                 } else {
                     // start another decode image capture request
                     mDecodeData.clearData();
@@ -416,8 +430,14 @@ public final class StriptestHandler extends Handler {
                     mDecodeData.clearData();
                     mCameraOpsManager.setDecodeImageCaptureRequest();
                 } else {
-                    // we are done
-                    mListener.moveToResults();
+                    if (currentTestStage < totalTestStages) {
+                        // if all are stages are not completed then show next instructions
+                        currentTestStage++;
+                        mListener.moveToInstructions(currentTestStage);
+                    } else {
+                        // we are done
+                        mListener.moveToResults();
+                    }
                 }
                 break;
         }

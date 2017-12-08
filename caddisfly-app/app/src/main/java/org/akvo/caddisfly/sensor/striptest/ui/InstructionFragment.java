@@ -59,10 +59,11 @@ public class InstructionFragment extends Fragment {
     }
 
     @NonNull
-    public static InstructionFragment newInstance(TestInfo testInfo) {
+    public static InstructionFragment newInstance(TestInfo testInfo, int testStage) {
         InstructionFragment fragment = new InstructionFragment();
         Bundle args = new Bundle();
         args.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        args.putInt(ConstantKey.TEST_STAGE, testStage);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,19 +86,26 @@ public class InstructionFragment extends Fragment {
         if (getArguments() != null) {
 
             TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+            int testStage = getArguments().getInt(ConstantKey.TEST_STAGE);
 
             if (testInfo != null) {
                 List<Instruction> instructions = testInfo.getInstructions();
-                showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
+
+                // If quality check was finished and this is the start of the first stage of the test
+                if (testStage == 1) {
+                    showInstruction(linearLayout, getString(R.string.success_quality_checks), BOLD);
+                }
 
                 if (instructions != null) {
                     for (int i = 0; i < instructions.size(); i++) {
                         Instruction instruction = instructions.get(i);
                         List<String> section = instruction.section;
 
-                        for (int j = 0; j < section.size(); j++) {
-                            if (!section.get(j).startsWith("image:")) {
-                                showInstruction(linearLayout, section.get(j), Typeface.NORMAL);
+                        if (Math.max(instruction.testStage, 1) == testStage) {
+                            for (int j = 0; j < section.size(); j++) {
+                                if (!section.get(j).startsWith("image:")) {
+                                    showInstruction(linearLayout, section.get(j), Typeface.NORMAL);
+                                }
                             }
                         }
                     }

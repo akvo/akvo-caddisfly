@@ -69,9 +69,9 @@ public class Result implements Parcelable {
     @SerializedName("timeDelay")
     @Expose
     private Integer timeDelay = 0;
-    @SerializedName("phase")
+    @SerializedName("testStage")
     @Expose
-    private Integer phase = 1;
+    private Integer testStage = 1;
     @SerializedName("colors")
     @Expose
     private List<ColorItem> colorItems = new ArrayList<>();
@@ -92,7 +92,7 @@ public class Result implements Parcelable {
         patchPos = in.readByte() == 0x00 ? null : in.readDouble();
         patchWidth = in.readByte() == 0x00 ? null : in.readDouble();
         timeDelay = in.readByte() == 0x00 ? null : in.readInt();
-        phase = in.readByte() == 0x00 ? null : in.readInt();
+        testStage = in.readByte() == 0x00 ? null : in.readInt();
         if (in.readByte() == 0x01) {
             colorItems = new ArrayList<>();
             in.readList(colorItems, ColorItem.class.getClassLoader());
@@ -161,8 +161,8 @@ public class Result implements Parcelable {
         this.timeDelay = timeDelay;
     }
 
-    public Integer getPhase() {
-        return phase;
+    public Integer getTestStage() {
+        return testStage;
     }
 
     public List<ColorItem> getColors() {
@@ -209,11 +209,11 @@ public class Result implements Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeInt(timeDelay);
         }
-        if (phase == null) {
+        if (testStage == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeInt(phase);
+            dest.writeInt(testStage);
         }
         if (colorItems == null) {
             dest.writeByte((byte) (0x00));

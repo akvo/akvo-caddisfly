@@ -2,7 +2,9 @@ package org.akvo.caddisfly.common;
 
 
 public class ConstantKey {
-    public static final String UUID = "org.akvo.caddisfly.uuid";
+    private static final String NAMESPACE_PREFIX = "org.akvo.caddisfly.";
+
+    public static final String UUID =  NAMESPACE_PREFIX + "uuid";
     public static final String FORMAT = "org.akvo.caddisfly.format";
     public static final String WIDTH = "org.akvo.caddisfly.width";
     public static final String HEIGHT = "org.akvo.caddisfly.height";
@@ -25,5 +27,6 @@ public class ConstantKey {
     public static final String RUN_TEST = "runTest";
     public static final String RESULT = "result";
 
+    public static final String TEST_STAGE = NAMESPACE_PREFIX + "testStage";
 }
 

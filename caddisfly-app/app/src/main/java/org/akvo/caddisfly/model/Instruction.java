@@ -49,15 +49,15 @@ public class Instruction implements Parcelable {
     @SerializedName("layout")
     @Expose
     public String layout;
-    @SerializedName("phase")
+    @SerializedName("testStage")
     @Expose
-    public int phase;
+    public int testStage;
 
     private Instruction(Parcel in) {
         section = in.createStringArrayList();
         image = in.readString();
         layout = in.readString();
-        phase = in.readInt();
+        testStage = in.readInt();
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Instruction implements Parcelable {
         parcel.writeStringList(section);
         parcel.writeString(image);
         parcel.writeString(layout);
-        parcel.writeInt(phase);
+        parcel.writeInt(testStage);
     }
 }
 

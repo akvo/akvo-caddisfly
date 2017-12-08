@@ -110,7 +110,7 @@ public class CameraOperationsManager {
             changingExposure = true;
             mCamera.stopPreview();
             mCamera.cancelAutoFocus();
-            stopAutoFocus();
+            stopAutofocus();
             Camera.Parameters cameraParam = mCamera.getParameters();
             cameraParam.setExposureCompensation(newSetting);
             mCamera.setParameters(cameraParam);
@@ -129,7 +129,7 @@ public class CameraOperationsManager {
         }
     }
 
-    public void stopAutoFocus() {
+    public void stopAutofocus() {
         if (mCameraHandler != null) {
             mCameraHandler.removeCallbacks(runAutoFocus);
         }

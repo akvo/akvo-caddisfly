@@ -1238,7 +1238,7 @@
           ]
         },
         {
-          "phase": 2,
+          "testStage": 2,
           "section": [
             "<b>stage_two</b>",
             "dip_strip_move_back_forth_30_seconds",
@@ -1247,7 +1247,7 @@
           ]
         },
         {
-          "phase": 2,
+          "testStage": 2,
           "section": [
             "place_strip_clr",
             "image:place_clr"
@@ -1262,7 +1262,7 @@
           "timeDelay": 35,
           "patchPos": 3,
           "patchWidth": 6,
-          "phase": 2,
+          "testStage": 2,
           "colors": [
             {
               "value": 0,
@@ -1297,7 +1297,7 @@
           "timeDelay": 35,
           "patchPos": 17,
           "patchWidth": 6,
-          "phase": 2,
+          "testStage": 2,
           "colors": [
             {
               "value": 0,

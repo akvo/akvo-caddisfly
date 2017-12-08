@@ -25,7 +25,7 @@ package org.akvo.caddisfly.sensor.striptest.ui;
 @SuppressWarnings("deprecation")
 interface StripMeasureListener {
 
-    void moveToInstructions();
+    void moveToInstructions(int testStage);
 
     void moveToStripMeasurement();
 

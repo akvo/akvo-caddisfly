@@ -36,6 +36,7 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraPreview;
+import org.akvo.caddisfly.sensor.striptest.models.TimeDelayDetail;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
 import org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView;
@@ -125,19 +126,22 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         mStriptestHandler.setStatus(StriptestHandler.State.PREPARE);
 
         // we use a set to remove duplicates
-        Set<Integer> timeLapseSet = new HashSet<>();
+        Set<int[]> timeDelaySet = new HashSet<>();
         double currentPatch = -1;
         for (int i = 0; i < patches.size(); i++) {
             double nextPatch = patches.get(i).getTimeDelay();
             if (Math.abs(nextPatch - currentPatch) > 0.001) {
-                timeLapseSet.add((int) Math.round(nextPatch));
+                timeDelaySet.add(new int[]{patches.get(i).getTestStage(), (int) Math.round(nextPatch)});
                 currentPatch = nextPatch;
             }
         }
-        List<Integer> timeLapses = new ArrayList<>();
-        timeLapses.addAll(timeLapseSet);
-        Collections.sort(timeLapses);
-        mStriptestHandler.setTestData(timeLapses);
+        List<TimeDelayDetail> timeDelays = new ArrayList<>();
+        for (int[] value : timeDelaySet) {
+            timeDelays.add(new TimeDelayDetail(value[0], value[1]));
+        }
+
+        Collections.sort(timeDelays);
+        mStriptestHandler.setTestData(timeDelays);
 
         // initialize camera and start camera preview
         startCameraPreview();
@@ -183,8 +187,8 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
     }
 
     @Override
-    public void moveToInstructions() {
-        instructionsFragment = InstructionFragment.newInstance(testInfo);
+    public void moveToInstructions(int testStage) {
+        instructionsFragment = InstructionFragment.newInstance(testInfo, testStage);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.layout_instructionLayout, instructionsFragment)
                 .commit();
@@ -248,7 +252,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
     private void releaseResources() {
         if (mCamera != null) {
-            mCameraOpsManager.stopAutoFocus();
+            mCameraOpsManager.stopAutofocus();
             mCameraOpsManager.stopCamera();
             mCamera.setOneShotPreviewCallback(null);
             mCamera.stopPreview();
