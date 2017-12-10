@@ -17,10 +17,9 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.instruction;
 
 
-import android.support.test.espresso.DataInteraction;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.RequiresDevice;
@@ -34,11 +33,13 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.TestConfigHelper;
+import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.TestConstantKeys;
+import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.util.TestConstant;
+import org.akvo.caddisfly.repository.TestConfigRepository;
+import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -53,17 +54,19 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
@@ -75,12 +78,11 @@ import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class InstructionsTest {
+public class StriptestInstructions {
 
     private final StringBuilder jsArrayString = new StringBuilder();
     @Rule
@@ -144,9 +146,9 @@ public class InstructionsTest {
                 allOf(withId(R.id.button_instructions), withText("Instructions"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                3),
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -156,16 +158,7 @@ public class InstructionsTest {
         onView(withText("Soil - Phosphorous"))
                 .check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                2)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView.perform(click());
+        TestUtil.nextPage();
 
         onView(withText(R.string.add_5_drops_reagent_1))
                 .check(matches(isDisplayed()));
@@ -175,7 +168,7 @@ public class InstructionsTest {
 
         onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.pager))
+        onView(withId(R.id.viewPager))
                 .perform(swipeLeft());
 
         onView(withText(R.string.put_6_drops_of_reagent_in_another_container))
@@ -184,16 +177,7 @@ public class InstructionsTest {
         onView(withText(R.string.place_tube_in_provided_rack))
                 .check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView2 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                2)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView2.perform(click());
+        TestUtil.nextPage();
 
 //        onView(withText(R.string.dip_container_15s))
 //                .check(matches(isDisplayed()));
@@ -201,100 +185,62 @@ public class InstructionsTest {
 //        onView(withText(R.string.shake_excess_water))
 //                .check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView3 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                2)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView3.perform(click());
+        TestUtil.nextPage();
 
-        ViewInteraction appCompatImageView4 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                2)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView4.perform(click());
+        TestUtil.nextPage();
 
-        ViewInteraction textView20 = onView(
-                allOf(withText("Place the test strip with the patch facing left on the black area of the Colour Reference Card and press Start."),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_instructions),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        textView20.check(matches(withText("Place the test strip with the patch facing left on the black area of the Colour Reference Card and press Start.")));
-
-        ViewInteraction imageView = onView(
-                allOf(childAtPosition(
-                        allOf(withId(R.id.layout_instructions),
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        0)),
-                        1),
-                        isDisplayed()));
-        imageView.check(matches(isDisplayed()));
+        onView(withText(R.string.place_strip_clr))
+                .check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                0)),
-                                1),
+                        withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        ViewInteraction imageView2 = onView(
-                allOf(withId(R.id.imageBrandLabel),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                1),
-                        isDisplayed()));
-        imageView2.check(matches(isDisplayed()));
-
-        ViewInteraction button = onView(
+        ViewInteraction button1 = onView(
                 allOf(withId(R.id.button_prepare),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                2),
+                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
+                                        1),
+                                0),
                         isDisplayed()));
-        button.check(matches(isDisplayed()));
+        button1.check(matches(isDisplayed()));
 
-        ViewInteraction button2 = onView(
-                allOf(withId(R.id.button_instructions),
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.button_instructions), withText("Instructions"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                3),
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
+                        isDisplayed()));
+        appCompatButton3.perform(click());
+
+        pressBack();
+
+//        ViewInteraction imageView3 = onView(
+//                allOf(withId(R.id.imageBrand),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withId(R.id.coordinatorLayout),
+//                                        0),
+//                                1),
+//                        isDisplayed()));
+//        imageView3.check(matches(isDisplayed()));
+
+        ViewInteraction button2 = onView(
+                allOf(withId(R.id.button_prepare),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
+                                        1),
+                                0),
                         isDisplayed()));
         button2.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                withClassName(is("android.support.constraint.ConstraintLayout")),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton2.perform(click());
+        pressBack();
 
         pressBack();
 
@@ -309,11 +255,11 @@ public class InstructionsTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
         clickExternalSourceButton(0);
 
@@ -330,9 +276,9 @@ public class InstructionsTest {
                 allOf(withId(R.id.button_instructions), withText("Instructions"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                3),
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
+                                1),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -342,99 +288,77 @@ public class InstructionsTest {
         onView(withText("Water - Total Iron"))
                 .check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                2)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView.perform(click());
+        TestUtil.nextPage();
 
         onView(withText(R.string.open_one_foil_and_add_powder))
                 .check(matches(isDisplayed()));
 
         onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.pager))
+        onView(withId(R.id.viewPager))
                 .perform(swipeLeft());
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription("Navigate up"),
-                        childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                0)),
-                                1),
+                        withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        ViewInteraction imageView2 = onView(
-                allOf(withId(R.id.imageBrandLabel),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                1),
-                        isDisplayed()));
-        imageView2.check(matches(isDisplayed()));
-
-        ViewInteraction button = onView(
-                allOf(withId(R.id.button_prepare),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                2),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
-
-        ViewInteraction button2 = onView(
-                allOf(withId(R.id.button_instructions),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                3),
-                        isDisplayed()));
-        button2.check(matches(isDisplayed()));
-        button2.perform(click());
-
-        pressBack();
-
-        ViewInteraction imageView3 = onView(
-                allOf(withId(R.id.imageBrandLabel),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                1),
-                        isDisplayed()));
-        imageView3.check(matches(isDisplayed()));
+//        ViewInteraction imageView2 = onView(
+//                allOf(withId(R.id.imageBrand),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withId(R.id.coordinatorLayout),
+//                                        0),
+//                                1),
+//                        isDisplayed()));
+//        imageView2.check(matches(isDisplayed()));
 
         ViewInteraction button1 = onView(
                 allOf(withId(R.id.button_prepare),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.coordinatorLayout),
-                                        0),
-                                2),
+                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
+                                        1),
+                                0),
                         isDisplayed()));
         button1.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageButton2 = onView(
-                allOf(withContentDescription("Navigate up"),
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.button_instructions), withText("Instructions"),
                         childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                withClassName(is("android.support.constraint.ConstraintLayout")),
-                                                0)),
+                                childAtPosition(
+                                        withClassName(is("android.widget.LinearLayout")),
+                                        1),
                                 1),
                         isDisplayed()));
-        appCompatImageButton2.perform(click());
+        appCompatButton3.perform(click());
+
+        pressBack();
+
+//        ViewInteraction imageView3 = onView(
+//                allOf(withId(R.id.imageBrand),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withId(R.id.coordinatorLayout),
+//                                        0),
+//                                1),
+//                        isDisplayed()));
+//        imageView3.check(matches(isDisplayed()));
+
+        ViewInteraction button2 = onView(
+                allOf(withId(R.id.button_prepare),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
+                                        1),
+                                0),
+                        isDisplayed()));
+        button2.check(matches(isDisplayed()));
+
+        onView(allOf(withContentDescription("Navigate up"),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click());
 
     }
 
@@ -486,7 +410,7 @@ public class InstructionsTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
         clickExternalSourceButton(0);
 
@@ -528,24 +452,19 @@ public class InstructionsTest {
 
         onView(withText(getString(mActivityTestRule.getActivity(), R.string.stripTest))).perform(click());
 
-        List<TestInfo> testList = TestConfigHelper.loadTestsList();
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        List<TestInfo> testList = testConfigRepository.getTests(TestType.COLORIMETRIC_STRIP);
 
-        int index = 0;
-        int firstTestIndex = 3;
-        for (int i = firstTestIndex + index; i < 30; i++) {
+        for (int i = 0; i < TestConstants.STRIP_TESTS_COUNT; i++) {
 
-            if (testList.get(i).getType() == TestType.COLORIMETRIC_STRIP) {
-//                if (testList.get(i).getTitle().startsWith("Soil")) {
-                String id = testList.get(i).getId();
-                id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            assertEquals(testList.get(i).getSubtype(), TestType.COLORIMETRIC_STRIP);
 
-                int pages = navigateToTest(index, id);
+            String id = testList.get(i).getUuid();
+            id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+            int pages = navigateToTest(i, id);
 
-                index++;
-//                }
-            }
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
 
         Log.e("Caddisfly", jsArrayString.toString());
@@ -554,13 +473,12 @@ public class InstructionsTest {
 
     private int navigateToTest(int index, String id) {
 
-        DataInteraction linearLayout = onData(anything())
-                .inAdapterView(allOf(withId(R.id.list_types),
+        ViewInteraction recyclerView = onView(
+                allOf(withId(R.id.list_types),
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
-                                1)))
-                .atPosition(index);
-        linearLayout.perform(click());
+                                0)));
+        recyclerView.perform(actionOnItemAtPosition(index, click()));
 
         mDevice.waitForIdle();
 

@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.misc;
 
 import android.content.Intent;
 import android.os.SystemClock;
@@ -29,9 +29,8 @@ import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.util.TestConstant;
+import org.akvo.caddisfly.common.TestConstantKeys;
+import org.akvo.caddisfly.ui.MainActivity;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -76,8 +75,6 @@ public class LanguageTest {
 
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
-        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null, TestType.COLORIMETRIC_LIQUID,
-                new String[]{}, new String[]{}, new String[]{}, null, null, null, null));
     }
 
     @Test
@@ -99,7 +96,7 @@ public class LanguageTest {
 
         onView(withText(R.string.language)).perform(click());
 
-        onData(hasToString(startsWith(currentHashMap.get(TestConstant.LANGUAGE)))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get(TestConstantKeys.LANGUAGE)))).perform(click());
     }
 
     @Test
@@ -118,7 +115,7 @@ public class LanguageTest {
         loadData(mActivityRule.getActivity(), language);
 
         try {
-            onView(withText(currentHashMap.get(TestConstant.LANGUAGE))).perform(click());
+            onView(withText(currentHashMap.get(TestConstantKeys.LANGUAGE))).perform(click());
             onData(hasToString(startsWith(currentHashMap.get("otherLanguage")))).perform(click());
             onView(withId(R.id.actionSettings)).perform(click());
         } catch (Exception ignored) {
@@ -126,7 +123,7 @@ public class LanguageTest {
 
         onView(withText(R.string.language)).perform(click());
 
-        onData(hasToString(startsWith(currentHashMap.get(TestConstant.LANGUAGE)))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get(TestConstantKeys.LANGUAGE)))).perform(click());
 
         SystemClock.sleep(2000);
 
@@ -150,10 +147,10 @@ public class LanguageTest {
 
         Espresso.pressBack();
 
-        onView(withText(currentHashMap.get(TestConstant.LANGUAGE))).perform(click());
-        onData(hasToString(startsWith(currentHashMap.get(TestConstant.LANGUAGE)))).perform(click());
+        onView(withText(currentHashMap.get(TestConstantKeys.LANGUAGE))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get(TestConstantKeys.LANGUAGE)))).perform(click());
 
-        onView(withText(currentHashMap.get(TestConstant.LANGUAGE))).perform(click());
-        onData(hasToString(startsWith(currentHashMap.get(TestConstant.LANGUAGE)))).perform(click());
+        onView(withText(currentHashMap.get(TestConstantKeys.LANGUAGE))).perform(click());
+        onData(hasToString(startsWith(currentHashMap.get(TestConstantKeys.LANGUAGE)))).perform(click());
     }
 }

@@ -17,11 +17,10 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.diagnostic;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.test.espresso.Espresso;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
@@ -29,6 +28,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -39,8 +40,9 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
@@ -48,10 +50,12 @@ import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class SensorTest {
+public class DiagnosticTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
@@ -81,30 +85,35 @@ public class SensorTest {
 
     @Test
     @RequiresDevice
-    public void testEC() {
+    public void testDiagnosticMode() {
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        for (int i = 0; i < 10; i++) {
+            onView(withId(R.id.textVersion)).perform(click());
+        }
 
         goToMainScreen();
 
-        mDevice.waitForWindowUpdate("", 2000);
+        onView(withId(R.id.fabDisableDiagnostics)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.sensors)).perform(click());
+        goToMainScreen();
 
-        onView(withText(currentHashMap.get("electricalConductivity"))).perform(click());
+        onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(R.string.electricalConductivity)).check(matches(isDisplayed()));
+        onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        mDevice.waitForWindowUpdate("", 2000);
+        if (TestUtil.isEmulator()){
 
-        onView(withText(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
+            onView(withText(R.string.errorCameraFlashRequired))
+                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
+                            .getDecorView())))).check(matches(isDisplayed()));
+            return;
+        }
 
-        mDevice.waitForWindowUpdate("", 2000);
-
-        onView(withContentDescription(mActivityRule.getActivity()
-                .getString(R.string.deviceConnectSensor))).check(matches(isDisplayed()));
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
+        onView(withId(R.id.actionSwatches)).perform(click());
 
     }
 }

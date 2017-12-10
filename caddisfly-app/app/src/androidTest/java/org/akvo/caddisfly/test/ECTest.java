@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensors;
+package org.akvo.caddisfly.test;
 
 import android.content.SharedPreferences;
 import android.os.SystemClock;
@@ -33,8 +33,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.TestConstantKeys;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -231,11 +231,11 @@ public class ECTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton(TestConstant.NEXT);
-        clickExternalSourceButton(TestConstant.NEXT);
-        clickExternalSourceButton(TestConstant.NEXT);
-        clickExternalSourceButton(TestConstant.NEXT);
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
         clickExternalSourceButton("useExternalSource");
 

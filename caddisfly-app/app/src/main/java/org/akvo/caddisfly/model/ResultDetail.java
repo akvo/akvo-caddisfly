@@ -19,15 +19,13 @@
 
 package org.akvo.caddisfly.model;
 
-import org.akvo.caddisfly.util.ColorUtil;
-
 public class ResultDetail {
     private final int color;
     private double result;
     private int matchedColor;
     private double distance;
+    private int dilution = 1;
     private int calibrationSteps;
-    private ColorUtil.ColorModel colorModel;
 
     public ResultDetail(double result, int color) {
         this.result = result;
@@ -46,20 +44,24 @@ public class ResultDetail {
         this.result = result;
     }
 
-    public int getMatchedColor() {
-        return matchedColor;
-    }
-
-    public void setMatchedColor(int matchedColor) {
-        this.matchedColor = matchedColor;
-    }
-
     public double getDistance() {
         return distance;
     }
 
     public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    public void setDilution(int dilution) {
+        this.dilution = dilution;
+    }
+
+    public int getMatchedColor() {
+        return matchedColor;
+    }
+
+    public void setMatchedColor(int matchedColor) {
+        this.matchedColor = matchedColor;
     }
 
     public int getCalibrationSteps() {
@@ -70,11 +72,7 @@ public class ResultDetail {
         this.calibrationSteps = calibrationSteps;
     }
 
-    public ColorUtil.ColorModel getColorModel() {
-        return colorModel;
-    }
-
-    public void setColorModel(ColorUtil.ColorModel colorModel) {
-        this.colorModel = colorModel;
+    public int getDilution() {
+        return dilution;
     }
 }

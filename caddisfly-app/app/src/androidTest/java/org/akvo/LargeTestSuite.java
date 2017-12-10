@@ -1,10 +1,10 @@
 package org.akvo;
 
-import org.akvo.caddisfly.analyze.AnalysisTest;
+import org.akvo.caddisfly.test.ChamberTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({AnalysisTest.class})
+@Suite.SuiteClasses({ChamberTest.class})
 public class LargeTestSuite {
 }

@@ -29,9 +29,6 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
@@ -94,9 +91,6 @@ public class SurveyTest {
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();
 
-        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null,
-                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null, null, null));
-
         resetLanguage();
     }
 
@@ -108,7 +102,7 @@ public class SurveyTest {
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             onView(withText(R.string.errorCameraFlashRequired))
                     .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
@@ -151,7 +145,7 @@ public class SurveyTest {
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             onView(withText(R.string.errorCameraFlashRequired))
                     .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()

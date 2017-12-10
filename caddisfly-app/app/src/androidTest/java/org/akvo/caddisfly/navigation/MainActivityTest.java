@@ -17,13 +17,14 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.navigation;
 
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 
+import org.akvo.caddisfly.ui.MainActivity;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;

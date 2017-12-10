@@ -39,7 +39,6 @@ import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 
 import java.text.DateFormat;
@@ -74,16 +73,21 @@ public class CalibrationItemFragment extends Fragment {
 
         Context context = view.getContext();
 
-        long milliseconds = PreferencesUtil.getLong(context, testInfo.getUuid(),
-                R.string.calibrationExpiryDateKey);
+        CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDB()
+                .calibrationDao().getCalibrationDetails(testInfo.getUuid());
 
-        if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
-            view.setText(String.format("%s. %s", context.getString(R.string.expired),
-                    context.getString(R.string.calibrateWithNewReagent)));
+        if (calibrationDetail != null) {
+            long milliseconds = calibrationDetail.expiry;
+            if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
+                view.setText(String.format("%s. %s", context.getString(R.string.expired),
+                        context.getString(R.string.calibrateWithNewReagent)));
 
-            view.setVisibility(View.VISIBLE);
+                view.setVisibility(View.VISIBLE);
+                return;
+            }
+        }
 
-        } else if (SwatchHelper.isCalibrationComplete(testInfo.getSwatches())
+        if (SwatchHelper.isCalibrationComplete(testInfo.getSwatches())
                 && !SwatchHelper.isSwatchListValid(testInfo)) {
             //Display error if calibration is completed but invalid
             view.setText(String.format("%s. %s",
@@ -129,18 +133,18 @@ public class CalibrationItemFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void loadDetails() {
+    public void loadDetails() {
 
-        CalibrationDetail calibration = CaddisflyApp.getApp().getDB()
+        CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDB()
                 .calibrationDao().getCalibrationDetails(testInfo.getUuid());
 
-        if (calibration != null) {
-            binding.textSubtitle.setText(calibration.batchNumber);
+        if (calibrationDetail != null) {
+            binding.textSubtitle.setText(calibrationDetail.batchNumber);
 
-            binding.textSubtitle1.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibration.date)));
+            binding.textSubtitle1.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.date)));
 
             binding.textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
-                    DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibration.expiry))));
+                    DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.expiry))));
         }
     }
 

@@ -33,8 +33,6 @@ import org.akvo.caddisfly.databinding.FragmentResultBinding;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 
-import java.util.Locale;
-
 import static org.akvo.caddisfly.common.ConstantKey.TEST_INFO;
 
 public class ResultFragment extends Fragment {
@@ -64,11 +62,7 @@ public class ResultFragment extends Fragment {
             if (testInfo != null) {
                 Result result = testInfo.Results().get(0);
 
-                String resultString;
-                resultString = String.format(Locale.getDefault(), "%.2f",
-                        result.getResultDouble());
-
-                b.textResult.setText(resultString);
+                b.textResult.setText(result.getResult());
                 b.textTitle.setText(testInfo.getName());
                 b.textDilution.setText(getResources().getQuantityString(R.plurals.dilutions,
                         testInfo.getDilution(), testInfo.getDilution()));
@@ -76,7 +70,7 @@ public class ResultFragment extends Fragment {
 
                 if (testInfo.getDilution() == testInfo.getMaxDilution()) {
                     b.dilutionLayout.setVisibility(View.GONE);
-                } else if (result.isHighLevelsFound()) {
+                } else if (result.highLevelsFound()) {
                     b.dilutionLayout.setVisibility(View.VISIBLE);
                 } else {
                     b.dilutionLayout.setVisibility(View.GONE);

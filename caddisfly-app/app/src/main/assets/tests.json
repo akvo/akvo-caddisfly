@@ -6200,6 +6200,7 @@
       "dilutions": [1,2,5],
       "monthsValid": 3,
       "hasImage": true,
+      "useBackCase": true,
       "instructions": [
 
       ],
@@ -6244,6 +6245,7 @@
       "dilutions": [1,2,5],
       "monthsValid": 12,
       "hasImage": true,
+      "useBackCase": true,
       "instructions": [
         {
           "section": [
@@ -6342,6 +6344,7 @@
       "ranges": "0,0.25,0.5,0.75,1.0",
       "monthsValid": 24,
       "hasImage": true,
+      "useBackCase": true,
       "instructions": [
         {
           "section": [
@@ -6433,6 +6436,7 @@
       "ranges": "0,0.5,1.0,1.5,2.0,2.5,3.0",
       "monthsValid": 24,
       "hasImage": true,
+      "useBackCase": true,
       "instructions": [
         {
           "section": [

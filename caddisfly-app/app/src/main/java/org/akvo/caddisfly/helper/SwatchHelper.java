@@ -73,8 +73,7 @@ public final class SwatchHelper {
      * @param photoColor The color to compare
      * @param swatches   The range of colors to compare against
      */
-    public static ResultDetail analyzeColor(int steps, ColorInfo photoColor, List<Swatch> swatches,
-                                            ColorUtil.ColorModel colorModel) {
+    public static ResultDetail analyzeColor(int steps, ColorInfo photoColor, List<Swatch> swatches) {
 
         ColorCompareInfo colorCompareInfo;
 
@@ -88,7 +87,6 @@ public final class SwatchHelper {
         if (colorCompareInfo.getResult() > -1) {
             resultDetail.setResult(colorCompareInfo.getResult());
         }
-        resultDetail.setColorModel(colorModel);
         resultDetail.setCalibrationSteps(steps);
         resultDetail.setMatchedColor(colorCompareInfo.getMatchedColor());
         resultDetail.setDistance(colorCompareInfo.getDistance());

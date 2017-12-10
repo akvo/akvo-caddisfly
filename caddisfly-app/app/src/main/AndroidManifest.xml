@@ -96,21 +96,13 @@
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
 
-        <activity
-            android:name=".ui.DiagnosticInfoActivity"
-            android:parentActivityName=".preference.SettingsActivity"
-            android:screenOrientation="nosensor" />
-
         <!--USB Sensor-->
-
         <activity
             android:name=".sensor.usb.SensorActivity"
             android:screenOrientation="nosensor" />
-
-        <!--end USB Sensor-->
+        <!-- /USB Sensor -->
 
         <!-- StripTest -->
-
         <activity
             android:name=".sensor.striptest.ui.StripMeasureActivity"
             android:screenOrientation="nosensor" />
@@ -118,12 +110,9 @@
         <activity
             android:name=".sensor.striptest.ui.ResultActivity"
             android:screenOrientation="nosensor" />
+        <!-- /StripTest -->
 
-        <!-- end StripTest -->
-
-
-        <!--Bluetooth-->
-
+        <!-- Bluetooth -->
         <activity
             android:name=".sensor.bluetooth.DeviceControlActivity"
             android:screenOrientation="nosensor" />
@@ -139,11 +128,9 @@
         <service
             android:name=".sensor.bluetooth.BluetoothLeService"
             android:enabled="true" />
+        <!-- /Bluetooth -->
 
-        <!--end Bluetooth-->
-
-        <!--USB-->
-
+        <!-- USB -->
         <activity
             android:name=".sensor.UsbConnectionActivity"
             android:autoRemoveFromRecents="true"
@@ -161,8 +148,18 @@
         <service
             android:name=".usb.UsbService"
             android:enabled="true" />
+        <!-- /USB -->
 
-        <!--end USB-->
+        <!-- Diagnostic -->
+        <activity
+            android:name=".ui.DiagnosticInfoActivity"
+            android:parentActivityName=".preference.SettingsActivity"
+            android:screenOrientation="nosensor" />
+
+        <activity
+            android:name=".diagnostic.DiagnosticSwatchActivity"
+            android:screenOrientation="nosensor" />
+        <!-- /Diagnostic -->
 
         <provider
             android:name="android.support.v4.content.FileProvider"

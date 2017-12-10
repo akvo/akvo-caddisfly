@@ -27,6 +27,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Result implements Parcelable {
 
@@ -78,6 +79,7 @@ public class Result implements Parcelable {
     private String result;
     private double resultDouble;
     private boolean highLevelsFound;
+    private double dilution = 1;
 
     public Result() {
     }
@@ -227,27 +229,33 @@ public class Result implements Parcelable {
         return result;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setResult(double resultDouble, int dilution, Integer maxDilution) {
+
+        // determine if high levels of contaminant
+        double maxResult = colorItems.get(colorItems.size() - 1).getValue();
+        highLevelsFound = resultDouble > maxResult * 0.98;
+
+        this.resultDouble = resultDouble * dilution;
+
+        // if no more can dilution can be performed then set result to highest value
+        if (dilution >= maxDilution) {
+            this.resultDouble = maxResult * dilution;
+        }
+
+        result = String.format(Locale.getDefault(), "%.2f", this.resultDouble);
+
+        // Add 'greater than' symbol if result could be an unknown high value
+        if (highLevelsFound){
+            result = "> " + result;
+        }
     }
 
-    public double getResultDouble() {
-        return resultDouble;
+    public boolean highLevelsFound() {
+
+        return highLevelsFound;
     }
 
-    public void setResultDouble(double resultDouble) {
-        this.resultDouble = resultDouble;
-    }
-
-    public double getMaxValue() {
-        return colorItems.get(colorItems.size() - 1).getValue();
-    }
-
-    public boolean isHighLevelsFound() {
-        return false;
-    }
-
-    public void setHighLevelsFound(boolean highLevelsFound) {
-        this.highLevelsFound = highLevelsFound;
+    public void setDilution(double dilution) {
+        this.dilution = dilution;
     }
 }

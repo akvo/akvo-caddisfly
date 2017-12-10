@@ -64,7 +64,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class ChamberTestActivity extends BaseActivity implements
         BaseRunTest.OnFragmentInteractionListener,
@@ -213,6 +212,7 @@ public class ChamberTestActivity extends BaseActivity implements
     @Override
     public void onCalibrationDetailsSaved() {
         loadDetails();
+        calibrationItemFragment.loadDetails();
     }
 
     @Override
@@ -354,15 +354,15 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(ArrayList<ResultDetail> results, Calibration calibration) {
+    public void onFragmentInteraction(ArrayList<ResultDetail> resultDetails, Calibration calibration) {
 
-        mResults = results;
+        mResults = resultDetails;
         if (calibration == null) {
             for (Result result : mTestInfo.Results()) {
-                result.setResultDouble(results.get(result.getId() - 1).getResult());
-                if (result.getResultDouble() > result.getMaxValue() - 0.2) {
-                    result.setHighLevelsFound(true);
-                }
+                ResultDetail resultDetail = resultDetails.get(result.getId() - 1);
+                result.setResult(resultDetail.getResult(),
+                        resultDetail.getDilution(),
+                        mTestInfo.getDilutions().get(mTestInfo.getDilutions().size() - 1));
             }
 
             fragmentManager
@@ -383,8 +383,9 @@ public class ChamberTestActivity extends BaseActivity implements
         Intent resultIntent = new Intent(getIntent());
         final SparseArray<String> results = new SparseArray<>();
 
-        for (ResultDetail result : mResults) {
-            results.put(1, String.format(Locale.getDefault(), "%.2f", result.getResult()));
+        for (int i = 0; i < mTestInfo.Results().size(); i++) {
+            Result result = mTestInfo.Results().get(i);
+            results.put(i + 1, result.getResult());
         }
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(mTestInfo,

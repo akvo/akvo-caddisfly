@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.misc;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -33,7 +33,9 @@ import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.liquid.ColorimetryLiquidActivity;
+import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.ui.TestActivity;
+import org.akvo.caddisfly.ui.TestListActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -139,7 +141,7 @@ public class MiscTest {
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             onView(withText(R.string.errorCameraFlashRequired))
                     .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
@@ -187,7 +189,7 @@ public class MiscTest {
         final Activity typeListActivity = getActivityInstance();
         typeListActivity.runOnUiThread(() -> {
             try {
-                Method method = TypeListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
+                Method method = TestListActivity.class.getDeclaredMethod("alertFeatureNotSupported");
                 method.setAccessible(true);
                 method.invoke(typeListActivity);
             } catch (Exception e) {
@@ -199,7 +201,7 @@ public class MiscTest {
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             onView(withText(R.string.errorCameraFlashRequired))
                     .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
@@ -230,7 +232,7 @@ public class MiscTest {
         final Activity activity = getActivityInstance();
         activity.runOnUiThread(() -> {
             try {
-                Method method = ColorimetryLiquidActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
+                Method method = TestActivity.class.getDeclaredMethod("alertCouldNotLoadConfig");
                 method.setAccessible(true);
                 method.invoke(activity);
             } catch (Exception e) {
@@ -252,7 +254,7 @@ public class MiscTest {
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
 
-        if (TestUtil.isEmulator()){
+        if (TestUtil.isEmulator()) {
 
             onView(withText(R.string.errorCameraFlashRequired))
                     .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()

@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.survey;
+package org.akvo.caddisfly.test;
 
 import android.content.SharedPreferences;
 import android.os.SystemClock;
@@ -29,8 +29,8 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.TestConstantKeys;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -82,7 +82,7 @@ public class SurveySensorTest {
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();
-        
+
         resetLanguage();
     }
 
@@ -94,15 +94,15 @@ public class SurveySensorTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
-        clickExternalSourceButton(TestConstant.NEXT);
+        clickExternalSourceButton(TestConstantKeys.NEXT);
 
         clickExternalSourceButton(0);
 

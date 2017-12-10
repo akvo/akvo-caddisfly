@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.navigation;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -104,7 +105,7 @@ public class StripTestNavigation {
                         isDisplayed()));
         linearLayout.perform(click());
 
-        onView(withId(R.id.imageBrandLabel)).check(matches(hasDrawable()));
+        onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
 
         onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
 
@@ -128,7 +129,7 @@ public class StripTestNavigation {
 
         TestUtil.goBack();
 
-        onView(withId(R.id.imageBrandLabel)).check(matches(hasDrawable()));
+        onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
 
         onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
 
@@ -145,7 +146,6 @@ public class StripTestNavigation {
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
-
 
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withContentDescription("Navigate up"),

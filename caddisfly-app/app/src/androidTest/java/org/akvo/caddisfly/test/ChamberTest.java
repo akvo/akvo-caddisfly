@@ -17,10 +17,11 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.analyze;
+package org.akvo.caddisfly.test;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
@@ -32,12 +33,9 @@ import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.sensor.SensorConstants;
-import org.akvo.caddisfly.sensor.liquid.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.TestConstantKeys;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -46,7 +44,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.text.DecimalFormatSymbols;
 import java.util.Calendar;
 
 import static android.Manifest.permission.CAMERA;
@@ -59,6 +56,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -78,6 +76,7 @@ import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.saveCalibration;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.util.TestUtil.getText;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
@@ -89,7 +88,7 @@ import static org.hamcrest.Matchers.startsWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class AnalysisTest {
+public class ChamberTest {
 
     private static final int TEST_START_DELAY = 16000;
 
@@ -118,9 +117,6 @@ public class AnalysisTest {
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
         prefs.edit().clear().apply();
-
-        CaddisflyApp.getApp().setCurrentTestInfo(new TestInfo(null,
-                TestType.COLORIMETRIC_LIQUID, new String[]{}, new String[]{}, new String[]{}, null, null, null, null));
 
         resetLanguage();
     }
@@ -155,7 +151,7 @@ public class AnalysisTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
+        onView(withText(currentHashMap.get(TestConstantKeys.FLUORIDE))).perform(click());
 
         if (TestUtil.isEmulator()) {
 
@@ -177,13 +173,11 @@ public class AnalysisTest {
 
         onView(withId(R.id.actionSettings)).perform(click());
 
-        clickListViewItem(mActivityRule.getActivity().getString(R.string.noBackdropDetection));
-
         leaveDiagnosticMode();
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
+        onView(withText(currentHashMap.get(TestConstantKeys.FLUORIDE))).perform(click());
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
@@ -212,11 +206,32 @@ public class AnalysisTest {
 
         onView(withText(R.string.save)).perform(click());
 
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 mg/l")).perform(click());
+//        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+//        onView(withText("2" + dfs.getDecimalSeparator() + "0 mg/l")).perform(click());
 
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        ViewInteraction recyclerView2 = onView(
+                allOf(withId(R.id.calibrationList),
+                        childAtPosition(
+                                withClassName(is("android.widget.RelativeLayout")),
+                                3)));
+        recyclerView2.perform(actionOnItemAtPosition(4, click()));
+
+
+        ViewInteraction cameraView1 = onView(
+                allOf(withId(R.id.camera_view),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutWait),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                1),
+                        isDisplayed()));
+        cameraView1.perform(click());
+
+        sleep(6000);
+
+//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         goToMainScreen();
 
@@ -242,13 +257,26 @@ public class AnalysisTest {
         onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        ViewInteraction cameraView = onView(
+                allOf(withId(R.id.camera_view),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutWait),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                1),
+                        isDisplayed()));
+        cameraView.perform(click());
+
+        sleep(6000);
+
+//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
-                .check(matches(isCompletelyDisplayed()));
+                .check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonOk)).perform(click());
+        onView(withId(R.id.buttonAccept)).perform(click());
 
         clickExternalSourceButton(0);
 
@@ -261,7 +289,8 @@ public class AnalysisTest {
         onView(withId(R.id.buttonDilution1)).perform(click());
 
         onView(allOf(withId(R.id.textDilution), withText(String.format(mActivityRule.getActivity()
-                .getString(R.string.timesDilution), 2)))).check(matches(isCompletelyDisplayed()));
+                .getString(R.string.timesDilution), 2))))
+                .check(matches(isCompletelyDisplayed()));
 
         //Test Start Screen
         takeScreenshot();
@@ -271,16 +300,29 @@ public class AnalysisTest {
 //        onView(allOf(withId(R.id.textDilution), withText(mActivityRule.getActivity()
 //                .getString(R.string.testWithDilution)))).check(matches(isCompletelyDisplayed()));
 
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        ViewInteraction cameraView3 = onView(
+                allOf(withId(R.id.camera_view),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutWait),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                1),
+                        isDisplayed()));
+        cameraView3.perform(click());
+
+        sleep(6000);
+
+//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
-                .check(matches(isCompletelyDisplayed()));
+                .check(matches(isDisplayed()));
 
         //High levels found dialog
         takeScreenshot();
 
-        onView(withId(R.id.buttonOk)).perform(click());
+        onView(withId(R.id.buttonAccept)).perform(click());
 
         clickExternalSourceButton(0);
 
@@ -303,13 +345,32 @@ public class AnalysisTest {
         //Test Progress Screen
         takeScreenshot();
 
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        ViewInteraction cameraView2 = onView(
+                allOf(withId(R.id.camera_view),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutWait),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                1),
+                        isDisplayed()));
+        cameraView2.perform(click());
 
-        double result = Double.valueOf(getText(withId(R.id.textResult)).replace(">", "").trim());
+        sleep(6000);
+
+//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+
+        String resultString = getText(withId(R.id.textResult));
+        assertTrue(resultString.contains(">"));
+
+        double result = Double.valueOf(resultString.replace(">", "").trim());
         assertTrue("Result is wrong", result > 9);
 
-        onView(withId(R.id.buttonOk)).perform(click());
+        onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
+                .check(matches(not(isDisplayed())));
+
+        onView(withId(R.id.buttonAccept)).perform(click());
 
         mDevice.pressBack();
 
@@ -340,7 +401,7 @@ public class AnalysisTest {
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
+        onView(withText(currentHashMap.get(TestConstantKeys.FLUORIDE))).perform(click());
 
         if (TestUtil.isEmulator()) {
 
@@ -352,7 +413,7 @@ public class AnalysisTest {
 
         onView(withId(R.id.menuLoad)).perform(click());
 
-        sleep(1000);
+        sleep(2000);
 
         onData(hasToString(startsWith("TestValid"))).perform(click());
 
@@ -360,13 +421,11 @@ public class AnalysisTest {
 
         onView(withId(R.id.actionSettings)).perform(click());
 
-        clickListViewItem(mActivityRule.getActivity().getString(R.string.noBackdropDetection));
-
         leaveDiagnosticMode();
 
         onView(withText(R.string.calibrate)).perform(click());
 
-        onView(withText(currentHashMap.get(TestConstant.FLUORIDE))).perform(click());
+        onView(withText(currentHashMap.get(TestConstantKeys.FLUORIDE))).perform(click());
 
         onView(withId(R.id.fabEditCalibration)).perform(click());
 
@@ -395,11 +454,32 @@ public class AnalysisTest {
 
         onView(withText(R.string.save)).perform(click());
 
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("1" + dfs.getDecimalSeparator() + "50 mg/l")).perform(click());
+//        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+//        onView(withText("1" + dfs.getDecimalSeparator() + "5 mg/l")).perform(click());
 
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        ViewInteraction recyclerView2 = onView(
+                allOf(withId(R.id.calibrationList),
+                        childAtPosition(
+                                withClassName(is("android.widget.RelativeLayout")),
+                                3)));
+        recyclerView2.perform(actionOnItemAtPosition(3, click()));
+
+
+//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+
+        ViewInteraction cameraView = onView(
+                allOf(withId(R.id.camera_view),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutWait),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                1),
+                        isDisplayed()));
+        cameraView.perform(click());
+
+        sleep(6000);
 
         goToMainScreen();
 
@@ -419,13 +499,26 @@ public class AnalysisTest {
 
         //onView(withId(R.id.buttonStart)).perform(click());
 
-        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+        ViewInteraction cameraView1 = onView(
+                allOf(withId(R.id.camera_view),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutWait),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.LinearLayout")),
+                                                1)),
+                                1),
+                        isDisplayed()));
+        cameraView1.perform(click());
+
+        sleep(6000);
+
+//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
         //Result dialog
         takeScreenshot();
 
-        onView(withId(R.id.buttonOk)).perform(click());
+        onView(withId(R.id.buttonAccept)).perform(click());
 
         mDevice.pressBack();
 

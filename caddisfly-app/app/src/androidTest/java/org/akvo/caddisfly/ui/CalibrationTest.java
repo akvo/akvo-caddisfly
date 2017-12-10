@@ -236,7 +236,8 @@ public class CalibrationTest {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             onView(withText((String.format("%s. %s", mActivityRule.getActivity().getString(R.string.expired),
-                    mActivityRule.getActivity().getString(R.string.calibrateWithNewReagent))))).check(matches(isDisplayed()));
+                    mActivityRule.getActivity().getString(R.string.calibrateWithNewReagent)))))
+                    .check(matches(isDisplayed()));
         }
 
         onView(withId(R.id.fabEditCalibration)).perform(click());

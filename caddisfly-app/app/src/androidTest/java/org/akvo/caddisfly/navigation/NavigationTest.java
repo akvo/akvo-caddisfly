@@ -17,13 +17,14 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.navigation;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
@@ -34,6 +35,7 @@ import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
@@ -53,6 +55,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -70,7 +73,9 @@ import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.saveCalibration;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.startsWith;
@@ -212,7 +217,15 @@ public class NavigationTest {
 
         onView(withText(R.string.save)).perform(click());
 
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 mg/l")).perform(click());
+
+        ViewInteraction recyclerView3 = onView(
+                allOf(withId(R.id.calibrationList),
+                        childAtPosition(
+                                withClassName(is("android.widget.RelativeLayout")),
+                                3)));
+        recyclerView3.perform(actionOnItemAtPosition(4, click()));
+
+       // onView(withText("2" + dfs.getDecimalSeparator() + "0 mg/l")).perform(click());
 
         //onView(withId(R.id.buttonStart)).perform(click());
 
@@ -326,14 +339,16 @@ public class NavigationTest {
 
         clickExternalSourceButton(0);
 
-//        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
+        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+//        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         //Connect EC Sensor Screen
         takeScreenshot();
 
         mDevice.pressBack();
+
+        clickExternalSourceButton(TestConstant.NEXT);
 
         clickExternalSourceButton(TestConstant.NEXT);
 
@@ -366,7 +381,7 @@ public class NavigationTest {
 
         mDevice.pressBack();
 
-        TestUtil.swipeRight(5);
+        TestUtil.swipeRight(6);
 
         clickExternalSourceButton(0); //Iron
 

@@ -50,20 +50,24 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.ActivityTestBinding;
+import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtResultFragment;
 import org.akvo.caddisfly.sensor.cbt.CompartmentBagFragment;
@@ -80,6 +84,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.UUID;
 
 import timber.log.Timber;
@@ -119,6 +124,7 @@ public class TestActivity extends BaseActivity implements
     private String mResult = "00000";
 
     private FragmentManager fragmentManager;
+    private TestConfigRepository testConfigRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,6 +206,24 @@ public class TestActivity extends BaseActivity implements
         if (mTestInfo != null && mTestInfo.getSubtype() == TestType.SENSOR) {
             if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
                 ErrorMessages.alertFeatureNotSupported(this, true);
+            }
+        }
+
+        if (mTestInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
+            List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
+                    .calibrationDao().getAll(mTestInfo.getUuid());
+
+            if (calibrations.size() < 1) {
+                testConfigRepository = new TestConfigRepository();
+                testConfigRepository.addCalibration(mTestInfo);
+                calibrations = CaddisflyApp.getApp().getDB()
+                        .calibrationDao().getAll(mTestInfo.getUuid());
+            }
+
+            mTestInfo.setCalibrations(calibrations);
+
+            if (!SwatchHelper.isSwatchListValid(mTestInfo)) {
+                ErrorMessages.alertCalibrationIncomplete(this, mTestInfo);
             }
         }
     }
@@ -404,6 +428,12 @@ public class TestActivity extends BaseActivity implements
                 }
                 break;
             case COLORIMETRIC_LIQUID:
+
+                if (!SwatchHelper.isSwatchListValid(mTestInfo)) {
+                    ErrorMessages.alertCalibrationIncomplete(this, mTestInfo);
+                    return;
+                }
+
                 intent = new Intent(this, ChamberTestActivity.class);
                 intent.putExtra(ConstantKey.RUN_TEST, true);
                 intent.putExtra(ConstantKey.TEST_INFO, mTestInfo);

@@ -54,6 +54,7 @@ import io.fotoapparat.Fotoapparat;
 import io.fotoapparat.FotoapparatSwitcher;
 import io.fotoapparat.parameter.LensPosition;
 import io.fotoapparat.parameter.ScaleType;
+import io.fotoapparat.parameter.update.UpdateRequest;
 import io.fotoapparat.result.PhotoResult;
 
 import static io.fotoapparat.log.Loggers.fileLogger;
@@ -61,6 +62,7 @@ import static io.fotoapparat.log.Loggers.logcat;
 import static io.fotoapparat.log.Loggers.loggers;
 import static io.fotoapparat.parameter.selector.AspectRatioSelectors.standardRatio;
 import static io.fotoapparat.parameter.selector.FlashSelectors.off;
+import static io.fotoapparat.parameter.selector.FlashSelectors.torch;
 import static io.fotoapparat.parameter.selector.FocusModeSelectors.autoFocus;
 import static io.fotoapparat.parameter.selector.FocusModeSelectors.continuousFocus;
 import static io.fotoapparat.parameter.selector.FocusModeSelectors.fixed;
@@ -141,7 +143,7 @@ public class BaseRunTest extends Fragment implements RunTest {
                         autoFocus(),
                         fixed()
                 ))
-                .flash(off())
+                .flash(torch())
 //                .frameProcessor(new SampleFrameProcessor())
                 .logger(loggers(
                         logcat(),
@@ -155,6 +157,13 @@ public class BaseRunTest extends Fragment implements RunTest {
     public void onPause() {
         super.onPause();
         try {
+
+            cameraSwitcher.getCurrentFotoapparat().updateParameters(
+                    UpdateRequest.builder()
+                            .flash(off())
+                            .build()
+            );
+
             cameraSwitcher.getCurrentFotoapparat().stop();
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,7 +175,8 @@ public class BaseRunTest extends Fragment implements RunTest {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_run_test, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_run_test,
+                container, false);
 
 //        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
 
@@ -195,7 +205,6 @@ public class BaseRunTest extends Fragment implements RunTest {
         } else {
             initializeTest();
         }
-
 
         return binding.getRoot();
     }
@@ -234,6 +243,12 @@ public class BaseRunTest extends Fragment implements RunTest {
                 .toBitmap(scaled(0.25f))
                 .whenAvailable(result -> {
                     if (cameraStarted) {
+                        cameraSwitcher.getCurrentFotoapparat().updateParameters(
+                                UpdateRequest.builder()
+                                        .flash(off())
+                                        .build()
+                        );
+
                         cameraSwitcher.getCurrentFotoapparat().stop();
                     }
                     (new Handler()).postDelayed(() -> getAnalyzedResult(result.bitmap), 100);
@@ -255,7 +270,8 @@ public class BaseRunTest extends Fragment implements RunTest {
         //Extract the color from the photo which will be used for comparison
         ColorInfo photoColor;
         if (croppedBitmap != null) {
-            photoColor = ColorUtil.getColorFromBitmap(croppedBitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+            photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
+                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
             if (mCalibration != null) {
                 mCalibration.color = photoColor.getColor();
@@ -264,10 +280,10 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             ArrayList<ResultDetail> results = new ArrayList<>();
 
-            ResultDetail resultDetail = SwatchHelper.analyzeColor(mTestInfo.getSwatches().size(), photoColor,
-                    mTestInfo.getSwatches(), ColorUtil.DEFAULT_COLOR_MODEL);
+            ResultDetail resultDetail = SwatchHelper.analyzeColor(mTestInfo.getSwatches().size(),
+                    photoColor, mTestInfo.getSwatches());
+            resultDetail.setDilution(dilution);
 
-            resultDetail.setResult(resultDetail.getResult() * dilution);
             results.add(resultDetail);
 
             if (mListener != null) {
