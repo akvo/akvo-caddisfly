@@ -26,7 +26,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 
 import java.io.IOException;

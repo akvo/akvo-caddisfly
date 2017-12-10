@@ -60,7 +60,14 @@ public final class SensorConstants {
     public static final int DEGREES_180 = 180;
     public static final String LANGUAGE = "language";
     public static final String QUESTION_TITLE = "questionTitle";
+
+    public static final String TESTS_META_FILENAME = "tests.json";
     public static final String MPN_TABLE_FILENAME = "most-probable-number.json";
+
+    public static final String BRACKET = "bracket";
+    public static final String RESULT = "result";
+
+
 
     private SensorConstants() {
     }

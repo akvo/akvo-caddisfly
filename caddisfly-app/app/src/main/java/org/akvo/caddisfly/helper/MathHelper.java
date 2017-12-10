@@ -21,8 +21,8 @@ package org.akvo.caddisfly.helper;
 
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 
-import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_180;
-import static org.akvo.caddisfly.sensor.SensorConstants.DEGREES_90;
+import static org.akvo.caddisfly.common.SensorConstants.DEGREES_180;
+import static org.akvo.caddisfly.common.SensorConstants.DEGREES_90;
 
 /**
  * Math helper functions

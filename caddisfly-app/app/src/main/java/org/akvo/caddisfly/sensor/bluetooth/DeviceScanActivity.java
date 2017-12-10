@@ -76,7 +76,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.striptest.utils.Constants;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 
@@ -119,12 +120,15 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     private ScanCallback mScanCallback;
     private DeviceConnectDialog deviceConnectDialog;
     private Snackbar snackbar;
+    private TestInfo testInfo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_device_list);
+
+        testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
 
         setTitle("Connection");
 
@@ -231,8 +235,8 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         if (device == null) {
             return;
         }
-        final Intent intent = new Intent(DeviceScanActivity.this, DeviceControlActivity.class);
-        intent.putExtra(Constants.UUID, getIntent().getStringExtra(Constants.UUID));
+        final Intent intent = new Intent(this, DeviceControlActivity.class);
+        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
 
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, device.getName());
         intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, device.getAddress());
@@ -316,9 +320,9 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-                if (snackbar == null || !snackbar.isShownOrQueued()) {
-                    requestPermissions(PERMISSIONS, PERMISSION_ALL);
-                }
+            if (snackbar == null || !snackbar.isShownOrQueued()) {
+                requestPermissions(PERMISSIONS, PERMISSION_ALL);
+            }
         } else {
             scanLeDevice(true);
         }

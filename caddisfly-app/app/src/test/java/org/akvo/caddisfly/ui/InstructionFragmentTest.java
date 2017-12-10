@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.SensorConstants;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;

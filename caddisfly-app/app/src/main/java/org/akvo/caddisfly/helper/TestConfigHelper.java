@@ -25,12 +25,12 @@ import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.model.GroupType;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.AssetsManager;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
@@ -44,7 +44,8 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
-import static org.akvo.caddisfly.sensor.SensorConstants.MPN_TABLE_FILENAME;
+import static org.akvo.caddisfly.common.SensorConstants.MPN_TABLE_FILENAME;
+
 
 /**
  * Utility functions to parse a text config json text.
@@ -110,7 +111,7 @@ public final class TestConfigHelper {
         try {
 
             resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
-            resultJson.put(SensorConstants.NAME, testInfo.getTitle());
+            resultJson.put(SensorConstants.NAME, testInfo.getName());
             resultJson.put(SensorConstants.UUID, testInfo.getUuid());
 
             JSONArray resultsJsonArray = new JSONArray();

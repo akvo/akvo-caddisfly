@@ -24,12 +24,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
@@ -65,6 +65,18 @@ public class BluetoothResultFragment extends Fragment {
     private LinearLayout layoutResult2;
     private LinearLayout layoutResult3;
     private Button mAcceptButton;
+    private TestInfo testInfo;
+
+    /**
+     * Creates test fragment for specific uuid
+     */
+    public static BluetoothResultFragment getInstance(TestInfo testInfo) {
+        BluetoothResultFragment fragment = new BluetoothResultFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +84,7 @@ public class BluetoothResultFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_bluetooth_result, container, false);
 
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
 
         Button buttonInstructions = view.findViewById(R.id.button_instructions);
         buttonInstructions.setOnClickListener(view1 -> {
@@ -109,12 +121,10 @@ public class BluetoothResultFragment extends Fragment {
 
         mAcceptButton.setOnClickListener(view12 -> {
             // Build the result json to be returned
-            TestInfo testInfo1 = CaddisflyApp.getApp().getCurrentTestInfo();
 
             Intent resultIntent = new Intent(getActivity().getIntent());
 
-
-            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo1,
+            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,
                     results, null, -1, "");
             resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
@@ -124,7 +134,7 @@ public class BluetoothResultFragment extends Fragment {
         });
 
         textPerformTest.setText(StringUtil.toInstruction((AppCompatActivity) getActivity(), testInfo,
-                String.format(getString(R.string.perform_test), testInfo.getTitle())));
+                String.format(getString(R.string.perform_test), testInfo.getName())));
 
         if (AppPreferences.isDiagnosticMode()) {
             LinearLayout layoutTitle = view.findViewById(R.id.layoutTitleBar);
@@ -168,14 +178,12 @@ public class BluetoothResultFragment extends Fragment {
             dialog.dismiss();
         }
 
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
         // Display data received for diagnostics
         if (AppPreferences.showBluetoothData()) {
             AlertDialog dialog;
             AlertDialog.Builder builder;
             final TextView showText = new TextView(getActivity());
-            showText.setText(String.format("%s = %s", testInfo.getTitle(), data));
+            showText.setText(String.format("%s = %s", testInfo.getName(), data));
 
             showText.setPadding(50, 20, 40, 30);
 
@@ -314,10 +322,9 @@ public class BluetoothResultFragment extends Fragment {
                             layoutResult1.setVisibility(View.VISIBLE);
                             textName1.setText(testInfo.Results().get(0).getName());
                             textResult1.setText(result);
-                            textUnit1.setText(testInfo.Results().get(0).getName());
+                            textUnit1.setText(testInfo.Results().get(0).getUnit());
                             results.put(1, result);
                         }
-
                     }
 
                     if (results.size() < 1 || resultCount != testInfo.Results().size()) {
@@ -329,7 +336,7 @@ public class BluetoothResultFragment extends Fragment {
         }
 
 
-        if (dataOk && testId.equals(CaddisflyApp.getApp().getCurrentTestInfo().getMd610Id())) {
+        if (dataOk && testId.equals(testInfo.getMd610Id())) {
             mAcceptButton.setVisibility(View.VISIBLE);
             crossFade();
             return true;

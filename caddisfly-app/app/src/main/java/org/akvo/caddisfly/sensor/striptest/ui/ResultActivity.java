@@ -36,12 +36,12 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.GroupType;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.SensorConstants;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
 import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
 import org.akvo.caddisfly.sensor.striptest.utils.ColorUtils;
@@ -97,7 +97,7 @@ public class ResultActivity extends BaseActivity {
             Intent intent = new Intent(getIntent());
             String path;
 
-            if (getIntent().getBooleanExtra(Constants.SEND_IMAGE_IN_RESULT, false) && totalImage != null) {
+            if (getIntent().getBooleanExtra(ConstantKey.SEND_IMAGE_IN_RESULT, false) && totalImage != null) {
 
                 // store image on sd card
                 path = FileUtil.writeBitmapToExternalStorage(totalImage, "/result-images", totalImageUrl);

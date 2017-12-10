@@ -22,8 +22,9 @@ package org.akvo.caddisfly.helper;
 import android.util.SparseArray;
 
 import org.akvo.caddisfly.BuildConfig;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.SensorConstants;
+import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,20 +41,22 @@ public class ResultsTest {
     @Test
     public void testColorimetryResult() {
 
-        TestInfo testInfo = TestConfigHelper.loadTestByUuid(SensorConstants.FLUORIDE_ID);
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.FLUORIDE_ID);
+
         assert testInfo != null;
 
         SparseArray<String> results = new SparseArray<>();
         results.put(1, "> 2.0");
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, "");
 
         // Replace items that cannot be tested (e.g. currentTime)
         String json = resultJson.toString().replaceAll("(\"testDate\":\").*?\"", "$1today\"");
         json = json.replaceAll("(\"appVersion\":\").*?\"", "$1version\"");
         json = json.replaceAll("(\"country\":\").*?\"", "$1\"");
 
-        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Water - Fluoride\",\"uuid\":\"f0f3c1dd-89af-49f1-83e7-bcc31c3006cf\",\"result\":[{\"name\":\"Fluoride\",\"unit\":\"mg\\/l\",\"id\":1,\"value\":\"> 2.0\"}],\"testDate\":\"today\",\"user\":{\"backDropDetection\":true,\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 6.0.1_r3 (23)\",\"country\":\"\",\"language\":\"en\"}}";
+        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Water - Fluoride\",\"uuid\":\"f0f3c1dd-89af-49f1-83e7-bcc31c3006cf\",\"result\":[{\"name\":\"Fluoride\",\"unit\":\"mg\\/l\",\"id\":1,\"value\":\"> 2.0\"}],\"testDate\":\"today\",\"user\":{\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 6.0.1_r3 (23)\",\"country\":\"\",\"language\":\"en\"}}";
 
         assertEquals(expectedJson, json);
     }
@@ -61,21 +64,23 @@ public class ResultsTest {
     @Test
     public void testEcSensorResult() {
 
-        TestInfo testInfo = TestConfigHelper.loadTestByUuid("f88237b7-be3d-4fac-bbee-ab328eefcd14");
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        TestInfo testInfo = testConfigRepository.getTestInfo("f88237b7-be3d-4fac-bbee-ab328eefcd14");
+
         assert testInfo != null;
 
         SparseArray<String> results = new SparseArray<>();
         results.put(1, "32432");
         results.put(2, "29.5");
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, -1, "", null);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, "");
 
         // Replace items that cannot be tested (e.g. currentTime)
         String json = resultJson.toString().replaceAll("(\"testDate\":\").*?\"", "$1today\"");
         json = json.replaceAll("(\"appVersion\":\").*?\"", "$1version\"");
         json = json.replaceAll("(\"country\":\").*?\"", "$1\"");
 
-        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Water - Electrical Conductivity\",\"uuid\":\"f88237b7-be3d-4fac-bbee-ab328eefcd14\",\"result\":[{\"name\":\"Water Electrical Conductivity\",\"unit\":\"μS\\/cm\",\"id\":1,\"value\":\"32432\"},{\"name\":\"Temperature\",\"unit\":\"°Celsius\",\"id\":2,\"value\":\"29.5\"}],\"testDate\":\"today\",\"user\":{\"backDropDetection\":true,\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 6.0.1_r3 (23)\",\"country\":\"\",\"language\":\"en\"}}";
+        String expectedJson = "{\"type\":\"caddisfly\",\"name\":\"Water - Electrical Conductivity\",\"uuid\":\"f88237b7-be3d-4fac-bbee-ab328eefcd14\",\"result\":[{\"name\":\"Water Electrical Conductivity\",\"unit\":\"μS\\/cm\",\"id\":1,\"value\":\"32432\"},{\"name\":\"Temperature\",\"unit\":\"°Celsius\",\"id\":2,\"value\":\"29.5\"}],\"testDate\":\"today\",\"user\":{\"language\":\"\"},\"app\":{\"appVersion\":\"version\",\"language\":\"en\"},\"device\":{\"model\":\"unknown\",\"product\":\"unknown\",\"manufacturer\":\"unknown\",\"os\":\"Android - 6.0.1_r3 (23)\",\"country\":\"\",\"language\":\"en\"}}";
 
         assertEquals(expectedJson, json);
     }

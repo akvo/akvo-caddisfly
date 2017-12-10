@@ -1,6 +1,6 @@
 package org.akvo.caddisfly.sensor.striptest.qrdetector;
 
-import org.akvo.caddisfly.sensor.striptest.utils.Constants;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,22 +17,22 @@ public class FinderPatternInfoToJson {
             JSONArray topLeft = new JSONArray();
             topLeft.put(info.getTopLeft().getX());
             topLeft.put(info.getTopLeft().getY());
-            jsonObject.put(Constants.TOP_LEFT, topLeft);
+            jsonObject.put(ConstantKey.TOP_LEFT, topLeft);
 
             JSONArray topRight = new JSONArray();
             topRight.put(info.getTopRight().getX());
             topRight.put(info.getTopRight().getY());
-            jsonObject.put(Constants.TOP_RIGHT, topRight);
+            jsonObject.put(ConstantKey.TOP_RIGHT, topRight);
 
             JSONArray bottomLeft = new JSONArray();
             bottomLeft.put(info.getBottomLeft().getX());
             bottomLeft.put(info.getBottomLeft().getY());
-            jsonObject.put(Constants.BOTTOM_LEFT, bottomLeft);
+            jsonObject.put(ConstantKey.BOTTOM_LEFT, bottomLeft);
 
             JSONArray bottomRight = new JSONArray();
             bottomRight.put(info.getBottomRight().getX());
             bottomRight.put(info.getBottomRight().getY());
-            jsonObject.put(Constants.BOTTOM_RIGHT, bottomRight);
+            jsonObject.put(ConstantKey.BOTTOM_RIGHT, bottomRight);
 
             return jsonObject.toString();
 

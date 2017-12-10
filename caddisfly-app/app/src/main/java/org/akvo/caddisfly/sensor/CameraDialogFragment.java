@@ -40,6 +40,7 @@ import android.view.Window;
 import android.widget.FrameLayout;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;

@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.databinding.FragmentInstructionsBinding;
 import org.akvo.caddisfly.model.Instruction;
@@ -39,16 +40,15 @@ import org.akvo.caddisfly.model.TestInfo;
 
 public class InstructionFragment extends Fragment {
 
-    private static final String KEY_TEST_INFO = "TEST_INFO";
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private FragmentInstructionsBinding b;
 
     private TestInfo mTestInfo;
 
-    public static InstructionFragment forProduct(Parcelable mTestInfo) {
+    public static InstructionFragment getInstance(Parcelable testInfo) {
         InstructionFragment fragment = new InstructionFragment();
         Bundle args = new Bundle();
-        args.putParcelable(KEY_TEST_INFO, mTestInfo);
+        args.putParcelable(ConstantKey.TEST_INFO, testInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +58,7 @@ public class InstructionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        mTestInfo = getArguments().getParcelable(KEY_TEST_INFO);
+        mTestInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
 
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_instructions, container, false);
 

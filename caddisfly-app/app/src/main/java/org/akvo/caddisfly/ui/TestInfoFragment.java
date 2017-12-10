@@ -45,14 +45,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.TestDetailFragmentBinding;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 
 public class TestInfoFragment extends Fragment {
-
-    private static final String KEY_PRODUCT_ID = "product_id";
 
     private TestDetailFragmentBinding binding;
 
@@ -62,7 +61,7 @@ public class TestInfoFragment extends Fragment {
     public static TestInfoFragment forProduct(TestInfo testInfo) {
         TestInfoFragment fragment = new TestInfoFragment();
         Bundle args = new Bundle();
-        args.putParcelable(KEY_PRODUCT_ID, testInfo);
+        args.putParcelable(ConstantKey.TEST_INFO, testInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,7 +90,7 @@ public class TestInfoFragment extends Fragment {
         final TestInfoViewModel model =
                 ViewModelProviders.of(this).get(TestInfoViewModel.class);
 
-        TestInfo testInfo = getArguments().getParcelable(KEY_PRODUCT_ID);
+        TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
 
         model.setTest(testInfo);
 

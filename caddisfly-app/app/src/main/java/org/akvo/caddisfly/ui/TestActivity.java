@@ -277,13 +277,13 @@ public class TestActivity extends BaseActivity implements
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         if (mTestInfo != null) {
-            setTitle(mTestInfo.getTitle() == null ? mTestInfo.getName() : mTestInfo.getTitle());
+            setTitle(mTestInfo.getName());
         }
     }
 
     public void onInstructionsClick(View view) {
 
-        instructionFragment = InstructionFragment.forProduct(mTestInfo);
+        instructionFragment = InstructionFragment.getInstance(mTestInfo);
 
         getSupportFragmentManager()
                 .beginTransaction()

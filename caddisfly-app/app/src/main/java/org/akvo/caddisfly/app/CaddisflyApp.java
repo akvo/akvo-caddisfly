@@ -32,7 +32,6 @@ import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
@@ -44,9 +43,8 @@ import timber.log.Timber;
 public class CaddisflyApp extends Application {
 
     private static final String DATABASE_NAME = "calibration";
-    private static CaddisflyApp app; // Singleton
-    private TestInfo mCurrentTestInfo = new TestInfo();
     static CalibrationDatabase database;
+    private static CaddisflyApp app; // Singleton
 
     /**
      * Gets the singleton app object.
@@ -88,19 +86,6 @@ public class CaddisflyApp extends Application {
         } catch (PackageManager.NameNotFoundException ignored) {
         }
         return version;
-    }
-
-    /**
-     * Gets the current TestInfo.
-     *
-     * @return the current test info
-     */
-    public TestInfo getCurrentTestInfo() {
-        return mCurrentTestInfo;
-    }
-
-    public void setCurrentTestInfo(TestInfo testInfo) {
-        mCurrentTestInfo = testInfo;
     }
 
     @Override

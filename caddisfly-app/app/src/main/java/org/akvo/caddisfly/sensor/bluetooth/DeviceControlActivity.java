@@ -44,7 +44,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.ui.InstructionFragment;
@@ -68,6 +68,7 @@ public class DeviceControlActivity extends BaseActivity
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
     private boolean resultReceived = false;
+    private TestInfo testInfo;
 
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
@@ -139,20 +140,20 @@ public class DeviceControlActivity extends BaseActivity
         final Intent intent = getIntent();
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
+        testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
 
         setTitle("Connected");
 
         TextView textSelectTest = findViewById(R.id.textSelectTest);
         textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
-                testInfo.getTitle())));
+                testInfo.getName())));
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-        mBluetoothResultFragment = new BluetoothResultFragment();
-        mInstructionFragment = new InstructionFragment();
+        mBluetoothResultFragment = BluetoothResultFragment.getInstance(testInfo);
+        mInstructionFragment = InstructionFragment.getInstance(testInfo);
 
         layoutInstructions = findViewById(R.id.layoutInstructions);
         layoutWaiting = findViewById(R.id.layoutWaiting);
@@ -245,12 +246,10 @@ public class DeviceControlActivity extends BaseActivity
             AlertDialog.Builder alert = new AlertDialog.Builder(activity);
             alert.setTitle(R.string.to_select_test);
 
-            TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
             alert.setMessage(TextUtils.concat(
                     StringUtil.toInstruction(this, testInfo,
                             String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
-                                    StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getTitle()))
+                                    StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getName()))
             ));
 
             alert.setPositiveButton(R.string.ok, (dialogInterface, i) -> dialogInterface.dismiss());
@@ -342,9 +341,7 @@ public class DeviceControlActivity extends BaseActivity
         layoutSelectTest.setVisibility(View.GONE);
         layoutWaiting.setVisibility(View.GONE);
 
-        TestInfo testInfo = CaddisflyApp.getApp().getCurrentTestInfo();
-
-        setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getTitle()));
+        setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
     }
 
     private void showSelectTestView() {
