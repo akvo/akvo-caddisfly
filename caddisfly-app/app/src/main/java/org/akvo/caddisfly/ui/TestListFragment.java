@@ -50,7 +50,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.databinding.ListFragmentBinding;
+import org.akvo.caddisfly.databinding.FragmentListBinding;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
@@ -90,8 +90,8 @@ public class TestListFragment extends LifecycleFragment {
 
         mTestType = (TestType) getArguments().get("type");
 
-        ListFragmentBinding b = DataBindingUtil.inflate(inflater,
-                R.layout.list_fragment, container, false);
+        FragmentListBinding b = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_list, container, false);
 
         mTestInfoAdapter = new TestInfoAdapter(mTestInfoClickCallback);
 

@@ -83,7 +83,7 @@
             android:drawableEnd="@drawable/ic_play_arrow_black_24dp"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"
-            android:text="@string/test_instructions"
+            android:text="@string/instructions"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="16sp"
             android:textStyle="bold" />

@@ -46,14 +46,15 @@ import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.databinding.TestDetailFragmentBinding;
+import org.akvo.caddisfly.databinding.FragmentTestDetailBinding;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 
 public class TestInfoFragment extends Fragment {
 
-    private TestDetailFragmentBinding binding;
+    private FragmentTestDetailBinding b;
 
     /**
      * Creates test fragment for specific uuid
@@ -70,15 +71,42 @@ public class TestInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // Inflate this data binding layout
-        binding = DataBindingUtil.inflate(inflater, R.layout.test_detail_fragment, container, false);
+        // Inflate this data b layout
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_test_detail, container, false);
 
-        return binding.getRoot();
+        final TestInfoViewModel model =
+                ViewModelProviders.of(this).get(TestInfoViewModel.class);
+
+        TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+
+        if (testInfo != null) {
+
+            if (AppPreferences.isDiagnosticMode()) {
+                b.swatchView.setVisibility(View.VISIBLE);
+                b.swatchView.setPatch(testInfo);
+            }
+
+            model.setTest(testInfo);
+
+            b.setTestInfoViewModel(model);
+
+            b.setTestInfo(testInfo);
+
+            if (testInfo.getSubtype() == TestType.COLORIMETRIC_STRIP) {
+                b.buttonPrepare.setText(R.string.prepare_test);
+            }
+
+            getActivity().setTitle(testInfo.getName());
+
+        }
+
+        return b.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
 
 ////        TestInfoViewModel.Factory factory = new TestInfoViewModel.Factory(
 ////                getActivity().getApplication(), getArguments().getInt(KEY_PRODUCT_ID));
@@ -86,25 +114,5 @@ public class TestInfoFragment extends Fragment {
 ////        final TestInfoViewModel model = ViewModelProviders.of(this, factory)
 ////                .get(ProductViewModel.class);
 //
-
-        final TestInfoViewModel model =
-                ViewModelProviders.of(this).get(TestInfoViewModel.class);
-
-        TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
-
-        model.setTest(testInfo);
-
-        binding.setTestInfoViewModel(model);
-
-        binding.setTestInfo(testInfo);
-
-        if (testInfo != null) {
-
-            if (testInfo.getSubtype() == TestType.COLORIMETRIC_STRIP) {
-                binding.buttonPrepare.setText(R.string.prepare_test);
-            }
-
-            getActivity().setTitle(testInfo.getName());
-        }
     }
 }

@@ -85,16 +85,6 @@ public class MainActivity extends BaseActivity {
         // If app has expired then close this activity
         ApkHelper.isAppVersionExpired(this);
 
-        findViewById(R.id.fabDisableDiagnostics).setOnClickListener(view -> {
-            Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
-                    Toast.LENGTH_SHORT).show();
-
-            AppPreferences.disableDiagnosticMode();
-
-            switchLayoutForDiagnosticOrUserMode();
-
-            changeActionBarStyleBasedOnCurrentMode();
-        });
     }
 
     /**
@@ -133,6 +123,16 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onDisableDiagnosticsClick(View view) {
+
+        Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
+                Toast.LENGTH_SHORT).show();
+
+        AppPreferences.disableDiagnosticMode();
+
+        switchLayoutForDiagnosticOrUserMode();
+
+        changeActionBarStyleBasedOnCurrentMode();
+
         final TestListViewModel viewModel =
                 ViewModelProviders.of(this).get(TestListViewModel.class);
 

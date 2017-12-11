@@ -97,10 +97,13 @@ public class ResultActivity extends BaseActivity {
             Intent intent = new Intent(getIntent());
             String path;
 
-            if (getIntent().getBooleanExtra(ConstantKey.SEND_IMAGE_IN_RESULT, false) && totalImage != null) {
+            if (getIntent().getBooleanExtra(ConstantKey.SEND_IMAGE_IN_RESULT,
+                    false) && totalImage != null) {
 
                 // store image on sd card
-                path = FileUtil.writeBitmapToExternalStorage(totalImage, "/result-images", totalImageUrl);
+                path = FileUtil.writeBitmapToExternalStorage(totalImage,
+                        "/result-images", totalImageUrl);
+
                 intent.putExtra(SensorConstants.IMAGE, path);
 
                 if (path.length() == 0) {
@@ -110,7 +113,8 @@ public class ResultActivity extends BaseActivity {
                 totalImageUrl = "";
             }
 
-            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo, resultStringValues, brackets, -1, totalImageUrl);
+            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo,
+                    resultStringValues, brackets, -1, totalImageUrl);
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
             setResult(RESULT_OK, intent);
@@ -124,7 +128,6 @@ public class ResultActivity extends BaseActivity {
             finish();
         });
     }
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

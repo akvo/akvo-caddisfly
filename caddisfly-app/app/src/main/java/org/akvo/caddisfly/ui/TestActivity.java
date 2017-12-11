@@ -117,6 +117,7 @@ public class TestActivity extends BaseActivity implements
     InstructionFragment instructionFragment;
     String mCurrentPhotoPath;
     String imageFileName = "";
+    ActivityTestBinding b;
     // track if the call was made internally or from an external app
     private boolean mIsExternalAppCall = false;
     // old versions of the survey app does not expect image in result
@@ -125,7 +126,6 @@ public class TestActivity extends BaseActivity implements
     private String mExternalAppLanguageCode;
     private TestInfo mTestInfo;
     private String mResult = "00000";
-
     private FragmentManager fragmentManager;
     private TestConfigRepository testConfigRepository;
 
@@ -133,8 +133,7 @@ public class TestActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityTestBinding b =
-                DataBindingUtil.setContentView(this, R.layout.activity_test);
+        b = DataBindingUtil.setContentView(this, R.layout.activity_test);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -282,6 +281,9 @@ public class TestActivity extends BaseActivity implements
         if (mTestInfo != null) {
             setTitle(mTestInfo.getName());
         }
+        b.getRoot().invalidate();
+        b.getRoot().requestLayout();
+
     }
 
     public void onInstructionsClick(View view) {

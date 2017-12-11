@@ -34,10 +34,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -144,9 +144,9 @@ public class DeviceControlActivity extends BaseActivity
 
         setTitle("Connected");
 
-        TextView textSelectTest = findViewById(R.id.textSelectTest);
-        textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
-                testInfo.getName())));
+//        TextView textSelectTest = findViewById(R.id.textSelectTest);
+//        textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
+//                testInfo.getName())));
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
@@ -166,9 +166,15 @@ public class DeviceControlActivity extends BaseActivity
         layoutSelectTest = findViewById(R.id.selectTestLayout);
         findViewById(R.id.buttonTestSelected).setOnClickListener(v -> showWaitingView());
 
-        Button instructionsButton = findViewById(R.id.button_instructions);
-        instructionsButton.setOnClickListener(view -> alertDialog =
-                showInstructionDialog(DeviceControlActivity.this, alertDialog));
+//        Button instructionsButton = findViewById(R.id.button_instructions);
+//        instructionsButton.setOnClickListener(view -> alertDialog =
+//                showInstructionDialog(DeviceControlActivity.this, alertDialog));
+
+        SpannableStringBuilder selectionInstruction = StringUtil.toInstruction(this, testInfo,
+                String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
+                        StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getName()));
+
+        ((TextView) findViewById(R.id.textSelectInstruction)).setText(selectionInstruction);
 
         showSelectTestView();
     }
@@ -341,21 +347,23 @@ public class DeviceControlActivity extends BaseActivity
         layoutSelectTest.setVisibility(View.GONE);
         layoutWaiting.setVisibility(View.GONE);
 
-        setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
+        setTitle(StringUtil.fromHtml(String.format(getString(R.string.select_test),
+                testInfo.getName())));
+//        setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
     }
 
     private void showSelectTestView() {
         layoutSelectTest.setVisibility(View.VISIBLE);
         layoutWaiting.setVisibility(View.GONE);
         layoutInstructions.setVisibility(View.GONE);
-        setTitle("Connected");
+        setTitle(testInfo.getMd610Id() + ". " + testInfo.getName());
     }
 
     private void showWaitingView() {
         layoutWaiting.setVisibility(View.VISIBLE);
         layoutSelectTest.setVisibility(View.GONE);
         layoutInstructions.setVisibility(View.GONE);
-        setTitle("Connected");
+//        setTitle("Connected");
     }
 
 }

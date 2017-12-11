@@ -72,6 +72,15 @@ public class AboutActivity extends BaseActivity {
         switchLayoutForDiagnosticOrUserMode();
 
         changeActionBarStyleBasedOnCurrentMode();
+
+        clearTests();
+    }
+
+    private void clearTests() {
+        final TestListViewModel viewModel =
+                ViewModelProviders.of(this).get(TestListViewModel.class);
+
+        viewModel.clearTests();
     }
 
     /**
@@ -90,6 +99,9 @@ public class AboutActivity extends BaseActivity {
                 changeActionBarStyleBasedOnCurrentMode();
 
                 switchLayoutForDiagnosticOrUserMode();
+
+                // clear and reload all the tests as diagnostic mode includes experimental tests
+                clearTests();
             }
         }
     }
@@ -111,12 +123,6 @@ public class AboutActivity extends BaseActivity {
                 findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
             }
         }
-
-        final TestListViewModel viewModel =
-                ViewModelProviders.of(this).get(TestListViewModel.class);
-
-        viewModel.clearTests();
-
     }
 
 }
