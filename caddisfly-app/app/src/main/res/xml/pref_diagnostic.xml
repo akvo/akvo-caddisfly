@@ -21,15 +21,6 @@
     <org.akvo.caddisfly.preference.PreferenceCategoryCustom
         android:key="preferenceCategoryDiagnostics"
         android:title="@string/diagnostics">
-        <Preference
-            android:key="cameraPreview"
-            android:title="@string/cameraPreview" />
-        <Preference
-            android:key="startTest"
-            android:title="Colorimetric Test" />
-        <Preference
-            android:key="startStripTest"
-            android:title="Strip Test" />
         <CheckBoxPreference
             android:key="@string/ignoreTimeDelaysKey"
             android:title="@string/ignoreTimeDelays" />
@@ -56,5 +47,9 @@
             android:maxLength="3"
             android:numeric="integer"
             android:title="Max color distance" />
+        <Preference
+            android:key="syncTestList"
+            android:icon="@drawable/ic_file_download_white_24dp"
+            android:title="Download experimental tests" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

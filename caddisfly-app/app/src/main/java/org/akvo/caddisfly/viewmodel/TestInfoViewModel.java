@@ -94,6 +94,10 @@ public class TestInfoViewModel extends AndroidViewModel {
     @BindingAdapter("content")
     public static void setContent(LinearLayout linearLayout, Instruction instruction) {
 
+        if (instruction == null || instruction.section == null){
+            return;
+        }
+
         Context context = linearLayout.getContext();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 

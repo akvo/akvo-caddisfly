@@ -52,15 +52,13 @@ public final class AssetsManager {
 
         json = loadJSONFromAsset(Constants.TESTS_META_FILENAME);
 
-//        experimentalJson = loadJSONFromAsset("experimental_tests.json");
-
-//        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG),
-//                Constants.TESTS_META_FILENAME);
-//        experimentalJson = FileUtil.loadTextFromFile(file);
-
-        File file = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
+        File experimentalConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG),
                 Constants.TESTS_META_FILENAME);
-        customJson = FileUtil.loadTextFromFile(file);
+        experimentalJson = FileUtil.loadTextFromFile(experimentalConfig);
+
+        File customConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
+                Constants.TESTS_META_FILENAME);
+        customJson = FileUtil.loadTextFromFile(customConfig);
 
     }
 

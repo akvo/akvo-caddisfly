@@ -95,20 +95,20 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@null"
                 android:src="@drawable/place_device"
-                android:visibility="@{vm.test.useBackCase ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{vm.test.cameraAbove ? View.GONE : View.VISIBLE}" />
 
             <io.fotoapparat.view.CameraView
                 android:id="@+id/camera_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/black"
-                android:visibility="@{vm.test.useBackCase ? View.GONE : View.VISIBLE}" />
+                android:visibility="@{vm.test.cameraAbove ? View.VISIBLE : View.GONE}" />
 
             <org.akvo.caddisfly.widget.CircleView
                 android:id="@+id/circleView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{vm.test.useBackCase ? View.GONE : View.VISIBLE}" />
+                android:visibility="@{vm.test.cameraAbove ? View.VISIBLE : View.GONE}" />
 
         </FrameLayout>
     </LinearLayout>

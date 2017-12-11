@@ -25,6 +25,7 @@ import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.model.GroupType;
 import org.akvo.caddisfly.model.MpnValue;
@@ -215,7 +216,7 @@ public final class TestConfigHelper {
     public static String getUuidFromShortCode(String shortCode) {
 
         if (!shortCode.isEmpty()) {
-            return getUuidByShortCode(shortCode, SensorConstants.TESTS_META_FILENAME);
+            return getUuidByShortCode(shortCode, Constants.TESTS_META_FILENAME);
         }
         return null;
     }
@@ -237,35 +238,6 @@ public final class TestConfigHelper {
 
         } catch (JSONException e) {
             Timber.e(e);
-        }
-        return null;
-    }
-
-    public static String getBluetoothTest(String code) {
-
-        if (code != null && !code.isEmpty()) {
-
-            for (int i = 0; i < 3; i++) {
-
-                String jsonText = AssetsManager.getInstance().loadJSONFromAsset(SensorConstants.TESTS_META_FILENAME);
-                try {
-                    JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
-                    for (int j = 0; j < array.length(); j++) {
-                        JSONObject item = array.getJSONObject(j);
-
-                        if (item.has("md610_id")) {
-                            String id = item.getString("md610_id");
-                            if (id.equalsIgnoreCase(code)) {
-                                return item.getString("uuid");
-                            }
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    Timber.e(e);
-                }
-
-            }
         }
         return null;
     }

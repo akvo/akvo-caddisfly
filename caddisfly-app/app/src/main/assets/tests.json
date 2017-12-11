@@ -6189,7 +6189,7 @@
     },
     {
       "name": "Water - Chromium",
-      "subtype": "backcase",
+      "subtype": "cuvette",
       "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
       "shortCode": "CHROM",
       "brand": "Caddisfly",
@@ -6200,7 +6200,6 @@
       "dilutions": [1,2,5],
       "monthsValid": 3,
       "hasImage": true,
-      "useBackCase": true,
       "instructions": [
 
       ],
@@ -6232,7 +6231,7 @@
     },
     {
       "name": "Water - Fluoride",
-      "subtype": "backcase",
+      "subtype": "cuvette",
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
       "shortCode": "FLUOR",
       "brand": "Caddisfly",
@@ -6245,7 +6244,6 @@
       "dilutions": [1,2,5],
       "monthsValid": 12,
       "hasImage": true,
-      "useBackCase": true,
       "instructions": [
         {
           "section": [
@@ -6335,7 +6333,7 @@
     },
     {
       "name": "Water - Free Chlorine",
-      "subtype": "backcase",
+      "subtype": "cuvette",
       "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
       "shortCode": "CHLOR",
       "brand": "Caddisfly",
@@ -6344,7 +6342,6 @@
       "ranges": "0,0.25,0.5,0.75,1.0",
       "monthsValid": 24,
       "hasImage": true,
-      "useBackCase": true,
       "instructions": [
         {
           "section": [
@@ -6428,7 +6425,7 @@
     },
     {
       "name": "Water - Free Chlorine",
-      "subtype": "backcase",
+      "subtype": "cuvette",
       "uuid": "a2413119-38eb-4959-92ee-cc169fdbb0fc",
       "brand": "Caddisfly",
       "imageScale": "centerCrop",
@@ -6436,7 +6433,6 @@
       "ranges": "0,0.5,1.0,1.5,2.0,2.5,3.0",
       "monthsValid": 24,
       "hasImage": true,
-      "useBackCase": true,
       "instructions": [
         {
           "section": [

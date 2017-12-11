@@ -98,9 +98,9 @@ public class TestInfo implements Parcelable {
     @SerializedName("hasImage")
     @Expose
     private Boolean hasImage;
-    @SerializedName("useBackCase")
+    @SerializedName("cameraAbove")
     @Expose
-    private Boolean useBackCase;
+    private Boolean cameraAbove;
     @SerializedName("displayResults")
     @Expose
     private List<Result> displayResults = null;
@@ -205,8 +205,8 @@ public class TestInfo implements Parcelable {
         unit = in.readString();
         byte tmpHasImage = in.readByte();
         hasImage = tmpHasImage == 0 ? null : tmpHasImage == 1;
-        byte tmpUseBackCase = in.readByte();
-        useBackCase = tmpUseBackCase == 0 ? null : tmpUseBackCase == 1;
+        byte tmpCameraAbove = in.readByte();
+        cameraAbove = tmpCameraAbove == 0 ? null : tmpCameraAbove == 1;
         shortCode = in.readString();
         byte tmpCalibrate = in.readByte();
         calibrate = tmpCalibrate == 0 ? null : tmpCalibrate == 1;
@@ -246,8 +246,8 @@ public class TestInfo implements Parcelable {
         responseFormat = in.readString();
     }
 
-    public boolean getUseBackCase() {
-        return useBackCase == null ? false : useBackCase;
+    public boolean getCameraAbove() {
+        return cameraAbove == null ? false : cameraAbove;
     }
 
     public boolean getIsGroup() {
@@ -403,7 +403,7 @@ public class TestInfo implements Parcelable {
         }
         parcel.writeString(unit);
         parcel.writeByte((byte) (hasImage == null ? 0 : hasImage ? 1 : 2));
-        parcel.writeByte((byte) (useBackCase == null ? 0 : useBackCase ? 1 : 2));
+        parcel.writeByte((byte) (cameraAbove == null ? 0 : cameraAbove ? 1 : 2));
         parcel.writeString(shortCode);
         parcel.writeByte((byte) (calibrate == null ? 0 : calibrate ? 1 : 2));
         parcel.writeString(ranges);

@@ -29,7 +29,7 @@ public enum TestType {
      * Liquid reagent is mixed with sample and color is analysed from the resulting
      * color change in the solution
      */
-    @SerializedName("backcase")
+    @SerializedName("cuvette")
     COLORIMETRIC_LIQUID,
 
     /**

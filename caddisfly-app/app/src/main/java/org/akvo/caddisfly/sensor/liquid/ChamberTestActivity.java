@@ -112,10 +112,10 @@ public class ChamberTestActivity extends BaseActivity implements
 
             mTestInfo.setCalibrations(calibrations);
 
-            if (mTestInfo.getUseBackCase()) {
-                fragment = RunTestFragment.newInstance(mTestInfo, null);
-            } else {
+            if (mTestInfo.getCameraAbove()) {
                 fragment = ChamberBelowFragment.newInstance(mTestInfo, null);
+            } else {
+                fragment = RunTestFragment.newInstance(mTestInfo, null);
             }
 
             if (getIntent().getBooleanExtra(ConstantKey.RUN_TEST, false)) {
