@@ -20,25 +20,17 @@
 package org.akvo.caddisfly.instruction;
 
 
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
-import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.common.TestConstantKeys;
-import org.akvo.caddisfly.common.TestConstants;
-import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
@@ -51,31 +43,25 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
-
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
-import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -360,153 +346,5 @@ public class StriptestInstructions {
                 withParent(withId(R.id.toolbar)),
                 isDisplayed())).perform(click());
 
-    }
-
-    @Test
-    @RequiresDevice
-    public void testInstructionsBackcase() {
-
-        goToMainScreen();
-
-        gotoSurveyForm();
-
-        clickExternalSourceButton(0);
-
-        sleep(1000);
-
-        mDevice.waitForIdle();
-
-        TestUtil.sleep(1000);
-
-        String id = SensorConstants.FLUORIDE_ID.substring(
-                SensorConstants.FLUORIDE_ID.lastIndexOf("-") + 1, SensorConstants.FLUORIDE_ID.length());
-
-        takeScreenshot(id, -1);
-
-        mDevice.waitForIdle();
-
-        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
-
-        for (int i = 0; i < 17; i++) {
-
-            try {
-                takeScreenshot(id, i);
-
-                onView(withId(R.id.image_pageRight)).perform(click());
-
-            } catch (Exception e) {
-                TestUtil.sleep(600);
-                Espresso.pressBack();
-                break;
-            }
-        }
-    }
-
-    @Test
-    @RequiresDevice
-    public void testInstructionsBackcase2() {
-
-        goToMainScreen();
-
-        gotoSurveyForm();
-
-        clickExternalSourceButton(TestConstantKeys.NEXT);
-
-        clickExternalSourceButton(0);
-
-        sleep(1000);
-
-        mDevice.waitForIdle();
-
-        TestUtil.sleep(1000);
-
-        String id = SensorConstants.FREE_CHLORINE_ID.substring(
-                SensorConstants.FREE_CHLORINE_ID.lastIndexOf("-") + 1, SensorConstants.FREE_CHLORINE_ID.length());
-
-        takeScreenshot(id, -1);
-
-        mDevice.waitForIdle();
-
-        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
-
-        for (int i = 0; i < 17; i++) {
-
-            try {
-                takeScreenshot(id, i);
-
-                onView(withId(R.id.image_pageRight)).perform(click());
-
-            } catch (Exception e) {
-                TestUtil.sleep(600);
-                Espresso.pressBack();
-                break;
-            }
-        }
-    }
-
-    @Test
-    @RequiresDevice
-    public void testInstructionsAll() {
-
-        goToMainScreen();
-
-        onView(withText(getString(mActivityTestRule.getActivity(), R.string.stripTest))).perform(click());
-
-        TestConfigRepository testConfigRepository = new TestConfigRepository();
-        List<TestInfo> testList = testConfigRepository.getTests(TestType.COLORIMETRIC_STRIP);
-
-        for (int i = 0; i < TestConstants.STRIP_TESTS_COUNT; i++) {
-
-            assertEquals(testList.get(i).getSubtype(), TestType.COLORIMETRIC_STRIP);
-
-            String id = testList.get(i).getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1, id.length());
-
-            int pages = navigateToTest(i, id);
-
-            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-        }
-
-        Log.e("Caddisfly", jsArrayString.toString());
-
-    }
-
-    private int navigateToTest(int index, String id) {
-
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.list_types),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)));
-        recyclerView.perform(actionOnItemAtPosition(index, click()));
-
-        mDevice.waitForIdle();
-
-        TestUtil.sleep(1000);
-
-        takeScreenshot(id, -1);
-
-        mDevice.waitForIdle();
-
-        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
-
-        int pages = 0;
-        for (int i = 0; i < 17; i++) {
-            pages++;
-
-            try {
-                takeScreenshot(id, i);
-
-                onView(withId(R.id.image_pageRight)).perform(click());
-
-            } catch (Exception e) {
-                TestUtil.sleep(600);
-                Espresso.pressBack();
-                Espresso.pressBack();
-                TestUtil.sleep(600);
-                break;
-            }
-        }
-        return pages;
     }
 }

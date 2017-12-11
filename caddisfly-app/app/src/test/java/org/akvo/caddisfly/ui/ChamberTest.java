@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -165,7 +166,7 @@ public class ChamberTest {
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
         Intent nextIntent2 = shadowOf(activity).getNextStartedActivity();
-        if (intent.getComponent() != null) {
+        if (nextIntent2.getComponent() != null) {
             assertEquals(ChamberTestActivity.class.getCanonicalName(),
                     nextIntent2.getComponent().getClassName());
         }
@@ -201,8 +202,12 @@ public class ChamberTest {
 
         controller.start();
 
-        AlertDialog alert1 = ShadowAlertDialog.getLatestAlertDialog();
-        assertNull(alert1);
+        AlertDialog alert = ShadowAlertDialog.getLatestAlertDialog();
+        ShadowAlertDialog sAlert = shadowOf(alert);
+
+        assertEquals(sAlert.getMessage(), "Calibration for Water - Fluoride is incomplete\n" +
+                "\n" +
+                "Do you want to calibrate now?");
 
     }
 //

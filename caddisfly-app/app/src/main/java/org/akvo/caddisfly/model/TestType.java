@@ -46,6 +46,12 @@ public enum TestType {
     SENSOR,
 
     /**
+     * External sensors/meters not connected to the phone/device
+     */
+    @SerializedName("manual")
+    MANUAL,
+
+    /**
      * External bluetooth testing device
      */
     @SerializedName("bluetooth")

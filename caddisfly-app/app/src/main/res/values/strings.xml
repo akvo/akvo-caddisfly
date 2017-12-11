@@ -210,4 +210,13 @@
 
     <string name="view_results">View results</string>
 
+    <!--Manual-->
+    <string name="take_photo_meter_result">Take a photo of the meter screen displaying the measurement result</string>
+    <string name="enter_measured_value">Enter the measured value</string>
+    <string name="us_cm">μS/cm</string>
+    <string name="ms_cm">ms/cm</string>
+    <string name="select_unit">Select unit</string>
+    <string name="submitResult">Submit Result</string>
+    <string name="take_photo_compartments">Take a photo of the compartment bag</string>
+
 </resources>

@@ -30,7 +30,6 @@ import org.akvo.caddisfly.model.GroupType;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AssetsManager;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
@@ -202,7 +201,6 @@ public final class TestConfigHelper {
 
     private static JSONObject getUserPreferences() throws JSONException {
         JSONObject details = new JSONObject();
-        details.put("backDropDetection", !AppPreferences.getNoBackdropDetection());
         details.put("language", PreferencesUtil.getString(CaddisflyApp.getApp(), R.string.languageKey, ""));
         return details;
     }

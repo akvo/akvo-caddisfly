@@ -42,6 +42,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -72,6 +73,7 @@ import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtResultFragment;
 import org.akvo.caddisfly.sensor.cbt.CompartmentBagFragment;
 import org.akvo.caddisfly.sensor.liquid.ChamberTestActivity;
+import org.akvo.caddisfly.sensor.manual.MeasurementInputFragment;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.usb.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -92,7 +94,8 @@ import timber.log.Timber;
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
 
 public class TestActivity extends BaseActivity implements
-        CompartmentBagFragment.OnFragmentInteractionListener {
+        CompartmentBagFragment.OnFragmentInteractionListener,
+        MeasurementInputFragment.OnSubmitResultListener {
 
     public static final int CBT_TEST = 1;
     public static final int MANUAL_TEST = 2;
@@ -209,7 +212,7 @@ public class TestActivity extends BaseActivity implements
             }
         }
 
-        if (mTestInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
+        if (mTestInfo != null && mTestInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
             List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
                     .calibrationDao().getAll(mTestInfo.getUuid());
 
@@ -346,9 +349,7 @@ public class TestActivity extends BaseActivity implements
             case COLORIMETRIC_STRIP:
                 checkCameraAndStart();
                 break;
-            case SENSOR:
-            case BLUETOOTH:
-            case CBT:
+            default:
                 startTest();
                 break;
         }
@@ -398,7 +399,11 @@ public class TestActivity extends BaseActivity implements
                 startBluetoothTest();
                 break;
             case CBT:
-                Toast.makeText(this, "Take a photo of the compartment bag", Toast.LENGTH_LONG).show();
+                (new Handler()).postDelayed(() -> {
+                    Toast toast = Toast.makeText(this, R.string.take_photo_compartments, Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.BOTTOM, 0, 200);
+                    toast.show();
+                }, 400);
 
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // Ensure that there's a camera activity to handle the intent
@@ -444,6 +449,52 @@ public class TestActivity extends BaseActivity implements
                 intent.putExtra("internal", true);
                 intent.putExtra(ConstantKey.TEST_INFO, mTestInfo);
                 startActivity(intent);
+                break;
+            case MANUAL:
+
+                if (mTestInfo.getHasImage()) {
+
+                    (new Handler()).postDelayed(() -> {
+                        Toast toast = Toast.makeText(this, R.string.take_photo_meter_result, Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.BOTTOM, 0, 200);
+                        toast.show();
+                    }, 400);
+
+                    Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    // Ensure that there's a camera activity to handle the intent
+                    if (pictureIntent.resolveActivity(getPackageManager()) != null) {
+                        // Create the File where the photo should go
+                        File photoFile = null;
+                        try {
+                            photoFile = createImageFile();
+                        } catch (IOException ex) {
+                            // Error occurred while creating the File
+                        }
+
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+
+                            Uri photoURI;
+                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                                photoURI = Uri.fromFile(photoFile);
+                            } else {
+                                photoURI = FileProvider.getUriForFile(this,
+                                        FILE_PROVIDER_AUTHORITY_URI,
+                                        photoFile);
+                            }
+                            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                            startActivityForResult(pictureIntent, MANUAL_TEST);
+                        }
+                    }
+                } else {
+                    FragmentTransaction ft = fragmentManager.beginTransaction();
+
+                    ft.replace(R.id.fragment_container,
+                            MeasurementInputFragment.newInstance(mTestInfo), "tubeFragment")
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                            .addToBackStack(null)
+                            .commit();
+                }
                 break;
             case SENSOR:
 
@@ -501,6 +552,13 @@ public class TestActivity extends BaseActivity implements
                     this.setResult(Activity.RESULT_OK, intent2);
                     finish();
 
+                    break;
+                case MANUAL_TEST:
+                    fragmentTransaction.replace(R.id.fragment_container,
+                            MeasurementInputFragment.newInstance(mTestInfo), "manualFragment")
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                            .addToBackStack(null)
+                            .commit();
                     break;
                 case SENSOR_TEST:
                     //return the test result to the external app
@@ -611,6 +669,37 @@ public class TestActivity extends BaseActivity implements
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void onSubmitResult(String result) {
+        Intent resultIntent = new Intent(getIntent());
+
+        SparseArray<String> results = new SparseArray<>();
+
+        final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+
+        String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+
+        if (mCurrentPhotoPath != null) {
+            ImageUtil.resizeImage(mCurrentPhotoPath, resultImagePath);
+
+            File imageFile = new File(mCurrentPhotoPath);
+            if (imageFile.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                new File(mCurrentPhotoPath).delete();
+            }
+        }
+
+        results.put(1, result);
+
+        JSONObject resultJson = TestConfigHelper.getJsonResult(mTestInfo, results, null, -1, imageFileName);
+        resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
+        resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
+
+        setResult(Activity.RESULT_OK, resultIntent);
+
+        finish();
     }
 
     public static class IncubationTimesDialogFragment extends DialogFragment {

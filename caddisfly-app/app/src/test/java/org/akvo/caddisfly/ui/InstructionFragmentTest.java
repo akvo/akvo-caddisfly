@@ -24,8 +24,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.helper.TestConfigHelper;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.repository.TestConfigRepository;
+import org.akvo.caddisfly.widget.RowView;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -41,16 +43,21 @@ public class InstructionFragmentTest {
 
     @Test
     public void testFragment() {
-        TestInfo testInfo = TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
-        Fragment fragment = CbtInstructionFragment.forProduct(testInfo);
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.CBT_ID);
+
+        Fragment fragment = InstructionFragment.getInstance(testInfo);
         startFragment(fragment);
         assertNotNull(fragment);
     }
 
     @Test
     public void testInstruction() {
-        TestInfo testInfo = TestConfigHelper.loadTestByUuid(SensorConstants.CBT_ID);
-        Fragment fragment = CbtInstructionFragment.forProduct(testInfo);
+
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.CBT_ID);
+
+        Fragment fragment = InstructionFragment.getInstance(testInfo);
         startVisibleFragment(fragment, TestActivity.class, R.id.fragment_container);
 
         assertNotNull(fragment);
@@ -66,7 +73,6 @@ public class InstructionFragmentTest {
         assertNotNull(imageView);
         int drawableResId = Shadows.shadowOf(imageView.getDrawable()).getCreatedFromResId();
         assertEquals(-1, drawableResId);
-
     }
 
 }

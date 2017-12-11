@@ -19,88 +19,70 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowListView;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
-import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 public class PhotometerTest {
 
-    @Test
-    public void titleIsCorrect() {
-
-        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
-        TextView textView = activity.findViewById(R.id.textToolbarTitle);
-        assertEquals(textView.getText(), "Select Test");
-    }
-
-    @Test
-    public void testCount() throws Exception {
-        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
-        assertSame(51, listView.getCount());
-        assertEquals("Fluoride",
-                ((TestInfo) listView.getAdapter().getItem(25)).getTitle());
-        assertEquals("170 Fluoride",
-                ((TextView) listView.getChildAt(25).findViewById(R.id.text_title)).getText());
-    }
-
-    @Test
-    public void sensorTitles() throws Exception {
-        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
-
-        for (int i = 0; i < listView.getCount(); i++) {
-            TestInfo testInfo = ((TestInfo) listView.getAdapter().getItem(0));
-            String title = String.format("%s %s", testInfo.getMd610Id(), testInfo.getTitle());
-            assertEquals(title,
-                    ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
-        }
-    }
-
-    @Test
-    public void clickTest() {
-
-        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
-
-        ShadowListView list = shadowOf(listView);
-        assertTrue(list.performItemClick(1));
-
-        Intent intent = shadowOf(activity).getNextStartedActivity();
-        if (intent.getComponent() != null) {
-            assertEquals(DeviceScanActivity.class.getCanonicalName(),
-                    intent.getComponent().getClassName());
-        }
-    }
-
-    @Test
-    public void clickHome() {
-
-        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
-
-        ShadowActivity shadowActivity = shadowOf(activity);
-        shadowActivity.clickMenuItem(android.R.id.home);
-        Intent intent = shadowOf(activity).getNextStartedActivity();
-
-        assertNull(intent);
-    }
+//    @Test
+//    public void titleIsCorrect() {
+//
+//        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
+//        TextView textView = activity.findViewById(R.id.textToolbarTitle);
+//        assertEquals(textView.getText(), "Select Test");
+//    }
+//
+//    @Test
+//    public void testCount() throws Exception {
+//        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
+//        ListView listView = activity.findViewById(R.id.list_types);
+//        assertSame(51, listView.getCount());
+//        assertEquals("Fluoride",
+//                ((TestInfo) listView.getAdapter().getItem(25)).getTitle());
+//        assertEquals("170 Fluoride",
+//                ((TextView) listView.getChildAt(25).findViewById(R.id.text_title)).getText());
+//    }
+//
+//    @Test
+//    public void sensorTitles() throws Exception {
+//        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
+//        ListView listView = activity.findViewById(R.id.list_types);
+//
+//        for (int i = 0; i < listView.getCount(); i++) {
+//            TestInfo testInfo = ((TestInfo) listView.getAdapter().getItem(0));
+//            String title = String.format("%s %s", testInfo.getMd610Id(), testInfo.getTitle());
+//            assertEquals(title,
+//                    ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
+//        }
+//    }
+//
+//    @Test
+//    public void clickTest() {
+//
+//        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
+//        ListView listView = activity.findViewById(R.id.list_types);
+//
+//        ShadowListView list = shadowOf(listView);
+//        assertTrue(list.performItemClick(1));
+//
+//        Intent intent = shadowOf(activity).getNextStartedActivity();
+//        if (intent.getComponent() != null) {
+//            assertEquals(DeviceScanActivity.class.getCanonicalName(),
+//                    intent.getComponent().getClassName());
+//        }
+//    }
+//
+//    @Test
+//    public void clickHome() {
+//
+//        Activity activity = Robolectric.setupActivity(BluetoothTypeListActivity.class);
+//
+//        ShadowActivity shadowActivity = shadowOf(activity);
+//        shadowActivity.clickMenuItem(android.R.id.home);
+//        Intent intent = shadowOf(activity).getNextStartedActivity();
+//
+//        assertNull(intent);
+//    }
 
 }

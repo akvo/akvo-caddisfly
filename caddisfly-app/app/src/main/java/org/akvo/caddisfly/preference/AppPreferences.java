@@ -76,11 +76,6 @@ public final class AppPreferences {
     }
 
     //Diagnostic in user mode
-    public static boolean getNoBackdropDetection() {
-        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noBackdropDetectionKey, false);
-    }
-
-    //Diagnostic in user mode
     public static boolean isSaveImagesOn() {
         return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesKey, false);
     }

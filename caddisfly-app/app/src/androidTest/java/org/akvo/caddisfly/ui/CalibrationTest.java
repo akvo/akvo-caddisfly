@@ -33,6 +33,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;

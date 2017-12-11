@@ -21,13 +21,18 @@ package org.akvo.caddisfly.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -52,9 +57,18 @@ public class CbtTest {
     @Test
     public void titleIsCorrect() {
 
-        CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.CBT_ID);
 
-        Activity activity = Robolectric.setupActivity(TestActivity.class);
+        Intent intent = new Intent();
+        Bundle data = new Bundle();
+        data.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        intent.putExtras(data);
+
+        ActivityController controller = Robolectric.buildActivity(TestActivity.class, intent).create();
+        controller.start();
+
+        Activity activity = (Activity) controller.get();
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "E.coli – Aquagenx CBT");
     }
@@ -62,9 +76,18 @@ public class CbtTest {
     @Test
     public void clickingInstructions() {
 
-        CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.CBT_ID);
 
-        Activity activity = Robolectric.setupActivity(TestActivity.class);
+        Intent intent = new Intent();
+        Bundle data = new Bundle();
+        data.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        intent.putExtras(data);
+
+        ActivityController controller = Robolectric.buildActivity(TestActivity.class, intent).create();
+        controller.start();
+
+        Activity activity = (Activity) controller.get();
         Button button = activity.findViewById(R.id.button_instructions);
 
         button.performClick();
@@ -81,9 +104,15 @@ public class CbtTest {
 
         String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        CaddisflyApp.getApp().loadTestConfigurationByUuid(SensorConstants.CBT_ID);
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.CBT_ID);
 
-        ActivityController controller = Robolectric.buildActivity(TestActivity.class).create().start();
+        Intent intent = new Intent();
+        Bundle data = new Bundle();
+        data.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        intent.putExtras(data);
+
+        ActivityController controller = Robolectric.buildActivity(TestActivity.class, intent).create().start();
         Activity activity = (Activity) controller.get();
 
         Button button = activity.findViewById(R.id.button_prepare);
@@ -109,5 +138,4 @@ public class CbtTest {
         assertThat(ShadowToast.getTextOfLatestToast(), equalTo("Take a photo of the compartment bag"));
 
     }
-
 }

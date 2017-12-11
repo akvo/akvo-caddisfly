@@ -19,26 +19,27 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.widget.ListView;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.usb.SensorActivity;
+import org.akvo.caddisfly.model.TestType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowListView;
+import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowLooper;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -47,64 +48,109 @@ public class SensorsTest {
     @Test
     public void titleIsCorrect() {
 
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(TestListActivity.class);
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "Select Test");
     }
 
     @Test
     public void sensorCount() throws Exception {
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
-        assertSame(3, listView.getCount());
+        Intent intent = new Intent();
+        intent.putExtra("type", TestType.SENSOR);
+
+        ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
+
+        controller.start().visible();
+
+        Activity activity = (Activity) controller.get();
+
+        RecyclerView recyclerView = activity.findViewById(R.id.list_types);
+
+        assertSame(3, recyclerView.getChildCount());
+
         assertEquals("Soil - Electrical Conductivity",
-                ((TestInfo) listView.getAdapter().getItem(0)).getTitle());
+                ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(0).getName());
         assertEquals("Soil - Electrical Conductivity",
-                ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
+                ((TextView) recyclerView.getChildAt(0).findViewById(R.id.text_title)).getText());
     }
 
 
     @Test
     public void sensorTitles() throws Exception {
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
+        Intent intent = new Intent();
+        intent.putExtra("type", TestType.SENSOR);
+
+        ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
+
+        controller.start().visible();
+
+        Activity activity = (Activity) controller.get();
+
+        RecyclerView recyclerView = activity.findViewById(R.id.list_types);
+
+        assertSame(3, recyclerView.getChildCount());
 
         assertEquals("Soil - Electrical Conductivity",
-                ((TestInfo) listView.getAdapter().getItem(0)).getTitle());
+                ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(0).getName());
         assertEquals("Soil - Electrical Conductivity",
-                ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
+                ((TextView) recyclerView.getChildAt(0).findViewById(R.id.text_title)).getText());
 
         assertEquals("Soil - Moisture",
-                ((TestInfo) listView.getAdapter().getItem(1)).getTitle());
+                ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(1).getName());
         assertEquals("Soil - Moisture",
-                ((TextView) listView.getChildAt(1).findViewById(R.id.text_title)).getText());
+                ((TextView) recyclerView.getChildAt(1).findViewById(R.id.text_title)).getText());
 
         assertEquals("Water - Electrical Conductivity",
-                ((TestInfo) listView.getAdapter().getItem(2)).getTitle());
+                ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(2).getName());
         assertEquals("Water - Electrical Conductivity",
-                ((TextView) listView.getChildAt(2).findViewById(R.id.text_title)).getText());
+                ((TextView) recyclerView.getChildAt(2).findViewById(R.id.text_title)).getText());
     }
 
     @Test
     public void clickSensorItem() {
 
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        ShadowListView list = shadowOf(listView);
-        assertTrue(list.performItemClick(1));
+        Intent intent = new Intent();
+        intent.putExtra("type", TestType.SENSOR);
 
-        Intent intent = shadowOf(activity).getNextStartedActivity();
-        if (intent.getComponent() != null) {
-            assertEquals(SensorActivity.class.getCanonicalName(),
-                    intent.getComponent().getClassName());
+        ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
+
+        controller.start().visible();
+
+        Activity activity = (Activity) controller.get();
+
+        RecyclerView recyclerView = activity.findViewById(R.id.list_types);
+
+        recyclerView.getChildAt(1).performClick();
+
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        Intent nextIntent = shadowOf(activity).getNextStartedActivity();
+
+        assertNull(nextIntent);
+
+        ShadowApplication application = shadowOf(activity.getApplication());
+        application.grantPermissions(permissions);
+        controller.resume();
+
+        assertSame(3, recyclerView.getChildCount());
+
+        recyclerView.getChildAt(1).performClick();
+
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        Intent nextIntent1 = shadowOf(activity).getNextStartedActivity();
+        if (nextIntent1 != null && nextIntent1.getComponent() != null) {
+            assertEquals(TestActivity.class.getCanonicalName(),
+                    nextIntent1.getComponent().getClassName());
         }
     }
 
     @Test
     public void clickHome() {
 
-        Activity activity = Robolectric.setupActivity(SensorTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(TestListActivity.class);
 
         ShadowActivity shadowActivity = Shadows.shadowOf(activity);
         shadowActivity.clickMenuItem(android.R.id.home);

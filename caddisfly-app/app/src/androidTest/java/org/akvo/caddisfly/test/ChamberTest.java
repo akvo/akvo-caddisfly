@@ -33,6 +33,7 @@ import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.common.TestConstantKeys;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;

@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.SettingsActivity;
-import org.akvo.caddisfly.sensor.striptest.ui.TestTypeListActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -98,7 +97,7 @@ public class MainTest {
         button.performClick();
         intent = shadowOf(activity).getNextStartedActivity();
         if (intent.getComponent() != null) {
-            assertEquals(SensorTypeListActivity.class.getCanonicalName(),
+            assertEquals(TestListActivity.class.getCanonicalName(),
                     intent.getComponent().getClassName());
         }
     }
@@ -112,7 +111,7 @@ public class MainTest {
         button.performClick();
         Intent intent = shadowOf(activity).getNextStartedActivity();
         if (intent.getComponent() != null) {
-            assertEquals(TestTypeListActivity.class.getCanonicalName(),
+            assertEquals(TestListActivity.class.getCanonicalName(),
                     intent.getComponent().getClassName());
         }
     }
@@ -126,7 +125,7 @@ public class MainTest {
         button.performClick();
         Intent intent = shadowOf(activity).getNextStartedActivity();
         if (intent.getComponent() != null) {
-            assertEquals(BluetoothTypeListActivity.class.getCanonicalName(),
+            assertEquals(TestListActivity.class.getCanonicalName(),
                     intent.getComponent().getClassName());
         }
     }
@@ -154,7 +153,7 @@ public class MainTest {
         button.performClick();
         Intent intent = shadowOf(activity).getNextStartedActivity();
         if (intent.getComponent() != null) {
-            assertEquals(TypeListActivity.class.getCanonicalName(),
+            assertEquals(TestListActivity.class.getCanonicalName(),
                     intent.getComponent().getClassName());
         }
     }

@@ -19,24 +19,27 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.widget.ListView;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.sensor.striptest.ui.TestTypeListActivity;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowListView;
+import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowLooper;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
-import static junit.framework.Assert.assertTrue;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -45,55 +48,101 @@ public class StripsTest {
     @Test
     public void titleIsCorrect() {
 
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(TestListActivity.class);
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "Select Test");
     }
 
     @Test
     public void testCount() throws Exception {
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
-        assertSame(20, listView.getCount());
+
+        Intent intent = new Intent();
+        intent.putExtra("type", TestType.COLORIMETRIC_STRIP);
+
+        ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
+
+        controller.start().visible();
+
+        Activity activity = (Activity) controller.get();
+
+        RecyclerView recyclerView = activity.findViewById(R.id.list_types);
+
+        assertSame(20, recyclerView.getChildCount());
+
+        TestInfoAdapter adapter = (TestInfoAdapter) recyclerView.getAdapter();
+        recyclerView.getAdapter();
         assertEquals("Water - Total Iron",
-                ((StripTest.Brand) listView.getAdapter().getItem(18)).getName());
+                adapter.getItemAt(18).getName());
         assertEquals("Water - Total Iron",
-                ((TextView) listView.getChildAt(18).findViewById(R.id.text_title)).getText());
+                ((TextView) recyclerView.getChildAt(18).findViewById(R.id.text_title)).getText());
     }
 
     @Test
     public void testTitles() throws Exception {
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
+        Intent intent = new Intent();
+        intent.putExtra("type", TestType.COLORIMETRIC_STRIP);
 
-        for (int i = 0; i < listView.getCount(); i++) {
-            StripTest.Brand brand = ((StripTest.Brand) listView.getAdapter().getItem(0));
-            String title = brand.getName();
+        ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
+
+        controller.start().visible();
+
+        Activity activity = (Activity) controller.get();
+
+        RecyclerView recyclerView = activity.findViewById(R.id.list_types);
+
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            TestInfo testInfo = ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(0);
+            String title = testInfo.getName();
             assertEquals(title,
-                    ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
+                    ((TextView) recyclerView.getChildAt(0).findViewById(R.id.text_title)).getText());
         }
     }
 
     @Test
     public void clickTest() {
 
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        ShadowListView list = shadowOf(listView);
-        assertTrue(list.performItemClick(1));
+        Intent intent = new Intent();
+        intent.putExtra("type", TestType.COLORIMETRIC_STRIP);
 
-        Intent intent = shadowOf(activity).getNextStartedActivity();
-        if (intent.getComponent() != null) {
-            assertEquals(BrandInfoActivity.class.getCanonicalName(),
-                    intent.getComponent().getClassName());
+        ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
+
+        controller.start().visible();
+
+        Activity activity = (Activity) controller.get();
+
+        RecyclerView recyclerView = activity.findViewById(R.id.list_types);
+
+        recyclerView.getChildAt(1).performClick();
+
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        Intent nextIntent = shadowOf(activity).getNextStartedActivity();
+
+        assertNull(nextIntent);
+
+        ShadowApplication application = shadowOf(activity.getApplication());
+        application.grantPermissions(permissions);
+        controller.resume();
+
+        assertSame(20, recyclerView.getChildCount());
+
+        recyclerView.getChildAt(1).performClick();
+
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        Intent nextIntent1 = shadowOf(activity).getNextStartedActivity();
+        if (nextIntent1.getComponent() != null) {
+            assertEquals(TestActivity.class.getCanonicalName(),
+                    nextIntent1.getComponent().getClassName());
         }
     }
 
     @Test
     public void clickHome() {
 
-        Activity activity = Robolectric.setupActivity(TestTypeListActivity.class);
+        Activity activity = Robolectric.setupActivity(TestListActivity.class);
 
         ShadowActivity shadowActivity = shadowOf(activity);
         shadowActivity.clickMenuItem(android.R.id.home);
