@@ -79,7 +79,6 @@ public class ChamberTestActivity extends BaseActivity implements
     CalibrationItemFragment calibrationItemFragment;
     private FragmentManager fragmentManager;
     private TestInfo mTestInfo;
-    private ArrayList<ResultDetail> mResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +131,7 @@ public class ChamberTestActivity extends BaseActivity implements
         if (mTestInfo.getDilutions().size() > 0) {
             selectDilutionFragment = SelectDilutionFragment.newInstance(mTestInfo);
             fragmentManager.beginTransaction()
+                    .addToBackStack("dilution")
                     .replace(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
         } else {
             runTest(1);
@@ -142,6 +142,7 @@ public class ChamberTestActivity extends BaseActivity implements
         fragment.setDilution(dilution);
 
         fragmentManager.beginTransaction()
+                .addToBackStack("")
                 .replace(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
     }
 
@@ -250,24 +251,6 @@ public class ChamberTestActivity extends BaseActivity implements
 
     private void loadDetails() {
 
-//        mTestInfo.setCalibrationDate(PreferencesUtil.getLong(this, mTestInfo.getUuid(), R.string.calibrationDateKey));
-//
-//        if (mTestInfo.getCalibrationDate() >= 0) {
-//            textSubtitle1.setText(DateFormat.getDateInstance(DateFormat.MEDIUM)
-//                    .format(new Date(mTestInfo.getCalibrationDate())));
-//        }
-//
-//        mTestInfo.setExpiryDate(PreferencesUtil.getLong(this, mTestInfo.getId(), R.string.calibrationExpiryDateKey));
-//
-//        if (mTestInfo.getExpiryDate() >= 0) {
-//            textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
-//                    DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(mTestInfo.getExpiryDate()))));
-//        }
-//
-//        mTestInfo.setBatchNumber(PreferencesUtil.getString(this, testInfo.getId(), R.string.batchNumberKey, ""));
-//
-//        textSubtitle.setText(mTestInfo.getBatchNumber());
-
         List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
                 .calibrationDao().getAll(mTestInfo.getUuid());
         mTestInfo.setCalibrations(calibrations);
@@ -279,7 +262,6 @@ public class ChamberTestActivity extends BaseActivity implements
                 ViewModelProviders.of(this).get(TestInfoViewModel.class);
 
         model.setTest(mTestInfo);
-
     }
 
     /**
@@ -356,7 +338,6 @@ public class ChamberTestActivity extends BaseActivity implements
     @Override
     public void onFragmentInteraction(ArrayList<ResultDetail> resultDetails, Calibration calibration) {
 
-        mResults = resultDetails;
         if (calibration == null) {
             for (Result result : mTestInfo.Results()) {
                 ResultDetail resultDetail = resultDetails.get(result.getId() - 1);
@@ -367,6 +348,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
             fragmentManager
                     .beginTransaction()
+                    .addToBackStack(null)
                     .replace(R.id.fragment_container,
                             ResultFragment.newInstance(mTestInfo), "result").commit();
         } else {
@@ -402,7 +384,10 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     public void onTestWithDilution(View view) {
-        onBackPressed();
+        if (!fragmentManager.popBackStackImmediate("dilution", 0)) {
+            super.onBackPressed();
+        }
+
     }
 
     @Override

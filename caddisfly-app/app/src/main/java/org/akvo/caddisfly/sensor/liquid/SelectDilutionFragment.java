@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.liquid;
 
 import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -27,10 +28,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.databinding.FragmentSelectDilutionBinding;
 import org.akvo.caddisfly.model.TestInfo;
 
 import java.util.Locale;
@@ -40,6 +41,7 @@ public class SelectDilutionFragment extends Fragment {
 
     private TestInfo testInfo;
     private OnFragmentInteractionListener mListener;
+    private FragmentSelectDilutionBinding b;
 
     public SelectDilutionFragment() {
         // Required empty public constructor
@@ -64,29 +66,25 @@ public class SelectDilutionFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_select_dilution, container, false);
 
-        Button noDilutionButton = view.findViewById(R.id.buttonNoDilution);
-        Button percentButton1 = view.findViewById(R.id.buttonDilution1);
-        Button percentButton2 = view.findViewById(R.id.buttonDilution2);
-        Button buttonCustomDilution = view.findViewById(R.id.buttonCustomDilution);
+        b = DataBindingUtil.inflate(inflater, R.layout.fragment_select_dilution,
+                container, false);
 
         //todo: remove hardcoding of dilution times
-        percentButton1.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 2));
-        percentButton2.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 5));
+        b.buttonDilution1.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 2));
+        b.buttonDilution2.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 5));
 
-        noDilutionButton.setOnClickListener(view1 -> mListener.onFragmentInteraction(1));
+        b.buttonNoDilution.setOnClickListener(view1 -> mListener.onFragmentInteraction(1));
 
-        percentButton1.setOnClickListener(view1 -> mListener.onFragmentInteraction(2));
+        b.buttonDilution1.setOnClickListener(view1 -> mListener.onFragmentInteraction(2));
 
-        percentButton2.setOnClickListener(view1 -> mListener.onFragmentInteraction(5));
+        b.buttonDilution2.setOnClickListener(view1 -> mListener.onFragmentInteraction(5));
 
-        buttonCustomDilution.setOnClickListener(view1 -> showCustomDilutionDialog());
+        b.buttonCustomDilution.setOnClickListener(view1 -> showCustomDilutionDialog());
 
-        ((TextView) view.findViewById(R.id.textTitle)).setText(testInfo.getName());
+        ((TextView) b.getRoot().findViewById(R.id.textTitle)).setText(testInfo.getName());
 
-        return view;
+        return b.getRoot();
     }
 
     private void showCustomDilutionDialog() {

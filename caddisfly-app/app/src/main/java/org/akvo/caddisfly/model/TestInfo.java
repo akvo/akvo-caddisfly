@@ -470,28 +470,14 @@ public class TestInfo implements Parcelable {
     public void setCalibrations(List<Calibration> calibrations) {
         this.calibrations = calibrations;
         this.swatches.clear();
-        for (Calibration calibration : calibrations) {
-            Swatch swatch = new Swatch(calibration.value, calibration.color, Color.TRANSPARENT);
-            swatches.add(swatch);
-        }
-        swatches = SwatchHelper.generateGradient(swatches, ColorUtil.ColorModel.RGB);
 
-//
-//        if (results.get(0).getColors() != null) {
-//            for (int i = 0; i < results.get(0).getColors().size(); i++) {
-//
-//                Swatch swatch = new Swatch((results.get(0).getColors().get(i).getValue() * 10) / 10f,
-//                        Color.TRANSPARENT, Color.TRANSPARENT);
-//
-//                swatches.add(swatch);
-//            }
-//        }
-//
-//
-//        for (Swatch swatch :
-//                swatches) {
-//            swatch.setColor(calibrations.hashCode());
-//        }
+        if (calibrations.size() > 0) {
+            for (Calibration calibration : calibrations) {
+                Swatch swatch = new Swatch(calibration.value, calibration.color, Color.TRANSPARENT);
+                swatches.add(swatch);
+            }
+            swatches = SwatchHelper.generateGradient(swatches, ColorUtil.ColorModel.RGB);
+        }
     }
 
     public int getDilution() {

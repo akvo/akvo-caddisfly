@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -122,15 +121,18 @@
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/fragment_item" />
 
-        <!--<android.support.design.widget.FloatingActionButton-->
-            <!--android:id="@+id/buttonStart"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_margin="@dimen/fab_margin"-->
-            <!--android:onClick="runTestClick"-->
-            <!--android:visibility="visible" />-->
+        <Button
+            android:id="@+id/buttonRunTest"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="runTestClick"
+            android:text="@string/runTest"
+            android:theme="?primaryButtonStyle" />
+
     </RelativeLayout>
 
 </layout>
