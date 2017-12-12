@@ -130,13 +130,13 @@ public class ChamberTestActivity extends BaseActivity implements
     private void start() {
         if (mTestInfo.getDilutions().size() > 0) {
             selectDilutionFragment = SelectDilutionFragment.newInstance(mTestInfo);
-            if (fragmentManager.getBackStackEntryCount() == 0) {
-                fragmentManager.beginTransaction()
-                        .add(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
-            }else{
+            if (calibrationItemFragment != null && calibrationItemFragment.isVisible()) {
                 fragmentManager.beginTransaction()
                         .addToBackStack("dilution")
                         .replace(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
+            }else{
+                fragmentManager.beginTransaction()
+                        .add(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
             }
         } else {
             runTest(1);

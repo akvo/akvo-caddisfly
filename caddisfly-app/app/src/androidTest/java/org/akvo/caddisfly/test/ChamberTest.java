@@ -217,16 +217,18 @@ public class ChamberTest {
         recyclerView2.perform(actionOnItemAtPosition(4, click()));
 
 
-        ViewInteraction cameraView1 = onView(
-                allOf(withId(R.id.camera_view),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutWait),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        cameraView1.perform(click());
+        onView(withId(R.id.layoutWait)).check(matches(isDisplayed()));
+
+//        ViewInteraction cameraView1 = onView(
+//                allOf(withId(R.id.camera_view),
+//                        childAtPosition(
+//                                allOf(withId(R.id.layoutWait),
+//                                        childAtPosition(
+//                                                withClassName(is("android.widget.LinearLayout")),
+//                                                1)),
+//                                1),
+//                        isDisplayed()));
+//        cameraView1.perform(click());
 
         sleep(6000);
 
@@ -257,16 +259,18 @@ public class ChamberTest {
         onView(allOf(withId(R.id.textDilution), withText(R.string.noDilution)))
                 .check(matches(isCompletelyDisplayed()));
 
-        ViewInteraction cameraView = onView(
-                allOf(withId(R.id.camera_view),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutWait),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        cameraView.perform(click());
+        onView(withId(R.id.layoutWait)).check(matches(isDisplayed()));
+
+//        ViewInteraction cameraView = onView(
+//                allOf(withId(R.id.camera_view),
+//                        childAtPosition(
+//                                allOf(withId(R.id.layoutWait),
+//                                        childAtPosition(
+//                                                withClassName(is("android.widget.LinearLayout")),
+//                                                1)),
+//                                1),
+//                        isDisplayed()));
+//        cameraView.perform(click());
 
         sleep(6000);
 
@@ -300,16 +304,18 @@ public class ChamberTest {
 //        onView(allOf(withId(R.id.textDilution), withText(mActivityRule.getActivity()
 //                .getString(R.string.testWithDilution)))).check(matches(isCompletelyDisplayed()));
 
-        ViewInteraction cameraView3 = onView(
-                allOf(withId(R.id.camera_view),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutWait),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        cameraView3.perform(click());
+        onView(withId(R.id.layoutWait)).check(matches(isDisplayed()));
+
+//        ViewInteraction cameraView3 = onView(
+//                allOf(withId(R.id.camera_view),
+//                        childAtPosition(
+//                                allOf(withId(R.id.layoutWait),
+//                                        childAtPosition(
+//                                                withClassName(is("android.widget.LinearLayout")),
+//                                                1)),
+//                                1),
+//                        isDisplayed()));
+//        cameraView3.perform(click());
 
         sleep(6000);
 
@@ -345,16 +351,18 @@ public class ChamberTest {
         //Test Progress Screen
         takeScreenshot();
 
-        ViewInteraction cameraView2 = onView(
-                allOf(withId(R.id.camera_view),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutWait),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        cameraView2.perform(click());
+        onView(withId(R.id.layoutWait)).check(matches(isDisplayed()));
+
+//        ViewInteraction cameraView2 = onView(
+//                allOf(withId(R.id.camera_view),
+//                        childAtPosition(
+//                                allOf(withId(R.id.layoutWait),
+//                                        childAtPosition(
+//                                                withClassName(is("android.widget.LinearLayout")),
+//                                                1)),
+//                                1),
+//                        isDisplayed()));
+//        cameraView2.perform(click());
 
         sleep(6000);
 

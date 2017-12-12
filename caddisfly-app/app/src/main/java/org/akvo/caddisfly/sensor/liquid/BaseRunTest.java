@@ -42,6 +42,7 @@ import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
@@ -57,9 +58,6 @@ import io.fotoapparat.parameter.ScaleType;
 import io.fotoapparat.parameter.update.UpdateRequest;
 import io.fotoapparat.result.PhotoResult;
 
-import static io.fotoapparat.log.Loggers.fileLogger;
-import static io.fotoapparat.log.Loggers.logcat;
-import static io.fotoapparat.log.Loggers.loggers;
 import static io.fotoapparat.parameter.selector.AspectRatioSelectors.standardRatio;
 import static io.fotoapparat.parameter.selector.FlashSelectors.off;
 import static io.fotoapparat.parameter.selector.FlashSelectors.torch;
@@ -75,15 +73,24 @@ public class BaseRunTest extends Fragment implements RunTest {
     protected static final String ARG_PARAM1 = "param1";
     protected static final String ARG_PARAM2 = "param2";
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00## ");
+    private static final int DELAY = 1000; // 1 second
     protected SoundPoolPlayer sound;
     protected FotoapparatSwitcher cameraSwitcher;
     protected FragmentRunTestBinding binding;
     protected boolean cameraStarted;
     protected Context mContext;
+    protected int pictureCount = 0;
+    protected Handler mHandler;
     private TestInfo mTestInfo;
     private Calibration mCalibration;
     private int dilution;
     private OnFragmentInteractionListener mListener;
+    Runnable mRunnableCode = () -> {
+        if (pictureCount < AppPreferences.getSamplingTimes()) {
+            pictureCount++;
+            takePicture();
+        }
+    };
 
     public BaseRunTest() {
         // Required empty public constructor
@@ -144,11 +151,10 @@ public class BaseRunTest extends Fragment implements RunTest {
                         fixed()
                 ))
                 .flash(torch())
-//                .frameProcessor(new SampleFrameProcessor())
-                .logger(loggers(
-                        logcat(),
-                        fileLogger(mContext)
-                ))
+//                .logger(loggers(
+//                        logcat(),
+//                        fileLogger(mContext)
+//                ))
                 .cameraErrorCallback(e -> Toast.makeText(mContext, e.toString(), Toast.LENGTH_LONG).show())
                 .build();
     }
@@ -177,13 +183,6 @@ public class BaseRunTest extends Fragment implements RunTest {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_run_test,
                 container, false);
-
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
-
-//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
-//            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-////            getSupportActionBar().setTitle("");
-//        }
 
         if (getArguments() != null) {
             mTestInfo = getArguments().getParcelable(ARG_PARAM1);
@@ -242,16 +241,10 @@ public class BaseRunTest extends Fragment implements RunTest {
         photoResult
                 .toBitmap(scaled(0.25f))
                 .whenAvailable(result -> {
-                    if (cameraStarted) {
-                        cameraSwitcher.getCurrentFotoapparat().updateParameters(
-                                UpdateRequest.builder()
-                                        .flash(off())
-                                        .build()
-                        );
-
-                        cameraSwitcher.getCurrentFotoapparat().stop();
-                    }
-                    (new Handler()).postDelayed(() -> getAnalyzedResult(result.bitmap), 100);
+                    (new Handler()).postDelayed(() -> {
+                        getAnalyzedResult(result.bitmap);
+                        mHandler.postDelayed(mRunnableCode, DELAY);
+                    }, 100);
 
                     sound.playShortResource(R.raw.beep);
                 });
@@ -286,7 +279,23 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             results.add(resultDetail);
 
-            if (mListener != null) {
+            if (mListener != null && pictureCount >= AppPreferences.getSamplingTimes()) {
+                try {
+
+                    if (cameraStarted) {
+                        cameraSwitcher.getCurrentFotoapparat().updateParameters(
+                                UpdateRequest.builder()
+                                        .flash(off())
+                                        .build()
+                        );
+
+                        cameraSwitcher.getCurrentFotoapparat().stop();
+                        cameraSwitcher.stop();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 mListener.onFragmentInteraction(results, mCalibration);
             }
         }

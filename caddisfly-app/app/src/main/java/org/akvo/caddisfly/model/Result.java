@@ -238,7 +238,7 @@ public class Result implements Parcelable {
         this.resultDouble = resultDouble * dilution;
 
         // if no more can dilution can be performed then set result to highest value
-        if (dilution >= maxDilution) {
+        if (highLevelsFound && dilution >= maxDilution) {
             this.resultDouble = maxResult * dilution;
         }
 
