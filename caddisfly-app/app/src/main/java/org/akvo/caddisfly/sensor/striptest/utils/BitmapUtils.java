@@ -31,15 +31,18 @@ public class BitmapUtils {
     private final static int COLOR_BAR_HGAP = 10;
     private final static int VAL_BAR_HEIGHT = 25;
     private final static int TEXT_SIZE = 20;
-    //    final static int TEXT_SIZE_LARGE = 35;
     private final static int SPACING = 10;
+    private final static int SPACING_BELOW_STRIP = 40;
 
     // creates image for a strip consisting of one or more individual patches
     // creates individual parts of the result image, and concatenates them
     public static Bitmap createResultImageSingle(PatchResult patchResult, TestInfo brand) {
         Bitmap triangle = createTriangleBitmap(patchResult, brand);
         Bitmap strip = createStripBitmap(patchResult);
-        Bitmap colourDrop = createColourDropBitmapSingle(patchResult);
+        Bitmap colourDrop = null;
+        if (!Float.isNaN(patchResult.getValue())) {
+            colourDrop = createColourDropBitmapSingle(patchResult);
+        }
         Bitmap colourBars = createColourBarsBitmapSingle(patchResult);
         return concatAllBitmaps(triangle, strip, colourDrop, colourBars);
     }
@@ -84,7 +87,14 @@ public class BitmapUtils {
     // concatenate all the individual bitmaps
     // result is a single bitmap.
     public static Bitmap concatAllBitmaps(Bitmap triangle, Bitmap strip, Bitmap colourDrop, Bitmap colourBars) {
-        int height = strip.getHeight() + colourDrop.getHeight() + colourBars.getHeight() + SPACING;
+        int height = strip.getHeight() + colourBars.getHeight() + SPACING;
+
+        if (colourDrop == null) {
+            height += SPACING_BELOW_STRIP;
+        } else {
+            height += colourDrop.getHeight();
+        }
+
         if (triangle != null) {
             height += triangle.getHeight();
         }
@@ -102,8 +112,14 @@ public class BitmapUtils {
         canvas.drawBitmap(strip, 0f, totalHeight, null);
         totalHeight += strip.getHeight() + SPACING;
 
-        canvas.drawBitmap(colourDrop, 0f, totalHeight, null);
-        totalHeight += colourDrop.getHeight();
+        if (colourDrop != null) {
+            canvas.drawBitmap(colourDrop, 0f, totalHeight, null);
+            totalHeight += colourDrop.getHeight();
+        }
+
+        if (colourDrop == null) {
+            totalHeight += SPACING_BELOW_STRIP;
+        }
 
         canvas.drawBitmap(colourBars, 0f, totalHeight, null);
 
