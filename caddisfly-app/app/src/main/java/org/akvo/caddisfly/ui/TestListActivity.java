@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.ActivityTestListBinding;
+import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -93,13 +94,19 @@ public class TestListActivity extends BaseActivity
     }
 
     private void startTest(boolean hideList) {
-        if (mTestInfo == null || mTestInfo.getUuid() == null) {
+        if (mTestInfo == null || mTestInfo.getUuid() == null || mTestInfo.Results().size() == 0) {
+            ErrorMessages.alertCouldNotLoadConfig(this);
             return;
         }
 
         Intent intent;
         if (mTestInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
-            intent = new Intent(this, ChamberTestActivity.class);
+            if (mTestInfo.Results().get(0).getColors().size() > 0) {
+                intent = new Intent(this, ChamberTestActivity.class);
+            } else {
+                ErrorMessages.alertCouldNotLoadConfig(this);
+                return;
+            }
         } else {
             intent = new Intent(this, TestActivity.class);
         }

@@ -121,7 +121,7 @@ public class TestInfo implements Parcelable {
     private String defaultColors;
     @SerializedName("hueTrend")
     @Expose
-    private Integer hueTrend;
+    private Integer hueTrend = 0;
     @SerializedName("dilutions")
     @Expose
     private List<Integer> dilutions = new ArrayList<>();
@@ -471,10 +471,26 @@ public class TestInfo implements Parcelable {
         this.calibrations = calibrations;
         this.swatches.clear();
 
+        Result result = results.get(0);
+
+
         if (calibrations.size() > 0) {
-            for (Calibration calibration : calibrations) {
-                Swatch swatch = new Swatch(calibration.value, calibration.color, Color.TRANSPARENT);
-                swatches.add(swatch);
+            for (int i = calibrations.size() - 1; i >= 0; i--) {
+                boolean found = false;
+
+                Calibration calibration = calibrations.get(i);
+                for (ColorItem colorItem : result.getColors()) {
+                    if (calibration.value == colorItem.getValue()) {
+                        colorItem.setRgb(calibration.color);
+                        Swatch swatch = new Swatch(calibration.value, calibration.color, Color.TRANSPARENT);
+                        swatches.add(swatch);
+                        found = true;
+                    }
+                }
+
+                if (!found) {
+                    calibrations.remove(i);
+                }
             }
             swatches = SwatchHelper.generateGradient(swatches, ColorUtil.ColorModel.RGB);
         }

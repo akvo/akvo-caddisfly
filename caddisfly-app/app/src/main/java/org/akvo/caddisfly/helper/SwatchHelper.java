@@ -187,7 +187,7 @@ public final class SwatchHelper {
         return calibrationDetails.toString();
     }
 
-    public static List<Calibration> loadCalibrationFromFile(Context context, TestInfo testInfo, String fileName) throws IOException {
+    public static void loadCalibrationFromFile(Context context, TestInfo testInfo, String fileName) throws IOException {
         final List<Calibration> swatchList = new ArrayList<>();
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testInfo.getUuid());
 
@@ -238,6 +238,7 @@ public final class SwatchHelper {
 
             for (String rgb : calibrationDetails) {
                 String[] values = rgb.split("=");
+
                 Calibration calibration = new Calibration();
                 calibration.uid = testInfo.getUuid();
                 calibration.date = new Date().getTime();
@@ -246,8 +247,10 @@ public final class SwatchHelper {
                 swatchList.add(calibration);
             }
 
+            testInfo.setCalibrations(swatchList);
+
             if (swatchList.size() > 0) {
-                saveCalibratedSwatches(context, testInfo, swatchList);
+                saveCalibrationToDB(testInfo);
 
                 if (AppPreferences.isDiagnosticMode()) {
                     Toast.makeText(context,
@@ -259,40 +262,24 @@ public final class SwatchHelper {
                 throw new IOException();
             }
         }
-        return swatchList;
     }
 
     /**
-     * Save a list of calibrated colors
+     * Save a list of calibrated colors to DB
      *
-     * @param calibrations List of swatch colors to be saved
+     * @param testInfo The test info
      */
-    private static void saveCalibratedSwatches(Context context, TestInfo testInfo, List<Calibration> calibrations) {
+    private static void saveCalibrationToDB(TestInfo testInfo) {
 
         CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
 
         dao.deleteCalibrations(testInfo.getUuid());
 
-        for (Calibration calibration : calibrations) {
+        for (Calibration calibration : testInfo.getCalibrations()) {
             dao.insert(calibration);
         }
 
-        testInfo.setCalibrations(calibrations);
     }
-
-//    /**
-//     * Load any user calibrated swatches.
-//     *
-//     * @param testInfo The type of test
-//     */
-//
-//    private static void loadCalibratedSwatches(Context context, TestInfo testInfo) {
-//
-//        for (Swatch swatch : testInfo.getSwatches()) {
-//            String key = String.format(Locale.US, "%s-%.2f", testInfo.getUuid(), swatch.getValue());
-//            swatch.setColor(PreferencesUtil.getInt(context, key, 0));
-//        }
-//    }
 
     /**
      * Auto generate the color swatches for the given test type
@@ -346,6 +333,11 @@ public final class SwatchHelper {
      */
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean isSwatchListValid(TestInfo testInfo) {
+
+        if (testInfo == null) {
+            return false;
+        }
+
         boolean result = true;
 
         List<Calibration> calibrations = testInfo.getCalibrations();
@@ -409,17 +401,6 @@ public final class SwatchHelper {
         }
 
         return true;
-    }
-
-    public static int getCalibratedSwatchCount(List<Swatch> swatches) {
-
-        int count = 0;
-        for (Swatch swatch1 : swatches) {
-            if (swatch1.getColor() != Color.TRANSPARENT && swatch1.getColor() != Color.BLACK) {
-                count += 1;
-            }
-        }
-        return count;
     }
 
     /**

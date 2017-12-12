@@ -1,7 +1,27 @@
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly.
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.akvo.caddisfly.sensor.striptest.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -18,17 +38,29 @@ import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueS
 
 public class SwatchView extends View {
 
-    private final static int COLOR_BAR_HGAP = 10;
+    private final static int GUTTER = 5;
     private final static int VAL_BAR_HEIGHT = 20;
     private final static int TEXT_SIZE = 20;
+    private final static int MARGIN = 10;
 
     int blockWidth = 0;
     int lineHeight = 0;
+    Paint paintColor;
+    float[] lab = new float[3];
     private TestInfo testInfo;
+    private Paint blackText;
 
 
     public SwatchView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        blackText = new Paint();
+        blackText.setColor(android.graphics.Color.BLACK);
+        blackText.setTextSize(TEXT_SIZE);
+        blackText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        blackText.setTextAlign(Paint.Align.CENTER);
+
+        paintColor = new Paint();
+        paintColor.setStyle(Paint.Style.FILL);
     }
 
     @Override
@@ -44,40 +76,34 @@ public class SwatchView extends View {
 
                     int[][] rgbCols = new int[colorCount][3];
                     float[] values = new float[colorCount];
-                    float[] lab = new float[3];
-                    int[] rgb;
 
                     // get lab colours and turn them to RGB
                     for (int i = 0; i < colorCount; i++) {
-                        List<Double> patchColorValues = colors.get(i).getLab();
-                        lab[0] = patchColorValues.get(0).floatValue();
-                        lab[1] = patchColorValues.get(1).floatValue();
-                        lab[2] = patchColorValues.get(2).floatValue();
 
-                        rgb = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
-                        rgbCols[i] = rgb;
                         values[i] = colors.get(i).getValue().floatValue();
+
+                        List<Double> patchColorValues = colors.get(i).getLab();
+                        if (patchColorValues != null) {
+                            lab[0] = patchColorValues.get(0).floatValue();
+                            lab[1] = patchColorValues.get(1).floatValue();
+                            lab[2] = patchColorValues.get(2).floatValue();
+
+                            rgbCols[i] = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
+                            colors.get(i).setRgb(Color.rgb(rgbCols[i][0], rgbCols[i][1], rgbCols[i][2]));
+                        }
                     }
 
-                    // create paints
-                    Paint paintColor = new Paint();
-                    paintColor.setStyle(Paint.Style.FILL);
-                    Paint blackText = new Paint();
-                    blackText.setColor(android.graphics.Color.BLACK);
-                    blackText.setTextSize(TEXT_SIZE);
-                    blackText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    blackText.setTextAlign(Paint.Align.CENTER);
-
-                    int totWidth = COLOR_BAR_HGAP + blockWidth;
+                    int totWidth = GUTTER + blockWidth;
                     for (int i = 0; i < colorCount; i++) {
-                        paintColor.setARGB(255, rgbCols[i][0], rgbCols[i][1], rgbCols[i][2]);
 
-                        canvas.drawRect(i * totWidth, resultIndex * lineHeight,
+                        paintColor.setColor(colors.get(i).getRgb());
+
+                        canvas.drawRect(MARGIN + (i * totWidth), MARGIN + (resultIndex * lineHeight),
                                 i * totWidth + blockWidth, (resultIndex * lineHeight) + blockWidth, paintColor);
 
                         if (testInfo.getGroupingType() == GroupType.INDIVIDUAL || resultIndex == testInfo.Results().size() - 1) {
-                            canvas.drawText(createValueString(values[i]), i * totWidth + blockWidth / 2,
-                                    (resultIndex * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
+                            canvas.drawText(createValueString(values[i]), MARGIN + (i * totWidth + blockWidth / 2),
+                                    MARGIN + (resultIndex * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
                         }
                     }
                 }
@@ -95,7 +121,10 @@ public class SwatchView extends View {
         int lineCount = 0;
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
 
+
         if (getMeasuredWidth() != 0 && getMeasuredHeight() != 0) {
+
+            int width = getMeasuredWidth() - (MARGIN * 2);
 
             if (testInfo != null) {
                 for (int resultIndex = 0; resultIndex < testInfo.Results().size(); resultIndex++) {
@@ -104,7 +133,7 @@ public class SwatchView extends View {
                         int colorCount = colors.size();
 
                         if (blockWidth == 0) {
-                            blockWidth = Math.round((getMeasuredWidth() - (colorCount - 1) * COLOR_BAR_HGAP) / colorCount);
+                            blockWidth = Math.round((width - (colorCount - 2) * GUTTER) / colorCount);
                             if (testInfo.getGroupingType() == GroupType.GROUP) {
                                 lineHeight = blockWidth + (VAL_BAR_HEIGHT / 2);
                             } else {
@@ -120,7 +149,7 @@ public class SwatchView extends View {
             lineCount = testInfo.Results().size();
         }
         super.onMeasure(widthMeasureSpec,
-                MeasureSpec.makeMeasureSpec(( lineCount* lineHeight) +
+                MeasureSpec.makeMeasureSpec((lineCount * lineHeight) +
                         VAL_BAR_HEIGHT, MeasureSpec.EXACTLY));
     }
 }

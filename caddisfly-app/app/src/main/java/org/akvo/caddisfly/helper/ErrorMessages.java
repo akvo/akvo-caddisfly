@@ -65,10 +65,7 @@ public class ErrorMessages {
                 activity.getString(R.string.errorLoadingConfiguration),
                 activity.getString(R.string.pleaseContactSupport));
         AlertUtil.showError(activity, R.string.error, message, null, R.string.ok,
-                (dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-                    activity.finish();
-                }, null, null);
+                (dialogInterface, i) -> dialogInterface.dismiss(), null, null);
     }
 
     /**
@@ -103,7 +100,7 @@ public class ErrorMessages {
         );
     }
 
-    private void alertCalibrationExpired(Activity activity) {
+    public static void alertCalibrationExpired(Activity activity) {
 
         String message = String.format(MESSAGE_TWO_LINE_FORMAT,
                 activity.getString(R.string.errorCalibrationExpired),

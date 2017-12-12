@@ -58,6 +58,7 @@ import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.ActivityTestBinding;
 import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
@@ -86,6 +87,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -226,6 +228,17 @@ public class TestActivity extends BaseActivity implements
 
             if (!SwatchHelper.isSwatchListValid(mTestInfo)) {
                 ErrorMessages.alertCalibrationIncomplete(this, mTestInfo);
+                return;
+            }
+
+            CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDB()
+                    .calibrationDao().getCalibrationDetails(mTestInfo.getUuid());
+
+            if (calibrationDetail != null) {
+                long milliseconds = calibrationDetail.expiry;
+                if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
+                    ErrorMessages.alertCalibrationExpired(this);
+                }
             }
         }
     }

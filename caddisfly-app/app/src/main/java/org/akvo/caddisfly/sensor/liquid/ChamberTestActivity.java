@@ -130,9 +130,14 @@ public class ChamberTestActivity extends BaseActivity implements
     private void start() {
         if (mTestInfo.getDilutions().size() > 0) {
             selectDilutionFragment = SelectDilutionFragment.newInstance(mTestInfo);
-            fragmentManager.beginTransaction()
-                    .addToBackStack("dilution")
-                    .replace(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
+            if (fragmentManager.getBackStackEntryCount() == 0) {
+                fragmentManager.beginTransaction()
+                        .add(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
+            }else{
+                fragmentManager.beginTransaction()
+                        .addToBackStack("dilution")
+                        .replace(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
+            }
         } else {
             runTest(1);
         }
@@ -141,9 +146,14 @@ public class ChamberTestActivity extends BaseActivity implements
     private void runTest(int dilution) {
         fragment.setDilution(dilution);
 
-        fragmentManager.beginTransaction()
-                .addToBackStack("")
-                .replace(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
+        if (mTestInfo.getDilutions().size() > 0) {
+            fragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
+        }else{
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
+        }
     }
 
     public void runTestClick(View view) {
@@ -253,6 +263,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
         List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
                 .calibrationDao().getAll(mTestInfo.getUuid());
+
         mTestInfo.setCalibrations(calibrations);
         if (calibrationItemFragment != null) {
             calibrationItemFragment.setAdapter(mTestInfo);

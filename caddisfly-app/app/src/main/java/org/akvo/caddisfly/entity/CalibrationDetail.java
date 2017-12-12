@@ -1,13 +1,29 @@
-package org.akvo.caddisfly.entity;
+/*
+ * Copyright (C) Stichting Akvo (Akvo Foundation)
+ *
+ * This file is part of Akvo Caddisfly.
+ *
+ * Akvo Caddisfly is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Akvo Caddisfly is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+ */
 
+package org.akvo.caddisfly.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-
-//import javax.annotation.Nonnull;
 
 @Entity(primaryKeys = {"uid"})
 public class CalibrationDetail implements Parcelable {
@@ -36,7 +52,7 @@ public class CalibrationDetail implements Parcelable {
     public CalibrationDetail() {
     }
 
-    public CalibrationDetail(Parcel in) {
+    private CalibrationDetail(Parcel in) {
         uid = in.readString();
         date = in.readLong();
         expiry = in.readLong();

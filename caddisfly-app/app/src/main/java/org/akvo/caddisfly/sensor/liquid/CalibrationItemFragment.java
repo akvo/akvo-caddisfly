@@ -166,7 +166,7 @@ public class CalibrationItemFragment extends Fragment {
     }
 
     public void setAdapter(TestInfo testInfo) {
-        binding.calibrationList.setAdapter(new MyItemRecyclerViewAdapter(testInfo, mListener));
+        binding.calibrationList.setAdapter(new CalibrationViewAdapter(testInfo, mListener));
         binding.invalidateAll();
     }
 

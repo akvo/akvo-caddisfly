@@ -31,13 +31,13 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.model.TestInfo;
 
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationViewAdapter.ViewHolder> {
 
-    private final TestInfo mValues;
+    private final TestInfo testInfo;
     private final CalibrationItemFragment.OnListFragmentInteractionListener mListener;
 
-    MyItemRecyclerViewAdapter(TestInfo items, CalibrationItemFragment.OnListFragmentInteractionListener listener) {
-        mValues = items;
+    CalibrationViewAdapter(TestInfo items, CalibrationItemFragment.OnListFragmentInteractionListener listener) {
+        testInfo = items;
         mListener = listener;
     }
 
@@ -50,10 +50,10 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.getCalibrations().get(position);
+        holder.mItem = testInfo.getCalibrations().get(position);
         holder.mIdView.setBackground(new ColorDrawable(holder.mItem.color));
         holder.textValue.setText(String.valueOf(holder.mItem.value));
-        holder.textUnit.setText(String.valueOf(mValues.Results().get(0).getUnit()));
+        holder.textUnit.setText(String.valueOf(testInfo.Results().get(0).getUnit()));
 
         holder.mView.setOnClickListener(v -> {
             if (null != mListener) {
@@ -66,7 +66,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     @Override
     public int getItemCount() {
-        return mValues.getCalibrations().size();
+        return testInfo.getCalibrations().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
