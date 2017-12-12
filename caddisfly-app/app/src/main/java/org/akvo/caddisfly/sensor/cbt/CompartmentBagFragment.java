@@ -37,7 +37,7 @@ public class CompartmentBagFragment extends BaseFragment {
     private static final int BUTTON_ENABLE_DELAY = 1500;
     private static final int ANIMATION_DURATION_MILLIS = 500;
     private static final float BUTTON_START_ALPHA = 0.1f;
-    private OnFragmentInteractionListener mListener;
+    private OnCompartmentBagSelectListener mListener;
     private String mKey = "00000";
 
     public static CompartmentBagFragment newInstance(String key) {
@@ -70,7 +70,7 @@ public class CompartmentBagFragment extends BaseFragment {
             mKey = customShapeButton.getKey();
 
             if (mListener != null) {
-                mListener.onFragmentInteraction(mKey);
+                mListener.onCompartmentBagSelect(mKey);
             }
         });
 
@@ -99,11 +99,11 @@ public class CompartmentBagFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnCompartmentBagSelectListener) {
+            mListener = (OnCompartmentBagSelectListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnCompartmentBagSelectListener");
         }
     }
 
@@ -113,7 +113,7 @@ public class CompartmentBagFragment extends BaseFragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String key);
+    public interface OnCompartmentBagSelectListener {
+        void onCompartmentBagSelect(String key);
     }
 }

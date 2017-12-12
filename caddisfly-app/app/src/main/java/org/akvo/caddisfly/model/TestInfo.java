@@ -539,8 +539,12 @@ public class TestInfo implements Parcelable {
         return hasImage;
     }
 
-    public double getMaxDilution() {
-        return dilutions.get(dilutions.size() - 1);
+    public int getMaxDilution() {
+        if (dilutions.size() > 0) {
+            return dilutions.get(dilutions.size() - 1);
+        } else {
+            return 1;
+        }
     }
 
     public List<Result> getDisplayResults() {

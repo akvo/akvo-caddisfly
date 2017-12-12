@@ -38,14 +38,14 @@ import org.akvo.caddisfly.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link EditCustomDilution.OnFragmentInteractionListener} interface
+ * {@link OnCustomDilutionListener} interface
  * to handle interaction events.
  * Use the {@link EditCustomDilution#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class EditCustomDilution extends DialogFragment {
 
-    private OnFragmentInteractionListener mListener;
+    private OnCustomDilutionListener mListener;
     private EditText editDilutionFactor;
 
     /**
@@ -109,7 +109,7 @@ public class EditCustomDilution extends DialogFragment {
                 public void onClick(View v) {
                     if (formEntryValid() && !editDilutionFactor.getText().toString().trim().isEmpty()) {
                         if (mListener != null) {
-                            mListener.onFragmentInteraction(Integer.parseInt(editDilutionFactor.getText().toString()));
+                            mListener.onCustomDilution(Integer.parseInt(editDilutionFactor.getText().toString()));
                         }
                         closeKeyboard(context, editDilutionFactor);
                         dismiss();
@@ -131,11 +131,11 @@ public class EditCustomDilution extends DialogFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnCustomDilutionListener) {
+            mListener = (OnCustomDilutionListener) context;
         } else {
             throw new IllegalArgumentException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnResultListener");
         }
     }
 
@@ -171,8 +171,8 @@ public class EditCustomDilution extends DialogFragment {
         }
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Integer value);
+    public interface OnCustomDilutionListener {
+        void onCustomDilution(Integer value);
     }
 
 }

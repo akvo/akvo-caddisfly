@@ -35,6 +35,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentRunTestBinding;
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
@@ -84,7 +85,9 @@ public class BaseRunTest extends Fragment implements RunTest {
     private TestInfo mTestInfo;
     private Calibration mCalibration;
     private int dilution;
-    private OnFragmentInteractionListener mListener;
+    private OnResultListener mListener;
+    ArrayList<ResultDetail> results = new ArrayList<>();
+
     Runnable mRunnableCode = () -> {
         if (pictureCount < AppPreferences.getSamplingTimes()) {
             pictureCount++;
@@ -129,7 +132,7 @@ public class BaseRunTest extends Fragment implements RunTest {
     }
 
     protected void initializeTest() {
-
+        results.clear();
     }
 
     protected void setupCamera() {
@@ -211,11 +214,11 @@ public class BaseRunTest extends Fragment implements RunTest {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnResultListener) {
+            mListener = (OnResultListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnResultListener");
         }
     }
 
@@ -271,8 +274,6 @@ public class BaseRunTest extends Fragment implements RunTest {
                 mCalibration.date = new Date().getTime();
             }
 
-            ArrayList<ResultDetail> results = new ArrayList<>();
-
             ResultDetail resultDetail = SwatchHelper.analyzeColor(mTestInfo.getSwatches().size(),
                     photoColor, mTestInfo.getSwatches());
             resultDetail.setDilution(dilution);
@@ -296,7 +297,15 @@ public class BaseRunTest extends Fragment implements RunTest {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                mListener.onFragmentInteraction(results, mCalibration);
+
+                // ignore the first two results
+                for (int i = 0; i < Constants.SKIP_SAMPLING_COUNT; i++) {
+                    if (results.size() > 1) {
+                        results.remove(0);
+                    }
+                }
+
+                mListener.onResult(results, mCalibration);
             }
         }
     }
@@ -311,7 +320,7 @@ public class BaseRunTest extends Fragment implements RunTest {
         this.dilution = dilution;
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(ArrayList<ResultDetail> results, Calibration calibration);
+    public interface OnResultListener {
+        void onResult(ArrayList<ResultDetail> results, Calibration calibration);
     }
 }

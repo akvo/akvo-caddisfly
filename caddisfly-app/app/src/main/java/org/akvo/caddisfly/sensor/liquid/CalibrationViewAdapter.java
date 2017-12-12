@@ -34,9 +34,9 @@ import org.akvo.caddisfly.model.TestInfo;
 public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationViewAdapter.ViewHolder> {
 
     private final TestInfo testInfo;
-    private final CalibrationItemFragment.OnListFragmentInteractionListener mListener;
+    private final CalibrationItemFragment.OnCalibrationSelectedListener mListener;
 
-    CalibrationViewAdapter(TestInfo items, CalibrationItemFragment.OnListFragmentInteractionListener listener) {
+    CalibrationViewAdapter(TestInfo items, CalibrationItemFragment.OnCalibrationSelectedListener listener) {
         testInfo = items;
         mListener = listener;
     }
@@ -59,7 +59,7 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
             if (null != mListener) {
                 // Notify the active callbacks interface (the activity, if the
                 // fragment is attached to one) that an item has been selected.
-                mListener.onListFragmentInteraction(holder.mItem);
+                mListener.onCalibrationSelected(holder.mItem);
             }
         });
     }

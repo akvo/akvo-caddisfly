@@ -187,7 +187,7 @@ public class MeasurementInputFragment extends BaseFragment {
             mListener = (OnSubmitResultListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnSubmitResultListener");
         }
     }
 

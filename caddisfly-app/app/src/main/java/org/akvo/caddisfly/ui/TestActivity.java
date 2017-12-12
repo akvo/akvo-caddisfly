@@ -96,7 +96,7 @@ import timber.log.Timber;
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
 
 public class TestActivity extends BaseActivity implements
-        CompartmentBagFragment.OnFragmentInteractionListener,
+        CompartmentBagFragment.OnCompartmentBagSelectListener,
         MeasurementInputFragment.OnSubmitResultListener {
 
     public static final int CBT_TEST = 1;
@@ -615,12 +615,6 @@ public class TestActivity extends BaseActivity implements
         return image;
     }
 
-//    @Override
-//    public void onFragmentInteraction(String key) {
-//        mResult = key;
-//    }
-
-
     public void onClickAcceptResult(View view) {
 
         Intent resultIntent = new Intent(getIntent());
@@ -674,7 +668,7 @@ public class TestActivity extends BaseActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(String key) {
+    public void onCompartmentBagSelect(String key) {
         mResult = key;
     }
 

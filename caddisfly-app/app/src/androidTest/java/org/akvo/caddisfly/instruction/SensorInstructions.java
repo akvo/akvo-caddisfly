@@ -27,7 +27,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -141,7 +140,7 @@ public class SensorInstructions {
             jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
 
-        Log.e("Caddisfly", jsArrayString.toString());
+//        Log.e("Caddisfly", jsArrayString.toString());
 
     }
 

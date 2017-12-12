@@ -40,7 +40,7 @@ public class SelectDilutionFragment extends Fragment {
     private static final String ARG_PARAM_TEST_INFO = "testInfo";
 
     private TestInfo testInfo;
-    private OnFragmentInteractionListener mListener;
+    private OnDilutionSelectedListener mListener;
     private FragmentSelectDilutionBinding b;
 
     public SelectDilutionFragment() {
@@ -74,11 +74,11 @@ public class SelectDilutionFragment extends Fragment {
         b.buttonDilution1.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 2));
         b.buttonDilution2.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 5));
 
-        b.buttonNoDilution.setOnClickListener(view1 -> mListener.onFragmentInteraction(1));
+        b.buttonNoDilution.setOnClickListener(view1 -> mListener.onDilutionSelected(1));
 
-        b.buttonDilution1.setOnClickListener(view1 -> mListener.onFragmentInteraction(2));
+        b.buttonDilution1.setOnClickListener(view1 -> mListener.onDilutionSelected(2));
 
-        b.buttonDilution2.setOnClickListener(view1 -> mListener.onFragmentInteraction(5));
+        b.buttonDilution2.setOnClickListener(view1 -> mListener.onDilutionSelected(5));
 
         b.buttonCustomDilution.setOnClickListener(view1 -> showCustomDilutionDialog());
 
@@ -98,11 +98,11 @@ public class SelectDilutionFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnDilutionSelectedListener) {
+            mListener = (OnDilutionSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnDilutionSelectedListener");
         }
     }
 
@@ -112,7 +112,7 @@ public class SelectDilutionFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(int dilution);
+    public interface OnDilutionSelectedListener {
+        void onDilutionSelected(int dilution);
     }
 }

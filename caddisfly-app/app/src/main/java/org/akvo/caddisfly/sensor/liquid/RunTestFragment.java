@@ -36,18 +36,21 @@ import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AlertUtil;
 
+import io.fotoapparat.parameter.update.UpdateRequest;
+
+import static io.fotoapparat.parameter.selector.FlashSelectors.off;
+
 public class RunTestFragment extends BaseRunTest implements RunTest {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
-
+    AlertDialog alertDialogToBeDestroyed;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
     private boolean mIgnoreShake;
     private boolean mWaitingForStillness;
-
 
     public RunTestFragment() {
         // Required empty public constructor
@@ -83,8 +86,8 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
 
             mWaitingForStillness = true;
 
-//            showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestInterrupted),
-//                    getString(R.string.doNotMoveDeviceDuringTest)), null);
+            showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestInterrupted),
+                    getString(R.string.doNotMoveDeviceDuringTest)), null);
         }, () -> {
             if (mWaitingForStillness) {
                 mWaitingForStillness = false;
@@ -142,10 +145,14 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
 
             cameraSwitcher.start();
 
+            mShakeDetector.setMinShakeAcceleration(1);
+            mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                    SensorManager.SENSOR_DELAY_UI);
+
             startRepeatingTask();
         }
     }
-
 
     void startRepeatingTask() {
         mRunnableCode.run();
@@ -157,8 +164,8 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
 
     @Override
     public void onPause() {
+        releaseResources();
         super.onPause();
-        stopRepeatingTask();
     }
 
     /**
@@ -169,11 +176,11 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
      */
     private void showError(String message, final Bitmap bitmap) {
 
-//        releaseResources();
+        releaseResources();
 
         sound.playShortResource(R.raw.err);
 
-        AlertDialog alertDialogToBeDestroyed = AlertUtil.showError(getActivity(),
+        alertDialogToBeDestroyed = AlertUtil.showError(getActivity(),
                 R.string.error, message, bitmap, R.string.retry,
                 (dialogInterface, i) -> initializeTest(),
                 (dialogInterface, i) -> {
@@ -183,6 +190,29 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
                     getActivity().finish();
                 }, null
         );
+    }
+
+    private void releaseResources() {
+
+        if (alertDialogToBeDestroyed != null){
+            alertDialogToBeDestroyed.dismiss();
+        }
+
+        mSensorManager.unregisterListener(mShakeDetector);
+        stopRepeatingTask();
+        try {
+
+            cameraSwitcher.getCurrentFotoapparat().updateParameters(
+                    UpdateRequest.builder()
+                            .flash(off())
+                            .build()
+            );
+
+            cameraSwitcher.getCurrentFotoapparat().stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        cameraStarted = false;
     }
 
 }

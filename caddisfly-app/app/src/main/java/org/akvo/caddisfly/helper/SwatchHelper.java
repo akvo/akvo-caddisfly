@@ -52,14 +52,15 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
+import static org.apache.commons.math3.util.Precision.round;
+
 public final class SwatchHelper {
 
     private static final int MAX_DISTANCE = 999;
-    private static final int MAX_DIFFERENCE = 150;
     private static final int HSV_CROSSOVER_DIFFERENCE = 200;
 
     // If the color distance between samplings exceeds this the test is rejected
-    private static final double MAX_COLOR_DISTANCE = 30;
+    private static final double MAX_COLOR_DISTANCE = 40;
 
     // The number of interpolations to generate between range values
     private static final double INTERPOLATION_COUNT = 250;
@@ -435,5 +436,42 @@ public final class SwatchHelper {
             Timber.e(e);
             return 0.0;
         }
+    }
+
+    public static double getAverageResult(ArrayList<ResultDetail> resultDetails) {
+        double result = 0;
+
+        for (int i = 0; i < resultDetails.size(); i++) {
+            int color1 = resultDetails.get(i).getColor();
+            for (int j = 0; j < resultDetails.size(); j++) {
+                int color2 = resultDetails.get(j).getColor();
+
+                if (ColorUtil.getColorDistance(color1, color2) > MAX_COLOR_DISTANCE) {
+                    return -1;
+                }
+            }
+        }
+
+        for (int i = 0; i < resultDetails.size(); i++) {
+            double value = resultDetails.get(i).getResult();
+            if (value > -1) {
+                result += value;
+            } else {
+                return -1;
+            }
+        }
+
+        try {
+            result = round(result / resultDetails.size(), 2);
+
+//            Log.d("RESULT", "result: " + result);
+//            Log.d("RESULT", "size: " + resultDetails.size());
+
+        } catch (Exception ex) {
+            result = -1;
+        }
+
+//        Log.d("RESULT", "value: " + result);
+        return result;
     }
 }

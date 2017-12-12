@@ -63,7 +63,7 @@ import timber.log.Timber;
  * Bluetooth LE API.
  */
 public class DeviceControlActivity extends BaseActivity
-        implements BluetoothResultFragment.OnFragmentInteractionListener {
+        implements BluetoothResultFragment.OnCurrentModeListener {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
@@ -329,7 +329,7 @@ public class DeviceControlActivity extends BaseActivity
     }
 
     @Override
-    public void onFragmentInteraction(int mode) {
+    public void onCurrentMode(int mode) {
         if (mode == 1) {
             if (mBluetoothResultFragment.isVisible()) {
                 mBluetoothResultFragment.displayWaiting();

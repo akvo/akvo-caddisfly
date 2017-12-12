@@ -66,11 +66,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ChamberTestActivity extends BaseActivity implements
-        BaseRunTest.OnFragmentInteractionListener,
-        CalibrationItemFragment.OnListFragmentInteractionListener,
+        BaseRunTest.OnResultListener,
+        CalibrationItemFragment.OnCalibrationSelectedListener,
         SaveCalibrationDialogFragment.OnCalibrationDetailsSavedListener,
-        SelectDilutionFragment.OnFragmentInteractionListener,
-        EditCustomDilution.OnFragmentInteractionListener {
+        SelectDilutionFragment.OnDilutionSelectedListener,
+        EditCustomDilution.OnCustomDilutionListener {
 
     TestConfigRepository testConfigRepository;
 
@@ -134,7 +134,7 @@ public class ChamberTestActivity extends BaseActivity implements
                 fragmentManager.beginTransaction()
                         .addToBackStack("dilution")
                         .replace(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
-            }else{
+            } else {
                 fragmentManager.beginTransaction()
                         .add(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
             }
@@ -150,9 +150,15 @@ public class ChamberTestActivity extends BaseActivity implements
             fragmentManager.beginTransaction()
                     .addToBackStack(null)
                     .replace(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
-        }else{
-            fragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
+        } else {
+            if (calibrationItemFragment != null && calibrationItemFragment.isVisible()) {
+                fragmentManager.beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
+            } else {
+                fragmentManager.beginTransaction()
+                        .add(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
+            }
         }
     }
 
@@ -170,7 +176,7 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     @Override
-    public void onListFragmentInteraction(Calibration item) {
+    public void onCalibrationSelected(Calibration item) {
 
         (new Handler()).postDelayed(() -> {
             fragment.setCalibration(item);
@@ -179,26 +185,6 @@ public class ChamberTestActivity extends BaseActivity implements
                     .replace(R.id.fragment_container, (Fragment) fragment, "camera").commit();
         }, 150);
     }
-
-//    @Override
-//    public void onFragmentInteraction(ArrayList<ResultDetail> results, Calibration calibration) {
-//
-//        mTestInfo.Results().get(0).setResult(String.valueOf(results.get(0).getResult()));
-//
-//        //todo fix this
-//        if (calibration == null) {
-//            fragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.fragment_container,
-//                            ResultFragment.newInstance(mTestInfo, "50"), "result").commit();
-//        } else {
-//
-//            CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
-//            dao.insert(calibration);
-//
-//            fragmentManager.popBackStackImmediate();
-//        }
-//    }
 
     @Override
     public void onBackPressed() {
@@ -346,16 +332,37 @@ public class ChamberTestActivity extends BaseActivity implements
         }
     }
 
+    //    @Override
+//    public void onResult(ArrayList<ResultDetail> results, Calibration calibration) {
+//
+//        mTestInfo.Results().get(0).setResult(String.valueOf(results.get(0).getResult()));
+//
+//        //todo fix this
+//        if (calibration == null) {
+//            fragmentManager
+//                    .beginTransaction()
+//                    .replace(R.id.fragment_container,
+//                            ResultFragment.newInstance(mTestInfo, "50"), "result").commit();
+//        } else {
+//
+//            CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
+//            dao.insert(calibration);
+//
+//            fragmentManager.popBackStackImmediate();
+//        }
+//    }
+
     @Override
-    public void onFragmentInteraction(ArrayList<ResultDetail> resultDetails, Calibration calibration) {
+    public void onResult(ArrayList<ResultDetail> resultDetails, Calibration calibration) {
 
         if (calibration == null) {
-            for (Result result : mTestInfo.Results()) {
-                ResultDetail resultDetail = resultDetails.get(result.getId() - 1);
-                result.setResult(resultDetail.getResult(),
-                        resultDetail.getDilution(),
-                        mTestInfo.getDilutions().get(mTestInfo.getDilutions().size() - 1));
-            }
+
+            int dilution = resultDetails.get(0).getDilution();
+
+            double value = SwatchHelper.getAverageResult(resultDetails);
+
+            Result result = mTestInfo.Results().get(0);
+            result.setResult(value, dilution, mTestInfo.getMaxDilution());
 
             fragmentManager
                     .beginTransaction()
@@ -402,12 +409,12 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(int dilution) {
+    public void onDilutionSelected(int dilution) {
         runTest(dilution);
     }
 
     @Override
-    public void onFragmentInteraction(Integer dilution) {
+    public void onCustomDilution(Integer dilution) {
         runTest(dilution);
     }
 }

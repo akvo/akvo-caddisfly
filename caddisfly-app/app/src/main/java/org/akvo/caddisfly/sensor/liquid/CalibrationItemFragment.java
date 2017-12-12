@@ -47,7 +47,7 @@ import java.util.Date;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnCalibrationSelectedListener}
  * interface.
  */
 public class CalibrationItemFragment extends Fragment {
@@ -55,7 +55,7 @@ public class CalibrationItemFragment extends Fragment {
     private static final String ARG_TEST_INFO = "testInfo";
     FragmentItemListBinding binding;
     private TestInfo testInfo;
-    private OnListFragmentInteractionListener mListener;
+    private OnCalibrationSelectedListener mListener;
 
     public CalibrationItemFragment() {
     }
@@ -151,11 +151,11 @@ public class CalibrationItemFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnCalibrationSelectedListener) {
+            mListener = (OnCalibrationSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+                    + " must implement OnCalibrationSelectedListener");
         }
     }
 
@@ -171,7 +171,7 @@ public class CalibrationItemFragment extends Fragment {
     }
 
 
-    public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(Calibration item);
+    public interface OnCalibrationSelectedListener {
+        void onCalibrationSelected(Calibration item);
     }
 }
