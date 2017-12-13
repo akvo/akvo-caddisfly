@@ -113,8 +113,6 @@ public class MiscTest {
 
         onView(withText(R.string.legalInformation)).check(matches(isDisplayed())).perform(click());
 
-        onView(withId(R.id.webNotices)).check(matches(isDisplayed()));
-
         Espresso.pressBack();
 
         Espresso.pressBack();

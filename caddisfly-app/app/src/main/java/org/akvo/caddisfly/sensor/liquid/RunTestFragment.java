@@ -19,33 +19,21 @@
 
 package org.akvo.caddisfly.sensor.liquid;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.view.View;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.util.AlertUtil;
-
-import io.fotoapparat.parameter.update.UpdateRequest;
-
-import static io.fotoapparat.parameter.selector.FlashSelectors.off;
 
 public class RunTestFragment extends BaseRunTest implements RunTest {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
-    AlertDialog alertDialogToBeDestroyed;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
@@ -56,11 +44,10 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
         // Required empty public constructor
     }
 
-    public static RunTestFragment newInstance(TestInfo param1, Calibration calibration) {
+    public static RunTestFragment newInstance(TestInfo testInfo) {
         RunTestFragment fragment = new RunTestFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, param1);
-        args.putParcelable(ARG_PARAM2, calibration);
+        args.putParcelable(ConstantKey.TEST_INFO, testInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,42 +56,38 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Set up the shake detector
-        mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if (mSensorManager != null) {
-            mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (getActivity() != null) {
+            //Set up the shake detector
+            mSensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
+            if (mSensorManager != null) {
+                mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            }
+
+            mShakeDetector = new ShakeDetector(() -> {
+                if ((mIgnoreShake) || mWaitingForStillness) {
+                    return;
+                }
+
+                if (getActivity().isDestroyed()) {
+                    return;
+                }
+
+                mWaitingForStillness = true;
+
+                showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestInterrupted),
+                        getString(R.string.doNotMoveDeviceDuringTest)), null, getActivity());
+            }, () -> {
+                if (mWaitingForStillness) {
+                    mWaitingForStillness = false;
+                    dismissShakeAndStartTest();
+                }
+            });
+
+            mSensorManager.unregisterListener(mShakeDetector);
+
+            mShakeDetector.setMinShakeAcceleration(5);
+            mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
         }
-
-        mShakeDetector = new ShakeDetector(() -> {
-            if ((mIgnoreShake) || mWaitingForStillness) {
-                return;
-            }
-
-            if (getActivity().isDestroyed()) {
-                return;
-            }
-
-            mWaitingForStillness = true;
-
-            showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestInterrupted),
-                    getString(R.string.doNotMoveDeviceDuringTest)), null);
-        }, () -> {
-            if (mWaitingForStillness) {
-                mWaitingForStillness = false;
-                dismissShakeAndStartTest();
-            }
-        });
-
-        mSensorManager.unregisterListener(mShakeDetector);
-
-        mShakeDetector.setMinShakeAcceleration(5);
-        mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
     }
 
     protected void initializeTest() {
@@ -122,8 +105,6 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
 
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                 SensorManager.SENSOR_DELAY_UI);
-
-        mHandler = new Handler();
     }
 
     private void dismissShakeAndStartTest() {
@@ -134,85 +115,23 @@ public class RunTestFragment extends BaseRunTest implements RunTest {
         startTest();
     }
 
-    private void startTest() {
+    protected void startTest() {
+
         if (!cameraStarted) {
-
-            setupCamera();
-
-            cameraStarted = true;
-
-            sound.playShortResource(R.raw.beep);
-
-            cameraSwitcher.start();
-
             mShakeDetector.setMinShakeAcceleration(1);
             mShakeDetector.setMaxShakeDuration(MAX_SHAKE_DURATION);
             mSensorManager.registerListener(mShakeDetector, mAccelerometer,
                     SensorManager.SENSOR_DELAY_UI);
-
-            startRepeatingTask();
         }
-    }
 
-    void startRepeatingTask() {
-        mRunnableCode.run();
-    }
-
-    void stopRepeatingTask() {
-        mHandler.removeCallbacks(mRunnableCode);
+        super.startTest();
     }
 
     @Override
-    public void onPause() {
-        releaseResources();
-        super.onPause();
-    }
-
-    /**
-     * Show an error message dialog.
-     *
-     * @param message the message to be displayed
-     * @param bitmap  any bitmap image to displayed along with error message
-     */
-    private void showError(String message, final Bitmap bitmap) {
-
-        releaseResources();
-
-        sound.playShortResource(R.raw.err);
-
-        alertDialogToBeDestroyed = AlertUtil.showError(getActivity(),
-                R.string.error, message, bitmap, R.string.retry,
-                (dialogInterface, i) -> initializeTest(),
-                (dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-//                    releaseResources();
-                    getActivity().setResult(Activity.RESULT_CANCELED);
-                    getActivity().finish();
-                }, null
-        );
-    }
-
-    private void releaseResources() {
-
-        if (alertDialogToBeDestroyed != null){
-            alertDialogToBeDestroyed.dismiss();
-        }
+    protected void releaseResources() {
 
         mSensorManager.unregisterListener(mShakeDetector);
-        stopRepeatingTask();
-        try {
-
-            cameraSwitcher.getCurrentFotoapparat().updateParameters(
-                    UpdateRequest.builder()
-                            .flash(off())
-                            .build()
-            );
-
-            cameraSwitcher.getCurrentFotoapparat().stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        cameraStarted = false;
+        super.releaseResources();
     }
 
 }

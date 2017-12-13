@@ -38,18 +38,19 @@ import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueS
 
 public class SwatchView extends View {
 
-    private final static int GUTTER = 5;
     private final static int VAL_BAR_HEIGHT = 20;
     private final static int TEXT_SIZE = 20;
-    private final static int MARGIN = 10;
-
-    int blockWidth = 0;
-    int lineHeight = 0;
+    private final static float MARGIN = 10;
+    private static float gutterSize = 5;
+    float blockWidth = 0;
+    float lineHeight = 0;
     Paint paintColor;
     float[] lab = new float[3];
+    int lineCount = 0;
+    int extraHeight = 0;
+    float totalWidth = 0;
     private TestInfo testInfo;
     private Paint blackText;
-
 
     public SwatchView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -93,16 +94,15 @@ public class SwatchView extends View {
                         }
                     }
 
-                    int totWidth = GUTTER + blockWidth;
                     for (int i = 0; i < colorCount; i++) {
 
                         paintColor.setColor(colors.get(i).getRgb());
 
-                        canvas.drawRect(MARGIN + (i * totWidth), MARGIN + (resultIndex * lineHeight),
-                                i * totWidth + blockWidth, (resultIndex * lineHeight) + blockWidth, paintColor);
+                        canvas.drawRect(MARGIN + (i * totalWidth), MARGIN + (resultIndex * lineHeight),
+                                i * totalWidth + blockWidth, (resultIndex * lineHeight) + blockWidth, paintColor);
 
                         if (testInfo.getGroupingType() == GroupType.INDIVIDUAL || resultIndex == testInfo.Results().size() - 1) {
-                            canvas.drawText(createValueString(values[i]), MARGIN + (i * totWidth + blockWidth / 2),
+                            canvas.drawText(createValueString(values[i]), MARGIN + (i * totalWidth + blockWidth / 2),
                                     MARGIN + (resultIndex * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
                         }
                     }
@@ -113,29 +113,35 @@ public class SwatchView extends View {
 
     public void setPatch(TestInfo testInfo) {
         this.testInfo = testInfo;
+        if (testInfo.getGroupingType() == GroupType.GROUP) {
+            gutterSize = 1;
+            extraHeight = 40;
+        }
+
+        lineCount = testInfo.Results().size();
+
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        int lineCount = 0;
-        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
 
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
 
         if (getMeasuredWidth() != 0 && getMeasuredHeight() != 0) {
 
-            int width = getMeasuredWidth() - (MARGIN * 2);
+            float width = getMeasuredWidth() - (MARGIN * 2);
 
             if (testInfo != null) {
                 for (int resultIndex = 0; resultIndex < testInfo.Results().size(); resultIndex++) {
                     List<ColorItem> colors = testInfo.Results().get(resultIndex).getColors();
                     if (colors.size() > 0) {
-                        int colorCount = colors.size();
+                        float colorCount = colors.size();
 
                         if (blockWidth == 0) {
-                            blockWidth = Math.round((width - (colorCount - 2) * GUTTER) / colorCount);
+                            blockWidth = (width - (colorCount - 4) * gutterSize) / colorCount;
                             if (testInfo.getGroupingType() == GroupType.GROUP) {
-                                lineHeight = blockWidth + (VAL_BAR_HEIGHT / 2);
+                                lineHeight = blockWidth + (VAL_BAR_HEIGHT / 3);
                             } else {
                                 lineHeight = blockWidth + VAL_BAR_HEIGHT + VAL_BAR_HEIGHT;
                             }
@@ -143,13 +149,12 @@ public class SwatchView extends View {
                     }
                 }
             }
+
+            totalWidth = gutterSize + blockWidth;
         }
 
-        if (testInfo != null) {
-            lineCount = testInfo.Results().size();
-        }
+
         super.onMeasure(widthMeasureSpec,
-                MeasureSpec.makeMeasureSpec((lineCount * lineHeight) +
-                        VAL_BAR_HEIGHT, MeasureSpec.EXACTLY));
+                MeasureSpec.makeMeasureSpec((int) ((lineCount * lineHeight) + extraHeight), MeasureSpec.EXACTLY));
     }
 }

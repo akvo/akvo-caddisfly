@@ -26,8 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
 
 public class ChamberBelowFragment extends BaseRunTest implements RunTest {
@@ -36,11 +35,10 @@ public class ChamberBelowFragment extends BaseRunTest implements RunTest {
         // Required empty public constructor
     }
 
-    public static ChamberBelowFragment newInstance(TestInfo param1, Calibration calibration) {
+    public static ChamberBelowFragment newInstance(TestInfo testInfo) {
         ChamberBelowFragment fragment = new ChamberBelowFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, param1);
-        args.putParcelable(ARG_PARAM2, calibration);
+        args.putParcelable(ConstantKey.TEST_INFO, testInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,18 +47,6 @@ public class ChamberBelowFragment extends BaseRunTest implements RunTest {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        startTest();
-    }
-
-    private void startTest() {
-        if (!cameraStarted) {
-
-            setupCamera();
-
-            cameraStarted = true;
-
-            cameraSwitcher.start();
-        }
     }
 
     @Override
@@ -68,20 +54,25 @@ public class ChamberBelowFragment extends BaseRunTest implements RunTest {
         super.initializeTest();
         binding.imageIllustration.setVisibility(View.GONE);
         binding.circleView.setVisibility(View.GONE);
+
+        if (!cameraStarted) {
+
+            setupCamera();
+
+            cameraStarted = true;
+
+            cameraSwitcher.start();
+
+            binding.cameraView.setOnClickListener(v -> {
+                binding.cameraView.setOnClickListener(null);
+                startRepeatingTask();
+            });
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
-        binding.cameraView.setOnClickListener(v -> takePicture());
-
         return binding.getRoot();
-    }
-
-    protected void takePicture() {
-        binding.cameraView.setOnClickListener(null);
-        sound.playShortResource(R.raw.beep);
-        super.takePicture();
     }
 }

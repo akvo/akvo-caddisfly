@@ -19,6 +19,8 @@
 
 package org.akvo.caddisfly.sensor.liquid;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -35,6 +37,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentRunTestBinding;
 import org.akvo.caddisfly.entity.Calibration;
@@ -44,11 +47,11 @@ import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -71,9 +74,7 @@ import static io.fotoapparat.parameter.selector.SizeSelectors.biggestSize;
 import static io.fotoapparat.result.transformer.SizeTransformers.scaled;
 
 public class BaseRunTest extends Fragment implements RunTest {
-    protected static final String ARG_PARAM1 = "param1";
-    protected static final String ARG_PARAM2 = "param2";
-    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00## ");
+    //    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00## ");
     private static final int DELAY = 1000; // 1 second
     protected SoundPoolPlayer sound;
     protected FotoapparatSwitcher cameraSwitcher;
@@ -82,12 +83,12 @@ public class BaseRunTest extends Fragment implements RunTest {
     protected Context mContext;
     protected int pictureCount = 0;
     protected Handler mHandler;
+    AlertDialog alertDialogToBeDestroyed;
+    ArrayList<ResultDetail> results = new ArrayList<>();
     private TestInfo mTestInfo;
     private Calibration mCalibration;
     private int dilution;
     private OnResultListener mListener;
-    ArrayList<ResultDetail> results = new ArrayList<>();
-
     Runnable mRunnableCode = () -> {
         if (pictureCount < AppPreferences.getSamplingTimes()) {
             pictureCount++;
@@ -112,7 +113,7 @@ public class BaseRunTest extends Fragment implements RunTest {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (mCalibration != null) {
+        if (mCalibration != null && getActivity() != null) {
 
             // disable the key guard when device wakes up and shake alert is displayed
             getActivity().getWindow().setFlags(
@@ -133,6 +134,8 @@ public class BaseRunTest extends Fragment implements RunTest {
 
     protected void initializeTest() {
         results.clear();
+
+        mHandler = new Handler();
     }
 
     protected void setupCamera() {
@@ -163,32 +166,16 @@ public class BaseRunTest extends Fragment implements RunTest {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        try {
-
-            cameraSwitcher.getCurrentFotoapparat().updateParameters(
-                    UpdateRequest.builder()
-                            .flash(off())
-                            .build()
-            );
-
-            cameraSwitcher.getCurrentFotoapparat().stop();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        cameraStarted = false;
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_run_test,
                 container, false);
 
+        pictureCount = 0;
+
         if (getArguments() != null) {
-            mTestInfo = getArguments().getParcelable(ARG_PARAM1);
+            mTestInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
         }
 
         if (mTestInfo != null) {
@@ -318,6 +305,85 @@ public class BaseRunTest extends Fragment implements RunTest {
     @Override
     public void setDilution(int dilution) {
         this.dilution = dilution;
+    }
+
+
+    void startRepeatingTask() {
+        mRunnableCode.run();
+    }
+
+    void stopRepeatingTask() {
+        mHandler.removeCallbacks(mRunnableCode);
+    }
+
+    protected void startTest() {
+        if (!cameraStarted) {
+
+            setupCamera();
+
+            cameraStarted = true;
+
+            sound.playShortResource(R.raw.beep);
+
+            cameraSwitcher.start();
+
+            startRepeatingTask();
+        }
+    }
+
+    protected void releaseResources() {
+
+        if (alertDialogToBeDestroyed != null) {
+            alertDialogToBeDestroyed.dismiss();
+        }
+
+        stopRepeatingTask();
+        try {
+
+            cameraSwitcher.getCurrentFotoapparat().updateParameters(
+                    UpdateRequest.builder()
+                            .flash(off())
+                            .build()
+            );
+
+            cameraSwitcher.getCurrentFotoapparat().stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        cameraStarted = false;
+    }
+
+
+    /**
+     * Show an error message dialog.
+     *
+     * @param message the message to be displayed
+     * @param bitmap  any bitmap image to displayed along with error message
+     */
+    protected void showError(String message,
+                             @SuppressWarnings("SameParameterValue") final Bitmap bitmap,
+                             Activity activity) {
+
+        releaseResources();
+
+        sound.playShortResource(R.raw.err);
+
+        alertDialogToBeDestroyed = AlertUtil.showError(activity,
+                R.string.error, message, bitmap, R.string.retry,
+                (dialogInterface, i) -> initializeTest(),
+                (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+//                    releaseResources();
+                    activity.setResult(Activity.RESULT_CANCELED);
+                    activity.finish();
+                }, null
+        );
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        releaseResources();
     }
 
     public interface OnResultListener {

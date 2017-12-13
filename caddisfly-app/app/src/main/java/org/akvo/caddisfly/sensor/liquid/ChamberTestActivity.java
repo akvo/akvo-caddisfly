@@ -112,9 +112,9 @@ public class ChamberTestActivity extends BaseActivity implements
             mTestInfo.setCalibrations(calibrations);
 
             if (mTestInfo.getCameraAbove()) {
-                fragment = ChamberBelowFragment.newInstance(mTestInfo, null);
+                fragment = ChamberBelowFragment.newInstance(mTestInfo);
             } else {
-                fragment = RunTestFragment.newInstance(mTestInfo, null);
+                fragment = RunTestFragment.newInstance(mTestInfo);
             }
 
             if (getIntent().getBooleanExtra(ConstantKey.RUN_TEST, false)) {
@@ -141,6 +141,9 @@ public class ChamberTestActivity extends BaseActivity implements
         } else {
             runTest(1);
         }
+
+        invalidateOptionsMenu();
+
     }
 
     private void runTest(int dilution) {
@@ -160,6 +163,9 @@ public class ChamberTestActivity extends BaseActivity implements
                         .add(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
             }
         }
+
+        invalidateOptionsMenu();
+
     }
 
     public void runTestClick(View view) {
@@ -177,12 +183,13 @@ public class ChamberTestActivity extends BaseActivity implements
 
     @Override
     public void onCalibrationSelected(Calibration item) {
-
         (new Handler()).postDelayed(() -> {
             fragment.setCalibration(item);
             fragmentManager.beginTransaction()
-                    .addToBackStack("")
+                    .addToBackStack(null)
                     .replace(R.id.fragment_container, (Fragment) fragment, "camera").commit();
+
+            invalidateOptionsMenu();
         }, 150);
     }
 
@@ -192,6 +199,8 @@ public class ChamberTestActivity extends BaseActivity implements
         if (!fragmentManager.popBackStackImmediate()) {
             super.onBackPressed();
         }
+
+        invalidateOptionsMenu();
     }
 
 
@@ -214,7 +223,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (AppPreferences.isDiagnosticMode()) {
+        if (AppPreferences.isDiagnosticMode() && calibrationItemFragment.isVisible()) {
             getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
         }
         return true;
@@ -331,26 +340,6 @@ public class ChamberTestActivity extends BaseActivity implements
         } catch (ActivityNotFoundException ignored) {
         }
     }
-
-    //    @Override
-//    public void onResult(ArrayList<ResultDetail> results, Calibration calibration) {
-//
-//        mTestInfo.Results().get(0).setResult(String.valueOf(results.get(0).getResult()));
-//
-//        //todo fix this
-//        if (calibration == null) {
-//            fragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.fragment_container,
-//                            ResultFragment.newInstance(mTestInfo, "50"), "result").commit();
-//        } else {
-//
-//            CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
-//            dao.insert(calibration);
-//
-//            fragmentManager.popBackStackImmediate();
-//        }
-//    }
 
     @Override
     public void onResult(ArrayList<ResultDetail> resultDetails, Calibration calibration) {

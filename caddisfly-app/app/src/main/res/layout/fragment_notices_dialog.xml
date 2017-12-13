@@ -18,15 +18,106 @@
   -->
 
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/about_scrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="org.akvo.caddisfly.ui.NoticesDialogFragment">
+    android:layout_height="match_parent">
 
-    <WebView
-        android:id="@+id/webNotices"
+    <LinearLayout
+        android:id="@+id/about_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-</FrameLayout>
+        <TextView
+            style="?android:textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal"
+            android:padding="20dp"
+            android:text="@string/appName"
+            android:textStyle="bold" />
+
+        <TextView
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/software_incorporates_material" />
+
+        <TextView
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/apache_license_2"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layoutDirection="ltr"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/apache_software"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#555"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/mit_license"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layoutDirection="ltr"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/mit_software"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#555"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/cca_share_license"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layoutDirection="ltr"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/lovibond_software"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#555"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/cca_license"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</ScrollView>

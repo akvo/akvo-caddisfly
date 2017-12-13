@@ -218,5 +218,10 @@
     <string name="select_unit">Select unit</string>
     <string name="submitResult">Submit Result</string>
     <string name="take_photo_compartments">Take a photo of the compartment bag</string>
+    <string name="software_incorporates_material">This software incorporates material from the projects listed below</string>
+    <string name="apache_license_2">Apache License 2.0</string>
+    <string name="mit_license">MIT License</string>
+    <string name="cca_share_license">CC BY-NC-SA 4.0 – International</string>
+    <string name="cca_license">CC BY 4.0 International</string>
 
 </resources>
