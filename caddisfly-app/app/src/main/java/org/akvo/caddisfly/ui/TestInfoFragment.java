@@ -97,9 +97,6 @@ public class TestInfoFragment extends Fragment {
                     b.buttonPrepare.setText(R.string.prepare_test);
                 }
 
-                if (getActivity() != null) {
-                    getActivity().setTitle(testInfo.getName());
-                }
             }
         }
 
