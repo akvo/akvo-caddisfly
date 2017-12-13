@@ -79,8 +79,8 @@
     </style>
 
     <style name="AppTheme.Button.Blue">
-        <item name="colorButtonNormal">#014b86</item>
-        <item name="colorControlHighlight">#ea013359</item>
+        <item name="colorButtonNormal">@color/button_main</item>
+        <item name="colorControlHighlight">@color/button_main_highlight</item>
     </style>
 
     <style name="width_match_parent_max_tablet">

@@ -19,6 +19,8 @@
 
 package org.akvo.caddisfly.common;
 
+import org.akvo.caddisfly.BuildConfig;
+
 /**
  * Global Configuration settings for the app.
  */
@@ -51,7 +53,7 @@ public final class AppConfig {
     /**
      * Uri for photos from built in camera.
      */
-    public static final String FILE_PROVIDER_AUTHORITY_URI = "org.akvo.caddisfly.fileprovider";
+    public static final String FILE_PROVIDER_AUTHORITY_URI = BuildConfig.APPLICATION_ID + ".fileprovider";
 
     /**
      * The sound volume for the beeps and other sound effects.

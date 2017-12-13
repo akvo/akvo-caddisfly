@@ -33,6 +33,20 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions "default"
+
+    productFlavors {
+        prod {
+            dimension "default"
+            buildConfigField 'boolean', 'isExperimentFlavor', 'false'
+        }
+        experiment {
+            applicationIdSuffix ".experiment"
+            dimension "default"
+            buildConfigField 'boolean', 'isExperimentFlavor', 'true'
+        }
+    }
+
     dataBinding {
         enabled = true
     }

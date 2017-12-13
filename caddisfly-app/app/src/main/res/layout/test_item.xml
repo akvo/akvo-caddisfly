@@ -62,7 +62,7 @@
             android:id="@+id/textGroup"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:background="#f7582c"
+            android:background="@color/primary"
             android:clickable="false"
             android:focusable="false"
             android:gravity="center_vertical"

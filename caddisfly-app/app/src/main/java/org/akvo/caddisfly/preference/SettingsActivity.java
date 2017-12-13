@@ -19,23 +19,36 @@
 
 package org.akvo.caddisfly.preference;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
+import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 public class SettingsActivity extends BaseActivity
         implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private ScrollView mScrollView;
     private int mScrollPosition;
+
+    private void removeAllFragments() {
+        findViewById(R.id.layoutContent3).setVisibility(View.GONE);
+        findViewById(R.id.layoutContent4).setVisibility(View.GONE);
+        findViewById(R.id.layoutContent5).setVisibility(View.GONE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +85,23 @@ public class SettingsActivity extends BaseActivity
                 .commit();
 
         if (AppPreferences.isDiagnosticMode()) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.layoutContent3, new DiagnosticPreferenceFragment())
-                    .commit();
-        }
+            if (BuildConfig.isExperimentFlavor) {
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.layoutContent3, new ExperimentPreferenceFragment())
+                        .commit();
+            }
 
-        if (AppPreferences.isDiagnosticMode()) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.layoutContent4, new DiagnosticUserPreferenceFragment())
+                    .add(R.id.layoutContent4, new DiagnosticPreferenceFragment())
                     .commit();
+
+            getFragmentManager().beginTransaction()
+                    .add(R.id.layoutContent5, new DiagnosticUserPreferenceFragment())
+                    .commit();
+
+            findViewById(R.id.layoutContent3).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutContent4).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutContent5).setVisibility(View.VISIBLE);
         }
 
         mScrollView = findViewById(R.id.scrollViewSettings);
@@ -102,7 +123,36 @@ public class SettingsActivity extends BaseActivity
         super.onPostCreate(savedInstanceState);
 
         setTitle(R.string.settings);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (AppPreferences.isDiagnosticMode()) {
+            getMenuInflater().inflate(R.menu.menu_settings, menu);
+        }
+        return true;
+    }
+
+    public void onDisableDiagnostics(MenuItem item) {
+        Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
+                Toast.LENGTH_SHORT).show();
+
+        AppPreferences.disableDiagnosticMode();
+
+        changeActionBarStyleBasedOnCurrentMode();
+
+        invalidateOptionsMenu();
+
+        clearTests();
+
+        removeAllFragments();
+    }
+
+    private void clearTests() {
+        final TestListViewModel viewModel =
+                ViewModelProviders.of(this).get(TestListViewModel.class);
+
+        viewModel.clearTests();
     }
 
     @Override
@@ -137,4 +187,5 @@ public class SettingsActivity extends BaseActivity
 
         mScrollView.post(() -> mScrollView.scrollTo(0, mScrollPosition));
     }
+
 }

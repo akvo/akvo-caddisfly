@@ -61,6 +61,7 @@ import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,6 +100,30 @@ public class ChamberTestActivity extends BaseActivity implements
 
             List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
                     .calibrationDao().getAll(mTestInfo.getUuid());
+
+            if (calibrations.size() < 1) {
+                try {
+                    SwatchHelper.loadCalibrationFromFile(this, mTestInfo, "_AutoBackup");
+                    loadDetails();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                boolean colorFound = false;
+                for (Calibration calibration : calibrations) {
+                    if (calibration.color > 0){
+                        colorFound = true;
+                    }
+                }
+                if (!colorFound){
+                    try {
+                        SwatchHelper.loadCalibrationFromFile(this, mTestInfo, "_AutoBackup");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    loadDetails();
+                }
+            }
 
             if (calibrations.size() < 1) {
                 testConfigRepository.addCalibration(mTestInfo);

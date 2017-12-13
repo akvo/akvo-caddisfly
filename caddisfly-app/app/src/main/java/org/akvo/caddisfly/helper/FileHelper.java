@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.helper;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.AppConstants;
 import org.akvo.caddisfly.util.FileUtil;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public final class FileHelper {
      * The user created configuration file name
      */
     // Folders
-    public static final String ROOT_DIRECTORY = File.separator + "Akvo Caddisfly";
+    public static final String ROOT_DIRECTORY = File.separator + AppConstants.APP_FOLDER;
     private static final String DIR_CALIBRATION = ROOT_DIRECTORY + File.separator + "calibration"; // Calibration files
     private static final String DIR_CONFIG = ROOT_DIRECTORY + File.separator + "custom-config"; // Calibration files
     private static final String DIR_EXP_CONFIG = ROOT_DIRECTORY + File.separator + "experiment-config"; // Calibration files

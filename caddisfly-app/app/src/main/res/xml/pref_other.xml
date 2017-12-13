@@ -21,10 +21,6 @@
     <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/other">
         <Preference
             android:key="about"
-            android:title="@string/about">
-            <intent
-                android:targetClass="org.akvo.caddisfly.ui.AboutActivity"
-                android:targetPackage="org.akvo.caddisfly" />
-        </Preference>
+            android:title="@string/about" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

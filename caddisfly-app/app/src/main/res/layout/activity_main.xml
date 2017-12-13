@@ -184,7 +184,7 @@
                 android:layout_alignBottom="@+id/textDiagnostics"
                 android:layout_alignParentEnd="true"
                 android:onClick="onDisableDiagnosticsClick"
-                android:src="@android:drawable/ic_menu_revert"
+                android:src="@drawable/ic_revert_24dp"
                 app:backgroundTint="@color/diagnostic"
                 tools:ignore="RelativeOverlap" />
         </RelativeLayout>

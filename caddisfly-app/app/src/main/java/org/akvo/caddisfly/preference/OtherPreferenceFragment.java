@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.preference;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -31,6 +32,7 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.ui.AboutActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
 
 public class OtherPreferenceFragment extends PreferenceFragment {
@@ -50,6 +52,11 @@ public class OtherPreferenceFragment extends PreferenceFragment {
         Preference aboutPreference = findPreference("about");
         if (aboutPreference != null) {
             aboutPreference.setSummary(CaddisflyApp.getAppVersion());
+            aboutPreference.setOnPreferenceClickListener(preference -> {
+                final Intent intent = new Intent(getActivity(), AboutActivity.class);
+                getActivity().startActivity(intent);
+                return true;
+            });
         }
 
         return rootView;

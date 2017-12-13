@@ -47,9 +47,5 @@
             android:maxLength="3"
             android:numeric="integer"
             android:title="Max color distance" />
-        <Preference
-            android:key="syncTestList"
-            android:icon="@drawable/ic_file_download_white_24dp"
-            android:title="Download experimental tests" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

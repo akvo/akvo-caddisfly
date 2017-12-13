@@ -52,7 +52,7 @@ public class PageIndicatorView extends View {
 
         fillPaint = new Paint();
         fillPaint.setStyle(Paint.Style.FILL);
-        fillPaint.setColor(ContextCompat.getColor(context, R.color.cyan));
+        fillPaint.setColor(ContextCompat.getColor(context, R.color.accent));
         fillPaint.setAntiAlias(true);
     }
 

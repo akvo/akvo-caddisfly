@@ -50,7 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void updateTheme() {
 
-        setTheme(R.style.AppTheme_Orange);
+        setTheme(R.style.AppTheme_Main);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
