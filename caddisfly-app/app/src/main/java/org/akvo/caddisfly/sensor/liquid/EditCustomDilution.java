@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.liquid;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -27,7 +28,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -65,28 +65,25 @@ public class EditCustomDilution extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final Context context = getActivity();
-
-        LayoutInflater i = getActivity().getLayoutInflater();
+        final Activity activity = getActivity();
 
         @SuppressLint("InflateParams")
-        View view = i.inflate(R.layout.edit_custom_dilution, null);
+        View view = activity.getLayoutInflater().inflate(R.layout.edit_custom_dilution, null);
 
         editDilutionFactor = view.findViewById(R.id.editDilutionFactor);
-
         editDilutionFactor.requestFocus();
 
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
+        AlertDialog.Builder b = new AlertDialog.Builder(activity)
                 .setTitle(R.string.customDilution)
                 .setPositiveButton(R.string.ok,
                         (dialog, whichButton) -> {
-                            closeKeyboard(context, editDilutionFactor);
+                            closeKeyboard(activity, editDilutionFactor);
                             dismiss();
                         }
                 )
                 .setNegativeButton(R.string.cancel,
                         (dialog, whichButton) -> {
-                            closeKeyboard(context, editDilutionFactor);
+                            closeKeyboard(activity, editDilutionFactor);
                             dismiss();
                         }
                 );

@@ -112,23 +112,18 @@
 
     <!--Software Notices-->
     <string name="lovibond_software"><a href="">Lovibond Testing Instruction Visuals (MD610)</a></string>
-    <string name="apache_software"><a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
+    <string name="apache_software"><a href="">Android Code</a>
           |
-
-        <a href="http://commons.apache.org/proper/commons-math/">Commons Math</a>
-          |
-
-        <a href="https://github.com/zxing/zxing">ZXing</a>
-          |
-
         <a href="https://github.com/bjoernQ/unmock-plugin">Android Unmock Gradle Plugin</a>
           |
-
-        <a href="">Android Code</a>
+        <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
+          |
+        <a href="http://commons.apache.org/proper/commons-math/">Commons Math</a>
+          |
+        <a href="https://github.com/zxing/zxing">ZXing</a>
     </string>
     <string name="mit_software"><a href="">Robolectric</a>
           |
-
         <a href="">UsbSerial</a>
     </string>
     <string name="cca_software"><a href="">Material Icons</a></string>

@@ -53,7 +53,7 @@ import java.util.Date;
 public class CalibrationItemFragment extends Fragment {
 
     private static final String ARG_TEST_INFO = "testInfo";
-    FragmentItemListBinding binding;
+    private FragmentItemListBinding binding;
     private TestInfo testInfo;
     private OnCalibrationSelectedListener mListener;
 
@@ -124,7 +124,9 @@ public class CalibrationItemFragment extends Fragment {
 
         binding.setTestInfoViewModel(model);
 
-        binding.calibrationList.addItemDecoration(new DividerItemDecoration(getContext(), 1));
+        if (getContext() != null) {
+            binding.calibrationList.addItemDecoration(new DividerItemDecoration(getContext(), 1));
+        }
 
         setAdapter(testInfo);
 

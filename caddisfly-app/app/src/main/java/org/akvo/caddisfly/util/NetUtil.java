@@ -30,7 +30,10 @@ public final class NetUtil {
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        NetworkInfo networkInfo = null;
+        if (cm != null) {
+            networkInfo = cm.getActiveNetworkInfo();
+        }
         return networkInfo != null && networkInfo.isConnected();
     }
 }

@@ -223,5 +223,6 @@
     <string name="mit_license">MIT License</string>
     <string name="cca_share_license">CC BY-NC-SA 4.0 – International</string>
     <string name="cca_license">CC BY 4.0 International</string>
+    <string name="software_notices">Software Notices</string>
 
 </resources>

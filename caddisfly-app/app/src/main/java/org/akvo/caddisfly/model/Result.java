@@ -77,9 +77,7 @@ public class Result implements Parcelable {
     @Expose
     private List<ColorItem> colorItems = new ArrayList<>();
     private String result;
-    private double resultDouble;
     private boolean highLevelsFound;
-    private double dilution = 1;
 
     public Result() {
     }
@@ -235,14 +233,14 @@ public class Result implements Parcelable {
         double maxResult = colorItems.get(colorItems.size() - 1).getValue();
         highLevelsFound = resultDouble > maxResult * 0.98;
 
-        this.resultDouble = resultDouble * dilution;
+        double finalResult = resultDouble * dilution;
 
         // if no more can dilution can be performed then set result to highest value
         if (highLevelsFound && dilution >= maxDilution) {
-            this.resultDouble = maxResult * dilution;
+            finalResult = maxResult * dilution;
         }
 
-        result = String.format(Locale.getDefault(), "%.2f", this.resultDouble);
+        result = String.format(Locale.getDefault(), "%.2f", finalResult);
 
         // Add 'greater than' symbol if result could be an unknown high value
         if (highLevelsFound){
@@ -253,9 +251,5 @@ public class Result implements Parcelable {
     public boolean highLevelsFound() {
 
         return highLevelsFound;
-    }
-
-    public void setDilution(double dilution) {
-        this.dilution = dilution;
     }
 }

@@ -50,12 +50,12 @@ public class TestInfo implements Parcelable {
     @SerializedName("reagents")
     @Expose
     private List<Reagent> reagents = null;
-    @SerializedName("isGroup")
+    @SerializedName("isCategory")
     @Expose
-    private boolean isGroup;
-    @SerializedName("group")
+    private boolean isCategory;
+    @SerializedName("category")
     @Expose
-    private String group;
+    private String category;
     @SerializedName("name")
     @Expose
     private String name;
@@ -162,14 +162,14 @@ public class TestInfo implements Parcelable {
     public TestInfo() {
     }
 
-    public TestInfo(String groupName) {
-        group = groupName;
-        isGroup = true;
+    public TestInfo(String categoryName) {
+        category = categoryName;
+        isCategory = true;
     }
 
     protected TestInfo(Parcel in) {
-        isGroup = in.readByte() != 0;
-        group = in.readString();
+        isCategory = in.readByte() != 0;
+        category = in.readString();
         name = in.readString();
         subtype = TestType.valueOf(in.readString());
         description = in.readString();
@@ -251,11 +251,11 @@ public class TestInfo implements Parcelable {
     }
 
     public boolean getIsGroup() {
-        return isGroup;
+        return isCategory;
     }
 
-    public String getGroup() {
-        return group;
+    public String getCategory() {
+        return category;
     }
 
     public String getName() {
@@ -374,8 +374,8 @@ public class TestInfo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeByte((byte) (isGroup ? 1 : 0));
-        parcel.writeString(group);
+        parcel.writeByte((byte) (isCategory ? 1 : 0));
+        parcel.writeString(category);
         parcel.writeString(name);
         parcel.writeString(subtype.name());
         parcel.writeString(description);

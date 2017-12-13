@@ -65,7 +65,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
     private static final String ARG_TEST_INFO = "testInfo";
     private final Calendar calendar = Calendar.getInstance();
-    TestInfo mTestInfo;
+    private TestInfo mTestInfo;
     private EditText editName = null;
     private EditText editBatchCode = null;
     private EditText editExpiryDate;
@@ -317,11 +317,14 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         try {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(
                     Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
-
-            View view = getActivity().getCurrentFocus();
-            if (view != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
+                if (getActivity()!= null) {
+                    View view = getActivity().getCurrentFocus();
+                    if (view != null) {
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                }
             }
         } catch (Exception e) {
             Timber.e(e);

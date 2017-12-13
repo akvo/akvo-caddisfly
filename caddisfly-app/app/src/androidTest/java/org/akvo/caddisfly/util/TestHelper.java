@@ -109,8 +109,6 @@ public final class TestHelper {
     public static void loadData(Activity activity, String languageCode) {
         mCurrentLanguage = languageCode;
 
-        String testLanguage = languageCode;
-
         STRING_HASH_MAP_EN.clear();
         STRING_HASH_MAP_FR.clear();
         STRING_HASH_MAP_IN.clear();
@@ -120,7 +118,7 @@ public final class TestHelper {
         AssetManager assets = currentResources.getAssets();
         DisplayMetrics metrics = currentResources.getDisplayMetrics();
         Configuration config = new Configuration(currentResources.getConfiguration());
-        config.locale = new Locale(testLanguage);
+        config.locale = new Locale(languageCode);
         Resources res = new Resources(assets, metrics, config);
 
         addString(TestConstant.LANGUAGE, "English", "Français", "Bahasa Indonesia");

@@ -39,9 +39,9 @@ public class TestListActivity extends BaseActivity
         implements TestListFragment.OnListFragmentInteractionListener {
 
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
-    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    TestInfo mTestInfo;
+    private TestInfo mTestInfo;
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -82,7 +82,7 @@ public class TestListActivity extends BaseActivity
     /**
      * Shows the detail fragment
      */
-    public void navigateToTestDetails(boolean hideList) {
+    private void navigateToTestDetails(boolean hideList) {
 
         String[] checkPermissions = permissions;
 
@@ -94,6 +94,10 @@ public class TestListActivity extends BaseActivity
     }
 
     private void startTest(boolean hideList) {
+        if (mTestInfo != null && mTestInfo.getIsGroup()) {
+            return;
+        }
+
         if (mTestInfo == null || mTestInfo.getUuid() == null || mTestInfo.Results().size() == 0) {
             ErrorMessages.alertCouldNotLoadConfig(this);
             return;

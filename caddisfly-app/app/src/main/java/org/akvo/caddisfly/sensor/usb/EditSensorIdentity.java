@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.usb;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -27,7 +28,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -65,34 +65,33 @@ public class EditSensorIdentity extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final Context context = getActivity();
-
-        LayoutInflater i = getActivity().getLayoutInflater();
+        final Activity activity = getActivity();
 
         @SuppressLint("InflateParams")
-        View view = i.inflate(R.layout.fragment_edit_sensor_identity, null);
+        View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_edit_sensor_identity, null);
 
         editId = view.findViewById(R.id.editId);
-
         editId.requestFocus();
 
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        if (activity != null) {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            }
         }
 
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
+        AlertDialog.Builder b = new AlertDialog.Builder(activity)
                 .setTitle(R.string.sensorDetails)
                 .setPositiveButton(R.string.save,
                         (dialog, whichButton) -> {
-                            closeKeyboard(context, editId);
+                            closeKeyboard(activity, editId);
                             dismiss();
                         }
                 )
                 .setNegativeButton(R.string.cancel,
                         (dialog, whichButton) -> {
-                            closeKeyboard(context, editId);
+                            closeKeyboard(activity, editId);
                             dismiss();
                         }
                 );

@@ -72,11 +72,8 @@ public class ChamberTestActivity extends BaseActivity implements
         SelectDilutionFragment.OnDilutionSelectedListener,
         EditCustomDilution.OnCustomDilutionListener {
 
-    TestConfigRepository testConfigRepository;
-
-    Fragment selectDilutionFragment;
-    RunTest fragment;
-    CalibrationItemFragment calibrationItemFragment;
+    private RunTest fragment;
+    private CalibrationItemFragment calibrationItemFragment;
     private FragmentManager fragmentManager;
     private TestInfo mTestInfo;
 
@@ -87,7 +84,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
         setContentView(R.layout.activity_chamber_test);
 
-        testConfigRepository = new TestConfigRepository();
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
 
         fragmentManager = getSupportFragmentManager();
 
@@ -129,7 +126,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
     private void start() {
         if (mTestInfo.getDilutions().size() > 0) {
-            selectDilutionFragment = SelectDilutionFragment.newInstance(mTestInfo);
+            Fragment selectDilutionFragment = SelectDilutionFragment.newInstance(mTestInfo);
             if (calibrationItemFragment != null && calibrationItemFragment.isVisible()) {
                 fragmentManager.beginTransaction()
                         .addToBackStack("dilution")
@@ -353,6 +350,7 @@ public class ChamberTestActivity extends BaseActivity implements
             Result result = mTestInfo.Results().get(0);
             result.setResult(value, dilution, mTestInfo.getMaxDilution());
 
+            fragmentManager.popBackStack();
             fragmentManager
                     .beginTransaction()
                     .addToBackStack(null)

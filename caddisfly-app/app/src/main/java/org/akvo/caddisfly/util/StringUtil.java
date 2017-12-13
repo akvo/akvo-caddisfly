@@ -183,7 +183,6 @@ public final class StringUtil {
                     // Add action buttons
                     .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
 
-
             return builder.create();
         }
     }

@@ -31,23 +31,26 @@ import org.akvo.caddisfly.R;
 public class BaseFragment extends Fragment {
 
     protected void setTitle(View view, String title) {
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            try {
-                ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-            } catch (Exception ignored) {
+        if (getActivity() != null) {
+            Toolbar toolbar = view.findViewById(R.id.toolbar);
+
+            if (toolbar != null) {
+                try {
+                    ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+                } catch (Exception ignored) {
+                }
             }
-        }
 
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+            ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
 
-        if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            if (actionBar != null) {
+                actionBar.setDisplayShowTitleEnabled(false);
+                actionBar.setDisplayHomeAsUpEnabled(true);
 
-            TextView textTitle = view.findViewById(R.id.textToolbarTitle);
-            if (textTitle != null) {
-                textTitle.setText(title);
+                TextView textTitle = view.findViewById(R.id.textToolbarTitle);
+                if (textTitle != null) {
+                    textTitle.setText(title);
+                }
             }
         }
     }

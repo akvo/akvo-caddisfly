@@ -200,7 +200,7 @@ public final class TestUtil {
                 Press.FINGER);
     }
 
-    public static void swipeLeft() {
+    private static void swipeLeft() {
         mDevice.waitForIdle();
         mDevice.swipe(500, 300, 50, 300, 4);
         mDevice.waitForIdle();

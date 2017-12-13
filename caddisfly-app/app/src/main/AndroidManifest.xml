@@ -93,7 +93,6 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"
-            android:noHistory="true"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
 

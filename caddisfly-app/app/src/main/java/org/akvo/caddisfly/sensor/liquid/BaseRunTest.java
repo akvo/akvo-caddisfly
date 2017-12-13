@@ -76,20 +76,20 @@ import static io.fotoapparat.result.transformer.SizeTransformers.scaled;
 public class BaseRunTest extends Fragment implements RunTest {
     //    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00## ");
     private static final int DELAY = 1000; // 1 second
-    protected SoundPoolPlayer sound;
+    private SoundPoolPlayer sound;
     protected FotoapparatSwitcher cameraSwitcher;
     protected FragmentRunTestBinding binding;
     protected boolean cameraStarted;
-    protected Context mContext;
+    private Context mContext;
     protected int pictureCount = 0;
-    protected Handler mHandler;
-    AlertDialog alertDialogToBeDestroyed;
-    ArrayList<ResultDetail> results = new ArrayList<>();
+    private Handler mHandler;
+    private AlertDialog alertDialogToBeDestroyed;
+    private final ArrayList<ResultDetail> results = new ArrayList<>();
     private TestInfo mTestInfo;
     private Calibration mCalibration;
     private int dilution;
     private OnResultListener mListener;
-    Runnable mRunnableCode = () -> {
+    private final Runnable mRunnableCode = () -> {
         if (pictureCount < AppPreferences.getSamplingTimes()) {
             pictureCount++;
             takePicture();
@@ -128,7 +128,7 @@ public class BaseRunTest extends Fragment implements RunTest {
         }
     }
 
-    protected void alertCouldNotLoadConfig() {
+    private void alertCouldNotLoadConfig() {
 
     }
 
@@ -215,7 +215,7 @@ public class BaseRunTest extends Fragment implements RunTest {
         mListener = null;
     }
 
-    protected void takePicture() {
+    private void takePicture() {
 
         if (!cameraStarted) {
             return;
@@ -312,7 +312,7 @@ public class BaseRunTest extends Fragment implements RunTest {
         mRunnableCode.run();
     }
 
-    void stopRepeatingTask() {
+    private void stopRepeatingTask() {
         mHandler.removeCallbacks(mRunnableCode);
     }
 

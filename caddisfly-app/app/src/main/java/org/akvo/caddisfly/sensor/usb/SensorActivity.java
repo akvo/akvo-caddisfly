@@ -76,7 +76,7 @@ public class SensorActivity extends BaseActivity {
 
     private final Handler handler = new Handler();
     private final SparseArray<String> results = new SparseArray<>();
-    ActivitySensorBinding b;
+    private ActivitySensorBinding b;
     // Notifications from UsbService will be received here.
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override

@@ -99,8 +99,8 @@ public class TestActivity extends BaseActivity implements
         CompartmentBagFragment.OnCompartmentBagSelectListener,
         MeasurementInputFragment.OnSubmitResultListener {
 
-    public static final int CBT_TEST = 1;
-    public static final int MANUAL_TEST = 2;
+    private static final int CBT_TEST = 1;
+    private static final int MANUAL_TEST = 2;
     private static final int SENSOR_TEST = 3;
     private static final int BLUETOOTH_TEST = 4;
     private static final int CHAMBER_TEST = 5;
@@ -113,23 +113,22 @@ public class TestActivity extends BaseActivity implements
     private final WeakRefHandler handler = new WeakRefHandler(this);
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
 
-    String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
+    private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private final String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
 
-    InstructionFragment instructionFragment;
-    String mCurrentPhotoPath;
-    String imageFileName = "";
-    ActivityTestBinding b;
+    private InstructionFragment instructionFragment;
+    private String mCurrentPhotoPath;
+    private String imageFileName = "";
+    private ActivityTestBinding b;
     // track if the call was made internally or from an external app
     private boolean mIsExternalAppCall = false;
     // old versions of the survey app does not expect image in result
     private boolean mCallerExpectsImageInResult = true;
     // the language requested by the external app
     private String mExternalAppLanguageCode;
-    private TestInfo mTestInfo;
+    private TestInfo testInfo;
     private String mResult = "00000";
     private FragmentManager fragmentManager;
-    private TestConfigRepository testConfigRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,10 +141,10 @@ public class TestActivity extends BaseActivity implements
         // Add list fragment if this is first creation
         if (savedInstanceState == null) {
 
-            mTestInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+            testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
 
-            if (mTestInfo != null) {
-                TestInfoFragment fragment = TestInfoFragment.forProduct(mTestInfo);
+            if (testInfo != null) {
+                TestInfoFragment fragment = TestInfoFragment.getInstance(testInfo);
 
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, fragment, TestActivity.class.getSimpleName()).commit();
@@ -186,16 +185,16 @@ public class TestActivity extends BaseActivity implements
                 //Get the test config by uuid
                 final TestListViewModel viewModel =
                         ViewModelProviders.of(this).get(TestListViewModel.class);
-                mTestInfo = viewModel.getTestInfo(uuid);
+                testInfo = viewModel.getTestInfo(uuid);
             }
 
-            if (mTestInfo == null) {
+            if (testInfo == null) {
                 setTitle(getTestName(questionTitle));
                 alertTestTypeNotSupported();
             } else {
 
-                if (mTestInfo != null) {
-                    TestInfoFragment fragment = TestInfoFragment.forProduct(mTestInfo);
+                if (testInfo != null) {
+                    TestInfoFragment fragment = TestInfoFragment.getInstance(testInfo);
 
                     fragmentManager.beginTransaction()
                             .add(R.id.fragment_container, fragment, TestActivity.class.getSimpleName()).commit();
@@ -203,36 +202,32 @@ public class TestActivity extends BaseActivity implements
             }
         }
 
-        if (mTestInfo != null) {
-            setTitle(mTestInfo.getName());
-        }
-
-        if (mTestInfo != null && mTestInfo.getSubtype() == TestType.SENSOR) {
+        if (testInfo != null && testInfo.getSubtype() == TestType.SENSOR) {
             if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
                 ErrorMessages.alertFeatureNotSupported(this, true);
             }
         }
 
-        if (mTestInfo != null && mTestInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
+        if (testInfo != null && testInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
             List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
-                    .calibrationDao().getAll(mTestInfo.getUuid());
+                    .calibrationDao().getAll(testInfo.getUuid());
 
             if (calibrations.size() < 1) {
-                testConfigRepository = new TestConfigRepository();
-                testConfigRepository.addCalibration(mTestInfo);
+                TestConfigRepository testConfigRepository = new TestConfigRepository();
+                testConfigRepository.addCalibration(testInfo);
                 calibrations = CaddisflyApp.getApp().getDB()
-                        .calibrationDao().getAll(mTestInfo.getUuid());
+                        .calibrationDao().getAll(testInfo.getUuid());
             }
 
-            mTestInfo.setCalibrations(calibrations);
+            testInfo.setCalibrations(calibrations);
 
-            if (!SwatchHelper.isSwatchListValid(mTestInfo)) {
-                ErrorMessages.alertCalibrationIncomplete(this, mTestInfo);
+            if (!SwatchHelper.isSwatchListValid(testInfo)) {
+                ErrorMessages.alertCalibrationIncomplete(this, testInfo);
                 return;
             }
 
             CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDB()
-                    .calibrationDao().getCalibrationDetails(mTestInfo.getUuid());
+                    .calibrationDao().getCalibrationDetails(testInfo.getUuid());
 
             if (calibrationDetail != null) {
                 long milliseconds = calibrationDetail.expiry;
@@ -252,8 +247,12 @@ public class TestActivity extends BaseActivity implements
             return;
         }
 
-        if (mTestInfo != null) {
-            setTitle(mTestInfo.getName());
+        if (testInfo != null) {
+            if (testInfo.getSubtype() == TestType.BLUETOOTH) {
+                setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
+            }else{
+                setTitle(testInfo.getName());
+            }
         }
     }
 
@@ -291,17 +290,13 @@ public class TestActivity extends BaseActivity implements
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (mTestInfo != null) {
-            setTitle(mTestInfo.getName());
-        }
         b.getRoot().invalidate();
         b.getRoot().requestLayout();
-
     }
 
     public void onInstructionsClick(View view) {
 
-        instructionFragment = InstructionFragment.getInstance(mTestInfo);
+        instructionFragment = InstructionFragment.getInstance(testInfo);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -325,7 +320,7 @@ public class TestActivity extends BaseActivity implements
     }
 
     public void onSiteLinkClick(View view) {
-        String url = mTestInfo.getBrandUrl();
+        String url = testInfo.getBrandUrl();
         if (!url.contains("http://")) {
             url = "http://" + url;
         }
@@ -336,7 +331,7 @@ public class TestActivity extends BaseActivity implements
     public void onStartTestClick(View view) {
 
         String[] checkPermissions = permissions;
-        switch (mTestInfo.getSubtype()) {
+        switch (testInfo.getSubtype()) {
             case BLUETOOTH:
                 checkPermissions = bluetoothPermissions;
                 break;
@@ -353,13 +348,13 @@ public class TestActivity extends BaseActivity implements
     private void startBluetoothTest() {
         final Intent intent = new Intent(this, DeviceScanActivity.class);
         intent.putExtra("internal", true);
-        intent.putExtra(ConstantKey.TEST_INFO, mTestInfo);
+        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, BLUETOOTH_TEST);
     }
 
     private void initializeTest() {
 
-        switch (mTestInfo.getSubtype()) {
+        switch (testInfo.getSubtype()) {
             case COLORIMETRIC_LIQUID:
             case COLORIMETRIC_STRIP:
                 checkCameraAndStart();
@@ -409,107 +404,32 @@ public class TestActivity extends BaseActivity implements
     private void startTest() {
         final Intent intent;
 
-        switch (mTestInfo.getSubtype()) {
+        switch (testInfo.getSubtype()) {
             case BLUETOOTH:
                 startBluetoothTest();
                 break;
             case CBT:
-                (new Handler()).postDelayed(() -> {
-                    Toast toast = Toast.makeText(this, R.string.take_photo_compartments, Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.BOTTOM, 0, 200);
-                    toast.show();
-                }, 400);
-
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                // Ensure that there's a camera activity to handle the intent
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    // Create the File where the photo should go
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException ex) {
-                        // Error occurred while creating the File
-                    }
-
-                    // Continue only if the File was successfully created
-                    if (photoFile != null) {
-
-                        Uri photoURI;
-                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                            photoURI = Uri.fromFile(photoFile);
-                        } else {
-                            photoURI = FileProvider.getUriForFile(this,
-                                    FILE_PROVIDER_AUTHORITY_URI,
-                                    photoFile);
-                        }
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(takePictureIntent, CBT_TEST);
-                    }
-                }
+                startCbtTest();
                 break;
             case COLORIMETRIC_LIQUID:
-
-                if (!SwatchHelper.isSwatchListValid(mTestInfo)) {
-                    ErrorMessages.alertCalibrationIncomplete(this, mTestInfo);
+                if (!SwatchHelper.isSwatchListValid(testInfo)) {
+                    ErrorMessages.alertCalibrationIncomplete(this, testInfo);
                     return;
                 }
 
                 intent = new Intent(this, ChamberTestActivity.class);
                 intent.putExtra(ConstantKey.RUN_TEST, true);
-                intent.putExtra(ConstantKey.TEST_INFO, mTestInfo);
+                intent.putExtra(ConstantKey.TEST_INFO, testInfo);
                 startActivityForResult(intent, CHAMBER_TEST);
                 break;
             case COLORIMETRIC_STRIP:
                 intent = new Intent(this, StripMeasureActivity.class);
                 intent.putExtra("internal", true);
-                intent.putExtra(ConstantKey.TEST_INFO, mTestInfo);
+                intent.putExtra(ConstantKey.TEST_INFO, testInfo);
                 startActivity(intent);
                 break;
             case MANUAL:
-
-                if (mTestInfo.getHasImage()) {
-
-                    (new Handler()).postDelayed(() -> {
-                        Toast toast = Toast.makeText(this, R.string.take_photo_meter_result, Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.BOTTOM, 0, 200);
-                        toast.show();
-                    }, 400);
-
-                    Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    // Ensure that there's a camera activity to handle the intent
-                    if (pictureIntent.resolveActivity(getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                        } catch (IOException ex) {
-                            // Error occurred while creating the File
-                        }
-
-                        // Continue only if the File was successfully created
-                        if (photoFile != null) {
-
-                            Uri photoURI;
-                            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                                photoURI = Uri.fromFile(photoFile);
-                            } else {
-                                photoURI = FileProvider.getUriForFile(this,
-                                        FILE_PROVIDER_AUTHORITY_URI,
-                                        photoFile);
-                            }
-                            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                            startActivityForResult(pictureIntent, MANUAL_TEST);
-                        }
-                    }
-                } else {
-                    FragmentTransaction ft = fragmentManager.beginTransaction();
-
-                    ft.replace(R.id.fragment_container,
-                            MeasurementInputFragment.newInstance(mTestInfo), "tubeFragment")
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                            .addToBackStack(null)
-                            .commit();
-                }
+                startManualTest();
                 break;
             case SENSOR:
 
@@ -517,12 +437,93 @@ public class TestActivity extends BaseActivity implements
                 boolean hasOtg = getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
                 if (hasOtg) {
                     final Intent sensorIntent = new Intent(this, SensorActivity.class);
-                    sensorIntent.putExtra(ConstantKey.TEST_INFO, mTestInfo);
+                    sensorIntent.putExtra(ConstantKey.TEST_INFO, testInfo);
                     startActivityForResult(sensorIntent, SENSOR_TEST);
                 } else {
                     ErrorMessages.alertFeatureNotSupported(this, true);
                 }
                 break;
+        }
+    }
+
+    private void startManualTest() {
+        if (testInfo.getHasImage()) {
+
+            (new Handler()).postDelayed(() -> {
+                Toast toast = Toast.makeText(this, R.string.take_photo_meter_result, Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.BOTTOM, 0, 200);
+                toast.show();
+            }, 400);
+
+            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Ensure that there's a camera activity to handle the intent
+            if (pictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    // Error occurred while creating the File
+                }
+
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+
+                    Uri photoURI;
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                        photoURI = Uri.fromFile(photoFile);
+                    } else {
+                        photoURI = FileProvider.getUriForFile(this,
+                                FILE_PROVIDER_AUTHORITY_URI,
+                                photoFile);
+                    }
+                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(pictureIntent, MANUAL_TEST);
+                }
+            }
+        } else {
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+
+            ft.replace(R.id.fragment_container,
+                    MeasurementInputFragment.newInstance(testInfo), "tubeFragment")
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    private void startCbtTest() {
+        (new Handler()).postDelayed(() -> {
+            Toast toast = Toast.makeText(this, R.string.take_photo_compartments, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.BOTTOM, 0, 200);
+            toast.show();
+        }, 400);
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+
+                Uri photoURI;
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                    photoURI = Uri.fromFile(photoFile);
+                } else {
+                    photoURI = FileProvider.getUriForFile(this,
+                            FILE_PROVIDER_AUTHORITY_URI,
+                            photoFile);
+                }
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CBT_TEST);
+            }
         }
     }
 
@@ -570,7 +571,7 @@ public class TestActivity extends BaseActivity implements
                     break;
                 case MANUAL_TEST:
                     fragmentTransaction.replace(R.id.fragment_container,
-                            MeasurementInputFragment.newInstance(mTestInfo), "manualFragment")
+                            MeasurementInputFragment.newInstance(testInfo), "manualFragment")
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                             .addToBackStack(null)
                             .commit();
@@ -639,7 +640,7 @@ public class TestActivity extends BaseActivity implements
         results.put(2, mpnValue.getMpn());
         results.put(3, mpnValue.getConfidence());
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(mTestInfo, results, null, -1, imageFileName);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, imageFileName);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
 
@@ -702,7 +703,7 @@ public class TestActivity extends BaseActivity implements
 
         results.put(1, result);
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(mTestInfo, results, null, -1, imageFileName);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, imageFileName);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
 

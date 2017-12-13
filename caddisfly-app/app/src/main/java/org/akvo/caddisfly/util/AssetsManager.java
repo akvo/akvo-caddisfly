@@ -43,9 +43,9 @@ public final class AssetsManager {
     private static AssetsManager assetsManager;
     private final AssetManager manager;
 
-    private String json;
-    private String experimentalJson;
-    private String customJson;
+    private final String json;
+    private final String experimentalJson;
+    private final String customJson;
 
     public AssetsManager() {
         this.manager = CaddisflyApp.getApp().getApplicationContext().getAssets();

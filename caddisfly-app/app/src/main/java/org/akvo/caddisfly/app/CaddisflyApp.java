@@ -43,7 +43,7 @@ import timber.log.Timber;
 public class CaddisflyApp extends Application {
 
     private static final String DATABASE_NAME = "calibration";
-    static CalibrationDatabase database;
+    private static CalibrationDatabase database;
     private static CaddisflyApp app; // Singleton
 
     /**

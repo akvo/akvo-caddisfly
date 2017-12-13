@@ -22,6 +22,7 @@ package org.akvo.caddisfly.ui;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -55,12 +56,17 @@ public class InstructionFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        mTestInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
-
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_instructions, container, false);
+
+        if (getArguments() != null) {
+            mTestInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+            b.imagePageRight.setOnClickListener(view ->
+                    b.viewPager.setCurrentItem(Math.min(mTestInfo.getInstructions().size() - 1,
+                            b.viewPager.getCurrentItem() + 1)));
+        }
 
         b.setCallback(this);
 
@@ -68,14 +74,9 @@ public class InstructionFragment extends Fragment {
 
         b.viewPager.setAdapter(mSectionsPagerAdapter);
 
-        b.imagePageLeft.setOnClickListener(view -> {
-            b.viewPager.setCurrentItem(Math.max(0, b.viewPager.getCurrentItem() - 1));
-        });
+        b.imagePageLeft.setOnClickListener(view ->
+                b.viewPager.setCurrentItem(Math.max(0, b.viewPager.getCurrentItem() - 1)));
 
-        b.imagePageRight.setOnClickListener(view -> {
-            b.viewPager.setCurrentItem(Math.min(mTestInfo.getInstructions().size() - 1,
-                    b.viewPager.getCurrentItem() + 1));
-        });
 
         b.pagerIndicator.setPageCount(mSectionsPagerAdapter.getCount());
 
@@ -114,15 +115,6 @@ public class InstructionFragment extends Fragment {
         return b.getRoot();
     }
 
-    public void onClickLeft() {
-        b.viewPager.setCurrentItem(Math.max(0, b.viewPager.getCurrentItem() - 1));
-    }
-
-    public void onClickRight() {
-        b.viewPager.setCurrentItem(Math.min(mTestInfo.getInstructions().size() - 1,
-                b.viewPager.getCurrentItem() + 1));
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -154,15 +146,16 @@ public class InstructionFragment extends Fragment {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
             fragmentInstructionBinding = DataBindingUtil.inflate(inflater,
                     R.layout.fragment_instruction, container, false);
 
-            instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
-
-            fragmentInstructionBinding.setInstruction(instruction);
+            if (getArguments() != null) {
+                instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
+                fragmentInstructionBinding.setInstruction(instruction);
+            }
 
             return fragmentInstructionBinding.getRoot();
         }

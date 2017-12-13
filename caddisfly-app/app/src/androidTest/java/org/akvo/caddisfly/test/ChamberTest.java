@@ -272,13 +272,13 @@ public class ChamberTest {
 //                        isDisplayed()));
 //        cameraView.perform(click());
 
-        sleep(6000);
+        sleep(20000);
 
 //        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
 //                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
 
-        onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
-                .check(matches(isDisplayed()));
+//        onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
+//                .check(matches(isDisplayed()));
 
         onView(withId(R.id.buttonAccept)).perform(click());
 

@@ -41,7 +41,7 @@ public final class ColorUtil {
     /**
      * The default color model used for analysis
      */
-    public static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
+    private static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
 
     /**
      * The maximum color distance before the color is considered out of range

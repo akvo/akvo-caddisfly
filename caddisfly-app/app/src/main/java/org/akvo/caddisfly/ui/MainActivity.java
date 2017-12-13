@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity {
 
     private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
-    NavigationController navigationController;
+    private NavigationController navigationController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

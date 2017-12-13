@@ -38,6 +38,7 @@ package org.akvo.caddisfly.ui;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -54,12 +55,10 @@ import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 
 public class TestInfoFragment extends Fragment {
 
-    private FragmentTestDetailBinding b;
-
     /**
-     * Creates test fragment for specific uuid
+     * Creates test fragment for specific test
      */
-    public static TestInfoFragment forProduct(TestInfo testInfo) {
+    public static TestInfoFragment getInstance(TestInfo testInfo) {
         TestInfoFragment fragment = new TestInfoFragment();
         Bundle args = new Bundle();
         args.putParcelable(ConstantKey.TEST_INFO, testInfo);
@@ -69,50 +68,41 @@ public class TestInfoFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate this data b layout
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_test_detail, container, false);
+        FragmentTestDetailBinding b = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_test_detail, container, false);
 
         final TestInfoViewModel model =
                 ViewModelProviders.of(this).get(TestInfoViewModel.class);
 
-        TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+        if (getArguments() != null) {
+            TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
 
-        if (testInfo != null) {
+            if (testInfo != null) {
 
-            if (AppPreferences.isDiagnosticMode()) {
-                b.swatchView.setVisibility(View.VISIBLE);
-                b.swatchView.setPatch(testInfo);
+                if (AppPreferences.isDiagnosticMode()) {
+                    b.swatchView.setVisibility(View.VISIBLE);
+                    b.swatchView.setPatch(testInfo);
+                }
+
+                model.setTest(testInfo);
+
+                b.setTestInfoViewModel(model);
+
+                b.setTestInfo(testInfo);
+
+                if (testInfo.getSubtype() == TestType.COLORIMETRIC_STRIP) {
+                    b.buttonPrepare.setText(R.string.prepare_test);
+                }
+
+                if (getActivity() != null) {
+                    getActivity().setTitle(testInfo.getName());
+                }
             }
-
-            model.setTest(testInfo);
-
-            b.setTestInfoViewModel(model);
-
-            b.setTestInfo(testInfo);
-
-            if (testInfo.getSubtype() == TestType.COLORIMETRIC_STRIP) {
-                b.buttonPrepare.setText(R.string.prepare_test);
-            }
-
-            getActivity().setTitle(testInfo.getName());
-
         }
 
         return b.getRoot();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-////        TestInfoViewModel.Factory factory = new TestInfoViewModel.Factory(
-////                getActivity().getApplication(), getArguments().getInt(KEY_PRODUCT_ID));
-////
-////        final TestInfoViewModel model = ViewModelProviders.of(this, factory)
-////                .get(ProductViewModel.class);
-//
     }
 }
