@@ -78,26 +78,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/eclipse_public_license"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layoutDirection="ltr"
-                android:lineSpacingMultiplier="1.5"
-                android:text="@string/eclipse_software"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="#555"
-                android:textIsSelectable="true" />
-
-            <TextView
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 android:text="@string/cca_share_license"
                 android:textStyle="bold" />
 
@@ -128,6 +108,26 @@
                 android:layoutDirection="ltr"
                 android:lineSpacingMultiplier="1.5"
                 android:text="@string/cca_software"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="#555"
+                android:textIsSelectable="true" />
+
+            <TextView
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/eclipse_public_license"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layoutDirection="ltr"
+                android:lineSpacingMultiplier="1.5"
+                android:text="@string/eclipse_software"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#555"
                 android:textIsSelectable="true" />

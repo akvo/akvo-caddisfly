@@ -35,17 +35,21 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.dao.CalibrationDao;
 import org.akvo.caddisfly.diagnostic.DiagnosticSwatchActivity;
 import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
@@ -57,6 +61,7 @@ import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.FileUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 import org.json.JSONObject;
 
@@ -66,6 +71,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class ChamberTestActivity extends BaseActivity implements
         BaseRunTest.OnResultListener,
         CalibrationItemFragment.OnCalibrationSelectedListener,
@@ -73,10 +80,12 @@ public class ChamberTestActivity extends BaseActivity implements
         SelectDilutionFragment.OnDilutionSelectedListener,
         EditCustomDilution.OnCustomDilutionListener {
 
-    private RunTest fragment;
+    private RunTest runTestFragment;
     private CalibrationItemFragment calibrationItemFragment;
     private FragmentManager fragmentManager;
-    private TestInfo mTestInfo;
+    private TestInfo testInfo;
+    private boolean cameraIsOk = false;
+    private int currentDilution = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,127 +101,84 @@ public class ChamberTestActivity extends BaseActivity implements
         // Add list fragment if this is first creation
         if (savedInstanceState == null) {
 
-            mTestInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
-            if (mTestInfo == null) {
+            testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+            if (testInfo == null) {
                 finish();
                 return;
             }
 
-            List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
-                    .calibrationDao().getAll(mTestInfo.getUuid());
+            loadCalibration(testConfigRepository);
 
-            if (calibrations.size() < 1) {
-                try {
-                    SwatchHelper.loadCalibrationFromFile(this, mTestInfo, "_AutoBackup");
-                    loadDetails();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (testInfo.getCameraAbove()) {
+                runTestFragment = ChamberBelowFragment.newInstance(testInfo);
             } else {
-                boolean colorFound = false;
-                for (Calibration calibration : calibrations) {
-                    if (calibration.color > 0){
-                        colorFound = true;
-                    }
-                }
-                if (!colorFound){
-                    try {
-                        SwatchHelper.loadCalibrationFromFile(this, mTestInfo, "_AutoBackup");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    loadDetails();
-                }
-            }
-
-            if (calibrations.size() < 1) {
-                testConfigRepository.addCalibration(mTestInfo);
-                calibrations = CaddisflyApp.getApp().getDB()
-                        .calibrationDao().getAll(mTestInfo.getUuid());
-            }
-
-            mTestInfo.setCalibrations(calibrations);
-
-            if (mTestInfo.getCameraAbove()) {
-                fragment = ChamberBelowFragment.newInstance(mTestInfo);
-            } else {
-                fragment = RunTestFragment.newInstance(mTestInfo);
+                runTestFragment = RunTestFragment.newInstance(testInfo);
             }
 
             if (getIntent().getBooleanExtra(ConstantKey.RUN_TEST, false)) {
                 start();
             } else {
-                calibrationItemFragment = CalibrationItemFragment.newInstance(mTestInfo);
-                fragmentManager.beginTransaction()
-                        .add(R.id.fragment_container, calibrationItemFragment, this.getLocalClassName()).commit();
+                calibrationItemFragment = CalibrationItemFragment.newInstance(testInfo);
+                goToFragment(calibrationItemFragment);
             }
+        }
+    }
+
+    private void goToFragment(Fragment fragment) {
+        if (fragmentManager.getFragments().size() > 0) {
+            fragmentManager.beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.fragment_container, fragment).commit();
+        } else {
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, fragment).commit();
         }
     }
 
     private void start() {
-        if (mTestInfo.getDilutions().size() > 0) {
-            Fragment selectDilutionFragment = SelectDilutionFragment.newInstance(mTestInfo);
-            if (calibrationItemFragment != null && calibrationItemFragment.isVisible()) {
-                fragmentManager.beginTransaction()
-                        .addToBackStack("dilution")
-                        .replace(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
-            } else {
-                fragmentManager.beginTransaction()
-                        .add(R.id.fragment_container, selectDilutionFragment, this.getLocalClassName()).commit();
-            }
+
+        if (testInfo.getDilutions().size() > 0) {
+            Fragment selectDilutionFragment = SelectDilutionFragment.newInstance(testInfo);
+            goToFragment(selectDilutionFragment);
         } else {
-            runTest(1);
+            runTest();
         }
 
         invalidateOptionsMenu();
 
     }
 
-    private void runTest(int dilution) {
-        fragment.setDilution(dilution);
+    private void runTest() {
+        if (cameraIsOk) {
 
-        if (mTestInfo.getDilutions().size() > 0) {
-            fragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
+            runTestFragment.setDilution(currentDilution);
+            goToFragment((Fragment) runTestFragment);
         } else {
-            if (calibrationItemFragment != null && calibrationItemFragment.isVisible()) {
-                fragmentManager.beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
-            } else {
-                fragmentManager.beginTransaction()
-                        .add(R.id.fragment_container, (Fragment) fragment, this.getLocalClassName()).commit();
-            }
+            checkCameraMegaPixel();
         }
 
         invalidateOptionsMenu();
-
     }
 
     public void runTestClick(View view) {
-        fragment.setCalibration(null);
+        runTestFragment.setCalibration(null);
         start();
     }
 
+    @Override
+    public void onCalibrationSelected(Calibration item) {
+        (new Handler()).postDelayed(() -> {
+            runTestFragment.setCalibration(item);
+            runTest();
+            invalidateOptionsMenu();
+        }, 150);
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
         setTitle(R.string.calibrate);
-    }
-
-    @Override
-    public void onCalibrationSelected(Calibration item) {
-        (new Handler()).postDelayed(() -> {
-            fragment.setCalibration(item);
-            fragmentManager.beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.fragment_container, (Fragment) fragment, "camera").commit();
-
-            invalidateOptionsMenu();
-        }, 150);
     }
 
     @Override
@@ -225,7 +191,6 @@ public class ChamberTestActivity extends BaseActivity implements
         invalidateOptionsMenu();
     }
 
-
     public void onEditCalibration(View view) {
         showEditCalibrationDetailsDialog(true);
     }
@@ -233,7 +198,7 @@ public class ChamberTestActivity extends BaseActivity implements
     private void showEditCalibrationDetailsDialog(boolean isEdit) {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         SaveCalibrationDialogFragment saveCalibrationDialogFragment =
-                SaveCalibrationDialogFragment.newInstance(mTestInfo, isEdit);
+                SaveCalibrationDialogFragment.newInstance(testInfo, isEdit);
         saveCalibrationDialogFragment.show(ft, "saveCalibrationDialog");
     }
 
@@ -245,7 +210,8 @@ public class ChamberTestActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (AppPreferences.isDiagnosticMode() && calibrationItemFragment.isVisible()) {
+        if (AppPreferences.isDiagnosticMode() &&
+                (calibrationItemFragment != null && calibrationItemFragment.isVisible())) {
             getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
         }
         return true;
@@ -256,11 +222,11 @@ public class ChamberTestActivity extends BaseActivity implements
         switch (item.getItemId()) {
             case R.id.actionSwatches:
                 final Intent intent = new Intent(this, DiagnosticSwatchActivity.class);
-                intent.putExtra(ConstantKey.TEST_INFO, mTestInfo);
+                intent.putExtra(ConstantKey.TEST_INFO, testInfo);
                 startActivity(intent);
                 return true;
             case R.id.menuLoad:
-                loadCalibration(this);
+                loadCalibrationFromFile(this);
                 loadDetails();
                 return true;
             case R.id.menuSave:
@@ -279,30 +245,67 @@ public class ChamberTestActivity extends BaseActivity implements
     private void loadDetails() {
 
         List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
-                .calibrationDao().getAll(mTestInfo.getUuid());
+                .calibrationDao().getAll(testInfo.getUuid());
 
-        mTestInfo.setCalibrations(calibrations);
+        testInfo.setCalibrations(calibrations);
         if (calibrationItemFragment != null) {
-            calibrationItemFragment.setAdapter(mTestInfo);
+            calibrationItemFragment.setAdapter(testInfo);
         }
 
         final TestInfoViewModel model =
                 ViewModelProviders.of(this).get(TestInfoViewModel.class);
 
-        model.setTest(mTestInfo);
+        model.setTest(testInfo);
+    }
+
+    private void loadCalibration(TestConfigRepository testConfigRepository) {
+        List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
+                .calibrationDao().getAll(testInfo.getUuid());
+
+        if (calibrations.size() < 1) {
+            try {
+                SwatchHelper.loadCalibrationFromFile(this, testInfo, "_AutoBackup");
+                loadDetails();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            boolean colorFound = false;
+            for (Calibration calibration : calibrations) {
+                if (calibration.color != 0) {
+                    colorFound = true;
+                }
+            }
+            if (!colorFound) {
+                try {
+                    SwatchHelper.loadCalibrationFromFile(this, testInfo, "_AutoBackup");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                loadDetails();
+            }
+        }
+
+        if (calibrations.size() < 1) {
+            testConfigRepository.addCalibration(testInfo);
+            calibrations = CaddisflyApp.getApp().getDB()
+                    .calibrationDao().getAll(testInfo.getUuid());
+        }
+
+        testInfo.setCalibrations(calibrations);
     }
 
     /**
      * Load the calibrated swatches from the calibration text file
      */
-    private void loadCalibration(@NonNull final Context context) {
+    private void loadCalibrationFromFile(@NonNull final Context context) {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.loadCalibration);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, R.layout.row_text);
 
-            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, mTestInfo.getUuid());
+            final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testInfo.getUuid());
 
             File[] listFilesTemp = null;
             if (path.exists() && path.isDirectory()) {
@@ -325,7 +328,7 @@ public class ChamberTestActivity extends BaseActivity implements
                         (dialog, which) -> {
                             String fileName = listFiles[which].getName();
                             try {
-                                SwatchHelper.loadCalibrationFromFile(context, mTestInfo, fileName);
+                                SwatchHelper.loadCalibrationFromFile(context, testInfo, fileName);
                                 loadDetails();
                             } catch (Exception ex) {
                                 AlertUtil.showError(context, R.string.error, getString(R.string.errorLoadingFile),
@@ -347,6 +350,7 @@ public class ChamberTestActivity extends BaseActivity implements
                                     String fileName = listFiles[position].getName();
                                     FileUtil.deleteFile(path, fileName);
                                     ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
+                                    //noinspection unchecked
                                     listAdapter.remove(listAdapter.getItem(position));
                                     alertDialog.dismiss();
                                     Toast.makeText(context, R.string.deleted, Toast.LENGTH_SHORT).show();
@@ -372,20 +376,20 @@ public class ChamberTestActivity extends BaseActivity implements
 
             double value = SwatchHelper.getAverageResult(resultDetails);
 
-            Result result = mTestInfo.Results().get(0);
-            result.setResult(value, dilution, mTestInfo.getMaxDilution());
+            Result result = testInfo.Results().get(0);
+            result.setResult(value, dilution, testInfo.getMaxDilution());
 
             fragmentManager.popBackStack();
             fragmentManager
                     .beginTransaction()
                     .addToBackStack(null)
                     .replace(R.id.fragment_container,
-                            ResultFragment.newInstance(mTestInfo), "result").commit();
+                            ResultFragment.newInstance(testInfo), "result").commit();
         } else {
 
             CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
             dao.insert(calibration);
-
+            CalibrationFile.saveCalibratedData(this, testInfo, calibration, 0);
             fragmentManager.popBackStackImmediate();
         }
     }
@@ -395,12 +399,12 @@ public class ChamberTestActivity extends BaseActivity implements
         Intent resultIntent = new Intent(getIntent());
         final SparseArray<String> results = new SparseArray<>();
 
-        for (int i = 0; i < mTestInfo.Results().size(); i++) {
-            Result result = mTestInfo.Results().get(i);
+        for (int i = 0; i < testInfo.Results().size(); i++) {
+            Result result = testInfo.Results().get(i);
             results.put(i + 1, result.getResult());
         }
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(mTestInfo,
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,
                 results, null, -1, "");
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
@@ -417,16 +421,55 @@ public class ChamberTestActivity extends BaseActivity implements
         if (!fragmentManager.popBackStackImmediate("dilution", 0)) {
             super.onBackPressed();
         }
-
     }
 
     @Override
     public void onDilutionSelected(int dilution) {
-        runTest(dilution);
+        currentDilution = dilution;
+        runTest();
     }
 
     @Override
     public void onCustomDilution(Integer dilution) {
-        runTest(dilution);
+        runTest();
     }
+
+    private void checkCameraMegaPixel() {
+
+        cameraIsOk = true;
+        if (PreferencesUtil.getBoolean(this, R.string.showMinMegaPixelDialogKey, true)) {
+            try {
+
+                if (CameraHelper.getMaxSupportedMegaPixelsByCamera(this) < Constants.MIN_CAMERA_MEGA_PIXELS) {
+
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+                    View checkBoxView = View.inflate(this, R.layout.dialog_message, null);
+                    CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+                    checkBox.setOnCheckedChangeListener((buttonView, isChecked)
+                            -> PreferencesUtil.setBoolean(getBaseContext(), R.string.showMinMegaPixelDialogKey, !isChecked));
+
+                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+                    builder.setTitle(R.string.warning);
+                    builder.setMessage(R.string.camera_not_good)
+                            .setView(checkBoxView)
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.continue_anyway, (dialog, id) -> runTest())
+                            .setNegativeButton(R.string.stop_test, (dialog, id) -> {
+                                dialog.dismiss();
+                                cameraIsOk = false;
+                                finish();
+                            }).show();
+
+                } else {
+                    runTest();
+                }
+            } catch (Exception e) {
+                Timber.e(e);
+            }
+        } else {
+            runTest();
+        }
+    }
+
 }

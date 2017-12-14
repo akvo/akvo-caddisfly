@@ -48,6 +48,7 @@ public class SettingsActivity extends BaseActivity
         findViewById(R.id.layoutContent3).setVisibility(View.GONE);
         findViewById(R.id.layoutContent4).setVisibility(View.GONE);
         findViewById(R.id.layoutContent5).setVisibility(View.GONE);
+        findViewById(R.id.layoutContent6).setVisibility(View.GONE);
     }
 
     @Override
@@ -99,9 +100,14 @@ public class SettingsActivity extends BaseActivity
                     .add(R.id.layoutContent5, new DiagnosticUserPreferenceFragment())
                     .commit();
 
+            getFragmentManager().beginTransaction()
+                    .add(R.id.layoutContent6, new DebuggingPreferenceFragment())
+                    .commit();
+
             findViewById(R.id.layoutContent3).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutContent4).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutContent5).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutContent6).setVisibility(View.VISIBLE);
         }
 
         mScrollView = findViewById(R.id.scrollViewSettings);

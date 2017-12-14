@@ -22,24 +22,10 @@
         android:key="preferenceCategoryDiagnostics"
         android:title="@string/diagnostics">
         <SwitchPreference
-            android:key="@string/ignoreTimeDelaysKey"
-            android:title="@string/ignoreTimeDelays" />
+            android:key="@string/showDebugMessagesKey"
+            android:title="@string/debuggingOn" />
         <SwitchPreference
-            android:key="@string/noSoundKey"
-            android:title="@string/noSound" />
-        <EditTextPreference
-            android:defaultValue="5"
-            android:dialogMessage="A number from 1 to 5"
-            android:key="@string/samplingsTimeKey"
-            android:maxLength="2"
-            android:numeric="integer"
-            android:title="Sampling times" />
-        <EditTextPreference
-            android:defaultValue="40"
-            android:dialogMessage="Enter a value below 400"
-            android:key="@string/colorDistanceToleranceKey"
-            android:maxLength="3"
-            android:numeric="integer"
-            android:title="Max color distance" />
+            android:key="@string/showBlueToothDataKey"
+            android:title="@string/showBluetoothData" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

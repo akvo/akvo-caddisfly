@@ -31,8 +31,8 @@ public final class AppConfig {
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
     public static final int APP_EXPIRY_DAY = 15;
-    public static final int APP_EXPIRY_MONTH = 12;
-    public static final int APP_EXPIRY_YEAR = 2017;
+    public static final int APP_EXPIRY_MONTH = 1;
+    public static final int APP_EXPIRY_YEAR = 2018;
 
     /**
      * To launch Flow app.

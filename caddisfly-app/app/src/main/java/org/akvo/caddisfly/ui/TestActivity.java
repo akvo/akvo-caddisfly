@@ -69,6 +69,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtResultFragment;
@@ -95,6 +96,7 @@ import timber.log.Timber;
 
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
 
+@SuppressWarnings("deprecation")
 public class TestActivity extends BaseActivity implements
         CompartmentBagFragment.OnCompartmentBagSelectListener,
         MeasurementInputFragment.OnSubmitResultListener {
@@ -116,7 +118,6 @@ public class TestActivity extends BaseActivity implements
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
 
-    private InstructionFragment instructionFragment;
     private String mCurrentPhotoPath;
     private String imageFileName = "";
     private ActivityTestBinding b;
@@ -129,6 +130,7 @@ public class TestActivity extends BaseActivity implements
     private TestInfo testInfo;
     private String mResult = "00000";
     private FragmentManager fragmentManager;
+    private boolean cameraIsOk = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +164,7 @@ public class TestActivity extends BaseActivity implements
 
             mIsExternalAppCall = true;
             mExternalAppLanguageCode = intent.getStringExtra(SensorConstants.LANGUAGE);
-//            CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
+            CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
             String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
 
             if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())) {
@@ -193,12 +195,10 @@ public class TestActivity extends BaseActivity implements
                 alertTestTypeNotSupported();
             } else {
 
-                if (testInfo != null) {
-                    TestInfoFragment fragment = TestInfoFragment.getInstance(testInfo);
+                TestInfoFragment fragment = TestInfoFragment.getInstance(testInfo);
 
-                    fragmentManager.beginTransaction()
-                            .add(R.id.fragment_container, fragment, TestActivity.class.getSimpleName()).commit();
-                }
+                fragmentManager.beginTransaction()
+                        .add(R.id.fragment_container, fragment, TestActivity.class.getSimpleName()).commit();
             }
         }
 
@@ -250,7 +250,7 @@ public class TestActivity extends BaseActivity implements
         if (testInfo != null) {
             if (testInfo.getSubtype() == TestType.BLUETOOTH) {
                 setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
-            }else{
+            } else {
                 setTitle(testInfo.getName());
             }
         }
@@ -283,7 +283,7 @@ public class TestActivity extends BaseActivity implements
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
-            initializeTest();
+            startTest();
         }
     }
 
@@ -296,7 +296,7 @@ public class TestActivity extends BaseActivity implements
 
     public void onInstructionsClick(View view) {
 
-        instructionFragment = InstructionFragment.getInstance(testInfo);
+        InstructionFragment instructionFragment = InstructionFragment.getInstance(testInfo);
 
         getSupportFragmentManager()
                 .beginTransaction()
@@ -331,14 +331,12 @@ public class TestActivity extends BaseActivity implements
     public void onStartTestClick(View view) {
 
         String[] checkPermissions = permissions;
-        switch (testInfo.getSubtype()) {
-            case BLUETOOTH:
-                checkPermissions = bluetoothPermissions;
-                break;
+        if (testInfo.getSubtype() == TestType.BLUETOOTH) {
+            checkPermissions = bluetoothPermissions;
         }
 
         if (permissionsDelegate.hasPermissions(checkPermissions)) {
-            initializeTest();
+            startTest();
         } else {
             permissionsDelegate.requestPermissions(checkPermissions);
         }
@@ -352,58 +350,7 @@ public class TestActivity extends BaseActivity implements
         startActivityForResult(intent, BLUETOOTH_TEST);
     }
 
-    private void initializeTest() {
-
-        switch (testInfo.getSubtype()) {
-            case COLORIMETRIC_LIQUID:
-            case COLORIMETRIC_STRIP:
-                checkCameraAndStart();
-                break;
-            default:
-                startTest();
-                break;
-        }
-    }
-
-    private void checkCameraAndStart() {
-
-        if (PreferencesUtil.getBoolean(this, R.string.showMinMegaPixelDialogKey, true)) {
-            try {
-
-                if (CameraHelper.getMaxSupportedMegaPixelsByCamera(this) < Constants.MIN_CAMERA_MEGA_PIXELS) {
-
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-                    View checkBoxView = View.inflate(this, R.layout.dialog_message, null);
-                    CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
-                    checkBox.setOnCheckedChangeListener((buttonView, isChecked)
-                            -> PreferencesUtil.setBoolean(getBaseContext(), R.string.showMinMegaPixelDialogKey, !isChecked));
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle(R.string.warning);
-                    builder.setMessage(R.string.camera_not_good)
-                            .setView(checkBoxView)
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.continue_anyway, (dialog, id) -> startTest())
-                            .setNegativeButton(R.string.stop_test, (dialog, id) -> {
-                                dialog.dismiss();
-                                finish();
-                            }).show();
-
-                } else {
-                    startTest();
-                }
-            } catch (Exception e) {
-                Timber.e(e);
-            }
-        } else {
-            startTest();
-        }
-    }
-
     private void startTest() {
-        final Intent intent;
-
         switch (testInfo.getSubtype()) {
             case BLUETOOTH:
                 startBluetoothTest();
@@ -412,37 +359,60 @@ public class TestActivity extends BaseActivity implements
                 startCbtTest();
                 break;
             case COLORIMETRIC_LIQUID:
-                if (!SwatchHelper.isSwatchListValid(testInfo)) {
-                    ErrorMessages.alertCalibrationIncomplete(this, testInfo);
-                    return;
-                }
-
-                intent = new Intent(this, ChamberTestActivity.class);
-                intent.putExtra(ConstantKey.RUN_TEST, true);
-                intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-                startActivityForResult(intent, CHAMBER_TEST);
+                startChamberTest();
                 break;
             case COLORIMETRIC_STRIP:
-                intent = new Intent(this, StripMeasureActivity.class);
-                intent.putExtra("internal", true);
-                intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-                startActivity(intent);
+                if (cameraIsOk) {
+                    startStripTest();
+                } else {
+                    checkCameraMegaPixel();
+                }
                 break;
             case MANUAL:
                 startManualTest();
                 break;
             case SENSOR:
-
-                //Only start the sensor activity if the device supports 'On The Go'(OTG) feature
-                boolean hasOtg = getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
-                if (hasOtg) {
-                    final Intent sensorIntent = new Intent(this, SensorActivity.class);
-                    sensorIntent.putExtra(ConstantKey.TEST_INFO, testInfo);
-                    startActivityForResult(sensorIntent, SENSOR_TEST);
-                } else {
-                    ErrorMessages.alertFeatureNotSupported(this, true);
-                }
+                startSensorTest();
                 break;
+        }
+    }
+
+    private void startSensorTest() {
+        //Only start the sensor activity if the device supports 'On The Go'(OTG) feature
+        boolean hasOtg = getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
+        if (hasOtg) {
+            final Intent sensorIntent = new Intent(this, SensorActivity.class);
+            sensorIntent.putExtra(ConstantKey.TEST_INFO, testInfo);
+            startActivityForResult(sensorIntent, SENSOR_TEST);
+        } else {
+            ErrorMessages.alertFeatureNotSupported(this, true);
+        }
+    }
+
+    private void startStripTest() {
+        Intent intent;
+        intent = new Intent(this, StripMeasureActivity.class);
+        intent.putExtra("internal", true);
+        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+        startActivity(intent);
+    }
+
+    private void startChamberTest() {
+
+        //Only start the colorimetry calibration if the device has a camera flash
+        if (AppPreferences.useExternalCamera()
+                || CameraHelper.hasFeatureCameraFlash(this,
+                R.string.cannotStartTest, R.string.ok, null)) {
+
+            if (!SwatchHelper.isSwatchListValid(testInfo)) {
+                ErrorMessages.alertCalibrationIncomplete(this, testInfo);
+                return;
+            }
+
+            Intent intent = new Intent(this, ChamberTestActivity.class);
+            intent.putExtra(ConstantKey.RUN_TEST, true);
+            intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+            startActivityForResult(intent, CHAMBER_TEST);
         }
     }
 
@@ -595,6 +565,7 @@ public class TestActivity extends BaseActivity implements
                     this.setResult(Activity.RESULT_OK, intent);
                     finish();
                     break;
+                default:
             }
         }
     }
@@ -630,8 +601,9 @@ public class TestActivity extends BaseActivity implements
 
         File imageFile = new File(mCurrentPhotoPath);
         if (imageFile.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            new File(mCurrentPhotoPath).delete();
+            if (!new File(mCurrentPhotoPath).delete()) {
+                Toast.makeText(this, "Could not delete file", Toast.LENGTH_SHORT).show();
+            }
         }
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
@@ -647,25 +619,6 @@ public class TestActivity extends BaseActivity implements
         setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
-    }
-
-    @NonNull
-    @Deprecated
-    private String getTestName(@NonNull String title) {
-
-        String tempTitle = title;
-        //ensure we have short name to display as title
-        if (title.length() > 0) {
-            if (title.length() > 30) {
-                tempTitle = title.substring(0, 30);
-            }
-            if (title.contains("-")) {
-                tempTitle = title.substring(0, title.indexOf("-")).trim();
-            }
-        } else {
-            tempTitle = getString(R.string.error);
-        }
-        return tempTitle;
     }
 
     @Override
@@ -696,8 +649,9 @@ public class TestActivity extends BaseActivity implements
 
             File imageFile = new File(mCurrentPhotoPath);
             if (imageFile.exists()) {
-                //noinspection ResultOfMethodCallIgnored
-                new File(mCurrentPhotoPath).delete();
+                if (!new File(mCurrentPhotoPath).delete()) {
+                    Toast.makeText(this, "Could not delete file", Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
@@ -710,6 +664,63 @@ public class TestActivity extends BaseActivity implements
         setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
+    }
+
+    @NonNull
+    @Deprecated
+    private String getTestName(@NonNull String title) {
+
+        String tempTitle = title;
+        //ensure we have short name to display as title
+        if (title.length() > 0) {
+            if (title.length() > 30) {
+                tempTitle = title.substring(0, 30);
+            }
+            if (title.contains("-")) {
+                tempTitle = title.substring(0, title.indexOf("-")).trim();
+            }
+        } else {
+            tempTitle = getString(R.string.error);
+        }
+        return tempTitle;
+    }
+
+    private void checkCameraMegaPixel() {
+
+        cameraIsOk = true;
+        if (PreferencesUtil.getBoolean(this, R.string.showMinMegaPixelDialogKey, true)) {
+            try {
+
+                if (CameraHelper.getMaxSupportedMegaPixelsByCamera(this) < Constants.MIN_CAMERA_MEGA_PIXELS) {
+
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+                    View checkBoxView = View.inflate(this, R.layout.dialog_message, null);
+                    CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
+                    checkBox.setOnCheckedChangeListener((buttonView, isChecked)
+                            -> PreferencesUtil.setBoolean(getBaseContext(), R.string.showMinMegaPixelDialogKey, !isChecked));
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle(R.string.warning);
+                    builder.setMessage(R.string.camera_not_good)
+                            .setView(checkBoxView)
+                            .setCancelable(false)
+                            .setPositiveButton(R.string.continue_anyway, (dialog, id) -> startTest())
+                            .setNegativeButton(R.string.stop_test, (dialog, id) -> {
+                                dialog.dismiss();
+                                cameraIsOk = false;
+                                finish();
+                            }).show();
+
+                } else {
+                    startTest();
+                }
+            } catch (Exception e) {
+                Timber.e(e);
+            }
+        } else {
+            startTest();
+        }
     }
 
     public static class IncubationTimesDialogFragment extends DialogFragment {
@@ -746,4 +757,5 @@ public class TestActivity extends BaseActivity implements
             }
         }
     }
+
 }

@@ -28,11 +28,12 @@ import android.view.MenuItem;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.databinding.ActivityTestListBinding;
+import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.liquid.ChamberTestActivity;
 
 public class TestListActivity extends BaseActivity
@@ -41,7 +42,7 @@ public class TestListActivity extends BaseActivity
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    private TestInfo mTestInfo;
+    private TestInfo testInfo;
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -57,8 +58,8 @@ public class TestListActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityTestListBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.activity_test_list);
+//        ActivityTestListBinding binding =
+        DataBindingUtil.setContentView(this, R.layout.activity_test_list);
 
         setTitle(R.string.selectTest);
 
@@ -94,39 +95,50 @@ public class TestListActivity extends BaseActivity
     }
 
     private void startTest(boolean hideList) {
-        if (mTestInfo != null && mTestInfo.getIsGroup()) {
+        if (testInfo != null && testInfo.getIsGroup()) {
             return;
         }
 
-        if (mTestInfo == null || mTestInfo.getUuid() == null || mTestInfo.Results().size() == 0) {
+        if (testInfo == null || testInfo.getUuid() == null || testInfo.Results().size() == 0) {
             ErrorMessages.alertCouldNotLoadConfig(this);
             return;
         }
 
-        Intent intent;
-        if (mTestInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
-            if (mTestInfo.Results().get(0).getColors().size() > 0) {
-                intent = new Intent(this, ChamberTestActivity.class);
-            } else {
-                ErrorMessages.alertCouldNotLoadConfig(this);
-                return;
-            }
+        if (testInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
+            startCalibration();
         } else {
-            intent = new Intent(this, TestActivity.class);
+            Intent intent = new Intent(this, TestActivity.class);
+            intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+            intent.putExtra("internal", true);
+            startActivity(intent);
         }
-
-        intent.putExtra("internal", true);
-        intent.putExtra(ConstantKey.TEST_INFO, mTestInfo);
-        startActivity(intent);
 
         if (hideList) {
             finish();
         }
     }
 
+    private void startCalibration() {
+        //Only start the colorimetry calibration if the device has a camera flash
+        if (AppPreferences.useExternalCamera()
+                || CameraHelper.hasFeatureCameraFlash(this,
+                R.string.cannotCalibrate, R.string.ok, null)) {
+
+            final Intent intent;
+            if (testInfo.Results().get(0).getColors().size() > 0) {
+                intent = new Intent(this, ChamberTestActivity.class);
+            } else {
+                ErrorMessages.alertCouldNotLoadConfig(this);
+                return;
+            }
+            intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+            startActivity(intent);
+        }
+    }
+
     @Override
     public void onListFragmentInteraction(TestInfo testInfo) {
-        mTestInfo = testInfo;
+        this.testInfo = testInfo;
         navigateToTestDetails(false);
     }
 
