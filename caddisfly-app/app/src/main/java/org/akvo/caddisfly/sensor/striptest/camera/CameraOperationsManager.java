@@ -25,9 +25,16 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StriptestHandler;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
+
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * Created by markwestra on 19/07/2017
@@ -48,10 +55,18 @@ public class CameraOperationsManager {
 
     private boolean changingExposure = false;
     private StriptestHandler mStriptestHandler;
+
+    //todo: remove debug code
+    private byte[] bytes;
+
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera arg1) {
+
+            //todo: remove debug code
+            StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
+
             // store image for later use
-            StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
+//            StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
             MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
@@ -70,9 +85,21 @@ public class CameraOperationsManager {
         }
     };
 
-    public CameraOperationsManager() {
-//        this.configManager = new CameraConfigurationManager();
-//        this.context = context;
+    public CameraOperationsManager(String name) {
+
+        //todo: remove debug code
+        File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, "");
+        File photo = new File(path, name + ".jpg");
+
+        bytes = new byte[(int) photo.length()];
+        BufferedInputStream bis;
+        try {
+            bis = new BufferedInputStream(new FileInputStream(photo));
+            DataInputStream dis = new DataInputStream(bis);
+            dis.readFully(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public CameraPreview initCamera(Context context) {

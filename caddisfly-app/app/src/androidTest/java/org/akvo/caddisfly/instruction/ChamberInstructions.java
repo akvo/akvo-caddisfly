@@ -217,11 +217,11 @@ public class ChamberInstructions {
         onView(withText(getString(mActivityTestRule.getActivity(), R.string.stripTest))).perform(click());
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        List<TestInfo> testList = testConfigRepository.getTests(TestType.COLORIMETRIC_STRIP);
+        List<TestInfo> testList = testConfigRepository.getTests(TestType.STRIP_TEST);
 
         for (int i = 0; i < TestConstants.STRIP_TESTS_COUNT; i++) {
 
-            assertEquals(testList.get(i).getSubtype(), TestType.COLORIMETRIC_STRIP);
+            assertEquals(testList.get(i).getSubtype(), TestType.STRIP_TEST);
 
             String id = testList.get(i).getUuid();
             id = id.substring(id.lastIndexOf("-") + 1, id.length());

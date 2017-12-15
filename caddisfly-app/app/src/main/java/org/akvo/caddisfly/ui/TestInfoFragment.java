@@ -93,7 +93,7 @@ public class TestInfoFragment extends Fragment {
 
                 b.setTestInfo(testInfo);
 
-                if (testInfo.getSubtype() == TestType.COLORIMETRIC_STRIP) {
+                if (testInfo.getSubtype() == TestType.STRIP_TEST) {
                     b.buttonPrepare.setText(R.string.prepare_test);
                 }
 

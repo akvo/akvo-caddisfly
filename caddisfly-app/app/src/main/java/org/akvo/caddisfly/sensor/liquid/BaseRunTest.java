@@ -286,7 +286,7 @@ public class BaseRunTest extends Fragment implements RunTest {
                     }
                 }
 
-                mListener.onResult(results, mCalibration);
+                mListener.onResult(results, mCalibration, croppedBitmap);
             }
         }
     }
@@ -380,6 +380,6 @@ public class BaseRunTest extends Fragment implements RunTest {
     }
 
     public interface OnResultListener {
-        void onResult(ArrayList<ResultDetail> results, Calibration calibration);
+        void onResult(ArrayList<ResultDetail> results, Calibration calibration, Bitmap croppedBitmap);
     }
 }

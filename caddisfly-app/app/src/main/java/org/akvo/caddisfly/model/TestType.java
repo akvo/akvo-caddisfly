@@ -30,14 +30,14 @@ public enum TestType {
      * color change in the solution.
      */
     @SerializedName("cuvette")
-    COLORIMETRIC_LIQUID,
+    CHAMBER_TEST,
 
     /**
      * Strip paper is dipped into the sample and color is analysed from the resulting
      * color change on the strip paper.
      */
     @SerializedName("striptest")
-    COLORIMETRIC_STRIP,
+    STRIP_TEST,
 
     /**
      * External sensors connected to the phone/device.

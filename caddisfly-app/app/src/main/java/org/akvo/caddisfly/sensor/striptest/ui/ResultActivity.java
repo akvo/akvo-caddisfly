@@ -97,14 +97,13 @@ public class ResultActivity extends BaseActivity {
             Intent intent = new Intent(getIntent());
             String path;
 
-            if (getIntent().getBooleanExtra(ConstantKey.SEND_IMAGE_IN_RESULT,
-                    false) && totalImage != null) {
+            if (totalImage != null) {
 
                 // store image on sd card
                 path = FileUtil.writeBitmapToExternalStorage(totalImage,
                         "/result-images", totalImageUrl);
 
-                intent.putExtra(SensorConstants.IMAGE, path);
+                intent.putExtra(ConstantKey.IMAGE, path);
 
                 if (path.length() == 0) {
                     totalImageUrl = "";

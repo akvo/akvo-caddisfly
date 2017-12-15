@@ -25,6 +25,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -70,6 +71,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import timber.log.Timber;
 
@@ -86,6 +88,7 @@ public class ChamberTestActivity extends BaseActivity implements
     private TestInfo testInfo;
     private boolean cameraIsOk = false;
     private int currentDilution = 1;
+    private Bitmap mCroppedBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -369,7 +372,7 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     @Override
-    public void onResult(ArrayList<ResultDetail> resultDetails, Calibration calibration) {
+    public void onResult(ArrayList<ResultDetail> resultDetails, Calibration calibration, Bitmap croppedBitmap) {
 
         if (calibration == null) {
 
@@ -385,7 +388,10 @@ public class ChamberTestActivity extends BaseActivity implements
                     .beginTransaction()
                     .addToBackStack(null)
                     .replace(R.id.fragment_container,
-                            ResultFragment.newInstance(testInfo), "result").commit();
+                            ResultFragment.newInstance(testInfo), null).commit();
+
+            mCroppedBitmap = croppedBitmap;
+
         } else {
 
             CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
@@ -405,8 +411,13 @@ public class ChamberTestActivity extends BaseActivity implements
             results.put(i + 1, result.getResult());
         }
 
+        // Save photo taken during the test
+        String resultImageUrl = UUID.randomUUID().toString() + ".png";
+        String path = FileUtil.writeBitmapToExternalStorage(mCroppedBitmap, "/result-images", resultImageUrl);
+        resultIntent.putExtra(ConstantKey.IMAGE, path);
+
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,
-                results, null, -1, "");
+                results, null, -1, resultImageUrl);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
         // TODO: Remove this when obsolete

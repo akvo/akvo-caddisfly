@@ -103,7 +103,7 @@ public class TestListActivity extends BaseActivity
             return;
         }
 
-        if (testInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
+        if (testInfo.getSubtype() == TestType.CHAMBER_TEST) {
             startCalibration();
         } else {
             Intent intent = new Intent(this, TestActivity.class);

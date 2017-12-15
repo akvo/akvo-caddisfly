@@ -33,6 +33,7 @@ import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.repository.TestConfigRepository;
+import org.akvo.caddisfly.sensor.cbt.CbtActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -41,15 +42,11 @@ import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
-import org.robolectric.shadows.ShadowToast;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static junit.framework.Assert.assertNull;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 public class CbtTest {
@@ -118,7 +115,11 @@ public class CbtTest {
         Button button = activity.findViewById(R.id.button_prepare);
         button.performClick();
 
-        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(null));
+        Intent nextIntent = shadowOf(activity).getNextStartedActivity();
+
+        assertNull(nextIntent);
+
+//        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(null));
 
         ShadowApplication application = Shadows.shadowOf(activity.getApplication());
         application.grantPermissions(permissions);
@@ -126,16 +127,22 @@ public class CbtTest {
 
         button.performClick();
 
-        CountDownLatch latch = new CountDownLatch(1);
-        try {
-            latch.await(1, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
-        assertThat(ShadowToast.getTextOfLatestToast(), equalTo("Take a photo of the compartment bag"));
+        Intent nextIntent2 = shadowOf(activity).getNextStartedActivity();
+        if (nextIntent2.getComponent() != null) {
+            assertEquals(CbtActivity.class.getCanonicalName(),
+                    nextIntent2.getComponent().getClassName());
+        }
+
+//        CountDownLatch latch = new CountDownLatch(1);
+//        try {
+//            latch.await(1, TimeUnit.SECONDS);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
+//        assertThat(ShadowToast.getTextOfLatestToast(), equalTo("Take a photo of the compartment bag"));
 
     }
 }

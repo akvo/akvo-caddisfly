@@ -86,7 +86,7 @@ public class ChamberTest {
     @Test
     public void testCount() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.COLORIMETRIC_LIQUID);
+        intent.putExtra("type", TestType.CHAMBER_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -114,7 +114,7 @@ public class ChamberTest {
     @Test
     public void testTitles() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.COLORIMETRIC_LIQUID);
+        intent.putExtra("type", TestType.CHAMBER_TEST);
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
         controller.start().visible();
@@ -135,7 +135,7 @@ public class ChamberTest {
         String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.COLORIMETRIC_LIQUID);
+        intent.putExtra("type", TestType.CHAMBER_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 

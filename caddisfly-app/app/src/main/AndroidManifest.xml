@@ -19,6 +19,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.akvo.caddisfly">
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -94,31 +95,30 @@
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
 
-        <!--USB Sensor-->
+        <!-- USB Sensor -->
         <activity
             android:name=".sensor.usb.SensorActivity"
             android:screenOrientation="nosensor" />
         <!-- /USB Sensor -->
 
+
         <!-- StripTest -->
         <activity
             android:name=".sensor.striptest.ui.StripMeasureActivity"
             android:screenOrientation="nosensor" />
-
         <activity
             android:name=".sensor.striptest.ui.ResultActivity"
             android:screenOrientation="nosensor" />
         <!-- /StripTest -->
 
+
         <!-- Bluetooth -->
         <activity
             android:name=".sensor.bluetooth.DeviceControlActivity"
             android:screenOrientation="nosensor" />
-
         <activity
             android:name=".sensor.bluetooth.DeviceScanActivity"
             android:screenOrientation="nosensor" />
-
         <activity
             android:name=".sensor.liquid.ChamberTestActivity"
             android:screenOrientation="nosensor" />
@@ -127,6 +127,7 @@
             android:name=".sensor.bluetooth.BluetoothLeService"
             android:enabled="true" />
         <!-- /Bluetooth -->
+
 
         <!-- USB -->
         <activity
@@ -148,12 +149,12 @@
             android:enabled="true" />
         <!-- /USB -->
 
+
         <!-- Diagnostic -->
         <activity
             android:name=".ui.DiagnosticInfoActivity"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
-
         <activity
             android:name=".diagnostic.DiagnosticSwatchActivity"
             android:screenOrientation="nosensor" />
@@ -169,6 +170,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".sensor.cbt.CbtActivity" />
+        <activity android:name=".sensor.manual.ManualTestActivity"></activity>
     </application>
 
 </manifest>

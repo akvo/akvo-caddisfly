@@ -53,7 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import static org.akvo.caddisfly.model.TestType.COLORIMETRIC_LIQUID;
+import static org.akvo.caddisfly.model.TestType.CHAMBER_TEST;
 
 public class MainActivity extends BaseActivity {
 
@@ -140,7 +140,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onStripTestsClick(View view) {
-        navigationController.navigateToTestType(TestType.COLORIMETRIC_STRIP);
+        navigationController.navigateToTestType(TestType.STRIP_TEST);
     }
 
     public void onBluetoothDeviceClick(View view) {
@@ -157,7 +157,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onCalibrateClick(View view) {
-        navigationController.navigateToTestType(COLORIMETRIC_LIQUID);
+        navigationController.navigateToTestType(CHAMBER_TEST);
     }
 
     public void onCbtClick(View view) {

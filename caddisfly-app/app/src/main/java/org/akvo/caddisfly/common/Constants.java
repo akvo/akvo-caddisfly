@@ -25,4 +25,8 @@ public class Constants {
     public static final float MAX_TILT_DIFF = 0.03f;
 
     public static final int MIN_CAMERA_MEGA_PIXELS = 5;
+
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+
 }

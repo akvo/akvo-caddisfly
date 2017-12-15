@@ -25,6 +25,7 @@ import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.ConstantJsonKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.model.GroupType;
@@ -110,25 +111,25 @@ public final class TestConfigHelper {
 
         try {
 
-            resultJson.put(SensorConstants.TYPE, SensorConstants.TYPE_NAME);
-            resultJson.put(SensorConstants.NAME, testInfo.getName());
-            resultJson.put(SensorConstants.UUID, testInfo.getUuid());
+            resultJson.put(ConstantJsonKey.TYPE, SensorConstants.TYPE_NAME);
+            resultJson.put(ConstantJsonKey.NAME, testInfo.getName());
+            resultJson.put(ConstantJsonKey.UUID, testInfo.getUuid());
 
             JSONArray resultsJsonArray = new JSONArray();
             for (Result subTest : testInfo.Results()) {
                 JSONObject subTestJson = new JSONObject();
-                subTestJson.put(SensorConstants.NAME, subTest.getName());
-                subTestJson.put(SensorConstants.UNIT, subTest.getUnit());
-                subTestJson.put(SensorConstants.ID, subTest.getId());
+                subTestJson.put(ConstantJsonKey.NAME, subTest.getName());
+                subTestJson.put(ConstantJsonKey.UNIT, subTest.getUnit());
+                subTestJson.put(ConstantJsonKey.ID, subTest.getId());
 
                 // If a result exists for the sub test id then add it
                 int id = subTest.getId();
                 if (results.size() >= id) {
-                    subTestJson.put(SensorConstants.VALUE, results.get(id));
+                    subTestJson.put(ConstantJsonKey.VALUE, results.get(id));
 
                     // if there is a bracket result, include it.
                     if (brackets != null && brackets.get(id) != null) {
-                        subTestJson.put(SensorConstants.BRACKET, brackets.get(id));
+                        subTestJson.put(ConstantJsonKey.BRACKET, brackets.get(id));
                     }
                 }
 
@@ -155,24 +156,24 @@ public final class TestConfigHelper {
                 }
             }
 
-            resultJson.put(SensorConstants.RESULT, resultsJsonArray);
+            resultJson.put(ConstantJsonKey.RESULT, resultsJsonArray);
 
             if (!resultImageUrl.isEmpty()) {
-                resultJson.put(SensorConstants.IMAGE, resultImageUrl);
+                resultJson.put(ConstantJsonKey.IMAGE, resultImageUrl);
             }
 
             // Add current date to result
-            resultJson.put("testDate", new SimpleDateFormat(SensorConstants.DATE_TIME_FORMAT, Locale.US)
+            resultJson.put(ConstantJsonKey.TEST_DATE, new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US)
                     .format(Calendar.getInstance().getTime()));
 
             // Add user preference details to the result
-            resultJson.put(SensorConstants.USER, TestConfigHelper.getUserPreferences());
+            resultJson.put(ConstantJsonKey.USER, TestConfigHelper.getUserPreferences());
 
             // Add app details to the result
-            resultJson.put(SensorConstants.APP, TestConfigHelper.getAppDetails());
+            resultJson.put(ConstantJsonKey.APP, TestConfigHelper.getAppDetails());
 
             // Add standard diagnostic details to the result
-            resultJson.put(SensorConstants.DEVICE, TestConfigHelper.getDeviceDetails());
+            resultJson.put(ConstantJsonKey.DEVICE, TestConfigHelper.getDeviceDetails());
 
         } catch (JSONException e) {
             Timber.e(e);
@@ -230,9 +231,9 @@ public final class TestConfigHelper {
             JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject item = array.getJSONObject(i);
-                if (item.has(SensorConstants.SHORT_CODE)
-                        && shortCode.equalsIgnoreCase(item.getString(SensorConstants.SHORT_CODE))) {
-                    return item.getString(SensorConstants.UUID);
+                if (item.has(ConstantJsonKey.SHORT_CODE)
+                        && shortCode.equalsIgnoreCase(item.getString(ConstantJsonKey.SHORT_CODE))) {
+                    return item.getString(ConstantJsonKey.UUID);
                 }
             }
 

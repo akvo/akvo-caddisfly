@@ -109,7 +109,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         }
 
         if (mCameraOpsManager == null) {
-            mCameraOpsManager = new CameraOperationsManager();
+            mCameraOpsManager = new CameraOperationsManager(testInfo.getName());
         }
 
         // create striptestHandler

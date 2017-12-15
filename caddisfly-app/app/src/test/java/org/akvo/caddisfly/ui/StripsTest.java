@@ -57,7 +57,7 @@ public class StripsTest {
     public void testCount() throws Exception {
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.COLORIMETRIC_STRIP);
+        intent.putExtra("type", TestType.STRIP_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -80,7 +80,7 @@ public class StripsTest {
     @Test
     public void testTitles() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.COLORIMETRIC_STRIP);
+        intent.putExtra("type", TestType.STRIP_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -104,7 +104,7 @@ public class StripsTest {
         String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.COLORIMETRIC_STRIP);
+        intent.putExtra("type", TestType.STRIP_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
