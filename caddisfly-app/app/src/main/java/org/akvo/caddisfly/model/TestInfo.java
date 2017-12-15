@@ -447,7 +447,7 @@ public class TestInfo implements Parcelable {
         }
     }
 
-    public List<Result> Results() {
+    public List<Result> getResults() {
         return results;
     }
 

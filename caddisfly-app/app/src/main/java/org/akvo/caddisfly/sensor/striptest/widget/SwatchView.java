@@ -69,9 +69,9 @@ public class SwatchView extends View {
         super.onDraw(canvas);
 
         if (testInfo != null) {
-            for (int resultIndex = 0; resultIndex < testInfo.Results().size(); resultIndex++) {
+            for (int resultIndex = 0; resultIndex < testInfo.getResults().size(); resultIndex++) {
 
-                List<ColorItem> colors = testInfo.Results().get(resultIndex).getColors();
+                List<ColorItem> colors = testInfo.getResults().get(resultIndex).getColors();
                 if (colors.size() > 0) {
                     int colorCount = colors.size();
 
@@ -101,7 +101,7 @@ public class SwatchView extends View {
                         canvas.drawRect(MARGIN + (i * totalWidth), MARGIN + (resultIndex * lineHeight),
                                 i * totalWidth + blockWidth, (resultIndex * lineHeight) + blockWidth, paintColor);
 
-                        if (testInfo.getGroupingType() == GroupType.INDIVIDUAL || resultIndex == testInfo.Results().size() - 1) {
+                        if (testInfo.getGroupingType() == GroupType.INDIVIDUAL || resultIndex == testInfo.getResults().size() - 1) {
                             canvas.drawText(createValueString(values[i]), MARGIN + (i * totalWidth + blockWidth / 2),
                                     MARGIN + (resultIndex * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
                         }
@@ -118,7 +118,7 @@ public class SwatchView extends View {
             extraHeight = 40;
         }
 
-        lineCount = testInfo.Results().size();
+        lineCount = testInfo.getResults().size();
 
     }
 
@@ -133,8 +133,8 @@ public class SwatchView extends View {
             float width = getMeasuredWidth() - (MARGIN * 2);
 
             if (testInfo != null) {
-                for (int resultIndex = 0; resultIndex < testInfo.Results().size(); resultIndex++) {
-                    List<ColorItem> colors = testInfo.Results().get(resultIndex).getColors();
+                for (int resultIndex = 0; resultIndex < testInfo.getResults().size(); resultIndex++) {
+                    List<ColorItem> colors = testInfo.getResults().get(resultIndex).getColors();
                     if (colors.size() > 0) {
                         float colorCount = colors.size();
 

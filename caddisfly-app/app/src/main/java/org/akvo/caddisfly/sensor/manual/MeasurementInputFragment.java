@@ -44,6 +44,9 @@ public class MeasurementInputFragment extends BaseFragment {
     EditText editResult;
     private OnSubmitResultListener mListener;
 
+    /**
+     * Get the instance.
+     */
     public static MeasurementInputFragment newInstance(TestInfo testInfo) {
         MeasurementInputFragment fragment = new MeasurementInputFragment();
         Bundle args = new Bundle();
@@ -75,7 +78,7 @@ public class MeasurementInputFragment extends BaseFragment {
             TestInfo testInfo = getArguments().getParcelable(ARG_PARAM1);
             Result testResult;
             if (testInfo != null) {
-                testResult = testInfo.Results().get(0);
+                testResult = testInfo.getResults().get(0);
 
                 if (testResult.getUnit().isEmpty()) {
                     textRange.setText(String.format("(%s)", testInfo.getMinMaxRange()));
@@ -119,15 +122,15 @@ public class MeasurementInputFragment extends BaseFragment {
                             Float resultFloat = Float.parseFloat(result);
 
                             if (unitRadioGroup.getVisibility() == View.VISIBLE) {
-                                int radioButtonID = unitRadioGroup.getCheckedRadioButtonId();
+                                int radioButtonId = unitRadioGroup.getCheckedRadioButtonId();
 
-                                if (radioButtonID == -1) {
+                                if (radioButtonId == -1) {
                                     radioValidation.setActivated(true);
                                     radioValidation.requestFocus();
                                     radioValidation.setError("Select unit");
                                     okToSubmit = false;
                                 } else {
-                                    RadioButton selectedRadioButton = unitRadioGroup.findViewById(radioButtonID);
+                                    RadioButton selectedRadioButton = unitRadioGroup.findViewById(radioButtonId);
                                     int index = unitRadioGroup.indexOfChild(selectedRadioButton);
 
                                     if (index == 1) {
@@ -153,7 +156,7 @@ public class MeasurementInputFragment extends BaseFragment {
         return view;
     }
 
-    public void showSoftKeyboard(View view) {
+    private void showSoftKeyboard(View view) {
         if (getActivity() != null && view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager)
                     getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -163,7 +166,7 @@ public class MeasurementInputFragment extends BaseFragment {
         }
     }
 
-    public void hideSoftKeyboard(View view) {
+    private void hideSoftKeyboard(View view) {
         if (getActivity() != null) {
             InputMethodManager imm = (InputMethodManager)
                     getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -21,7 +21,7 @@ package org.akvo.caddisfly.preference;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.common.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.common.ChamberTestConfig;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
@@ -48,21 +48,21 @@ public final class AppPreferences {
         int samplingTimes;
         if (isDiagnosticMode()) {
             samplingTimes = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    R.string.samplingsTimeKey, String.valueOf(ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT)));
+                    R.string.samplingsTimeKey, String.valueOf(ChamberTestConfig.SAMPLING_COUNT_DEFAULT)));
         } else {
-            samplingTimes = ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT;
+            samplingTimes = ChamberTestConfig.SAMPLING_COUNT_DEFAULT;
         }
         //Add skip count as the first few samples may not be valid
-        return samplingTimes + ColorimetryLiquidConfig.SKIP_SAMPLING_COUNT;
+        return samplingTimes + ChamberTestConfig.SKIP_SAMPLING_COUNT;
     }
 
     public static int getColorDistanceTolerance() {
         if (isDiagnosticMode()) {
             return Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
                     R.string.colorDistanceToleranceKey,
-                    String.valueOf(ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB)));
+                    String.valueOf(ChamberTestConfig.MAX_COLOR_DISTANCE_RGB)));
         } else {
-            return ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
+            return ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
         }
     }
 

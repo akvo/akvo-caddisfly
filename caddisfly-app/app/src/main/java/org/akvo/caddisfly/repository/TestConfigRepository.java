@@ -73,7 +73,8 @@ public class TestConfigRepository {
             if (testType == TestType.BLUETOOTH) {
                 Collections.sort(testInfoList, (object1, object2) ->
                         ("000000000".substring(object1.getMd610Id().length()) + object1.getMd610Id())
-                                .compareToIgnoreCase(("000000000".substring(object2.getMd610Id().length()) + object2.getMd610Id())));
+                                .compareToIgnoreCase(("000000000".substring(object2.getMd610Id().length())
+                                        + object2.getMd610Id())));
             } else {
                 Collections.sort(testInfoList, (object1, object2) ->
                         object1.getName().compareToIgnoreCase(object2.getName()));
@@ -192,7 +193,7 @@ public class TestConfigRepository {
 
         CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
 
-        for (ColorItem colorItem : testInfo.Results().get(0).getColors()) {
+        for (ColorItem colorItem : testInfo.getResults().get(0).getColors()) {
             Calibration calibration = new Calibration();
             calibration.uid = testInfo.getUuid();
             calibration.date = new Date().getTime();

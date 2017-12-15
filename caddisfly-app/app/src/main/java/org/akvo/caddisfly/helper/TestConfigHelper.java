@@ -45,7 +45,7 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
-import static org.akvo.caddisfly.common.SensorConstants.MPN_TABLE_FILENAME;
+import static org.akvo.caddisfly.common.Constants.MPN_TABLE_FILENAME;
 
 
 /**
@@ -62,6 +62,9 @@ public final class TestConfigHelper {
     private TestConfigHelper() {
     }
 
+    /**
+     * Get the most probable number for the key.
+     */
     public static MpnValue getMpnValueForKey(String key) {
         if (mpnTable == null) {
             mpnTable = loadMpnTable();
@@ -116,7 +119,7 @@ public final class TestConfigHelper {
             resultJson.put(ConstantJsonKey.UUID, testInfo.getUuid());
 
             JSONArray resultsJsonArray = new JSONArray();
-            for (Result subTest : testInfo.Results()) {
+            for (Result subTest : testInfo.getResults()) {
                 JSONObject subTestJson = new JSONObject();
                 subTestJson.put(ConstantJsonKey.NAME, subTest.getName());
                 subTestJson.put(ConstantJsonKey.UNIT, subTest.getUnit());

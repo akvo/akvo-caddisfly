@@ -37,9 +37,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.common.ChamberTestConfig;
 import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentRunTestBinding;
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
@@ -242,13 +241,13 @@ public class BaseRunTest extends Fragment implements RunTest {
     private void getAnalyzedResult(@NonNull Bitmap bitmap) {
 
         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
-                ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                ChamberTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         //Extract the color from the photo which will be used for comparison
         ColorInfo photoColor;
         if (croppedBitmap != null) {
             photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
-                    ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+                    ChamberTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
             if (mCalibration != null) {
                 mCalibration.color = photoColor.getColor();
@@ -280,7 +279,7 @@ public class BaseRunTest extends Fragment implements RunTest {
                 }
 
                 // ignore the first two results
-                for (int i = 0; i < Constants.SKIP_SAMPLING_COUNT; i++) {
+                for (int i = 0; i < ChamberTestConfig.SKIP_SAMPLING_COUNT; i++) {
                     if (results.size() > 1) {
                         results.remove(0);
                     }

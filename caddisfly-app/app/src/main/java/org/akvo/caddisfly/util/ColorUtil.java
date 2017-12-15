@@ -24,7 +24,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.SparseIntArray;
 
-import org.akvo.caddisfly.common.ColorimetryLiquidConfig;
+import org.akvo.caddisfly.common.ChamberTestConfig;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.LabColor;
 import org.akvo.caddisfly.model.XyzColor;
@@ -88,12 +88,12 @@ public final class ColorUtil {
                 if (defaultValue > 0) {
                     return defaultValue;
                 } else {
-                    return ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
+                    return ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
                 }
             case LAB:
                 return MAX_COLOR_DISTANCE_LAB;
             default:
-                return ColorimetryLiquidConfig.MAX_COLOR_DISTANCE_RGB;
+                return ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
         }
     }
 

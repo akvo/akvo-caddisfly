@@ -380,7 +380,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
             double value = SwatchHelper.getAverageResult(resultDetails);
 
-            Result result = testInfo.Results().get(0);
+            Result result = testInfo.getResults().get(0);
             result.setResult(value, dilution, testInfo.getMaxDilution());
 
             fragmentManager.popBackStack();
@@ -401,13 +401,16 @@ public class ChamberTestActivity extends BaseActivity implements
         }
     }
 
+    /**
+     * Create result json to send back.
+     */
     public void onClickAcceptChamberResult(View view) {
 
         Intent resultIntent = new Intent(getIntent());
         final SparseArray<String> results = new SparseArray<>();
 
-        for (int i = 0; i < testInfo.Results().size(); i++) {
-            Result result = testInfo.Results().get(i);
+        for (int i = 0; i < testInfo.getResults().size(); i++) {
+            Result result = testInfo.getResults().get(i);
             results.put(i + 1, result.getResult());
         }
 
@@ -429,6 +432,9 @@ public class ChamberTestActivity extends BaseActivity implements
         finish();
     }
 
+    /**
+     * Navigate back to the dilution selection screen if re-testing.
+     */
     public void onTestWithDilution(View view) {
         if (!fragmentManager.popBackStackImmediate("dilution", 0)) {
             super.onBackPressed();

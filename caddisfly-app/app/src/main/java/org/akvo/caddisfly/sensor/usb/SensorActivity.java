@@ -399,10 +399,10 @@ public class SensorActivity extends BaseActivity {
                 }
 
                 // display the results
-                if (testInfo.Results().size() > 0 && results.size() > 0
+                if (testInfo.getResults().size() > 0 && results.size() > 0
                         && !results.get(1).equals(EMPTY_STRING)) {
                     b.textResult.setText(results.get(1));
-                    b.textUnit.setText(testInfo.Results().get(0).getUnit());
+                    b.textUnit.setText(testInfo.getResults().get(0).getUnit());
                     b.textResult.setVisibility(View.VISIBLE);
                     b.textUnit.setVisibility(View.VISIBLE);
                     b.progressWait.setVisibility(View.GONE);
@@ -417,9 +417,9 @@ public class SensorActivity extends BaseActivity {
                     b.textSubtitle2.setText(R.string.dipSensorInSample);
                 }
 
-                if (testInfo.Results().size() > 1 && results.size() > 1) {
+                if (testInfo.getResults().size() > 1 && results.size() > 1) {
                     b.textResult2.setText(results.get(2));
-                    b.textUnit2.setText(testInfo.Results().get(1).getUnit());
+                    b.textUnit2.setText(testInfo.getResults().get(1).getUnit());
                     b.textResult2.setVisibility(View.VISIBLE);
                     b.textUnit2.setVisibility(View.VISIBLE);
                 } else {

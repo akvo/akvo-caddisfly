@@ -26,7 +26,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 
 import java.io.IOException;
@@ -131,7 +131,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
 
         //portrait mode
-        mCamera.setDisplayOrientation(SensorConstants.DEGREES_90);
+        mCamera.setDisplayOrientation(Constants.DEGREES_90);
 
         //preview size
         assert bestSize != null;

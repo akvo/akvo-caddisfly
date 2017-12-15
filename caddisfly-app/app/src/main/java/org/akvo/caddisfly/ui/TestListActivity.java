@@ -98,7 +98,7 @@ public class TestListActivity extends BaseActivity
             return;
         }
 
-        if (testInfo == null || testInfo.getUuid() == null || testInfo.Results().size() == 0) {
+        if (testInfo == null || testInfo.getUuid() == null || testInfo.getResults().size() == 0) {
             ErrorMessages.alertCouldNotLoadConfig(this);
             return;
         }
@@ -120,7 +120,7 @@ public class TestListActivity extends BaseActivity
                 R.string.cannotCalibrate, R.string.ok, null)) {
 
             final Intent intent;
-            if (testInfo.Results().get(0).getColors().size() > 0) {
+            if (testInfo.getResults().get(0).getColors().size() > 0) {
                 intent = new Intent(this, ChamberTestActivity.class);
             } else {
                 ErrorMessages.alertCouldNotLoadConfig(this);

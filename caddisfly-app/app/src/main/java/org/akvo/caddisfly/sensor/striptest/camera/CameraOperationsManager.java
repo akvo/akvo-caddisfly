@@ -25,16 +25,9 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
-import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StriptestHandler;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
-
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 /**
  * Created by markwestra on 19/07/2017
@@ -42,11 +35,6 @@ import java.io.IOException;
 
 public class CameraOperationsManager {
     private static final long AUTO_FOCUS_DELAY = 4000L;
-
-//    private final Context context;
-
-    // An additional thread for running camera tasks that shouldn't block the UI.
-    private HandlerThread mCameraThread;
 
     // A Handler for running camera tasks in the background.
     private Handler mCameraHandler;
@@ -57,16 +45,16 @@ public class CameraOperationsManager {
     private StriptestHandler mStriptestHandler;
 
     //todo: remove debug code
-    private byte[] bytes;
+    //private byte[] bytes;
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera arg1) {
 
             //todo: remove debug code
-            StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
+            //StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
 
             // store image for later use
-//            StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
+            StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
             MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
@@ -86,20 +74,8 @@ public class CameraOperationsManager {
     };
 
     public CameraOperationsManager(String name) {
-
         //todo: remove debug code
-        File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, "");
-        File photo = new File(path, name + ".jpg");
-
-        bytes = new byte[(int) photo.length()];
-        BufferedInputStream bis;
-        try {
-            bis = new BufferedInputStream(new FileInputStream(photo));
-            DataInputStream dis = new DataInputStream(bis);
-            dis.readFully(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //bytes = ImageUtil.loadImageBytes(name);
     }
 
     public CameraPreview initCamera(Context context) {
@@ -175,25 +151,8 @@ public class CameraOperationsManager {
         if (StripMeasureActivity.DEBUG) {
             Log.d("Caddisfly", "Starting camera background thread");
         }
-        mCameraThread = new HandlerThread("CameraBackground");
+        HandlerThread mCameraThread = new HandlerThread("CameraBackground");
         mCameraThread.start();
         mCameraHandler = new Handler(mCameraThread.getLooper());
     }
-
-//    /**
-//     * Stops the background thread and its {@link Handler}.
-//     */
-//    private void stopCameraThread() {
-//        if (StripMeasureActivity.DEBUG) {
-//            Log.d("Caddisfly", "Stopping camera background thread");
-//        }
-//        mCameraThread.quitSafely();
-//        try {
-//            mCameraThread.join();
-//            mCameraThread = null;
-//            mCameraHandler = null;
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

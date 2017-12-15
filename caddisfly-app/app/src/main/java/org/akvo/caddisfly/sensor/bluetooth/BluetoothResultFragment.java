@@ -112,8 +112,6 @@ public class BluetoothResultFragment extends Fragment {
         textUnit3 = view.findViewById(R.id.textUnit3);
         textName3 = view.findViewById(R.id.textName3);
 
-        TextView textPerformTest = view.findViewById(R.id.textPerformTest);
-
         layoutWaiting = view.findViewById(R.id.layoutWaiting);
         layoutResult = view.findViewById(R.id.layoutResult);
 
@@ -133,6 +131,7 @@ public class BluetoothResultFragment extends Fragment {
 
         });
 
+        TextView textPerformTest = view.findViewById(R.id.textPerformTest);
         textPerformTest.setText(StringUtil.toInstruction((AppCompatActivity) getActivity(), testInfo,
                 String.format(getString(R.string.perform_test), testInfo.getName())));
 
@@ -166,6 +165,9 @@ public class BluetoothResultFragment extends Fragment {
         errorDialog.show();
     }
 
+    /**
+     * Display the waiting screen.
+     */
     public void displayWaiting() {
 
         layoutResult.setVisibility(View.GONE);
@@ -174,6 +176,9 @@ public class BluetoothResultFragment extends Fragment {
 
     }
 
+    /**
+     * Display the result data.
+     */
     public boolean displayData(String data) {
 
         if (errorDialog != null) {
@@ -295,9 +300,9 @@ public class BluetoothResultFragment extends Fragment {
                             }
                         }
 
-                        if (testInfo.Results().size() > 1) {
+                        if (testInfo.getResults().size() > 1) {
 
-                            for (Result subTest : testInfo.Results()) {
+                            for (Result subTest : testInfo.getResults()) {
                                 if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
 
                                     if (subTest.getId() == 1) {
@@ -322,14 +327,14 @@ public class BluetoothResultFragment extends Fragment {
                             }
                         } else {
                             layoutResult1.setVisibility(View.VISIBLE);
-                            textName1.setText(testInfo.Results().get(0).getName());
+                            textName1.setText(testInfo.getResults().get(0).getName());
                             textResult1.setText(result);
-                            textUnit1.setText(testInfo.Results().get(0).getUnit());
+                            textUnit1.setText(testInfo.getResults().get(0).getUnit());
                             results.put(1, result);
                         }
                     }
 
-                    if (results.size() < 1 || resultCount != testInfo.Results().size()) {
+                    if (results.size() < 1 || resultCount != testInfo.getResults().size()) {
                         dataOk = false;
                     }
                     break;

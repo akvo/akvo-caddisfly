@@ -37,6 +37,9 @@ import static org.akvo.caddisfly.common.ConstantKey.TEST_INFO;
 
 public class ResultFragment extends Fragment {
 
+    /**
+     * Get the instance.
+     */
     public static ResultFragment newInstance(TestInfo testInfo) {
         ResultFragment fragment = new ResultFragment();
         Bundle args = new Bundle();
@@ -60,7 +63,7 @@ public class ResultFragment extends Fragment {
         if (getArguments() != null) {
             TestInfo testInfo = getArguments().getParcelable(TEST_INFO);
             if (testInfo != null) {
-                Result result = testInfo.Results().get(0);
+                Result result = testInfo.getResults().get(0);
 
                 b.textResult.setText(result.getResult());
                 b.textTitle.setText(testInfo.getName());

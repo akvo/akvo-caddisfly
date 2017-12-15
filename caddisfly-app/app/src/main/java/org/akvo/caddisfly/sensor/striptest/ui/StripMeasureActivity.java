@@ -103,7 +103,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
         if (testInfo != null && testInfo.getUuid() != null) {
             setTitle(testInfo.getName());
-            patches = testInfo.Results();
+            patches = testInfo.getResults();
         } else {
             finish();
         }

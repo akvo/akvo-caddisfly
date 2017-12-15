@@ -19,7 +19,7 @@
 
 package org.akvo.caddisfly.common;
 
-public final class ColorimetryLiquidConfig {
+public final class ChamberTestConfig {
 
     /**
      * Width and height of cropped image.
@@ -48,7 +48,9 @@ public final class ColorimetryLiquidConfig {
      */
     public static final int SKIP_SAMPLING_COUNT = 2;
 
-    private ColorimetryLiquidConfig() {
+    public static final int GET_READY_SECONDS = 12;
+
+    private ChamberTestConfig() {
     }
 
 }

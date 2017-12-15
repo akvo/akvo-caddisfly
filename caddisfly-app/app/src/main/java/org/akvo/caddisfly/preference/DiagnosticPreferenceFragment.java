@@ -32,7 +32,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.Constants;
+import org.akvo.caddisfly.common.ChamberTestConfig;
 import org.akvo.caddisfly.ui.TestListActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
 
@@ -101,8 +101,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                 Object value = newValue;
                 try {
 
-                    if (Integer.parseInt(String.valueOf(value)) > Constants.SAMPLING_COUNT_DEFAULT) {
-                        value = Constants.SAMPLING_COUNT_DEFAULT;
+                    if (Integer.parseInt(String.valueOf(value)) > ChamberTestConfig.SAMPLING_COUNT_DEFAULT) {
+                        value = ChamberTestConfig.SAMPLING_COUNT_DEFAULT;
                     }
 
                     if (Integer.parseInt(String.valueOf(value)) < 1) {
@@ -110,7 +110,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     }
 
                 } catch (Exception e) {
-                    value = Constants.SAMPLING_COUNT_DEFAULT;
+                    value = ChamberTestConfig.SAMPLING_COUNT_DEFAULT;
                 }
                 sampleTimesPreference.setText(String.valueOf(value));
                 sampleTimesPreference.setSummary(String.valueOf(value));
@@ -138,7 +138,7 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
                     }
 
                 } catch (Exception e) {
-                    value = Constants.MAX_COLOR_DISTANCE_RGB;
+                    value = ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
                 }
                 distancePreference.setText(String.valueOf(value));
                 distancePreference.setSummary(String.valueOf(value));

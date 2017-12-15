@@ -53,7 +53,7 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
         holder.mItem = testInfo.getCalibrations().get(position);
         holder.mIdView.setBackground(new ColorDrawable(holder.mItem.color));
         holder.textValue.setText(String.valueOf(holder.mItem.value));
-        holder.textUnit.setText(String.valueOf(testInfo.Results().get(0).getUnit()));
+        holder.textUnit.setText(String.valueOf(testInfo.getResults().get(0).getUnit()));
 
         holder.mView.setOnClickListener(v -> {
             if (null != mListener) {

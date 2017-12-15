@@ -33,7 +33,7 @@ import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.TestConstantKeys;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
@@ -124,7 +124,7 @@ public class ChamberTest {
     @Test
     @RequiresDevice
     public void testFreeChlorine() {
-        saveCalibration("TestValidChlorine", SensorConstants.FREE_CHLORINE_ID_2);
+        saveCalibration("TestValidChlorine", Constants.FREE_CHLORINE_ID_2);
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -135,7 +135,7 @@ public class ChamberTest {
     @RequiresDevice
     public void testStartHighLevelTest() {
 
-        saveCalibration("HighLevelTest", SensorConstants.FLUORIDE_ID);
+        saveCalibration("HighLevelTest", Constants.FLUORIDE_ID);
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -232,8 +232,8 @@ public class ChamberTest {
 
         sleep(6000);
 
-//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         goToMainScreen();
 
@@ -274,8 +274,8 @@ public class ChamberTest {
 
         sleep(20000);
 
-//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
 //        onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
 //                .check(matches(isDisplayed()));
@@ -319,8 +319,8 @@ public class ChamberTest {
 
         sleep(6000);
 
-//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
                 .check(matches(isDisplayed()));
@@ -366,8 +366,8 @@ public class ChamberTest {
 
         sleep(6000);
 
-//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         String resultString = getText(withId(R.id.textResult));
         assertTrue(resultString.contains(">"));
@@ -393,7 +393,7 @@ public class ChamberTest {
     @RequiresDevice
     public void testStartNoDilutionTest() {
 
-        saveCalibration("TestValid", SensorConstants.FLUORIDE_ID);
+        saveCalibration("TestValid", Constants.FLUORIDE_ID);
 
         onView(withId(R.id.actionSettings)).perform(click());
 
@@ -473,8 +473,8 @@ public class ChamberTest {
         recyclerView2.perform(actionOnItemAtPosition(3, click()));
 
 
-//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         ViewInteraction cameraView = onView(
                 allOf(withId(R.id.camera_view),
@@ -520,8 +520,8 @@ public class ChamberTest {
 
         sleep(6000);
 
-//        sleep(TEST_START_DELAY + (ColorimetryLiquidConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ColorimetryLiquidConfig.SAMPLING_COUNT_DEFAULT);
+//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         //Result dialog
         takeScreenshot();

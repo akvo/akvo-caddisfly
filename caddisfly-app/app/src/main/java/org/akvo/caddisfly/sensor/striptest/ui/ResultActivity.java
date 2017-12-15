@@ -157,7 +157,7 @@ public class ResultActivity extends BaseActivity {
 
         // todo check order of patches
         // for display purposes sort the patches by physical position on the strip
-        List<Result> results = testInfo.Results();
+        List<Result> results = testInfo.getResults();
 
         // compute XYZ colours of patches and store as lab and xyz
         List<PatchResult> patchResultList = new ArrayList<>();
@@ -197,7 +197,7 @@ public class ResultActivity extends BaseActivity {
         String bracket;
 
         if (testInfo.getGroupingType() == GroupType.GROUP) {
-            float[] result = ResultUtils.calculateResultGroup(patchResultList, testInfo.Results());
+            float[] result = ResultUtils.calculateResultGroup(patchResultList, testInfo.getResults());
             index = (int) result[0];
             value = result[1];
             bracket = createBracket(result[2], result[3]);
