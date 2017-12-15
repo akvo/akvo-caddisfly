@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * List of swatches including the generated gradient swatches
+ * List of swatches including the generated gradient swatches.
  */
 class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
 
@@ -78,15 +78,15 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
                 distanceRgb = ColorUtil.getColorDistance(previousColor, color);
             }
 
-            float[] colorHSV = new float[3];
-            Color.colorToHSV(color, colorHSV);
+            float[] colorHsv = new float[3];
+            Color.colorToHSV(color, colorHsv);
 
             ((TextView) rowView.findViewById(R.id.textRgb)).setText(
                     String.format(Locale.getDefault(), "d:%.2f  %s: %s",
                             distanceRgb, "rgb", ColorUtil.getColorRgbString(color)));
             ((TextView) rowView.findViewById(R.id.textHsv)).setText(
                     String.format(Locale.getDefault(), "d:%.2f  %s: %.0f  %.2f  %.2f",
-                            distance, "hsv", colorHSV[0], colorHSV[1], colorHSV[1]));
+                            distance, "hsv", colorHsv[0], colorHsv[1], colorHsv[1]));
         } else {
             return view;
         }

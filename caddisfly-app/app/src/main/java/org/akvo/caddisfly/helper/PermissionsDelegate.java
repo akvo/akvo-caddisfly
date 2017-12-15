@@ -57,9 +57,7 @@ public class PermissionsDelegate {
         );
     }
 
-    public boolean resultGranted(int requestCode,
-                                 String[] permissions,
-                                 int[] grantResults) {
+    public boolean resultGranted(int requestCode, int[] grantResults) {
 
         if (requestCode != REQUEST_CODE) {
             return false;
@@ -75,7 +73,6 @@ public class PermissionsDelegate {
             }
         }
 
-//        requestPermissions(permissions);
         return true;
     }
 }

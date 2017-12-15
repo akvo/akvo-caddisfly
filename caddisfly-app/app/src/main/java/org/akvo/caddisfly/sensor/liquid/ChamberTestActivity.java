@@ -210,8 +210,8 @@ public class ChamberTestActivity extends BaseActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (AppPreferences.isDiagnosticMode() &&
-                (calibrationItemFragment != null && calibrationItemFragment.isVisible())) {
+        if (AppPreferences.isDiagnosticMode()
+                && (calibrationItemFragment != null && calibrationItemFragment.isVisible())) {
             getMenuInflater().inflate(R.menu.menu_calibrate_dev, menu);
         }
         return true;
@@ -244,7 +244,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
     private void loadDetails() {
 
-        List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
+        List<Calibration> calibrations = CaddisflyApp.getApp().getDb()
                 .calibrationDao().getAll(testInfo.getUuid());
 
         testInfo.setCalibrations(calibrations);
@@ -259,7 +259,7 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     private void loadCalibration(TestConfigRepository testConfigRepository) {
-        List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
+        List<Calibration> calibrations = CaddisflyApp.getApp().getDb()
                 .calibrationDao().getAll(testInfo.getUuid());
 
         if (calibrations.size() < 1) {
@@ -288,7 +288,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
         if (calibrations.size() < 1) {
             testConfigRepository.addCalibration(testInfo);
-            calibrations = CaddisflyApp.getApp().getDB()
+            calibrations = CaddisflyApp.getApp().getDb()
                     .calibrationDao().getAll(testInfo.getUuid());
         }
 
@@ -296,7 +296,7 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     /**
-     * Load the calibrated swatches from the calibration text file
+     * Load the calibrated swatches from the calibration text file.
      */
     private void loadCalibrationFromFile(@NonNull final Context context) {
         try {
@@ -364,6 +364,7 @@ public class ChamberTestActivity extends BaseActivity implements
                 AlertUtil.showMessage(context, R.string.notFound, R.string.loadFilesNotAvailable);
             }
         } catch (ActivityNotFoundException ignored) {
+            // do nothing
         }
     }
 
@@ -387,7 +388,7 @@ public class ChamberTestActivity extends BaseActivity implements
                             ResultFragment.newInstance(testInfo), "result").commit();
         } else {
 
-            CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
+            CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
             dao.insert(calibration);
             CalibrationFile.saveCalibratedData(this, testInfo, calibration, 0);
             fragmentManager.popBackStackImmediate();
@@ -447,9 +448,12 @@ public class ChamberTestActivity extends BaseActivity implements
                     View checkBoxView = View.inflate(this, R.layout.dialog_message, null);
                     CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
                     checkBox.setOnCheckedChangeListener((buttonView, isChecked)
-                            -> PreferencesUtil.setBoolean(getBaseContext(), R.string.showMinMegaPixelDialogKey, !isChecked));
+                            -> PreferencesUtil.setBoolean(getBaseContext(),
+                            R.string.showMinMegaPixelDialogKey, !isChecked));
 
-                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+                    android.support.v7.app.AlertDialog.Builder builder
+                            = new android.support.v7.app.AlertDialog.Builder(this);
+
                     builder.setTitle(R.string.warning);
                     builder.setMessage(R.string.camera_not_good)
                             .setView(checkBoxView)

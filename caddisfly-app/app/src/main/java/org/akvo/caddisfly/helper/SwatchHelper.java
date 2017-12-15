@@ -266,13 +266,13 @@ public final class SwatchHelper {
     }
 
     /**
-     * Save a list of calibrated colors to DB
+     * Save a list of calibrated colors to DB.
      *
      * @param testInfo The test info
      */
     private static void saveCalibrationToDB(TestInfo testInfo) {
 
-        CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
+        CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
 
         dao.deleteCalibrations(testInfo.getUuid());
 
@@ -283,7 +283,7 @@ public final class SwatchHelper {
     }
 
     /**
-     * Auto generate the color swatches for the given test type
+     * Auto generate the color swatches for the given test type.
      *
      * @param swatches The test object
      * @return The list of generated color swatches
@@ -373,32 +373,32 @@ public final class SwatchHelper {
 
     private static boolean validateHueTrend(List<Calibration> swatches, int trend) {
 
-        float[] colorHSV = new float[3];
+        float[] colorHsv = new float[3];
         float previousHue = 0f;
 
         boolean crossed = false;
         for (int i = 0; i < swatches.size(); i++) {
             //noinspection ResourceType
-            Color.colorToHSV(swatches.get(i).color, colorHSV);
+            Color.colorToHSV(swatches.get(i).color, colorHsv);
 
             if (trend < 0) {
-                if (!crossed && colorHSV[0] - previousHue > HSV_CROSSOVER_DIFFERENCE) {
-                    previousHue = colorHSV[0];
+                if (!crossed && colorHsv[0] - previousHue > HSV_CROSSOVER_DIFFERENCE) {
+                    previousHue = colorHsv[0];
                     crossed = true;
                 }
-                if (i > 0 && previousHue < colorHSV[0]) {
+                if (i > 0 && previousHue < colorHsv[0]) {
                     return false;
                 }
             } else {
-                if (!crossed && colorHSV[0] - previousHue < -HSV_CROSSOVER_DIFFERENCE) {
-                    previousHue = colorHSV[0];
+                if (!crossed && colorHsv[0] - previousHue < -HSV_CROSSOVER_DIFFERENCE) {
+                    previousHue = colorHsv[0];
                     crossed = true;
                 }
-                if (i > 0 && previousHue > colorHSV[0]) {
+                if (i > 0 && previousHue > colorHsv[0]) {
                     return false;
                 }
             }
-            previousHue = colorHSV[0];
+            previousHue = colorHsv[0];
         }
 
         return true;
@@ -421,7 +421,7 @@ public final class SwatchHelper {
     }
 
     /**
-     * Convert a string number into a double value
+     * Convert a string number into a double value.
      *
      * @param text the text to be converted to number
      * @return the double value

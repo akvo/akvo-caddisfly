@@ -118,17 +118,17 @@ public class TestActivity extends BaseActivity implements
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
 
-    private String mCurrentPhotoPath;
+    private String currentPhotoPath;
     private String imageFileName = "";
     private ActivityTestBinding b;
     // track if the call was made internally or from an external app
-    private boolean mIsExternalAppCall = false;
+    private boolean isExternalAppCall = false;
     // old versions of the survey app does not expect image in result
     private boolean mCallerExpectsImageInResult = true;
     // the language requested by the external app
     private String mExternalAppLanguageCode;
     private TestInfo testInfo;
-    private String mResult = "00000";
+    private String cbtResult = "00000";
     private FragmentManager fragmentManager;
     private boolean cameraIsOk = false;
 
@@ -160,11 +160,9 @@ public class TestActivity extends BaseActivity implements
                 && AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())
                 || AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction())) {
 
-            String uuid = intent.getStringExtra(SensorConstants.RESOURCE_ID);
-
-            mIsExternalAppCall = true;
+            isExternalAppCall = true;
             mExternalAppLanguageCode = intent.getStringExtra(SensorConstants.LANGUAGE);
-            CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, mIsExternalAppCall, handler);
+            CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, isExternalAppCall, handler);
             String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
 
             if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())) {
@@ -173,6 +171,7 @@ public class TestActivity extends BaseActivity implements
                 mCallerExpectsImageInResult = false;
             }
 
+            String uuid = intent.getStringExtra(SensorConstants.RESOURCE_ID);
             if (uuid == null) {
 
                 //todo: remove when obsolete
@@ -209,13 +208,13 @@ public class TestActivity extends BaseActivity implements
         }
 
         if (testInfo != null && testInfo.getSubtype() == TestType.COLORIMETRIC_LIQUID) {
-            List<Calibration> calibrations = CaddisflyApp.getApp().getDB()
+            List<Calibration> calibrations = CaddisflyApp.getApp().getDb()
                     .calibrationDao().getAll(testInfo.getUuid());
 
             if (calibrations.size() < 1) {
                 TestConfigRepository testConfigRepository = new TestConfigRepository();
                 testConfigRepository.addCalibration(testInfo);
-                calibrations = CaddisflyApp.getApp().getDB()
+                calibrations = CaddisflyApp.getApp().getDb()
                         .calibrationDao().getAll(testInfo.getUuid());
             }
 
@@ -226,7 +225,7 @@ public class TestActivity extends BaseActivity implements
                 return;
             }
 
-            CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDB()
+            CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
                     .calibrationDao().getCalibrationDetails(testInfo.getUuid());
 
             if (calibrationDetail != null) {
@@ -282,7 +281,7 @@ public class TestActivity extends BaseActivity implements
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
+        if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
             startTest();
         }
     }
@@ -374,6 +373,7 @@ public class TestActivity extends BaseActivity implements
             case SENSOR:
                 startSensorTest();
                 break;
+            default:
         }
     }
 
@@ -439,15 +439,15 @@ public class TestActivity extends BaseActivity implements
                 // Continue only if the File was successfully created
                 if (photoFile != null) {
 
-                    Uri photoURI;
+                    Uri photoUri;
                     if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                        photoURI = Uri.fromFile(photoFile);
+                        photoUri = Uri.fromFile(photoFile);
                     } else {
-                        photoURI = FileProvider.getUriForFile(this,
+                        photoUri = FileProvider.getUriForFile(this,
                                 FILE_PROVIDER_AUTHORITY_URI,
                                 photoFile);
                     }
-                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                     startActivityForResult(pictureIntent, MANUAL_TEST);
                 }
             }
@@ -483,15 +483,16 @@ public class TestActivity extends BaseActivity implements
             // Continue only if the File was successfully created
             if (photoFile != null) {
 
-                Uri photoURI;
+                Uri photoUri;
+
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                    photoURI = Uri.fromFile(photoFile);
+                    photoUri = Uri.fromFile(photoFile);
                 } else {
-                    photoURI = FileProvider.getUriForFile(this,
+                    photoUri = FileProvider.getUriForFile(this,
                             FILE_PROVIDER_AUTHORITY_URI,
                             photoFile);
                 }
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(takePictureIntent, CBT_TEST);
             }
         }
@@ -505,7 +506,7 @@ public class TestActivity extends BaseActivity implements
             switch (requestCode) {
                 case CBT_TEST:
                     fragmentTransaction.replace(R.id.fragment_container,
-                            CompartmentBagFragment.newInstance(mResult), "compartmentFragment")
+                            CompartmentBagFragment.newInstance(cbtResult), "compartmentFragment")
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                             .addToBackStack(null)
                             .commit();
@@ -526,12 +527,17 @@ public class TestActivity extends BaseActivity implements
                     //todo: remove when obsolete
                     if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent2.getAction())
                             && data.hasExtra(SensorConstants.RESPONSE_COMPAT)) {
+
                         //if survey from old version server then don't send json response
-                        intent2.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE_COMPAT));
+                        intent2.putExtra(SensorConstants.RESPONSE,
+                                data.getStringExtra(SensorConstants.RESPONSE_COMPAT));
                     } else {
-                        intent2.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
+                        intent2.putExtra(SensorConstants.RESPONSE,
+                                data.getStringExtra(SensorConstants.RESPONSE));
+
                         if (mCallerExpectsImageInResult) {
-                            intent2.putExtra(SensorConstants.IMAGE, data.getStringExtra(SensorConstants.IMAGE));
+                            intent2.putExtra(SensorConstants.IMAGE,
+                                    data.getStringExtra(SensorConstants.IMAGE));
                         }
                     }
 
@@ -583,13 +589,11 @@ public class TestActivity extends BaseActivity implements
 
         imageFileName += ".jpg";
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
+        currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
     public void onClickAcceptResult(View view) {
-
-        Intent resultIntent = new Intent(getIntent());
 
         SparseArray<String> results = new SparseArray<>();
 
@@ -597,22 +601,24 @@ public class TestActivity extends BaseActivity implements
 
         String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
 
-        ImageUtil.resizeImage(mCurrentPhotoPath, resultImagePath);
+        ImageUtil.resizeImage(currentPhotoPath, resultImagePath);
 
-        File imageFile = new File(mCurrentPhotoPath);
+        File imageFile = new File(currentPhotoPath);
         if (imageFile.exists()) {
-            if (!new File(mCurrentPhotoPath).delete()) {
+            if (!new File(currentPhotoPath).delete()) {
                 Toast.makeText(this, "Could not delete file", Toast.LENGTH_SHORT).show();
             }
         }
 
-        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
+        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(cbtResult);
 
         results.put(1, StringUtil.getStringResourceByName(this, mpnValue.getRiskCategory()).toString());
         results.put(2, mpnValue.getMpn());
         results.put(3, mpnValue.getConfidence());
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, imageFileName);
+
+        Intent resultIntent = new Intent(getIntent());
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
 
@@ -623,12 +629,12 @@ public class TestActivity extends BaseActivity implements
 
     @Override
     public void onCompartmentBagSelect(String key) {
-        mResult = key;
+        cbtResult = key;
     }
 
     public void onClickMatchedButton(View view) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, CbtResultFragment.newInstance(mResult), "resultFragment")
+        fragmentTransaction.replace(R.id.fragment_container, CbtResultFragment.newInstance(cbtResult), "resultFragment")
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                 .addToBackStack(null)
                 .commit();
@@ -644,12 +650,12 @@ public class TestActivity extends BaseActivity implements
 
         String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
 
-        if (mCurrentPhotoPath != null) {
-            ImageUtil.resizeImage(mCurrentPhotoPath, resultImagePath);
+        if (currentPhotoPath != null) {
+            ImageUtil.resizeImage(currentPhotoPath, resultImagePath);
 
-            File imageFile = new File(mCurrentPhotoPath);
+            File imageFile = new File(currentPhotoPath);
             if (imageFile.exists()) {
-                if (!new File(mCurrentPhotoPath).delete()) {
+                if (!new File(currentPhotoPath).delete()) {
                     Toast.makeText(this, "Could not delete file", Toast.LENGTH_SHORT).show();
                 }
             }

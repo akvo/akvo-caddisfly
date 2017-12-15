@@ -23,7 +23,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -45,25 +44,18 @@ import java.io.OutputStream;
 import timber.log.Timber;
 
 /**
- * Set of utility functions to manipulate images
+ * Set of utility functions to manipulate images.
  */
 public final class ImageUtil {
 
     private static final int FOUND_CIRCLE_RADIUS = 50;
     private static final int IMAGE_CENTER_CIRCLE_RADIUS = 20;
-    //Custom color matrix to convert to GrayScale
-    private static final float[] MATRIX = new float[]{
-            0.3f, 0.59f, 0.11f, 0, 0,
-            0.3f, 0.59f, 0.11f, 0, 0,
-            0.3f, 0.59f, 0.11f, 0, 0,
-            0, 0, 0, 1, 0};
-
 
     private ImageUtil() {
     }
 
     /**
-     * Decode bitmap from byte array
+     * Decode bitmap from byte array.
      *
      * @param bytes the byte array
      * @return the bitmap
@@ -73,7 +65,7 @@ public final class ImageUtil {
     }
 
     /**
-     * Crop a bitmap to a square shape with  given length
+     * Crop a bitmap to a square shape with  given length.
      *
      * @param bitmap the bitmap to crop
      * @param length the length of the sides
@@ -102,13 +94,13 @@ public final class ImageUtil {
         croppedBitmap = ImageUtil.getRoundedShape(croppedBitmap, length);
         croppedBitmap.setHasAlpha(true);
 
-        Canvas canvas = new Canvas(bitmap);
-
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.GREEN);
         paint.setStrokeWidth(3);
         paint.setStyle(Paint.Style.STROKE);
+
+        Canvas canvas = new Canvas(bitmap);
         canvas.drawBitmap(bitmap, new Matrix(), null);
         canvas.drawCircle(point.x, point.y, FOUND_CIRCLE_RADIUS, paint);
 
@@ -119,25 +111,8 @@ public final class ImageUtil {
         return croppedBitmap;
     }
 
-
-    public static Bitmap getGrayscale(@NonNull Bitmap src) {
-
-        Bitmap dest = Bitmap.createBitmap(
-                src.getWidth(),
-                src.getHeight(),
-                src.getConfig());
-
-        Canvas canvas = new Canvas(dest);
-        Paint paint = new Paint();
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(MATRIX);
-        paint.setColorFilter(filter);
-        canvas.drawBitmap(src, 0, 0, paint);
-
-        return dest;
-    }
-
     /**
-     * Crop bitmap image into a round shape
+     * Crop bitmap image into a round shape.
      *
      * @param bitmap   the bitmap
      * @param diameter the diameter of the resulting image
@@ -201,6 +176,7 @@ public final class ImageUtil {
                 try {
                     out.close();
                 } catch (Exception ignored) {
+                    // do nothing
                 }
             }
         }
@@ -208,11 +184,11 @@ public final class ImageUtil {
         return false;
     }
 
-    public static Bitmap rotateImage(@NonNull Bitmap in, int angle) {
-        Matrix mat = new Matrix();
-        mat.postRotate(angle);
-        return Bitmap.createBitmap(in, 0, 0, in.getWidth(), in.getHeight(), mat, true);
-    }
+//    public static Bitmap rotateImage(@NonNull Bitmap in, int angle) {
+//        Matrix mat = new Matrix();
+//        mat.postRotate(angle);
+//        return Bitmap.createBitmap(in, 0, 0, in.getWidth(), in.getHeight(), mat, true);
+//    }
 
     private static void checkOrientation(String originalImage, String resizedImage) {
         try {
@@ -233,12 +209,13 @@ public final class ImageUtil {
     }
 
     /**
-     * resizeImage handles resizing a too-large image file from the camera,
+     * resizeImage handles resizing a too-large image file from the camera.
      *
      * @return true if the image was successfully resized to the new file, false otherwise
      */
     public static boolean resizeImage(String origFilename, String outFilename) {
-        int reqWidth, reqHeight;
+        int reqWidth;
+        int reqHeight;
         reqWidth = 1280;
         reqHeight = 960;
 
@@ -265,7 +242,7 @@ public final class ImageUtil {
 
         if (bitmap != null && ImageUtil.saveImage(bitmap, outFilename)) {
             ImageUtil.checkOrientation(origFilename, outFilename);// Ensure the EXIF data is not lost
-//            Timber.d("Resized Image size: %d x %d", bitmap.getWidth(), bitmap.getHeight());
+            // Timber.d("Resized Image size: %d x %d", bitmap.getWidth(), bitmap.getHeight());
             return true;
         }
         return false;

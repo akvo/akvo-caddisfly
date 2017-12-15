@@ -19,6 +19,8 @@
 
 package org.akvo.caddisfly.helper;
 
+import android.widget.Toast;
+
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConstants;
 import org.akvo.caddisfly.util.FileUtil;
@@ -28,16 +30,28 @@ import java.io.File;
 public final class FileHelper {
 
     /**
-     * The user created configuration file name
+     * The user created configuration file name.
      */
     // Folders
     public static final String ROOT_DIRECTORY = File.separator + AppConstants.APP_FOLDER;
-    private static final String DIR_CALIBRATION = ROOT_DIRECTORY + File.separator + "calibration"; // Calibration files
-    private static final String DIR_CONFIG = ROOT_DIRECTORY + File.separator + "custom-config"; // Calibration files
-    private static final String DIR_EXP_CONFIG = ROOT_DIRECTORY + File.separator + "experiment-config"; // Calibration files
-    private static final String DIR_IMAGE = ROOT_DIRECTORY + File.separator + "image"; // Calibration files
-    private static final String DIR_CARD = ROOT_DIRECTORY + File.separator + "color-card"; // Calibration files
-    private static final String DIR_RESULT_IMAGES = ROOT_DIRECTORY + File.separator + "result-images"; // Calibration files;
+
+    private static final String DIR_CALIBRATION = ROOT_DIRECTORY
+            + File.separator + "calibration"; // Calibration files
+
+    private static final String DIR_CONFIG = ROOT_DIRECTORY
+            + File.separator + "custom-config"; // Custom config json folder
+
+    private static final String DIR_EXP_CONFIG = ROOT_DIRECTORY
+            + File.separator + "experiment-config"; // Experimental config json folder
+
+    private static final String DIR_IMAGE = ROOT_DIRECTORY
+            + File.separator + "image"; // Images saved for debugging
+
+    private static final String DIR_CARD = ROOT_DIRECTORY
+            + File.separator + "color-card"; // Color card for debugging
+
+    private static final String DIR_RESULT_IMAGES = ROOT_DIRECTORY
+            + File.separator + "result-images"; // Images to be sent with result to dashboard
 
     private FileHelper() {
     }
@@ -94,14 +108,17 @@ public final class FileHelper {
             dir = new File(dir, subPath);
         }
         if (!dir.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            dir.mkdirs();
+            if (!dir.mkdirs()) {
+                Toast.makeText(CaddisflyApp.getApp(),
+                        "Error creating folder: " + dir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+            }
         }
+
         return dir;
     }
 
     /**
-     * The different types of files
+     * The different types of files.
      */
     public enum FileType {
         CALIBRATION, CONFIG, EXP_CONFIG, IMAGE, CARD, RESULT_IMAGE

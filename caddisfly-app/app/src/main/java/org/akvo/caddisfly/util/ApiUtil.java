@@ -39,7 +39,7 @@ import java.util.UUID;
 import timber.log.Timber;
 
 /**
- * Utility functions for api related actions
+ * Utility functions for api related actions.
  */
 @SuppressWarnings("deprecation")
 public final class ApiUtil {
@@ -63,7 +63,7 @@ public final class ApiUtil {
     }
 
     /**
-     * Checks if the device has a camera flash
+     * Checks if the device has a camera flash.
      *
      * @param context the context
      * @return true if camera flash is available
@@ -83,7 +83,7 @@ public final class ApiUtil {
                             hasFlash = false;
                         }
                     }
-                } catch (Exception e) {
+                } catch (Exception ignored) {
                     // do nothing
                 }
             }
@@ -94,7 +94,7 @@ public final class ApiUtil {
     }
 
     /**
-     * Gets an unique id for installation
+     * Gets an unique id for installation.
      *
      * @return the unique id
      */
@@ -127,6 +127,7 @@ public final class ApiUtil {
             });
 
         } catch (Exception ignored) {
+            // do nothing
         }
 
         if (camera != null) {

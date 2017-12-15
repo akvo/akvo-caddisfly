@@ -49,7 +49,7 @@ import java.util.List;
 import timber.log.Timber;
 
 /**
- * Utility functions to file and folder manipulation
+ * Utility functions to file and folder manipulation.
  */
 public final class FileUtil {
 
@@ -57,7 +57,7 @@ public final class FileUtil {
     }
 
     /**
-     * Delete a file
+     * Delete a file.
      *
      * @param path     the path to the file
      * @param fileName the name of the file to delete
@@ -113,7 +113,7 @@ public final class FileUtil {
     }
 
     /**
-     * Read the text from a file
+     * Read the text from a file.
      *
      * @param file the file to read text from
      * @return the loaded text
@@ -138,6 +138,7 @@ public final class FileUtil {
                 return stringBuilder.toString();
 
             } catch (IOException ignored) {
+                // do nothing
             } finally {
                 if (isr != null) {
                     try {
@@ -160,7 +161,7 @@ public final class FileUtil {
     }
 
     /**
-     * Load lines of strings from a file
+     * Load lines of strings from a file.
      *
      * @param path     the path to the file
      * @param fileName the file name
@@ -190,6 +191,7 @@ public final class FileUtil {
                 return arrayList;
 
             } catch (IOException ignored) {
+                // do nothing
             } finally {
                 if (isr != null) {
                     try {
@@ -350,13 +352,13 @@ public final class FileUtil {
             while ((line = br.readLine()) != null) {
                 stringBuilder.append(line);
             }
-            String json = stringBuilder.toString();
 
             br.close();
             in.close();
             fis.close();
 
-            return json;
+            return stringBuilder.toString();
+
         } catch (IOException e) {
             Timber.e(e);
         }

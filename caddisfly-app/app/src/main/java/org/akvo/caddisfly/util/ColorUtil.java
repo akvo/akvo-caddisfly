@@ -24,10 +24,10 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.util.SparseIntArray;
 
+import org.akvo.caddisfly.common.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.LabColor;
 import org.akvo.caddisfly.model.XyzColor;
-import org.akvo.caddisfly.sensor.liquid.ColorimetryLiquidConfig;
 
 import java.util.Locale;
 

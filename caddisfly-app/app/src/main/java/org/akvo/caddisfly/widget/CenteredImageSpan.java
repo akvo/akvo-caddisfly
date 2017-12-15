@@ -76,8 +76,9 @@ public class CenteredImageSpan extends ImageSpan {
         WeakReference<Drawable> wr = mDrawableRef;
         Drawable d = null;
 
-        if (wr != null)
+        if (wr != null) {
             d = wr.get();
+        }
 
         if (d == null) {
             d = getDrawable();

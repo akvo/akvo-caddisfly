@@ -85,17 +85,18 @@ public final class ApkHelper {
     }
 
     /**
-     * Checks if the app was installed from the app store or from an install file
+     * Checks if the app was installed from the app store or from an install file.
      *
      * @param context The context
      * @return True if app was not installed from the store
-     * <p>
+     *
      * source: http://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
      */
     public static boolean isNonStoreVersion(@NonNull Context context) {
 
         // Valid installer package names
-        List<String> validInstallers = new ArrayList<>(Arrays.asList("com.android.vending", "com.google.android.feedback"));
+        List<String> validInstallers = new ArrayList<>(
+                Arrays.asList("com.android.vending", "com.google.android.feedback"));
 
         try {
             // The package name of the app that has installed the app
@@ -105,6 +106,7 @@ public final class ApkHelper {
             return installer == null || !validInstallers.contains(installer);
 
         } catch (Exception ignored) {
+            // do nothing
         }
 
         return true;

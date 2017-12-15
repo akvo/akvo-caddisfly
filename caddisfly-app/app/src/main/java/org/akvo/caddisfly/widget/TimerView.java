@@ -147,7 +147,6 @@ public class TimerView extends View {
 
             String text = String.valueOf((int) mProgress);
             mTextPaint.getTextBounds(text, 0, text.length(), rectangle);
-            float width = mTextPaint.measureText(text);
 
             mCanvas.drawArc(mCircleOuterBounds, ARC_START_ANGLE, 360, true, mCircleBackgroundPaint);
 
@@ -159,6 +158,8 @@ public class TimerView extends View {
             }
 
             mCanvas.drawOval(mCircleInnerBounds, mEraserPaint);
+
+            float width = mTextPaint.measureText(text);
             mCanvas.drawText(text, (canvas.getWidth() - width) / 2f,
                     ((canvas.getHeight() + Math.abs(rectangle.height())) / 2f) - 10, mTextPaint);
 

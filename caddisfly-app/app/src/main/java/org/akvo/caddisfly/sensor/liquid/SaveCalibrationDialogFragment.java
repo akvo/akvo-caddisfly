@@ -263,7 +263,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                     calibrationDetail.expiry = calendar.getTimeInMillis();
                     calibrationDetail.batchNumber = editBatchCode.getText().toString().trim();
 
-                    CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
+                    CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
                     dao.insert(calibrationDetail);
 
                     mListener.onCalibrationDetailsSaved();
@@ -319,7 +319,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                     Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
-                if (getActivity()!= null) {
+                if (getActivity() != null) {
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

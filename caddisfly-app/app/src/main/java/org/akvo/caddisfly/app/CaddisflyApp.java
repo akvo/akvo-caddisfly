@@ -84,6 +84,7 @@ public class CaddisflyApp extends Application {
             }
 
         } catch (PackageManager.NameNotFoundException ignored) {
+            // do nothing
         }
         return version;
     }
@@ -106,7 +107,7 @@ public class CaddisflyApp extends Application {
                 .build();
     }
 
-    public CalibrationDatabase getDB() {
+    public CalibrationDatabase getDb() {
         return database;
     }
 

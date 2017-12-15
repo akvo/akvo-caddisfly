@@ -47,9 +47,9 @@ public final class AlertUtil {
     /**
      * Displays an alert dialog.
      *
-     * @param context   the context
-     * @param title     the title
-     * @param message   the message
+     * @param context the context
+     * @param title   the title
+     * @param message the message
      */
     public static void showMessage(@NonNull Context context, @StringRes int title, @StringRes int message) {
         showAlert(context, title, message, null, null, null);
@@ -58,9 +58,9 @@ public final class AlertUtil {
     /**
      * Displays an alert dialog.
      *
-     * @param context   the context
-     * @param title     the title
-     * @param message   the message
+     * @param context the context
+     * @param title   the title
+     * @param message the message
      */
     public static void showMessage(@NonNull Context context, @StringRes int title, String message) {
         showAlert(context, title, message, null, null, null);
@@ -90,10 +90,10 @@ public final class AlertUtil {
     }
 
     public static AlertDialog showAlert(@NonNull Context context, @StringRes int title, @StringRes int message,
-                                                               @StringRes int okButtonText,
-                                                               DialogInterface.OnClickListener positiveListener,
-                                                               DialogInterface.OnClickListener negativeListener,
-                                                               DialogInterface.OnCancelListener cancelListener) {
+                                        @StringRes int okButtonText,
+                                        DialogInterface.OnClickListener positiveListener,
+                                        DialogInterface.OnClickListener negativeListener,
+                                        DialogInterface.OnCancelListener cancelListener) {
         return showAlert(context, context.getString(title), context.getString(message), okButtonText,
                 R.string.cancel, true, false, positiveListener, negativeListener, cancelListener);
     }
@@ -181,8 +181,10 @@ public final class AlertUtil {
      * @return the alert dialog
      */
     @SuppressLint("InflateParams")
-    public static AlertDialog showError(@NonNull Context context, @StringRes int title, String message, @Nullable Bitmap bitmap,
-                                        @StringRes int okButtonText, @Nullable DialogInterface.OnClickListener positiveListener,
+    public static AlertDialog showError(@NonNull Context context, @StringRes int title,
+                                        String message, @Nullable Bitmap bitmap,
+                                        @StringRes int okButtonText,
+                                        @Nullable DialogInterface.OnClickListener positiveListener,
                                         @Nullable DialogInterface.OnClickListener negativeListener,
                                         DialogInterface.OnCancelListener cancelListener) {
 

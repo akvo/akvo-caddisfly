@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.sensor.bluetooth;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -35,7 +34,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.FragmentTransaction;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -113,7 +111,6 @@ public class DeviceControlActivity extends BaseActivity
                 //updateConnectionState(R.string.disconnected);
                 Toast.makeText(DeviceControlActivity.this,
                         "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
-//                invalidateOptionsMenu();
                 finish();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 setGattServices(mBluetoothLeService.getSupportedGattServices());
@@ -144,10 +141,6 @@ public class DeviceControlActivity extends BaseActivity
 
         setTitle("Connected");
 
-//        TextView textSelectTest = findViewById(R.id.textSelectTest);
-//        textSelectTest.setText(StringUtil.fromHtml(String.format(getString(R.string.select_test),
-//                testInfo.getName())));
-
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -165,10 +158,6 @@ public class DeviceControlActivity extends BaseActivity
 
         layoutSelectTest = findViewById(R.id.selectTestLayout);
         findViewById(R.id.buttonTestSelected).setOnClickListener(v -> showWaitingView());
-
-//        Button instructionsButton = findViewById(R.id.button_instructions);
-//        instructionsButton.setOnClickListener(view -> alertDialog =
-//                showInstructionDialog(DeviceControlActivity.this, alertDialog));
 
         SpannableStringBuilder selectionInstruction = StringUtil.toInstruction(this, testInfo,
                 String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
@@ -245,26 +234,6 @@ public class DeviceControlActivity extends BaseActivity
         } else {
             super.onBackPressed();
         }
-    }
-
-    private AlertDialog showInstructionDialog(Activity activity, AlertDialog dialog) {
-        if (dialog == null) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-            alert.setTitle(R.string.to_select_test);
-
-            alert.setMessage(TextUtils.concat(
-                    StringUtil.toInstruction(this, testInfo,
-                            String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
-                                    StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getName()))
-            ));
-
-            alert.setPositiveButton(R.string.ok, (dialogInterface, i) -> dialogInterface.dismiss());
-
-            alert.setCancelable(false);
-            dialog = alert.create();
-        }
-        dialog.show();
-        return dialog;
     }
 
     private void displayData(String data) {
@@ -349,7 +318,6 @@ public class DeviceControlActivity extends BaseActivity
 
         setTitle(StringUtil.fromHtml(String.format(getString(R.string.select_test),
                 testInfo.getName())));
-//        setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
     }
 
     private void showSelectTestView() {
@@ -363,7 +331,6 @@ public class DeviceControlActivity extends BaseActivity
         layoutWaiting.setVisibility(View.VISIBLE);
         layoutSelectTest.setVisibility(View.GONE);
         layoutInstructions.setVisibility(View.GONE);
-//        setTitle("Connected");
     }
 
 }

@@ -37,6 +37,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ColorimetryLiquidConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentRunTestBinding;
@@ -76,15 +77,15 @@ import static io.fotoapparat.result.transformer.SizeTransformers.scaled;
 public class BaseRunTest extends Fragment implements RunTest {
     //    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00## ");
     private static final int DELAY = 1000; // 1 second
-    private SoundPoolPlayer sound;
+    private final ArrayList<ResultDetail> results = new ArrayList<>();
     protected FotoapparatSwitcher cameraSwitcher;
     protected FragmentRunTestBinding binding;
     protected boolean cameraStarted;
-    private Context mContext;
     protected int pictureCount = 0;
+    private SoundPoolPlayer sound;
+    private Context mContext;
     private Handler mHandler;
     private AlertDialog alertDialogToBeDestroyed;
-    private final ArrayList<ResultDetail> results = new ArrayList<>();
     private TestInfo mTestInfo;
     private Calibration mCalibration;
     private int dilution;
@@ -157,10 +158,6 @@ public class BaseRunTest extends Fragment implements RunTest {
                         fixed()
                 ))
                 .flash(torch())
-//                .logger(loggers(
-//                        logcat(),
-//                        fileLogger(mContext)
-//                ))
                 .cameraErrorCallback(e -> Toast.makeText(mContext, e.toString(), Toast.LENGTH_LONG).show())
                 .build();
     }
@@ -223,10 +220,7 @@ public class BaseRunTest extends Fragment implements RunTest {
 
         PhotoResult photoResult = cameraSwitcher.getCurrentFotoapparat().takePicture();
 
-//        photoResult.saveToFile(new File(
-//                getExternalFilesDir("photos"),
-//                "photo.jpg"
-//        ));
+        //photoResult.saveToFile(new File(getExternalFilesDir("photos"), "photo.jpg"));
 
         photoResult
                 .toBitmap(scaled(0.25f))
@@ -373,7 +367,6 @@ public class BaseRunTest extends Fragment implements RunTest {
                 (dialogInterface, i) -> initializeTest(),
                 (dialogInterface, i) -> {
                     dialogInterface.dismiss();
-//                    releaseResources();
                     activity.setResult(Activity.RESULT_CANCELED);
                     activity.finish();
                 }, null

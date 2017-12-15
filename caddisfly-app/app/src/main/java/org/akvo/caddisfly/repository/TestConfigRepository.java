@@ -135,13 +135,21 @@ public class TestConfigRepository {
 
         TestInfo testInfo;
         testInfo = getTestInfoItem(assetsManager.getJson(), id);
-        if (testInfo != null) return testInfo;
+        if (testInfo != null) {
+            return testInfo;
+        }
 
-        testInfo = getTestInfoItem(assetsManager.getExperimentalJson(), id);
-        if (testInfo != null) return testInfo;
+        if (AppPreferences.isDiagnosticMode()) {
+            testInfo = getTestInfoItem(assetsManager.getExperimentalJson(), id);
+            if (testInfo != null) {
+                return testInfo;
+            }
+        }
 
         testInfo = getTestInfoItem(assetsManager.getCustomJson(), id);
-        if (testInfo != null) return testInfo;
+        if (testInfo != null) {
+            return testInfo;
+        }
 
         return null;
     }
@@ -154,11 +162,13 @@ public class TestConfigRepository {
         for (TestInfo testInfo : testInfoList) {
             if (testInfo.getUuid().equalsIgnoreCase(id)) {
 
-//                try {
-//                    mergeObjects(testInfo, testInfo);
-//                } catch (IllegalAccessException | InstantiationException e) {
-//                    e.printStackTrace();
-//                }
+                /*
+                try {
+                    mergeObjects(testInfo, testInfo);
+                } catch (IllegalAccessException | InstantiationException e) {
+                    e.printStackTrace();
+                }
+                */
 
                 return testInfo;
             }
@@ -180,7 +190,7 @@ public class TestConfigRepository {
 
     public void addCalibration(TestInfo testInfo) {
 
-        CalibrationDao dao = CaddisflyApp.getApp().getDB().calibrationDao();
+        CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
 
         for (ColorItem colorItem : testInfo.Results().get(0).getColors()) {
             Calibration calibration = new Calibration();

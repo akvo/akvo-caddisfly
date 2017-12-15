@@ -72,7 +72,7 @@ public final class TestConfigHelper {
 
         HashMap<String, MpnValue> mapper = new HashMap<>();
 
-        String jsonText = AssetsManager.getInstance().loadJSONFromAsset(MPN_TABLE_FILENAME);
+        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(MPN_TABLE_FILENAME);
         try {
             JSONArray array = new JSONObject(jsonText).getJSONArray("rows");
 
@@ -225,7 +225,7 @@ public final class TestConfigHelper {
     @Nullable
     private static String getUuidByShortCode(String shortCode, String filename) {
         // Load the pre-configured tests from the app
-        String jsonText = AssetsManager.getInstance().loadJSONFromAsset(filename);
+        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(filename);
         try {
             JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
             for (int i = 0; i < array.length(); i++) {

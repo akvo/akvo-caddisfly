@@ -49,8 +49,8 @@ public class TestListActivity extends BaseActivity
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (permissionsDelegate.resultGranted(requestCode, permissions, grantResults)) {
-            startTest(false);
+        if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
+            startTest();
         }
     }
 
@@ -58,7 +58,6 @@ public class TestListActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        ActivityTestListBinding binding =
         DataBindingUtil.setContentView(this, R.layout.activity_test_list);
 
         setTitle(R.string.selectTest);
@@ -81,20 +80,20 @@ public class TestListActivity extends BaseActivity
     }
 
     /**
-     * Shows the detail fragment
+     * Shows the detail fragment.
      */
-    private void navigateToTestDetails(boolean hideList) {
+    private void navigateToTestDetails() {
 
         String[] checkPermissions = permissions;
 
         if (permissionsDelegate.hasPermissions(checkPermissions)) {
-            startTest(hideList);
+            startTest();
         } else {
             permissionsDelegate.requestPermissions(checkPermissions);
         }
     }
 
-    private void startTest(boolean hideList) {
+    private void startTest() {
         if (testInfo != null && testInfo.getIsGroup()) {
             return;
         }
@@ -111,10 +110,6 @@ public class TestListActivity extends BaseActivity
             intent.putExtra(ConstantKey.TEST_INFO, testInfo);
             intent.putExtra("internal", true);
             startActivity(intent);
-        }
-
-        if (hideList) {
-            finish();
         }
     }
 
@@ -139,7 +134,7 @@ public class TestListActivity extends BaseActivity
     @Override
     public void onListFragmentInteraction(TestInfo testInfo) {
         this.testInfo = testInfo;
-        navigateToTestDetails(false);
+        navigateToTestDetails();
     }
 
     @Override

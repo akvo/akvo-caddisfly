@@ -28,7 +28,7 @@ import java.util.Locale;
 import timber.log.Timber;
 
 /**
- * Utility functions for date and time
+ * Utility functions for date and time.
  */
 public final class DateUtil {
 
@@ -36,7 +36,7 @@ public final class DateUtil {
     }
 
     /**
-     * Gets the number of days in between two given dates
+     * Gets the number of days in between two given dates.
      *
      * @param calendar1 the first date
      * @param calendar2 the second date
@@ -52,7 +52,7 @@ public final class DateUtil {
     }
 
     /**
-     * Gets the number of hours in between two given dates
+     * Gets the number of hours in between two given dates.
      *
      * @param calendar1 the first date
      * @param calendar2 the second date

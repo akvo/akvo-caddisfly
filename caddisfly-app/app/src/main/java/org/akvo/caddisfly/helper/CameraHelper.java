@@ -41,7 +41,7 @@ public final class CameraHelper {
     }
 
     /**
-     * Check if the camera is available
+     * Check if the camera is available.
      *
      * @param context         the context
      * @param onClickListener positive button listener
@@ -78,7 +78,7 @@ public final class CameraHelper {
     }
 
     /**
-     * Check if the device has a camera flash
+     * Check if the device has a camera flash.
      *
      * @param context         the context
      * @param onClickListener positive button listener

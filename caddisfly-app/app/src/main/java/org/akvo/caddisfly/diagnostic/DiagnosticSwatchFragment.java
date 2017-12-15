@@ -62,10 +62,13 @@ public class DiagnosticSwatchFragment extends ListFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getActivity().setTitle(R.string.swatches);
+        if (getActivity() != null) {
+            getActivity().setTitle(R.string.swatches);
+        }
 
         if (testInfo.getSwatches().size() > 0) {
-            DiagnosticSwatchesAdapter diagnosticSwatchesAdapter = new DiagnosticSwatchesAdapter(getActivity(), testInfo.getSwatches());
+            DiagnosticSwatchesAdapter diagnosticSwatchesAdapter =
+                    new DiagnosticSwatchesAdapter(getActivity(), testInfo.getSwatches());
             setListAdapter(diagnosticSwatchesAdapter);
         }
     }

@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Show the diagnostic mode layout
+     * Show the diagnostic mode layout.
      */
     private void switchLayoutForDiagnosticOrUserMode() {
         if (AppPreferences.isDiagnosticMode()) {
@@ -192,7 +192,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /**
-     * Handler to restart the app after language has been changed
+     * Handler to restart the app after language has been changed.
      */
     private static class WeakRefHandler extends Handler {
         private final WeakReference<Activity> ref;

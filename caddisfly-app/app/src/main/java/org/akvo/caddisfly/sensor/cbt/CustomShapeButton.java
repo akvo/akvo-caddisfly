@@ -93,8 +93,8 @@ public class CustomShapeButton extends View {
             } else if (x > colWidth * 3 && x < colWidth * 4 && y < bottom2) {
                 area4 = !area4;
                 active4 = true;
-            } else if ((x > colWidth * 2 && x < colWidth * 3) ||
-                    (x > colWidth * 3 && y > bottom2 && x < (colWidth * 4) + (colWidth / 3))) {
+            } else if ((x > colWidth * 2 && x < colWidth * 3)
+                    || (x > colWidth * 3 && y > bottom2 && x < (colWidth * 4) + (colWidth / 3))) {
                 area3 = !area3;
                 active3 = true;
             }
@@ -141,7 +141,6 @@ public class CustomShapeButton extends View {
         int fillLine = 80;
         int left = 0;
         colWidth = (getWidth() / 5);
-        int halfWidth = colWidth / 2;
 
         bottom = (int) (getHeight() - strokePaint.getStrokeWidth());
 
@@ -154,17 +153,26 @@ public class CustomShapeButton extends View {
             rect1 = new Rect(left, fillLine, colWidth, bottom3);
         }
 
-        canvas.drawRect(rect1, area1 ? active1 ? greenSelectPaint : greenPaint : (active1 ? fillSelectPaint : fillPaint));
+        canvas.drawRect(rect1, area1 ? active1
+                ? greenSelectPaint : greenPaint : (active1 ? fillSelectPaint : fillPaint));
 
-        canvas.drawRect(left, bottom3, colWidth, bottom, area2 ? (active2 ? greenSelectPaint : greenPaint) : (active2 ? fillSelectPaint : fillPaint));
-        canvas.drawRect(colWidth, fillLine, colWidth * 2, bottom, area2 ? active2 ? greenSelectPaint : greenPaint : (active2 ? fillSelectPaint : fillPaint));
+        canvas.drawRect(left, bottom3, colWidth, bottom, area2
+                ? (active2 ? greenSelectPaint : greenPaint) : (active2 ? fillSelectPaint : fillPaint));
 
-        canvas.drawRect(colWidth * 2, fillLine, colWidth * 3, bottom, area3 ? active3 ? greenSelectPaint : greenPaint : fillPaint);
-        canvas.drawRect(colWidth * 3, bottom2, colWidth * 4 + (colWidth / 3), bottom, area3 ? active3 ? greenSelectPaint : greenPaint : fillPaint);
+        canvas.drawRect(colWidth, fillLine, colWidth * 2, bottom, area2
+                ? active2 ? greenSelectPaint : greenPaint : (active2 ? fillSelectPaint : fillPaint));
 
-        canvas.drawRect(colWidth * 3, fillLine, colWidth * 4, bottom2, area4 ? active4 ? greenSelectPaint : greenPaint : fillPaint);
+        canvas.drawRect(colWidth * 2, fillLine, colWidth * 3, bottom, area3
+                ? active3 ? greenSelectPaint : greenPaint : fillPaint);
 
-        canvas.drawRect(colWidth * 4, fillLine, colWidth * 5, bottom1, area5 ? active5 ? greenSelectPaint : greenPaint : fillPaint);
+        canvas.drawRect(colWidth * 3, bottom2, colWidth * 4 + (colWidth / 3), bottom, area3
+                ? active3 ? greenSelectPaint : greenPaint : fillPaint);
+
+        canvas.drawRect(colWidth * 3, fillLine, colWidth * 4, bottom2, area4 ? active4
+                ? greenSelectPaint : greenPaint : fillPaint);
+
+        canvas.drawRect(colWidth * 4, fillLine, colWidth * 5, bottom1, area5 ? active5
+                ? greenSelectPaint : greenPaint : fillPaint);
 
         mPath.moveTo(left, lineTop);
         mPath.lineTo(left, bottom);
@@ -193,6 +201,7 @@ public class CustomShapeButton extends View {
 
         canvas.drawPath(markerPath, markerPaint);
 
+        int halfWidth = colWidth / 2;
         canvas.drawText("1", halfWidth - 10, fillLine + (bottom3 / 2) - 10, textPaint);
         canvas.drawText("2", colWidth - 10, bottom3 + ((bottom - bottom3) / 2), textPaint);
         canvas.drawText("3", (colWidth * 3) + 20, fillLine + (bottom - bottom2), textPaint);
@@ -202,11 +211,11 @@ public class CustomShapeButton extends View {
     }
 
     public String getKey() {
-        mKey = (area1 ? "1" : "0") +
-                (area2 ? "1" : "0") +
-                (area3 ? "1" : "0") +
-                (area4 ? "1" : "0") +
-                (area5 ? "1" : "0");
+        mKey = (area1 ? "1" : "0")
+                + (area2 ? "1" : "0")
+                + (area3 ? "1" : "0")
+                + (area4 ? "1" : "0")
+                + (area5 ? "1" : "0");
 
         return mKey;
     }

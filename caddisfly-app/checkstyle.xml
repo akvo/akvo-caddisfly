@@ -118,7 +118,7 @@
                 value="Type name ''{0}'' must match pattern ''{1}''."/>
         </module>
         <module name="MemberName">
-            <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9]*$"/>
+            <property name="format" value="^[a-z0-9][a-zA-Z0-9]*$"/>
             <message key="name.invalidPattern"
                 value="Member name ''{0}'' must match pattern ''{1}''."/>
         </module>
@@ -178,11 +178,11 @@
         </module>
         <module name="OverloadMethodsDeclarationOrder"/>
         <module name="VariableDeclarationUsageDistance"/>
-        <module name="CustomImportOrder">
-            <property name="sortImportsInGroupAlphabetically" value="true"/>
-            <property name="separateLineBetweenGroups" value="true"/>
-            <property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>
-        </module>
+        <!--<module name="CustomImportOrder">-->
+            <!--<property name="sortImportsInGroupAlphabetically" value="true"/>-->
+            <!--<property name="separateLineBetweenGroups" value="true"/>-->
+            <!--<property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>-->
+        <!--</module>-->
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceBefore">
             <property name="tokens" value="COMMA, SEMI, POST_INC, POST_DEC, DOT, ELLIPSIS, METHOD_REF"/>
@@ -233,5 +233,8 @@
             <property name="exceptionVariableName" value="expected"/>
         </module>
         <module name="CommentsIndentation"/>
+    </module>
+    <module name="SuppressionFilter">
+        <property name="file" value="suppress.xml"/>
     </module>
 </module>

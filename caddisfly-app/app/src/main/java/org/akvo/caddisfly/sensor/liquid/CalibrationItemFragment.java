@@ -73,7 +73,7 @@ public class CalibrationItemFragment extends Fragment {
 
         Context context = view.getContext();
 
-        CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDB()
+        CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
                 .calibrationDao().getCalibrationDetails(testInfo.getUuid());
 
         if (calibrationDetail != null) {
@@ -115,8 +115,6 @@ public class CalibrationItemFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_item_list, container, false);
 
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(binding.toolbar);
-
         final TestInfoViewModel model =
                 ViewModelProviders.of(this).get(TestInfoViewModel.class);
 
@@ -137,13 +135,14 @@ public class CalibrationItemFragment extends Fragment {
 
     public void loadDetails() {
 
-        CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDB()
+        CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
                 .calibrationDao().getCalibrationDetails(testInfo.getUuid());
 
         if (calibrationDetail != null) {
             binding.textSubtitle.setText(calibrationDetail.batchNumber);
 
-            binding.textSubtitle1.setText(DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.date)));
+            binding.textSubtitle1.setText(DateFormat
+                    .getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.date)));
 
             binding.textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
                     DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.expiry))));

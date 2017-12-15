@@ -34,7 +34,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
 
 /**
- * The base activity with common functions
+ * The base activity with common functions.
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -71,6 +71,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             try {
                 setSupportActionBar(toolbar);
             } catch (Exception ignored) {
+                // do nothing
             }
         }
         if (getSupportActionBar() != null) {
@@ -110,7 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * Changes the action bar style depending on if the app is in user mode or diagnostic mode
-     * This serves as a visual indication as to what mode the app is running in
+     * This serves as a visual indication as to what mode the app is running in.
      */
     protected void changeActionBarStyleBasedOnCurrentMode() {
         if (AppPreferences.isDiagnosticMode()) {

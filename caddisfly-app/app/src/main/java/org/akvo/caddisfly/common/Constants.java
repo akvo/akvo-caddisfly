@@ -6,17 +6,17 @@ public class Constants {
     public static final String TESTS_META_FILENAME = "tests.json";
 
     /**
-     * Max distance between colors at which the colors are considered to be similar
+     * Max distance between colors at which the colors are considered to be similar.
      */
     public static final int MAX_COLOR_DISTANCE_RGB = 40;
 
     /**
-     * The number of photos to take during analysis
+     * The number of photos to take during analysis.
      */
     public static final int SAMPLING_COUNT_DEFAULT = 5;
 
     /**
-     * The number of photo samples to be skipped during analysis
+     * The number of photo samples to be skipped during analysis.
      */
     public static final int SKIP_SAMPLING_COUNT = 2;
     public static final int GET_READY_SECONDS = 12;

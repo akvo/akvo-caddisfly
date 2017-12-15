@@ -5,6 +5,7 @@
     "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 
 <suppressions>
+    <suppress checks=".*" files="[\\/]qrdetector[\\/].*" />
     <suppress checks=".*" files="[\\/]usb[\\/]" />
     <suppress checks=".*" files="UVCCameraTextureView.java" />
     <suppress checks=".*" files="CalibrationCard.java" />

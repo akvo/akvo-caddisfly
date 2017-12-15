@@ -60,7 +60,7 @@ public class BluetoothResultFragment extends Fragment {
     private LinearLayout layoutWaiting;
     private LinearLayout layoutResult;
     private OnCurrentModeListener mListener;
-    private AlertDialog dialog;
+    private AlertDialog errorDialog;
     private LinearLayout layoutResult1;
     private LinearLayout layoutResult2;
     private LinearLayout layoutResult3;
@@ -68,7 +68,7 @@ public class BluetoothResultFragment extends Fragment {
     private TestInfo testInfo;
 
     /**
-     * Creates test fragment for specific uuid
+     * Creates test fragment for specific uuid.
      */
     public static BluetoothResultFragment getInstance(TestInfo testInfo) {
         BluetoothResultFragment fragment = new BluetoothResultFragment();
@@ -154,14 +154,16 @@ public class BluetoothResultFragment extends Fragment {
         alertDialog.setMessage(TextUtils.concat(
                 StringUtil.toInstruction((AppCompatActivity) getActivity(),
                         null, getString(R.string.data_does_not_match) + "<br /><br />"),
-                StringUtil.toInstruction((AppCompatActivity) getActivity(), null, getString(R.string.select_correct_test))
+
+                StringUtil.toInstruction((AppCompatActivity) getActivity(),
+                        null, getString(R.string.select_correct_test))
         ));
 
         alertDialog.setPositiveButton(R.string.ok, (dialogInterface, i) -> dialogInterface.dismiss());
 
         alertDialog.setCancelable(false);
-        dialog = alertDialog.create();
-        dialog.show();
+        errorDialog = alertDialog.create();
+        errorDialog.show();
     }
 
     public void displayWaiting() {
@@ -174,13 +176,12 @@ public class BluetoothResultFragment extends Fragment {
 
     public boolean displayData(String data) {
 
-        if (dialog != null) {
-            dialog.dismiss();
+        if (errorDialog != null) {
+            errorDialog.dismiss();
         }
 
         // Display data received for diagnostics
         if (AppPreferences.showBluetoothData()) {
-            AlertDialog dialog;
             AlertDialog.Builder builder;
             final TextView showText = new TextView(getActivity());
             showText.setText(String.format("%s = %s", testInfo.getName(), data));
@@ -205,6 +206,7 @@ public class BluetoothResultFragment extends Fragment {
 
             builder.setNegativeButton(R.string.cancel, (dialog12, which) -> dialog12.dismiss());
 
+            AlertDialog dialog;
             dialog = builder.create();
             dialog.setTitle("Received Data");
             dialog.setCancelable(false);
@@ -271,7 +273,7 @@ public class BluetoothResultFragment extends Fragment {
                                         Double.parseDouble(ranges[0]);
                                     } catch (Exception e) {
                                         //todo fix this
-//                                        ranges[0] = String.valueOf(testInfo.getRangeValues()[0]);
+                                        //ranges[0] = String.valueOf(testInfo.getRangeValues()[0]);
                                     }
                                     result = "<" + ranges[0];
                                 } else if (result.equalsIgnoreCase("overrange")) {
@@ -280,7 +282,7 @@ public class BluetoothResultFragment extends Fragment {
                                         Double.parseDouble(ranges[1]);
                                     } catch (Exception e) {
                                         //todo fix this
-//                                        ranges[1] = String.valueOf(testInfo.getRangeValues()[1]);
+                                        //ranges[1] = String.valueOf(testInfo.getRangeValues()[1]);
                                     }
                                     result = ">" + ranges[1];
                                 } else if (result.equalsIgnoreCase("???")) {

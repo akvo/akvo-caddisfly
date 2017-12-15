@@ -295,21 +295,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             }
         }
     }
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode,
-//                                           @NonNull String[] permissions,
-//                                           @NonNull int[] grantResults) {
-//        switch (requestCode) {
-//            case PERMISSION_REQUEST_COARSE_LOCATION:
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                } else {
-//                    finish();
-//                }
-//                break;
-//            default:
-//                break;
-//        }
-//    }
 
     @Override
     protected void onResume() {
@@ -431,7 +416,8 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             mScanning = true;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                ScanFilter filter = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(GattAttributes.LOVIBOND_SERVICE)).build();
+                ScanFilter filter = new ScanFilter.Builder()
+                        .setServiceUuid(ParcelUuid.fromString(GattAttributes.LOVIBOND_SERVICE)).build();
 
                 List<ScanFilter> scanFilters = new ArrayList<>();
                 scanFilters.add(filter);

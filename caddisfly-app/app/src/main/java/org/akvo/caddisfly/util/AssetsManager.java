@@ -35,9 +35,6 @@ import java.util.Locale;
 
 import timber.log.Timber;
 
-/**
- * Created by linda on 8/19/15
- */
 public final class AssetsManager {
 
     private static AssetsManager assetsManager;
@@ -50,7 +47,7 @@ public final class AssetsManager {
     public AssetsManager() {
         this.manager = CaddisflyApp.getApp().getApplicationContext().getAssets();
 
-        json = loadJSONFromAsset(Constants.TESTS_META_FILENAME);
+        json = loadJsonFromAsset(Constants.TESTS_META_FILENAME);
 
         File experimentalConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG),
                 Constants.TESTS_META_FILENAME);
@@ -84,33 +81,7 @@ public final class AssetsManager {
         return null;
     }
 
-//    /**
-//     * Read file from asset directory
-//     *
-//     * @param context  current activity
-//     * @param fileName file to read
-//     * @return content of the file, string format
-//     */
-//    private String readFromAsset(final Context context, final String fileName) {
-//        String text = "";
-//        try {
-//            InputStream is = context.getAssets().open(fileName);
-//
-//            int size = is.available();
-//
-//            // Read the entire asset into a local byte buffer.
-//            byte[] buffer = new byte[size];
-//            //noinspection ResultOfMethodCallIgnored
-//            is.read(buffer);
-//            is.close();
-//            text = new String(buffer, "UTF-8");
-//        } catch (IOException e) {
-//            Timber.e(e);
-//        }
-//        return text;
-//    }
-
-    public String loadJSONFromAsset(String fileName) {
+    public String loadJsonFromAsset(String fileName) {
         String json;
         InputStream is = null;
         try {

@@ -22,19 +22,19 @@ package org.akvo.caddisfly.model;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * The different types of testing methods
+ * The different types of testing methods.
  */
 public enum GroupType {
     /**
      * Liquid reagent is mixed with sample and color is analysed from the resulting
-     * color change in the solution
+     * color change in the solution.
      */
     @SerializedName("INDIVIDUAL")
     INDIVIDUAL,
 
     /**
      * Strip paper is dipped into the sample and color is analysed from the resulting
-     * color change on the strip paper
+     * color change on the strip paper.
      */
     @SerializedName("GROUP")
     GROUP
