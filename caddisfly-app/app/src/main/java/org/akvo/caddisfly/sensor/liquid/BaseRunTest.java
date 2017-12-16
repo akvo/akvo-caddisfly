@@ -56,7 +56,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import io.fotoapparat.Fotoapparat;
-import io.fotoapparat.FotoapparatSwitcher;
 import io.fotoapparat.parameter.LensPosition;
 import io.fotoapparat.parameter.ScaleType;
 import io.fotoapparat.parameter.update.UpdateRequest;
@@ -77,7 +76,7 @@ public class BaseRunTest extends Fragment implements RunTest {
     //    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00## ");
     private static final int DELAY = 1000; // 1 second
     private final ArrayList<ResultDetail> results = new ArrayList<>();
-    protected FotoapparatSwitcher cameraSwitcher;
+    protected Fotoapparat camera;
     protected FragmentRunTestBinding binding;
     protected boolean cameraStarted;
     protected int pictureCount = 0;
@@ -93,6 +92,8 @@ public class BaseRunTest extends Fragment implements RunTest {
         if (pictureCount < AppPreferences.getSamplingTimes()) {
             pictureCount++;
             takePicture();
+        } else {
+            releaseResources();
         }
     };
 
@@ -107,6 +108,7 @@ public class BaseRunTest extends Fragment implements RunTest {
         mContext = getContext();
 
         sound = new SoundPoolPlayer(getActivity());
+
     }
 
     @Override
@@ -139,22 +141,20 @@ public class BaseRunTest extends Fragment implements RunTest {
     }
 
     protected void setupCamera() {
-        Fotoapparat camera = createCamera(LensPosition.BACK);
-        cameraSwitcher = FotoapparatSwitcher.withDefault(camera);
-        cameraSwitcher.switchTo(camera);
+        camera = createCamera();
     }
 
-    private Fotoapparat createCamera(LensPosition position) {
+    private Fotoapparat createCamera() {
         return Fotoapparat
                 .with(mContext)
                 .into(binding.cameraView)
                 .previewScaleType(ScaleType.CENTER_CROP)
                 .photoSize(standardRatio(biggestSize()))
-                .lensPosition(lensPosition(position))
+                .lensPosition(lensPosition(LensPosition.BACK))
                 .focusMode(firstAvailable(
-                        continuousFocus(),
+                        fixed(),
                         autoFocus(),
-                        fixed()
+                        continuousFocus()
                 ))
                 .flash(torch())
                 .cameraErrorCallback(e -> Toast.makeText(mContext, e.toString(), Toast.LENGTH_LONG).show())
@@ -217,7 +217,7 @@ public class BaseRunTest extends Fragment implements RunTest {
             return;
         }
 
-        PhotoResult photoResult = cameraSwitcher.getCurrentFotoapparat().takePicture();
+        PhotoResult photoResult = camera.takePicture();
 
         //photoResult.saveToFile(new File(getExternalFilesDir("photos"), "photo.jpg"));
 
@@ -264,14 +264,14 @@ public class BaseRunTest extends Fragment implements RunTest {
                 try {
 
                     if (cameraStarted) {
-                        cameraSwitcher.getCurrentFotoapparat().updateParameters(
+                        camera.updateParameters(
                                 UpdateRequest.builder()
                                         .flash(off())
                                         .build()
                         );
 
-                        cameraSwitcher.getCurrentFotoapparat().stop();
-                        cameraSwitcher.stop();
+                        camera.stop();
+                        camera.stop();
                     }
 
                 } catch (Exception e) {
@@ -318,7 +318,7 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             sound.playShortResource(R.raw.beep);
 
-            cameraSwitcher.start();
+            camera.start();
 
             startRepeatingTask();
         }
@@ -333,13 +333,13 @@ public class BaseRunTest extends Fragment implements RunTest {
         stopRepeatingTask();
         try {
 
-            cameraSwitcher.getCurrentFotoapparat().updateParameters(
+            camera.updateParameters(
                     UpdateRequest.builder()
                             .flash(off())
                             .build()
             );
 
-            cameraSwitcher.getCurrentFotoapparat().stop();
+            camera.stop();
         } catch (Exception e) {
             e.printStackTrace();
         }

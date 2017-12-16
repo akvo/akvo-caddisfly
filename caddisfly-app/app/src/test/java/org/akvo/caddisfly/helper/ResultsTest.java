@@ -21,7 +21,7 @@ package org.akvo.caddisfly.helper;
 
 import android.util.SparseArray;
 
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.json.JSONObject;
@@ -39,7 +39,7 @@ public class ResultsTest {
     public void testColorimetryResult() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.FLUORIDE_ID);
+        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.FLUORIDE_ID);
 
         assert testInfo != null;
 

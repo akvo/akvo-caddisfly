@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
@@ -55,7 +55,7 @@ public class CbtTest {
     public void titleIsCorrect() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.CBT_ID);
+        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.CBT_ID);
 
         Intent intent = new Intent();
         Bundle data = new Bundle();
@@ -74,7 +74,7 @@ public class CbtTest {
     public void clickingInstructions() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.CBT_ID);
+        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.CBT_ID);
 
         Intent intent = new Intent();
         Bundle data = new Bundle();
@@ -102,7 +102,7 @@ public class CbtTest {
         String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(SensorConstants.CBT_ID);
+        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.CBT_ID);
 
         Intent intent = new Intent();
         Bundle data = new Bundle();

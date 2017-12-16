@@ -52,6 +52,7 @@ import org.akvo.caddisfly.diagnostic.DiagnosticSwatchActivity;
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Result;
@@ -70,6 +71,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,6 +84,8 @@ public class ChamberTestActivity extends BaseActivity implements
         SelectDilutionFragment.OnDilutionSelectedListener,
         EditCustomDilution.OnCustomDilutionListener {
 
+    private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
+
     private RunTest runTestFragment;
     private CalibrationItemFragment calibrationItemFragment;
     private FragmentManager fragmentManager;
@@ -89,6 +93,8 @@ public class ChamberTestActivity extends BaseActivity implements
     private boolean cameraIsOk = false;
     private int currentDilution = 1;
     private Bitmap mCroppedBitmap;
+    private SoundPoolPlayer sound;
+    private AlertDialog alertDialogToBeDestroyed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +104,8 @@ public class ChamberTestActivity extends BaseActivity implements
         setContentView(R.layout.activity_chamber_test);
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
+
+        sound = new SoundPoolPlayer(this);
 
         fragmentManager = getSupportFragmentManager();
 
@@ -115,7 +123,7 @@ public class ChamberTestActivity extends BaseActivity implements
             if (testInfo.getCameraAbove()) {
                 runTestFragment = ChamberBelowFragment.newInstance(testInfo);
             } else {
-                runTestFragment = RunTestFragment.newInstance(testInfo);
+                runTestFragment = ChamberAboveTest.newInstance(testInfo);
             }
 
             if (getIntent().getBooleanExtra(ConstantKey.RUN_TEST, false)) {
@@ -380,23 +388,47 @@ public class ChamberTestActivity extends BaseActivity implements
 
             double value = SwatchHelper.getAverageResult(resultDetails);
 
-            Result result = testInfo.getResults().get(0);
-            result.setResult(value, dilution, testInfo.getMaxDilution());
+            if (value > -1) {
 
-            fragmentManager.popBackStack();
-            fragmentManager
-                    .beginTransaction()
-                    .addToBackStack(null)
-                    .replace(R.id.fragment_container,
-                            ResultFragment.newInstance(testInfo), null).commit();
+                sound.playShortResource(R.raw.err);
 
-            mCroppedBitmap = croppedBitmap;
+                Result result = testInfo.getResults().get(0);
+                result.setResult(value, dilution, testInfo.getMaxDilution());
+
+                fragmentManager.popBackStack();
+                fragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container,
+                                ResultFragment.newInstance(testInfo), null).commit();
+
+                mCroppedBitmap = croppedBitmap;
+            } else {
+
+                showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestFailed),
+                        getString(R.string.checkChamberPlacement)), croppedBitmap);
+            }
 
         } else {
 
+            int color = SwatchHelper.getAverageColor(resultDetails);
+
             CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
+
+//            Calibration calibration1 = null;
+//            try {
+//                calibration1 = (Calibration) calibration.clone();
+//                calibration1.color = color;
+//                calibration1.date = new Date().getTime();
+//            } catch (CloneNotSupportedException e) {
+//                e.printStackTrace();
+//            }
+
+            calibration.color = color;
+            calibration.date = new Date().getTime();
             dao.insert(calibration);
-            CalibrationFile.saveCalibratedData(this, testInfo, calibration, 0);
+
+            CalibrationFile.saveCalibratedData(this, testInfo, calibration, color);
             fragmentManager.popBackStackImmediate();
         }
     }
@@ -433,6 +465,36 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     /**
+     * Show an error message dialog.
+     *
+     * @param message the message to be displayed
+     * @param bitmap  any bitmap image to displayed along with error message
+     */
+    private void showError(String message, final Bitmap bitmap) {
+
+        releaseResources();
+
+        sound.playShortResource(R.raw.err);
+
+        alertDialogToBeDestroyed = AlertUtil.showError(this, R.string.error, message, bitmap, R.string.retry,
+                (dialogInterface, i) -> start(),
+                (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    releaseResources();
+                    setResult(Activity.RESULT_CANCELED);
+                    finish();
+                }, null
+        );
+    }
+
+    private void releaseResources() {
+        if (alertDialogToBeDestroyed != null) {
+            alertDialogToBeDestroyed.dismiss();
+        }
+        sound.release();
+    }
+
+    /**
      * Navigate back to the dilution selection screen if re-testing.
      */
     public void onTestWithDilution(View view) {
@@ -449,6 +511,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
     @Override
     public void onCustomDilution(Integer dilution) {
+        currentDilution = dilution;
         runTest();
     }
 

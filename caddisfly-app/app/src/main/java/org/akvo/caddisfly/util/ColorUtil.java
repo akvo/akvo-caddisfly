@@ -41,7 +41,7 @@ public final class ColorUtil {
     /**
      * The default color model used for analysis
      */
-    private static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
+    protected static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
 
     /**
      * The maximum color distance before the color is considered out of range
@@ -209,7 +209,7 @@ public final class ColorUtil {
      * @param color2 the color to compare with
      * @return the distance between the two colors
      */
-    private static double getColorDistanceRgb(int color1, int color2) {
+    public static double getColorDistanceRgb(int color1, int color2) {
         double r, g, b;
 
         r = Math.pow(Color.red(color2) - Color.red(color1), 2.0);

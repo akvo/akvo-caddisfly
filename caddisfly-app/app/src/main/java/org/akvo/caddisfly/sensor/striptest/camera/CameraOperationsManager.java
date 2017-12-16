@@ -92,7 +92,6 @@ public class CameraOperationsManager {
     }
 
     // TODO add cancel request
-
     public void setDecodeImageCaptureRequest() {
         if (mCameraHandler != null && mCamera != null) {
             mCameraHandler.post(() -> mCamera.setOneShotPreviewCallback(previewCallback));

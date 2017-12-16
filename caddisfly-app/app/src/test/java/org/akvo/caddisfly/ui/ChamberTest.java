@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -71,7 +71,7 @@ public class ChamberTest {
                 + "1.5=255  62  55\n"
                 + "2.0=255  81  34\n";
 
-        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, SensorConstants.FLUORIDE_ID);
+        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, Constants.FLUORIDE_ID);
 
         FileUtil.saveToFile(path, name, file);
     }
@@ -190,7 +190,7 @@ public class ChamberTest {
         Intent intent = new Intent(AppConfig.FLOW_ACTION_CADDISFLY);
 
         Bundle data = new Bundle();
-        data.putString(CADDISFLY_RESOURCE_ID, SensorConstants.FLUORIDE_ID);
+        data.putString(CADDISFLY_RESOURCE_ID, Constants.FLUORIDE_ID);
         data.putString(CADDISFLY_QUESTION_ID, "123");
         data.putString(CADDISFLY_QUESTION_TITLE, "Fluoride");
         data.putString(CADDISFLY_LANGUAGE, "en");

@@ -34,6 +34,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.databinding.FragmentSelectDilutionBinding;
 import org.akvo.caddisfly.model.TestInfo;
 
+import java.util.List;
 import java.util.Locale;
 
 public class SelectDilutionFragment extends Fragment {
@@ -41,7 +42,7 @@ public class SelectDilutionFragment extends Fragment {
 
     private TestInfo testInfo;
     private OnDilutionSelectedListener mListener;
-    private FragmentSelectDilutionBinding b;
+    private FragmentSelectDilutionBinding binding;
 
     public SelectDilutionFragment() {
         // Required empty public constructor
@@ -67,24 +68,38 @@ public class SelectDilutionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        b = DataBindingUtil.inflate(inflater, R.layout.fragment_select_dilution,
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_dilution,
                 container, false);
 
-        //todo: remove hardcoding of dilution times
-        b.buttonDilution1.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 2));
-        b.buttonDilution2.setText(String.format(Locale.getDefault(), getString(R.string.timesDilution), 5));
+        List<Integer> dilutions = testInfo.getDilutions();
 
-        b.buttonNoDilution.setOnClickListener(view1 -> mListener.onDilutionSelected(1));
+        binding.buttonNoDilution.setOnClickListener(view1 -> mListener.onDilutionSelected(1));
 
-        b.buttonDilution1.setOnClickListener(view1 -> mListener.onDilutionSelected(2));
+        if (dilutions.size() > 1) {
+            int dilution = dilutions.get(1);
+            binding.buttonDilution1.setText(String.format(Locale.getDefault(),
+                    getString(R.string.timesDilution), dilution));
+            binding.buttonDilution1.setOnClickListener(view1 -> mListener.onDilutionSelected(dilution));
+        }
 
-        b.buttonDilution2.setOnClickListener(view1 -> mListener.onDilutionSelected(5));
+        if (dilutions.size() > 2) {
+            int dilution = dilutions.get(2);
+            binding.buttonDilution2.setText(String.format(Locale.getDefault(),
+                    getString(R.string.timesDilution), dilution));
+            binding.buttonDilution2.setOnClickListener(view1 -> mListener.onDilutionSelected(dilution));
+        } else {
+            binding.buttonDilution2.setVisibility(View.GONE);
+        }
 
-        b.buttonCustomDilution.setOnClickListener(view1 -> showCustomDilutionDialog());
+        if (dilutions.size() > 3) {
+            binding.buttonCustomDilution.setOnClickListener(view1 -> showCustomDilutionDialog());
+        } else {
+            binding.buttonCustomDilution.setVisibility(View.GONE);
+        }
 
-        ((TextView) b.getRoot().findViewById(R.id.textTitle)).setText(testInfo.getName());
+        ((TextView) binding.getRoot().findViewById(R.id.textTitle)).setText(testInfo.getName());
 
-        return b.getRoot();
+        return binding.getRoot();
     }
 
     private void showCustomDilutionDialog() {

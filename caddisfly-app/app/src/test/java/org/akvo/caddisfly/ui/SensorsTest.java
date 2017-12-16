@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -34,10 +33,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.robolectric.Shadows.shadowOf;
@@ -109,7 +108,7 @@ public class SensorsTest {
     @Test
     public void clickSensorItem() {
 
-        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        String[] permissions = new String[]{};
 
         Intent intent = new Intent();
         intent.putExtra("type", TestType.SENSOR);
@@ -126,22 +125,11 @@ public class SensorsTest {
 
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
-        Intent nextIntent = shadowOf(activity).getNextStartedActivity();
-
-        assertNull(nextIntent);
-
-        ShadowApplication application = shadowOf(activity.getApplication());
-        application.grantPermissions(permissions);
-        controller.resume();
-
-        assertSame(3, recyclerView.getChildCount());
-
-        recyclerView.getChildAt(1).performClick();
-
-        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-
         Intent nextIntent1 = shadowOf(activity).getNextStartedActivity();
-        if (nextIntent1 != null && nextIntent1.getComponent() != null) {
+
+        assertNotNull(nextIntent1);
+
+        if (nextIntent1.getComponent() != null) {
             assertEquals(TestActivity.class.getCanonicalName(),
                     nextIntent1.getComponent().getClassName());
         }

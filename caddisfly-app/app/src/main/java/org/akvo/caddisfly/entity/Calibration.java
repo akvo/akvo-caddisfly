@@ -7,8 +7,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-//import javax.annotation.Nonnull;
-
 @Entity(primaryKeys = {"uid", "value"})
 public class Calibration implements Parcelable {
 

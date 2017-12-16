@@ -84,12 +84,14 @@ public class TestListActivity extends BaseActivity
      */
     private void navigateToTestDetails() {
 
-        String[] checkPermissions = permissions;
-
-        if (permissionsDelegate.hasPermissions(checkPermissions)) {
-            startTest();
+        if (testInfo.getSubtype() == TestType.CHAMBER_TEST) {
+            if (permissionsDelegate.hasPermissions(permissions)) {
+                startTest();
+            } else {
+                permissionsDelegate.requestPermissions(permissions);
+            }
         } else {
-            permissionsDelegate.requestPermissions(checkPermissions);
+            startTest();
         }
     }
 

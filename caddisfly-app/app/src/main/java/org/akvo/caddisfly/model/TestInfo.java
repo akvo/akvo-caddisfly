@@ -317,6 +317,15 @@ public class TestInfo implements Parcelable {
                     }
                 }
             }
+
+            if (dilutions.size() > 1) {
+                int maxDilution = dilutions.get(Math.min(dilutions.size() - 1, 2));
+                int maxColors = results.get(0).getColors().size() - 1;
+                String text = String.format(" (Upto %s with dilution)",
+                        maxDilution * results.get(0).getColors().get(maxColors).getValue());
+                return minMaxRange.toString() + text;
+            }
+
             return minMaxRange.toString();
         }
         return "";

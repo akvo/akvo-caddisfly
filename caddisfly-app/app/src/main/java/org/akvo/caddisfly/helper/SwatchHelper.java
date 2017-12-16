@@ -61,6 +61,7 @@ public final class SwatchHelper {
 
     // If the color distance between samplings exceeds this the test is rejected
     private static final double MAX_COLOR_DISTANCE = 40;
+    private static final double MAX_COLOR_DISTANCE_CALIBRATION = 10;
 
     // The number of interpolations to generate between range values
     private static final double INTERPOLATION_COUNT = 250;
@@ -474,4 +475,43 @@ public final class SwatchHelper {
 //        Log.d("RESULT", "value: " + result);
         return result;
     }
+
+    /**
+     * Returns an average color from a list of results
+     * If any color does not closely match the rest of the colors then it returns -1
+     *
+     * @param resultDetails the list of results
+     * @return the average color
+     */
+    public static int getAverageColor(ArrayList<ResultDetail> resultDetails) {
+
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+
+        for (int i = 0; i < resultDetails.size(); i++) {
+            int color1 = resultDetails.get(i).getColor();
+
+            //if invalid color return 0
+            if (color1 == 0) {
+                return 0;
+            }
+
+            //check all the colors are mostly similar otherwise return -1
+            for (int j = 0; j < resultDetails.size(); j++) {
+                int color2 = resultDetails.get(j).getColor();
+                if (ColorUtil.getColorDistanceRgb(color1, color2) > MAX_COLOR_DISTANCE_CALIBRATION) {
+                    return 0;
+                }
+            }
+            red += Color.red(color1);
+            green += Color.green(color1);
+            blue += Color.blue(color1);
+        }
+
+        //return an average color
+        int resultCount = resultDetails.size();
+        return Color.rgb(red / resultCount, green / resultCount, blue / resultCount);
+    }
+
 }

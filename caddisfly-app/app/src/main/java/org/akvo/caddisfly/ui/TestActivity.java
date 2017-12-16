@@ -87,6 +87,7 @@ public class TestActivity extends BaseActivity {
 
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
+    private final String[] noPermissions = {};
 
     // track if the call was made internally or from an external app
     private boolean isExternalAppCall = false;
@@ -227,8 +228,20 @@ public class TestActivity extends BaseActivity {
     public void onStartTestClick(View view) {
 
         String[] checkPermissions = permissions;
-        if (testInfo.getSubtype() == TestType.BLUETOOTH) {
-            checkPermissions = bluetoothPermissions;
+
+        switch (testInfo.getSubtype()) {
+            case SENSOR:
+                checkPermissions = noPermissions;
+                break;
+            case MANUAL:
+                if (!testInfo.getHasImage()) {
+                    checkPermissions = noPermissions;
+                }
+                break;
+            case BLUETOOTH:
+                checkPermissions = bluetoothPermissions;
+                break;
+            default:
         }
 
         if (permissionsDelegate.hasPermissions(checkPermissions)) {

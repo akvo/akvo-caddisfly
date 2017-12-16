@@ -61,7 +61,7 @@ public class ChamberBelowFragment extends BaseRunTest implements RunTest {
 
             cameraStarted = true;
 
-            cameraSwitcher.start();
+            camera.start();
 
             binding.cameraView.setOnClickListener(v -> {
                 binding.cameraView.setOnClickListener(null);
