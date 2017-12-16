@@ -132,7 +132,7 @@ public class ManualTest {
 
         clickExternalSourceButton(0, TestConstant.GO_TO_TEST);
 
-        SystemClock.sleep(6000);
+        SystemClock.sleep(3000);
 
         onView(withText("Instructions")).check(matches(isDisplayed())).perform(click());
 
@@ -214,7 +214,7 @@ public class ManualTest {
 
         clickExternalSourceButton(1, TestConstant.GO_TO_TEST);
 
-        SystemClock.sleep(6000);
+        SystemClock.sleep(3000);
 
         onView(withText("Instructions")).check(matches(isDisplayed())).perform(click());
 

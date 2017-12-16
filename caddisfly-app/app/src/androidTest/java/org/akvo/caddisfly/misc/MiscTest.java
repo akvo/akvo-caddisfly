@@ -40,6 +40,7 @@ import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -157,6 +158,7 @@ public class MiscTest {
     }
 
     @Test
+    @Ignore
     @RequiresDevice
     public void testZErrors() {
 
@@ -276,7 +278,7 @@ public class MiscTest {
 
         onView(withText(R.string.save)).perform(click());
 
-        onView(withText("2" + dfs.getDecimalSeparator() + "00 mg/l")).perform(click());
+        onView(withText("2" + dfs.getDecimalSeparator() + "0 mg/l")).perform(click());
 
         //onView(withId(R.id.buttonStart)).perform(click());
 

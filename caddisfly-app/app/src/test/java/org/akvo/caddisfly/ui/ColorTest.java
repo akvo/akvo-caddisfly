@@ -19,36 +19,61 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.graphics.Bitmap;
+import android.graphics.Color;
+
+import org.akvo.caddisfly.common.ChamberTestConfig;
+import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.helper.SwatchHelper;
+import org.akvo.caddisfly.model.ColorInfo;
+import org.akvo.caddisfly.model.ColorItem;
+import org.akvo.caddisfly.model.Result;
+import org.akvo.caddisfly.model.ResultDetail;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.util.ColorUtil;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static junit.framework.Assert.assertEquals;
+
 @RunWith(RobolectricTestRunner.class)
 public class ColorTest {
-//
-//    @Test
-//    public void testGetResultValue() {
-//        int[] colors = new int[2500];
-//        for (int i = 0; i < 2500; i++) {
-//            colors[i] = -1;
-//        }
-//
-//        Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
-//        TestInfo testInfo = new TestInfo();
-//        testInfo.addSwatch(new Swatch(0, Color.rgb(255, 87, 181), Color.TRANSPARENT));
-//        testInfo.addSwatch(new Swatch(0.5, Color.rgb(255, 124, 157), Color.TRANSPARENT));
-//        testInfo.addSwatch(new Swatch(1, Color.rgb(255, 146, 139), Color.TRANSPARENT));
-//        testInfo.addSwatch(new Swatch(1.5, Color.rgb(250, 171, 130), Color.TRANSPARENT));
-//        testInfo.addSwatch(new Swatch(2, Color.rgb(245, 185, 122), Color.TRANSPARENT));
-//
-//        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, ColorimetryLiquidConfig.SAMPLE_CROP_LENGTH_DEFAULT);
-//
-//        ResultDetail resultDetail = SwatchHelper.analyzeColor(5, photoColor,
-//                testInfo.getSwatches(),
-//                ColorUtil.ColorModel.RGB);
-//
-//        assertEquals(-1.0, resultDetail.getResult());
-//    }
-//
+
+    @Test
+    public void testGetResultValue() {
+        int[] colors = new int[2500];
+        for (int i = 0; i < 2500; i++) {
+            colors[i] = -1;
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
+        TestInfo testInfo = new TestInfo();
+        Result result = new Result();
+        result.getColors().add(new ColorItem(0));
+        result.getColors().add(new ColorItem(0.5));
+        result.getColors().add(new ColorItem(1));
+        result.getColors().add(new ColorItem(1.5));
+        result.getColors().add(new ColorItem(2));
+        testInfo.getResults().add(result);
+        List<Calibration> calibrations = new ArrayList<>();
+        calibrations.add(new Calibration(0, Color.rgb(255, 87, 181)));
+        calibrations.add(new Calibration(0.5, Color.rgb(255, 124, 157)));
+        calibrations.add(new Calibration(1, Color.rgb(255, 146, 139)));
+        calibrations.add(new Calibration(1.5, Color.rgb(250, 171, 130)));
+        calibrations.add(new Calibration(2, Color.rgb(245, 185, 122)));
+        testInfo.setCalibrations(calibrations);
+
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, ChamberTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+        ResultDetail resultDetail = SwatchHelper.analyzeColor(5, photoColor, testInfo.getSwatches());
+
+        assertEquals(-1.0, resultDetail.getResult());
+    }
+
 //    @Test
 //    public void testGetResultValue2() {
 //        int[] colors = new int[2500];

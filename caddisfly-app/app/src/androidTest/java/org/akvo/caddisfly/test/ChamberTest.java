@@ -33,6 +33,7 @@ import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.ChamberTestConfig;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.TestConstantKeys;
 import org.akvo.caddisfly.ui.MainActivity;
@@ -473,21 +474,21 @@ public class ChamberTest {
         recyclerView2.perform(actionOnItemAtPosition(3, click()));
 
 
-//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
-        ViewInteraction cameraView = onView(
-                allOf(withId(R.id.camera_view),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutWait),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        cameraView.perform(click());
+//        ViewInteraction cameraView = onView(
+//                allOf(withId(R.id.camera_view),
+//                        childAtPosition(
+//                                allOf(withId(R.id.layoutWait),
+//                                        childAtPosition(
+//                                                withClassName(is("android.widget.LinearLayout")),
+//                                                1)),
+//                                1),
+//                        isDisplayed()));
+//        cameraView.perform(click());
 
-        sleep(6000);
+//        sleep(6000);
 
         goToMainScreen();
 
@@ -507,21 +508,21 @@ public class ChamberTest {
 
         //onView(withId(R.id.buttonStart)).perform(click());
 
-        ViewInteraction cameraView1 = onView(
-                allOf(withId(R.id.camera_view),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutWait),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        cameraView1.perform(click());
+//        ViewInteraction cameraView1 = onView(
+//                allOf(withId(R.id.camera_view),
+//                        childAtPosition(
+//                                allOf(withId(R.id.layoutWait),
+//                                        childAtPosition(
+//                                                withClassName(is("android.widget.LinearLayout")),
+//                                                1)),
+//                                1),
+//                        isDisplayed()));
+//        cameraView1.perform(click());
 
-        sleep(6000);
+//        sleep(6000);
 
-//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         //Result dialog
         takeScreenshot();

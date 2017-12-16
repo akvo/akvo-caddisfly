@@ -106,7 +106,7 @@ public class TestInfo implements Parcelable {
     private List<Result> displayResults = null;
     @SerializedName("results")
     @Expose
-    private List<Result> results = null;
+    private List<Result> results = new ArrayList<>();
     @SerializedName("shortCode")
     @Expose
     private String shortCode;
@@ -481,7 +481,6 @@ public class TestInfo implements Parcelable {
         this.swatches.clear();
 
         Result result = results.get(0);
-
 
         if (calibrations.size() > 0) {
             for (int i = calibrations.size() - 1; i >= 0; i--) {

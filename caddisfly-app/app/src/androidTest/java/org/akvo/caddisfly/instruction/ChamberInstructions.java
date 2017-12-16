@@ -32,7 +32,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.TestConstantKeys;
 import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
@@ -140,8 +140,8 @@ public class ChamberInstructions {
 
         TestUtil.sleep(1000);
 
-        String id = SensorConstants.FLUORIDE_ID.substring(
-                SensorConstants.FLUORIDE_ID.lastIndexOf("-") + 1, SensorConstants.FLUORIDE_ID.length());
+        String id = Constants.FLUORIDE_ID.substring(
+                Constants.FLUORIDE_ID.lastIndexOf("-") + 1, Constants.FLUORIDE_ID.length());
 
         takeScreenshot(id, -1);
 
@@ -182,8 +182,8 @@ public class ChamberInstructions {
 
         TestUtil.sleep(1000);
 
-        String id = SensorConstants.FREE_CHLORINE_ID.substring(
-                SensorConstants.FREE_CHLORINE_ID.lastIndexOf("-") + 1, SensorConstants.FREE_CHLORINE_ID.length());
+        String id = Constants.FREE_CHLORINE_ID.substring(
+                Constants.FREE_CHLORINE_ID.lastIndexOf("-") + 1, Constants.FREE_CHLORINE_ID.length());
 
         takeScreenshot(id, -1);
 

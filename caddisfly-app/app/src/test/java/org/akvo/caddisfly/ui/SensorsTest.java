@@ -108,8 +108,6 @@ public class SensorsTest {
     @Test
     public void clickSensorItem() {
 
-        String[] permissions = new String[]{};
-
         Intent intent = new Intent();
         intent.putExtra("type", TestType.SENSOR);
 

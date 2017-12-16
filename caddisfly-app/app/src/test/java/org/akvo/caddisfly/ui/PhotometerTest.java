@@ -19,11 +19,9 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -35,7 +33,6 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
 
 import static junit.framework.Assert.assertEquals;
@@ -78,21 +75,32 @@ public class PhotometerTest {
 
     @Test
     public void sensorTitles() throws Exception {
-        Activity activity = Robolectric.setupActivity(TestListActivity.class);
-        ListView listView = activity.findViewById(R.id.list_types);
+        Intent intent = new Intent();
+        intent.putExtra("type", TestType.BLUETOOTH);
 
-        for (int i = 0; i < listView.getCount(); i++) {
-            TestInfo testInfo = ((TestInfo) listView.getAdapter().getItem(0));
-            String title = String.format("%s %s", testInfo.getMd610Id(), testInfo.getName());
+        ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
+
+        controller.start().visible();
+
+        Activity activity = (Activity) controller.get();
+
+        RecyclerView recyclerView = activity.findViewById(R.id.list_types);
+
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            TestInfo testInfo = ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(i);
+
+            String title = testInfo.getName();
             assertEquals(title,
-                    ((TextView) listView.getChildAt(0).findViewById(R.id.text_title)).getText());
+                    ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(i).getName());
+
+            title = testInfo.getMd610Id() + " " + testInfo.getName();
+            assertEquals(title,
+                    ((TextView) recyclerView.getChildAt(i).findViewById(R.id.text_title)).getText());
         }
     }
 
     @Test
     public void clickTest() {
-
-        String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         Intent intent = new Intent();
         intent.putExtra("type", TestType.BLUETOOTH);
@@ -105,28 +113,16 @@ public class PhotometerTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
+        assertSame(50, recyclerView.getChildCount());
+
         recyclerView.getChildAt(1).performClick();
 
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
         Intent nextIntent = shadowOf(activity).getNextStartedActivity();
-
-        assertNull(nextIntent);
-
-        ShadowApplication application = shadowOf(activity.getApplication());
-        application.grantPermissions(permissions);
-        controller.resume();
-
-        assertSame(3, recyclerView.getChildCount());
-
-        recyclerView.getChildAt(1).performClick();
-
-        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-
-        Intent nextIntent1 = shadowOf(activity).getNextStartedActivity();
-        if (nextIntent1 != null && nextIntent1.getComponent() != null) {
+        if (nextIntent != null && nextIntent.getComponent() != null) {
             assertEquals(TestActivity.class.getCanonicalName(),
-                    nextIntent1.getComponent().getClassName());
+                    nextIntent.getComponent().getClassName());
         }
     }
 

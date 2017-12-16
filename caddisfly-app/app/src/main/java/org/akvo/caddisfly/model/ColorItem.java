@@ -60,6 +60,10 @@ public class ColorItem implements Parcelable {
         }
     }
 
+    public ColorItem(double value) {
+        this.value = value;
+    }
+
     public Double getValue() {
         return value;
     }

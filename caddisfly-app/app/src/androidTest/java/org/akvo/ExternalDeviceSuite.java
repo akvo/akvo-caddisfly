@@ -1,7 +1,7 @@
 package org.akvo;
 
-import org.akvo.caddisfly.sensors.ECTest;
 import org.akvo.caddisfly.survey.SurveySensorTest;
+import org.akvo.caddisfly.test.ECTest;
 import org.akvo.caddisfly.test.SensorTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

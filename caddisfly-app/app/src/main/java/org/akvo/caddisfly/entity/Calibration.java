@@ -3,6 +3,7 @@ package org.akvo.caddisfly.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -32,6 +33,12 @@ public class Calibration implements Parcelable {
     public int color;
 
     public Calibration() {
+    }
+
+    @Ignore
+    public Calibration(double value, int color) {
+        this.value = value;
+        this.color = color;
     }
 
     public Calibration(Parcel in) {

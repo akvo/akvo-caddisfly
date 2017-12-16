@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -49,11 +48,50 @@
         android:textSize="25sp"
         tools:text="0.5" />
 
-    <TextView
-        android:id="@+id/textUnit"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="20sp"
-        tools:text="ppm" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            tools:text="ppm" />
+
+        <TextView
+            android:id="@+id/textRgb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:textIsSelectable="false"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:text="rgb: 243 23 156" />
+
+        <TextView
+            android:id="@+id/textHsv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:textIsSelectable="false"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:text="hsv: 243 23 156" />
+
+        <TextView
+            android:id="@+id/textBrightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="false"
+            android:textSize="14sp"
+            android:visibility="gone"
+            tools:text="d: 233  b: 233" />
+
+    </LinearLayout>
 </LinearLayout>

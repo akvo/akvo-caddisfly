@@ -33,7 +33,7 @@ import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
@@ -109,7 +109,7 @@ public class CalibrationTest {
     @RequiresDevice
     public void testOutOfSequence() {
 
-        saveCalibration("OutOfSequence", SensorConstants.FLUORIDE_ID);
+        saveCalibration("OutOfSequence", Constants.FLUORIDE_ID);
 
         goToMainScreen();
 

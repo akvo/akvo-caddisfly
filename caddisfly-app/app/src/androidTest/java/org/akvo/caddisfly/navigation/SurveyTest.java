@@ -29,7 +29,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
@@ -132,7 +132,7 @@ public class SurveyTest {
     @RequiresDevice
     public void testStartASurvey() {
 
-        saveCalibration("TestValid", SensorConstants.FLUORIDE_ID);
+        saveCalibration("TestValid", Constants.FLUORIDE_ID);
 
         onView(withId(R.id.actionSettings)).perform(click());
 

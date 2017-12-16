@@ -29,7 +29,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -111,7 +111,7 @@ public class SurveyTest {
         }
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("0" + dfs.getDecimalSeparator() + "00 mg/l")).check(matches(isDisplayed()));
+        onView(withText("0" + dfs.getDecimalSeparator() + "0 mg/l")).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 
@@ -131,7 +131,7 @@ public class SurveyTest {
     @RequiresDevice
     public void testStartASurvey() {
 
-        saveCalibration("TestValid", SensorConstants.FLUORIDE_ID);
+        saveCalibration("TestValid", Constants.FLUORIDE_ID);
 
         onView(withId(R.id.actionSettings)).perform(click());
 

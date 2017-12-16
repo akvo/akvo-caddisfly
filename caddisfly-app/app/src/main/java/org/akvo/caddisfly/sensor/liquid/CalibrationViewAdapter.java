@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.sensor.liquid;
 
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +30,14 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.model.ColorItem;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.util.ColorUtil;
+
+import java.util.List;
+import java.util.Locale;
 
 public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationViewAdapter.ViewHolder> {
 
@@ -53,7 +61,37 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
         holder.mItem = testInfo.getCalibrations().get(position);
         holder.mIdView.setBackground(new ColorDrawable(holder.mItem.color));
         holder.textValue.setText(String.valueOf(holder.mItem.value));
-        holder.textUnit.setText(String.valueOf(testInfo.getResults().get(0).getUnit()));
+
+        Result result = testInfo.getResults().get(0);
+        List<ColorItem> colors = result.getColors();
+        int color = colors.get(position).getRgb();
+        holder.textUnit.setText(String.valueOf(result.getUnit()));
+
+        //display additional information if we are in diagnostic mode
+        if (AppPreferences.isDiagnosticMode()) {
+
+            holder.textUnit.setVisibility(View.GONE);
+
+            holder.textRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
+            holder.textRgb.setVisibility(View.VISIBLE);
+
+            float[] colorHsv = new float[3];
+            Color.colorToHSV(color, colorHsv);
+            holder.textHsv.setText(String.format(Locale.getDefault(),
+                    "h: %.0f  %.2f  %.2f", colorHsv[0], colorHsv[1], colorHsv[2]));
+            holder.textHsv.setVisibility(View.VISIBLE);
+
+            double distance = 0;
+            if (position > 0) {
+                int previousColor = colors.get(position - 1).getRgb();
+                distance = ColorUtil.getColorDistance(previousColor, color);
+            }
+
+            holder.textBrightness.setText(String.format(Locale.getDefault(),
+                    "d:%.2f  b: %d", distance, ColorUtil.getBrightness(color)));
+            holder.textBrightness.setVisibility(View.VISIBLE);
+
+        }
 
         holder.mView.setOnClickListener(v -> {
             if (null != mListener) {
@@ -62,6 +100,7 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
                 mListener.onCalibrationSelected(holder.mItem);
             }
         });
+
     }
 
     @Override
@@ -74,6 +113,9 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
         final Button mIdView;
         final TextView textValue;
         final TextView textUnit;
+        private final TextView textRgb;
+        private final TextView textHsv;
+        private final TextView textBrightness;
         Calibration mItem;
 
         ViewHolder(View view) {
@@ -82,6 +124,9 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
             mIdView = view.findViewById(R.id.buttonColor);
             textValue = view.findViewById(R.id.textValue);
             textUnit = view.findViewById(R.id.textUnit);
+            textRgb = view.findViewById(R.id.textRgb);
+            textHsv = view.findViewById(R.id.textHsv);
+            textBrightness = view.findViewById(R.id.textBrightness);
         }
 
         @Override

@@ -365,9 +365,9 @@ public final class SwatchHelper {
 //            previousSwatch = swatch1;
         }
 
-        if (result && testInfo.getHueTrend() != 0) {
-            result = validateHueTrend(calibrations, testInfo.getHueTrend());
-        }
+//        if (result && testInfo.getHueTrend() != 0) {
+//            result = validateHueTrend(calibrations, testInfo.getHueTrend());
+//        }
 
         return result;
     }
