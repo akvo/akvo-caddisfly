@@ -64,6 +64,7 @@
     <string name="reagentBatch">Reagent batch</string>
     <string name="rgb_example_value">RGB (e.g. 255.255.255)</string>
     <string name="expired">Expired</string>
+    <string name="couldNotCalibrate">Could not calibrate</string>
 
     <!--Dilution Selection Dialog-->
     <string name="dilution">Dilution</string>

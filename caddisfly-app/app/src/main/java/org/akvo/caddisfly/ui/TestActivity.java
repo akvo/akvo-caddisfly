@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
@@ -481,6 +482,16 @@ public class TestActivity extends BaseActivity {
         );
     }
 
+    /**
+     * Show CBT incubation times instructions in a dialog.
+     *
+     * @param view the view
+     */
+    public void onClickIncubationTimes(View view) {
+        DialogFragment newFragment = new CbtActivity.IncubationTimesDialogFragment();
+        newFragment.show(getSupportFragmentManager(), "incubationTimes");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -509,6 +520,4 @@ public class TestActivity extends BaseActivity {
             }
         }
     }
-
-
 }

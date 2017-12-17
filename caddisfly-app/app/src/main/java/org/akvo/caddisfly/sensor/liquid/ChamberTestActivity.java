@@ -26,6 +26,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -413,22 +414,17 @@ public class ChamberTestActivity extends BaseActivity implements
 
             int color = SwatchHelper.getAverageColor(resultDetails);
 
-            CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
+            if (color == Color.TRANSPARENT) {
+                showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.couldNotCalibrate),
+                        getString(R.string.checkChamberPlacement)), croppedBitmap);
+            } else {
 
-//            Calibration calibration1 = null;
-//            try {
-//                calibration1 = (Calibration) calibration.clone();
-//                calibration1.color = color;
-//                calibration1.date = new Date().getTime();
-//            } catch (CloneNotSupportedException e) {
-//                e.printStackTrace();
-//            }
-
-            calibration.color = color;
-            calibration.date = new Date().getTime();
-            dao.insert(calibration);
-
-            CalibrationFile.saveCalibratedData(this, testInfo, calibration, color);
+                CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
+                calibration.color = color;
+                calibration.date = new Date().getTime();
+                dao.insert(calibration);
+                CalibrationFile.saveCalibratedData(this, testInfo, calibration, color);
+            }
             fragmentManager.popBackStackImmediate();
         }
     }

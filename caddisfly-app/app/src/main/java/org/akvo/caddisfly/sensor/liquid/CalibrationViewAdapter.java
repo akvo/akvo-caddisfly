@@ -60,7 +60,10 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = testInfo.getCalibrations().get(position);
         holder.mIdView.setBackground(new ColorDrawable(holder.mItem.color));
-        holder.textValue.setText(String.valueOf(holder.mItem.value));
+
+        String format = "%." + testInfo.getDecimalPlaces() + "f";
+        holder.textValue.setText(String.valueOf(String.format(Locale.getDefault(), format,
+                holder.mItem.value)));
 
         Result result = testInfo.getResults().get(0);
         List<ColorItem> colors = result.getColors();

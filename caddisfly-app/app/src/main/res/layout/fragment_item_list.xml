@@ -123,8 +123,9 @@
 
         <Button
             android:id="@+id/buttonRunTest"
+            android:background="@drawable/round_corners_button"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:layout_alignParentBottom="true"

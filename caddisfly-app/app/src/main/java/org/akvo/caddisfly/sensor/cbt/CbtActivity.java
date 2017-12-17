@@ -184,9 +184,13 @@ public class CbtActivity extends AppCompatActivity
         finish();
     }
 
-    public void onClickIncubationTimes(View view) {
-        DialogFragment newFragment = new IncubationTimesDialogFragment();
-        newFragment.show(getSupportFragmentManager(), "incubationTimes");
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public static class IncubationTimesDialogFragment extends DialogFragment {
@@ -202,15 +206,6 @@ public class CbtActivity extends AppCompatActivity
                     .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
             return builder.create();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }

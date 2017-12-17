@@ -158,6 +158,7 @@ public class TestInfo implements Parcelable {
     private List<Calibration> calibrations;
     private int dilution = 1;
     private List<Swatch> swatches = new ArrayList<>();
+    private int decimalPlaces = 0;
 
     public TestInfo() {
     }
@@ -477,31 +478,37 @@ public class TestInfo implements Parcelable {
     }
 
     public void setCalibrations(List<Calibration> calibrations) {
-        this.calibrations = calibrations;
         this.swatches.clear();
 
         Result result = results.get(0);
 
-        if (calibrations.size() > 0) {
+        List<Calibration> newCalibrations = new ArrayList<>();
+
+        for (ColorItem colorItem : result.getColors()) {
+
+            Calibration newCalibration = new Calibration(colorItem.getValue(), Color.TRANSPARENT);
+
             for (int i = calibrations.size() - 1; i >= 0; i--) {
-                boolean found = false;
-
                 Calibration calibration = calibrations.get(i);
-                for (ColorItem colorItem : result.getColors()) {
-                    if (calibration.value == colorItem.getValue()) {
-                        colorItem.setRgb(calibration.color);
-                        Swatch swatch = new Swatch(calibration.value, calibration.color, Color.TRANSPARENT);
-                        swatches.add(swatch);
-                        found = true;
-                    }
-                }
-
-                if (!found) {
-                    calibrations.remove(i);
+                if (calibration.value == colorItem.getValue()) {
+                    newCalibration.color = calibration.color;
+                    colorItem.setRgb(calibration.color);
                 }
             }
-            swatches = SwatchHelper.generateGradient(swatches, ColorUtil.ColorModel.RGB);
+
+            Swatch swatch = new Swatch(newCalibration.value, newCalibration.color, Color.TRANSPARENT);
+            swatches.add(swatch);
+
+            String text = Double.toString(Math.abs(newCalibration.value));
+            if (newCalibration.value % 1 != 0) {
+                decimalPlaces = Math.max(text.length() - text.indexOf('.') - 1, decimalPlaces);
+            }
+
+            newCalibrations.add(newCalibration);
         }
+
+        this.calibrations = newCalibrations;
+        swatches = SwatchHelper.generateGradient(swatches, ColorUtil.ColorModel.RGB);
     }
 
     public int getDilution() {
@@ -557,5 +564,9 @@ public class TestInfo implements Parcelable {
 
     public List<Result> getDisplayResults() {
         return displayResults;
+    }
+
+    public int getDecimalPlaces() {
+        return decimalPlaces;
     }
 }

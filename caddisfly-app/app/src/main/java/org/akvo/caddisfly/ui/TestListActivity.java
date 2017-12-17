@@ -31,6 +31,7 @@ import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
+import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -98,6 +99,19 @@ public class TestListActivity extends BaseActivity
     private void startTest() {
         if (testInfo != null && testInfo.getIsGroup()) {
             return;
+        }
+
+        try {
+            if (testInfo.getResults().get(0).getColors().size() == 0) {
+                if (!testInfo.getRanges().isEmpty()) {
+                    String[] values = testInfo.getRanges().split(",");
+                    for (String value : values) {
+                        testInfo.getResults().get(0).getColors().add(new ColorItem(Double.parseDouble(value)));
+                    }
+                }
+            }
+        } catch (NumberFormatException ignored) {
+            // do nothing
         }
 
         if (testInfo == null || testInfo.getUuid() == null || testInfo.getResults().size() == 0) {

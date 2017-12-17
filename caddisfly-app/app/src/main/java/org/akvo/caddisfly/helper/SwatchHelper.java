@@ -493,15 +493,15 @@ public final class SwatchHelper {
             int color1 = resultDetails.get(i).getColor();
 
             //if invalid color return 0
-            if (color1 == 0) {
-                return 0;
+            if (color1 == Color.TRANSPARENT) {
+                return color1;
             }
 
             //check all the colors are mostly similar otherwise return -1
             for (int j = 0; j < resultDetails.size(); j++) {
                 int color2 = resultDetails.get(j).getColor();
                 if (ColorUtil.getColorDistanceRgb(color1, color2) > MAX_COLOR_DISTANCE_CALIBRATION) {
-                    return 0;
+                    return Color.TRANSPARENT;
                 }
             }
             red += Color.red(color1);
