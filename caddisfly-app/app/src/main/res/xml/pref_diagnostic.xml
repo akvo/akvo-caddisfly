@@ -21,12 +21,9 @@
     <org.akvo.caddisfly.preference.PreferenceCategoryCustom
         android:key="preferenceCategoryDiagnostics"
         android:title="@string/diagnostics">
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="@string/ignoreTimeDelaysKey"
             android:title="@string/ignoreTimeDelays" />
-        <SwitchPreference
-            android:key="@string/noSoundKey"
-            android:title="@string/noSound" />
         <EditTextPreference
             android:defaultValue="5"
             android:dialogMessage="A number from 1 to 5"

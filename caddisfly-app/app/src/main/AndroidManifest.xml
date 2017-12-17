@@ -95,6 +95,20 @@
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
 
+        <!-- CBT -->
+        <activity
+            android:name=".sensor.cbt.CbtActivity"
+            android:screenOrientation="nosensor" />
+        <!-- /CBT -->
+
+
+        <!-- Manual Test -->
+        <activity
+            android:name=".sensor.manual.ManualTestActivity"
+            android:screenOrientation="nosensor" />
+        <!-- /Manual Tests -->
+
+
         <!-- USB Sensor -->
         <activity
             android:name=".sensor.usb.SensorActivity"
@@ -169,9 +183,5 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-        <activity android:name=".sensor.cbt.CbtActivity" />
-        <activity android:name=".sensor.manual.ManualTestActivity"></activity>
     </application>
-
 </manifest>

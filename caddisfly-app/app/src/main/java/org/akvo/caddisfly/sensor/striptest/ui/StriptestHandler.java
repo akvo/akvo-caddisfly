@@ -133,9 +133,6 @@ public final class StriptestHandler extends Handler {
 
     @Override
     public void handleMessage(Message message) {
-//        if (StripMeasureActivity.DEBUG){
-//            Log.d(TAG, "in handle message of striptestHandler");
-//        }
         switch (message.what) {
             case START_PREVIEW_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
@@ -472,30 +469,4 @@ public final class StriptestHandler extends Handler {
     public enum State {
         PREPARE, MEASURE
     }
-
 }
-
-//    public void quitSynchronously() {
-//        if (StriptestActivity.DEBUG){
-//            Log.d(TAG, "trying to quit striptestHandler");
-//        }
-//
-//        mState = State.DONE;
-//
-//        Message quit = Message.obtain(decodeThread.getHandler(), DecodeThread.QUIT);
-//        quit.sendToTarget();
-//        try {
-//            // Wait at most half a second; should be enough time, and onPause() will timeout quickly
-//            decodeThread.join(500L);
-//        } catch (InterruptedException e) {
-//            // continue
-//        }
-//
-//        // Be absolutely sure we don't send any queued up messages
-////        removeMessages(R.id.decode_succeeded);
-////        removeMessages(R.id.decode_failed);
-//        if (StriptestActivity.DEBUG){
-//            Log.d(TAG, "Done with quiting striptest handler and Decode handler");
-//        }
-//
-//    }

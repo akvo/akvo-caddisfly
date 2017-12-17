@@ -24,8 +24,10 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.view.Menu;
 import android.view.MenuItem;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.helper.CameraHelper;
@@ -36,13 +38,16 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.liquid.ChamberTestActivity;
+import org.akvo.caddisfly.util.ConfigDownloader;
 
 public class TestListActivity extends BaseActivity
         implements TestListFragment.OnListFragmentInteractionListener {
 
+    private static final int REQUEST_SYNC_PERMISSION = 101;
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
+    private final String[] storagePermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    TestListFragment fragment;
     private TestInfo testInfo;
 
     @Override
@@ -50,7 +55,9 @@ public class TestListActivity extends BaseActivity
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
+        if (requestCode == REQUEST_SYNC_PERMISSION && permissionsDelegate.resultGranted(grantResults)) {
+            startSync();
+        } else if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
             startTest();
         }
     }
@@ -68,7 +75,7 @@ public class TestListActivity extends BaseActivity
 
             TestType testType = (TestType) getIntent().getSerializableExtra("type");
 
-            TestListFragment fragment = TestListFragment.newInstance(testType);
+            fragment = TestListFragment.newInstance(testType);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment, TestListFragment.TAG).commit();
@@ -97,7 +104,7 @@ public class TestListActivity extends BaseActivity
     }
 
     private void startTest() {
-        if (testInfo != null && testInfo.getIsGroup()) {
+        if (testInfo == null || testInfo.getIsGroup()) {
             return;
         }
 
@@ -154,11 +161,36 @@ public class TestListActivity extends BaseActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        if (BuildConfig.isExperimentFlavor && AppPreferences.isDiagnosticMode()) {
+            getMenuInflater().inflate(R.menu.menu_test_list, menu);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onDownloadTests(MenuItem item) {
+        if (permissionsDelegate.hasPermissions(storagePermission)) {
+            startSync();
+        } else {
+            permissionsDelegate.requestPermissions(storagePermission, REQUEST_SYNC_PERMISSION);
+        }
+    }
+
+    private void startSync() {
+        ConfigDownloader.syncExperimentalConfig(this, () -> fragment.refresh());
+    }
+
+    public interface SyncCallbackInterface {
+        void onDownloadFinished();
     }
 }

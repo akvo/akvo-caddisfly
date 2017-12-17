@@ -57,7 +57,7 @@
     <string name="systemLanguageKey">systemLanguage</string>
     <string name="diagnosticModeKey">diagnosticMode</string>
     <string name="showDebugMessagesKey">showDebugMessages</string>
-    <string name="noSoundKey">noSound</string>
+    <string name="soundOnKey">soundOn</string>
     <string name="colorDistanceToleranceKey">maxColorDistanceTolerance</string>
     <string name="samplingsTimeKey">numberOfSamples</string>
     <string name="hasCameraFlashKey">hasCameraFlash</string>
@@ -65,7 +65,7 @@
     <string name="calibrationExpiryDateKey">calibrationExpiryDate</string>
     <string name="batchNumberKey">batchNumber</string>
     <string name="themeChangedKey">themeChanged</string>
-    <string name="saveImagesKey">saveImages</string>
+    <string name="saveImagesDataKey">saveImages</string>
     <string name="totalSuccessfulCalibrationsKey">totalSuccessfulCalibrations</string>
     <string name="totalFailedCalibrationsKey">totalFailedCalibrations</string>
     <string name="totalSuccessfulTestsKey">totalSuccessfulTests</string>
@@ -85,10 +85,12 @@
     <string name="diagnostics">Diagnostics</string>
     <string name="cameraPreview">Colorimeter camera preview</string>
     <string name="debuggingOn">Show debug messages</string>
-    <string name="noSound">Turn sound off</string>
+    <string name="sound">Sound</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="ignoreTimeDelays">Ignore time delays</string>
     <string name="showBluetoothData">Show bluetooth data</string>
+    <string name="debugging">Debugging</string>
+    <string name="download_experimental_tests">Download experimental tests</string>
 
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>

@@ -30,7 +30,7 @@ import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.preference.AppPreferences;
 
 /**
- * Manages various sounds used in the app
+ * Manages various sounds used in the app.
  */
 public class SoundPoolPlayer {
     private final SparseIntArray mSounds = new SparseIntArray();
@@ -64,7 +64,7 @@ public class SoundPoolPlayer {
     }
 
     /**
-     * Play a short sound effect
+     * Play a short sound effect.
      *
      * @param resourceId the
      */
@@ -75,7 +75,7 @@ public class SoundPoolPlayer {
         }
 
         //play sound if the sound is not turned off in the preference
-        if (!AppPreferences.isSoundOff()) {
+        if (AppPreferences.isSoundOn()) {
             mPlayer.play(mSounds.get(resourceId), AppConfig.SOUND_EFFECTS_VOLUME,
                     AppConfig.SOUND_EFFECTS_VOLUME, 0, 0, 1);
         }

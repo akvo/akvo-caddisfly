@@ -41,17 +41,12 @@ public final class AssetsManager {
     private final AssetManager manager;
 
     private final String json;
-    private final String experimentalJson;
     private final String customJson;
 
     public AssetsManager() {
         this.manager = CaddisflyApp.getApp().getApplicationContext().getAssets();
 
         json = loadJsonFromAsset(Constants.TESTS_META_FILENAME);
-
-        File experimentalConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG),
-                Constants.TESTS_META_FILENAME);
-        experimentalJson = FileUtil.loadTextFromFile(experimentalConfig);
 
         File customConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
                 Constants.TESTS_META_FILENAME);
@@ -77,6 +72,7 @@ public final class AssetsManager {
             return Drawable.createFromStream(ims, null);
 
         } catch (IOException ignored) {
+            // do nothing
         }
         return null;
     }
@@ -116,7 +112,9 @@ public final class AssetsManager {
     }
 
     public String getExperimentalJson() {
-        return experimentalJson;
+        File experimentalConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG),
+                Constants.TESTS_META_FILENAME);
+        return FileUtil.loadTextFromFile(experimentalConfig);
     }
 
     public String getCustomJson() {

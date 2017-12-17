@@ -20,12 +20,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <org.akvo.caddisfly.preference.PreferenceCategoryCustom
         android:key="preferenceCategoryDiagnostics"
-        android:title="@string/debugging">
-        <CheckBoxPreference
-            android:key="@string/showDebugMessagesKey"
-            android:title="@string/debuggingOn" />
-        <CheckBoxPreference
-            android:key="@string/showBlueToothDataKey"
-            android:title="@string/showBluetoothData" />
+        android:title="@string/diagnostics_options">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/soundOnKey"
+            android:title="@string/sound" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

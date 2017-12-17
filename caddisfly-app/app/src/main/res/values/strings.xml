@@ -229,5 +229,6 @@
     <string name="software_notices">Software Notices</string>
     <string name="eclipse_public_license">Eclipse Public License 1.0</string>
     <string name="experiment">Experiment</string>
+    <string name="diagnostics_options">Diagnostic Options</string>
 
 </resources>

@@ -58,10 +58,11 @@ public class TestInfoAdapter extends RecyclerView.Adapter<TestInfoAdapter.TestIn
     }
 
     public void setTestList(final List<? extends TestInfo> testList) {
-        if (mTestList == null) {
-            mTestList = testList;
-            notifyItemRangeInserted(0, testList.size());
+        if (mTestList != null) {
+            mTestList.clear();
         }
+        mTestList = testList;
+        notifyItemRangeInserted(0, testList.size());
     }
 
     @Override

@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConstants;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.FileUtil;
 
 import java.io.File;
@@ -109,8 +110,10 @@ public final class FileHelper {
         }
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                Toast.makeText(CaddisflyApp.getApp(),
-                        "Error creating folder: " + dir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+                if (AppPreferences.getShowDebugMessages()) {
+                    Toast.makeText(CaddisflyApp.getApp(),
+                            "Error creating folder: " + dir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
 

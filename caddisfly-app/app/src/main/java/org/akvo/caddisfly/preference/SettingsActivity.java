@@ -45,10 +45,10 @@ public class SettingsActivity extends BaseActivity
     private int mScrollPosition;
 
     private void removeAllFragments() {
-        findViewById(R.id.layoutContent3).setVisibility(View.GONE);
-        findViewById(R.id.layoutContent4).setVisibility(View.GONE);
-        findViewById(R.id.layoutContent5).setVisibility(View.GONE);
-        findViewById(R.id.layoutContent6).setVisibility(View.GONE);
+        findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
+        findViewById(R.id.layoutDiagnosticsOptions).setVisibility(View.GONE);
+        findViewById(R.id.layoutUserDiagnostics).setVisibility(View.GONE);
+        findViewById(R.id.layoutDebugging).setVisibility(View.GONE);
     }
 
     @Override
@@ -78,36 +78,37 @@ public class SettingsActivity extends BaseActivity
         setContentView(R.layout.activity_settings);
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.layoutContent, new GeneralPreferenceFragment())
+                .replace(R.id.layoutGeneral, new GeneralPreferenceFragment())
                 .commit();
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.layoutContent2, new OtherPreferenceFragment())
+                .replace(R.id.layoutOther, new OtherPreferenceFragment())
                 .commit();
 
         if (AppPreferences.isDiagnosticMode()) {
-            if (BuildConfig.isExperimentFlavor) {
+
+            getFragmentManager().beginTransaction()
+                    .add(R.id.layoutDiagnostics, new DiagnosticPreferenceFragment())
+                    .commit();
+
+            getFragmentManager().beginTransaction()
+                    .add(R.id.layoutDiagnosticsOptions, new DiagnosticOptionsPreferenceFragment())
+                    .commit();
+
+            if (!BuildConfig.isExperimentFlavor) {
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.layoutContent3, new ExperimentPreferenceFragment())
+                        .add(R.id.layoutUserDiagnostics, new DiagnosticUserPreferenceFragment())
                         .commit();
             }
 
             getFragmentManager().beginTransaction()
-                    .add(R.id.layoutContent4, new DiagnosticPreferenceFragment())
+                    .add(R.id.layoutDebugging, new DebuggingPreferenceFragment())
                     .commit();
 
-            getFragmentManager().beginTransaction()
-                    .add(R.id.layoutContent5, new DiagnosticUserPreferenceFragment())
-                    .commit();
-
-            getFragmentManager().beginTransaction()
-                    .add(R.id.layoutContent6, new DebuggingPreferenceFragment())
-                    .commit();
-
-            findViewById(R.id.layoutContent3).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutContent4).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutContent5).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutContent6).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutDiagnosticsOptions).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutUserDiagnostics).setVisibility(View.VISIBLE);
+            findViewById(R.id.layoutDebugging).setVisibility(View.VISIBLE);
         }
 
         mScrollView = findViewById(R.id.scrollViewSettings);

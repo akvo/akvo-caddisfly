@@ -28,6 +28,7 @@ import android.util.Log;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StriptestHandler;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
+import org.akvo.caddisfly.util.ImageUtil;
 
 /**
  * Created by markwestra on 19/07/2017
@@ -45,16 +46,16 @@ public class CameraOperationsManager {
     private StriptestHandler mStriptestHandler;
 
     //todo: remove debug code
-    //private byte[] bytes;
+    private byte[] bytes;
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera arg1) {
 
             //todo: remove debug code
-            //StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
+            StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
 
             // store image for later use
-            StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
+//            StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
             MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
@@ -75,7 +76,7 @@ public class CameraOperationsManager {
 
     public CameraOperationsManager(String name) {
         //todo: remove debug code
-        //bytes = ImageUtil.loadImageBytes(name);
+        bytes = ImageUtil.loadImageBytes(name);
     }
 
     public CameraPreview initCamera(Context context) {

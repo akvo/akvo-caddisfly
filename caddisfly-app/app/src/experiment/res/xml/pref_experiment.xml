@@ -21,7 +21,7 @@
     <org.akvo.caddisfly.preference.PreferenceCategoryCustom android:title="@string/experiment">
         <Preference
             android:key="syncTestList"
-            android:icon="@drawable/ic_file_download_white_24dp"
+            android:icon="@drawable/ic_file_download_24dp"
             android:title="Download experimental tests" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

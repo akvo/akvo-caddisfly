@@ -25,6 +25,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.akvo.caddisfly.preference.AppPreferences;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -153,8 +155,17 @@ public class Result implements Parcelable {
         this.patchWidth = patchWidth;
     }
 
+    /**
+     * Time to wait before analyzing.
+     *
+     * @return the time delay seconds
+     */
     public Integer getTimeDelay() {
-        return timeDelay;
+        if (AppPreferences.ignoreTimeDelays()) {
+            return 3;
+        } else {
+            return timeDelay;
+        }
     }
 
     public void setTimeDelay(Integer timeDelay) {
@@ -243,7 +254,7 @@ public class Result implements Parcelable {
         result = String.format(Locale.getDefault(), "%.2f", finalResult);
 
         // Add 'greater than' symbol if result could be an unknown high value
-        if (highLevelsFound){
+        if (highLevelsFound) {
             result = "> " + result;
         }
     }

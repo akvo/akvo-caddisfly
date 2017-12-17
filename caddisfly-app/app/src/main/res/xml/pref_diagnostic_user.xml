@@ -22,7 +22,7 @@
         android:key="preferenceCategoryDiagnostics"
         android:title="@string/diagnosticsUser">
         <CheckBoxPreference
-            android:key="@string/saveImagesKey"
+            android:key="@string/saveImagesDataKey"
             android:title="@string/saveImages" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

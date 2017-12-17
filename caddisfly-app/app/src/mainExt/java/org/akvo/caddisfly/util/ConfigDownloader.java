@@ -17,9 +17,16 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.preference;
+package org.akvo.caddisfly.util;
 
-import android.app.Fragment;
+import android.app.Activity;
 
-public class ExperimentPreferenceFragment extends Fragment {
+import org.akvo.caddisfly.ui.TestListActivity;
+
+@SuppressWarnings("unused")
+public class ConfigDownloader {
+    public static void syncExperimentalConfig(Activity activity,
+                                              TestListActivity.SyncCallbackInterface configSyncHandler) {
+        // do nothing
+    }
 }

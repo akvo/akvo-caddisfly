@@ -40,40 +40,41 @@
             android:orientation="vertical">
 
             <FrameLayout
-                android:id="@+id/layoutContent"
+                android:id="@+id/layoutDiagnostics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
             <FrameLayout
-                android:id="@+id/layoutContent2"
+                android:id="@+id/layoutDiagnosticsOptions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
             <FrameLayout
-                android:id="@+id/layoutContent3"
+                android:id="@+id/layoutDebugging"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
             <FrameLayout
-                android:id="@+id/layoutContent4"
+                android:id="@+id/layoutGeneral"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
             <FrameLayout
-                android:id="@+id/layoutContent5"
+                android:id="@+id/layoutOther"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
 
             <FrameLayout
-                android:id="@+id/layoutContent6"
+                android:id="@+id/layoutUserDiagnostics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

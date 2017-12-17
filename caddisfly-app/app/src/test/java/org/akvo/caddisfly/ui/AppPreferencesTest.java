@@ -42,16 +42,16 @@ public class AppPreferencesTest {
     @Test
     public void checkPlaySound() {
 
-        String methodName = "isSoundOff";
+        String methodName = "isSoundOn";
 
-        checkDiagnosticPreference(R.string.noSoundKey, DEFAULT_FALSE, methodName, true);
+        checkDiagnosticPreference(R.string.soundOnKey, true, methodName, false);
 
         Method method;
         try {
             method = AppPreferences.class.getDeclaredMethod(methodName);
 
             try {
-                assertEquals(DEFAULT_FALSE, method.invoke(null));
+                assertEquals(true, method.invoke(null));
             } catch (IllegalAccessException | InvocationTargetException e) {
                 e.printStackTrace();
             }

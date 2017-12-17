@@ -35,21 +35,23 @@ import org.akvo.caddisfly.util.ListViewUtil;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiagnosticUserPreferenceFragment extends PreferenceFragment {
+public class DiagnosticOptionsPreferenceFragment extends PreferenceFragment {
 
     private ListView list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.pref_diagnostic_user);
+        addPreferencesFromResource(R.xml.pref_diagnostic_options);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.card_row, container, false);
-        view.setBackgroundColor(Color.rgb(250, 230, 230));
-        return view;
+        final View rootView = inflater.inflate(R.layout.card_row, container, false);
+
+        rootView.setBackgroundColor(Color.rgb(255, 240, 220));
+
+        return rootView;
     }
 
     @Override

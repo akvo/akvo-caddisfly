@@ -57,6 +57,27 @@ public class PermissionsDelegate {
         );
     }
 
+    public void requestPermissions(String[] permissions, int requestCode) {
+        ActivityCompat.requestPermissions(
+                activity,
+                permissions,
+                requestCode
+        );
+    }
+
+    public boolean resultGranted(int[] grantResults) {
+        if (grantResults.length < 1) {
+            return false;
+        }
+
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean resultGranted(int requestCode, int[] grantResults) {
 
         if (requestCode != REQUEST_CODE) {

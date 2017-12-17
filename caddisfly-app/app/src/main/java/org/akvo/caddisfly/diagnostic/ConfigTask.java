@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.akvo.caddisfly.diagnostic;
 
 import android.app.ProgressDialog;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.ui.TestListActivity;
 import org.akvo.caddisfly.util.FileUtil;
 
 import java.io.BufferedReader;
@@ -39,10 +41,12 @@ import java.net.URL;
 public class ConfigTask extends AsyncTask<String, String, String> {
 
     private WeakReference<Context> contextRef;
+    private TestListActivity.SyncCallbackInterface configSyncHandler;
     private ProgressDialog pd;
 
-    public ConfigTask(Context context) {
+    public ConfigTask(Context context, TestListActivity.SyncCallbackInterface syncCallback) {
         contextRef = new WeakReference<>(context);
+        this.configSyncHandler = syncCallback;
     }
 
     protected void onPreExecute() {
@@ -108,6 +112,8 @@ public class ConfigTask extends AsyncTask<String, String, String> {
 
         File path = FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG, "");
         FileUtil.saveToFile(path, "tests.json", result);
+
+        configSyncHandler.onDownloadFinished();
         Toast.makeText(contextRef.get(), "Experimental tests synced", Toast.LENGTH_LONG).show();
     }
 }

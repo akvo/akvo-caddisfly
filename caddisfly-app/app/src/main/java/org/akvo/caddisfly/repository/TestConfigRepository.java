@@ -27,7 +27,7 @@ public class TestConfigRepository {
 
     private static HashMap<TestType, List<TestInfo>> testMap = new HashMap<>();
 
-    AssetsManager assetsManager;
+    private AssetsManager assetsManager;
 
     public TestConfigRepository() {
         assetsManager = new AssetsManager();
@@ -63,12 +63,6 @@ public class TestConfigRepository {
                     testInfoList.remove(i);
                 }
             }
-
-//            for (int i = testInfoList.size() - 1; i >= 0; i--) {
-//                if (!testInfoList.get(i).getBrand().contains("Quantofix")) {
-//                    testInfoList.remove(i);
-//                }
-//            }
 
             if (testType == TestType.BLUETOOTH) {
                 Collections.sort(testInfoList, (object1, object2) ->

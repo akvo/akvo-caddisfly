@@ -44,6 +44,11 @@ public final class AppPreferences {
         PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.diagnosticModeKey, false);
     }
 
+    /**
+     * The number of photos to take during the test.
+     *
+     * @return number of samples to take
+     */
     public static int getSamplingTimes() {
         int samplingTimes;
         if (isDiagnosticMode()) {
@@ -56,6 +61,11 @@ public final class AppPreferences {
         return samplingTimes + ChamberTestConfig.SKIP_SAMPLING_COUNT;
     }
 
+    /**
+     * The color distance tolerance for when matching colors.
+     *
+     * @return the tolerance value
+     */
     public static int getColorDistanceTolerance() {
         if (isDiagnosticMode()) {
             return Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
@@ -66,9 +76,8 @@ public final class AppPreferences {
         }
     }
 
-    public static boolean isSoundOff() {
-        return isDiagnosticMode()
-                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.noSoundKey, false);
+    public static boolean isSoundOn() {
+        return !isDiagnosticMode() || PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.soundOnKey, true);
     }
 
     public static boolean getShowDebugMessages() {
@@ -78,7 +87,7 @@ public final class AppPreferences {
 
     //Diagnostic in user mode
     public static boolean isSaveImagesOn() {
-        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesKey, false);
+        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesDataKey, false);
     }
 
     public static boolean useExternalCamera() {
@@ -96,6 +105,11 @@ public final class AppPreferences {
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreTimeDelaysKey, false);
     }
 
+    /**
+     * Preference whether to show bluetooth raw data for debugging purposes.
+     *
+     * @return true if bluetooth raw data should be displayed
+     */
     public static boolean showBluetoothData() {
         return isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showBlueToothDataKey, false);

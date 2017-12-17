@@ -28,7 +28,7 @@ import java.util.List;
 
 public class TestListViewModel extends AndroidViewModel {
 
-    TestConfigRepository testConfigRepository;
+    private TestConfigRepository testConfigRepository;
 
     public TestListViewModel(@NonNull Application application) {
         super(application);

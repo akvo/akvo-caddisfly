@@ -20,10 +20,9 @@
 package org.akvo.caddisfly.preference;
 
 import android.app.Fragment;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -33,7 +32,6 @@ import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ChamberTestConfig;
-import org.akvo.caddisfly.ui.TestListActivity;
 import org.akvo.caddisfly.util.ListViewUtil;
 
 /**
@@ -54,39 +52,13 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.card_row, container, false);
 
+        rootView.setBackgroundColor(Color.rgb(255, 240, 220));
+
         setupSampleTimesPreference();
-
-        setupStartTestPreference();
-
-        setupStartStripTestPreference();
 
         setupDistancePreference();
 
         return rootView;
-    }
-
-    private void setupStartStripTestPreference() {
-        final Preference startStripTestPreference = findPreference("startStripTest");
-        if (startStripTestPreference != null) {
-            startStripTestPreference.setOnPreferenceClickListener(preference -> {
-                final Intent intent = new Intent(getActivity(), TestListActivity.class);
-                intent.putExtra("internal", true);
-                startActivity(intent);
-                return true;
-            });
-        }
-    }
-
-    private void setupStartTestPreference() {
-        final Preference startTestPreference = findPreference("startTest");
-        if (startTestPreference != null) {
-            startTestPreference.setOnPreferenceClickListener(preference -> {
-                final Intent intent = new Intent(getActivity(), TestListActivity.class);
-                intent.putExtra("runTest", true);
-                startActivity(intent);
-                return true;
-            });
-        }
     }
 
     private void setupSampleTimesPreference() {

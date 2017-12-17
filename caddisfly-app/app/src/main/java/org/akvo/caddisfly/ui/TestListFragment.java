@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.akvo.caddisfly.ui;
 
 import android.arch.lifecycle.Lifecycle;
@@ -44,6 +45,8 @@ import java.util.List;
 public class TestListFragment extends LifecycleFragment {
 
     public static final String TAG = "TestListViewModel";
+
+    FragmentListBinding b;
 
     private OnListFragmentInteractionListener mListener;
 
@@ -74,7 +77,7 @@ public class TestListFragment extends LifecycleFragment {
 
         mTestType = (TestType) getArguments().get("type");
 
-        FragmentListBinding b = DataBindingUtil.inflate(inflater,
+        b = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_list, container, false);
 
         mTestInfoAdapter = new TestInfoAdapter(mTestInfoClickCallback);
@@ -89,7 +92,11 @@ public class TestListFragment extends LifecycleFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        loadTests();
+        b.listTypes.setAdapter(mTestInfoAdapter);
+    }
 
+    private void loadTests() {
         final TestListViewModel viewModel =
                 ViewModelProviders.of(this).get(TestListViewModel.class);
 
@@ -110,6 +117,13 @@ public class TestListFragment extends LifecycleFragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnCalibrationSelectedListener");
         }
+    }
+
+    public void refresh() {
+        loadTests();
+        mTestInfoAdapter.notifyDataSetChanged();
+        b.listTypes.getAdapter().notifyDataSetChanged();
+        b.listTypes.invalidate();
     }
 
     public interface OnListFragmentInteractionListener {

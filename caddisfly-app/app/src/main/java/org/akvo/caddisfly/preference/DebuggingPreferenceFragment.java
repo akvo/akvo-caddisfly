@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.preference;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
@@ -46,8 +47,9 @@ public class DebuggingPreferenceFragment extends PreferenceFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.card_row, container, false);
+        View view = inflater.inflate(R.layout.card_row, container, false);
+        view.setBackgroundColor(Color.rgb(255, 240, 220));
+        return view;
     }
 
 
