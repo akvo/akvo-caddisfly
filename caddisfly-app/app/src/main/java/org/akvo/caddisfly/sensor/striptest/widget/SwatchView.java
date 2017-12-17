@@ -51,6 +51,7 @@ public class SwatchView extends View {
     float totalWidth = 0;
     private TestInfo testInfo;
     private Paint blackText;
+    private boolean colorFound = false;
 
     public SwatchView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -90,20 +91,27 @@ public class SwatchView extends View {
                             lab[2] = patchColorValues.get(2).floatValue();
 
                             rgbCols[i] = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
-                            colors.get(i).setRgb(Color.rgb(rgbCols[i][0], rgbCols[i][1], rgbCols[i][2]));
+                            int color = Color.rgb(rgbCols[i][0], rgbCols[i][1], rgbCols[i][2]);
+
+                            if (color != Color.TRANSPARENT) {
+                                colorFound = true;
+                            }
+                            colors.get(i).setRgb(color);
                         }
                     }
 
-                    for (int i = 0; i < colorCount; i++) {
+                    if (colorFound) {
+                        for (int i = 0; i < colorCount; i++) {
 
-                        paintColor.setColor(colors.get(i).getRgb());
+                            paintColor.setColor(colors.get(i).getRgb());
 
-                        canvas.drawRect(MARGIN + (i * totalWidth), MARGIN + (resultIndex * lineHeight),
-                                i * totalWidth + blockWidth, (resultIndex * lineHeight) + blockWidth, paintColor);
+                            canvas.drawRect(MARGIN + (i * totalWidth), MARGIN + (resultIndex * lineHeight),
+                                    i * totalWidth + blockWidth, (resultIndex * lineHeight) + blockWidth, paintColor);
 
-                        if (testInfo.getGroupingType() == GroupType.INDIVIDUAL || resultIndex == testInfo.getResults().size() - 1) {
-                            canvas.drawText(createValueString(values[i]), MARGIN + (i * totalWidth + blockWidth / 2),
-                                    MARGIN + (resultIndex * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
+                            if (testInfo.getGroupingType() == GroupType.INDIVIDUAL || resultIndex == testInfo.getResults().size() - 1) {
+                                canvas.drawText(createValueString(values[i]), MARGIN + (i * totalWidth + blockWidth / 2),
+                                        MARGIN + (resultIndex * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
+                            }
                         }
                     }
                 }
