@@ -158,13 +158,13 @@ public class Result implements Parcelable {
     /**
      * Time to wait before analyzing.
      *
-     * @return the time delay seconds
+     * @return the time delay milli seconds
      */
     public Integer getTimeDelay() {
         if (AppPreferences.ignoreTimeDelays()) {
             return 3;
         } else {
-            return timeDelay;
+            return timeDelay * 1000;
         }
     }
 

@@ -6207,7 +6207,7 @@
           "id": 1,
           "name": "Chromium",
           "unit": "mg/l",
-          "timeDelay": 300,
+          "timeDelay": 15,
           "colors": [
             {
               "value": 0

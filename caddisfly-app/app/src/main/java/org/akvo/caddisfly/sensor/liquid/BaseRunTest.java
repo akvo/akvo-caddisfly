@@ -73,9 +73,9 @@ import static io.fotoapparat.parameter.selector.SizeSelectors.biggestSize;
 import static io.fotoapparat.result.transformer.SizeTransformers.scaled;
 
 public class BaseRunTest extends Fragment implements RunTest {
-    //    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00## ");
-    private static final int DELAY = 1000; // 1 second
+    private static final int SHORT_DELAY = 300;
     private final ArrayList<ResultDetail> results = new ArrayList<>();
+    private final Handler delayHandler = new Handler();
     protected Fotoapparat camera;
     protected FragmentRunTestBinding binding;
     protected boolean cameraStarted;
@@ -224,10 +224,14 @@ public class BaseRunTest extends Fragment implements RunTest {
         photoResult
                 .toBitmap(scaled(0.25f))
                 .whenAvailable(result -> {
-                    (new Handler()).postDelayed(() -> {
-                        getAnalyzedResult(result.bitmap);
-                        mHandler.postDelayed(mRunnableCode, DELAY);
-                    }, 100);
+                    getAnalyzedResult(result.bitmap);
+
+                    if (mTestInfo.getResults().get(0).getTimeDelay() > 0) {
+                        // test has time delay so take the pictures quickly with short delay
+                        mHandler.postDelayed(mRunnableCode, SHORT_DELAY);
+                    } else {
+                        mHandler.postDelayed(mRunnableCode, ChamberTestConfig.DELAY_BETWEEN_SAMPLING);
+                    }
 
                     sound.playShortResource(R.raw.beep);
                 });
@@ -270,7 +274,6 @@ public class BaseRunTest extends Fragment implements RunTest {
                                         .build()
                         );
 
-                        camera.stop();
                         camera.stop();
                     }
 
@@ -318,9 +321,17 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             sound.playShortResource(R.raw.beep);
 
-            camera.start();
+            int timeDelay = ChamberTestConfig.DELAY_BETWEEN_SAMPLING;
 
-            startRepeatingTask();
+            // If the test has a time delay config then use that otherwise use standard delay
+            if (mTestInfo.getResults().get(0).getTimeDelay() > 0) {
+                timeDelay = Math.max(SHORT_DELAY, mTestInfo.getResults().get(0).getTimeDelay());
+            }
+
+            delayHandler.postDelayed(() -> {
+                camera.start();
+                mRunnableCode.run();
+            }, timeDelay);
         }
     }
 
@@ -345,7 +356,6 @@ public class BaseRunTest extends Fragment implements RunTest {
         }
         cameraStarted = false;
     }
-
 
     /**
      * Show an error message dialog.
