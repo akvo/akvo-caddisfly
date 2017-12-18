@@ -487,11 +487,13 @@ public class TestInfo implements Parcelable {
         for (ColorItem colorItem : result.getColors()) {
 
             Calibration newCalibration = new Calibration(colorItem.getValue(), Color.TRANSPARENT);
+            newCalibration.uid = uuid;
 
             for (int i = calibrations.size() - 1; i >= 0; i--) {
                 Calibration calibration = calibrations.get(i);
                 if (calibration.value == colorItem.getValue()) {
                     newCalibration.color = calibration.color;
+                    newCalibration.date = calibration.date;
                     colorItem.setRgb(calibration.color);
                 }
             }

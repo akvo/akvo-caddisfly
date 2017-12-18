@@ -48,7 +48,7 @@ public class ColorItem implements Parcelable {
     @SerializedName("lab")
     @Expose
     private List<Double> lab = null;
-    private int rgb;
+    private Integer rgb;
 
     private ColorItem(Parcel in) {
         value = in.readByte() == 0x00 ? null : in.readDouble();
@@ -57,6 +57,11 @@ public class ColorItem implements Parcelable {
             in.readList(lab, Double.class.getClassLoader());
         } else {
             lab = null;
+        }
+        if (in.readByte() == 0) {
+            rgb = 0;
+        } else {
+            rgb = in.readInt();
         }
     }
 
@@ -106,6 +111,12 @@ public class ColorItem implements Parcelable {
         } else {
             dest.writeByte((byte) (0x01));
             dest.writeList(lab);
+        }
+        if (rgb == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(rgb);
         }
     }
 }

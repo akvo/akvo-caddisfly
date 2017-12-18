@@ -135,9 +135,7 @@ public class ChamberAboveTest extends BaseRunTest implements RunTest {
 
     @Override
     protected void releaseResources() {
-
         mSensorManager.unregisterListener(mShakeDetector);
         super.releaseResources();
     }
-
 }

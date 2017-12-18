@@ -194,6 +194,12 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     @Override
+    protected void onDestroy() {
+        sound.release();
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
 
         if (!fragmentManager.popBackStackImmediate()) {
@@ -295,16 +301,17 @@ public class ChamberTestActivity extends BaseActivity implements
                     e.printStackTrace();
                 }
                 loadDetails();
+            } else {
+                testInfo.setCalibrations(calibrations);
             }
         }
 
-        if (calibrations.size() < 1) {
+        if (testInfo.getCalibrations().size() < 1) {
             testConfigRepository.addCalibration(testInfo);
             calibrations = CaddisflyApp.getApp().getDb()
                     .calibrationDao().getAll(testInfo.getUuid());
+            testInfo.setCalibrations(calibrations);
         }
-
-        testInfo.setCalibrations(calibrations);
     }
 
     /**
@@ -391,7 +398,7 @@ public class ChamberTestActivity extends BaseActivity implements
 
             if (value > -1) {
 
-                sound.playShortResource(R.raw.err);
+                sound.playShortResource(R.raw.done);
 
                 Result result = testInfo.getResults().get(0);
                 result.setResult(value, dilution, testInfo.getMaxDilution());
@@ -468,9 +475,9 @@ public class ChamberTestActivity extends BaseActivity implements
      */
     private void showError(String message, final Bitmap bitmap) {
 
-        releaseResources();
-
         sound.playShortResource(R.raw.err);
+
+        releaseResources();
 
         alertDialogToBeDestroyed = AlertUtil.showError(this, R.string.error, message, bitmap, R.string.retry,
                 (dialogInterface, i) -> start(),
@@ -487,7 +494,6 @@ public class ChamberTestActivity extends BaseActivity implements
         if (alertDialogToBeDestroyed != null) {
             alertDialogToBeDestroyed.dismiss();
         }
-        sound.release();
     }
 
     /**
