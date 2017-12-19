@@ -20,6 +20,7 @@
   -->
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
@@ -39,11 +40,12 @@
                 android:id="@+id/textTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?colorPrimary"
                 android:gravity="center"
                 android:paddingBottom="3dp"
                 android:textColor="#fff"
                 android:textSize="32sp"
+                app:background="@{``}"
+                tools:background="@color/primary"
                 tools:text="Fluoride" />
 
             <TextView
@@ -52,14 +54,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
-                android:background="?colorPrimary"
                 android:gravity="center"
-
                 android:paddingBottom="15dp"
+
                 android:textColor="#e2e2e2"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:visibility="visible"
+                app:background="@{``}"
+                tools:background="@color/primary"
                 tools:text="@string/timesDilution" />
 
             <TextView

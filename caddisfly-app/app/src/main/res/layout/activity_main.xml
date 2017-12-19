@@ -147,8 +147,10 @@
                         android:textAllCaps="true"
                         android:textColor="#d8001c29"
                         android:textSize="12dp"
+                        android:visibility="gone"
                         tools:ignore="SpUsage"
-                        tools:text="Version expires: 15 Jan 2018" />
+                        tools:text="Version expires: 15 Jan 2018"
+                        tools:visibility="visible" />
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>

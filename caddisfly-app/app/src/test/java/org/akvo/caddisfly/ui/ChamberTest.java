@@ -34,7 +34,7 @@ import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.sensor.liquid.ChamberTestActivity;
+import org.akvo.caddisfly.sensor.chamber.ChamberTestActivity;
 import org.akvo.caddisfly.util.FileUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -134,7 +134,7 @@
             android:name=".sensor.bluetooth.DeviceScanActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.liquid.ChamberTestActivity"
+            android:name=".sensor.chamber.ChamberTestActivity"
             android:screenOrientation="nosensor" />
 
         <service

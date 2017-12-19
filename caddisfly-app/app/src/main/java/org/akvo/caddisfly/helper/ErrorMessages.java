@@ -25,7 +25,7 @@ import android.content.Intent;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.liquid.ChamberTestActivity;
+import org.akvo.caddisfly.sensor.chamber.ChamberTestActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 
 public class ErrorMessages {

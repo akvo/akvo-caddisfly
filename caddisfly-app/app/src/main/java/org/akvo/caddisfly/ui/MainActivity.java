@@ -80,7 +80,9 @@ public class MainActivity extends BaseActivity {
         DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
         b.textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
 
-        b.textVersionExpiry.setVisibility(View.VISIBLE);
+        if (AppConfig.APP_EXPIRY) {
+            b.textVersionExpiry.setVisibility(View.VISIBLE);
+        }
 
         // If app has expired then close this activity
         ApkHelper.isAppVersionExpired(this);

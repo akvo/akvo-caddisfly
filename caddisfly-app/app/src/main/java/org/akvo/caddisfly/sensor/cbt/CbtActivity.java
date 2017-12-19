@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +30,7 @@ import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
@@ -41,7 +41,7 @@ import java.util.UUID;
 
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
 
-public class CbtActivity extends AppCompatActivity
+public class CbtActivity extends BaseActivity
         implements CompartmentBagFragment.OnCompartmentBagSelectListener {
 
     private static final int CBT_TEST = 1;
@@ -62,6 +62,8 @@ public class CbtActivity extends AppCompatActivity
         if (savedInstanceState == null) {
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
         }
+
+        setTitle(testInfo.getName());
 
         startCbtTest();
     }
