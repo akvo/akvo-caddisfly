@@ -73,7 +73,7 @@ import static io.fotoapparat.parameter.selector.SizeSelectors.biggestSize;
 import static io.fotoapparat.result.transformer.SizeTransformers.scaled;
 
 public class BaseRunTest extends Fragment implements RunTest {
-    private static final int SHORT_DELAY = 300;
+    private static final double SHORT_DELAY = 0.3;
     private final ArrayList<ResultDetail> results = new ArrayList<>();
     private final Handler delayHandler = new Handler();
     protected Fotoapparat camera;
@@ -228,9 +228,9 @@ public class BaseRunTest extends Fragment implements RunTest {
 
                     if (mTestInfo.getResults().get(0).getTimeDelay() > 0) {
                         // test has time delay so take the pictures quickly with short delay
-                        mHandler.postDelayed(mRunnableCode, SHORT_DELAY);
+                        mHandler.postDelayed(mRunnableCode, (long) (SHORT_DELAY * 1000));
                     } else {
-                        mHandler.postDelayed(mRunnableCode, ChamberTestConfig.DELAY_BETWEEN_SAMPLING);
+                        mHandler.postDelayed(mRunnableCode, ChamberTestConfig.DELAY_BETWEEN_SAMPLING * 1000);
                     }
 
                     sound.playShortResource(R.raw.beep);
@@ -325,13 +325,13 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             // If the test has a time delay config then use that otherwise use standard delay
             if (mTestInfo.getResults().get(0).getTimeDelay() > 0) {
-                timeDelay = Math.max(SHORT_DELAY, mTestInfo.getResults().get(0).getTimeDelay());
+                timeDelay = (int) Math.max(SHORT_DELAY, mTestInfo.getResults().get(0).getTimeDelay());
             }
 
             delayHandler.postDelayed(() -> {
                 camera.start();
                 mRunnableCode.run();
-            }, timeDelay);
+            }, timeDelay * 1000);
         }
     }
 

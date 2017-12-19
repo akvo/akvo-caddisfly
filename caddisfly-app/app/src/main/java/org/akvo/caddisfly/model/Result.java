@@ -162,9 +162,9 @@ public class Result implements Parcelable {
      */
     public Integer getTimeDelay() {
         if (AppPreferences.ignoreTimeDelays()) {
-            return 3;
+            return 0;
         } else {
-            return timeDelay * 1000;
+            return timeDelay;
         }
     }
 

@@ -26,9 +26,9 @@ public final class ChamberTestConfig {
      */
     public static final int SAMPLE_CROP_LENGTH_DEFAULT = 50;
     /**
-     * The delay between each photo taken by the camera during the analysis.
+     * The delay seconds between each photo taken by the camera during the analysis.
      */
-    public static final int DELAY_BETWEEN_SAMPLING = 3000;
+    public static final int DELAY_BETWEEN_SAMPLING = 3;
     /**
      * The number of photos to take during analysis.
      */
