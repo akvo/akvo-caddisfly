@@ -162,7 +162,8 @@ public class Result implements Parcelable {
      */
     public Integer getTimeDelay() {
         if (AppPreferences.ignoreTimeDelays()) {
-            return 0;
+            // use the id as seconds when ignoring actual timeDelay
+            return id;
         } else {
             return timeDelay;
         }

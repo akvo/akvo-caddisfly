@@ -101,9 +101,6 @@ public class TestInfo implements Parcelable {
     @SerializedName("cameraAbove")
     @Expose
     private Boolean cameraAbove = false;
-    @SerializedName("displayResults")
-    @Expose
-    private List<Result> displayResults = null;
     @SerializedName("results")
     @Expose
     private List<Result> results = new ArrayList<>();
@@ -229,9 +226,6 @@ public class TestInfo implements Parcelable {
 
         results = new ArrayList<>();
         in.readTypedList(results, Result.CREATOR);
-
-        displayResults = new ArrayList<>();
-        in.readTypedList(displayResults, Result.CREATOR);
 
         instructions = new ArrayList<>();
         in.readTypedList(instructions, Instruction.CREATOR);
@@ -439,7 +433,6 @@ public class TestInfo implements Parcelable {
         parcel.writeString(md610Id);
         parcel.writeString(sampleQuantity);
         parcel.writeTypedList(results);
-        parcel.writeTypedList(displayResults);
         parcel.writeTypedList(instructions);
         parcel.writeString(selectInstruction);
         parcel.writeString(image);
@@ -576,10 +569,6 @@ public class TestInfo implements Parcelable {
         } else {
             return 1;
         }
-    }
-
-    public List<Result> getDisplayResults() {
-        return displayResults;
     }
 
     public int getDecimalPlaces() {

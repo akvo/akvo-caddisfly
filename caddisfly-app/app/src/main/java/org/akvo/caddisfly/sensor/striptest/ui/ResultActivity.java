@@ -163,6 +163,9 @@ public class ResultActivity extends BaseActivity {
         List<PatchResult> patchResultList = new ArrayList<>();
         for (Result patch : results) {
             PatchResult patchResult = new PatchResult(patch.getId());
+            if (patch.getColors().size() == 0) {
+                continue;
+            }
             int delay = patch.getTimeDelay();
 
             // check if we have the corresponding image
@@ -365,16 +368,16 @@ public class ResultActivity extends BaseActivity {
     /**
      * When result item does not have a patch but exists solely to display a calculated result
      *
-     * @param testInfo - the test info
+     * @param testInfo        - the test info
      * @param patchResultList - results for the patches
      */
     private void displayCalculatedResults(TestInfo testInfo, List<PatchResult> patchResultList) {
         // if testInfo has a displayResult items
-        if (testInfo.getDisplayResults() != null) {
-            for (Result displayResult : testInfo.getDisplayResults()) {
+        if (testInfo.getResults() != null) {
+            for (Result displayResult : testInfo.getResults()) {
 
                 // if displayResult formula exists then calculate and display
-                if (!displayResult.getFormula().isEmpty()) {
+                if (displayResult.getColors().size() == 0 && !displayResult.getFormula().isEmpty()) {
                     String patchDescription = displayResult.getName();
                     String unit = displayResult.getUnit();
 
@@ -400,6 +403,8 @@ public class ResultActivity extends BaseActivity {
                                 -1, unit), null);
                         return;
                     }
+
+                    resultStringValues.put(displayResult.getId(), String.valueOf(calculatedResult));
 
                     inflateView(patchDescription, createValueUnitString(
                             (float) calculatedResult, unit), null);

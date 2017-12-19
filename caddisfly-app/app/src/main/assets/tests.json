@@ -109,17 +109,15 @@
           ]
         }
       ],
-      "displayResults": [
+      "results": [
         {
           "id": 1,
           "name": "Nitrogen",
           "unit": "mg/l",
           "formula": "((%1$f + %2$f) * 5)"
-        }
-      ],
-      "results": [
+        },
         {
-          "id": 1,
+          "id": 2,
           "name": "Nitrate Nitrogen",
           "unit": "mg/l",
           "timeDelay": 60,
