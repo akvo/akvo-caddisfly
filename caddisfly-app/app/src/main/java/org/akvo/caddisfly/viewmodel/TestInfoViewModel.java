@@ -94,7 +94,7 @@ public class TestInfoViewModel extends AndroidViewModel {
     @BindingAdapter("content")
     public static void setContent(LinearLayout linearLayout, Instruction instruction) {
 
-        if (instruction == null || instruction.section == null){
+        if (instruction == null || instruction.section == null) {
             return;
         }
 

@@ -1217,7 +1217,7 @@
       "instructions": [
         {
           "section": [
-            "<b>stage_one</b>",
+            "stage_one",
             "collect_water_sample",
             "image:collect_sample"
           ]
@@ -1238,7 +1238,7 @@
         {
           "testStage": 2,
           "section": [
-            "<b>stage_two</b>",
+            "stage_two",
             "dip_strip_move_back_forth_30_seconds",
             "dry_off_excess_water_place_on_towel",
             "image:dip_sample_30_back_forward"
@@ -2533,7 +2533,7 @@
       "subtype": "bluetooth",
       "md610_id": "30",
       "uuid": "85e9bea2-8538-4759-a46a-46459783c2d3",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -2590,7 +2590,7 @@
       "subtype": "bluetooth",
       "md610_id": "31",
       "uuid": "403af73f-377f-42ea-bba3-f9c88cfe97d2",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -2657,7 +2657,7 @@
       "subtype": "bluetooth",
       "md610_id": "40",
       "uuid": "76defb64-592f-405c-b491-77ffa76fbad8",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -2724,7 +2724,7 @@
       "subtype": "bluetooth",
       "md610_id": "60",
       "uuid": "f0d60451-a220-4113-821d-3a658167cc9f",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -2791,7 +2791,7 @@
       "subtype": "bluetooth",
       "md610_id": "62",
       "uuid": "538ab4d3-706b-4c5e-93a9-adb5c13b1be9",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -2885,7 +2885,7 @@
       "subtype": "bluetooth",
       "md610_id": "65",
       "uuid": "3221bdba-8898-4ae2-958f-5f6a1f949c8f",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -2973,7 +2973,7 @@
       "subtype": "bluetooth",
       "md610_id": "66",
       "uuid": "17ca9214-23d4-49bf-99cc-c0463db03a90",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3061,7 +3061,7 @@
       "subtype": "bluetooth",
       "md610_id": "90",
       "uuid": "4f8fcb4b-35f6-40df-aa1c-c3f4a96352d4",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3128,7 +3128,7 @@
       "subtype": "bluetooth",
       "md610_id": "92",
       "uuid": "e2849dba-6486-4ceb-b5fd-58472d61fe5e",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3200,7 +3200,7 @@
       "md610_id": "100",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
       "shortCode": "100TC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3299,7 +3299,7 @@
       "md610_id": "100",
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
       "shortCode": "100FC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3362,7 +3362,7 @@
       "md610_id": "101",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
       "shortCode": "101TC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3459,7 +3459,7 @@
       "md610_id": "101",
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
       "shortCode": "101FC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3521,7 +3521,7 @@
       "md610_id": "103",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
       "shortCode": "103TC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3620,7 +3620,7 @@
       "md610_id": "103",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
       "shortCode": "103FC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3683,7 +3683,7 @@
       "md610_id": "110",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
       "shortCode": "110TC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3780,7 +3780,7 @@
       "md610_id": "110",
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
       "shortCode": "110FC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3836,7 +3836,7 @@
       "md610_id": "111",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
       "shortCode": "111TC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3933,7 +3933,7 @@
       "md610_id": "111",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
       "shortCode": "111FC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -3989,7 +3989,7 @@
       "md610_id": "125",
       "uuid": "b6b46404-3392-4718-ac35-d2379c0f7d6d",
       "shortCode": "125CH",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4120,7 +4120,7 @@
       "md610_id": "125",
       "uuid": "b6b12955-46ae-4be7-8c57-e2ccb417bd7b",
       "shortCode": "125VI",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4189,7 +4189,7 @@
       "md610_id": "125",
       "uuid": "cdbbd63a-2740-4e42-9b4b-5a3d490d9df3",
       "shortCode": "125TC",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4284,7 +4284,7 @@
       "subtype": "bluetooth",
       "md610_id": "130",
       "uuid": "f15575d4-141e-4696-9c99-59cc2d3153b9",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "sampleQuantity": "2",
       "ranges": "0,150",
@@ -4358,7 +4358,7 @@
       "subtype": "bluetooth",
       "md610_id": "131",
       "uuid": "c99c85fa-ab1a-4065-b959-9991fb84dd90",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "sampleQuantity": "2",
       "ranges": "0,1500",
@@ -4432,7 +4432,7 @@
       "subtype": "bluetooth",
       "md610_id": "132",
       "uuid": "cf6a1ce4-0e5d-42a9-827d-606b771e0ffe",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "sampleQuantity": "0.2",
       "ranges": "0,15",
@@ -4506,7 +4506,7 @@
       "subtype": "bluetooth",
       "md610_id": "170",
       "uuid": "d839537b-8106-44e8-953a-6060e4dbe59d",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4561,7 +4561,7 @@
       "subtype": "bluetooth",
       "md610_id": "190",
       "uuid": "3e7c94de-1963-4b59-b196-de40aa126a24",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4636,7 +4636,7 @@
       "subtype": "bluetooth",
       "md610_id": "200",
       "uuid": "d4d57975-5e87-4ba9-b9d1-09ec2eb8f500",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4693,7 +4693,7 @@
       "subtype": "bluetooth",
       "md610_id": "201",
       "uuid": "5d82d3a3-cfb3-40fb-a739-49e308b0f9b4",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4750,7 +4750,7 @@
       "subtype": "bluetooth",
       "md610_id": "220",
       "uuid": "ac65e12d-632a-439d-b841-383b1b9b7026",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4807,7 +4807,7 @@
       "subtype": "bluetooth",
       "md610_id": "222",
       "uuid": "7a9457b0-96c2-487d-b3d3-c52c50fb2279",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4863,7 +4863,7 @@
       "subtype": "bluetooth",
       "md610_id": "223",
       "uuid": "928f2cf7-7c98-4707-af3b-2e12e0d2d46b",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4936,7 +4936,7 @@
       "subtype": "bluetooth",
       "md610_id": "225",
       "uuid": "1f704c37-9dbe-4ca7-a3da-00adc1e5fa0b",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -4992,7 +4992,7 @@
       "subtype": "bluetooth",
       "md610_id": "227",
       "uuid": "bdcf8941-f7df-4c04-9242-fc8a5b3af672",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5063,7 +5063,7 @@
       "subtype": "bluetooth",
       "md610_id": "265",
       "uuid": "a213cf40-7cb8-4828-872e-25bf2b8b12aa",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5131,7 +5131,7 @@
       "subtype": "bluetooth",
       "md610_id": "260",
       "uuid": "252298b1-5c2b-4b7d-9385-cc25d617725d",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5225,7 +5225,7 @@
       "subtype": "bluetooth",
       "md610_id": "270",
       "uuid": "22963cac-e81d-43db-a84b-e71c27a3dd60",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5282,7 +5282,7 @@
       "subtype": "bluetooth",
       "md610_id": "272",
       "uuid": "1ad51f5d-bfea-4a49-8797-efd899d7f484",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5338,7 +5338,7 @@
       "subtype": "bluetooth",
       "md610_id": "320",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5405,7 +5405,7 @@
       "subtype": "bluetooth",
       "md610_id": "321",
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5472,7 +5472,7 @@
       "subtype": "bluetooth",
       "md610_id": "323",
       "uuid": "ef94c4fc-be81-4a25-b879-7c0ab18efe43",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5528,7 +5528,7 @@
       "subtype": "bluetooth",
       "md610_id": "335",
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5609,7 +5609,7 @@
       "subtype": "bluetooth",
       "md610_id": "329",
       "uuid": "58bd3f92-7092-4bfa-ac4a-1f3f24b85b6c",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5664,7 +5664,7 @@
       "subtype": "bluetooth",
       "md610_id": "330",
       "uuid": "6b6e9183-215f-4dc2-94a9-68444b1ec0df",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5719,7 +5719,7 @@
       "subtype": "bluetooth",
       "md610_id": "331",
       "uuid": "976a33ff-a5cd-4a21-98ed-f07cd94f018e",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5773,7 +5773,7 @@
       "subtype": "bluetooth",
       "md610_id": "332",
       "uuid": "635fe6af-b66b-48b4-aa62-0b6a8db0a493",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5828,7 +5828,7 @@
       "subtype": "bluetooth",
       "md610_id": "340",
       "uuid": "6b485134-e6e5-4db1-88b3-d96ff081e629",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5884,7 +5884,7 @@
       "subtype": "bluetooth",
       "md610_id": "355",
       "uuid": "4275391e-1498-4623-a068-e3f40dea8c29",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5941,7 +5941,7 @@
       "subtype": "bluetooth",
       "md610_id": "360",
       "uuid": "64248882-405c-4ec2-b433-5977bf505ffb",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
         {
@@ -5997,7 +5997,7 @@
       "subtype": "bluetooth",
       "md610_id": "384",
       "uuid": "51c6bbf7-f027-478d-8a60-37404537d819",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
       "ranges": "0,750",
@@ -6052,7 +6052,7 @@
       "subtype": "bluetooth",
       "md610_id": "386",
       "uuid": "90d6c006-2646-4c79-aa17-bb0ec47e2007",
-      "brand": "Lovibond",
+      "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
       "ranges": "0,1000",
