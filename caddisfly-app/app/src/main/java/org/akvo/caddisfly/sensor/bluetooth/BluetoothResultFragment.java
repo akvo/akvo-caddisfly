@@ -186,7 +186,7 @@ public class BluetoothResultFragment extends Fragment {
         }
 
         // Display data received for diagnostics
-        if (AppPreferences.showBluetoothData()) {
+        if (AppPreferences.getShowDebugInfo()) {
             AlertDialog.Builder builder;
             final TextView showText = new TextView(getActivity());
             showText.setText(String.format("%s = %s", testInfo.getName(), data));

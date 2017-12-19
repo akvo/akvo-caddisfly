@@ -64,7 +64,7 @@ public class AppPreferencesTest {
     @Test
     public void checkDebugMessagesKey() {
 
-        String methodName = "getShowDebugMessages";
+        String methodName = "getShowDebugInfo";
 
         checkDiagnosticPreference(R.string.showDebugMessagesKey, DEFAULT_FALSE, methodName, true);
 

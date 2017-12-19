@@ -80,7 +80,7 @@ public final class AppPreferences {
         return !isDiagnosticMode() || PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.soundOnKey, true);
     }
 
-    public static boolean getShowDebugMessages() {
+    public static boolean getShowDebugInfo() {
         return isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
     }
@@ -105,14 +105,4 @@ public final class AppPreferences {
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreTimeDelaysKey, false);
     }
 
-    /**
-     * Preference whether to show bluetooth raw data for debugging purposes.
-     *
-     * @return true if bluetooth raw data should be displayed
-     */
-    public static boolean showBluetoothData() {
-        return isDiagnosticMode()
-                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showBlueToothDataKey, false);
-
-    }
 }

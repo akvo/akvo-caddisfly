@@ -110,7 +110,7 @@ public final class FileHelper {
         }
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                if (AppPreferences.getShowDebugMessages()) {
+                if (AppPreferences.getShowDebugInfo()) {
                     Toast.makeText(CaddisflyApp.getApp(),
                             "Error creating folder: " + dir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
                 }

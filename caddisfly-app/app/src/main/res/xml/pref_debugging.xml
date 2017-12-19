@@ -24,8 +24,5 @@
         <CheckBoxPreference
             android:key="@string/showDebugMessagesKey"
             android:title="@string/debuggingOn" />
-        <CheckBoxPreference
-            android:key="@string/showBlueToothDataKey"
-            android:title="@string/showBluetoothData" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

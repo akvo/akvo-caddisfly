@@ -310,7 +310,7 @@ public class SensorActivity extends BaseActivity {
 
         String tempValue = value;
 
-        if (AppPreferences.getShowDebugMessages()) {
+        if (AppPreferences.getShowDebugInfo()) {
             Toast.makeText(this, tempValue, Toast.LENGTH_SHORT).show();
         }
 
@@ -366,7 +366,7 @@ public class SensorActivity extends BaseActivity {
 
             String[] resultArray = tempValue.split(",");
 
-            if (AppPreferences.getShowDebugMessages()) {
+            if (AppPreferences.getShowDebugInfo()) {
                 final String finalValue = tempValue;
                 runOnUiThread(() -> {
                     if (debugToast == null) {
