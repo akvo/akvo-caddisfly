@@ -139,8 +139,6 @@ public class DeviceControlActivity extends BaseActivity
 
         testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
 
-        setTitle("Connected");
-
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
 
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
@@ -315,9 +313,6 @@ public class DeviceControlActivity extends BaseActivity
         layoutInstructions.setVisibility(View.VISIBLE);
         layoutSelectTest.setVisibility(View.GONE);
         layoutWaiting.setVisibility(View.GONE);
-
-        setTitle(StringUtil.fromHtml(String.format(getString(R.string.select_test),
-                testInfo.getName())));
     }
 
     private void showSelectTestView() {

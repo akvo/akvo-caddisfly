@@ -36,10 +36,6 @@ public final class AppConfig {
     public static final int APP_EXPIRY_YEAR = 2018;
 
     /**
-     * To launch Flow app.
-     */
-    public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
-    /**
      * The intent action string used to connect to external app.
      *
      * @deprecated use {@link #FLOW_ACTION_CADDISFLY} instead

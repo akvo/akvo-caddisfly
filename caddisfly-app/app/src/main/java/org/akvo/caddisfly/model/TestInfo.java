@@ -97,10 +97,10 @@ public class TestInfo implements Parcelable {
     private String unit;
     @SerializedName("hasImage")
     @Expose
-    private Boolean hasImage;
+    private Boolean hasImage = false;
     @SerializedName("cameraAbove")
     @Expose
-    private Boolean cameraAbove;
+    private Boolean cameraAbove = false;
     @SerializedName("displayResults")
     @Expose
     private List<Result> displayResults = null;
@@ -112,7 +112,7 @@ public class TestInfo implements Parcelable {
     private String shortCode;
     @SerializedName("calibrate")
     @Expose
-    private Boolean calibrate;
+    private Boolean calibrate = false;
     @SerializedName("ranges")
     @Expose
     private String ranges;
@@ -194,23 +194,23 @@ public class TestInfo implements Parcelable {
         }
         illuminant = in.readString();
         if (in.readByte() == 0) {
-            length = null;
+            length = 0.0;
         } else {
             length = in.readDouble();
         }
         if (in.readByte() == 0) {
-            height = null;
+            height = 0.0;
         } else {
             height = in.readDouble();
         }
         unit = in.readString();
         byte tmpHasImage = in.readByte();
-        hasImage = tmpHasImage == 0 ? null : tmpHasImage == 1;
+        hasImage = tmpHasImage != 0 && tmpHasImage == 1;
         byte tmpCameraAbove = in.readByte();
-        cameraAbove = tmpCameraAbove == 0 ? null : tmpCameraAbove == 1;
+        cameraAbove = tmpCameraAbove != 0 && tmpCameraAbove == 1;
         shortCode = in.readString();
         byte tmpCalibrate = in.readByte();
-        calibrate = tmpCalibrate == 0 ? null : tmpCalibrate == 1;
+        calibrate = tmpCalibrate != 0 && tmpCalibrate == 1;
         ranges = in.readString();
         defaultColors = in.readString();
         if (in.readByte() == 0) {
@@ -584,5 +584,19 @@ public class TestInfo implements Parcelable {
 
     public int getDecimalPlaces() {
         return decimalPlaces;
+    }
+
+    public void addPlaceHolderCalibrations() {
+        for (ColorItem colorItem : getResults().get(0).getColors()) {
+            Calibration calibration = new Calibration();
+            calibration.uid = getUuid();
+            calibration.color = Color.TRANSPARENT;
+            calibration.value = colorItem.getValue();
+            calibrations.add(calibration);
+            String text = Double.toString(Math.abs(calibration.value));
+            if (calibration.value % 1 != 0) {
+                decimalPlaces = Math.max(text.length() - text.indexOf('.') - 1, decimalPlaces);
+            }
+        }
     }
 }

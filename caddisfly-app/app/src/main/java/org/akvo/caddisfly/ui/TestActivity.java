@@ -201,6 +201,7 @@ public class TestActivity extends BaseActivity {
         if (testInfo != null) {
             if (testInfo.getSubtype() == TestType.BLUETOOTH) {
                 setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
+
             } else {
                 setTitle(testInfo.getName());
             }

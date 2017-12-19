@@ -38,7 +38,6 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.databinding.FragmentListBinding;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 import java.util.List;
@@ -53,10 +52,7 @@ public class TestListFragment extends LifecycleFragment {
 
     private final TestInfoClickCallback mTestInfoClickCallback = test -> {
         if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.STARTED)) {
-
-            TestInfo testInfo = (new TestConfigRepository()).getTestInfo(test.getUuid());
-
-            Runnable runnable = () -> mListener.onListFragmentInteraction(testInfo);
+            Runnable runnable = () -> mListener.onListFragmentInteraction(test);
             (new Handler()).postDelayed(runnable, 100);
         }
     };

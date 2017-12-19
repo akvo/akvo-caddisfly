@@ -21,6 +21,11 @@ package org.akvo.caddisfly.common;
 
 public final class TestConstants {
 
+    /**
+     * To launch Flow app.
+     */
+    public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
+
     public static final int SENSOR_TESTS_COUNT = 3;
     public static final int STRIP_TESTS_COUNT = 20;
     public static final int MD610_TESTS_COUNT = 51;

@@ -97,7 +97,7 @@
             android:layout_alignParentEnd="true"
             android:onClick="onEditCalibration"
             android:src="@android:drawable/ic_menu_edit"
-            app:backgroundTint="?primaryButtonColor"
+            app:backgroundTint="?fabButtonColor"
             app:borderWidth="0dp"
             tools:ignore="RelativeOverlap" />
 
@@ -119,20 +119,21 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/textCalibrationError"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/fragment_item" />
+            tools:listitem="@layout/item_calibration" />
 
         <Button
             android:id="@+id/buttonRunTest"
-            android:background="@drawable/round_corners_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/round_corners_button"
             android:onClick="runTestClick"
             android:text="@string/runTest"
-            android:theme="?primaryButtonStyle" />
+            android:theme="?primaryButtonStyle"
+            app:hideInNormalMode="@{true}" />
 
     </RelativeLayout>
 

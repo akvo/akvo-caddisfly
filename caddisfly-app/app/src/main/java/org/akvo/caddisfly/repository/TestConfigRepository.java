@@ -1,7 +1,6 @@
 package org.akvo.caddisfly.repository;
 
 
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -22,7 +21,6 @@ import org.akvo.caddisfly.util.AssetsManager;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -184,7 +182,7 @@ public class TestConfigRepository {
 
                             if (calibrations.size() < 1) {
                                 try {
-                                    SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
+                                    calibrations = SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -197,7 +195,7 @@ public class TestConfigRepository {
                                 }
                                 if (!colorFound) {
                                     try {
-                                        SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
+                                        calibrations = SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -205,7 +203,9 @@ public class TestConfigRepository {
                             }
 
                             if (calibrations.size() < 1) {
-                                addCalibrations(testInfo);
+                                testInfo.addPlaceHolderCalibrations();
+                                CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
+                                dao.insertAll(testInfo.getCalibrations());
                             } else {
                                 testInfo.setCalibrations(calibrations);
                             }
@@ -233,21 +233,6 @@ public class TestConfigRepository {
             }
         }
         return null;
-    }
-
-    private void addCalibrations(TestInfo testInfo) {
-
-        CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
-
-        for (ColorItem colorItem : testInfo.getResults().get(0).getColors()) {
-            Calibration calibration = new Calibration();
-            calibration.uid = testInfo.getUuid();
-            calibration.date = new Date().getTime();
-            calibration.color = Color.TRANSPARENT;
-            calibration.value = colorItem.getValue();
-            dao.insert(calibration);
-            testInfo.getCalibrations().add(calibration);
-        }
     }
 
     public void clear() {

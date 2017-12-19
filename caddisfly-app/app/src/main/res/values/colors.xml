@@ -28,6 +28,8 @@
     <color name="button_text">#fff</color>
     <color name="button_text_soft">#e3e9e9e9</color>
 
+    <color name="fab_button_background">#00a79d</color>
+
     <!-- Diagnostic -->
     <color name="diagnostic">#ff0000</color>
     <color name="diagnostic_status">#e20101</color>

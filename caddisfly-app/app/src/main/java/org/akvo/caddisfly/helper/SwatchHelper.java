@@ -186,8 +186,8 @@ public final class SwatchHelper {
         return calibrationDetails.toString();
     }
 
-    public static void loadCalibrationFromFile(TestInfo testInfo, String fileName) throws IOException {
-        final List<Calibration> swatchList = new ArrayList<>();
+    public static List<Calibration> loadCalibrationFromFile(TestInfo testInfo, String fileName) throws IOException {
+        final List<Calibration> calibrations = new ArrayList<>();
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testInfo.getUuid());
 
         List<String> calibrationDetails = FileUtil.loadFromFile(path, fileName);
@@ -230,13 +230,12 @@ public final class SwatchHelper {
                 calibration.date = new Date().getTime();
                 calibration.color = ColorUtil.getColorFromRgb(values[1]);
                 calibration.value = stringToDouble(values[0]);
-                swatchList.add(calibration);
+                calibrations.add(calibration);
             }
 
-            testInfo.setCalibrations(swatchList);
-
-            if (swatchList.size() > 0) {
-                saveCalibrationToDB(testInfo);
+            if (calibrations.size() > 0) {
+                CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
+                dao.insertAll(calibrations);
 
 //                if (AppPreferences.isDiagnosticMode()) {
 //                    Toast.makeText(context,
@@ -248,24 +247,9 @@ public final class SwatchHelper {
                 throw new IOException();
             }
         }
+        return calibrations;
     }
 
-    /**
-     * Save a list of calibrated colors to DB.
-     *
-     * @param testInfo The test info
-     */
-    private static void saveCalibrationToDB(TestInfo testInfo) {
-
-        CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
-
-        dao.deleteCalibrations(testInfo.getUuid());
-
-        for (Calibration calibration : testInfo.getCalibrations()) {
-            dao.insert(calibration);
-        }
-
-    }
 
     /**
      * Auto generate the color swatches for the given test type.

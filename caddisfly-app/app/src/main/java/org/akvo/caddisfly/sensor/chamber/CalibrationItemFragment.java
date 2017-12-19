@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.databinding.FragmentItemListBinding;
+import org.akvo.caddisfly.databinding.FragmentCalibrationListBinding;
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.SwatchHelper;
@@ -53,7 +53,7 @@ import java.util.Date;
 public class CalibrationItemFragment extends Fragment {
 
     private static final String ARG_TEST_INFO = "testInfo";
-    private FragmentItemListBinding binding;
+    private FragmentCalibrationListBinding binding;
     private TestInfo testInfo;
     private OnCalibrationSelectedListener mListener;
 
@@ -113,7 +113,7 @@ public class CalibrationItemFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_item_list, container, false);
+                R.layout.fragment_calibration_list, container, false);
 
         final TestInfoViewModel model =
                 ViewModelProviders.of(this).get(TestInfoViewModel.class);

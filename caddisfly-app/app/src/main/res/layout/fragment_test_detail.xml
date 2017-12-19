@@ -71,6 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:background="#ccffffff"
                 android:visibility="gone" />
 
         </FrameLayout>
@@ -111,8 +112,7 @@
                 android:textAlignment="textEnd"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:visibility="@{testInfo.instructions == null || testInfo.instructions.size() &lt; 1 ? View.INVISIBLE : View.VISIBLE}" />
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>

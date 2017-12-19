@@ -38,7 +38,7 @@ import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueS
 
 public class SwatchView extends View {
 
-    private final static int VAL_BAR_HEIGHT = 20;
+    private final static int VAL_BAR_HEIGHT = 15;
     private final static int TEXT_SIZE = 20;
     private final static float MARGIN = 10;
     private static float gutterSize = 5;
@@ -49,9 +49,9 @@ public class SwatchView extends View {
     int lineCount = 0;
     int extraHeight = 0;
     float totalWidth = 0;
+    int[][] rgbCols;
     private TestInfo testInfo;
     private Paint blackText;
-    private boolean colorFound = false;
 
     public SwatchView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -76,40 +76,18 @@ public class SwatchView extends View {
                 if (colors.size() > 0) {
                     int colorCount = colors.size();
 
-                    int[][] rgbCols = new int[colorCount][3];
-                    float[] values = new float[colorCount];
-
-                    // get lab colours and turn them to RGB
                     for (int i = 0; i < colorCount; i++) {
 
-                        values[i] = colors.get(i).getValue().floatValue();
-
-                        List<Double> patchColorValues = colors.get(i).getLab();
-                        if (patchColorValues != null) {
-                            lab[0] = patchColorValues.get(0).floatValue();
-                            lab[1] = patchColorValues.get(1).floatValue();
-                            lab[2] = patchColorValues.get(2).floatValue();
-
-                            rgbCols[i] = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
-                            int color = Color.rgb(rgbCols[i][0], rgbCols[i][1], rgbCols[i][2]);
-
-                            if (color != Color.TRANSPARENT) {
-                                colorFound = true;
-                            }
-                            colors.get(i).setRgb(color);
-                        }
-                    }
-
-                    if (colorFound) {
-                        for (int i = 0; i < colorCount; i++) {
-
-                            paintColor.setColor(colors.get(i).getRgb());
+                        ColorItem colorItem = colors.get(i);
+                        if (colorItem != null) {
+                            paintColor.setColor(colorItem.getRgb());
 
                             canvas.drawRect(MARGIN + (i * totalWidth), MARGIN + (resultIndex * lineHeight),
                                     i * totalWidth + blockWidth, (resultIndex * lineHeight) + blockWidth, paintColor);
 
                             if (testInfo.getGroupingType() == GroupType.INDIVIDUAL || resultIndex == testInfo.getResults().size() - 1) {
-                                canvas.drawText(createValueString(values[i]), MARGIN + (i * totalWidth + blockWidth / 2),
+                                canvas.drawText(createValueString(colorItem.getValue().floatValue()),
+                                        MARGIN + (i * totalWidth + blockWidth / 2),
                                         MARGIN + (resultIndex * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
                             }
                         }
@@ -128,11 +106,34 @@ public class SwatchView extends View {
 
         lineCount = testInfo.getResults().size();
 
+        for (int resultIndex = 0; resultIndex < testInfo.getResults().size(); resultIndex++) {
+            List<ColorItem> colors = testInfo.getResults().get(resultIndex).getColors();
+            if (colors.size() > 0) {
+                int colorCount = colors.size();
+
+                rgbCols = new int[colorCount][3];
+
+                // get lab colours and turn them to RGB
+                for (int i = 0; i < colorCount; i++) {
+
+                    List<Double> patchColorValues = colors.get(i).getLab();
+                    if (patchColorValues != null) {
+                        lab[0] = patchColorValues.get(0).floatValue();
+                        lab[1] = patchColorValues.get(1).floatValue();
+                        lab[2] = patchColorValues.get(2).floatValue();
+
+                        rgbCols[i] = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
+                        int color = Color.rgb(rgbCols[i][0], rgbCols[i][1], rgbCols[i][2]);
+
+                        colors.get(i).setRgb(color);
+                    }
+                }
+            }
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
 
         setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec));
 
@@ -160,7 +161,6 @@ public class SwatchView extends View {
 
             totalWidth = gutterSize + blockWidth;
         }
-
 
         super.onMeasure(widthMeasureSpec,
                 MeasureSpec.makeMeasureSpec((int) ((lineCount * lineHeight) + extraHeight), MeasureSpec.EXACTLY));

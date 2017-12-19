@@ -27,7 +27,7 @@ public interface CalibrationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(CalibrationDetail calibrationDetail);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Calibration> calibrations);
 
     @Update

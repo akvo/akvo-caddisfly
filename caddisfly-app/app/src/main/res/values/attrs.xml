@@ -22,6 +22,7 @@
         <attr name="primaryButtonStyle" format="reference" />
         <attr name="secondaryButtonStyle" format="reference" />
         <attr name="primaryButtonColor" format="color" />
+        <attr name="fabButtonColor" format="color" />
         <attr name="textColorPrimary" format="color" />
         <attr name="longButtonStyle" format="reference" />
         <attr name="longButtonText" format="color" />

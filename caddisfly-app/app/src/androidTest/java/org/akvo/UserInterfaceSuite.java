@@ -5,7 +5,7 @@ import org.akvo.caddisfly.misc.LanguageTest;
 import org.akvo.caddisfly.misc.MiscTest;
 import org.akvo.caddisfly.navigation.NavigationTest;
 import org.akvo.caddisfly.navigation.StripTestNavigation;
-import org.akvo.caddisfly.survey.SurveySensorTest;
+import org.akvo.caddisfly.test.SurveySensorTest;
 import org.akvo.caddisfly.ui.CalibrationTest;
 import org.akvo.caddisfly.ui.SensorsUiTest;
 import org.junit.runner.RunWith;

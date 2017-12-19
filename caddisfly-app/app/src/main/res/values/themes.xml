@@ -37,6 +37,7 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="primaryButtonStyle">@style/AppTheme.Button.Cyan</item>
         <item name="primaryButtonColor">@color/button_green</item>
+        <item name="fabButtonColor">@color/fab_button_background</item>
         <item name="secondaryButtonStyle">@style/AppTheme.Button.Cyan</item>
         <item name="longButtonStyle">@style/AppTheme.Button.Blue</item>
         <item name="longButtonText">@color/button_text_soft</item>

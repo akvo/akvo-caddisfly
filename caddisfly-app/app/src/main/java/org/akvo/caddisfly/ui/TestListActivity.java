@@ -36,6 +36,7 @@ import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.sensor.chamber.ChamberTestActivity;
 import org.akvo.caddisfly.util.ConfigDownloader;
 
@@ -103,6 +104,9 @@ public class TestListActivity extends BaseActivity
     }
 
     private void startTest() {
+
+        testInfo = (new TestConfigRepository()).getTestInfo(testInfo.getUuid());
+
         if (testInfo == null || testInfo.getIsGroup()) {
             return;
         }

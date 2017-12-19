@@ -40,7 +40,7 @@ import android.support.test.uiautomator.UiSelector;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.AppConfig;
+import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.hamcrest.Matchers;
 
@@ -297,7 +297,7 @@ public final class TestHelper {
     public static void gotoSurveyForm() {
 
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(TestConstants.FLOW_SURVEY_PACKAGE_NAME);
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }

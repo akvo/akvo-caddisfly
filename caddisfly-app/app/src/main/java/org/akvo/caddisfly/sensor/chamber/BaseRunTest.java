@@ -319,7 +319,7 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             cameraStarted = true;
 
-            sound.playShortResource(R.raw.beep);
+            sound.playShortResource(R.raw.futurebeep2);
 
             int timeDelay = ChamberTestConfig.DELAY_BETWEEN_SAMPLING;
 

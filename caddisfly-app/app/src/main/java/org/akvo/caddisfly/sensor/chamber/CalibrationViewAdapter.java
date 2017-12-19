@@ -52,7 +52,7 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
+                .inflate(R.layout.item_calibration, parent, false);
         return new ViewHolder(view);
     }
 
@@ -67,33 +67,34 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
 
         Result result = testInfo.getResults().get(0);
         List<ColorItem> colors = result.getColors();
-        int color = colors.get(position).getRgb();
-        holder.textUnit.setText(String.valueOf(result.getUnit()));
+        if (position < colors.size()) {
+            int color = colors.get(position).getRgb();
+            holder.textUnit.setText(String.valueOf(result.getUnit()));
 
-        //display additional information if we are in diagnostic mode
-        if (AppPreferences.isDiagnosticMode()) {
+            //display additional information if we are in diagnostic mode
+            if (AppPreferences.isDiagnosticMode()) {
 
-            holder.textUnit.setVisibility(View.GONE);
+                holder.textUnit.setVisibility(View.GONE);
 
-            holder.textRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
-            holder.textRgb.setVisibility(View.VISIBLE);
+                holder.textRgb.setText(String.format("r: %s", ColorUtil.getColorRgbString(color)));
+                holder.textRgb.setVisibility(View.VISIBLE);
 
-            float[] colorHsv = new float[3];
-            Color.colorToHSV(color, colorHsv);
-            holder.textHsv.setText(String.format(Locale.getDefault(),
-                    "h: %.0f  %.2f  %.2f", colorHsv[0], colorHsv[1], colorHsv[2]));
-            holder.textHsv.setVisibility(View.VISIBLE);
+                float[] colorHsv = new float[3];
+                Color.colorToHSV(color, colorHsv);
+                holder.textHsv.setText(String.format(Locale.getDefault(),
+                        "h: %.0f  %.2f  %.2f", colorHsv[0], colorHsv[1], colorHsv[2]));
+                holder.textHsv.setVisibility(View.VISIBLE);
 
-            double distance = 0;
-            if (position > 0) {
-                int previousColor = colors.get(position - 1).getRgb();
-                distance = ColorUtil.getColorDistance(previousColor, color);
+                double distance = 0;
+                if (position > 0) {
+                    int previousColor = colors.get(position - 1).getRgb();
+                    distance = ColorUtil.getColorDistance(previousColor, color);
+                }
+
+                holder.textBrightness.setText(String.format(Locale.getDefault(),
+                        "d:%.2f  b: %d", distance, ColorUtil.getBrightness(color)));
+                holder.textBrightness.setVisibility(View.VISIBLE);
             }
-
-            holder.textBrightness.setText(String.format(Locale.getDefault(),
-                    "d:%.2f  b: %d", distance, ColorUtil.getBrightness(color)));
-            holder.textBrightness.setVisibility(View.VISIBLE);
-
         }
 
         holder.mView.setOnClickListener(v -> {

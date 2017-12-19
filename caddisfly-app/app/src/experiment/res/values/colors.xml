@@ -26,6 +26,8 @@
     <color name="button_main">#07763e</color>
     <color name="button_main_highlight">#04703a</color>
 
+    <color name="fab_button_background">#07763e</color>
+
     <!-- Diagnostic -->
     <color name="diagnostic">#910228</color>
     <color name="diagnostic_status">#830023</color>
