@@ -56,7 +56,7 @@ public class SwatchView extends View {
     public SwatchView(Context context, AttributeSet attrs) {
         super(context, attrs);
         blackText = new Paint();
-        blackText.setColor(android.graphics.Color.BLACK);
+        blackText.setColor(Color.BLACK);
         blackText.setTextSize(TEXT_SIZE);
         blackText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         blackText.setTextAlign(Paint.Align.CENTER);

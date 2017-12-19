@@ -126,7 +126,7 @@ public class CameraOperationsManager {
             mCameraHandler.removeCallbacks(runAutoFocus);
             mCameraHandler.postDelayed(runAutoFocus, AUTO_FOCUS_DELAY);
         } else {
-            throw new RuntimeException("can't start autofocus");
+            throw new UnsupportedOperationException("can't start autofocus");
         }
     }
 

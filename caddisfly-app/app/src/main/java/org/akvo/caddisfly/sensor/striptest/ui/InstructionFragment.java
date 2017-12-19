@@ -46,17 +46,12 @@ import java.util.List;
 
 import static android.graphics.Typeface.BOLD;
 
-
 public class InstructionFragment extends Fragment {
 
     private static final int BUTTON_ENABLE_DELAY = 4000;
     private static final int ANIMATION_DURATION_MILLIS = 2000;
     private static final float BUTTON_START_ALPHA = 0.2f;
     private StripMeasureListener mListener;
-
-    public InstructionFragment() {
-        // Required empty public constructor
-    }
 
     @NonNull
     public static InstructionFragment newInstance(TestInfo testInfo, int testStage) {
@@ -148,7 +143,7 @@ public class InstructionFragment extends Fragment {
 
         if (instruction.contains("<b>") || style == BOLD) {
             text = text.replaceAll("<b>", "").replaceAll("</b>", "");
-            textView.setTypeface(null, Typeface.BOLD);
+            textView.setTypeface(null, BOLD);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(R.dimen.titleTextSize));
         } else {

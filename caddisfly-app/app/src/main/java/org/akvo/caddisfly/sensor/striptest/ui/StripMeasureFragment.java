@@ -49,10 +49,6 @@ public class StripMeasureFragment extends Fragment {
     private TextSwitcher textSwitcher;
     private PercentageMeterView exposureView;
 
-    public StripMeasureFragment() {
-        // Required empty public constructor
-    }
-
     @NonNull
     public static StripMeasureFragment newInstance(StriptestHandler striptestHandler) {
         mStriptestHandler = striptestHandler;

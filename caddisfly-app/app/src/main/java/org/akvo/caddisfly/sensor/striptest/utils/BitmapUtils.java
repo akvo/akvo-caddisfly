@@ -52,11 +52,11 @@ public class BitmapUtils {
         Canvas canvas = new Canvas(resultImage);
 
         Paint blackPaint = new Paint();
-        blackPaint.setColor(android.graphics.Color.BLACK);
+        blackPaint.setColor(Color.BLACK);
 
         // create paint
         Paint redText = new Paint();
-        redText.setColor(android.graphics.Color.RED);
+        redText.setColor(Color.RED);
         redText.setTextSize(30);
         redText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         redText.setTextAlign(Paint.Align.CENTER);
@@ -137,7 +137,7 @@ public class BitmapUtils {
 
         // create paint
         Paint blackText = new Paint();
-        blackText.setColor(android.graphics.Color.BLACK);
+        blackText.setColor(Color.BLACK);
         blackText.setTextSize(TEXT_SIZE);
         blackText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         blackText.setTextAlign(Paint.Align.LEFT);
@@ -184,7 +184,7 @@ public class BitmapUtils {
 
         Paint black = new Paint();
 
-        black.setColor(android.graphics.Color.BLACK);
+        black.setColor(Color.BLACK);
         black.setStyle(Paint.Style.FILL);
 
         // compute points of triangle:
@@ -264,7 +264,7 @@ public class BitmapUtils {
         Paint paintColor = new Paint();
         paintColor.setStyle(Paint.Style.FILL);
         Paint blackText = new Paint();
-        blackText.setColor(android.graphics.Color.BLACK);
+        blackText.setColor(Color.BLACK);
         blackText.setTextSize(TEXT_SIZE);
         blackText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         blackText.setTextAlign(Paint.Align.CENTER);
@@ -376,7 +376,7 @@ public class BitmapUtils {
         paintColor.setStyle(Paint.Style.FILL);
 
         Paint blackText = new Paint();
-        blackText.setColor(android.graphics.Color.BLACK);
+        blackText.setColor(Color.BLACK);
         blackText.setTextSize(TEXT_SIZE);
         blackText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         blackText.setTextAlign(Paint.Align.CENTER);

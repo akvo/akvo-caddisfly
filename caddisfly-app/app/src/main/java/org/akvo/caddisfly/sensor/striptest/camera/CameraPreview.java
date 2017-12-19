@@ -22,6 +22,7 @@ package org.akvo.caddisfly.sensor.striptest.camera;
 import android.content.Context;
 import android.graphics.Rect;
 import android.hardware.Camera;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -102,20 +103,37 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             // ignore: tried to stop a non-existent preview
         }
 
-        // set preview size and make any resize, rotate or
-        // reformatting changes here
+        // set preview size and make any resize, rotate or reformatting changes here
+        Camera.Size bestSize = setupCamera();
 
+        if (bestSize == null) return;
+
+        try {
+            mCamera.setPreviewDisplay(holder);
+            mPreviewWidth = bestSize.width;
+            mPreviewHeight = bestSize.height;
+            Log.e(TAG, "Preview width in cameraPreview: " + mPreviewWidth);
+
+            activity.setPreviewProperties(w, h, mPreviewWidth, mPreviewHeight);
+            activity.initPreviewFragment();
+            mCamera.startPreview();
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    @Nullable
+    private Camera.Size setupCamera() {
         Camera.Parameters parameters;
         try {
             parameters = mCamera.getParameters();
         } catch (Exception e) {
-            return;
+            return null;
 
         }
         if (parameters == null) {
-            return;
+            return null;
         }
-
 
         Camera.Size bestSize = null;
         List<Camera.Size> sizes = mCamera.getParameters().getSupportedPreviewSizes();
@@ -169,20 +187,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         } catch (Exception e) {
             Log.e(TAG, "Error setting camera parameters: " + e.getMessage(), e);
         }
-
-        try {
-            mCamera.setPreviewDisplay(holder);
-            mPreviewWidth = bestSize.width;
-            mPreviewHeight = bestSize.height;
-            Log.e(TAG, "Preview width in cameraPreview: " + mPreviewWidth);
-
-            activity.setPreviewProperties(w, h, mPreviewWidth, mPreviewHeight);
-            activity.initPreviewFragment();
-            mCamera.startPreview();
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-
+        return bestSize;
     }
 
     @Override

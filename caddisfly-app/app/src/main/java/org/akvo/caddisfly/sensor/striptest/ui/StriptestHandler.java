@@ -56,15 +56,17 @@ public final class StriptestHandler extends Handler {
     public static DecodeData mDecodeData;
     private static CalibrationCardData mCalCardData;
     private static State mState;
-    private List<TimeDelayDetail> mPatchTimeDelaysUnfiltered;
-    private List<TimeDelayDetail> mPatchTimeDelays = new ArrayList<>();
-    private String TAG = "Caddisfly - handler";
+    private final List<TimeDelayDetail> mPatchTimeDelays = new ArrayList<>();
+    private final String TAG = "Caddisfly - handler";
     // camera manager instance
-    private CameraOperationsManager mCameraOpsManager;
+    private final CameraOperationsManager mCameraOpsManager;
+    // finder pattern indicator view
+    private final FinderPatternIndicatorView mFinderPatternIndicatorView;
+    private final StripMeasureListener mListener;
+    private final Context context;
+    private List<TimeDelayDetail> mPatchTimeDelaysUnfiltered;
     // decode processor instance
     private DecodeProcessor mDecodeProcessor;
-    // finder pattern indicator view
-    private FinderPatternIndicatorView mFinderPatternIndicatorView;
     private StripMeasureFragment mFragment;
     private TextSwitcher mTextSwitcher;
     private int shadowQualityFailedCount = 0;
@@ -78,12 +80,10 @@ public final class StriptestHandler extends Handler {
     private String defaultMessage;
     private int mQualityScore = 0;
     private int successCount = 0;
-    private StripMeasureListener mListener;
     private long startTimeMillis;
     private int nextPatch;
     private int numPatches;
     private boolean captureNextImage;
-    private Context context;
     private int currentTestStage = 1;
     private int totalTestStages = 1;
 
@@ -400,11 +400,9 @@ public final class StriptestHandler extends Handler {
                 }
 
                 if (mState.equals(State.PREPARE) && successCount > Constants.COUNT_QUALITY_CHECK_LIMIT) {
-                    if (mState.equals(StriptestHandler.State.PREPARE)) {
-                        mCameraOpsManager.stopAutofocus();
-                        mListener.moveToInstructions(currentTestStage);
-                        break;
-                    }
+                    mCameraOpsManager.stopAutofocus();
+                    mListener.moveToInstructions(currentTestStage);
+                    break;
                 }
 
                 if (mState.equals(State.MEASURE) && captureNextImage && quality > Constants.CALIB_PERCENTAGE_LIMIT) {
