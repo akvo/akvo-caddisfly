@@ -1,4 +1,5 @@
 exclude_paths:
   - caddisfly-app/openCVLibrary310/**
+  - caddisfly-app/app/src/main/java/org/akvo/caddisfly/sensor/striptest/utils/**
   - caddisfly-app/app/src/main/java/org/akvo/caddisfly/sensor/striptest/qrdetector/**
   - caddisfly-app/app/src/androidTest/**
