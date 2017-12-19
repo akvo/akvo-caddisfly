@@ -114,7 +114,7 @@ public class TestListFragment extends LifecycleFragment {
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new IllegalArgumentException(context.toString()
                     + " must implement OnCalibrationSelectedListener");
         }
     }

@@ -110,6 +110,8 @@
     <!--CBT-->
     <string name="mpn">MPN/100ml</string>
 
+    <string name="delete_error">Error on file delete</string>
+
     <!--Software Notices-->
     <string name="lovibond_software"><a href="http://www.lovibond.com/">Lovibond Testing Instruction Visuals (MD610)</a></string>
     <string name="apache_software"><a href="https://source.android.com/setup/licenses">Android Open Source Project</a>

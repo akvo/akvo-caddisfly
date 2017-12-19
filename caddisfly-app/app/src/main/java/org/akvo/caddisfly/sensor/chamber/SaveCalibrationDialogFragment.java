@@ -295,12 +295,10 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private void saveCalibrationDetails(File path) {
         final Context context = getContext();
 
-        final String testCode = mTestInfo.getUuid();
-
         final String calibrationDetails = SwatchHelper.generateCalibrationFile(context, mTestInfo,
-                testCode, editBatchCode.getText().toString().trim(),
+                editBatchCode.getText().toString().trim(),
                 Calendar.getInstance().getTimeInMillis(),
-                calendar.getTimeInMillis(), editRgb.getText().toString());
+                calendar.getTimeInMillis());
 
         FileUtil.saveToFile(path, editName.getText().toString().trim(), calibrationDetails);
 
@@ -349,7 +347,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         if (context instanceof OnCalibrationDetailsSavedListener) {
             mListener = (OnCalibrationDetailsSavedListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new IllegalArgumentException(context.toString()
                     + " must implement OnCalibrationDetailsSavedListener");
         }
     }

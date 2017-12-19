@@ -19,7 +19,6 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AssetsManager;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,20 +31,6 @@ public class TestConfigRepository {
 
     public TestConfigRepository() {
         assetsManager = new AssetsManager();
-    }
-
-    public static <T> T mergeObjects(T first, T second) throws IllegalAccessException, InstantiationException {
-        Class<?> clazz = first.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        Object returnValue = clazz.newInstance();
-        for (Field field : fields) {
-            field.setAccessible(true);
-            Object value1 = field.get(first);
-            Object value2 = field.get(second);
-            Object value = (value1 != null) ? value1 : value2;
-            field.set(returnValue, value);
-        }
-        return (T) returnValue;
     }
 
     public List<TestInfo> getTests(TestType testType) {
@@ -164,13 +149,12 @@ public class TestConfigRepository {
                         if (testInfo.getSubtype() == TestType.CHAMBER_TEST) {
                             // If colors are defined as comma delimited range values then create array
                             try {
-                                if (testInfo.getResults().get(0).getColors().size() == 0) {
-                                    if (!testInfo.getRanges().isEmpty()) {
-                                        String[] values = testInfo.getRanges().split(",");
-                                        for (String value : values) {
-                                            testInfo.getResults().get(0).getColors()
-                                                    .add(new ColorItem(Double.parseDouble(value)));
-                                        }
+                                if (testInfo.getResults().get(0).getColors().size() == 0
+                                        && !testInfo.getRanges().isEmpty()) {
+                                    String[] values = testInfo.getRanges().split(",");
+                                    for (String value : values) {
+                                        testInfo.getResults().get(0).getColors()
+                                                .add(new ColorItem(Double.parseDouble(value)));
                                     }
                                 }
                             } catch (NumberFormatException ignored) {

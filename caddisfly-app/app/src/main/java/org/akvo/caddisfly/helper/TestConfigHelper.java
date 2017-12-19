@@ -28,6 +28,8 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.ConstantJsonKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.model.GroupType;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.Result;
@@ -54,7 +56,6 @@ import static org.akvo.caddisfly.common.Constants.MPN_TABLE_FILENAME;
 public final class TestConfigHelper {
 
     // Files
-    private static final int DEFAULT_MONTHS_VALID = 6;
     private static final int BIT_MASK = 0x00FFFFFF;
 
     private static HashMap<String, MpnValue> mpnTable;
@@ -139,17 +140,21 @@ public final class TestConfigHelper {
                 if (color > -1) {
                     subTestJson.put("resultColor", Integer.toHexString(color & BIT_MASK));
 
-                    // todo: fix this
+                    CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
+                            .calibrationDao().getCalibrationDetails(testInfo.getUuid());
+
                     // Add calibration details to result
-//                    subTestJson.put("calibratedDate", testInfo.getCalibrationDateString());
-//                    subTestJson.put("reagentExpiry", testInfo.getExpiryDateString());
-//                    subTestJson.put("reagentBatch", testInfo.getBatchNumber());
-//
-//                    JSONArray calibrationSwatches = new JSONArray();
-//                    for (Swatch swatch : testInfo.getSwatches()) {
-//                        calibrationSwatches.put(Integer.toHexString(swatch.getColor() & BIT_MASK));
-//                    }
-//                    subTestJson.put("calibration", calibrationSwatches);
+                    subTestJson.put("calibratedDate",
+                            new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US)
+                            .format(calibrationDetail.date));
+                    subTestJson.put("reagentExpiry", calibrationDetail.expiry);
+                    subTestJson.put("reagentBatch", calibrationDetail.batchNumber);
+
+                    JSONArray calibrationSwatches = new JSONArray();
+                    for (Calibration calibration : testInfo.getCalibrations()) {
+                        calibrationSwatches.put(Integer.toHexString(calibration.color & BIT_MASK));
+                    }
+                    subTestJson.put("calibration", calibrationSwatches);
                 }
 
                 resultsJsonArray.put(subTestJson);

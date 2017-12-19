@@ -155,7 +155,7 @@ public class CalibrationItemFragment extends Fragment {
         if (context instanceof OnCalibrationSelectedListener) {
             mListener = (OnCalibrationSelectedListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new IllegalArgumentException(context.toString()
                     + " must implement OnCalibrationSelectedListener");
         }
     }

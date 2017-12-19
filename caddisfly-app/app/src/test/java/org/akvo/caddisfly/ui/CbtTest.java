@@ -38,7 +38,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
@@ -121,7 +120,7 @@ public class CbtTest {
 
 //        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(null));
 
-        ShadowApplication application = Shadows.shadowOf(activity.getApplication());
+        ShadowApplication application = shadowOf(activity.getApplication());
         application.grantPermissions(permissions);
         controller.resume();
 

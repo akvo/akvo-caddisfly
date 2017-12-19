@@ -40,10 +40,6 @@ public class ChamberAboveTest extends BaseRunTest implements RunTest {
     private boolean mIgnoreShake;
     private boolean mWaitingForStillness;
 
-    public ChamberAboveTest() {
-        // Required empty public constructor
-    }
-
     /**
      * Get the instance.
      *

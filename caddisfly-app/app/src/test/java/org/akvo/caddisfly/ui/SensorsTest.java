@@ -30,7 +30,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowLooper;
@@ -138,7 +137,7 @@ public class SensorsTest {
 
         Activity activity = Robolectric.setupActivity(TestListActivity.class);
 
-        ShadowActivity shadowActivity = Shadows.shadowOf(activity);
+        ShadowActivity shadowActivity = shadowOf(activity);
         shadowActivity.clickMenuItem(android.R.id.home);
         Intent intent = shadowOf(activity).getNextStartedActivity();
 

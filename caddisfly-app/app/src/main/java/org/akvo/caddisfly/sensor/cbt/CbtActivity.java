@@ -163,10 +163,8 @@ public class CbtActivity extends BaseActivity
         ImageUtil.resizeImage(currentPhotoPath, resultImagePath);
 
         File imageFile = new File(currentPhotoPath);
-        if (imageFile.exists()) {
-            if (!new File(currentPhotoPath).delete()) {
-                Toast.makeText(this, "Could not delete file", Toast.LENGTH_SHORT).show();
-            }
+        if (imageFile.exists() && !new File(currentPhotoPath).delete()) {
+            Toast.makeText(this, R.string.delete_error, Toast.LENGTH_SHORT).show();
         }
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(cbtResult);

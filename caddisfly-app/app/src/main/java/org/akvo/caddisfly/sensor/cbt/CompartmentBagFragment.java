@@ -102,7 +102,7 @@ public class CompartmentBagFragment extends BaseFragment {
         if (context instanceof OnCompartmentBagSelectListener) {
             mListener = (OnCompartmentBagSelectListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new IllegalArgumentException(context.toString()
                     + " must implement OnCompartmentBagSelectListener");
         }
     }

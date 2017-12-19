@@ -41,7 +41,7 @@ public final class ColorUtil {
     /**
      * The default color model used for analysis
      */
-    protected static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
+    private static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
 
     /**
      * The maximum color distance before the color is considered out of range
@@ -210,7 +210,9 @@ public final class ColorUtil {
      * @return the distance between the two colors
      */
     public static double getColorDistanceRgb(int color1, int color2) {
-        double r, g, b;
+        double r;
+        double g;
+        double b;
 
         r = Math.pow(Color.red(color2) - Color.red(color1), 2.0);
         g = Math.pow(Color.green(color2) - Color.green(color1), 2.0);
@@ -325,7 +327,14 @@ public final class ColorUtil {
      * @return int color value
      */
     public static int labToColor(@NonNull LabColor color) {
-        double a, b, g, l, r, x, y, z;
+        double a;
+        double b;
+        double g;
+        double l;
+        double r;
+        double x;
+        double y;
+        double z;
         l = color.l;
         a = color.a;
         b = color.b;
@@ -380,7 +389,9 @@ public final class ColorUtil {
 
     @NonNull
     private static XyzColor rgbToXyz(double r, double g, double b) {
-        double x, y, z;
+        double x;
+        double y;
+        double z;
         r = rgb_xyz(r);
         g = rgb_xyz(g);
         b = rgb_xyz(b);
@@ -399,16 +410,22 @@ public final class ColorUtil {
         double kl = 1, kc = 1, kh = 1;
 
         // compute terms
-        double pi = Math.PI,
-                L1 = x.l, a1 = x.a, b1 = x.b, Cab1 = Math.sqrt(a1 * a1 + b1 * b1),
-                L2 = y.l, a2 = y.a, b2 = y.b, Cab2 = Math.sqrt(a2 * a2 + b2 * b2),
-                Cab = 0.5 * (Cab1 + Cab2),
-                G = 0.5 * (1 - Math.sqrt(Math.pow(Cab, 7) / (Math.pow(Cab, 7) + Math.pow(25, 7)))),
-                ap1 = (1 + G) * a1,
-                ap2 = (1 + G) * a2,
-                Cp1 = Math.sqrt(ap1 * ap1 + b1 * b1),
-                Cp2 = Math.sqrt(ap2 * ap2 + b2 * b2),
-                Cpp = Cp1 * Cp2;
+        double pi = Math.PI;
+        double L1 = x.l;
+        double a1 = x.a;
+        double b1 = x.b;
+        double Cab1 = Math.sqrt(a1 * a1 + b1 * b1);
+        double L2 = y.l;
+        double a2 = y.a;
+        double b2 = y.b;
+        double Cab2 = Math.sqrt(a2 * a2 + b2 * b2);
+        double Cab = 0.5 * (Cab1 + Cab2);
+        double G = 0.5 * (1 - Math.sqrt(Math.pow(Cab, 7) / (Math.pow(Cab, 7) + Math.pow(25, 7))));
+        double ap1 = (1 + G) * a1;
+        double ap2 = (1 + G) * a2;
+        double Cp1 = Math.sqrt(ap1 * ap1 + b1 * b1);
+        double Cp2 = Math.sqrt(ap2 * ap2 + b2 * b2);
+        double Cpp = Cp1 * Cp2;
 
         // ensure hue is between 0 and 2pi
         double hp1 = Math.atan2(b1, ap1);

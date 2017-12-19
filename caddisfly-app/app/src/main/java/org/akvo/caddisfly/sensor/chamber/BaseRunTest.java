@@ -97,10 +97,6 @@ public class BaseRunTest extends Fragment implements RunTest {
         }
     };
 
-    public BaseRunTest() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,7 +196,7 @@ public class BaseRunTest extends Fragment implements RunTest {
         if (context instanceof OnResultListener) {
             mListener = (OnResultListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new IllegalArgumentException(context.toString()
                     + " must implement OnResultListener");
         }
     }

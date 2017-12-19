@@ -13,9 +13,8 @@ import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 import java.util.List;
 
-
 /**
- * A utility class that handles navigation
+ * A utility class that handles navigation.
  */
 public class NavigationController {
 

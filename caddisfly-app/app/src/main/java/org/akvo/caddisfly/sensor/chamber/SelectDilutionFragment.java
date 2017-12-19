@@ -44,10 +44,6 @@ public class SelectDilutionFragment extends Fragment {
     private OnDilutionSelectedListener mListener;
     private FragmentSelectDilutionBinding binding;
 
-    public SelectDilutionFragment() {
-        // Required empty public constructor
-    }
-
     public static SelectDilutionFragment newInstance(TestInfo testInfo) {
         SelectDilutionFragment fragment = new SelectDilutionFragment();
         Bundle args = new Bundle();
@@ -116,7 +112,7 @@ public class SelectDilutionFragment extends Fragment {
         if (context instanceof OnDilutionSelectedListener) {
             mListener = (OnDilutionSelectedListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new IllegalArgumentException(context.toString()
                     + " must implement OnDilutionSelectedListener");
         }
     }

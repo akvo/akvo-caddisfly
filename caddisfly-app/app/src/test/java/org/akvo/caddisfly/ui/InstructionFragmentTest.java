@@ -31,10 +31,10 @@ import org.akvo.caddisfly.widget.RowView;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.robolectric.Shadows.shadowOf;
 import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment;
 import static org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startVisibleFragment;
 
@@ -71,7 +71,7 @@ public class InstructionFragmentTest {
 
         ImageView imageView = view.findViewById(3);
         assertNotNull(imageView);
-        int drawableResId = Shadows.shadowOf(imageView.getDrawable()).getCreatedFromResId();
+        int drawableResId = shadowOf(imageView.getDrawable()).getCreatedFromResId();
         assertEquals(-1, drawableResId);
     }
 

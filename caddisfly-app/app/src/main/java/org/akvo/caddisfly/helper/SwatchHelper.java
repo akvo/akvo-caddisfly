@@ -54,7 +54,6 @@ import static org.apache.commons.math3.util.Precision.round;
 public final class SwatchHelper {
 
     private static final int MAX_DISTANCE = 999;
-    private static final int HSV_CROSSOVER_DIFFERENCE = 200;
 
     // If the color distance between samplings exceeds this the test is rejected
     private static final double MAX_COLOR_DISTANCE = 40;
@@ -67,7 +66,7 @@ public final class SwatchHelper {
     }
 
     /**
-     * Analyzes the color and returns a result info
+     * Analyzes the color and returns a result info.
      *
      * @param photoColor The color to compare
      * @param swatches   The range of colors to compare against
@@ -75,8 +74,6 @@ public final class SwatchHelper {
     public static ResultDetail analyzeColor(int steps, ColorInfo photoColor, List<Swatch> swatches) {
 
         ColorCompareInfo colorCompareInfo;
-
-//        List<Swatch> gradientSwatches = SwatchHelper.generateGradient(swatches, colorModel);
 
         //Find the color within the generated gradient that matches the photoColor
         colorCompareInfo = getNearestColorFromSwatches(photoColor.getColor(), swatches);
@@ -94,7 +91,7 @@ public final class SwatchHelper {
     }
 
     /**
-     * Compares the colorToFind to all colors in the color range and finds the nearest matching color
+     * Compares the colorToFind to all colors in the color range and finds the nearest matching color.
      *
      * @param colorToFind The colorToFind to compare
      * @param swatches    The range of colors from which to return the nearest colorToFind
@@ -140,8 +137,18 @@ public final class SwatchHelper {
         return new ColorCompareInfo(resultValue, colorToFind, matchedColor, distance);
     }
 
-    public static String generateCalibrationFile(Context context, TestInfo testInfo, String testCode, String batchCode,
-                                                 long calibrationDate, long expiryDate, String ledRgb) {
+    /**
+     * Generate the calibration details file.
+     *
+     * @param context         the context
+     * @param testInfo        the test
+     * @param batchCode       the batch number
+     * @param calibrationDate date of calibration
+     * @param expiryDate      expiry date of the reagent
+     * @return the calibration file content
+     */
+    public static String generateCalibrationFile(Context context, TestInfo testInfo, String batchCode,
+                                                 long calibrationDate, long expiryDate) {
 
         final StringBuilder calibrationDetails = new StringBuilder();
 
@@ -153,16 +160,13 @@ public final class SwatchHelper {
         }
 
         calibrationDetails.append("Type: ");
-        calibrationDetails.append(testCode);
+        calibrationDetails.append(testInfo.getUuid());
         calibrationDetails.append("\n");
         calibrationDetails.append("Date: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(calibrationDate));
         calibrationDetails.append("\n");
         calibrationDetails.append("Calibrated: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(calibrationDate));
-        calibrationDetails.append("\n");
-        calibrationDetails.append("LED RGB: ");
-        calibrationDetails.append(ledRgb);
         calibrationDetails.append("\n");
         calibrationDetails.append("ReagentExpiry: ");
         calibrationDetails.append(new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(expiryDate));
@@ -186,6 +190,14 @@ public final class SwatchHelper {
         return calibrationDetails.toString();
     }
 
+    /**
+     * Load the calibration details from file.
+     *
+     * @param testInfo the test
+     * @param fileName the file name
+     * @return the list of calibrations loaded
+     * @throws IOException IO exception
+     */
     public static List<Calibration> loadCalibrationFromFile(TestInfo testInfo, String fileName) throws IOException {
         final List<Calibration> calibrations = new ArrayList<>();
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testInfo.getUuid());
@@ -236,13 +248,6 @@ public final class SwatchHelper {
             if (calibrations.size() > 0) {
                 CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
                 dao.insertAll(calibrations);
-
-//                if (AppPreferences.isDiagnosticMode()) {
-//                    Toast.makeText(context,
-//                            String.format(context.getString(R.string.calibrationLoaded), fileName),
-//                            Toast.LENGTH_SHORT).show();
-//                }
-
             } else {
                 throw new IOException();
             }
@@ -316,7 +321,6 @@ public final class SwatchHelper {
             return false;
         }
 
-//        Calibration previousSwatch = calibrations.get(0);
         for (Calibration swatch1 : calibrations) {
             if (swatch1.color == Color.TRANSPARENT || swatch1.color == Color.BLACK) {
                 //Calibration is incomplete
@@ -330,47 +334,9 @@ public final class SwatchHelper {
                     break;
                 }
             }
-//            previousSwatch = swatch1;
         }
-
-//        if (result && testInfo.getHueTrend() != 0) {
-//            result = validateHueTrend(calibrations, testInfo.getHueTrend());
-//        }
 
         return result;
-    }
-
-    private static boolean validateHueTrend(List<Calibration> swatches, int trend) {
-
-        float[] colorHsv = new float[3];
-        float previousHue = 0f;
-
-        boolean crossed = false;
-        for (int i = 0; i < swatches.size(); i++) {
-            //noinspection ResourceType
-            Color.colorToHSV(swatches.get(i).color, colorHsv);
-
-            if (trend < 0) {
-                if (!crossed && colorHsv[0] - previousHue > HSV_CROSSOVER_DIFFERENCE) {
-                    previousHue = colorHsv[0];
-                    crossed = true;
-                }
-                if (i > 0 && previousHue < colorHsv[0]) {
-                    return false;
-                }
-            } else {
-                if (!crossed && colorHsv[0] - previousHue < -HSV_CROSSOVER_DIFFERENCE) {
-                    previousHue = colorHsv[0];
-                    crossed = true;
-                }
-                if (i > 0 && previousHue > colorHsv[0]) {
-                    return false;
-                }
-            }
-            previousHue = colorHsv[0];
-        }
-
-        return true;
     }
 
     /**
@@ -407,6 +373,12 @@ public final class SwatchHelper {
         }
     }
 
+    /**
+     * Get the average value from list of results.
+     *
+     * @param resultDetails the result info
+     * @return the average value
+     */
     public static double getAverageResult(ArrayList<ResultDetail> resultDetails) {
         double result = 0;
 
@@ -432,20 +404,15 @@ public final class SwatchHelper {
 
         try {
             result = round(result / resultDetails.size(), 2);
-
-//            Log.d("RESULT", "result: " + result);
-//            Log.d("RESULT", "size: " + resultDetails.size());
-
         } catch (Exception ex) {
             result = -1;
         }
 
-//        Log.d("RESULT", "value: " + result);
         return result;
     }
 
     /**
-     * Returns an average color from a list of results
+     * Returns an average color from a list of results.
      * If any color does not closely match the rest of the colors then it returns -1
      *
      * @param resultDetails the list of results
