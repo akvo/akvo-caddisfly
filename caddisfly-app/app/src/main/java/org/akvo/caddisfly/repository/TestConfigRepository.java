@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.dao.CalibrationDao;
 import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.TestConfig;
 import org.akvo.caddisfly.model.TestInfo;
@@ -17,6 +19,7 @@ import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AssetsManager;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Date;
@@ -152,24 +155,73 @@ public class TestConfigRepository {
     @Nullable
     private TestInfo getTestInfoItem(String json, String id) {
         List<TestInfo> testInfoList;
-        testInfoList = new Gson().fromJson(json, TestConfig.class).getTests();
+        try {
+            TestConfig testConfig = new Gson().fromJson(json, TestConfig.class);
+            if (testConfig != null) {
+                testInfoList = testConfig.getTests();
 
-        for (TestInfo testInfo : testInfoList) {
-            if (testInfo.getUuid().equalsIgnoreCase(id)) {
+                for (TestInfo testInfo : testInfoList) {
+                    if (testInfo.getUuid().equalsIgnoreCase(id)) {
 
-                /*
-                try {
-                    mergeObjects(testInfo, testInfo);
-                } catch (IllegalAccessException | InstantiationException e) {
-                    e.printStackTrace();
+                        if (testInfo.getSubtype() == TestType.CHAMBER_TEST) {
+                            // If colors are defined as comma delimited range values then create array
+                            try {
+                                if (testInfo.getResults().get(0).getColors().size() == 0) {
+                                    if (!testInfo.getRanges().isEmpty()) {
+                                        String[] values = testInfo.getRanges().split(",");
+                                        for (String value : values) {
+                                            testInfo.getResults().get(0).getColors()
+                                                    .add(new ColorItem(Double.parseDouble(value)));
+                                        }
+                                    }
+                                }
+                            } catch (NumberFormatException ignored) {
+                                // do nothing
+                            }
+
+                            List<Calibration> calibrations = CaddisflyApp.getApp().getDb()
+                                    .calibrationDao().getAll(testInfo.getUuid());
+
+                            if (calibrations.size() < 1) {
+                                try {
+                                    SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                boolean colorFound = false;
+                                for (Calibration calibration : calibrations) {
+                                    if (calibration.color != 0) {
+                                        colorFound = true;
+                                    }
+                                }
+                                if (!colorFound) {
+                                    try {
+                                        SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+
+                            if (calibrations.size() < 1) {
+                                addCalibrations(testInfo);
+                            } else {
+                                testInfo.setCalibrations(calibrations);
+                            }
+                        }
+
+                        return testInfo;
+                    }
                 }
-                */
-
-                return testInfo;
             }
+        } catch (JsonSyntaxException e) {
+            // do nothing
         }
+
         return null;
     }
+
 
     public TestInfo getTestInfoByMd610Id(String md610Id) {
 
@@ -183,7 +235,7 @@ public class TestConfigRepository {
         return null;
     }
 
-    public void addCalibration(TestInfo testInfo) {
+    private void addCalibrations(TestInfo testInfo) {
 
         CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
 
@@ -194,6 +246,7 @@ public class TestConfigRepository {
             calibration.color = Color.TRANSPARENT;
             calibration.value = colorItem.getValue();
             dao.insert(calibration);
+            testInfo.getCalibrations().add(calibration);
         }
     }
 

@@ -21,9 +21,7 @@ package org.akvo.caddisfly.helper;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.widget.Toast;
 
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.dao.CalibrationDao;
 import org.akvo.caddisfly.entity.Calibration;
@@ -37,7 +35,6 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ColorUtil;
 import org.akvo.caddisfly.util.DateUtil;
 import org.akvo.caddisfly.util.FileUtil;
-import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -189,7 +186,7 @@ public final class SwatchHelper {
         return calibrationDetails.toString();
     }
 
-    public static void loadCalibrationFromFile(Context context, TestInfo testInfo, String fileName) throws IOException {
+    public static void loadCalibrationFromFile(TestInfo testInfo, String fileName) throws IOException {
         final List<Calibration> swatchList = new ArrayList<>();
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testInfo.getUuid());
 
@@ -200,15 +197,12 @@ public final class SwatchHelper {
             for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
                 String line = calibrationDetails.get(i);
                 if (!line.contains("=")) {
-                    String testCode = testInfo.getUuid();
                     if (line.contains("Calibrated:")) {
                         Calendar calendar = Calendar.getInstance();
                         Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(':') + 1),
                                 "yyyy-MM-dd HH:mm");
                         if (date != null) {
                             calendar.setTime(date);
-                            PreferencesUtil.setLong(context, testCode,
-                                    R.string.calibrationDateKey, calendar.getTimeInMillis());
                         }
                     }
                     if (line.contains("ReagentExpiry:")) {
@@ -217,21 +211,11 @@ public final class SwatchHelper {
                                 "yyyy-MM-dd");
                         if (date != null) {
                             calendar.setTime(date);
-                            PreferencesUtil.setLong(context, testCode,
-                                    R.string.calibrationExpiryDateKey, calendar.getTimeInMillis());
                         }
                     }
 
                     if (line.contains("ReagentBatch:")) {
                         String batch = line.substring(line.indexOf(':') + 1).trim();
-                        PreferencesUtil.setString(context, testCode,
-                                R.string.batchNumberKey, batch);
-                    }
-
-                    if (line.contains("LED RGB:")) {
-                        String rgb = line.substring(line.indexOf(':') + 1).trim();
-                        PreferencesUtil.setString(context, testCode,
-                                R.string.ledRgbKey, rgb);
                     }
 
                     calibrationDetails.remove(i);
@@ -254,11 +238,11 @@ public final class SwatchHelper {
             if (swatchList.size() > 0) {
                 saveCalibrationToDB(testInfo);
 
-                if (AppPreferences.isDiagnosticMode()) {
-                    Toast.makeText(context,
-                            String.format(context.getString(R.string.calibrationLoaded), fileName),
-                            Toast.LENGTH_SHORT).show();
-                }
+//                if (AppPreferences.isDiagnosticMode()) {
+//                    Toast.makeText(context,
+//                            String.format(context.getString(R.string.calibrationLoaded), fileName),
+//                            Toast.LENGTH_SHORT).show();
+//                }
 
             } else {
                 throw new IOException();

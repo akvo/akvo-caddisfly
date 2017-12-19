@@ -111,7 +111,7 @@ public class SurveyTest {
         }
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        onView(withText("0" + dfs.getDecimalSeparator() + "0 mg/l")).check(matches(isDisplayed()));
+        onView(withText("0" + dfs.getDecimalSeparator() + "0")).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 
@@ -123,7 +123,7 @@ public class SurveyTest {
 
         onView(withText("Caddisfly, 0 - 1")).perform(click());
 
-        onView(withText("0" + dfs.getDecimalSeparator() + "50 mg/l")).check(matches(isDisplayed()));
+        onView(withText("0" + dfs.getDecimalSeparator() + "50")).check(matches(isDisplayed()));
 
     }
 

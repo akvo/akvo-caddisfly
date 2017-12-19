@@ -231,10 +231,10 @@ public class ChamberTest {
 //                        isDisplayed()));
 //        cameraView1.perform(click());
 
-        sleep(6000);
+//        sleep(6000);
 
-//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         goToMainScreen();
 
@@ -273,10 +273,10 @@ public class ChamberTest {
 //                        isDisplayed()));
 //        cameraView.perform(click());
 
-        sleep(20000);
+//        sleep(20000);
 
-//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
 //        onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
 //                .check(matches(isDisplayed()));
@@ -318,10 +318,10 @@ public class ChamberTest {
 //                        isDisplayed()));
 //        cameraView3.perform(click());
 
-        sleep(6000);
+//        sleep(6000);
 
-//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         onView(withText(mActivityRule.getActivity().getString(R.string.testWithDilution)))
                 .check(matches(isDisplayed()));
@@ -365,10 +365,10 @@ public class ChamberTest {
 //                        isDisplayed()));
 //        cameraView2.perform(click());
 
-        sleep(6000);
+//        sleep(6000);
 
-//        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
-//                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
+        sleep(TEST_START_DELAY + (ChamberTestConfig.DELAY_BETWEEN_SAMPLING + 5000)
+                * ChamberTestConfig.SAMPLING_COUNT_DEFAULT);
 
         String resultString = getText(withId(R.id.textResult));
         assertTrue(resultString.contains(">"));

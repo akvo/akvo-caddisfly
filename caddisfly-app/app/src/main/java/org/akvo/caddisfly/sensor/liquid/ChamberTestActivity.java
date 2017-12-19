@@ -69,7 +69,6 @@ import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -118,8 +117,6 @@ public class ChamberTestActivity extends BaseActivity implements
                 finish();
                 return;
             }
-
-            loadCalibration(testConfigRepository);
 
             if (testInfo.getCameraAbove()) {
                 runTestFragment = ChamberBelowFragment.newInstance(testInfo);
@@ -276,44 +273,6 @@ public class ChamberTestActivity extends BaseActivity implements
         model.setTest(testInfo);
     }
 
-    private void loadCalibration(TestConfigRepository testConfigRepository) {
-        List<Calibration> calibrations = CaddisflyApp.getApp().getDb()
-                .calibrationDao().getAll(testInfo.getUuid());
-
-        if (calibrations.size() < 1) {
-            try {
-                SwatchHelper.loadCalibrationFromFile(this, testInfo, "_AutoBackup");
-                loadDetails();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            boolean colorFound = false;
-            for (Calibration calibration : calibrations) {
-                if (calibration.color != 0) {
-                    colorFound = true;
-                }
-            }
-            if (!colorFound) {
-                try {
-                    SwatchHelper.loadCalibrationFromFile(this, testInfo, "_AutoBackup");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                loadDetails();
-            } else {
-                testInfo.setCalibrations(calibrations);
-            }
-        }
-
-        if (testInfo.getCalibrations().size() < 1) {
-            testConfigRepository.addCalibration(testInfo);
-            calibrations = CaddisflyApp.getApp().getDb()
-                    .calibrationDao().getAll(testInfo.getUuid());
-            testInfo.setCalibrations(calibrations);
-        }
-    }
-
     /**
      * Load the calibrated swatches from the calibration text file.
      */
@@ -347,7 +306,7 @@ public class ChamberTestActivity extends BaseActivity implements
                         (dialog, which) -> {
                             String fileName = listFiles[which].getName();
                             try {
-                                SwatchHelper.loadCalibrationFromFile(context, testInfo, fileName);
+                                SwatchHelper.loadCalibrationFromFile(testInfo, fileName);
                                 loadDetails();
                             } catch (Exception ex) {
                                 AlertUtil.showError(context, R.string.error, getString(R.string.errorLoadingFile),

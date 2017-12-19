@@ -56,6 +56,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -70,9 +71,11 @@ import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.util.TestUtil.getActivityInstance;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
@@ -278,7 +281,11 @@ public class MiscTest {
 
         onView(withText(R.string.save)).perform(click());
 
-        onView(withText("2" + dfs.getDecimalSeparator() + "0 mg/l")).perform(click());
+        onView(allOf(withId(R.id.calibrationList),
+                childAtPosition(withClassName(is("android.widget.RelativeLayout")),
+                        3))).perform(actionOnItemAtPosition(4, click()));
+
+//        onView(withText("2" + dfs.getDecimalSeparator() + "0 mg/l")).perform(click());
 
         //onView(withId(R.id.buttonStart)).perform(click());
 

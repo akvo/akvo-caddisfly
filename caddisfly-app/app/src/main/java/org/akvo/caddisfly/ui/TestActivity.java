@@ -45,7 +45,6 @@ import org.akvo.caddisfly.common.ConstantJsonKey;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
-import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
@@ -56,7 +55,6 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
 import org.akvo.caddisfly.sensor.liquid.ChamberTestActivity;
@@ -69,7 +67,6 @@ import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 import java.lang.ref.WeakReference;
 import java.util.Date;
-import java.util.List;
 
 import timber.log.Timber;
 
@@ -174,17 +171,6 @@ public class TestActivity extends BaseActivity {
         }
 
         if (testInfo != null && testInfo.getSubtype() == TestType.CHAMBER_TEST) {
-            List<Calibration> calibrations = CaddisflyApp.getApp().getDb()
-                    .calibrationDao().getAll(testInfo.getUuid());
-
-            if (calibrations.size() < 1) {
-                TestConfigRepository testConfigRepository = new TestConfigRepository();
-                testConfigRepository.addCalibration(testInfo);
-                calibrations = CaddisflyApp.getApp().getDb()
-                        .calibrationDao().getAll(testInfo.getUuid());
-            }
-
-            testInfo.setCalibrations(calibrations);
 
             if (!SwatchHelper.isSwatchListValid(testInfo)) {
                 ErrorMessages.alertCalibrationIncomplete(this, testInfo);
@@ -351,6 +337,7 @@ public class TestActivity extends BaseActivity {
                     && data.hasExtra(SensorConstants.RESPONSE_COMPAT)) {
                 //if survey from old version server then don't send json response
                 intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE_COMPAT));
+                intent.putExtra(SensorConstants.VALUE, data.getStringExtra(SensorConstants.RESPONSE_COMPAT));
             } else {
                 intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
                 if (testInfo.getHasImage() && mCallerExpectsImageInResult) {

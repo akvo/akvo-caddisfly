@@ -25,6 +25,8 @@
     <color name="background">#ea013359</color>
     <color name="button_main">#014b86</color>
     <color name="button_main_highlight">#ea013359</color>
+    <color name="button_text">#fff</color>
+    <color name="button_text_soft">#e3e9e9e9</color>
 
     <!-- Diagnostic -->
     <color name="diagnostic">#ff0000</color>
@@ -53,4 +55,5 @@
     <color name="card_background">#ffffff</color>
     <color name="card_shadow_1">#d4d4d4</color>
     <color name="card_shadow_2">#dddddd</color>
+
 </resources>
