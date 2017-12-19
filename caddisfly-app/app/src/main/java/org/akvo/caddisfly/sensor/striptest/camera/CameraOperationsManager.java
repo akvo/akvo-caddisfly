@@ -61,9 +61,8 @@ public class CameraOperationsManager {
     private Runnable runAutoFocus = new Runnable() {
         public void run() {
             if (mCamera != null) {
-                //mCamera.cancelAutoFocus();
                 if (!changingExposure) {
-
+                    mCamera.cancelAutoFocus();
                     mCamera.autoFocus((success, camera) -> {
                         // do Nothing
                     });
