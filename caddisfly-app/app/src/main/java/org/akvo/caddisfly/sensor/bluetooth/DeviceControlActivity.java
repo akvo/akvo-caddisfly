@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.sensor.bluetooth;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -90,14 +89,12 @@ public class DeviceControlActivity extends BaseActivity
         }
     };
     private BluetoothResultFragment mBluetoothResultFragment;
-    private InstructionFragment mInstructionFragment;
     private String mData;
 
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
     private LinearLayout layoutSelectTest;
-    private AlertDialog alertDialog;
     private RelativeLayout layoutInstructions;
     private RelativeLayout layoutWaiting;
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
@@ -144,13 +141,13 @@ public class DeviceControlActivity extends BaseActivity
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         mBluetoothResultFragment = BluetoothResultFragment.getInstance(testInfo);
-        mInstructionFragment = InstructionFragment.getInstance(testInfo);
+        InstructionFragment instructionFragment = InstructionFragment.getInstance(testInfo);
 
         layoutInstructions = findViewById(R.id.layoutInstructions);
         layoutWaiting = findViewById(R.id.layoutWaiting);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.layoutInstructions, mInstructionFragment, "instructionFragment");
+        ft.replace(R.id.layoutInstructions, instructionFragment, "instructionFragment");
         ft.replace(R.id.layoutWaiting, mBluetoothResultFragment);
         ft.commit();
 
@@ -186,9 +183,6 @@ public class DeviceControlActivity extends BaseActivity
             unregisterReceiver(mGattUpdateReceiver);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        if (alertDialog != null) {
-            alertDialog.dismiss();
         }
     }
 

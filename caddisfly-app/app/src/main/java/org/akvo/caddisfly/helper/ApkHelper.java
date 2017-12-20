@@ -49,37 +49,35 @@ public final class ApkHelper {
      * @return True if the app has expired
      */
     public static boolean isAppVersionExpired(@NonNull final Activity activity) {
-        if (AppConfig.APP_EXPIRY) {
-            if (isNonStoreVersion(activity)) {
-                final Uri marketUrl = Uri.parse("market://details?id=" + activity.getPackageName());
+        if (AppConfig.APP_EXPIRY && isNonStoreVersion(activity)) {
+            final Uri marketUrl = Uri.parse("market://details?id=" + activity.getPackageName());
 
-                final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
-                        AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
+            final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+                    AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
 
-                GregorianCalendar now = new GregorianCalendar();
-                if (now.after(appExpiryDate)) {
+            GregorianCalendar now = new GregorianCalendar();
+            if (now.after(appExpiryDate)) {
 
-                    String message = String.format("%s%n%n%s", activity.getString(R.string.thisVersionHasExpired),
-                            activity.getString(R.string.uninstallAndInstallFromStore));
+                String message = String.format("%s%n%n%s", activity.getString(R.string.thisVersionHasExpired),
+                        activity.getString(R.string.uninstallAndInstallFromStore));
 
-                    AlertDialog.Builder builder;
-                    builder = new AlertDialog.Builder(activity);
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(activity);
 
-                    builder.setTitle(R.string.versionExpired)
-                            .setMessage(message)
-                            .setCancelable(false);
+                builder.setTitle(R.string.versionExpired)
+                        .setMessage(message)
+                        .setCancelable(false);
 
-                    builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                        activity.startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
-                        activity.finish();
-                    });
+                builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    activity.startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
+                    activity.finish();
+                });
 
-                    final AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+                final AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
-                    return true;
-                }
+                return true;
             }
         }
         return false;

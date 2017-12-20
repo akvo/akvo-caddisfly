@@ -164,10 +164,9 @@ public class TestActivity extends BaseActivity {
             }
         }
 
-        if (testInfo != null && testInfo.getSubtype() == TestType.SENSOR) {
-            if (!this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
-                ErrorMessages.alertFeatureNotSupported(this, true);
-            }
+        if (testInfo != null && testInfo.getSubtype() == TestType.SENSOR
+                && !this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
+            ErrorMessages.alertFeatureNotSupported(this, true);
         }
 
         if (testInfo != null && testInfo.getSubtype() == TestType.CHAMBER_TEST) {

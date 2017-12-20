@@ -57,9 +57,6 @@ public class CalibrationItemFragment extends Fragment {
     private TestInfo testInfo;
     private OnCalibrationSelectedListener mListener;
 
-    public CalibrationItemFragment() {
-    }
-
     public static CalibrationItemFragment newInstance(TestInfo testInfo) {
         CalibrationItemFragment fragment = new CalibrationItemFragment();
         Bundle args = new Bundle();

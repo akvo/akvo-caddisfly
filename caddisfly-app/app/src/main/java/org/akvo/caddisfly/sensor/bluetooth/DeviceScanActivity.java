@@ -400,13 +400,11 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                     mBluetoothAdapter.stopLeScan(mLeScanCallback);
                 }
 
-                if (!isDestroyed() && !isFinishing()) {
-                    if (mLeDeviceListAdapter.getCount() < 1) {
-                        deviceList.setVisibility(View.GONE);
-                        layoutInfo.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
-                        showInstructionDialog();
-                    }
+                if (!isDestroyed() && !isFinishing() && mLeDeviceListAdapter.getCount() < 1) {
+                    deviceList.setVisibility(View.GONE);
+                    layoutInfo.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    showInstructionDialog();
                 }
             };
 

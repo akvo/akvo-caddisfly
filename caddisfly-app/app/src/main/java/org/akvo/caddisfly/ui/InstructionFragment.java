@@ -128,9 +128,6 @@ public class InstructionFragment extends Fragment {
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
 
-        public PlaceholderFragment() {
-        }
-
         /**
          * Returns a new instance of this fragment for the given section
          * number.

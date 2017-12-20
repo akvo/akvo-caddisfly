@@ -42,8 +42,13 @@ public class SelectDilutionFragment extends Fragment {
 
     private TestInfo testInfo;
     private OnDilutionSelectedListener mListener;
-    private FragmentSelectDilutionBinding binding;
 
+    /**
+     * Create new instance of fragment.
+     *
+     * @param testInfo the test
+     * @return the fragment
+     */
     public static SelectDilutionFragment newInstance(TestInfo testInfo) {
         SelectDilutionFragment fragment = new SelectDilutionFragment();
         Bundle args = new Bundle();
@@ -64,7 +69,7 @@ public class SelectDilutionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_dilution,
+        FragmentSelectDilutionBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_dilution,
                 container, false);
 
         List<Integer> dilutions = testInfo.getDilutions();

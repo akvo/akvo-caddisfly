@@ -104,17 +104,16 @@ public final class FileHelper {
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), true);
                 break;
         }
+
         File dir = new File(path);
         if (!subPath.isEmpty()) {
             dir = new File(dir, subPath);
         }
-        if (!dir.exists()) {
-            if (!dir.mkdirs()) {
-                if (AppPreferences.getShowDebugInfo()) {
-                    Toast.makeText(CaddisflyApp.getApp(),
-                            "Error creating folder: " + dir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-                }
-            }
+
+        // create folder if it does not exist
+        if (!dir.exists() && !dir.mkdirs() && AppPreferences.getShowDebugInfo()) {
+            Toast.makeText(CaddisflyApp.getApp(),
+                    "Error creating folder: " + dir.getAbsolutePath(), Toast.LENGTH_SHORT).show();
         }
 
         return dir;

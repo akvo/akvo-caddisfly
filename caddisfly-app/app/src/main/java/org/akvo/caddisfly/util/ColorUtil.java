@@ -341,19 +341,19 @@ public final class ColorUtil {
         y = (l + 16) / 116;
         x = y + a / 500;
         z = y - b / 200;
-        y = Yn * lab_xyz(y);
-        x = Xn * lab_xyz(x);
-        z = Zn * lab_xyz(z);
-        r = xyz_rgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
-        g = xyz_rgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
-        b = xyz_rgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
+        y = Yn * labToXyz(y);
+        x = Xn * labToXyz(x);
+        z = Zn * labToXyz(z);
+        r = xyzToRgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
+        g = xyzToRgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
+        b = xyzToRgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
         r = Math.max(0, Math.min(r, 255));
         g = Math.max(0, Math.min(g, 255));
         b = Math.max(0, Math.min(b, 255));
         return Color.rgb((int) r, (int) g, (int) b);
     }
 
-    private static double lab_xyz(double t) {
+    private static double labToXyz(double t) {
         if (t > t1) {
             return t * t * t;
         } else {
@@ -361,7 +361,7 @@ public final class ColorUtil {
         }
     }
 
-    private static double xyz_rgb(double r) {
+    private static double xyzToRgb(double r) {
         return Math.round(255 * (r <= 0.00304 ? 12.92 * r : 1.055 * Math.pow(r, 1 / 2.4) - 0.055));
     }
 
@@ -371,7 +371,7 @@ public final class ColorUtil {
         return new LabColor(116 * xyzColor.y - 16, 500 * (xyzColor.x - xyzColor.y), 200 * (xyzColor.y - xyzColor.z));
     }
 
-    private static double rgb_xyz(double r) {
+    private static double rgbToXyz(double r) {
         if ((r /= 255) <= 0.04045) {
             return (r / 12.92);
         } else {
@@ -379,7 +379,7 @@ public final class ColorUtil {
         }
     }
 
-    private static double xyz_lab(double t) {
+    private static double xyzToLab(double t) {
         if (t > t3) {
             return Math.pow(t, 1.0 / 3.0);
         } else {
@@ -392,12 +392,12 @@ public final class ColorUtil {
         double x;
         double y;
         double z;
-        r = rgb_xyz(r);
-        g = rgb_xyz(g);
-        b = rgb_xyz(b);
-        x = xyz_lab((0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / Xn);
-        y = xyz_lab((0.2126729 * r + 0.7151522 * g + 0.0721750 * b) / Yn);
-        z = xyz_lab((0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / Zn);
+        r = rgbToXyz(r);
+        g = rgbToXyz(g);
+        b = rgbToXyz(b);
+        x = xyzToLab((0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / Xn);
+        y = xyzToLab((0.2126729 * r + 0.7151522 * g + 0.0721750 * b) / Yn);
+        z = xyzToLab((0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / Zn);
         return new XyzColor(x, y, z);
     }
 
@@ -407,7 +407,9 @@ public final class ColorUtil {
         //  http://www.ece.rochester.edu/~gsharma/ciede2000/
 
         // parametric factors, use defaults
-        double kl = 1, kc = 1, kh = 1;
+        double kl = 1;
+        double kc = 1;
+        double kh = 1;
 
         // compute terms
         double pi = Math.PI;

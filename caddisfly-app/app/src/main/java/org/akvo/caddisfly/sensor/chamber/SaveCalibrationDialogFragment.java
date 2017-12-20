@@ -69,7 +69,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private EditText editName = null;
     private EditText editBatchCode = null;
     private EditText editExpiryDate;
-    private EditText editRgb;
     private boolean isEditing = false;
 
     private OnCalibrationDetailsSavedListener mListener;
@@ -122,7 +121,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
 
         editBatchCode = view.findViewById(R.id.editBatchCode);
 
-        editRgb = view.findViewById(R.id.editRgb);
+        EditText editRgb = view.findViewById(R.id.editRgb);
 
         long milliseconds = PreferencesUtil.getLong(getActivity(),
                 mTestInfo.getUuid(),
