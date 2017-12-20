@@ -91,6 +91,7 @@ public class BaseRunTest extends Fragment implements RunTest {
     private final Runnable mRunnableCode = () -> {
         if (pictureCount < AppPreferences.getSamplingTimes()) {
             pictureCount++;
+            sound.playShortResource(R.raw.beep);
             takePicture();
         } else {
             releaseResources();
@@ -220,8 +221,6 @@ public class BaseRunTest extends Fragment implements RunTest {
                     } else {
                         mHandler.postDelayed(mRunnableCode, ChamberTestConfig.DELAY_BETWEEN_SAMPLING * 1000);
                     }
-
-                    sound.playShortResource(R.raw.beep);
                 });
     }
 

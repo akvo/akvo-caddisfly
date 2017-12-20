@@ -278,7 +278,7 @@ public class BluetoothResultFragment extends Fragment {
                                         Double.parseDouble(ranges[0]);
                                     } catch (Exception e) {
                                         //todo fix this
-                                        //ranges[0] = String.valueOf(testInfo.getRangeValues()[0]);
+                                        ranges[0] = " min";
                                     }
                                     result = "<" + ranges[0];
                                 } else if (result.equalsIgnoreCase("overrange")) {
@@ -287,7 +287,7 @@ public class BluetoothResultFragment extends Fragment {
                                         Double.parseDouble(ranges[1]);
                                     } catch (Exception e) {
                                         //todo fix this
-                                        //ranges[1] = String.valueOf(testInfo.getRangeValues()[1]);
+                                        ranges[1] = " max";
                                     }
                                     result = ">" + ranges[1];
                                 } else if (result.equalsIgnoreCase("???")) {

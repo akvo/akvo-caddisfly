@@ -356,10 +356,15 @@ public class ChamberTestActivity extends BaseActivity implements
 
             if (value > -1) {
 
-                sound.playShortResource(R.raw.done);
 
                 Result result = testInfo.getResults().get(0);
                 result.setResult(value, dilution, testInfo.getMaxDilution());
+
+                if (result.highLevelsFound() && testInfo.getDilution() != testInfo.getMaxDilution()) {
+                    sound.playShortResource(R.raw.beep_long);
+                } else {
+                    sound.playShortResource(R.raw.done);
+                }
 
                 fragmentManager.popBackStack();
                 fragmentManager
