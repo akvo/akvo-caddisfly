@@ -126,10 +126,6 @@ public class BaseRunTest extends Fragment implements RunTest {
         }
     }
 
-    private void alertCouldNotLoadConfig() {
-
-    }
-
     protected void initializeTest() {
         results.clear();
 
@@ -181,11 +177,7 @@ public class BaseRunTest extends Fragment implements RunTest {
 
         binding.setVm(model);
 
-        if (mTestInfo.getUuid().isEmpty()) {
-            alertCouldNotLoadConfig();
-        } else {
-            initializeTest();
-        }
+        initializeTest();
 
         return binding.getRoot();
     }

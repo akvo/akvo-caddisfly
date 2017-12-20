@@ -44,13 +44,13 @@ public class CameraOperationsManager {
     private boolean changingExposure = false;
     private StriptestHandler mStriptestHandler;
 
-    //todo: remove debug code
+    //debug code
 //    private byte[] bytes;
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera arg1) {
 
-            //todo: remove debug code
+            //debug code
 //            StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
 
             // store image for later use
@@ -72,10 +72,10 @@ public class CameraOperationsManager {
         }
     };
 
-    public CameraOperationsManager() {
-        //todo: remove debug code
+//    public CameraOperationsManager() {
+        // debug code
 //        bytes = ImageUtil.loadImageBytes(name);
-    }
+//    }
 
     public CameraPreview initCamera(Context context) {
         startCameraThread();

@@ -25,6 +25,7 @@ import android.graphics.Color;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.dao.CalibrationDao;
 import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.model.ColorCompareInfo;
 import org.akvo.caddisfly.model.ColorInfo;
 import org.akvo.caddisfly.model.ResultDetail;
@@ -202,19 +203,25 @@ public final class SwatchHelper {
         final List<Calibration> calibrations = new ArrayList<>();
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testInfo.getUuid());
 
-        List<String> calibrationDetails = FileUtil.loadFromFile(path, fileName);
+        CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
 
+        List<String> calibrationDetails = FileUtil.loadFromFile(path, fileName);
         if (calibrationDetails != null) {
 
             for (int i = calibrationDetails.size() - 1; i >= 0; i--) {
                 String line = calibrationDetails.get(i);
                 if (!line.contains("=")) {
+
+                    CalibrationDetail calibrationDetail = new CalibrationDetail();
+                    calibrationDetail.uid = testInfo.getUuid();
+
                     if (line.contains("Calibrated:")) {
                         Calendar calendar = Calendar.getInstance();
                         Date date = DateUtil.convertStringToDate(line.substring(line.indexOf(':') + 1),
                                 "yyyy-MM-dd HH:mm");
                         if (date != null) {
                             calendar.setTime(date);
+                            calibrationDetail.date = calendar.getTimeInMillis();
                         }
                     }
                     if (line.contains("ReagentExpiry:")) {
@@ -223,12 +230,15 @@ public final class SwatchHelper {
                                 "yyyy-MM-dd");
                         if (date != null) {
                             calendar.setTime(date);
+                            calibrationDetail.expiry = calendar.getTimeInMillis();
                         }
                     }
 
                     if (line.contains("ReagentBatch:")) {
-                        String batch = line.substring(line.indexOf(':') + 1).trim();
+                        calibrationDetail.batchNumber = line.substring(line.indexOf(':') + 1).trim();
                     }
+
+                    dao.insert(calibrationDetail);
 
                     calibrationDetails.remove(i);
                 }
@@ -246,7 +256,6 @@ public final class SwatchHelper {
             }
 
             if (calibrations.size() > 0) {
-                CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
                 dao.insertAll(calibrations);
             } else {
                 throw new IOException();
@@ -254,7 +263,6 @@ public final class SwatchHelper {
         }
         return calibrations;
     }
-
 
     /**
      * Auto generate the color swatches for the given test type.
