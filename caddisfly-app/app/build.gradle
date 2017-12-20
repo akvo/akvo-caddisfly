@@ -56,6 +56,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildTypes {
+        debug{
+            debuggable false
+        }
+    }
 //    signingConfigs {
 //        caddisflyRelease {
 //            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
