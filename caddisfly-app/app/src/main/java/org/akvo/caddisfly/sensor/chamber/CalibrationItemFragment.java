@@ -153,12 +153,12 @@ public class CalibrationItemFragment extends Fragment {
         if (calibrationDetail != null) {
             binding.textSubtitle.setText(calibrationDetail.batchNumber);
 
-            if (calibrationDetail.date > -1) {
+            if (calibrationDetail.date > 0) {
                 binding.textSubtitle1.setText(DateFormat
                         .getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.date)));
             }
 
-            if (calibrationDetail.expiry > -1) {
+            if (calibrationDetail.expiry > 0) {
                 binding.textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
                         DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.expiry))));
             }

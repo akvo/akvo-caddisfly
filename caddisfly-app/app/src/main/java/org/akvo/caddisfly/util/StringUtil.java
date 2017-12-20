@@ -49,8 +49,8 @@ public final class StringUtil {
     private StringUtil() {
     }
 
-    public static Spanned getStringResourceByName(Context context, String key) {
-        key = key.trim();
+    public static Spanned getStringResourceByName(Context context, String theKey) {
+        String key = theKey.trim();
         String packageName = context.getPackageName();
         int resId = context.getResources().getIdentifier(key, "string", packageName);
         if (resId == 0) {

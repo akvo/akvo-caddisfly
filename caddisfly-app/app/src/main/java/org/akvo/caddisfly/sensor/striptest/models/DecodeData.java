@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class DecodeData {
 
-    private static final String TAG = "Caddisfly-DecodeData";
+//    private static final String TAG = "Caddisfly-DecodeData";
 
     private Image decodeImage;
     private byte[] decodeImageByteArray;

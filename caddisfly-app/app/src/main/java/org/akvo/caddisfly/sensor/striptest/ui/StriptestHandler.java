@@ -52,9 +52,9 @@ public final class StriptestHandler extends Handler {
     public static final int SHADOW_QUALITY_FAILED_MESSAGE = 9;
     public static final int CALIBRATION_DONE_MESSAGE = 10;
     public static final int IMAGE_SAVED_MESSAGE = 11;
+    public static final DecodeData mDecodeData = new DecodeData();
     private static final int DECODE_IMAGE_CAPTURE_FAILED_MESSAGE = 3;
-    public static DecodeData mDecodeData;
-    private static CalibrationCardData mCalCardData;
+    private static final CalibrationCardData mCalCardData = new CalibrationCardData();
     private static State mState;
     private final List<TimeDelayDetail> mPatchTimeDelays = new ArrayList<>();
     private final String TAG = "Caddisfly - handler";
@@ -101,9 +101,7 @@ public final class StriptestHandler extends Handler {
         if (mDecodeProcessor == null) {
             mDecodeProcessor = new DecodeProcessor(this);
         }
-        mDecodeData = new DecodeData();
         mDecodeData.setTestInfo(testInfo);
-        mCalCardData = new CalibrationCardData();
         this.context = context;
     }
 

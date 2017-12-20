@@ -294,11 +294,11 @@ public class TestInfoViewModel extends AndroidViewModel {
 //        view.setText(StringUtil.toInstruction(view.getContext(), null, text));
 //    }
 
-    private static void setImage(ImageView imageView, String name) {
-        if (name != null) {
+    private static void setImage(ImageView imageView, String theName) {
+        if (theName != null) {
             Context context = imageView.getContext();
             try {
-                name = name.replace(" ", "-");
+                String name = theName.replace(" ", "-");
                 if (name.contains(".xml")) {
                     //final XmlResourceParser parser = context.getAssets().openXmlResourceParser(name);
                     //Drawable drawable = VectorDrawableCompat.createFromXml(context.getResources(), parser);

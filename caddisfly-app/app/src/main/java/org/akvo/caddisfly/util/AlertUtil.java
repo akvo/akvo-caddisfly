@@ -72,12 +72,10 @@ public final class AlertUtil {
                                    DialogInterface.OnClickListener positiveListener,
                                    @Nullable DialogInterface.OnClickListener cancelListener) {
 
-        if (cancelListener == null) {
-            cancelListener = (dialogInterface, i) -> dialogInterface.dismiss();
-        }
-
         showAlert(context, context.getString(title), context.getString(message), okButtonText,
-                cancelButtonText, true, isDestructive, positiveListener, cancelListener, null);
+                cancelButtonText, true, isDestructive, positiveListener,
+                cancelListener == null ? (dialogInterface, i) -> dialogInterface.dismiss() : cancelListener,
+                null);
     }
 
     public static AlertDialog showAlert(@NonNull Context context, @StringRes int title, String message,

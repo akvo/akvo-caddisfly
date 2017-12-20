@@ -525,10 +525,7 @@ public class TestInfo implements Parcelable {
     }
 
     public void setDilution(int dilution) {
-        if (dilution < 1) {
-            dilution = 1;
-        }
-        this.dilution = dilution;
+        this.dilution = Math.max(1, dilution);
     }
 
     public String getDeviceId() {
@@ -573,19 +570,5 @@ public class TestInfo implements Parcelable {
 
     public int getDecimalPlaces() {
         return decimalPlaces;
-    }
-
-    public void addPlaceHolderCalibrations() {
-        for (ColorItem colorItem : getResults().get(0).getColors()) {
-            Calibration calibration = new Calibration();
-            calibration.uid = getUuid();
-            calibration.color = Color.TRANSPARENT;
-            calibration.value = colorItem.getValue();
-            calibrations.add(calibration);
-            String text = Double.toString(Math.abs(calibration.value));
-            if (calibration.value % 1 != 0) {
-                decimalPlaces = Math.max(text.length() - text.indexOf('.') - 1, decimalPlaces);
-            }
-        }
     }
 }

@@ -50,8 +50,8 @@
     <string name="notSupported">Not Supported</string>
     <string name="cameraBusy">Camera Busy</string>
     <string name="runTest">Run Test</string>
-    <string name="stage_one">Stage 1:</string>
-    <string name="stage_two">Stage 2:</string>
+    <string name="stage_one"><b>Stage 1:</b></string>
+    <string name="stage_two"><b>Stage 2:</b></string>
 
     <!--External-->
     <string name="sensor">Sensor</string>
