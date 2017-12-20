@@ -210,13 +210,9 @@ public class DecodeProcessor {
 //            decodeData.setDecodeSize(new Size(decodeWidth, decodeHeight));
 
             // get the version number from the barcode printed on the card
-            if (possibleCenters != null && possibleCenters.size() == 4) {
-
-                // if card version has been read and established then no need to decode again
-                if (!decodeData.isCardVersionEstablished()) {
-                    int versionNumber = CalibrationCardUtils.decodeCalibrationCardCode(possibleCenters, bitMatrix);
-                    decodeData.addVersionNumber(versionNumber);
-                }
+            if (possibleCenters != null && possibleCenters.size() == 4 && !decodeData.isCardVersionEstablished()) {
+                int versionNumber = CalibrationCardUtils.decodeCalibrationCardCode(possibleCenters, bitMatrix);
+                decodeData.addVersionNumber(versionNumber);
             }
 
             // send the message that the decoding was succesfull

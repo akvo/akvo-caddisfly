@@ -37,7 +37,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraPreview;
 import org.akvo.caddisfly.sensor.striptest.models.TimeDelayDetail;
-import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
 import org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -60,7 +59,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
     public static final boolean DEBUG = false;
     // a handler to handle the state machine of the preview, capture, decode, fullCapture cycle
-    public static StriptestHandler mStriptestHandler;
+    private StriptestHandler mStriptestHandler;
     private FinderPatternIndicatorView mFinderPatternIndicatorView;
     private TimerView mTimerCountdown;
     @Nullable
