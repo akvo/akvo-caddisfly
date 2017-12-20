@@ -19,14 +19,12 @@ package org.akvo.caddisfly.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.ObservableField;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.SpannableString;
@@ -49,9 +47,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.bluetooth.ReagentLabel;
 import org.akvo.caddisfly.util.StringUtil;
 import org.akvo.caddisfly.widget.RowView;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,35 +57,17 @@ public class TestInfoViewModel extends AndroidViewModel {
 
     private static TestInfo testInfo;
     public ObservableField<TestInfo> test = new ObservableField<>();
-//    private TestConfigRepository testConfigRepository = new TestConfigRepository();
 
     public TestInfoViewModel(@NonNull Application application) {
         super(application);
     }
 
-//    @BindingAdapter("instruction")
-//    public static void setInstruction(TextView view, List<String> stringList) {
-//        StringBuilder result = new StringBuilder();
-//        for (String text : stringList) {`
-//            if (text.equalsIgnoreCase("%n")) {
-//                result.append("<br/><br/>");
-//                continue;
-//            } else if (!result.toString().isEmpty()) {
-//                result.append(" ");
-//            }
-//
-//            String step = "";
-//            Matcher m1 = Pattern.compile("\\d+?\\.\\s*").matcher(text);
-//            while (m1.find()) {
-//                step = m1.group().trim();
-//                text = text.substring(text.indexOf(".") + 1, text.length()).trim();
-//            }
-//
-//            result.append(step).append(" ").append(StringUtil.toInstruction(view.getContext(), testInfo, text));
-//        }
-//        view.setText(StringUtil.fromHtml(result.toString()));
-//    }
-
+    /**
+     * Sets the content of the view with formatted string.
+     *
+     * @param linearLayout the layout
+     * @param instruction  the instruction key
+     */
     @BindingAdapter("content")
     public static void setContent(LinearLayout linearLayout, Instruction instruction) {
 
@@ -112,7 +89,8 @@ public class TestInfoViewModel extends AndroidViewModel {
             String text = instruction.section.get(i);
             if (text.contains("include:incubation_table")) {
 
-                LayoutInflater inflater = (LayoutInflater) linearLayout.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater inflater = (LayoutInflater) linearLayout.getContext()
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View view;
                 if (inflater != null) {
                     view = inflater.inflate(R.layout.incubation_table, linearLayout, false);
@@ -195,16 +173,18 @@ public class TestInfoViewModel extends AndroidViewModel {
 
                 RowView rowView = new RowView(context);
 
-//                TextView textView = new TextView(linearLayout.getContext());
-//
-//                if (displayMetrics.densityDpi > 250) {
-//                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
-//                } else {
-//                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-//                }
+                /*
+                    TextView textView = new TextView(linearLayout.getContext());
 
-//                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-//                        linearLayout.getContext().getResources().getDimension(R.dimen.mediumTextSize));
+                    if (displayMetrics.densityDpi > 250) {
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+                    } else {
+                        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                    }
+
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    linearLayout.getContext().getResources().getDimension(R.dimen.mediumTextSize));
+                */
 
 
                 Matcher m1 = Pattern.compile("^(\\d+?\\.\\s*)(.*)").matcher(text);
@@ -219,15 +199,18 @@ public class TestInfoViewModel extends AndroidViewModel {
                     if (j > 0) {
                         rowView.append(new SpannableString(" "));
                     }
-                    rowView.append(StringUtil.toInstruction((AppCompatActivity) context, testInfo, sentences[j].trim()));
+                    rowView.append(StringUtil.toInstruction((AppCompatActivity) context,
+                            testInfo, sentences[j].trim()));
                 }
 
-//                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-//                        LinearLayout.LayoutParams.MATCH_PARENT,
-//                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                /*
+                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
 
-//                llp.setMargins(0, 0, 0, 20);
-//                textView.setLayoutParams(llp);
+                    llp.setMargins(0, 0, 0, 20);
+                    textView.setLayoutParams(llp);
+                */
 
                 // set an id for the view to be able to find it for unit testing
                 rowView.setId(i);
@@ -262,10 +245,16 @@ public class TestInfoViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Sets the image scale.
+     *
+     * @param imageView the image view
+     * @param scaleType the scale type
+     */
     @BindingAdapter("imageScale")
     public static void setImageScale(ImageView imageView, String scaleType) {
         if (scaleType != null) {
-            imageView.setScaleType(scaleType.equals("fitCenter")
+            imageView.setScaleType("fitCenter".equals(scaleType)
                     ? ImageView.ScaleType.FIT_CENTER : ImageView.ScaleType.CENTER_CROP);
         } else {
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -283,50 +272,18 @@ public class TestInfoViewModel extends AndroidViewModel {
                 .getQuantityString(R.plurals.dilutions, testInfo.getDilution(), testInfo.getDilution()));
     }
 
-
-    //    @BindingAdapter("illustration")
-//    public static void setIllustration(ImageView imageView, String name) {
-//        setImage(imageView, Constants.ILLUSTRATION_PATH + name + ".png");
-//    }
-//
-//    @BindingAdapter("section")
-//    public static void setText(TextView view, String text) {
-//        view.setText(StringUtil.toInstruction(view.getContext(), null, text));
-//    }
-
     private static void setImage(ImageView imageView, String theName) {
         if (theName != null) {
             Context context = imageView.getContext();
             try {
                 String name = theName.replace(" ", "-");
-                if (name.contains(".xml")) {
-                    //final XmlResourceParser parser = context.getAssets().openXmlResourceParser(name);
-                    //Drawable drawable = VectorDrawableCompat.createFromXml(context.getResources(), parser);
-
-                    AssetManager assManager = context.getAssets();
-                    InputStream is = assManager.open(name);
-                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                    factory.setNamespaceAware(true);
-                    XmlPullParser xpp = factory.newPullParser();
-                    xpp.setInput(is, null);
-                    Drawable drawable = VectorDrawableCompat.createFromXml(context.getResources(), xpp);
-
-                    imageView.setImageDrawable(drawable);
-                } else {
-                    InputStream ims = context.getAssets().open(name);
-                    imageView.setImageDrawable(Drawable.createFromStream(ims, null));
-                    //imageView.setBackground(Drawable.createFromStream(ims, null));
-                }
-
-            } catch (IOException | XmlPullParserException e) {
+                InputStream ims = context.getAssets().open(name);
+                imageView.setImageDrawable(Drawable.createFromStream(ims, null));
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-
-//    public TestInfo getTest(String uuid) {
-//        return testConfigRepository.getTestInfo(uuid);
-//    }
 
     public void setTest(TestInfo testInfo) {
         this.test.set(testInfo);

@@ -433,6 +433,7 @@ public final class StriptestHandler extends Handler {
                     }
                 }
                 break;
+            default:
         }
     }
 

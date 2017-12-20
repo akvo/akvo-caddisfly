@@ -24,10 +24,17 @@ public final class MathUtil {
     private MathUtil() {
     }
 
-    //http://stackoverflow.com/questions/3422673/evaluating-a-math-expression-given-in-string-form#answer-26227947
+    /**
+     * Evaluates a math expression in a string.
+     * http://stackoverflow.com/questions/3422673/evaluating-a-math-expression-given-in-string-form#answer-26227947
+     *
+     * @param str the string to evaluate
+     * @return evaluated result
+     */
     public static double eval(final String str) {
         return new Object() {
-            private int pos = -1, ch;
+            private int pos = -1;
+            private int ch;
 
             void nextChar() {
                 ch = (++pos < str.length()) ? str.charAt(pos) : -1;

@@ -144,7 +144,8 @@ public class FinderPatternIndicatorView extends View {
 
     public void showShadow(List<float[]> shadowPoints, float percentage, PerspectiveTransform cardToImageTransform) {
         shadowGrid = new boolean[GRID_H + 5][GRID_V + 5];
-        int xGrid, yGrid;
+        int xGrid;
+        int yGrid;
         if (shadowPoints != null) {
             // the points are in the coordinate system of the card (mm)
             for (float[] point : shadowPoints) {

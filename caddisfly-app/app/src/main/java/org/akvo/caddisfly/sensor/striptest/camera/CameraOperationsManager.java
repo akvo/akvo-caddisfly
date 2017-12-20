@@ -72,7 +72,7 @@ public class CameraOperationsManager {
         }
     };
 
-    public CameraOperationsManager(String name) {
+    public CameraOperationsManager() {
         //todo: remove debug code
 //        bytes = ImageUtil.loadImageBytes(name);
     }
