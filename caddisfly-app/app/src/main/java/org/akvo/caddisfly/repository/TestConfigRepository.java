@@ -1,15 +1,18 @@
 package org.akvo.caddisfly.repository;
 
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.dao.CalibrationDao;
 import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.TestConfig;
@@ -17,22 +20,30 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AssetsManager;
+import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class TestConfigRepository {
 
-    private static HashMap<TestType, List<TestInfo>> testMap = new HashMap<>();
+    private static final HashMap<TestType, List<TestInfo>> testMap = new HashMap<>();
 
-    private AssetsManager assetsManager;
+    private final AssetsManager assetsManager;
 
     public TestConfigRepository() {
         assetsManager = new AssetsManager();
     }
 
+    /**
+     * Get list of tests by type of test.
+     *
+     * @param testType the test type
+     * @return the list of tests
+     */
     public List<TestInfo> getTests(TestType testType) {
 
         List<TestInfo> testInfoList = null;
@@ -112,6 +123,12 @@ public class TestConfigRepository {
         return testInfoList;
     }
 
+    /**
+     * Get the test details from json config.
+     *
+     * @param id the test id
+     * @return the test object
+     */
     public TestInfo getTestInfo(final String id) {
 
         TestInfo testInfo;
@@ -165,6 +182,39 @@ public class TestConfigRepository {
                                     .calibrationDao().getAll(testInfo.getUuid());
 
                             if (calibrations.size() < 1) {
+                                Context context = CaddisflyApp.getApp();
+
+                                List<ColorItem> colors = testInfo.getResults().get(0).getColors();
+                                for (ColorItem color : colors) {
+                                    String key = String.format(Locale.US, "%s-%.2f",
+                                            testInfo.getUuid(), color.getValue());
+                                    Calibration calibration = new Calibration();
+                                    calibration.uid = testInfo.getUuid();
+                                    calibration.color = PreferencesUtil.getInt(context, key, 0);
+                                    calibration.value = color.getValue();
+                                    calibrations.add(calibration);
+                                }
+
+                                CalibrationDetail calibrationDetail = new CalibrationDetail();
+                                calibrationDetail.uid = testInfo.getUuid();
+                                long date = PreferencesUtil.getLong(context,
+                                        testInfo.getUuid(), R.string.calibrationDateKey);
+                                if (date > -1) {
+                                    calibrationDetail.date = date;
+                                }
+                                long expiry = PreferencesUtil.getLong(context,
+                                        testInfo.getUuid(), R.string.calibrationExpiryDateKey);
+                                if (expiry > -1) {
+                                    calibrationDetail.expiry = expiry;
+                                }
+                                calibrationDetail.batchNumber = PreferencesUtil.getString(context,
+                                        testInfo.getUuid(), R.string.batchNumberKey, "");
+
+                                CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
+                                dao.insert(calibrationDetail);
+                            }
+
+                            if (calibrations.size() < 1) {
                                 try {
                                     calibrations = SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
                                 } catch (IOException e) {
@@ -203,19 +253,6 @@ public class TestConfigRepository {
             // do nothing
         }
 
-        return null;
-    }
-
-
-    public TestInfo getTestInfoByMd610Id(String md610Id) {
-
-        List<TestInfo> testInfoList = getTests(TestType.BLUETOOTH);
-
-        for (TestInfo testInfo : testInfoList) {
-            if (testInfo.getMd610Id().equalsIgnoreCase(md610Id)) {
-                return testInfo;
-            }
-        }
         return null;
     }
 

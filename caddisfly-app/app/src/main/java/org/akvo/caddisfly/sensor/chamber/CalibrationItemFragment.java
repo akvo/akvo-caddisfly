@@ -57,6 +57,12 @@ public class CalibrationItemFragment extends Fragment {
     private TestInfo testInfo;
     private OnCalibrationSelectedListener mListener;
 
+    /**
+     * Get instance of CalibrationItemFragment.
+     *
+     * @param testInfo the test info
+     * @return the fragment
+     */
     public static CalibrationItemFragment newInstance(TestInfo testInfo) {
         CalibrationItemFragment fragment = new CalibrationItemFragment();
         Bundle args = new Bundle();
@@ -65,6 +71,12 @@ public class CalibrationItemFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Validate the calibration.
+     *
+     * @param view     the view
+     * @param testInfo the test
+     */
     @BindingAdapter("checkValidity")
     public static void validateCalibration(TextView view, TestInfo testInfo) {
 
@@ -130,6 +142,9 @@ public class CalibrationItemFragment extends Fragment {
         return binding.getRoot();
     }
 
+    /**
+     * Display the calibration details such as date, expiry, batch number etc...
+     */
     public void loadDetails() {
 
         CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
@@ -138,11 +153,15 @@ public class CalibrationItemFragment extends Fragment {
         if (calibrationDetail != null) {
             binding.textSubtitle.setText(calibrationDetail.batchNumber);
 
-            binding.textSubtitle1.setText(DateFormat
-                    .getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.date)));
+            if (calibrationDetail.date > -1) {
+                binding.textSubtitle1.setText(DateFormat
+                        .getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.date)));
+            }
 
-            binding.textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
-                    DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.expiry))));
+            if (calibrationDetail.expiry > -1) {
+                binding.textSubtitle2.setText(String.format("%s: %s", getString(R.string.expires),
+                        DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date(calibrationDetail.expiry))));
+            }
         }
     }
 

@@ -32,13 +32,7 @@ import android.support.annotation.NonNull;
 import android.support.media.ExifInterface;
 import android.text.TextUtils;
 
-import org.akvo.caddisfly.helper.FileHelper;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -55,16 +49,6 @@ public final class ImageUtil {
     private static final int IMAGE_CENTER_CIRCLE_RADIUS = 20;
 
     private ImageUtil() {
-    }
-
-    /**
-     * Decode bitmap from byte array.
-     *
-     * @param bytes the byte array
-     * @return the bitmap
-     */
-    public static Bitmap getBitmap(@NonNull byte[] bytes) {
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     /**
@@ -142,6 +126,7 @@ public final class ImageUtil {
         return resultBitmap;
     }
 
+    /*
     public static void saveImage(@NonNull byte[] data, String subfolder, String fileName) {
 
         File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, subfolder);
@@ -164,6 +149,7 @@ public final class ImageUtil {
             }
         }
     }
+*/
 
     private static boolean saveImage(Bitmap bitmap, String filename) {
         OutputStream out = null;
@@ -187,12 +173,6 @@ public final class ImageUtil {
         return false;
     }
 
-//    public static Bitmap rotateImage(@NonNull Bitmap in, int angle) {
-//        Matrix mat = new Matrix();
-//        mat.postRotate(angle);
-//        return Bitmap.createBitmap(in, 0, 0, in.getWidth(), in.getHeight(), mat, true);
-//    }
-
     private static void checkOrientation(String originalImage, String resizedImage) {
         try {
             ExifInterface exif1 = new ExifInterface(originalImage);
@@ -213,10 +193,8 @@ public final class ImageUtil {
 
     /**
      * resizeImage handles resizing a too-large image file from the camera.
-     *
-     * @return true if the image was successfully resized to the new file, false otherwise
      */
-    public static boolean resizeImage(String origFilename, String outFilename) {
+    public static void resizeImage(String origFilename, String outFilename) {
         int reqWidth;
         int reqHeight;
         reqWidth = 1280;
@@ -246,9 +224,7 @@ public final class ImageUtil {
         if (bitmap != null && ImageUtil.saveImage(bitmap, outFilename)) {
             ImageUtil.checkOrientation(origFilename, outFilename);// Ensure the EXIF data is not lost
             // Timber.d("Resized Image size: %d x %d", bitmap.getWidth(), bitmap.getHeight());
-            return true;
         }
-        return false;
     }
 
     /**
@@ -300,19 +276,21 @@ public final class ImageUtil {
         return inSampleSize;
     }
 
-    public static byte[] loadImageBytes(String name) {
-        File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, "");
-        File photo = new File(path, name + ".jpg");
+    /*
+        public static byte[] loadImageBytes(String name) {
+            File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, "");
+            File photo = new File(path, name + ".jpg");
 
-        byte[] bytes = new byte[(int) photo.length()];
-        BufferedInputStream bis;
-        try {
-            bis = new BufferedInputStream(new FileInputStream(photo));
-            DataInputStream dis = new DataInputStream(bis);
-            dis.readFully(bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
+            byte[] bytes = new byte[(int) photo.length()];
+            BufferedInputStream bis;
+            try {
+                bis = new BufferedInputStream(new FileInputStream(photo));
+                DataInputStream dis = new DataInputStream(bis);
+                dis.readFully(bytes);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return  bytes;
         }
-        return  bytes;
-    }
+    */
 }

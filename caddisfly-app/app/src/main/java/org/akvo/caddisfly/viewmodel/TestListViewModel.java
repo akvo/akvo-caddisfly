@@ -28,7 +28,7 @@ import java.util.List;
 
 public class TestListViewModel extends AndroidViewModel {
 
-    private TestConfigRepository testConfigRepository;
+    private final TestConfigRepository testConfigRepository;
 
     public TestListViewModel(@NonNull Application application) {
         super(application);
@@ -41,10 +41,6 @@ public class TestListViewModel extends AndroidViewModel {
 
     public TestInfo getTestInfo(String uuid) {
         return testConfigRepository.getTestInfo(uuid);
-    }
-
-    public TestInfo getTestInfoByMd610Id(String md610Id) {
-        return testConfigRepository.getTestInfoByMd610Id(md610Id);
     }
 
     public void clearTests() {

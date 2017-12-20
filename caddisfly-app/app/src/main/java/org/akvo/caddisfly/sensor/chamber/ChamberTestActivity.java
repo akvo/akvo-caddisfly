@@ -60,7 +60,6 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
-import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.FileUtil;
@@ -102,8 +101,6 @@ public class ChamberTestActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_chamber_test);
-
-        TestConfigRepository testConfigRepository = new TestConfigRepository();
 
         sound = new SoundPoolPlayer(this);
 
@@ -169,6 +166,7 @@ public class ChamberTestActivity extends BaseActivity implements
         invalidateOptionsMenu();
     }
 
+    @SuppressWarnings("unused")
     public void runTestClick(View view) {
         runTestFragment.setCalibration(null);
         start();
@@ -206,6 +204,7 @@ public class ChamberTestActivity extends BaseActivity implements
         invalidateOptionsMenu();
     }
 
+    @SuppressWarnings("unused")
     public void onEditCalibration(View view) {
         showEditCalibrationDetailsDialog(true);
     }
@@ -398,6 +397,7 @@ public class ChamberTestActivity extends BaseActivity implements
     /**
      * Create result json to send back.
      */
+    @SuppressWarnings("unused")
     public void onClickAcceptChamberResult(View view) {
 
         Intent resultIntent = new Intent(getIntent());
@@ -458,6 +458,7 @@ public class ChamberTestActivity extends BaseActivity implements
     /**
      * Navigate back to the dilution selection screen if re-testing.
      */
+    @SuppressWarnings("unused")
     public void onTestWithDilution(View view) {
         if (!fragmentManager.popBackStackImmediate("dilution", 0)) {
             super.onBackPressed();

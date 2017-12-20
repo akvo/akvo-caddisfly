@@ -33,10 +33,6 @@
         <item>fr</item>
     </string-array>
 
-    <string name="steps">Steps</string>
-    <string name="lab">LAB</string>
-    <string name="rgb">RGB</string>
-    <string name="hsv">HSV</string>
     <string name="saveImages">Save images and data</string>
 
     <string name="aquagenx_link">www.aquagenx.com</string>
@@ -82,7 +78,6 @@
 
     <!--Diagnostic-->
     <string name="diagnostics">Diagnostics</string>
-    <string name="cameraPreview">Colorimeter camera preview</string>
     <string name="debuggingOn">Show debug info</string>
     <string name="sound">Sound</string>
     <string name="diagnosticsUser">Diagnostics in User Mode Also</string>

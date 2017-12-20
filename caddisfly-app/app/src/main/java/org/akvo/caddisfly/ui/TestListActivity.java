@@ -47,7 +47,7 @@ public class TestListActivity extends BaseActivity
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final String[] storagePermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    TestListFragment fragment;
+    private TestListFragment fragment;
     private TestInfo testInfo;
 
     @Override
@@ -82,11 +82,6 @@ public class TestListActivity extends BaseActivity
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
     /**
      * Shows the detail fragment.
      */
@@ -111,7 +106,7 @@ public class TestListActivity extends BaseActivity
             return;
         }
 
-        if (testInfo == null || testInfo.getUuid() == null || testInfo.getResults().size() == 0) {
+        if (testInfo.getResults().size() == 0) {
             ErrorMessages.alertCouldNotLoadConfig(this);
             return;
         }
@@ -168,6 +163,12 @@ public class TestListActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Download and sync test config.
+     *
+     * @param item menu item click on
+     */
+    @SuppressWarnings("unused")
     public void onDownloadTests(MenuItem item) {
         if (permissionsDelegate.hasPermissions(storagePermission)) {
             startSync();
