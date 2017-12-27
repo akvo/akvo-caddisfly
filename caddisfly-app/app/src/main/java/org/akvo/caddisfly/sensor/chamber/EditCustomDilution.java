@@ -150,13 +150,14 @@ public class EditCustomDilution extends DialogFragment {
             editDilutionFactor.requestFocus();
             InputMethodManager imm =
                     (InputMethodManager) editDilutionFactor.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null)
+            if (imm != null) {
                 imm.showSoftInput(editDilutionFactor, InputMethodManager.SHOW_IMPLICIT);
+            }
         });
     }
 
     /**
-     * Hides the keyboard
+     * Hides the keyboard.
      *
      * @param input the EditText for which the keyboard is open
      */

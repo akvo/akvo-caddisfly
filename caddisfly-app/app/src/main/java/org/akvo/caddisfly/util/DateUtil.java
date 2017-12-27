@@ -67,12 +67,6 @@ public final class DateUtil {
                 - calendar1.getTimeInMillis()) / (1000 * 60 * 60));
     }
 
-
-//    public static String getDateTimeString() {
-//        return new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US).format(new Date());
-//    }
-
-
     public static Date convertStringToDate(String dateString, String format) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
         try {

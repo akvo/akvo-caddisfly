@@ -31,7 +31,6 @@ import android.view.View;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -47,7 +46,7 @@ public class SettingsActivity extends BaseActivity
     private void removeAllFragments() {
         findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
         findViewById(R.id.layoutDiagnosticsOptions).setVisibility(View.GONE);
-        findViewById(R.id.layoutUserDiagnostics).setVisibility(View.GONE);
+        //findViewById(R.id.layoutUserDiagnostics).setVisibility(View.GONE);
         findViewById(R.id.layoutDebugging).setVisibility(View.GONE);
     }
 
@@ -94,20 +93,22 @@ public class SettingsActivity extends BaseActivity
             getFragmentManager().beginTransaction()
                     .add(R.id.layoutDiagnosticsOptions, new DiagnosticOptionsPreferenceFragment())
                     .commit();
+            /*
 
-            if (!BuildConfig.isExperimentFlavor) {
-                getFragmentManager().beginTransaction()
-                        .add(R.id.layoutUserDiagnostics, new DiagnosticUserPreferenceFragment())
-                        .commit();
-            }
+                if (!BuildConfig.isExperimentFlavor) {
+                    getFragmentManager().beginTransaction()
+                            .add(R.id.layoutUserDiagnostics, new DiagnosticUserPreferenceFragment())
+                            .commit();
+                }
 
+            */
             getFragmentManager().beginTransaction()
                     .add(R.id.layoutDebugging, new DebuggingPreferenceFragment())
                     .commit();
 
             findViewById(R.id.layoutDiagnosticsOptions).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
-            findViewById(R.id.layoutUserDiagnostics).setVisibility(View.VISIBLE);
+            //findViewById(R.id.layoutUserDiagnostics).setVisibility(View.VISIBLE);
             findViewById(R.id.layoutDebugging).setVisibility(View.VISIBLE);
         }
 

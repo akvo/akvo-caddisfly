@@ -27,8 +27,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 205
-        versionName "1.0.0 Beta 10 Test 1"
+        versionCode 206
+        versionName "1.0.0 Beta 10 Test 2"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -61,6 +61,7 @@ android {
             debuggable false
         }
     }
+
 //    signingConfigs {
 //        caddisflyRelease {
 //            storeFile file(CADDISFLY_RELEASE_STORE_FILE)

@@ -56,7 +56,7 @@ import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 public class TestInfoFragment extends Fragment {
 
     /**
-     * Creates test fragment for specific test
+     * Creates test fragment for specific test.
      */
     public static TestInfoFragment getInstance(TestInfo testInfo) {
         TestInfoFragment fragment = new TestInfoFragment();

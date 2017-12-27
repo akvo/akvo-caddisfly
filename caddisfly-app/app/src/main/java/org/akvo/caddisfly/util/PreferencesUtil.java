@@ -26,7 +26,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
 
 /**
- * Various utility functions to get/set values from/to SharedPreferences
+ * Various utility functions to get/set values from/to SharedPreferences.
  */
 @SuppressWarnings("SameParameterValue")
 public final class PreferencesUtil {
@@ -48,7 +48,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Gets a boolean value from preferences
+     * Gets a boolean value from preferences.
      *
      * @param context      the context
      * @param keyId        the key id
@@ -62,7 +62,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Sets a boolean value to preferences
+     * Sets a boolean value to preferences.
      *
      * @param context the context
      * @param keyId   the key id
@@ -78,7 +78,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Gets an integer value from preferences
+     * Gets an integer value from preferences.
      *
      * @param context      the context
      * @param key          the key id
@@ -92,7 +92,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Gets a long value from preferences
+     * Gets a long value from preferences.
      *
      * @param context the context
      * @param keyId   the key id
@@ -107,7 +107,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Sets an integer value to preferences
+     * Sets an integer value to preferences.
      *
      * @param context the context
      * @param key     the key id
@@ -121,19 +121,8 @@ public final class PreferencesUtil {
         editor.apply();
     }
 
-//    /**
-//     * Gets a long value from preferences
-//     *
-//     * @param context the context
-//     * @param keyId   the key id
-//     * @return the stored long value
-//     */
-//    public static long getLong(Context context, @StringRes int keyId) {
-//        return PreferencesUtil.getLong(context, getKey(context, keyId));
-//    }
-
     /**
-     * Gets a long value from preferences
+     * Gets a long value from preferences.
      *
      * @param context the context
      * @param keyId   the key id
@@ -145,7 +134,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Gets a long value from preferences
+     * Gets a long value from preferences.
      *
      * @param context the context
      * @param key     the key id
@@ -164,7 +153,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Sets a long value to preferences
+     * Sets a long value to preferences.
      *
      * @param context the context
      * @param keyId   the key id
@@ -176,7 +165,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Sets a long value to preferences
+     * Sets a long value to preferences.
      *
      * @param context the context
      * @param key     the int key id
@@ -191,7 +180,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Gets a string value from preferences
+     * Gets a string value from preferences.
      *
      * @param context      the context
      * @param keyId        the key id
@@ -205,7 +194,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Gets a string value from preferences
+     * Gets a string value from preferences.
      *
      * @param context      the context
      * @param keyId        the key id
@@ -224,7 +213,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Sets a string value to preferences
+     * Sets a string value to preferences.
      *
      * @param context the context
      * @param keyId   the key id
@@ -243,7 +232,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Sets a string value to preferences
+     * Sets a string value to preferences.
      *
      * @param context the context
      * @param keyId   the key id
@@ -263,7 +252,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Removes the key from the preferences
+     * Removes the key from the preferences.
      *
      * @param context the context
      * @param key     the key id
@@ -277,7 +266,7 @@ public final class PreferencesUtil {
     }
 
     /**
-     * Checks if the key is already saved in the preferences
+     * Checks if the key is already saved in the preferences.
      *
      * @param context the context
      * @param keyId   the key id

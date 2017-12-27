@@ -35,7 +35,7 @@ import java.io.File;
 public class CalibrationFile {
 
     /**
-     * Save a single calibrated color
+     * Save a single calibrated color.
      *
      * @param calibration The calibration object
      * @param resultColor The color value

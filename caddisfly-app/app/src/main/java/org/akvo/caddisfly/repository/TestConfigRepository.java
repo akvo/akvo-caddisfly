@@ -234,12 +234,12 @@ public class TestConfigRepository {
         calibrationDetail.uid = testInfo.getUuid();
         long date = PreferencesUtil.getLong(context,
                 testInfo.getUuid(), R.string.calibrationDateKey);
-        if (date > -1) {
+        if (date > 0) {
             calibrationDetail.date = date;
         }
         long expiry = PreferencesUtil.getLong(context,
                 testInfo.getUuid(), R.string.calibrationExpiryDateKey);
-        if (expiry > -1) {
+        if (expiry > 0) {
             calibrationDetail.expiry = expiry;
         }
         calibrationDetail.batchNumber = PreferencesUtil.getString(context,

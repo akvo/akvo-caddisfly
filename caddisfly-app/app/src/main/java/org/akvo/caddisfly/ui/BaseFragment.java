@@ -38,6 +38,7 @@ public class BaseFragment extends Fragment {
                 try {
                     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
                 } catch (Exception ignored) {
+                    // do nothing
                 }
             }
 

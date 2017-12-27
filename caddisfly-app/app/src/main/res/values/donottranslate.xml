@@ -61,7 +61,7 @@
     <string name="calibrationExpiryDateKey">calibrationExpiryDate</string>
     <string name="batchNumberKey">batchNumber</string>
     <string name="themeChangedKey">themeChanged</string>
-    <string name="saveImagesDataKey">saveImages</string>
+    <string name="saveImagesDataKey">saveImagesData</string>
     <string name="totalSuccessfulCalibrationsKey">totalSuccessfulCalibrations</string>
     <string name="totalFailedCalibrationsKey">totalFailedCalibrations</string>
     <string name="totalSuccessfulTestsKey">totalSuccessfulTests</string>

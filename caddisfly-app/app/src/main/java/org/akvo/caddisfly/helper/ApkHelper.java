@@ -85,11 +85,10 @@ public final class ApkHelper {
 
     /**
      * Checks if the app was installed from the app store or from an install file.
+     * source: http://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
      *
      * @param context The context
      * @return True if app was not installed from the store
-     *
-     * source: http://stackoverflow.com/questions/37539949/detect-if-an-app-is-installed-from-play-store
      */
     public static boolean isNonStoreVersion(@NonNull Context context) {
 

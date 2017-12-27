@@ -86,7 +86,6 @@ public class ErrorMessages {
 
                     activity.setResult(Activity.RESULT_CANCELED);
                     dialogInterface.dismiss();
-//                    activity.finish();
                 }, (dialogInterface, i) -> {
                     activity.setResult(Activity.RESULT_CANCELED);
                     dialogInterface.dismiss();

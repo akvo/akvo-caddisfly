@@ -87,7 +87,7 @@ public class CalibrationItemFragment extends Fragment {
 
         if (calibrationDetail != null) {
             long milliseconds = calibrationDetail.expiry;
-            if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
+            if (milliseconds > 0 && milliseconds <= new Date().getTime()) {
                 view.setText(String.format("%s. %s", context.getString(R.string.expired),
                         context.getString(R.string.calibrateWithNewReagent)));
 

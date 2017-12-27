@@ -129,10 +129,10 @@ public class InstructionFragment extends Fragment {
         Instruction instruction;
 
         /**
-         * Returns a new instance of this fragment for the given section
-         * number.
+         * Returns a new instance of this fragment for the given section number.
          *
-         * @param instruction: The information to to display
+         * @param instruction The information to to display
+         * @return The instance
          */
         public static PlaceholderFragment newInstance(Instruction instruction) {
             PlaceholderFragment fragment = new PlaceholderFragment();

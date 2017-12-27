@@ -76,7 +76,8 @@ public class ShakeDetector implements SensorEventListener {
 
         float maxLinearAcceleration = getMaxCurrentLinearAcceleration();
 
-        //stackoverflow.com/questions/11175599/how-to-measure-the-tilt-of-the-phone-in-xy-plane-using-accelerometer-in-android/15149421#15149421
+        //stackoverflow.com/questions/11175599/how-to-measure-the-tilt-of-the-phone-in-xy-plane-
+        // using-accelerometer-in-android/15149421#15149421
         float[] g;
         g = event.values.clone();
 
@@ -204,7 +205,7 @@ public class ShakeDetector implements SensorEventListener {
     }
 
     /**
-     * If the device has been shaken
+     * If the device has been shaken.
      */
     public interface OnShakeListener {
 
@@ -212,7 +213,7 @@ public class ShakeDetector implements SensorEventListener {
     }
 
     /**
-     * If the device is still for a while
+     * If the device is still for a while.
      */
     public interface OnNoShakeListener {
         void onNoShake();

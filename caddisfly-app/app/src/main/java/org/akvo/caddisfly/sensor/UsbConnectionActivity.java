@@ -65,7 +65,7 @@ public class UsbConnectionActivity extends Activity {
                 try {
                     progressDialog.dismiss();
                 } catch (Exception ignored) {
-
+                    // do nothing
                 }
                 finish();
             }, 1000);

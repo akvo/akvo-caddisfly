@@ -20,7 +20,6 @@
 package org.akvo.caddisfly.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
@@ -39,8 +38,6 @@ public class RowView extends TableRow {
     public RowView(Context context, AttributeSet attrs) {
         super(context);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RowView);
-
         setOrientation(LinearLayout.HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);
 
@@ -54,13 +51,8 @@ public class RowView extends TableRow {
         TableRow tableRow = (TableRow) getChildAt(0);
 
         textNumber = (TextView) tableRow.getChildAt(0);
-//        String numberText = a.getString(R.styleable.RowView_number);
-
         textPara = (TextView) tableRow.getChildAt(1);
-//        String paragraph = a.getString(R.styleable.RowView_paragraph);
         textPara.setMovementMethod(LinkMovementMethod.getInstance());
-        a.recycle();
-
     }
 
     public RowView(Context context) {

@@ -356,7 +356,6 @@ public class ChamberTestActivity extends BaseActivity implements
 
             if (value > -1) {
 
-
                 Result result = testInfo.getResults().get(0);
                 result.setResult(value, dilution, testInfo.getMaxDilution());
 

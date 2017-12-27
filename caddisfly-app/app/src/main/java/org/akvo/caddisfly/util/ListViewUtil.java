@@ -25,7 +25,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 /**
- * Utility functions for ListView manipulation
+ * Utility functions for ListView manipulation.
  */
 public final class ListViewUtil {
 

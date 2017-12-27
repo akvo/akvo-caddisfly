@@ -27,7 +27,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Reagent implements Parcelable {
 
-    public final static Creator<Reagent> CREATOR = new Creator<Reagent>() {
+    public static final Creator<Reagent> CREATOR = new Creator<Reagent>() {
 
         @SuppressWarnings({"unchecked"})
         public Reagent createFromParcel(Parcel in) {

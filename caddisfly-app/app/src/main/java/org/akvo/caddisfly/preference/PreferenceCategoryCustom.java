@@ -26,7 +26,7 @@ import android.util.AttributeSet;
 import org.akvo.caddisfly.R;
 
 /**
- * A custom category style for the preferences screen
+ * A custom category style for the preferences screen.
  */
 public class PreferenceCategoryCustom extends PreferenceCategory {
 

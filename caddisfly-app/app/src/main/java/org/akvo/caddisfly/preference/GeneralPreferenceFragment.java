@@ -32,7 +32,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ListViewUtil;
 
 /**
- * Fragment for general preferences section
+ * Fragment for general preferences section.
  */
 public class GeneralPreferenceFragment extends PreferenceFragment {
 

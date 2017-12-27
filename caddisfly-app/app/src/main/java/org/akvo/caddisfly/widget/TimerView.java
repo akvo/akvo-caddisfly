@@ -40,7 +40,6 @@ import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 
 /**
  * Countdown timer view.
- * <p>
  * based on: https://github.com/maxwellforest/blog_android_timer
  */
 public class TimerView extends View {
