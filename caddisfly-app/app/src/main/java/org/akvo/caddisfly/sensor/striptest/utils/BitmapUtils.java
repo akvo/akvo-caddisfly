@@ -1,16 +1,25 @@
 package org.akvo.caddisfly.sensor.striptest.utils;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.model.ColorItem;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
 
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.List;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueString;
@@ -166,6 +175,38 @@ public class BitmapUtils {
 
         int height = Math.round(rows * IMG_WIDTH / cols);
         Bitmap bmpRGB = Bitmap.createBitmap(imgRGB, 0, cols, cols, rows, Bitmap.Config.ARGB_8888);
+
+        if (AppPreferences.isDiagnosticMode()) {
+            bmpRGB = convertToMutable(CaddisflyApp.getApp(), bmpRGB);
+
+            if (bmpRGB != null) {
+                Canvas canvas = new Canvas(bmpRGB);
+
+                // Initialize a new Paint instance to draw the Rectangle
+                Paint paint = new Paint();
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setColor(Color.GREEN);
+                paint.setAntiAlias(true);
+
+                Result patch = patchResult.getPatch();
+                double stripRatio = 5;
+
+                double x = patch.getPatchPos() * stripRatio;
+                double y = 0.5 * patch.getPatchWidth() * stripRatio;
+
+                double halfSize = 0.5 * Constants.STRIP_WIDTH_FRACTION * patch.getPatchWidth();
+                int tlx = (int) Math.round(x - halfSize);
+                int tly = (int) Math.round(y - halfSize);
+                int brx = (int) Math.round(x + halfSize);
+                int bry = (int) Math.round(y + halfSize);
+
+                // Initialize a new Rect object
+                Rect rectangle = new Rect(tlx, tly, brx, bry);
+
+                // Finally, draw the rectangle on the canvas
+                canvas.drawRect(rectangle, paint);
+            }
+        }
 
         // resize
         return Bitmap.createScaledBitmap(bmpRGB, IMG_WIDTH, height, false);
@@ -402,5 +443,34 @@ public class BitmapUtils {
             }
         }
         return result;
+    }
+
+
+    public static Bitmap convertToMutable(final Context context, final Bitmap imgIn) {
+        final int width = imgIn.getWidth(), height = imgIn.getHeight();
+        final Bitmap.Config type = imgIn.getConfig();
+        File outputFile = null;
+        final File outputDir = context.getCacheDir();
+        try {
+            outputFile = File.createTempFile(Long.toString(System.currentTimeMillis()), null, outputDir);
+            outputFile.deleteOnExit();
+            final RandomAccessFile randomAccessFile = new RandomAccessFile(outputFile, "rw");
+            final FileChannel channel = randomAccessFile.getChannel();
+            final MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_WRITE, 0, imgIn.getRowBytes() * height);
+            imgIn.copyPixelsToBuffer(map);
+            imgIn.recycle();
+            final Bitmap result = Bitmap.createBitmap(width, height, type);
+            map.position(0);
+            result.copyPixelsFromBuffer(map);
+            channel.close();
+            randomAccessFile.close();
+            outputFile.delete();
+            return result;
+        } catch (final Exception ignored) {
+        } finally {
+            if (outputFile != null)
+                outputFile.delete();
+        }
+        return null;
     }
 }

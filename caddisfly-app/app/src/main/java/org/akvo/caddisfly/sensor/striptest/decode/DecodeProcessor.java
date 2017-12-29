@@ -378,7 +378,7 @@ public class DecodeProcessor {
     private void storeData() {
 //        long time = System.currentTimeMillis();
 
-        // substract black part and put it in a rectangle. Do the calibration at the same time.
+        // subtract black part and put it in a rectangle. Do the calibration at the same time.
         // 1) determine size of new image array
         // 2) loop over pixels of new image array
         // 3) compute location of pixel using card-to-image transform

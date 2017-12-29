@@ -77,8 +77,8 @@ public class ImageUtils {
             }
         }
 
-        // We should have at least 10% not-black to be sure we have a strip
-        if (totalWhite < 0.1 * width * height) {
+        // We should have at least 9% not-black to be sure we have a strip
+        if (totalWhite < 0.09 * width * height) {
             return null;
         }
 
@@ -204,25 +204,25 @@ public class ImageUtils {
         //use known length of strip to determine right side
         double posRight = posLeft + (stripLength * ratioPixelPerMm);
 
-        found = false;
+//        found = false;
 
         // moving from the right, determine the first point that crosses the threshold
-        int posRightTemp = width - 1;
-        while (!found && posRightTemp > 0) {
-            if (colCount[posRightTemp] > threshold) {
-                found = true;
-            } else {
-                posRightTemp--;
-            }
-        }
+//        int posRightTemp = width - 1;
+//        while (!found && posRightTemp > 0) {
+//            if (colCount[posRightTemp] > threshold) {
+//                found = true;
+//            } else {
+//                posRightTemp--;
+//            }
+//        }
 
         // if there is a big difference in the right position determined by the two above methods
         // then ignore the first method above and determine the left position by second method only
-        if (Math.abs(posRightTemp - posRight) > 3) {
-            // use known length of strip to determine left side
-            posLeft = posRightTemp - (stripLength * ratioPixelPerMm);
-            posRight = posRightTemp;
-        }
+//        if (Math.abs(posRightTemp - posRight) > 3) {
+//            // use known length of strip to determine left side
+//            posLeft = posRightTemp - (stripLength * ratioPixelPerMm);
+//            posRight = posRightTemp;
+//        }
 
         int start = (int) Math.round(posLeft);
         int end = (int) Math.round(posRight);

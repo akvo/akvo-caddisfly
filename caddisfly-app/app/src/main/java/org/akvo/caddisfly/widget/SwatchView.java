@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.sensor.striptest.widget;
+package org.akvo.caddisfly.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -38,9 +38,9 @@ import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueS
 
 public class SwatchView extends View {
 
-    private final static int VAL_BAR_HEIGHT = 15;
-    private final static int TEXT_SIZE = 20;
-    private final static float MARGIN = 10;
+    private static final int VAL_BAR_HEIGHT = 15;
+    private static final int TEXT_SIZE = 20;
+    private static final float MARGIN = 10;
     private static float gutterSize = 5;
     float blockWidth = 0;
     float lineHeight = 0;
@@ -53,6 +53,12 @@ public class SwatchView extends View {
     private TestInfo testInfo;
     private Paint blackText;
 
+    /**
+     * Displays the swatches for the calibrated colors of the test.
+     *
+     * @param context the context
+     * @param attrs   the attribute set
+     */
     public SwatchView(Context context, AttributeSet attrs) {
         super(context, attrs);
         blackText = new Paint();
@@ -70,10 +76,14 @@ public class SwatchView extends View {
         super.onDraw(canvas);
 
         if (testInfo != null) {
+            int index = -1;
+
             for (int resultIndex = 0; resultIndex < testInfo.getResults().size(); resultIndex++) {
 
                 List<ColorItem> colors = testInfo.getResults().get(resultIndex).getColors();
                 if (colors.size() > 0) {
+                    index += 1;
+
                     int colorCount = colors.size();
 
                     for (int i = 0; i < colorCount; i++) {
@@ -82,13 +92,14 @@ public class SwatchView extends View {
                         if (colorItem != null) {
                             paintColor.setColor(colorItem.getRgb());
 
-                            canvas.drawRect(MARGIN + (i * totalWidth), MARGIN + (resultIndex * lineHeight),
-                                    i * totalWidth + blockWidth, (resultIndex * lineHeight) + blockWidth, paintColor);
+                            canvas.drawRect(MARGIN + (i * totalWidth), MARGIN + (index * lineHeight),
+                                    i * totalWidth + blockWidth, (index * lineHeight) + blockWidth, paintColor);
 
-                            if (testInfo.getGroupingType() == GroupType.INDIVIDUAL || resultIndex == testInfo.getResults().size() - 1) {
+                            if (testInfo.getGroupingType() == GroupType.INDIVIDUAL
+                                    || index == testInfo.getResults().size() - 1) {
                                 canvas.drawText(createValueString(colorItem.getValue().floatValue()),
                                         MARGIN + (i * totalWidth + blockWidth / 2),
-                                        MARGIN + (resultIndex * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
+                                        MARGIN + (index * lineHeight) + blockWidth + VAL_BAR_HEIGHT, blackText);
                             }
                         }
                     }
@@ -97,18 +108,26 @@ public class SwatchView extends View {
         }
     }
 
-    public void setPatch(TestInfo testInfo) {
+    /**
+     * Set the test for which the swatches should be displayed.
+     *
+     * @param testInfo the test
+     */
+    public void setTestInfo(TestInfo testInfo) {
         this.testInfo = testInfo;
         if (testInfo.getGroupingType() == GroupType.GROUP) {
             gutterSize = 1;
             extraHeight = 40;
         }
 
-        lineCount = testInfo.getResults().size();
+        lineCount = 0;
 
         for (int resultIndex = 0; resultIndex < testInfo.getResults().size(); resultIndex++) {
             List<ColorItem> colors = testInfo.getResults().get(resultIndex).getColors();
             if (colors.size() > 0) {
+
+                lineCount += 1;
+
                 int colorCount = colors.size();
 
                 rgbCols = new int[colorCount][3];

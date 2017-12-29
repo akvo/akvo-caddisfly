@@ -175,7 +175,7 @@ public class ResultUtils {
                 valueString = String.format(Locale.US, "%.1f %s", value, unit);
             }
         }
-        return valueString;
+        return valueString.trim();
     }
 
     // creates formatted string from float value, for display of colour charts

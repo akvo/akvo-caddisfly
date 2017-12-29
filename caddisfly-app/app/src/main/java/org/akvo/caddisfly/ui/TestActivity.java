@@ -55,6 +55,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.sensor.bluetooth.DeviceControlActivity;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
 import org.akvo.caddisfly.sensor.chamber.ChamberTestActivity;
@@ -267,8 +268,13 @@ public class TestActivity extends BaseActivity {
     }
 
     private void startBluetoothTest() {
-        final Intent intent = new Intent(this, DeviceScanActivity.class);
-        intent.putExtra("internal", true);
+        Intent intent;
+        // skip scanning for device in testing mode
+        if (AppPreferences.isTestMode()) {
+            intent = new Intent(this, DeviceControlActivity.class);
+        } else {
+            intent = new Intent(this, DeviceScanActivity.class);
+        }
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
     }

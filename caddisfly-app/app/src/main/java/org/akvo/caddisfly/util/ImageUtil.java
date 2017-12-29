@@ -32,7 +32,13 @@ import android.support.annotation.NonNull;
 import android.support.media.ExifInterface;
 import android.text.TextUtils;
 
+import org.akvo.caddisfly.helper.FileHelper;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -276,21 +282,19 @@ public final class ImageUtil {
         return inSampleSize;
     }
 
-    /*
-        public static byte[] loadImageBytes(String name) {
-            File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, "");
-            File photo = new File(path, name + ".jpg");
+    public static byte[] loadImageBytes(String name, FileHelper.FileType fileType) {
+        File path = FileHelper.getFilesDir(fileType, "");
+        File photo = new File(path, name + ".jpg");
 
-            byte[] bytes = new byte[(int) photo.length()];
-            BufferedInputStream bis;
-            try {
-                bis = new BufferedInputStream(new FileInputStream(photo));
-                DataInputStream dis = new DataInputStream(bis);
-                dis.readFully(bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return  bytes;
+        byte[] bytes = new byte[(int) photo.length()];
+        BufferedInputStream bis;
+        try {
+            bis = new BufferedInputStream(new FileInputStream(photo));
+            DataInputStream dis = new DataInputStream(bis);
+            dis.readFully(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    */
+        return bytes;
+    }
 }

@@ -67,6 +67,7 @@
     <string name="totalSuccessfulTestsKey">totalSuccessfulTests</string>
     <string name="totalFailedTestsKey">totalFailedTests</string>
     <string name="refreshKey">refresh</string>
+    <string name="testModeOnKey">testModeOn</string>
 
     <string name="ledRgbKey">ledRgb</string>
     <string name="useExternalCameraKey">useExternalCamera</string>
@@ -84,6 +85,7 @@
     <string name="ignoreTimeDelays">Ignore time delays</string>
     <string name="debugging">Debugging</string>
     <string name="download_experimental_tests">Download experimental tests</string>
+    <string name="testModeOn">Test Mode</string>
 
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
@@ -131,4 +133,5 @@
     </string>
     <string name="cca_software"><a href="https://design.google.com/icons/">Material Icons</a></string>
     <string name="eclipse_software"><a href="https://github.com/junit-team/junit4">Junit 4</a></string>
+    <string name="testing">Testing</string>
 </resources>

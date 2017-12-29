@@ -25,9 +25,12 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StriptestHandler;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
+import org.akvo.caddisfly.util.ImageUtil;
 
 /**
  * Created by markwestra on 19/07/2017
@@ -45,16 +48,18 @@ public class CameraOperationsManager {
     private StriptestHandler mStriptestHandler;
 
     //debug code
-//    private byte[] bytes;
+    private byte[] bytes;
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera arg1) {
 
-            //debug code
-//            StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
-
-            // store image for later use
-            StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
+            if (AppPreferences.isTestMode()) {
+                // Used test image
+                StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
+            } else {
+                // store image for later use
+                StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
+            }
             MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
@@ -72,10 +77,11 @@ public class CameraOperationsManager {
         }
     };
 
-//    public CameraOperationsManager() {
-        // debug code
-//        bytes = ImageUtil.loadImageBytes(name);
-//    }
+    public CameraOperationsManager(String name) {
+        if (AppPreferences.isTestMode()) {
+            bytes = ImageUtil.loadImageBytes(name, FileHelper.FileType.TEST_IMAGE);
+        }
+    }
 
     public CameraPreview initCamera(Context context) {
         startCameraThread();

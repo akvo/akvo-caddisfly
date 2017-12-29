@@ -42,6 +42,7 @@ public final class AppPreferences {
 
     public static void disableDiagnosticMode() {
         PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.diagnosticModeKey, false);
+        PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
     }
 
     /**
@@ -83,6 +84,11 @@ public final class AppPreferences {
     public static boolean getShowDebugInfo() {
         return isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
+    }
+
+    public static boolean isTestMode() {
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
     }
 
     //Diagnostic in user mode

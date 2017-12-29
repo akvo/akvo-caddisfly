@@ -84,7 +84,7 @@ public class TestInfoFragment extends Fragment {
 
                 if (AppPreferences.isDiagnosticMode()) {
                     b.swatchView.setVisibility(View.VISIBLE);
-                    b.swatchView.setPatch(testInfo);
+                    b.swatchView.setTestInfo(testInfo);
                 }
 
                 model.setTest(testInfo);
