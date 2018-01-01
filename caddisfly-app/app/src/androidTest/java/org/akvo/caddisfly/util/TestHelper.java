@@ -40,6 +40,7 @@ import android.support.test.uiautomator.UiSelector;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.hamcrest.Matchers;
@@ -226,6 +227,24 @@ public final class TestHelper {
                 Espresso.pressBack();
             }
         }
+    }
+
+    public static void activateTestMode() {
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+
+        String version = CaddisflyApp.getAppVersion();
+
+        onView(withText(version)).check(matches(isDisplayed()));
+
+        enterDiagnosticMode();
+
+        goToMainScreen();
+
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        clickListViewItem("Test Mode");
     }
 
     public static void clickExternalSourceButton(int index) {

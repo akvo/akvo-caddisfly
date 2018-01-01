@@ -43,16 +43,13 @@ public final class FileHelper {
             + File.separator + "custom-config"; // Custom config json folder
 
     private static final String DIR_EXP_CONFIG = ROOT_DIRECTORY
-            + File.separator + "experiment-config"; // Experimental config json folder
-
-    private static final String DIR_IMAGE = ROOT_DIRECTORY
-            + File.separator + "image"; // Images saved for debugging
+            + File.separator + "qa" + File.separator + "experiment-config"; // Experimental config json folder
 
     private static final String DIR_TEST_IMAGE = ROOT_DIRECTORY
-            + File.separator + "qa" + File.separator + "image"; // Images saved for testing
+            + File.separator + "qa" + File.separator + "test-image"; // Images saved for testing
 
     private static final String DIR_CARD = ROOT_DIRECTORY
-            + File.separator + "color-card"; // Color card for debugging
+            + File.separator + "qa" + File.separator + "color-card"; // Color card for debugging
 
     private static final String DIR_RESULT_IMAGES = ROOT_DIRECTORY
             + File.separator + "result-images"; // Images to be sent with result to dashboard
@@ -94,9 +91,6 @@ public final class FileHelper {
             case EXP_CONFIG:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_EXP_CONFIG;
                 break;
-            case IMAGE:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_IMAGE;
-                break;
             case CARD:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CARD;
                 break;
@@ -129,7 +123,7 @@ public final class FileHelper {
      * The different types of files.
      */
     public enum FileType {
-        CALIBRATION, CONFIG, EXP_CONFIG, IMAGE, CARD, TEST_IMAGE, RESULT_IMAGE
+        CALIBRATION, CONFIG, EXP_CONFIG, CARD, TEST_IMAGE, RESULT_IMAGE
     }
 
 }

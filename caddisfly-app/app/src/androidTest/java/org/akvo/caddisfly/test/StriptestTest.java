@@ -7,14 +7,9 @@ import android.support.test.espresso.action.ViewActions;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
-import android.view.View;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -30,14 +25,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode;
+import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
-import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -56,24 +50,6 @@ public class StriptestTest {
                 mDevice.pressBack();
             }
         }
-    }
-
-    public static Matcher<View> withIndex(final Matcher<View> matcher, final int index) {
-        return new TypeSafeMatcher<View>() {
-            int currentIndex = 0;
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("with index: ");
-                description.appendValue(index);
-                matcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                return matcher.matches(view) && currentIndex++ == index;
-            }
-        };
     }
 
     @Before
@@ -141,7 +117,7 @@ public class StriptestTest {
                 allOf(withId(R.id.text_result), withText("No Result"),
                         childAtPosition(
                                 childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
                                         1),
                                 0),
                         isDisplayed()));
@@ -156,7 +132,7 @@ public class StriptestTest {
                 allOf(withId(R.id.text_result), withText("No Result"),
                         childAtPosition(
                                 childAtPosition(
-                                        IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
                                         1),
                                 0),
                         isDisplayed()));
@@ -259,23 +235,5 @@ public class StriptestTest {
         onView(withText("Save")).check(matches(isDisplayed()));
 
         onView(withText("Save")).perform(click());
-    }
-
-    private void activateTestMode() {
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
-
-        String version = CaddisflyApp.getAppVersion();
-
-        onView(withText(version)).check(matches(isDisplayed()));
-
-        enterDiagnosticMode();
-
-        goToMainScreen();
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        clickListViewItem(mActivityRule.getActivity().getString(R.string.testModeOn));
     }
 }

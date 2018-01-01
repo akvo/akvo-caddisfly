@@ -51,11 +51,14 @@ public class CameraOperationsManager {
     private byte[] bytes;
 
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
-        public void onPreviewFrame(byte[] imageData, Camera arg1) {
+        public void onPreviewFrame(byte[] imageData, Camera camera) {
 
             if (AppPreferences.isTestMode()) {
                 // Used test image
                 StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
+
+//                ImageUtil.saveImageBytes(camera, bytes, FileHelper.FileType.TEST_IMAGE,
+//                        String.valueOf(Calendar.getInstance().getTimeInMillis()));
             } else {
                 // store image for later use
                 StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);

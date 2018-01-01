@@ -28,6 +28,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.YuvImage;
+import android.hardware.Camera;
 import android.support.annotation.NonNull;
 import android.support.media.ExifInterface;
 import android.text.TextUtils;
@@ -282,18 +284,67 @@ public final class ImageUtil {
         return inSampleSize;
     }
 
+    public static void saveImageBytes(Camera camera, byte[] data, FileHelper.FileType fileType, String fileName) {
+        try {
+            Camera.Parameters parameters = camera.getParameters();
+            Camera.Size size = parameters.getPreviewSize();
+            YuvImage image = new YuvImage(data, parameters.getPreviewFormat(),
+                    size.width, size.height, null);
+
+            File path = FileHelper.getFilesDir(fileType);
+            File file = new File(path, fileName + ".jpg");
+
+            FileOutputStream fileStream = new FileOutputStream(file);
+            image.compressToJpeg(new Rect(0, 0, image.getWidth(),
+                    image.getHeight()), 100, fileStream);
+
+        } catch (FileNotFoundException e) {
+            Timber.e(e);
+        }
+    }
+
+    /**
+     * Save an image.
+     *
+     * @param data      the image data
+     * @param fileType the folder to save in
+     * @param fileName  the name of the file
+     */
+    public static void saveImage(@NonNull byte[] data, FileHelper.FileType fileType, String fileName) {
+
+        File path = FileHelper.getFilesDir(fileType);
+
+        File file = new File(path, fileName + ".yuv");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file.getPath());
+            fos.write(data);
+        } catch (Exception ignored) {
+            // do nothing
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    Timber.e(e);
+                }
+            }
+        }
+    }
+
     public static byte[] loadImageBytes(String name, FileHelper.FileType fileType) {
         File path = FileHelper.getFilesDir(fileType, "");
-        File photo = new File(path, name + ".jpg");
+        File file = new File(path, name + ".yuv");
 
-        byte[] bytes = new byte[(int) photo.length()];
+        byte[] bytes = new byte[(int) file.length()];
         BufferedInputStream bis;
         try {
-            bis = new BufferedInputStream(new FileInputStream(photo));
+            bis = new BufferedInputStream(new FileInputStream(file));
             DataInputStream dis = new DataInputStream(bis);
             dis.readFully(bytes);
         } catch (IOException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
         return bytes;
     }

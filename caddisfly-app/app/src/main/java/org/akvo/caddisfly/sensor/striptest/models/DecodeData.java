@@ -2,13 +2,16 @@ package org.akvo.caddisfly.sensor.striptest.models;
 
 import android.media.Image;
 
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPattern;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPatternInfo;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.PerspectiveTransform;
+import org.akvo.caddisfly.util.ImageUtil;
 import org.apache.commons.math3.linear.RealMatrix;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -284,5 +287,11 @@ public class DecodeData {
         this.distanceOk = true;
         calMatrix = null;
         illumData = null;
+    }
+
+    //todo remove debug code
+    public void saveImage() {
+        ImageUtil.saveImage(decodeImageByteArray, FileHelper.FileType.TEST_IMAGE,
+                String.valueOf(Calendar.getInstance().getTimeInMillis()));
     }
 }
