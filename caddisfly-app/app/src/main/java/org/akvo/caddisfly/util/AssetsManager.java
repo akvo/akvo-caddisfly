@@ -48,7 +48,7 @@ public final class AssetsManager {
 
         json = loadJsonFromAsset(Constants.TESTS_META_FILENAME);
 
-        File customConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.CONFIG),
+        File customConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.CUSTOM_CONFIG),
                 Constants.TESTS_META_FILENAME);
         customJson = FileUtil.loadTextFromFile(customConfig);
 

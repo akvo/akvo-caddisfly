@@ -36,6 +36,9 @@ import java.util.List;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueString;
 
+/**
+ * Displays the swatches for the calibrated colors of the test.
+ */
 public class SwatchView extends View {
 
     private static final int VAL_BAR_HEIGHT = 15;

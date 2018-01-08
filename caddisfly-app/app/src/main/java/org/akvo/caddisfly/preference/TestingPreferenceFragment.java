@@ -22,6 +22,7 @@ package org.akvo.caddisfly.preference;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -48,12 +49,25 @@ public class TestingPreferenceFragment extends PreferenceFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.card_row, container, false);
+        setBackgroundColor(view);
+
+        Preference testModeOnPreference = findPreference(getString(R.string.testModeOnKey));
+        if (testModeOnPreference != null) {
+            testModeOnPreference.setOnPreferenceClickListener(preference -> {
+                setBackgroundColor(view);
+                return true;
+            });
+        }
+
+        return view;
+    }
+
+    private void setBackgroundColor(View view) {
         if (AppPreferences.isTestMode()) {
             view.setBackgroundColor(Color.rgb(255, 165, 0));
         } else {
             view.setBackgroundColor(Color.rgb(255, 240, 220));
         }
-        return view;
     }
 
 

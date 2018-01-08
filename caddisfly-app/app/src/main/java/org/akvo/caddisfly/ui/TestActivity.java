@@ -125,44 +125,7 @@ public class TestActivity extends BaseActivity {
                 && AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())
                 || AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction())) {
 
-            isExternalAppCall = true;
-            mExternalAppLanguageCode = intent.getStringExtra(SensorConstants.LANGUAGE);
-            CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, isExternalAppCall, handler);
-            String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
-
-            if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())) {
-
-                // old version of survey does not expect image in result
-                mCallerExpectsImageInResult = false;
-            }
-
-            String uuid = intent.getStringExtra(SensorConstants.RESOURCE_ID);
-            if (uuid == null) {
-
-                //todo: remove when obsolete
-                //UUID was not found so it must be old version survey, look for 5 letter code
-                String code = questionTitle.trim().substring(Math.max(0, questionTitle.length() - 5)).toLowerCase();
-
-                uuid = TestConfigHelper.getUuidFromShortCode(code);
-            }
-
-            if (uuid != null) {
-                //Get the test config by uuid
-                final TestListViewModel viewModel =
-                        ViewModelProviders.of(this).get(TestListViewModel.class);
-                testInfo = viewModel.getTestInfo(uuid);
-            }
-
-            if (testInfo == null) {
-                setTitle(getTestName(questionTitle));
-                alertTestTypeNotSupported();
-            } else {
-
-                TestInfoFragment fragment = TestInfoFragment.getInstance(testInfo);
-
-                fragmentManager.beginTransaction()
-                        .add(R.id.fragment_container, fragment, TestActivity.class.getSimpleName()).commit();
-            }
+            getTestSelectedByExternalApp(fragmentManager, intent);
         }
 
         if (testInfo != null && testInfo.getSubtype() == TestType.SENSOR
@@ -182,10 +145,51 @@ public class TestActivity extends BaseActivity {
 
             if (calibrationDetail != null) {
                 long milliseconds = calibrationDetail.expiry;
-                if (milliseconds != -1 && milliseconds <= new Date().getTime()) {
+                if (milliseconds > 0 && milliseconds <= new Date().getTime()) {
                     ErrorMessages.alertCalibrationExpired(this);
                 }
             }
+        }
+    }
+
+    private void getTestSelectedByExternalApp(FragmentManager fragmentManager, Intent intent) {
+        isExternalAppCall = true;
+        mExternalAppLanguageCode = intent.getStringExtra(SensorConstants.LANGUAGE);
+        CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, isExternalAppCall, handler);
+        String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
+
+        if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())) {
+
+            // old version of survey does not expect image in result
+            mCallerExpectsImageInResult = false;
+        }
+
+        String uuid = intent.getStringExtra(SensorConstants.RESOURCE_ID);
+        if (uuid == null) {
+
+            //todo: remove when obsolete
+            //UUID was not found so it must be old version survey, look for 5 letter code
+            String code = questionTitle.trim().substring(Math.max(0, questionTitle.length() - 5)).toLowerCase();
+
+            uuid = TestConfigHelper.getUuidFromShortCode(code);
+        }
+
+        if (uuid != null) {
+            //Get the test config by uuid
+            final TestListViewModel viewModel =
+                    ViewModelProviders.of(this).get(TestListViewModel.class);
+            testInfo = viewModel.getTestInfo(uuid);
+        }
+
+        if (testInfo == null) {
+            setTitle(getTestName(questionTitle));
+            alertTestTypeNotSupported();
+        } else {
+
+            TestInfoFragment fragment = TestInfoFragment.getInstance(testInfo);
+
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, fragment, TestActivity.class.getSimpleName()).commit();
         }
     }
 

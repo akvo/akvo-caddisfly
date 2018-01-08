@@ -148,7 +148,7 @@ public class TestListActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        if (BuildConfig.isExperimentFlavor && AppPreferences.isDiagnosticMode()) {
+        if (BuildConfig.showExperimentalTests && AppPreferences.isDiagnosticMode()) {
             getMenuInflater().inflate(R.menu.menu_test_list, menu);
         }
         return true;
@@ -179,6 +179,8 @@ public class TestListActivity extends BaseActivity
 
     private void startSync() {
         ConfigDownloader.syncExperimentalConfig(this, () -> fragment.refresh());
+
+        ConfigDownloader.syncFfemExperimentalConfig(this);
     }
 
     public interface SyncCallbackInterface {

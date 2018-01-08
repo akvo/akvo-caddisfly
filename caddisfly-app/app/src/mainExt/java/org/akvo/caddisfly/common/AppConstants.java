@@ -33,6 +33,7 @@ public final class AppConstants {
     public static final int APP_EXPIRY_YEAR = 2017;
 
     public static final String APP_FOLDER = "Akvo Caddisfly";
+    public static final String FFEM_FOLDER = "";
 
     private AppConstants() {
     }

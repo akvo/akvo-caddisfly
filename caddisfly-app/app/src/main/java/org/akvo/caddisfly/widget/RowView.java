@@ -31,12 +31,21 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 
+/**
+ * A single numbered row for a list.
+ */
 public class RowView extends TableRow {
     private final TextView textNumber;
     private final TextView textPara;
 
+    /**
+     * A single numbered row for a list.
+     *
+     * @param context the context
+     * @param attrs the attributeSet
+     */
     public RowView(Context context, AttributeSet attrs) {
-        super(context);
+        super(context, attrs);
 
         setOrientation(LinearLayout.HORIZONTAL);
         setGravity(Gravity.CENTER_VERTICAL);

@@ -42,6 +42,7 @@ public class ConfigTask extends AsyncTask<String, String, String> {
 
     private WeakReference<Context> contextRef;
     private TestListActivity.SyncCallbackInterface configSyncHandler;
+    private FileHelper.FileType fileType;
     private ProgressDialog pd;
 
     public ConfigTask(Context context, TestListActivity.SyncCallbackInterface syncCallback) {
@@ -69,6 +70,7 @@ public class ConfigTask extends AsyncTask<String, String, String> {
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
 
+            fileType = FileHelper.FileType.valueOf(params[1]);
 
             InputStream stream = connection.getInputStream();
 
@@ -110,10 +112,12 @@ public class ConfigTask extends AsyncTask<String, String, String> {
             pd.dismiss();
         }
 
-        File path = FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG, "");
+        File path = FileHelper.getFilesDir(fileType, "");
         FileUtil.saveToFile(path, "tests.json", result);
 
-        configSyncHandler.onDownloadFinished();
+        if (configSyncHandler != null) {
+            configSyncHandler.onDownloadFinished();
+        }
         Toast.makeText(contextRef.get(), "Experimental tests synced", Toast.LENGTH_LONG).show();
     }
 }

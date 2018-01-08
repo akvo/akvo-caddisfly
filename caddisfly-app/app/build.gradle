@@ -37,13 +37,12 @@ android {
 
     productFlavors {
         mainExt {
-            dimension "default"
-            buildConfigField 'boolean', 'isExperimentFlavor', 'false'
+            buildConfigField 'boolean', 'showExperimentalTests', 'false'
         }
         experiment {
             applicationIdSuffix ".experiment"
-            dimension "default"
-            buildConfigField 'boolean', 'isExperimentFlavor', 'true'
+            versionName "Experiment Beta 10"
+            buildConfigField 'boolean', 'showExperimentalTests', 'true'
         }
     }
 

@@ -29,4 +29,8 @@ public class ConfigDownloader {
                                               TestListActivity.SyncCallbackInterface configSyncHandler) {
         // do nothing
     }
+
+    public static void syncFfemExperimentalConfig(TestListActivity testListActivity) {
+        // do nothing
+    }
 }

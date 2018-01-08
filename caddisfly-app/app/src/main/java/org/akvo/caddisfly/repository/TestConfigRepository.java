@@ -74,26 +74,7 @@ public class TestConfigRepository {
             }
 
             if (AppPreferences.isDiagnosticMode()) {
-
-                TestConfig testConfig = new Gson().fromJson(assetsManager.getExperimentalJson(), TestConfig.class);
-                if (testConfig != null) {
-                    List<TestInfo> experimentalList = testConfig.getTests();
-
-                    for (int i = experimentalList.size() - 1; i >= 0; i--) {
-                        if (experimentalList.get(i).getSubtype() != testType) {
-                            experimentalList.remove(i);
-                        }
-                    }
-
-                    if (experimentalList.size() > 0) {
-                        Collections.sort(experimentalList, (object1, object2) ->
-                                object1.getName().compareToIgnoreCase(object2.getName()));
-
-                        testInfoList.add(new TestInfo("Experimental"));
-
-                        testInfoList.addAll(experimentalList);
-                    }
-                }
+                addExperimentalTests(testType, testInfoList);
             }
 
             TestConfig testConfig = new Gson().fromJson(assetsManager.getCustomJson(), TestConfig.class);
@@ -123,6 +104,28 @@ public class TestConfigRepository {
 
         testMap.put(testType, testInfoList);
         return testInfoList;
+    }
+
+    private void addExperimentalTests(TestType testType, List<TestInfo> testInfoList) {
+        TestConfig testConfig = new Gson().fromJson(assetsManager.getExperimentalJson(), TestConfig.class);
+        if (testConfig != null) {
+            List<TestInfo> experimentalList = testConfig.getTests();
+
+            for (int i = experimentalList.size() - 1; i >= 0; i--) {
+                if (experimentalList.get(i).getSubtype() != testType) {
+                    experimentalList.remove(i);
+                }
+            }
+
+            if (experimentalList.size() > 0) {
+                Collections.sort(experimentalList, (object1, object2) ->
+                        object1.getName().compareToIgnoreCase(object2.getName()));
+
+                testInfoList.add(new TestInfo("Experimental"));
+
+                testInfoList.addAll(experimentalList);
+            }
+        }
     }
 
     /**

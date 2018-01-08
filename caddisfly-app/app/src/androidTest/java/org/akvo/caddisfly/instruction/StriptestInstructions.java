@@ -70,7 +70,6 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class StriptestInstructions {
 
-    private final StringBuilder jsArrayString = new StringBuilder();
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 

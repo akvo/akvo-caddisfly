@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.ViewModelProviders;
@@ -41,6 +42,7 @@ import org.akvo.caddisfly.common.NavigationController;
 import org.akvo.caddisfly.databinding.ActivityMainBinding;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
+import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
@@ -60,6 +62,8 @@ public class MainActivity extends BaseActivity {
     private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
     private NavigationController navigationController;
+    private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
+    private final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +163,25 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onCalibrateClick(View view) {
+
+        if (permissionsDelegate.hasPermissions(permissions)) {
+            startCalibrate();
+        } else {
+            permissionsDelegate.requestPermissions(permissions);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
+            startCalibrate();
+        }
+    }
+
+    private void startCalibrate() {
         navigationController.navigateToTestType(CHAMBER_TEST);
     }
 

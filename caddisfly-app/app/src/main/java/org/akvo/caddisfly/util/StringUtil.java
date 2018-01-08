@@ -92,17 +92,7 @@ public final class StringUtil {
         }
 
         // Set reagent in the string
-        for (int i = 1; i < 5; i++) {
-            Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
-            while (m1.find()) {
-                String name = testInfo.getReagent(i - 1).name;
-                String code = testInfo.getReagent(i - 1).code;
-                if (!code.isEmpty()) {
-                    name = String.format("%s (%s)", name, code);
-                }
-                builder.replace(m1.start(), m1.end(), name);
-            }
-        }
+        replaceReagentTags(testInfo, builder);
 
         // Set sample quantity in the string
         Matcher m1 = Pattern.compile("%sampleQuantity").matcher(builder);
@@ -118,6 +108,12 @@ public final class StringUtil {
             }
         }
 
+        insertDialogLinks(context, builder);
+
+        return builder;
+    }
+
+    private static void insertDialogLinks(AppCompatActivity context, SpannableStringBuilder builder) {
         if (builder.toString().contains("[a topic=")) {
 
             int startIndex = builder.toString().indexOf("[a topic=");
@@ -154,8 +150,20 @@ public final class StringUtil {
                 builder.setSpan(new UnderlineSpan(), startIndex, endIndex, 0);
             }
         }
+    }
 
-        return builder;
+    private static void replaceReagentTags(TestInfo testInfo, SpannableStringBuilder builder) {
+        for (int i = 1; i < 5; i++) {
+            Matcher m1 = Pattern.compile("%reagent" + i).matcher(builder);
+            while (m1.find()) {
+                String name = testInfo.getReagent(i - 1).name;
+                String code = testInfo.getReagent(i - 1).code;
+                if (!code.isEmpty()) {
+                    name = String.format("%s (%s)", name, code);
+                }
+                builder.replace(m1.start(), m1.end(), name);
+            }
+        }
     }
 
     public static String convertToTags(String text) {

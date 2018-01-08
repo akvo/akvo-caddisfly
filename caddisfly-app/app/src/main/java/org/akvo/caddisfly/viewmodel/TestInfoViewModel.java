@@ -98,94 +98,10 @@ public class TestInfoViewModel extends AndroidViewModel {
                 }
 
             } else if (text.contains("image:")) {
-
-                String imageName = text.substring(text.indexOf(":") + 1, text.length());
-
-                int resourceId = context.getResources().getIdentifier("drawable/in_" + imageName,
-                        "id", BuildConfig.APPLICATION_ID);
-
-                if (resourceId > 0) {
-
-                    double divisor = 3;
-                    if (displayMetrics.densityDpi > 250) {
-                        divisor = 2.4;
-                    }
-
-                    if (size.y > displayMetrics.heightPixels) {
-                        divisor += 0.3;
-                    }
-
-                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            (int) (displayMetrics.heightPixels / divisor));
-
-                    llp.setMargins(0, 0, 0, 20);
-
-                    final AppCompatImageView imageView = new AppCompatImageView(context);
-                    imageView.setImageResource(resourceId);
-                    imageView.setLayoutParams(llp);
-                    imageView.setContentDescription(imageName);
-
-                    linearLayout.addView(imageView);
-
-                } else {
-
-                    String image = Constants.ILLUSTRATION_PATH + imageName + ".webp";
-
-                    InputStream ims = null;
-                    try {
-                        ims = context.getAssets().open(image);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (ims != null) {
-
-                        ImageView imageView = new ImageView(linearLayout.getContext());
-                        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-
-                        imageView.setImageDrawable(Drawable.createFromStream(ims, null));
-
-                        double divisor = 3.1;
-                        if (displayMetrics.densityDpi > 250) {
-                            divisor = 2.7;
-                        }
-
-                        if (size.y > displayMetrics.heightPixels) {
-                            divisor += 0.3;
-                        }
-
-                        LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                (int) (displayMetrics.heightPixels / divisor));
-
-                        llp.setMargins(0, 0, 0, 20);
-                        imageView.setLayoutParams(llp);
-
-                        imageView.setContentDescription(imageName);
-
-                        // set an id for the view to be able to find it for unit testing
-                        imageView.setId(i);
-
-                        linearLayout.addView(imageView);
-                    }
-                }
+                insertImage(linearLayout, context, size, displayMetrics, i, text);
             } else {
 
                 RowView rowView = new RowView(context);
-
-                /*
-                    TextView textView = new TextView(linearLayout.getContext());
-
-                    if (displayMetrics.densityDpi > 250) {
-                        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
-                    } else {
-                        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-                    }
-
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    linearLayout.getContext().getResources().getDimension(R.dimen.mediumTextSize));
-                */
-
 
                 Matcher m1 = Pattern.compile("^(\\d+?\\.\\s*)(.*)").matcher(text);
                 if (m1.find()) {
@@ -203,15 +119,6 @@ public class TestInfoViewModel extends AndroidViewModel {
                             testInfo, sentences[j].trim()));
                 }
 
-                /*
-                    LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                    llp.setMargins(0, 0, 0, 20);
-                    textView.setLayoutParams(llp);
-                */
-
                 // set an id for the view to be able to find it for unit testing
                 rowView.setId(i);
 
@@ -220,27 +127,107 @@ public class TestInfoViewModel extends AndroidViewModel {
                 SpannableStringBuilder builder = new SpannableStringBuilder();
                 Spanned spanned2 = StringUtil.getStringResourceByName(context, text);
                 builder.append(spanned2);
+
                 // Set reagent in the string
-                for (int j = 1; j < 5; j++) {
-                    Matcher m2 = Pattern.compile("%reagent" + j).matcher(builder);
-                    while (m2.find()) {
-                        String code = testInfo.getReagent(j - 1).code;
-                        if (!code.isEmpty()) {
-                            ReagentLabel reagentLabel = new ReagentLabel(context, null);
+                replaceReagentTags(linearLayout, context, builder);
+            }
+        }
+    }
 
-                            int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+    private static void replaceReagentTags(LinearLayout linearLayout, Context context, SpannableStringBuilder builder) {
+        for (int j = 1; j < 5; j++) {
+            Matcher m2 = Pattern.compile("%reagent" + j).matcher(builder);
+            while (m2.find()) {
+                String code = testInfo.getReagent(j - 1).code;
+                if (!code.isEmpty()) {
+                    ReagentLabel reagentLabel = new ReagentLabel(context, null);
 
-                            reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT,
-                                    (int) (height * 0.2)));
+                    int height = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-                            reagentLabel.setReagentName(testInfo.getReagent(j - 1).name);
-                            reagentLabel.setReagentCode(code);
+                    reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            (int) (height * 0.2)));
 
-                            linearLayout.addView(reagentLabel);
-                        }
-                    }
+                    reagentLabel.setReagentName(testInfo.getReagent(j - 1).name);
+                    reagentLabel.setReagentCode(code);
+
+                    linearLayout.addView(reagentLabel);
                 }
+            }
+        }
+    }
+
+    private static void insertImage(LinearLayout linearLayout, Context context, Point size,
+                                    DisplayMetrics displayMetrics, int i, String text) {
+
+        String imageName = text.substring(text.indexOf(":") + 1, text.length());
+
+        int resourceId = context.getResources().getIdentifier("drawable/in_" + imageName,
+                "id", BuildConfig.APPLICATION_ID);
+
+        if (resourceId > 0) {
+
+            double divisor = 3;
+            if (displayMetrics.densityDpi > 250) {
+                divisor = 2.4;
+            }
+
+            if (size.y > displayMetrics.heightPixels) {
+                divisor += 0.3;
+            }
+
+            LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    (int) (displayMetrics.heightPixels / divisor));
+
+            llp.setMargins(0, 0, 0, 20);
+
+            final AppCompatImageView imageView = new AppCompatImageView(context);
+            imageView.setImageResource(resourceId);
+            imageView.setLayoutParams(llp);
+            imageView.setContentDescription(imageName);
+
+            linearLayout.addView(imageView);
+
+        } else {
+
+            String image = Constants.ILLUSTRATION_PATH + imageName + ".webp";
+
+            InputStream ims = null;
+            try {
+                ims = context.getAssets().open(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (ims != null) {
+
+                ImageView imageView = new ImageView(linearLayout.getContext());
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+                imageView.setImageDrawable(Drawable.createFromStream(ims, null));
+
+                double divisor = 3.1;
+                if (displayMetrics.densityDpi > 250) {
+                    divisor = 2.7;
+                }
+
+                if (size.y > displayMetrics.heightPixels) {
+                    divisor += 0.3;
+                }
+
+                LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        (int) (displayMetrics.heightPixels / divisor));
+
+                llp.setMargins(0, 0, 0, 20);
+                imageView.setLayoutParams(llp);
+
+                imageView.setContentDescription(imageName);
+
+                // set an id for the view to be able to find it for unit testing
+                imageView.setId(i);
+
+                linearLayout.addView(imageView);
             }
         }
     }

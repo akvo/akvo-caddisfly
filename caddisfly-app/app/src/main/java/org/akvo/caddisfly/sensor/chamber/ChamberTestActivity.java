@@ -51,6 +51,7 @@ import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.dao.CalibrationDao;
 import org.akvo.caddisfly.diagnostic.DiagnosticSwatchActivity;
 import org.akvo.caddisfly.entity.Calibration;
+import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
@@ -174,11 +175,25 @@ public class ChamberTestActivity extends BaseActivity implements
 
     @Override
     public void onCalibrationSelected(Calibration item) {
-        (new Handler()).postDelayed(() -> {
-            runTestFragment.setCalibration(item);
-            runTest();
-            invalidateOptionsMenu();
-        }, 150);
+
+        CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
+                .calibrationDao().getCalibrationDetails(testInfo.getUuid());
+
+        if (calibrationDetail == null) {
+            showEditCalibrationDetailsDialog(true);
+        } else {
+            long milliseconds = calibrationDetail.expiry;
+            //Show edit calibration details dialog if required
+            if (milliseconds <= new Date().getTime()) {
+                showEditCalibrationDetailsDialog(true);
+            } else {
+                (new Handler()).postDelayed(() -> {
+                    runTestFragment.setCalibration(item);
+                    runTest();
+                    invalidateOptionsMenu();
+                }, 150);
+            }
+        }
     }
 
     @Override
@@ -393,6 +408,8 @@ public class ChamberTestActivity extends BaseActivity implements
                 calibration.date = new Date().getTime();
                 dao.insert(calibration);
                 CalibrationFile.saveCalibratedData(this, testInfo, calibration, color);
+
+                sound.playShortResource(R.raw.done);
             }
             fragmentManager.popBackStackImmediate();
         }
