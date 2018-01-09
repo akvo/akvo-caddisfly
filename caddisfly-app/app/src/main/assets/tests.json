@@ -874,7 +874,7 @@
           "name": "Arsenic",
           "unit": "ug/l",
           "patchPos": 5.5,
-          "patchWidth": 3,
+          "patchWidth": 12,
           "colors": [
             {
               "value": 0,
@@ -963,7 +963,7 @@
           "name": "Arsenic",
           "unit": "ug/l",
           "patchPos": 6.2,
-          "patchWidth": 3,
+          "patchWidth": 12,
           "colors": [
             {
               "value": 0,

@@ -21,12 +21,13 @@ package org.akvo.caddisfly.sensor.striptest.ui;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +100,22 @@ public class InstructionFragment extends Fragment {
                         if (Math.max(instruction.testStage, 1) == testStage) {
                             for (int j = 0; j < section.size(); j++) {
                                 if (!section.get(j).startsWith("image:")) {
-                                    showInstruction(linearLayout, section.get(j), Typeface.NORMAL);
+
+                                    Spanned spanned = StringUtil.toInstruction((AppCompatActivity) getActivity(), testInfo, section.get(j));
+                                    TextView textView = new TextView(getActivity());
+                                    textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                                            getResources().getDimension(R.dimen.mediumTextSize));
+
+                                    textView.setPadding(
+                                            (int) getResources().getDimension(R.dimen.activity_vertical_margin),
+                                            0,
+                                            (int) getResources().getDimension(R.dimen.activity_vertical_margin),
+                                            (int) getResources().getDimension(R.dimen.activity_vertical_margin));
+
+                                    textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+                                    textView.append(spanned);
+                                    linearLayout.addView(textView);
                                 }
                             }
                         }
@@ -133,16 +149,9 @@ public class InstructionFragment extends Fragment {
                 (int) getResources().getDimension(R.dimen.activity_vertical_margin),
                 (int) getResources().getDimension(R.dimen.activity_vertical_margin));
 
-        String text = instruction;
-        if (instruction.contains("<!>")) {
-            text = instruction.replaceAll("<!>", "");
-            textView.setTextColor(Color.RED);
-        } else {
-            textView.setTextColor(Color.DKGRAY);
-        }
+        textView.setTextColor(Color.DKGRAY);
 
-        if (instruction.contains("<b>") || style == BOLD) {
-            text = text.replaceAll("<b>", "").replaceAll("</b>", "");
+        if (style == BOLD) {
             textView.setTypeface(null, BOLD);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(R.dimen.titleTextSize));
@@ -153,8 +162,8 @@ public class InstructionFragment extends Fragment {
         textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
                 getResources().getDisplayMetrics()), 1.0f);
 
-        Spanned spanned = StringUtil.getStringResourceByName(getContext(), text);
-        if (!text.isEmpty()) {
+        Spanned spanned = StringUtil.getStringResourceByName(getContext(), instruction);
+        if (!instruction.isEmpty()) {
             textView.append(spanned);
             linearLayout.addView(textView);
         }

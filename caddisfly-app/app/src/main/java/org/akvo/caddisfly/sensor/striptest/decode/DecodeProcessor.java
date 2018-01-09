@@ -423,7 +423,9 @@ public class DecodeProcessor {
         float[] col;
         float[] xyz;
         float[] coef = new float[16];
-        float c0c0, c1c1, c2c2;
+        float c0c0;
+        float c1c1;
+        float c2c2;
 
         float ONE_THIRD = 1.0f / 3.0f;
 //        int count = 0;

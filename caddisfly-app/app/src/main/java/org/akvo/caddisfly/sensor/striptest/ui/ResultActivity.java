@@ -339,7 +339,9 @@ public class ResultActivity extends BaseActivity {
         int bry = (int) Math.round(y + halfSize);
         int total = 0;
 
-        float X = 0, Y = 0, Z = 0;
+        float X = 0;
+        float Y = 0;
+        float Z = 0;
         for (int i = tlx; i <= brx; i++) {
             for (int j = tly; j <= bry; j++) {
                 X += img[j][i][0];

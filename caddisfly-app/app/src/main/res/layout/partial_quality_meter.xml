@@ -24,26 +24,19 @@
     android:layout_alignParentTop="true"
     android:background="@android:color/background_light"
     android:baselineAligned="false"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <LinearLayout
+    <org.akvo.caddisfly.sensor.striptest.widget.PercentageMeterView
+        android:id="@+id/quality_brightness"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/quality_check_view_height" />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <org.akvo.caddisfly.sensor.striptest.widget.PercentageMeterView
-            android:id="@+id/quality_brightness"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/quality_check_view_height" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="@string/imageQuality"
-            android:textColor="@android:color/tertiary_text_dark" />
-    </LinearLayout>
+        android:gravity="center_horizontal"
+        android:text="@string/imageQuality"
+        android:textColor="@android:color/tertiary_text_dark" />
 
 </LinearLayout>

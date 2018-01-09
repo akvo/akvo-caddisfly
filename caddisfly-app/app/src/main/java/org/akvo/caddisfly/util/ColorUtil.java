@@ -389,15 +389,12 @@ public final class ColorUtil {
 
     @NonNull
     private static XyzColor rgbToXyz(double r, double g, double b) {
-        double x;
-        double y;
-        double z;
-        r = rgbToXyz(r);
-        g = rgbToXyz(g);
-        b = rgbToXyz(b);
-        x = xyzToLab((0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / Xn);
-        y = xyzToLab((0.2126729 * r + 0.7151522 * g + 0.0721750 * b) / Yn);
-        z = xyzToLab((0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / Zn);
+        double xyz_r = rgbToXyz(r);
+        double xyz_g = rgbToXyz(g);
+        double xyz_b = rgbToXyz(b);
+        double x = xyzToLab((0.4124564 * xyz_r + 0.3575761 * xyz_g + 0.1804375 * xyz_b) / Xn);
+        double y = xyzToLab((0.2126729 * xyz_r + 0.7151522 * xyz_g + 0.0721750 * xyz_b) / Yn);
+        double z = xyzToLab((0.0193339 * xyz_r + 0.1191920 * xyz_g + 0.9503041 * xyz_b) / Zn);
         return new XyzColor(x, y, z);
     }
 
