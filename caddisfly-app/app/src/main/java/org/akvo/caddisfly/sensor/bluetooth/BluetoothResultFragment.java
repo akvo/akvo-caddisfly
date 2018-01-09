@@ -10,6 +10,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,7 +81,7 @@ public class BluetoothResultFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_bluetooth_result, container, false);
@@ -114,6 +116,12 @@ public class BluetoothResultFragment extends Fragment {
 
         layoutWaiting = view.findViewById(R.id.layoutWaiting);
         layoutResult = view.findViewById(R.id.layoutResult);
+
+        ProgressBar progressBar = view.findViewById(R.id.progressBar);
+
+        if (AppPreferences.isTestMode()) {
+            progressBar.setVisibility(View.GONE);
+        }
 
         mAcceptButton = view.findViewById(R.id.button_accept_result);
 

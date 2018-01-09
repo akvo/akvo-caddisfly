@@ -22,15 +22,18 @@ package org.akvo.caddisfly.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
@@ -376,4 +379,9 @@ public final class TestHelper {
 
     }
 
+    public static void clearPreferences(ActivityTestRule activityTestRule) {
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
+        prefs.edit().clear().apply();
+    }
 }

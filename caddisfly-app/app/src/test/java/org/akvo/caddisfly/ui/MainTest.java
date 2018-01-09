@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,7 +35,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.ShadowPackageManager;
 
 import static junit.framework.Assert.assertEquals;
@@ -146,9 +150,27 @@ public class MainTest {
 
     @Test
     public void clickingCalibrate() throws Exception {
-        Activity activity = Robolectric.setupActivity(MainActivity.class);
+
+        String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        ActivityController controller = Robolectric.buildActivity(MainActivity.class).create().start();
+        Activity activity = (Activity) controller.get();
 
         Button button = activity.findViewById(R.id.buttonCalibrate);
+
+        button.performClick();
+
+        Intent nextIntent = shadowOf(activity).getNextStartedActivity();
+
+        assertNull(nextIntent);
+
+        ShadowApplication application = shadowOf(activity.getApplication());
+        application.grantPermissions(permissions);
+        controller.resume();
+
+        button.performClick();
+
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
         button.performClick();
         Intent intent = shadowOf(activity).getNextStartedActivity();

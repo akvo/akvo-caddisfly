@@ -45,16 +45,15 @@ public class SwatchView extends View {
     private static final int TEXT_SIZE = 20;
     private static final float MARGIN = 10;
     private static float gutterSize = 5;
-    float blockWidth = 0;
-    float lineHeight = 0;
-    Paint paintColor;
-    float[] lab = new float[3];
-    int lineCount = 0;
-    int extraHeight = 0;
-    float totalWidth = 0;
-    int[][] rgbCols;
+    private float blockWidth = 0;
+    private float lineHeight = 0;
+    private final Paint paintColor;
+    private final float[] lab = new float[3];
+    private int lineCount = 0;
+    private int extraHeight = 0;
+    private float totalWidth = 0;
     private TestInfo testInfo;
-    private Paint blackText;
+    private final Paint blackText;
 
     /**
      * Displays the swatches for the calibrated colors of the test.
@@ -133,7 +132,7 @@ public class SwatchView extends View {
 
                 int colorCount = colors.size();
 
-                rgbCols = new int[colorCount][3];
+                int[][] rgbCols = new int[colorCount][3];
 
                 // get lab colours and turn them to RGB
                 for (int i = 0; i < colorCount; i++) {

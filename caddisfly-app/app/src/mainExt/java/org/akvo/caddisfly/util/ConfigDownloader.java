@@ -23,7 +23,7 @@ import android.app.Activity;
 
 import org.akvo.caddisfly.ui.TestListActivity;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "EmptyMethod"})
 public class ConfigDownloader {
     public static void syncExperimentalConfig(Activity activity,
                                               TestListActivity.SyncCallbackInterface configSyncHandler) {

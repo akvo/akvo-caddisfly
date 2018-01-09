@@ -465,10 +465,6 @@ public class TestInfo implements Parcelable {
         return results;
     }
 
-    public boolean requiresCameraFlash() {
-        return false;
-    }
-
     public String getSelectInstruction() {
         return selectInstruction;
     }

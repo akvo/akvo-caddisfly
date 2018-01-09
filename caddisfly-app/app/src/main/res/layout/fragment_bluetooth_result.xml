@@ -65,6 +65,7 @@
             tools:text="@string/perform_test" />
 
         <ProgressBar
+            android:id="@+id/progressBar"
             style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

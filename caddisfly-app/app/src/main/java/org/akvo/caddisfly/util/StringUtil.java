@@ -119,7 +119,7 @@ public final class StringUtil {
             int startIndex = builder.toString().indexOf("[a topic=");
 
             String topic;
-            Pattern p = Pattern.compile("\\[a topic=(.*?)\\]");
+            Pattern p = Pattern.compile("\\[a topic=(.*?)]");
             Matcher m3 = p.matcher(builder);
             if (m3.find()) {
                 topic = m3.group(1);

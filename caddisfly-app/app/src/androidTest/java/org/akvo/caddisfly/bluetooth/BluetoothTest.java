@@ -33,10 +33,13 @@ import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -55,8 +58,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
+import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -102,8 +105,19 @@ public class BluetoothTest {
         };
     }
 
+    @Before
+    public void setup() {
+        TestHelper.clearPreferences(mActivityTestRule);
+    }
+
+    @After
+    public void tearDown() {
+        TestHelper.clearPreferences(mActivityTestRule);
+    }
+
     @Test
     @RequiresDevice
+    @Ignore
     public void bluetoothTest() {
 
         activateTestMode();
@@ -128,24 +142,9 @@ public class BluetoothTest {
                                 0)));
         recyclerView.perform(actionOnItemAtPosition(25, click()));
 
-
         onView(withText("Next")).perform(click());
 
-
         onView(withText("Test Selected")).perform(click());
-
-//        if (TestUtil.isEmulator()) {
-//            onView(withText("Bluetooth not supported."))
-//                    .inRoot(withDecorView(not(is(mActivityTestRule.getActivity().getWindow()
-//                            .getDecorView())))).check(matches(isDisplayed()));
-//            return;
-//        }
-//
-//        try {
-//            Thread.sleep(7000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         onView(withText("Instructions")).perform(click());
 
@@ -204,7 +203,9 @@ public class BluetoothTest {
         onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
                 .check(matches(isDisplayed()));
 
-        TestUtil.goBack();
+        TestUtil.goBack(3);
+
+        TestHelper.clearPreferences(mActivityTestRule);
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.button_prepare), withText("Next"),
@@ -249,35 +250,10 @@ public class BluetoothTest {
             e.printStackTrace();
         }
 
-        onView(withText("Select Fluoride test on MD610"))
+        onView(withText("Select Test"))
                 .check(matches(isDisplayed()));
-
-        ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
-                        childAtPosition(
-                                allOf(withId(R.id.selectTestLayout),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                2),
-                        isDisplayed()));
-        appCompatButton5.perform(click());
 
         onView(withText("Press and hold (*shift*) + (*1*)(*7*)(*0*) to select Fluoride test and then press (*enter*)"))
-                .check(matches(isDisplayed()));
-
-        ViewInteraction appCompatButton6 = onView(
-                allOf(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                allOf(withClassName(is("com.android.internal.widget.ButtonBarLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                3),
-                        isDisplayed()));
-        appCompatButton6.perform(click());
-
-        onView(withText("Select Fluoride test on MD610"))
                 .check(matches(isDisplayed()));
 
         onView(withText(R.string.test_selected)).perform(click());

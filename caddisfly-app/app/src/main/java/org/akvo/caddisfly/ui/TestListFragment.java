@@ -20,7 +20,6 @@
 package org.akvo.caddisfly.ui;
 
 import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -28,6 +27,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -42,11 +42,11 @@ import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 import java.util.List;
 
-public class TestListFragment extends LifecycleFragment {
+public class TestListFragment extends Fragment {
 
     public static final String TAG = "TestListViewModel";
 
-    FragmentListBinding b;
+    private FragmentListBinding b;
 
     private OnListFragmentInteractionListener mListener;
 
@@ -75,14 +75,19 @@ public class TestListFragment extends LifecycleFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        mTestType = (TestType) getArguments().get("type");
-
         b = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_list, container, false);
 
+        if (getArguments() != null) {
+            mTestType = (TestType) getArguments().get("type");
+        }
+
         mTestInfoAdapter = new TestInfoAdapter(mTestInfoClickCallback);
 
-        b.listTypes.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        if (getContext() != null) {
+            b.listTypes.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        }
+
         b.listTypes.setHasFixedSize(true);
         b.listTypes.setAdapter(mTestInfoAdapter);
 

@@ -39,6 +39,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.TestConstantKeys;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -53,6 +54,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 
@@ -268,5 +270,15 @@ public final class TestUtil {
         onView(allOf(withId(R.id.image_pageRight),
                 isDisplayed())).perform(click());
         mDevice.waitForIdle();
+    }
+
+    public static void nextSurveyPage() {
+        clickExternalSourceButton(TestConstantKeys.NEXT);
+    }
+
+    public static void nextSurveyPage(int times) {
+        for (int i = 0; i < times; i++) {
+            nextSurveyPage();
+        }
     }
 }

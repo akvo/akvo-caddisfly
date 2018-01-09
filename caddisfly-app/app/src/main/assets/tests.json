@@ -3199,7 +3199,6 @@
       "subtype": "bluetooth",
       "md610_id": "100",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
-      "shortCode": "100TC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3298,7 +3297,6 @@
       "subtype": "bluetooth",
       "md610_id": "100",
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
-      "shortCode": "100FC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3361,7 +3359,6 @@
       "subtype": "bluetooth",
       "md610_id": "101",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
-      "shortCode": "101TC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3458,7 +3455,6 @@
       "subtype": "bluetooth",
       "md610_id": "101",
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
-      "shortCode": "101FC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3520,7 +3516,6 @@
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
-      "shortCode": "103TC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3619,7 +3614,6 @@
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
-      "shortCode": "103FC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3682,7 +3676,6 @@
       "subtype": "bluetooth",
       "md610_id": "110",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
-      "shortCode": "110TC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3779,7 +3772,6 @@
       "subtype": "bluetooth",
       "md610_id": "110",
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
-      "shortCode": "110FC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3835,7 +3827,6 @@
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
-      "shortCode": "111TC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3932,7 +3923,6 @@
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
-      "shortCode": "111FC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3988,7 +3978,6 @@
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "b6b46404-3392-4718-ac35-d2379c0f7d6d",
-      "shortCode": "125CH",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -4119,7 +4108,6 @@
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "b6b12955-46ae-4be7-8c57-e2ccb417bd7b",
-      "shortCode": "125VI",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -4188,7 +4176,6 @@
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "cdbbd63a-2740-4e42-9b4b-5a3d490d9df3",
-      "shortCode": "125TC",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -6101,7 +6088,6 @@
       "name": "E.coli – Aquagenx CBT",
       "subtype": "cbt",
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
-      "shortCode": "AXCBT",
       "brand": "Aquagenx",
       "sampleQuantity": "100",
       "imageScale": "centerCrop",

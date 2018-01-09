@@ -40,6 +40,7 @@ import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -98,6 +99,7 @@ public class BluetoothInstructions {
 
     @Test
     @RequiresDevice
+    @Ignore
     public void testInstructionsAll() {
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";

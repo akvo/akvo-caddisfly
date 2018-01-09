@@ -1,7 +1,5 @@
 package org.akvo.caddisfly.test;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.filters.RequiresDevice;
@@ -11,6 +9,7 @@ import android.support.test.uiautomator.UiDevice;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -26,6 +25,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -57,15 +57,9 @@ public class StriptestTest {
 
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
-        clearPreferences();
+        clearPreferences(mActivityRule);
 
         resetLanguage();
-    }
-
-    private void clearPreferences() {
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
-        prefs.edit().clear().apply();
     }
 
     @Test
@@ -82,7 +76,11 @@ public class StriptestTest {
 
         testNitrate100();
 
-        clearPreferences();
+    }
+
+    @After
+    public void tearDown() {
+        clearPreferences(mActivityRule);
     }
 
     private void test5in1() {

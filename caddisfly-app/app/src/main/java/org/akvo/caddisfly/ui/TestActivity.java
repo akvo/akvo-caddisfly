@@ -24,19 +24,24 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -63,6 +68,7 @@ import org.akvo.caddisfly.sensor.manual.ManualTestActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.usb.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
@@ -76,6 +82,7 @@ public class TestActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
     private static final String MESSAGE_TWO_LINE_FORMAT = "%s%n%n%s";
+    private static final float SNACK_BAR_LINE_SPACING = 1.4f;
 
     static {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
@@ -88,14 +95,11 @@ public class TestActivity extends BaseActivity {
     private final String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
     private final String[] noPermissions = {};
 
-    // track if the call was made internally or from an external app
-    private boolean isExternalAppCall = false;
-    // the language requested by the external app
-    private String mExternalAppLanguageCode;
     // old versions of the survey app does not expect image in result
     private boolean mCallerExpectsImageInResult = true;
     private TestInfo testInfo;
     private boolean cameraIsOk = false;
+    private LinearLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +108,8 @@ public class TestActivity extends BaseActivity {
         setContentView(R.layout.activity_test);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        mainLayout = findViewById(R.id.mainLayout);
 
         // Add list fragment if this is first creation
         if (savedInstanceState == null) {
@@ -153,9 +159,10 @@ public class TestActivity extends BaseActivity {
     }
 
     private void getTestSelectedByExternalApp(FragmentManager fragmentManager, Intent intent) {
-        isExternalAppCall = true;
-        mExternalAppLanguageCode = intent.getStringExtra(SensorConstants.LANGUAGE);
-        CaddisflyApp.getApp().setAppLanguage(mExternalAppLanguageCode, isExternalAppCall, handler);
+
+        CaddisflyApp.getApp().setAppLanguage(
+                intent.getStringExtra(SensorConstants.LANGUAGE), true, handler);
+
         String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
 
         if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())) {
@@ -455,6 +462,33 @@ public class TestActivity extends BaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
             startTest();
+        } else {
+
+            String message;
+            switch (testInfo.getSubtype()) {
+                case BLUETOOTH:
+                    message = getString(R.string.location_permission);
+                    break;
+                default:
+                    message = getString(R.string.cameraAndStoragePermissions);
+                    break;
+            }
+
+            Snackbar snackbar = Snackbar
+                    .make(mainLayout, message,
+                            Snackbar.LENGTH_LONG)
+                    .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(this));
+
+            TypedValue typedValue = new TypedValue();
+            getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+
+            snackbar.setActionTextColor(typedValue.data);
+            View snackView = snackbar.getView();
+            TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
+            textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
+            textView.setTextColor(Color.WHITE);
+            snackbar.show();
         }
     }
 

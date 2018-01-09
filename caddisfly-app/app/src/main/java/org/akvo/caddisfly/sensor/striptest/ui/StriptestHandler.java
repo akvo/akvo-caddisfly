@@ -72,18 +72,17 @@ public final class StriptestHandler extends Handler {
     private int shadowQualityFailedCount = 0;
     private int tiltFailedCount = 0;
     private int distanceFailedCount = 0;
-    private int decodeFailedCount = 0;
-    //boolean showShadowMessage = false;
+    private static int decodeFailedCount = 0;
+    private static int successCount = 0;
+    private static int nextPatch;
+    private static int numPatches;
+    private static boolean captureNextImage;
     private String currentMessage = "";
     private String currentShadowMessage = "";
     private String newMessage = "";
     private String defaultMessage;
     private int mQualityScore = 0;
-    private int successCount = 0;
     private long startTimeMillis;
-    private int nextPatch;
-    private int numPatches;
-    private boolean captureNextImage;
     private int currentTestStage = 1;
     private int totalTestStages = 1;
 

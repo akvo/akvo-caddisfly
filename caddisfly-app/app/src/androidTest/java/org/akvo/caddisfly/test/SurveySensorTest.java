@@ -94,17 +94,11 @@ public class SurveySensorTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton(TestConstantKeys.NEXT);
-
-        clickExternalSourceButton(TestConstantKeys.NEXT);
-
-        clickExternalSourceButton(TestConstantKeys.NEXT);
-
-        clickExternalSourceButton(TestConstantKeys.NEXT);
-
-        clickExternalSourceButton(TestConstantKeys.NEXT);
+        TestUtil.nextSurveyPage(6);
 
         clickExternalSourceButton(0);
+
+        onView(withText("Next")).perform(click());
 
         SystemClock.sleep(12000);
 
@@ -113,7 +107,6 @@ public class SurveySensorTest {
         onView(allOf(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()));
 
         if (TestUtil.isEmulator()) {
-
             return;
         }
 

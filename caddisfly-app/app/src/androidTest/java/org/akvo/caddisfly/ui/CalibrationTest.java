@@ -39,6 +39,7 @@ import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -107,6 +108,7 @@ public class CalibrationTest {
 
     @Test
     @RequiresDevice
+    @Ignore
     public void testOutOfSequence() {
 
         saveCalibration("OutOfSequence", Constants.FLUORIDE_ID);
