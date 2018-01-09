@@ -51,7 +51,7 @@ public class NavigationController {
         } else {
             intent = new Intent(context, TestListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra("type", testType);
+            intent.putExtra(ConstantKey.TYPE, testType);
         }
 
         intent.putExtra("internal", true);

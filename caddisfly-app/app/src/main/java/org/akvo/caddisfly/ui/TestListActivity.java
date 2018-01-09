@@ -109,7 +109,7 @@ public class TestListActivity extends BaseActivity
         // Add list fragment if this is first creation
         if (savedInstanceState == null) {
 
-            TestType testType = (TestType) getIntent().getSerializableExtra("type");
+            TestType testType = (TestType) getIntent().getSerializableExtra(ConstantKey.TYPE);
 
             fragment = TestListFragment.newInstance(testType);
 

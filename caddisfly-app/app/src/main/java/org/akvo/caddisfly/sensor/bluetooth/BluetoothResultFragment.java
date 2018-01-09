@@ -193,38 +193,8 @@ public class BluetoothResultFragment extends Fragment {
             errorDialog.dismiss();
         }
 
-        // Display data received for diagnostics
-        if (AppPreferences.getShowDebugInfo()) {
-            AlertDialog.Builder builder;
-            final TextView showText = new TextView(getActivity());
-            showText.setText(String.format("%s = %s", testInfo.getName(), data));
-
-            showText.setPadding(50, 20, 40, 30);
-
-            builder = new AlertDialog.Builder(getActivity());
-            builder.setView(showText);
-
-            builder.setPositiveButton("Copy", (dialog1, which) -> {
-
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("", showText.getText());
-                if (clipboard != null) {
-                    clipboard.setPrimaryClip(clip);
-                }
-
-                Toast.makeText(getActivity(), "Data copied to clipboard",
-                        Toast.LENGTH_SHORT)
-                        .show();
-            });
-
-            builder.setNegativeButton(R.string.cancel, (dialog12, which) -> dialog12.dismiss());
-
-            AlertDialog dialog;
-            dialog = builder.create();
-            dialog.setTitle("Received Data");
-            dialog.setCancelable(false);
-            dialog.show();
-        }
+        // Display data received for diagnostic purposes
+        showDebugInfo(data);
 
         String resultTitles = ",,Version,Version,Id,Test,Range,,,,Date,Time,,,,,,,Result,Unit";
         String[] titles = resultTitles.split(",");
@@ -308,38 +278,7 @@ public class BluetoothResultFragment extends Fragment {
                             }
                         }
 
-                        if (testInfo.getResults().size() > 1) {
-
-                            for (Result subTest : testInfo.getResults()) {
-                                if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
-
-                                    if (subTest.getId() == 1) {
-                                        layoutResult1.setVisibility(View.VISIBLE);
-                                        textName1.setText(subTest.getName());
-                                        textUnit1.setText(subTest.getUnit());
-                                        textResult1.setText(result);
-                                    } else if (subTest.getId() == 2) {
-                                        layoutResult2.setVisibility(View.VISIBLE);
-                                        textName2.setText(subTest.getName());
-                                        textUnit2.setText(subTest.getUnit());
-                                        textResult2.setText(result);
-                                    } else if (subTest.getId() == 3) {
-                                        layoutResult3.setVisibility(View.VISIBLE);
-                                        textName3.setText(subTest.getName());
-                                        textUnit3.setText(subTest.getUnit());
-                                        textResult3.setText(result);
-                                    }
-
-                                    results.put(subTest.getId(), result);
-                                }
-                            }
-                        } else {
-                            layoutResult1.setVisibility(View.VISIBLE);
-                            textName1.setText(testInfo.getResults().get(0).getName());
-                            textResult1.setText(result);
-                            textUnit1.setText(testInfo.getResults().get(0).getUnit());
-                            results.put(1, result);
-                        }
+                        showResults(result, md610Id);
                     }
 
                     if (results.size() < 1 || resultCount != testInfo.getResults().size()) {
@@ -349,7 +288,6 @@ public class BluetoothResultFragment extends Fragment {
                 }
             }
         }
-
 
         if (dataOk && testId.equals(testInfo.getMd610Id())) {
             mAcceptButton.setVisibility(View.VISIBLE);
@@ -367,6 +305,75 @@ public class BluetoothResultFragment extends Fragment {
             }
 
             return false;
+        }
+    }
+
+    private void showResults(String result, String md610Id) {
+        if (testInfo.getResults().size() > 1) {
+
+            for (Result subTest : testInfo.getResults()) {
+                if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
+
+                    if (subTest.getId() == 1) {
+                        layoutResult1.setVisibility(View.VISIBLE);
+                        textName1.setText(subTest.getName());
+                        textUnit1.setText(subTest.getUnit());
+                        textResult1.setText(result);
+                    } else if (subTest.getId() == 2) {
+                        layoutResult2.setVisibility(View.VISIBLE);
+                        textName2.setText(subTest.getName());
+                        textUnit2.setText(subTest.getUnit());
+                        textResult2.setText(result);
+                    } else if (subTest.getId() == 3) {
+                        layoutResult3.setVisibility(View.VISIBLE);
+                        textName3.setText(subTest.getName());
+                        textUnit3.setText(subTest.getUnit());
+                        textResult3.setText(result);
+                    }
+
+                    results.put(subTest.getId(), result);
+                }
+            }
+        } else {
+            layoutResult1.setVisibility(View.VISIBLE);
+            textName1.setText(testInfo.getResults().get(0).getName());
+            textResult1.setText(result);
+            textUnit1.setText(testInfo.getResults().get(0).getUnit());
+            results.put(1, result);
+        }
+    }
+
+    private void showDebugInfo(String data) {
+        if (AppPreferences.getShowDebugInfo()) {
+            AlertDialog.Builder builder;
+            final TextView showText = new TextView(getActivity());
+            showText.setText(String.format("%s = %s", testInfo.getName(), data));
+
+            showText.setPadding(50, 20, 40, 30);
+
+            builder = new AlertDialog.Builder(getActivity());
+            builder.setView(showText);
+
+            builder.setPositiveButton("Copy", (dialog1, which) -> {
+
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("", showText.getText());
+                if (clipboard != null) {
+                    clipboard.setPrimaryClip(clip);
+                }
+
+                Toast.makeText(getActivity(), "Data copied to clipboard",
+                        Toast.LENGTH_SHORT)
+                        .show();
+            });
+
+            builder.setNegativeButton(R.string.cancel, (dialog12, which) -> dialog12.dismiss());
+
+            AlertDialog dialog;
+            dialog = builder.create();
+            dialog.setTitle("Received Data");
+            dialog.setCancelable(false);
+            dialog.show();
         }
     }
 

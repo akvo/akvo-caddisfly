@@ -35,6 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.FragmentListBinding;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -64,7 +65,7 @@ public class TestListFragment extends Fragment {
         TestListFragment fragment = new TestListFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable("type", testType);
+        args.putSerializable(ConstantKey.TYPE, testType);
         fragment.setArguments(args);
 
         return fragment;
@@ -79,7 +80,7 @@ public class TestListFragment extends Fragment {
                 R.layout.fragment_list, container, false);
 
         if (getArguments() != null) {
-            mTestType = (TestType) getArguments().get("type");
+            mTestType = (TestType) getArguments().get(ConstantKey.TYPE);
         }
 
         mTestInfoAdapter = new TestInfoAdapter(mTestInfoClickCallback);

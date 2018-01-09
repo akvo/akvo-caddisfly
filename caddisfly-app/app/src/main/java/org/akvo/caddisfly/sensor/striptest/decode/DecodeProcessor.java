@@ -3,7 +3,6 @@ package org.akvo.caddisfly.sensor.striptest.decode;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
@@ -38,24 +37,11 @@ public class DecodeProcessor {
     private static final int DEGREES_90 = 90;
     private static final int DEGREES_180 = 180;
     private static final int DEGREES_0 = 0;
-    private static final String TAG = "Caddisfly-DecodeProc";
     // holds reference to the striptestHandler, which we need to pass messages
-    private StriptestHandler striptestHandler;
-    private HandlerThread mDecodeThread;
-    private Handler mDecodeHandler;
-    // instance of BitMatrixCreator
-    private BitMatrixCreator mBitMatrixCreator;
-    private int mCurrentDelay;
-    /******************************************* find possible centers **************************/
-    private Runnable runFindPossibleCenters = () -> {
-        try {
-            findPossibleCenters();
-        } catch (Exception e) {
-            // TODO find out how we gracefully get out in this case
-            //throw new RuntimeException("Can't start finding centers");
-        }
-    };
-    private Runnable runExposureQualityCheck = () -> {
+    private final StriptestHandler striptestHandler;
+
+    /********************************** check exposure ******************************************/
+    private final Runnable runExposureQualityCheck = () -> {
         try {
             checkExposureQuality();
         } catch (Exception e) {
@@ -63,30 +49,40 @@ public class DecodeProcessor {
         }
     };
     /*********************************** check shadow quality ***********************************/
-    private Runnable runShadowQualityCheck = () -> {
+    private final Runnable runShadowQualityCheck = () -> {
         try {
             checkShadowQuality();
         } catch (Exception e) {
             // TODO find out how we gracefully get out in this case
         }
     };
-    /*********************************** store data ***********************************************/
-
-    private Runnable runStoreData = () -> {
+    /********************************** calibration *********************************************/
+    private final Runnable runCalibration = () -> {
         try {
-            storeData();
+            calibrateCard();
         } catch (Exception e) {
             // TODO find out how we gracefully get out in this case
         }
     };
-
-
-
-    /* ********************************* check exposure *****************************************/
-    /********************************** calibration ***********************************************/
-    private Runnable runCalibration = () -> {
+    private HandlerThread mDecodeThread;
+    private Handler mDecodeHandler;
+    // instance of BitMatrixCreator
+    private BitMatrixCreator mBitMatrixCreator;
+    /******************************************* find possible centers **************************/
+    private final Runnable runFindPossibleCenters = () -> {
         try {
-            calibrateCard();
+            findPossibleCenters();
+        } catch (Exception e) {
+            // TODO find out how we gracefully get out in this case
+            //throw new RuntimeException("Can't start finding centers");
+        }
+    };
+    private int mCurrentDelay;
+
+    /*********************************** store data *********************************************/
+    private final Runnable runStoreData = () -> {
+        try {
+            storeData();
         } catch (Exception e) {
             // TODO find out how we gracefully get out in this case
         }
@@ -154,7 +150,6 @@ public class DecodeProcessor {
 
         final int decodeHeight = decodeData.getDecodeHeight();
         final int decodeWidth = decodeData.getDecodeWidth();
-        final int rowStride = decodeWidth;
 
         if (mBitMatrixCreator == null) {
             mBitMatrixCreator = new BitMatrixCreator(decodeWidth, decodeHeight);
@@ -162,11 +157,11 @@ public class DecodeProcessor {
 
         // create a black and white bit matrix from our data. Cut out the part that interests us
         try {
-            bitMatrix = BitMatrixCreator.createBitMatrix(decodeData.getDecodeImageByteArray(), rowStride, decodeWidth, decodeHeight, 0, 0,
+            bitMatrix = BitMatrixCreator.createBitMatrix(decodeData.getDecodeImageByteArray(),
+                    decodeWidth, decodeWidth, decodeHeight, 0, 0,
                     (int) Math.round(decodeHeight * Constants.CROP_FINDER_PATTERN_FACTOR),
                     decodeHeight);
         } catch (Exception e) {
-            Log.e(TAG, "error in bitmatrix", e);
             MessageUtils.sendMessage(striptestHandler, StriptestHandler.DECODE_FAILED_MESSAGE, 0);
             return;
         }
@@ -192,7 +187,6 @@ public class DecodeProcessor {
             } catch (Exception ignored) {
                 // patterns where not detected.
                 decodeData.setPatternInfo(null);
-                Log.d(TAG, "couldn't find enough patterns.");
                 MessageUtils.sendMessage(striptestHandler, StriptestHandler.DECODE_FAILED_MESSAGE, 0);
                 return;
             }
@@ -210,12 +204,12 @@ public class DecodeProcessor {
 //            decodeData.setDecodeSize(new Size(decodeWidth, decodeHeight));
 
             // get the version number from the barcode printed on the card
-            if (possibleCenters != null && possibleCenters.size() == 4 && !decodeData.isCardVersionEstablished()) {
+            if (possibleCenters.size() == 4 && !decodeData.isCardVersionEstablished()) {
                 int versionNumber = CalibrationCardUtils.decodeCalibrationCardCode(possibleCenters, bitMatrix);
                 decodeData.addVersionNumber(versionNumber);
             }
 
-            // send the message that the decoding was succesfull
+            // send the message that the decoding was successful
             MessageUtils.sendMessage(striptestHandler, StriptestHandler.DECODE_SUCCEEDED_MESSAGE, 0);
         }
     }
@@ -237,23 +231,23 @@ public class DecodeProcessor {
     private void checkExposureQuality() {
         DecodeData decodeData = StriptestHandler.getDecodeData();
         int maxY;
-        int maxmaxY = 0;
+        int maxMaxY = 0;
         if (decodeData.getFinderPatternsFound() != null) {
             for (FinderPattern fp : decodeData.getFinderPatternsFound()) {
                 maxY = ImageUtils.maxY(decodeData, fp);
-                if (maxY > maxmaxY) {
-                    maxmaxY = maxY;
+                if (maxY > maxMaxY) {
+                    maxMaxY = maxY;
                 }
             }
         }
 
-        if (maxmaxY < Constants.MAX_LUM_LOWER) {
+        if (maxMaxY < Constants.MAX_LUM_LOWER) {
             // send the message that the Exposure should be changed upwards
             MessageUtils.sendMessage(striptestHandler, StriptestHandler.CHANGE_EXPOSURE_MESSAGE, 2);
             return;
         }
 
-        if (maxmaxY > Constants.MAX_LUM_UPPER) {
+        if (maxMaxY > Constants.MAX_LUM_UPPER) {
             // send the message that the Exposure should be changed downwards
             MessageUtils.sendMessage(striptestHandler, StriptestHandler.CHANGE_EXPOSURE_MESSAGE, -2);
             return;
@@ -350,11 +344,11 @@ public class DecodeProcessor {
             decodeData.setShadowPoints(badPoints);
 
             // compute percentage of good points
-            float devPerc = 100f - (100.0f * numDev) / points.length;
-            decodeData.setPercentageShadow(Math.min(Math.max(50f, devPerc), 100f));
+            float devPercent = 100f - (100.0f * numDev) / points.length;
+            decodeData.setPercentageShadow(Math.min(Math.max(50f, devPercent), 100f));
 
             // if the percentage of good point is under the limit (something like 90%), we fail the test
-            if (devPerc < Constants.SHADOW_PERCENTAGE_LIMIT) {
+            if (devPercent < Constants.SHADOW_PERCENTAGE_LIMIT) {
                 MessageUtils.sendMessage(striptestHandler, StriptestHandler.SHADOW_QUALITY_FAILED_MESSAGE, 0);
             } else {
                 MessageUtils.sendMessage(striptestHandler, StriptestHandler.SHADOW_QUALITY_OK_MESSAGE, 0);
@@ -391,7 +385,7 @@ public class DecodeProcessor {
         PerspectiveTransform cardToImageTransform = decodeData.getCardToImageTransform();
         TestInfo testInfo = decodeData.getTestInfo();
 
-        float[] illum = decodeData.getIllumData();
+        float[] illumination = decodeData.getIllumData();
         RealMatrix calMatrix = decodeData.getCalMatrix();
 
         // we cut of an edge of 1mm at the edges, to avoid any white space captured at the edge
@@ -417,12 +411,24 @@ public class DecodeProcessor {
         int rowStride = decodeData.getDecodeWidth();
         int frameSize = rowStride * decodeData.getDecodeHeight();
 
-        int uvPos, xIm, yIm;
-        float xCard, yCard, Xcal, Ycal, Zcal;
-        float Y, U, V;
+        int uvPos;
+        int xIm;
+        int yIm;
+        float xCard;
+        float yCard;
+
+        float xCal;
+        float yCal;
+        float zCal;
+
+        float Y;
+        float U;
+        float V;
+
         float[] col;
         float[] xyz;
-        float[] coef = new float[16];
+        float[] coefficient = new float[16];
+
         float c0c0;
         float c1c1;
         float c2c2;
@@ -451,18 +457,18 @@ public class DecodeProcessor {
                 uvPos = frameSize + (yIm >> 1) * rowStride;
                 Y = (0xff & iDataArray[xIm + yIm * rowStride]);
                 U = (0xff & ((int) iDataArray[uvPos + (xIm & ~1) + 1])) - 128;
-                V = (0xff & ((int) iDataArray[uvPos + (xIm & ~1) + 0])) - 128;
+                V = (0xff & ((int) iDataArray[uvPos + (xIm & ~1)])) - 128;
 
                 xCard = xi * mmPerPixel + tlx;
                 yCard = yi * mmPerPixel + tly;
 
                 //Apply illumination transform
-                Y = capValue(Y - (illum[0] * xCard + illum[1] * yCard +
-                        +illum[2] * xCard * xCard + illum[3] * yCard * yCard
-                        + illum[4] * xCard * yCard + illum[5]) + illum[6], 0.0f, 255.0f);
+                Y = capValue(Y - (illumination[0] * xCard + illumination[1] * yCard +
+                        +illumination[2] * xCard * xCard + illumination[3] * yCard * yCard
+                        + illumination[4] * xCard * yCard + illumination[5]) + illumination[6], 0.0f, 255.0f);
 
                 // from here on, it is all just colour transforms fixed values.
-                // therefore, we try to shortcut this by using a hashmap.
+                // therefore, we try to shortcut this by using a hashMap.
                 label = Math.round(Y) + "|" + Math.round(U) + "|" + Math.round(V);
                 if (colourMap.containsKey(label)) {
                     xyz = colourMap.get(label);
@@ -477,38 +483,38 @@ public class DecodeProcessor {
                     c0c0 = col[0] * col[0];
                     c1c1 = col[1] * col[1];
                     c2c2 = col[2] * col[2];
-                    coef[0] = col[0];
-                    coef[1] = col[1];
-                    coef[2] = col[2];
-                    coef[3] = (float) Math.sqrt(col[0] * col[1]); // sqrt(R * G)
-                    coef[4] = (float) Math.sqrt(col[1] * col[2]); // sqrt(G * B)
-                    coef[5] = (float) Math.sqrt(col[0] * col[2]); // sqrt(R * B)
-                    coef[6] = (float) Math.pow(col[0] * c1c1, ONE_THIRD); // RGG ^ 1/3
-                    coef[7] = (float) Math.pow(col[1] * c2c2, ONE_THIRD); // GBB ^ 1/3
-                    coef[8] = (float) Math.pow(col[0] * c2c2, ONE_THIRD); // RBB ^ 1/3
-                    coef[9] = (float) Math.pow(col[1] * c0c0, ONE_THIRD); // GRR ^ 1/3
-                    coef[10] = (float) Math.pow(col[2] * c1c1, ONE_THIRD); // BGG ^ 1/3
-                    coef[11] = (float) Math.pow(col[2] * c0c0, ONE_THIRD); // BRR ^ 1/3
-                    coef[12] = (float) Math.pow(col[0] * col[1] * col[2], ONE_THIRD); // RGB ^ 1/3
+                    coefficient[0] = col[0];
+                    coefficient[1] = col[1];
+                    coefficient[2] = col[2];
+                    coefficient[3] = (float) Math.sqrt(col[0] * col[1]); // sqrt(R * G)
+                    coefficient[4] = (float) Math.sqrt(col[1] * col[2]); // sqrt(G * B)
+                    coefficient[5] = (float) Math.sqrt(col[0] * col[2]); // sqrt(R * B)
+                    coefficient[6] = (float) Math.pow(col[0] * c1c1, ONE_THIRD); // RGG ^ 1/3
+                    coefficient[7] = (float) Math.pow(col[1] * c2c2, ONE_THIRD); // GBB ^ 1/3
+                    coefficient[8] = (float) Math.pow(col[0] * c2c2, ONE_THIRD); // RBB ^ 1/3
+                    coefficient[9] = (float) Math.pow(col[1] * c0c0, ONE_THIRD); // GRR ^ 1/3
+                    coefficient[10] = (float) Math.pow(col[2] * c1c1, ONE_THIRD); // BGG ^ 1/3
+                    coefficient[11] = (float) Math.pow(col[2] * c0c0, ONE_THIRD); // BRR ^ 1/3
+                    coefficient[12] = (float) Math.pow(col[0] * col[1] * col[2], ONE_THIRD); // RGB ^ 1/3
 
-                    Xcal = 0;
-                    Ycal = 0;
-                    Zcal = 0;
+                    xCal = 0;
+                    yCal = 0;
+                    zCal = 0;
 
                     for (int i = 0; i <= 12; i++) {
-                        Xcal += coef[i] * calMatrix.getEntry(i, 0);
-                        Ycal += coef[i] * calMatrix.getEntry(i, 1);
-                        Zcal += coef[i] * calMatrix.getEntry(i, 2);
+                        xCal += coefficient[i] * calMatrix.getEntry(i, 0);
+                        yCal += coefficient[i] * calMatrix.getEntry(i, 1);
+                        zCal += coefficient[i] * calMatrix.getEntry(i, 2);
                     }
 
                     // store the result in the image
                     // XYZ is scale 0..100
-                    XYZ[xi][yi][0] = Xcal;
-                    XYZ[xi][yi][1] = Ycal;
-                    XYZ[xi][yi][2] = Zcal;
+                    XYZ[xi][yi][0] = xCal;
+                    XYZ[xi][yi][1] = yCal;
+                    XYZ[xi][yi][2] = zCal;
 
-                    // store the colour in the hashmap
-                    colourMap.put(label, new float[]{Xcal, Ycal, Zcal});
+                    // store the colour in the hashMap
+                    colourMap.put(label, new float[]{xCal, yCal, zCal});
                 }
             }
         }
@@ -544,7 +550,7 @@ public class DecodeProcessor {
         // get calibrationPatches as map
         CalibrationCardData calCardData = StriptestHandler.getCalCardData();
         DecodeData decodeData = StriptestHandler.getDecodeData();
-        Map<String, float[]> calibXYZMap = CalibrationCardUtils.calCardXYZ(calCardData.getCalValues());
+        Map<String, float[]> calXYZMap = CalibrationCardUtils.calCardXYZ(calCardData.getCalValues());
 
         // measure patches
         // YUV here has full scale: [0..255, -128..128, -128 .. 128]
@@ -558,28 +564,30 @@ public class DecodeProcessor {
 
         // sRGB D65 to linear sRGB to XYZ D65
         // XYZ is scaled [0..100]
-        Map<String, float[]> patchXYZMap = CalibrationCardUtils.linearRGBtoXYZ(patchRGBMap);
+//        Map<String, float[]> patchXYZMap = CalibrationCardUtils.linearRGBtoXYZ(patchRGBMap);
 
         // Set calibration goal RGB values so we can display them later
-        Map<String, int[]> patchCalibRGBMap = CalibrationCardUtils.XYZtoRGBint(calibXYZMap);
-        StriptestHandler.getDecodeData().setCalibrationPatchRGB(patchCalibRGBMap);
+        Map<String, int[]> patchCalRGBMap = CalibrationCardUtils.XYZtoRGBint(calXYZMap);
+        StriptestHandler.getDecodeData().setCalibrationPatchRGB(patchCalRGBMap);
 
         // measure the distance in terms of deltaE2000
-        float[] deltaE2000Stats = CalibrationCardUtils.deltaE2000stats(calibXYZMap, patchXYZMap);
+//        float[] deltaE2000Stats = CalibrationCardUtils.deltaE2000stats(calXYZMap, patchXYZMap);
 
         Map<String, float[]> resultXYZMap;
 //        float[] deltaE2000Stats2;
 
         // perform 3rd order root-polynomial calibration on RGB -> XYZ data
-        resultXYZMap = CalibrationUtils.rootPolynomialCalibration(decodeData, calibXYZMap, patchRGBMap);
-        deltaE2000Stats = CalibrationCardUtils.deltaE2000stats(calibXYZMap, resultXYZMap);
+        resultXYZMap = CalibrationUtils.rootPolynomialCalibration(decodeData, calXYZMap, patchRGBMap);
+
+        // measure the distance in terms of deltaE2000
+        float[] deltaE2000Stats = CalibrationCardUtils.deltaE2000stats(calXYZMap, resultXYZMap);
 
         // what are the worst stats?
-//        String[] worst = CalibrationCardUtils.worstPatches(calibXYZMap, resultXYZMap);
+//        String[] worst = CalibrationCardUtils.worstPatches(calXYZMap, resultXYZMap);
 
         // set calibrated colours so we can display them
-        Map<String, int[]> patchRGBCalibMap = CalibrationCardUtils.XYZtoRGBint(resultXYZMap);
-        decodeData.setMeasuredPatchRGB(patchRGBCalibMap);
+        Map<String, int[]> patchRGBCalMap = CalibrationCardUtils.XYZtoRGBint(resultXYZMap);
+        decodeData.setMeasuredPatchRGB(patchRGBCalMap);
 
         // set deltaE2000 stats
         decodeData.setDeltaEStats(deltaE2000Stats);

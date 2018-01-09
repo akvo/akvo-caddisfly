@@ -25,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +55,7 @@ public class SensorsTest {
     @Test
     public void sensorCount() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.SENSOR);
+        intent.putExtra(ConstantKey.TYPE, TestType.SENSOR);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -76,7 +77,7 @@ public class SensorsTest {
     @Test
     public void sensorTitles() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.SENSOR);
+        intent.putExtra(ConstantKey.TYPE, TestType.SENSOR);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -108,7 +109,7 @@ public class SensorsTest {
     public void clickSensorItem() {
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.SENSOR);
+        intent.putExtra(ConstantKey.TYPE, TestType.SENSOR);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 

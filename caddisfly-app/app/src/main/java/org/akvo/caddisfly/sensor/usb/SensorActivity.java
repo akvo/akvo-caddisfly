@@ -366,16 +366,7 @@ public class SensorActivity extends BaseActivity {
 
             String[] resultArray = tempValue.split(",");
 
-            if (AppPreferences.getShowDebugInfo()) {
-                final String finalValue = tempValue;
-                runOnUiThread(() -> {
-                    if (debugToast == null) {
-                        debugToast = Toast.makeText(getBaseContext(), finalValue, Toast.LENGTH_LONG);
-                    }
-                    debugToast.setText(finalValue);
-                    debugToast.show();
-                });
-            }
+            showDebugInfo(tempValue);
 
             if (resultArray.length == testInfo.getResponseFormat().split(",").length) {
 
@@ -399,42 +390,60 @@ public class SensorActivity extends BaseActivity {
                 }
 
                 // display the results
-                if (testInfo.getResults().size() > 0 && results.size() > 0
-                        && !results.get(1).equals(EMPTY_STRING)) {
-                    b.textResult.setText(results.get(1));
-                    b.textUnit.setText(testInfo.getResults().get(0).getUnit());
-                    b.textResult.setVisibility(View.VISIBLE);
-                    b.textUnit.setVisibility(View.VISIBLE);
-                    b.progressWait.setVisibility(View.GONE);
-                    b.buttonAcceptResult.setVisibility(View.VISIBLE);
-                } else {
-                    b.textResult.setText(EMPTY_STRING);
-                    b.textUnit.setText(EMPTY_STRING);
-                    b.textResult.setVisibility(View.INVISIBLE);
-                    b.textUnit.setVisibility(View.INVISIBLE);
-                    b.progressWait.setVisibility(View.VISIBLE);
-                    b.buttonAcceptResult.setVisibility(View.GONE);
-                    b.textSubtitle2.setText(R.string.dipSensorInSample);
-                }
-
-                if (testInfo.getResults().size() > 1 && results.size() > 1) {
-                    b.textResult2.setText(results.get(2));
-                    b.textUnit2.setText(testInfo.getResults().get(1).getUnit());
-                    b.textResult2.setVisibility(View.VISIBLE);
-                    b.textUnit2.setVisibility(View.VISIBLE);
-                } else {
-                    b.textResult2.setVisibility(View.GONE);
-                    b.textUnit2.setVisibility(View.GONE);
-                }
-
-                // if test is not via survey then do not show the accept button
-                if (mIsInternal) {
-                    b.buttonAcceptResult.setVisibility(View.GONE);
-                }
+                showResults();
 
                 b.layoutResult.animate().alpha(1f).setDuration(ANIMATION_DURATION);
                 hideNotConnectedView();
             }
+        }
+    }
+
+    private void showResults() {
+        if (testInfo.getResults().size() > 0 && results.size() > 0
+                && !results.get(1).equals(EMPTY_STRING)) {
+            b.textResult.setText(results.get(1));
+            b.textUnit.setText(testInfo.getResults().get(0).getUnit());
+            b.textResult.setVisibility(View.VISIBLE);
+            b.textUnit.setVisibility(View.VISIBLE);
+            b.progressWait.setVisibility(View.GONE);
+            b.buttonAcceptResult.setVisibility(View.VISIBLE);
+        } else {
+            b.textResult.setText(EMPTY_STRING);
+            b.textUnit.setText(EMPTY_STRING);
+            b.textResult.setVisibility(View.INVISIBLE);
+            b.textUnit.setVisibility(View.INVISIBLE);
+            b.progressWait.setVisibility(View.VISIBLE);
+            b.buttonAcceptResult.setVisibility(View.GONE);
+            b.textSubtitle2.setText(R.string.dipSensorInSample);
+        }
+
+        if (testInfo.getResults().size() > 1 && results.size() > 1) {
+            b.textResult2.setText(results.get(2));
+            b.textUnit2.setText(testInfo.getResults().get(1).getUnit());
+            b.textResult2.setVisibility(View.VISIBLE);
+            b.textUnit2.setVisibility(View.VISIBLE);
+        } else {
+            b.textResult2.setVisibility(View.GONE);
+            b.textUnit2.setVisibility(View.GONE);
+        }
+
+        // if test is not via survey then do not show the accept button
+        if (mIsInternal) {
+            b.buttonAcceptResult.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("ShowToast")
+    private void showDebugInfo(String tempValue) {
+        if (AppPreferences.getShowDebugInfo()) {
+            final String finalValue = tempValue;
+            runOnUiThread(() -> {
+                if (debugToast == null) {
+                    debugToast = Toast.makeText(getBaseContext(), finalValue, Toast.LENGTH_LONG);
+                }
+                debugToast.setText(finalValue);
+                debugToast.show();
+            });
         }
     }
 

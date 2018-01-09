@@ -14,5 +14,7 @@ public class ConstantKey {
 
     public static final String TEST_STAGE = NAMESPACE_PREFIX + "testStage";
     public static final String IMAGE = NAMESPACE_PREFIX + "image";
+
+    public static final String TYPE = NAMESPACE_PREFIX + "type";
 }
 

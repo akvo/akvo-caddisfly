@@ -25,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class PhotometerTest {
     public void testCount() throws Exception {
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.BLUETOOTH);
+        intent.putExtra(ConstantKey.TYPE, TestType.BLUETOOTH);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -65,7 +66,7 @@ public class PhotometerTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(50, recyclerView.getChildCount());
+        assertSame(51, recyclerView.getAdapter().getItemCount());
 
         assertEquals("Fluoride",
                 ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(25).getName());
@@ -76,7 +77,7 @@ public class PhotometerTest {
     @Test
     public void sensorTitles() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.BLUETOOTH);
+        intent.putExtra(ConstantKey.TYPE, TestType.BLUETOOTH);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -103,7 +104,7 @@ public class PhotometerTest {
     public void clickTest() {
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.BLUETOOTH);
+        intent.putExtra(ConstantKey.TYPE, TestType.BLUETOOTH);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -113,7 +114,7 @@ public class PhotometerTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(50, recyclerView.getChildCount());
+        assertSame(51, recyclerView.getAdapter().getItemCount());
 
         recyclerView.getChildAt(1).performClick();
 

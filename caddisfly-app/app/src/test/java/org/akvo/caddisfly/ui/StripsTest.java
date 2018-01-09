@@ -25,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class StripsTest {
     public void testCount() throws Exception {
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.STRIP_TEST);
+        intent.putExtra(ConstantKey.TYPE, TestType.STRIP_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -78,7 +79,7 @@ public class StripsTest {
     @Test
     public void testTitles() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.STRIP_TEST);
+        intent.putExtra(ConstantKey.TYPE, TestType.STRIP_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -100,7 +101,7 @@ public class StripsTest {
     public void clickTest() {
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.STRIP_TEST);
+        intent.putExtra(ConstantKey.TYPE, TestType.STRIP_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 

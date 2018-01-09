@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.TestInfo;
@@ -86,7 +87,7 @@ public class ChamberTest {
     @Test
     public void testCount() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.CHAMBER_TEST);
+        intent.putExtra(ConstantKey.TYPE, TestType.CHAMBER_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
@@ -114,7 +115,7 @@ public class ChamberTest {
     @Test
     public void testTitles() throws Exception {
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.CHAMBER_TEST);
+        intent.putExtra(ConstantKey.TYPE, TestType.CHAMBER_TEST);
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
         controller.start().visible();
@@ -135,7 +136,7 @@ public class ChamberTest {
         String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         Intent intent = new Intent();
-        intent.putExtra("type", TestType.CHAMBER_TEST);
+        intent.putExtra(ConstantKey.TYPE, TestType.CHAMBER_TEST);
 
         ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
 
