@@ -23,7 +23,7 @@ public final class Constants {
     public static final int GET_READY_SECONDS = 12;
     public static final int MIN_SHOW_TIMER_SECONDS = 5;
 
-    public static final int MAX_COLOR_DISTANCE = 20;
+    public static final int MAX_COLOR_DISTANCE = 23;
 
     private Constants() {
     }
