@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +35,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -252,9 +252,6 @@ public class BluetoothResultFragment extends Fragment {
                         if (isText) {
                             if (ranges.length > 1) {
                                 result = handleOutOfRangeResult(ranges, result);
-                                if (result == null) {
-                                    continue;
-                                }
                             } else {
                                 return false;
                             }
@@ -290,30 +287,33 @@ public class BluetoothResultFragment extends Fragment {
         }
     }
 
-    @Nullable
-    private String handleOutOfRangeResult(String[] ranges, String result) {
-        if (result.equalsIgnoreCase("underrange")) {
+    private String handleOutOfRangeResult(String[] ranges, String data) {
+
+        DecimalFormat df = new DecimalFormat("#.###");
+
+        if (data.equalsIgnoreCase("underrange")) {
             try {
                 //noinspection ResultOfMethodCallIgnored
                 Double.parseDouble(ranges[0]);
             } catch (Exception e) {
-                ranges[0] = String.valueOf(testInfo.getMinRangeValue());
+                ranges[0] = df.format(testInfo.getMinRangeValue());
             }
-            result = "<" + ranges[0];
-        } else if (result.equalsIgnoreCase("overrange")) {
+            if (ranges[0].equals("0")) {
+                return "0";
+            } else {
+                return "<" + ranges[0];
+            }
+
+        } else if (data.equalsIgnoreCase("overrange")) {
             try {
                 //noinspection ResultOfMethodCallIgnored
                 Double.parseDouble(ranges[1]);
             } catch (Exception e) {
-                ranges[1] = String.valueOf(testInfo.getMaxRangeValue());
+                ranges[1] = df.format(testInfo.getMaxRangeValue());
             }
-            result = ">" + ranges[1];
-        } else if (result.equalsIgnoreCase("???")) {
-            result = "";
-        } else {
-            return null;
+            return ">" + ranges[1];
         }
-        return result;
+        return "";
     }
 
     private void showResults(String result, String md610Id) {
