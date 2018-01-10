@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -250,27 +251,8 @@ public class BluetoothResultFragment extends Fragment {
 
                         if (isText) {
                             if (ranges.length > 1) {
-                                if (result.equalsIgnoreCase("underrange")) {
-                                    try {
-                                        //noinspection ResultOfMethodCallIgnored
-                                        Double.parseDouble(ranges[0]);
-                                    } catch (Exception e) {
-                                        //todo fix this
-                                        ranges[0] = " min";
-                                    }
-                                    result = "<" + ranges[0];
-                                } else if (result.equalsIgnoreCase("overrange")) {
-                                    try {
-                                        //noinspection ResultOfMethodCallIgnored
-                                        Double.parseDouble(ranges[1]);
-                                    } catch (Exception e) {
-                                        //todo fix this
-                                        ranges[1] = " max";
-                                    }
-                                    result = ">" + ranges[1];
-                                } else if (result.equalsIgnoreCase("???")) {
-                                    result = "";
-                                } else {
+                                result = handleOutOfRangeResult(ranges, result);
+                                if (result == null) {
                                     continue;
                                 }
                             } else {
@@ -306,6 +288,32 @@ public class BluetoothResultFragment extends Fragment {
 
             return false;
         }
+    }
+
+    @Nullable
+    private String handleOutOfRangeResult(String[] ranges, String result) {
+        if (result.equalsIgnoreCase("underrange")) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                Double.parseDouble(ranges[0]);
+            } catch (Exception e) {
+                ranges[0] = String.valueOf(testInfo.getMinRangeValue());
+            }
+            result = "<" + ranges[0];
+        } else if (result.equalsIgnoreCase("overrange")) {
+            try {
+                //noinspection ResultOfMethodCallIgnored
+                Double.parseDouble(ranges[1]);
+            } catch (Exception e) {
+                ranges[1] = String.valueOf(testInfo.getMaxRangeValue());
+            }
+            result = ">" + ranges[1];
+        } else if (result.equalsIgnoreCase("???")) {
+            result = "";
+        } else {
+            return null;
+        }
+        return result;
     }
 
     private void showResults(String result, String md610Id) {
@@ -356,15 +364,17 @@ public class BluetoothResultFragment extends Fragment {
 
             builder.setPositiveButton("Copy", (dialog1, which) -> {
 
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("", showText.getText());
-                if (clipboard != null) {
-                    clipboard.setPrimaryClip(clip);
-                }
+                if (getActivity() != null) {
+                    ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("", showText.getText());
+                    if (clipboard != null) {
+                        clipboard.setPrimaryClip(clip);
+                    }
 
-                Toast.makeText(getActivity(), "Data copied to clipboard",
-                        Toast.LENGTH_SHORT)
-                        .show();
+                    Toast.makeText(getActivity(), "Data copied to clipboard",
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
             });
 
             builder.setNegativeButton(R.string.cancel, (dialog12, which) -> dialog12.dismiss());

@@ -28,7 +28,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.helper.SwatchHelper;
-import org.akvo.caddisfly.util.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -282,6 +281,26 @@ public class TestInfo implements Parcelable {
         return ranges;
     }
 
+    public double getMinRangeValue() {
+        String[] array = ranges.split(",");
+
+        try {
+            return Double.valueOf(array[0]);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    public double getMaxRangeValue() {
+        String[] array = ranges.split(",");
+
+        try {
+            return Double.valueOf(array[array.length - 1]);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     public List<Integer> getDilutions() {
         return dilutions;
     }
@@ -513,7 +532,7 @@ public class TestInfo implements Parcelable {
         }
 
         this.calibrations = newCalibrations;
-        swatches = SwatchHelper.generateGradient(swatches, ColorUtil.ColorModel.RGB);
+        swatches = SwatchHelper.generateGradient(swatches);
     }
 
     public int getDilution() {
@@ -542,14 +561,6 @@ public class TestInfo implements Parcelable {
 
     public Integer getMonthsValid() {
         return monthsValid;
-    }
-
-    public void setMonthsValid(Integer monthsValid) {
-        this.monthsValid = monthsValid;
-    }
-
-    public Integer getHueTrend() {
-        return hueTrend;
     }
 
     public Boolean getHasImage() {

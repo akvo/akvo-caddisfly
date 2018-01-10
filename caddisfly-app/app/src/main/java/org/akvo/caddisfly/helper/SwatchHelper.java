@@ -271,8 +271,7 @@ public final class SwatchHelper {
      * @return The list of generated color swatches
      */
     @SuppressWarnings("SameParameterValue")
-    public static List<Swatch> generateGradient(
-            List<Swatch> swatches, ColorUtil.ColorModel colorModel) {
+    public static List<Swatch> generateGradient(List<Swatch> swatches) {
 
         List<Swatch> list = new ArrayList<>();
 
@@ -286,19 +285,7 @@ public final class SwatchHelper {
             int steps = (int) ((endValue - startValue) / increment);
 
             for (int j = 0; j < steps; j++) {
-                int color = 0;
-                switch (colorModel) {
-                    case RGB:
-                        color = ColorUtil.getGradientColor(startColor, endColor, steps, j);
-                        break;
-                    case LAB:
-                        color = ColorUtil.labToColor(ColorUtil.getGradientLabColor(ColorUtil.colorToLab(startColor),
-                                ColorUtil.colorToLab(endColor), steps, j));
-                        break;
-                    default:
-                        break;
-                }
-
+                int color = ColorUtil.getGradientColor(startColor, endColor, steps, j);
                 list.add(new Swatch(startValue + (j * increment), color, Color.TRANSPARENT));
             }
         }

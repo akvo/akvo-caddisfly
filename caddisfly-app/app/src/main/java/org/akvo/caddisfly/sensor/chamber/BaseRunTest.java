@@ -324,6 +324,8 @@ public class BaseRunTest extends Fragment implements RunTest {
 
     protected void releaseResources() {
 
+        delayHandler.removeCallbacksAndMessages(null);
+
         if (alertDialogToBeDestroyed != null) {
             alertDialogToBeDestroyed.dismiss();
         }

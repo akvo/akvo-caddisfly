@@ -22,9 +22,4 @@
     <!-- 0x2341 / Arduino -->
     <usb-device vendor-id="9025" />
 
-    <!-- all device of UVC -->
-    <usb-device
-        class="239"
-        subclass="2" />
-
 </resources>

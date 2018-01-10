@@ -69,12 +69,9 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
             ((TextView) rowView.findViewById(R.id.textName)).setText(
                     String.format(Locale.getDefault(), "%.3f", colorArray.get(position).getValue()));
 
-            double distance = 0;
             double distanceRgb = 0;
             if (position > 0) {
                 int previousColor = colorArray.get(position - 1).getColor();
-                distance = ColorUtil.getColorDistanceLab(ColorUtil.colorToLab(previousColor),
-                        ColorUtil.colorToLab(color));
                 distanceRgb = ColorUtil.getColorDistance(previousColor, color);
             }
 
@@ -86,7 +83,7 @@ class DiagnosticSwatchesAdapter extends ArrayAdapter<Swatch> {
                             distanceRgb, "rgb", ColorUtil.getColorRgbString(color)));
             ((TextView) rowView.findViewById(R.id.textHsv)).setText(
                     String.format(Locale.getDefault(), "d:%.2f  %s: %.0f  %.2f  %.2f",
-                            distance, "hsv", colorHsv[0], colorHsv[1], colorHsv[1]));
+                            distanceRgb, "hsv", colorHsv[0], colorHsv[1], colorHsv[1]));
         } else {
             return view;
         }

@@ -26,8 +26,6 @@ import android.util.SparseIntArray;
 
 import org.akvo.caddisfly.common.ChamberTestConfig;
 import org.akvo.caddisfly.model.ColorInfo;
-import org.akvo.caddisfly.model.LabColor;
-import org.akvo.caddisfly.model.XyzColor;
 
 import java.util.Locale;
 
@@ -39,61 +37,28 @@ import timber.log.Timber;
 public final class ColorUtil {
 
     /**
-     * The default color model used for analysis
-     */
-    private static final ColorModel DEFAULT_COLOR_MODEL = ColorModel.RGB;
-
-    /**
-     * The maximum color distance before the color is considered out of range
-     */
-    private static final double Xn = 0.950470;
-    private static final double Yn = 1.0;
-    private static final double Zn = 1.088830;
-    private static final double t0 = 0.137931034;  // 4 / 29;
-    private static final double t1 = 0.206896552;  // 6 / 29;
-    private static final double t2 = 0.12841855;   // 3 * t1 * t1;
-    private static final double t3 = 0.008856452; // t1 * t1 * t1;
-    private static final int MAX_COLOR_DISTANCE_LAB = 4;
-
-    /**
      * The minimum color distance at which the colors are considered equivalent
      */
     private static final double MIN_COLOR_DISTANCE_RGB = 6;
-    private static final double MIN_COLOR_DISTANCE_LAB = 1.2;
 
-    /**
-     * The color distance within which the sampled colors should be for a valid test
-     */
-    private static final double MAX_SAMPLING_COLOR_DISTANCE_RGB = 15;
-    private static final double MAX_SAMPLING_COLOR_DISTANCE_LAB = 1.5;
+//    /**
+//     * The color distance within which the sampled colors should be for a valid test
+//     */
+//    private static final double MAX_SAMPLING_COLOR_DISTANCE_RGB = 15;
 
     private ColorUtil() {
     }
 
     @SuppressWarnings("unused")
     public static double getMinDistance() {
-        switch (DEFAULT_COLOR_MODEL) {
-            case RGB:
-                return MIN_COLOR_DISTANCE_RGB;
-            case LAB:
-                return MIN_COLOR_DISTANCE_LAB;
-            default:
-                return MIN_COLOR_DISTANCE_RGB;
-        }
+        return MIN_COLOR_DISTANCE_RGB;
     }
 
     public static double getMaxDistance(double defaultValue) {
-        switch (DEFAULT_COLOR_MODEL) {
-            case RGB:
-                if (defaultValue > 0) {
-                    return defaultValue;
-                } else {
-                    return ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
-                }
-            case LAB:
-                return MAX_COLOR_DISTANCE_LAB;
-            default:
-                return ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
+        if (defaultValue > 0) {
+            return defaultValue;
+        } else {
+            return ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
         }
     }
 
@@ -190,16 +155,7 @@ public final class ColorUtil {
      * @return the distance between the two colors
      */
     public static double getColorDistance(int color1, int color2) {
-        switch (DEFAULT_COLOR_MODEL) {
-            case RGB:
-                return getColorDistanceRgb(color1, color2);
-
-            case LAB:
-                return getColorDistanceLab(colorToLab(color1), colorToLab(color2));
-
-            default:
-                return getColorDistanceRgb(color1, color2);
-        }
+        return getColorDistanceRgb(color1, color2);
     }
 
     /**
@@ -221,33 +177,12 @@ public final class ColorUtil {
         return Math.sqrt(b + g + r);
     }
 
-    public static boolean areColorsTooDissimilar(int color1, int color2) {
-        switch (DEFAULT_COLOR_MODEL) {
-            case RGB:
-                return getColorDistanceRgb(color1, color2) > MAX_SAMPLING_COLOR_DISTANCE_RGB;
-
-            case LAB:
-                return getColorDistanceLab(colorToLab(color1), colorToLab(color2))
-                        > MAX_SAMPLING_COLOR_DISTANCE_LAB;
-
-            default:
-                return getColorDistanceRgb(color1, color2) > MIN_COLOR_DISTANCE_RGB;
-        }
-    }
-
+//    public static boolean areColorsTooDissimilar(int color1, int color2) {
+//        return getColorDistanceRgb(color1, color2) > MAX_SAMPLING_COLOR_DISTANCE_RGB;
+//    }
 
     public static boolean areColorsSimilar(int color1, int color2) {
-        switch (DEFAULT_COLOR_MODEL) {
-            case RGB:
-                return getColorDistanceRgb(color1, color2) < MIN_COLOR_DISTANCE_RGB;
-
-            case LAB:
-                return getColorDistanceLab(colorToLab(color1), colorToLab(color2))
-                        < MIN_COLOR_DISTANCE_LAB;
-
-            default:
-                return getColorDistanceRgb(color1, color2) < MIN_COLOR_DISTANCE_RGB;
-        }
+        return getColorDistanceRgb(color1, color2) < MIN_COLOR_DISTANCE_RGB;
     }
 
     /**
@@ -297,215 +232,5 @@ public final class ColorUtil {
     public static Integer getColorFromRgb(@NonNull String rgb) {
         String[] rgbArray = rgb.split("\\s+");
         return Color.rgb(Integer.parseInt(rgbArray[0]), Integer.parseInt(rgbArray[1]), Integer.parseInt(rgbArray[2]));
-    }
-
-    /**
-     * Convert int color to Lab color
-     *
-     * @param color The color to convert
-     * @return The lab color
-     */
-    @NonNull
-    public static LabColor colorToLab(int color) {
-        return rgbToLab(Color.red(color), Color.green(color), Color.blue(color));
-    }
-
-    //http://stackoverflow.com/questions/27090107/color-gradient-algorithm-in-lab-color-space
-    @NonNull
-    public static LabColor getGradientLabColor(@NonNull LabColor c1, @NonNull LabColor c2, int n, int index) {
-        double alpha = (double) index / (n - 1);  // 0.0 <= alpha <= 1.0
-        double L = (1 - alpha) * c1.l + alpha * c2.l;
-        double a = (1 - alpha) * c1.a + alpha * c2.a;
-        double b = (1 - alpha) * c1.b + alpha * c2.b;
-        return new LabColor(L, a, b);
-    }
-
-    /**
-     * Convert LAB color to int Color
-     *
-     * @param color the LAB color
-     * @return int color value
-     */
-    public static int labToColor(@NonNull LabColor color) {
-        double a;
-        double b;
-        double g;
-        double l;
-        double r;
-        double x;
-        double y;
-        double z;
-        l = color.l;
-        a = color.a;
-        b = color.b;
-        y = (l + 16) / 116;
-        x = y + a / 500;
-        z = y - b / 200;
-        y = Yn * labToXyz(y);
-        x = Xn * labToXyz(x);
-        z = Zn * labToXyz(z);
-        r = xyzToRgb(3.2404542 * x - 1.5371385 * y - 0.4985314 * z);
-        g = xyzToRgb(-0.9692660 * x + 1.8760108 * y + 0.0415560 * z);
-        b = xyzToRgb(0.0556434 * x - 0.2040259 * y + 1.0572252 * z);
-        r = Math.max(0, Math.min(r, 255));
-        g = Math.max(0, Math.min(g, 255));
-        b = Math.max(0, Math.min(b, 255));
-        return Color.rgb((int) r, (int) g, (int) b);
-    }
-
-    private static double labToXyz(double t) {
-        if (t > t1) {
-            return t * t * t;
-        } else {
-            return t2 * (t - t0);
-        }
-    }
-
-    private static double xyzToRgb(double r) {
-        return Math.round(255 * (r <= 0.00304 ? 12.92 * r : 1.055 * Math.pow(r, 1 / 2.4) - 0.055));
-    }
-
-    @NonNull
-    private static LabColor rgbToLab(double r, double g, double b) {
-        XyzColor xyzColor = rgbToXyz(r, g, b);
-        return new LabColor(116 * xyzColor.y - 16, 500 * (xyzColor.x - xyzColor.y), 200 * (xyzColor.y - xyzColor.z));
-    }
-
-    private static double rgbToXyz(double r) {
-        if ((r /= 255) <= 0.04045) {
-            return (r / 12.92);
-        } else {
-            return (Math.pow((r + 0.055) / 1.055, 2.4));
-        }
-    }
-
-    private static double xyzToLab(double t) {
-        if (t > t3) {
-            return Math.pow(t, 1.0 / 3.0);
-        } else {
-            return t / t2 + t0;
-        }
-    }
-
-    @NonNull
-    private static XyzColor rgbToXyz(double r, double g, double b) {
-        double xyz_r = rgbToXyz(r);
-        double xyz_g = rgbToXyz(g);
-        double xyz_b = rgbToXyz(b);
-        double x = xyzToLab((0.4124564 * xyz_r + 0.3575761 * xyz_g + 0.1804375 * xyz_b) / Xn);
-        double y = xyzToLab((0.2126729 * xyz_r + 0.7151522 * xyz_g + 0.0721750 * xyz_b) / Yn);
-        double z = xyzToLab((0.0193339 * xyz_r + 0.1191920 * xyz_g + 0.9503041 * xyz_b) / Zn);
-        return new XyzColor(x, y, z);
-    }
-
-    //https://github.com/StanfordHCI/c3/blob/master/java/src/edu/stanford/vis/color/LAB.java
-    public static double getColorDistanceLab(@NonNull LabColor x, @NonNull LabColor y) {
-        // adapted from Sharma et al's MATLAB implementation at
-        //  http://www.ece.rochester.edu/~gsharma/ciede2000/
-
-        // parametric factors, use defaults
-        double kl = 1;
-        double kc = 1;
-        double kh = 1;
-
-        // compute terms
-        double pi = Math.PI;
-        double L1 = x.l;
-        double a1 = x.a;
-        double b1 = x.b;
-        double Cab1 = Math.sqrt(a1 * a1 + b1 * b1);
-        double L2 = y.l;
-        double a2 = y.a;
-        double b2 = y.b;
-        double Cab2 = Math.sqrt(a2 * a2 + b2 * b2);
-        double Cab = 0.5 * (Cab1 + Cab2);
-        double G = 0.5 * (1 - Math.sqrt(Math.pow(Cab, 7) / (Math.pow(Cab, 7) + Math.pow(25, 7))));
-        double ap1 = (1 + G) * a1;
-        double ap2 = (1 + G) * a2;
-        double Cp1 = Math.sqrt(ap1 * ap1 + b1 * b1);
-        double Cp2 = Math.sqrt(ap2 * ap2 + b2 * b2);
-        double Cpp = Cp1 * Cp2;
-
-        // ensure hue is between 0 and 2pi
-        double hp1 = Math.atan2(b1, ap1);
-        if (hp1 < 0) {
-            hp1 += 2 * pi;
-        }
-        double hp2 = Math.atan2(b2, ap2);
-        if (hp2 < 0) {
-            hp2 += 2 * pi;
-        }
-
-        double dL = L2 - L1,
-                dC = Cp2 - Cp1,
-                dhp = hp2 - hp1;
-
-        if (dhp > +pi) {
-            dhp -= 2 * pi;
-        }
-        if (dhp < -pi) {
-            dhp += 2 * pi;
-        }
-        if (Cpp == 0) {
-            dhp = 0;
-        }
-
-        // Note that the defining equations actually need
-        // signed Hue and chroma differences which is different
-        // from prior color difference formulae
-        double dH = 2 * Math.sqrt(Cpp) * Math.sin(dhp / 2);
-
-        // Weighting functions
-        double Lp = 0.5 * (L1 + L2),
-                Cp = 0.5 * (Cp1 + Cp2);
-
-        // Average Hue Computation
-        // This is equivalent to that in the paper but simpler programmatically.
-        // Average hue is computed in radians and converted to degrees where needed
-        double hp = 0.5 * (hp1 + hp2);
-        // Identify positions for which abs hue diff exceeds 180 degrees
-        if (Math.abs(hp1 - hp2) > pi) {
-            hp -= pi;
-        }
-        if (hp < 0) {
-            hp += 2 * pi;
-        }
-
-        // Check if one of the chroma values is zero, in which case set
-        // mean hue to the sum which is equivalent to other value
-        if (Cpp == 0) {
-            hp = hp1 + hp2;
-        }
-
-        double Lpm502 = (Lp - 50) * (Lp - 50),
-                Sl = 1 + 0.015 * Lpm502 / Math.sqrt(20 + Lpm502),
-                Sc = 1 + 0.045 * Cp,
-                T = 1 - 0.17 * Math.cos(hp - pi / 6)
-                        + 0.24 * Math.cos(2 * hp)
-                        + 0.32 * Math.cos(3 * hp + pi / 30)
-                        - 0.20 * Math.cos(4 * hp - 63 * pi / 180),
-                Sh = 1 + 0.015 * Cp * T,
-                ex = (180 / pi * hp - 275) / 25,
-                deltaThetaRad = (30 * pi / 180) * Math.exp(-1 * (ex * ex)),
-                Rc = 2 * Math.sqrt(Math.pow(Cp, 7) / (Math.pow(Cp, 7) + Math.pow(25, 7))),
-                RT = -1 * Math.sin(2 * deltaThetaRad) * Rc;
-
-        dL = dL / (kl * Sl);
-        dC = dC / (kc * Sc);
-        dH = dH / (kh * Sh);
-
-        // The CIE 00 color difference
-        return Math.sqrt(dL * dL + dC * dC + dH * dH + RT * dC * dH);
-    }
-
-//    public static double getColorDistanceLab(int color1, int color2) {
-//        return getColorDistanceLab(colorToLab(color1), colorToLab(color2));
-//    }
-
-    /**
-     * The different types of color models
-     */
-    public enum ColorModel {
-        RGB, LAB
     }
 }
