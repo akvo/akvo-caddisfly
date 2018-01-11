@@ -27,8 +27,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
 import android.view.View;
@@ -48,8 +48,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.Manifest.permission.CAMERA;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -59,15 +57,27 @@ import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAct
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertNotNull;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
+import static org.akvo.caddisfly.util.TestHelper.loadData;
+import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class CbtTest {
 
-    @Rule
-    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(WRITE_EXTERNAL_STORAGE, CAMERA);
+//    @Rule
+//    public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(WRITE_EXTERNAL_STORAGE, CAMERA);
+
+//    @Rule
+//    public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
     @Rule
     public IntentsTestRule<MainActivity> mIntentsRule = new IntentsTestRule<>(MainActivity.class);
@@ -103,6 +113,17 @@ public class CbtTest {
     }
 
     @Before
+    public void setUp() {
+
+        loadData(mIntentsRule.getActivity(), mCurrentLanguage);
+
+        clearPreferences(mIntentsRule);
+
+        resetLanguage();
+
+        stubCameraIntent();
+    }
+
     public void stubCameraIntent() {
         Instrumentation.ActivityResult result = createImageCaptureStub();
 
@@ -125,12 +146,34 @@ public class CbtTest {
     }
 
     @Test
-    public void cbtTest() {
+    public void startCbtTest() {
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonCbt),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+        cbtTest(false);
+
+        cbtTest(true);
+    }
+
+    public void cbtTest(boolean external) {
+
+        if (external) {
+
+            gotoSurveyForm();
+
+            TestUtil.nextSurveyPage(8);
+
+            clickExternalSourceButton(0);
+
+            mDevice.waitForIdle();
+
+        } else {
+
+            goToMainScreen();
+
+            onView(withText(R.string.cbt)).perform(click());
+
+        }
+
+        sleep(1000);
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.button_prepare), withText("Next"),
@@ -246,5 +289,10 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
+        if (external) {
+            assertNotNull(mDevice.findObject(By.text("Health Risk Category (Based on MPN and Confidence Interval): Very High Risk / Unsafe ")));
+            assertNotNull(mDevice.findObject(By.text("MPN: > 100 MPN/100ml")));
+            assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 9435.1 ")));
+        }
     }
 }

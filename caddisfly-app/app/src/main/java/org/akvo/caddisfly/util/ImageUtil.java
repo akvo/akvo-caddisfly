@@ -306,9 +306,9 @@ public final class ImageUtil {
     /**
      * Save an image.
      *
-     * @param data      the image data
+     * @param data     the image data
      * @param fileType the folder to save in
-     * @param fileName  the name of the file
+     * @param fileName the name of the file
      */
     public static void saveImage(@NonNull byte[] data, FileHelper.FileType fileType, String fileName) {
 
@@ -336,16 +336,19 @@ public final class ImageUtil {
     public static byte[] loadImageBytes(String name, FileHelper.FileType fileType) {
         File path = FileHelper.getFilesDir(fileType, "");
         File file = new File(path, name + ".yuv");
-
-        byte[] bytes = new byte[(int) file.length()];
-        BufferedInputStream bis;
-        try {
-            bis = new BufferedInputStream(new FileInputStream(file));
-            DataInputStream dis = new DataInputStream(bis);
-            dis.readFully(bytes);
-        } catch (IOException e) {
-            Timber.e(e);
+        if (file.exists()) {
+            byte[] bytes = new byte[(int) file.length()];
+            BufferedInputStream bis;
+            try {
+                bis = new BufferedInputStream(new FileInputStream(file));
+                DataInputStream dis = new DataInputStream(bis);
+                dis.readFully(bytes);
+            } catch (IOException e) {
+                Timber.e(e);
+            }
+            return bytes;
         }
-        return bytes;
+
+        return new byte[0];
     }
 }

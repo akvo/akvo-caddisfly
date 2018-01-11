@@ -189,23 +189,23 @@ public class ChamberInstructions {
 
         mDevice.waitForIdle();
 
-        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+//        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
-//        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
-//
-//        for (int i = 0; i < 17; i++) {
-//
-//            try {
-//                takeScreenshot(id, i);
-//
-//                onView(withId(R.id.image_pageRight)).perform(click());
-//
-//            } catch (Exception e) {
-//                TestUtil.sleep(600);
-//                Espresso.pressBack();
-//                break;
-//            }
-//        }
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+
+        for (int i = 0; i < 17; i++) {
+
+            try {
+                takeScreenshot(id, i);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
+                TestUtil.sleep(600);
+                Espresso.pressBack();
+                break;
+            }
+        }
     }
 
     @Test

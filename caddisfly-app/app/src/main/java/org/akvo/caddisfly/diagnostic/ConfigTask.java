@@ -81,8 +81,6 @@ public class ConfigTask extends AsyncTask<String, String, String> {
 
             while ((line = reader.readLine()) != null) {
                 buffer.append(line).append("\n");
-                Log.d("Response: ", "> " + line);
-
             }
 
             return buffer.toString();

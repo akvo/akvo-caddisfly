@@ -28,6 +28,7 @@ import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.widget.DatePicker;
 
@@ -64,6 +65,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.currentHashMap;
@@ -381,6 +383,10 @@ public class ChamberTest {
 
         onView(withId(R.id.buttonAccept)).perform(click());
 
+        mDevice.waitForIdle();
+
+        assertNotNull(mDevice.findObject(By.text("Fluoride: " + resultString + " mg/l")));
+
         mDevice.pressBack();
 
         mDevice.pressBack();
@@ -494,7 +500,7 @@ public class ChamberTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton(0);
+        clickExternalSourceButton(1);
 
         sleep(1000);
 
@@ -527,7 +533,13 @@ public class ChamberTest {
         //Result dialog
         takeScreenshot();
 
+        String resultString = getText(withId(R.id.textResult));
+
         onView(withId(R.id.buttonAccept)).perform(click());
+
+        mDevice.waitForIdle();
+
+        assertNotNull(mDevice.findObject(By.text("Fluoride: " + resultString + " mg/l")));
 
         mDevice.pressBack();
 

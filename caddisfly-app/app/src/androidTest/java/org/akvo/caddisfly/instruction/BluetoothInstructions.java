@@ -132,7 +132,7 @@ public class BluetoothInstructions {
 
         }
 
-        Log.d("Caddisfly", jsArrayString.toString());
+//        Log.d("Caddisfly", jsArrayString.toString());
 
     }
 

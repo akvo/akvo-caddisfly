@@ -172,9 +172,7 @@ public class ManualInstructions {
 
         gotoSurveyForm();
 
-        for (int i = 0; i < 5; i++) {
-            clickExternalSourceButton(TestConstantKeys.NEXT);
-        }
+        TestUtil.nextSurveyPage(6);
 
         clickExternalSourceButton(index, TestConstantKeys.GO_TO_TEST);
 
@@ -216,9 +214,7 @@ public class ManualInstructions {
 
         gotoSurveyForm();
 
-        for (int i = 0; i < 5; i++) {
-            clickExternalSourceButton(TestConstantKeys.NEXT);
-        }
+        TestUtil.nextSurveyPage(6);
 
         clickExternalSourceButton(1, TestConstantKeys.GO_TO_TEST);
 

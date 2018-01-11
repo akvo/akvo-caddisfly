@@ -51,6 +51,7 @@ import org.junit.runner.RunWith;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -266,6 +267,28 @@ public class CbtInstructions {
         CheckTextInTable(R.string.let_incubate);
 
         onView(withContentDescription("7")).check(matches(hasDrawable()));
+
+        ViewInteraction appCompatTextView14 = onView(
+                allOf(withId(R.id.button_instructions), withText("Read Instructions"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.TableLayout")),
+                                        7),
+                                2)));
+        appCompatTextView14.perform(scrollTo(), click());
+
+        onView(withText("Below 25 °C")).check(matches(isDisplayed()));
+
+        onView(withText("Incubate in a portable incubator, preferably at 35 – 37 °C for 48 hours or put in or near another heat source.")).check(matches(isDisplayed()));
+
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(android.R.id.button1), withText("OK"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.buttonPanel),
+                                        0),
+                                3)));
+        appCompatButton3.perform(scrollTo(), click());
 
         TestUtil.nextPage();
 

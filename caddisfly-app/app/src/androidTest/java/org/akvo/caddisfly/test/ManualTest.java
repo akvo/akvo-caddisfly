@@ -126,9 +126,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        for (int i = 0; i < 5; i++) {
-            clickExternalSourceButton(TestConstant.NEXT);
-        }
+        TestUtil.nextSurveyPage(6);
 
         clickExternalSourceButton(0, TestConstant.GO_TO_TEST);
 
@@ -208,9 +206,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        for (int i = 0; i < 5; i++) {
-            clickExternalSourceButton(TestConstant.NEXT);
-        }
+        TestUtil.nextSurveyPage(6);
 
         clickExternalSourceButton(1, TestConstant.GO_TO_TEST);
 
@@ -301,9 +297,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        for (int i = 0; i < 5; i++) {
-            clickExternalSourceButton(TestConstant.NEXT);
-        }
+        TestUtil.nextSurveyPage(6);
 
         clickExternalSourceButton(2, TestConstant.GO_TO_TEST);
 

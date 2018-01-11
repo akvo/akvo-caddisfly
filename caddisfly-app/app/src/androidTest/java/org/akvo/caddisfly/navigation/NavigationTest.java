@@ -339,22 +339,16 @@ public class NavigationTest {
 
         clickExternalSourceButton(0);
 
-//        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
+        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+//        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         //Connect EC Sensor Screen
         takeScreenshot();
 
         mDevice.pressBack();
 
-        clickExternalSourceButton(TestConstant.NEXT);
-
-        clickExternalSourceButton(TestConstant.NEXT);
-
-        clickExternalSourceButton(TestConstant.NEXT);
-
-        clickExternalSourceButton(TestConstant.NEXT);
+        TestUtil.nextSurveyPage(5);
 
         clickExternalSourceButton(0, TestConstant.USE_EXTERNAL_SOURCE);
 
@@ -368,11 +362,7 @@ public class NavigationTest {
 
         mDevice.pressBack();
 
-        clickExternalSourceButton(TestConstant.NEXT);
-
-        clickExternalSourceButton(TestConstant.NEXT);
-
-        clickExternalSourceButton(TestConstant.NEXT);
+        TestUtil.nextSurveyPage(3);
 
         //Unknown test
         clickExternalSourceButton(0, TestConstant.USE_EXTERNAL_SOURCE);
@@ -381,7 +371,7 @@ public class NavigationTest {
 
         mDevice.pressBack();
 
-        TestUtil.swipeRight(6);
+        TestUtil.swipeRight(7);
 
         clickExternalSourceButton(0); //Iron
 
