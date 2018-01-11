@@ -187,7 +187,7 @@ public class CalibrationCardUtils {
     }
 
     public static void readCalibrationFile(Context context, CalibrationCardData calCardData, int version) throws CalibrationCardException {
-        Log.d(TAG, "reading calibration file");
+//        Log.d(TAG, "reading calibration file");
         String calFileName = "calibrationv2-" + version + ".json";
         String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
 

@@ -605,7 +605,7 @@ public class FinderPatternFinder {
         int startSize = possibleCenters.size();
         if (startSize < 4) {
             // Couldn't find enough finder patterns
-            Log.d("Caddisfly", "couldnt find 4 centers");
+//            Log.d("Caddisfly", "couldn't find 4 centers");
             throw NotFoundException.getNotFoundInstance();
         }
 

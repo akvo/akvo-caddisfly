@@ -120,6 +120,7 @@
     <string name="shadows">Shadows</string>
     <string name="prepare_test">Prepare for test</string>
     <string name="taking_photo">Taking photo</string>
+    <string name="waiting">Waiting</string>
     <string name="waiting_for">Waiting for %s</string>
     <string name="success_quality_checks">Success! Quality check passed</string>
     <string name="prepareForCalibration">Prepare for calibration</string>
@@ -127,18 +128,29 @@
     <string name="no_result">No result</string>
     <string name="continue_anyway">Continue anyway</string>
     <string name="just_a_moment">Just a moment…</string>
-    <string name="checking_quality">Checking light quality</string>
+    <string name="checking_image_quality">Checking image quality</string>
     <string name="seconds">Sec.</string>
     <string name="detecting_color_card">Looking for colour card</string>
     <string name="ready_for_photo">Ready for photo</string>
     <string name="do_not_show_again">Do not show again</string>
     <string name="stop_test">Stop test</string>
     <string name="noData">No data</string>
+    <string name="error_calibrating">Calibration failed</string>
+    <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nFor best results, at least 8 megapixel camera required.</string>
+    <string name="qualityCheckFailed">Quality check failed</string>
+    <string name="shadows_detected">Shadows/reflections detected</string>
+    <string name="better_light_required">Better light required</string>
+    <string name="tilt_camera_in_direction">Tilt camera in direction of arrow</string>
+    <string name="move_camera_closer">Move camera closer to the card</string>
+    <string name="avoid_shadows_on_card">Please avoid shadows on the card</string>
 
     <!--Alerts-->
     <string name="cannotStartTest">Cannot start test</string>
     <string name="errorTestNotAvailable">Requested test is not available</string>
     <string name="pleaseContactSupport">Please contact technical support</string>
+    <string name="versionExpired">Version expired</string>
+    <string name="thisVersionHasExpired">This version of the app has expired.</string>
+    <string name="uninstallAndInstallFromStore">Please uninstall and then install the latest version from Play Store.</string>
 
     <!--Permission-->
     <string name="storagePermission">Storage permission is required</string>
@@ -186,17 +198,6 @@
     <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
     <string name="highLevelRecommendation">Due to high level of contamination, it is recommended to test with dilution</string>
     <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
-
-    <!--StripTest-->
-    <string name="error_calibrating">Calibration failed</string>
-    <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nFor best results, at least 8 megapixel camera required.</string>
-    <string name="qualityCheckFailed">Quality check failed</string>
-    <string name="shadows_detected">Shadows/reflections detected</string>
-    <string name="better_light_required">Better light required</string>
-
-    <string name="versionExpired">Version expired</string>
-    <string name="thisVersionHasExpired">This version of the app has expired.</string>
-    <string name="uninstallAndInstallFromStore">Please uninstall and then install the latest version from Play Store.</string>
 
     <!--Bluetooth-->
     <string name="nearby_devices">Nearby devices</string>

@@ -25,6 +25,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.TextSwitcher;
 
+import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
@@ -177,14 +178,14 @@ public final class StriptestHandler extends Handler {
                 // set message shown if there are no problems
                 if (mState.equals(State.MEASURE)) {
                     if (secondsLeft > Constants.GET_READY_SECONDS) {
-                        defaultMessage = "Waiting";
+                        defaultMessage = context.getString(R.string.waiting);
                     } else if (secondsLeft < 2) {
-                        defaultMessage = "Taking photo";
+                        defaultMessage = context.getString(R.string.taking_photo);
                     } else {
-                        defaultMessage = "Ready for photo";
+                        defaultMessage = context.getString(R.string.ready_for_photo);
                     }
                 } else {
-                    defaultMessage = "Checking image quality";
+                    defaultMessage = context.getString(R.string.checking_image_quality);
                 }
 
                 // start trying to find finder patterns on decode thread
@@ -237,11 +238,11 @@ public final class StriptestHandler extends Handler {
                 }
 
                 if (showTiltMessage) {
-                    newMessage = "Move camera in direction of arrow";
+                    newMessage = context.getString(R.string.tilt_camera_in_direction);
                     showDistanceMessage = false;
                 } else {
                     if (showDistanceMessage) {
-                        newMessage = "Move camera closer to the card";
+                        newMessage = context.getString(R.string.move_camera_closer);
                     }
                 }
 
@@ -337,10 +338,8 @@ public final class StriptestHandler extends Handler {
                 shadowQualityFailedCount = Math.min(8, shadowQualityFailedCount + 1);
                 String newShadowMessage;
                 if (shadowQualityFailedCount > 4) {
-//                    showShadowMessage = true;
-                    newShadowMessage = "Please avoid shadows on the card";
+                    newShadowMessage = context.getString(R.string.avoid_shadows_on_card);
                 } else {
-//                    showShadowMessage = false;
                     newShadowMessage = "";
                 }
 
@@ -365,10 +364,8 @@ public final class StriptestHandler extends Handler {
 
                 shadowQualityFailedCount = Math.max(0, shadowQualityFailedCount - 1);
                 if (shadowQualityFailedCount > 4) {
-//                    showShadowMessage = true;
-                    newShadowMessage = "Please avoid shadows on the card";
+                    newShadowMessage = context.getString(R.string.avoid_shadows_on_card);
                 } else {
-//                    showShadowMessage = false;
                     newShadowMessage = "";
                 }
 
