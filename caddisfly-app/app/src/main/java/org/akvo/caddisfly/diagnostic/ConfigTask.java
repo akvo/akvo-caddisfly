@@ -22,7 +22,6 @@ package org.akvo.caddisfly.diagnostic;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.helper.FileHelper;
@@ -40,8 +39,8 @@ import java.net.URL;
 
 public class ConfigTask extends AsyncTask<String, String, String> {
 
-    private WeakReference<Context> contextRef;
-    private TestListActivity.SyncCallbackInterface configSyncHandler;
+    private final WeakReference<Context> contextRef;
+    private final TestListActivity.SyncCallbackInterface configSyncHandler;
     private FileHelper.FileType fileType;
     private ProgressDialog pd;
 

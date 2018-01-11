@@ -91,24 +91,12 @@ public final class AppPreferences {
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
     }
 
-    //Diagnostic in user mode
-    public static boolean isSaveImagesOn() {
-        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveImagesDataKey, false);
-    }
-
     public static boolean useExternalCamera() {
         return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useExternalCameraKey, false);
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean useFlashMode() {
-        return isDiagnosticMode()
-                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useFlashModeKey, false);
     }
 
     public static boolean ignoreTimeDelays() {
         return isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreTimeDelaysKey, false);
     }
-
 }

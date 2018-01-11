@@ -26,13 +26,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-
-import org.akvo.caddisfly.helper.CameraHelper;
 
 import java.util.UUID;
 
@@ -116,28 +112,6 @@ public final class ApiUtil {
         return uniqueID;
     }
 
-    public static boolean isCameraInUse(Context context, @Nullable final Activity activity) {
-        Camera camera = null;
-        try {
-            camera = CameraHelper.getCamera(context, (dialogInterface, i) -> {
-                dialogInterface.dismiss();
-                if (activity != null) {
-                    activity.finish();
-                }
-            });
-
-        } catch (Exception ignored) {
-            // do nothing
-        }
-
-        if (camera != null) {
-            camera.release();
-            return false;
-        }
-
-        return true;
-    }
-
     public static void startInstalledAppDetailsActivity(@Nullable final Activity context) {
         if (context == null) {
             return;
@@ -150,17 +124,5 @@ public final class ApiUtil {
         i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(i);
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean hasPermissions(@Nullable Context context, @Nullable String... permissions) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }
