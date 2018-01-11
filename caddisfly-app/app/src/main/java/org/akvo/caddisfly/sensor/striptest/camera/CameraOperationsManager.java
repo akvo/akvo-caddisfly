@@ -37,7 +37,7 @@ import org.akvo.caddisfly.util.ImageUtil;
  */
 
 public class CameraOperationsManager {
-    private static final long AUTO_FOCUS_DELAY = 6000L;
+    private static final long AUTO_FOCUS_DELAY = 5000L;
 
     // A Handler for running camera tasks in the background.
     private Handler mCameraHandler;
