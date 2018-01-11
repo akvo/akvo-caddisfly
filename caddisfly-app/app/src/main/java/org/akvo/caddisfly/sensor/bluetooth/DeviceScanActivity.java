@@ -393,11 +393,13 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
             runnable = () -> {
                 mScanning = false;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    mBluetoothLeScanner.stopScan(mScanCallback);
-                } else {
-                    //noinspection deprecation
-                    mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                if (mBluetoothAdapter.isEnabled()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        mBluetoothLeScanner.stopScan(mScanCallback);
+                    } else {
+                        //noinspection deprecation
+                        mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                    }
                 }
 
                 if (!isDestroyed() && !isFinishing() && mLeDeviceListAdapter.getCount() < 1) {
@@ -422,7 +424,9 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
                 ScanSettings settings = new ScanSettings.Builder().setScanMode(ScanSettings.SCAN_MODE_BALANCED).build();
 
-                mBluetoothLeScanner.startScan(scanFilters, settings, mScanCallback);
+                if (mBluetoothAdapter.isEnabled()) {
+                    mBluetoothLeScanner.startScan(scanFilters, settings, mScanCallback);
+                }
 
                 progressBar.setVisibility(View.VISIBLE);
             } else {
