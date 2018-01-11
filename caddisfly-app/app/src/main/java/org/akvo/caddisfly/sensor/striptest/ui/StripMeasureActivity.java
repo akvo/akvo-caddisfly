@@ -129,7 +129,8 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         double currentPatch = -1;
         for (int i = 0; i < patches.size(); i++) {
             double nextPatch = patches.get(i).getTimeDelay();
-            if (Math.abs(nextPatch - currentPatch) > 0.001) {
+            // if item has no colors then it is a calculated result based on formula so don't add it to set
+            if (patches.get(i).getColors().size() > 0 && Math.abs(nextPatch - currentPatch) > 0.001) {
                 timeDelaySet.add(new int[]{patches.get(i).getTestStage(), (int) Math.round(nextPatch)});
                 currentPatch = nextPatch;
             }
