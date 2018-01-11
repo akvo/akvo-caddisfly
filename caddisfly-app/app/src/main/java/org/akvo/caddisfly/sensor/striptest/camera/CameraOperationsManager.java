@@ -70,10 +70,10 @@ public class CameraOperationsManager {
         public void run() {
             if (mCamera != null) {
                 if (!changingExposure) {
-                    mCamera.cancelAutoFocus();
-                    mCamera.autoFocus((success, camera) -> {
-                        // do Nothing
-                    });
+//                    mCamera.cancelAutoFocus();
+//                    mCamera.autoFocus((success, camera) -> {
+//                        // do Nothing
+//                    });
                 }
                 mCameraHandler.postDelayed(runAutoFocus, AUTO_FOCUS_DELAY);
             }

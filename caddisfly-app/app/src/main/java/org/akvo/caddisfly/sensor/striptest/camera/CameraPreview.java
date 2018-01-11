@@ -157,7 +157,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Log.d("Caddisfly", "Preview size set to:" + bestSize.width + "," + bestSize.height);
 
         if (parameters.getFocusMode() != null) {
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         }
 
         Camera.Area cardArea = new Camera.Area(new Rect(-1000, -1000, -167, 1000), 1);
