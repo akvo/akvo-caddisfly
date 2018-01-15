@@ -53,8 +53,8 @@ public class CameraOperationsManager {
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera camera) {
 
-            if (AppPreferences.isTestMode() && bytes.length > 0) {
-                // Use test image
+            if (bytes != null && bytes.length > 0 && AppPreferences.isTestMode()) {
+                // Use test image if we are in test mode
                 StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
 
 //                ImageUtil.saveImageBytes(camera, bytes, FileHelper.FileType.TEST_IMAGE,
