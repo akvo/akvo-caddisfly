@@ -66,14 +66,20 @@ public class CameraOperationsManager {
             MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
+
     private Runnable runAutoFocus = new Runnable() {
         public void run() {
             if (mCamera != null) {
                 if (!changingExposure) {
-//                    mCamera.cancelAutoFocus();
-//                    mCamera.autoFocus((success, camera) -> {
-//                        // do Nothing
-//                    });
+                    // Check the focus. This is mainly needed in order to restart focus that doesn't run anymore,
+                    // which sometimes happens on samsung devices.
+                    mCamera.autoFocus((success, camera) -> {
+                        // if we are in one of the other modes, we need to run 'cancelAutofocus' in order
+                        // to start the continuous focus again. *sigh*
+                        if (!camera.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                            mCamera.cancelAutoFocus();
+                        }
+                    });
                 }
                 mCameraHandler.postDelayed(runAutoFocus, AUTO_FOCUS_DELAY);
             }
