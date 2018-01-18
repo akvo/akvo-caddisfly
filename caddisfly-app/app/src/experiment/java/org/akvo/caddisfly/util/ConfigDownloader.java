@@ -61,21 +61,4 @@ public class ConfigDownloader {
                     "No data connection. Please connect to the internet and try again.", Toast.LENGTH_LONG).show();
         }
     }
-
-    /**
-     *  Download latest version of the experimental config file.
-     *
-     * @param activity the activity
-     */
-    public static void syncFfemExperimentalConfig(Activity activity) {
-
-        if (NetUtil.isNetworkAvailable(activity)) {
-            Date todayDate = Calendar.getInstance().getTime();
-            ConfigTask configTask = new ConfigTask(activity, null);
-
-            configTask.execute(AppConfig.EXPERIMENT_TESTS_FFEM_URL + "?" + todayDate.getTime(),
-                    FileHelper.FileType.FFEM_EXP_CONFIG.toString());
-
-        }
-    }
 }

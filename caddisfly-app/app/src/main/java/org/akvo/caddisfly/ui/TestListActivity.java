@@ -215,8 +215,6 @@ public class TestListActivity extends BaseActivity
 
     private void startSync() {
         ConfigDownloader.syncExperimentalConfig(this, () -> fragment.refresh());
-
-        ConfigDownloader.syncFfemExperimentalConfig(this);
     }
 
     public interface SyncCallbackInterface {
