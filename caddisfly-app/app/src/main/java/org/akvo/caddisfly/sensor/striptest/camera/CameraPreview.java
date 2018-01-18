@@ -117,6 +117,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             activity.setPreviewProperties(w, h, mPreviewWidth, mPreviewHeight);
             activity.initPreviewFragment();
             mCamera.startPreview();
+            // if we are in FOCUS_MODE_AUTO, we have to start the autofocus here.
+            if (mCamera.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                mCamera.autoFocus((success, camera) -> {
+                    // do nothing
+                });
+            }
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
         }
@@ -156,9 +162,20 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         parameters.setPreviewSize(bestSize.width, bestSize.height);
         Log.d("Caddisfly", "Preview size set to:" + bestSize.width + "," + bestSize.height);
 
-        if (parameters.getFocusMode() != null) {
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        // default focus mode
+        String focusMode = Camera.Parameters.FOCUS_MODE_AUTO;
+        List<String> supportedFocusModes = parameters.getSupportedFocusModes();
+
+        // Select FOCUS_MODE_CONTINUOUS_PICTURE if available
+        // fall back on FOCUS_MODE_CONTINUOUS_VIDEO if the previous is not available
+        // fall back on FOCUS_MODE_AUTO if none are available
+        if (supportedFocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+            focusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE;
+        } else if (supportedFocusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
+            focusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO;
         }
+
+        parameters.setFocusMode(focusMode);
 
         Camera.Area cardArea = new Camera.Area(new Rect(-1000, -1000, -167, 1000), 1);
         List<Camera.Area> cardAreaList = Arrays.asList(cardArea);

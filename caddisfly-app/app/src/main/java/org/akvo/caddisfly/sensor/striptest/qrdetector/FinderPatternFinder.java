@@ -85,7 +85,7 @@ public class FinderPatternFinder {
             return false;
         }
         float moduleSize = totalModuleSize / 7.0f;
-        float maxVariance = moduleSize / 2.0f;
+        float maxVariance = moduleSize / 1.7f;
         // Allow less than 50% variance from 1-1-3-1-1 proportions
         return
                 Math.abs(moduleSize - stateCount[0]) < maxVariance &&
@@ -472,7 +472,7 @@ public class FinderPatternFinder {
         // the original, assume it's a false positive
         int stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] +
                 stateCount[4];
-        if (5 * Math.abs(stateCountTotal - originalStateCountTotal) >= originalStateCountTotal) {
+        if (5 * Math.abs(stateCountTotal - originalStateCountTotal) >= 2 * originalStateCountTotal) {
             return Float.NaN;
         }
 
