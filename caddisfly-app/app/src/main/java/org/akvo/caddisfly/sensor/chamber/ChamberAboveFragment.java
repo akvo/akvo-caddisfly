@@ -30,7 +30,7 @@ import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.helper.ShakeDetector;
 import org.akvo.caddisfly.model.TestInfo;
 
-public class ChamberAboveTest extends BaseRunTest implements RunTest {
+public class ChamberAboveFragment extends BaseRunTest implements RunTest {
 
     private static final int MAX_SHAKE_DURATION = 2000;
     private static final String TWO_SENTENCE_FORMAT = "%s%n%n%s";
@@ -46,8 +46,8 @@ public class ChamberAboveTest extends BaseRunTest implements RunTest {
      * @param testInfo The test info
      * @return the instance
      */
-    public static ChamberAboveTest newInstance(TestInfo testInfo) {
-        ChamberAboveTest fragment = new ChamberAboveTest();
+    public static ChamberAboveFragment newInstance(TestInfo testInfo) {
+        ChamberAboveFragment fragment = new ChamberAboveFragment();
         Bundle args = new Bundle();
         args.putParcelable(ConstantKey.TEST_INFO, testInfo);
         fragment.setArguments(args);
@@ -127,6 +127,8 @@ public class ChamberAboveTest extends BaseRunTest implements RunTest {
         }
 
         super.startTest();
+
+        stopPreview();
     }
 
     @Override

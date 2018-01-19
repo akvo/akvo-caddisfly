@@ -59,7 +59,6 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = testInfo.getCalibrations().get(position);
-        holder.mIdView.setBackground(new ColorDrawable(holder.mItem.color));
 
         String format = "%." + testInfo.getDecimalPlaces() + "f";
         holder.textValue.setText(String.valueOf(String.format(Locale.getDefault(), format,
@@ -69,6 +68,7 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
         List<ColorItem> colors = result.getColors();
         if (position < colors.size()) {
             int color = colors.get(position).getRgb();
+            holder.mIdView.setBackground(new ColorDrawable(color));
             holder.textUnit.setText(String.valueOf(result.getUnit()));
 
             //display additional information if we are in diagnostic mode

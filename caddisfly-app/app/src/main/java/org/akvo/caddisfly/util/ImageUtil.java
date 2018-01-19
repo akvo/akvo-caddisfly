@@ -28,8 +28,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.YuvImage;
-import android.hardware.Camera;
 import android.support.annotation.NonNull;
 import android.support.media.ExifInterface;
 import android.text.TextUtils;
@@ -57,6 +55,18 @@ public final class ImageUtil {
     private static final int IMAGE_CENTER_CIRCLE_RADIUS = 20;
 
     private ImageUtil() {
+    }
+
+    /**
+     * Decode bitmap from byte array.
+     *
+     * @param bytes the byte array
+     * @return the bitmap
+     */
+    public static Bitmap getBitmap(@NonNull byte[] bytes) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inMutable = true;
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
     }
 
     /**
@@ -181,6 +191,36 @@ public final class ImageUtil {
         return false;
     }
 
+    /**
+     * Save an image.
+     *
+     * @param data     the image data
+     * @param fileType the folder to save in
+     * @param fileName the name of the file
+     */
+    public static void saveImage(@NonNull byte[] data, FileHelper.FileType fileType, String fileName) {
+
+        File path = FileHelper.getFilesDir(fileType);
+
+        File file = new File(path, fileName + ".yuv");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file.getPath());
+            fos.write(data);
+        } catch (Exception ignored) {
+            // do nothing
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    Timber.e(e);
+                }
+            }
+        }
+    }
+
     private static void checkOrientation(String originalImage, String resizedImage) {
         try {
             ExifInterface exif1 = new ExifInterface(originalImage);
@@ -284,55 +324,34 @@ public final class ImageUtil {
         return inSampleSize;
     }
 
-    public static void saveImageBytes(Camera camera, byte[] data, FileHelper.FileType fileType, String fileName) {
-        try {
-            Camera.Parameters parameters = camera.getParameters();
-            Camera.Size size = parameters.getPreviewSize();
-            YuvImage image = new YuvImage(data, parameters.getPreviewFormat(),
-                    size.width, size.height, null);
+    /*
+        public static void saveImageBytes(Camera camera, byte[] data, FileHelper.FileType fileType, String fileName) {
+            try {
+                Camera.Parameters parameters = camera.getParameters();
+                Camera.Size size = parameters.getPreviewSize();
+                YuvImage image = new YuvImage(data, parameters.getPreviewFormat(),
+                        size.width, size.height, null);
 
-            File path = FileHelper.getFilesDir(fileType);
-            File file = new File(path, fileName + ".jpg");
+                File path = FileHelper.getFilesDir(fileType);
+                File file = new File(path, fileName + ".jpg");
 
-            FileOutputStream fileStream = new FileOutputStream(file);
-            image.compressToJpeg(new Rect(0, 0, image.getWidth(),
-                    image.getHeight()), 100, fileStream);
+                FileOutputStream fileStream = new FileOutputStream(file);
+                image.compressToJpeg(new Rect(0, 0, image.getWidth(),
+                        image.getHeight()), 100, fileStream);
 
-        } catch (FileNotFoundException e) {
-            Timber.e(e);
-        }
-    }
-
-    /**
-     * Save an image.
-     *
-     * @param data     the image data
-     * @param fileType the folder to save in
-     * @param fileName the name of the file
-     */
-    public static void saveImage(@NonNull byte[] data, FileHelper.FileType fileType, String fileName) {
-
-        File path = FileHelper.getFilesDir(fileType);
-
-        File file = new File(path, fileName + ".yuv");
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file.getPath());
-            fos.write(data);
-        } catch (Exception ignored) {
-            // do nothing
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    Timber.e(e);
-                }
+            } catch (FileNotFoundException e) {
+                Timber.e(e);
             }
         }
-    }
+    */
 
+    /**
+     * load the  bytes from a file.
+     *
+     * @param name     the file name
+     * @param fileType the file type
+     * @return the loaded bytes
+     */
     public static byte[] loadImageBytes(String name, FileHelper.FileType fileType) {
         File path = FileHelper.getFilesDir(fileType, "");
         File file = new File(path, name + ".yuv");
