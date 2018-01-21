@@ -23,6 +23,7 @@ import android.content.Context;
 import android.graphics.Color;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.ChamberTestConfig;
 import org.akvo.caddisfly.dao.CalibrationDao;
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.entity.CalibrationDetail;
@@ -55,13 +56,6 @@ import static org.apache.commons.math3.util.Precision.round;
 public final class SwatchHelper {
 
     private static final int MAX_DISTANCE = 999;
-
-    // If the color distance between samplings exceeds this the test is rejected
-    private static final double MAX_COLOR_DISTANCE = 40;
-    private static final double MAX_COLOR_DISTANCE_CALIBRATION = 10;
-
-    // The number of interpolations to generate between range values
-    private static final double INTERPOLATION_COUNT = 250;
 
     private SwatchHelper() {
     }
@@ -281,7 +275,7 @@ public final class SwatchHelper {
             int endColor = swatches.get(i + 1).getColor();
             double startValue = swatches.get(i).getValue();
             double endValue = swatches.get(i + 1).getValue();
-            double increment = (endValue - startValue) / INTERPOLATION_COUNT;
+            double increment = (endValue - startValue) / ChamberTestConfig.INTERPOLATION_COUNT;
             int steps = (int) ((endValue - startValue) / increment);
 
             for (int j = 0; j < steps; j++) {
@@ -382,7 +376,7 @@ public final class SwatchHelper {
             for (int j = 0; j < resultDetails.size(); j++) {
                 int color2 = resultDetails.get(j).getColor();
 
-                if (ColorUtil.getColorDistance(color1, color2) > MAX_COLOR_DISTANCE) {
+                if (ColorUtil.getColorDistance(color1, color2) > ChamberTestConfig.MAX_COLOR_DISTANCE_RGB) {
                     return -1;
                 }
             }
@@ -430,7 +424,7 @@ public final class SwatchHelper {
             //check all the colors are mostly similar otherwise return -1
             for (int j = 0; j < resultDetails.size(); j++) {
                 int color2 = resultDetails.get(j).getColor();
-                if (ColorUtil.getColorDistanceRgb(color1, color2) > MAX_COLOR_DISTANCE_CALIBRATION) {
+                if (ColorUtil.getColorDistanceRgb(color1, color2) > ChamberTestConfig.MAX_COLOR_DISTANCE_CALIBRATION) {
                     return Color.TRANSPARENT;
                 }
             }

@@ -362,7 +362,7 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     @Override
-    public void onResult(ArrayList<ResultDetail> resultDetails, Calibration calibration, Bitmap croppedBitmap) {
+    public void onResult(ArrayList<ResultDetail> resultDetails, Calibration calibration) {
 
         if (calibration == null) {
 
@@ -388,7 +388,7 @@ public class ChamberTestActivity extends BaseActivity implements
                         .replace(R.id.fragment_container,
                                 ResultFragment.newInstance(testInfo), null).commit();
 
-                mCroppedBitmap = croppedBitmap;
+                mCroppedBitmap = resultDetails.get(0).getBitmap();
 
                 if (AppPreferences.isDiagnosticMode()) {
                     showDiagnosticResultDialog(false, result, resultDetails, false, 0);
@@ -410,7 +410,8 @@ public class ChamberTestActivity extends BaseActivity implements
                 } else {
 
                     showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestFailed),
-                            getString(R.string.checkChamberPlacement)), croppedBitmap);
+                            getString(R.string.checkChamberPlacement)),
+                            resultDetails.get(resultDetails.size() - 1).getBitmap());
                 }
             }
 
@@ -425,7 +426,8 @@ public class ChamberTestActivity extends BaseActivity implements
                 }
 
                 showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.couldNotCalibrate),
-                        getString(R.string.checkChamberPlacement)), croppedBitmap);
+                        getString(R.string.checkChamberPlacement)),
+                        resultDetails.get(resultDetails.size() - 1).getBitmap());
             } else {
 
                 CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();

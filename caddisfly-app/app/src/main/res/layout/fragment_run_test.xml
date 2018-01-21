@@ -68,8 +68,7 @@
                 android:textColor="#d6f6fdf6"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:dilution="@{vm.test}"
-                tools:text="No dilution" />
+                tools:text="@string/noDilution" />
 
             <TextView
                 android:id="@+id/textSubtitle"

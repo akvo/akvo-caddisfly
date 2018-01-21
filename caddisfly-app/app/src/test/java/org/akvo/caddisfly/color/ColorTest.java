@@ -17,7 +17,7 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.ui;
+package org.akvo.caddisfly.color;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -74,7 +74,39 @@ public class ColorTest {
         assertEquals(-1.0, resultDetail.getResult());
     }
 
-//    @Test
+    @Test
+    public void testGetRedResultValue() {
+        int[] colors = new int[2500];
+        for (int i = 0; i < 2500; i++) {
+            colors[i] = Color.rgb(254, 1, 19);;
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);
+        TestInfo testInfo = new TestInfo();
+        Result result = new Result();
+        result.getColors().add(new ColorItem(0));
+        result.getColors().add(new ColorItem(0.5));
+        result.getColors().add(new ColorItem(1));
+        result.getColors().add(new ColorItem(1.5));
+        result.getColors().add(new ColorItem(2));
+        testInfo.getResults().add(result);
+        List<Calibration> calibrations = new ArrayList<>();
+        calibrations.add(new Calibration(0, Color.rgb(253, 0, 18)));
+        calibrations.add(new Calibration(0.5, Color.rgb(254, 1, 21)));
+        calibrations.add(new Calibration(1, Color.rgb(254, 1, 19)));
+        calibrations.add(new Calibration(1.5, Color.rgb(253, 0, 18)));
+        calibrations.add(new Calibration(2, Color.rgb(253, 0, 18)));
+        testInfo.setCalibrations(calibrations);
+
+        ColorInfo photoColor = ColorUtil.getColorFromBitmap(bitmap, ChamberTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
+
+        ResultDetail resultDetail = SwatchHelper.analyzeColor(5, photoColor, testInfo.getSwatches());
+
+        assertEquals(0.752, resultDetail.getResult());
+    }
+
+
+    //    @Test
 //    public void testGetResultValue2() {
 //        int[] colors = new int[2500];
 //        for (int i = 0; i < 2500; i++) {

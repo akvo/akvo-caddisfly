@@ -370,4 +370,10 @@ public final class ImageUtil {
 
         return new byte[0];
     }
+
+    public static Bitmap rotateImage(@NonNull Bitmap in, int angle) {
+        Matrix mat = new Matrix();
+        mat.postRotate(angle);
+        return Bitmap.createBitmap(in, 0, 0, in.getWidth(), in.getHeight(), mat, true);
+    }
 }

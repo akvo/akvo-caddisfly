@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.chamber;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -101,36 +102,26 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        String testCode = mTestInfo.getUuid();
-        final Context context = getActivity();
-
-        LayoutInflater i = getActivity().getLayoutInflater();
+        final Activity activity = getActivity();
+        LayoutInflater i = activity.getLayoutInflater();
 
         @SuppressLint("InflateParams")
         View view = i.inflate(R.layout.fragment_save_calibration, null);
 
-        final DatePickerDialog.OnDateSetListener onDateSetListener = (view13, year, monthOfYear, dayOfMonth) -> {
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, monthOfYear);
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            String date = new SimpleDateFormat("dd MMM yyyy", Locale.US).format(calendar.getTime());
-            editExpiryDate.setText(date);
-        };
-
         editExpiryDate = view.findViewById(R.id.editExpiryDate);
-
         editBatchCode = view.findViewById(R.id.editBatchCode);
-
-        EditText editRgb = view.findViewById(R.id.editRgb);
 
         long milliseconds = PreferencesUtil.getLong(getActivity(),
                 mTestInfo.getUuid(),
                 R.string.calibrationExpiryDateKey);
         if (milliseconds > new Date().getTime()) {
 
-            editBatchCode.setText(PreferencesUtil.getString(context, testCode, R.string.batchNumberKey, "").trim());
+            editBatchCode.setText(PreferencesUtil.getString(activity, mTestInfo.getUuid(),
+                    R.string.batchNumberKey, "").trim());
 
-            long expiryDate = PreferencesUtil.getLong(getContext(), testCode, R.string.calibrationExpiryDateKey);
+            long expiryDate = PreferencesUtil.getLong(getContext(), mTestInfo.getUuid(),
+                    R.string.calibrationExpiryDateKey);
+
             if (expiryDate >= 0) {
                 calendar.setTimeInMillis(expiryDate);
 
@@ -139,12 +130,54 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             }
         }
 
-        editRgb.setText(PreferencesUtil.getString(context, testCode, R.string.ledRgbKey, "").trim());
+        setupDatePicker(activity);
 
-        if (!AppPreferences.useExternalCamera()) {
-            editRgb.setVisibility(View.GONE);
-            view.findViewById(R.id.textRgb).setVisibility(View.GONE);
+        editName = view.findViewById(R.id.editName);
+        if (!isEditing && AppPreferences.isDiagnosticMode()) {
+            editName.requestFocus();
+        } else {
+            editName.setVisibility(View.GONE);
+            editBatchCode.requestFocus();
         }
+
+        showKeyboard(activity);
+
+        AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.calibrationDetails)
+                .setPositiveButton(R.string.save,
+                        (dialog, whichButton) -> {
+                            closeKeyboard(activity, editName);
+                            dismiss();
+                        }
+                )
+                .setNegativeButton(R.string.cancel,
+                        (dialog, whichButton) -> {
+                            closeKeyboard(activity, editName);
+                            dismiss();
+                        }
+                );
+
+        b.setView(view);
+        return b.create();
+    }
+
+    private void showKeyboard(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        }
+    }
+
+    private void setupDatePicker(Context context) {
+
+        final DatePickerDialog.OnDateSetListener onDateSetListener = (view13, year, monthOfYear, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            String date = new SimpleDateFormat("dd MMM yyyy", Locale.US).format(calendar.getTime());
+            editExpiryDate.setText(date);
+        };
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(context, onDateSetListener,
                 calendar.get(Calendar.YEAR),
@@ -176,38 +209,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             closeKeyboard(getContext(), editBatchCode);
             datePickerDialog.show();
         });
-
-        editName = view.findViewById(R.id.editName);
-        if (!isEditing && AppPreferences.isDiagnosticMode()) {
-            editName.requestFocus();
-        } else {
-            editName.setVisibility(View.GONE);
-            editBatchCode.requestFocus();
-        }
-
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-        if (imm != null) {
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        }
-
-        AlertDialog.Builder b = new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.calibrationDetails)
-                .setPositiveButton(R.string.save,
-                        (dialog, whichButton) -> {
-                            closeKeyboard(context, editName);
-                            dismiss();
-                        }
-                )
-                .setNegativeButton(R.string.cancel,
-                        (dialog, whichButton) -> {
-                            closeKeyboard(context, editName);
-                            dismiss();
-                        }
-                );
-
-        b.setView(view);
-        return b.create();
     }
 
     @Override

@@ -42,9 +42,14 @@ public class ChamberCameraPreview extends SurfaceView implements SurfaceHolder.C
     private static final int MIN_PICTURE_WIDTH = 640;
     private static final int MIN_PICTURE_HEIGHT = 480;
     private static final int MIN_SUPPORTED_WIDTH = 400;
-    private SurfaceHolder mHolder;
+    private final SurfaceHolder mHolder;
     private Camera mCamera;
 
+    /**
+     * Camera preview.
+     *
+     * @param context the context
+     */
     public ChamberCameraPreview(Context context) {
         super(context);
         mCamera = getCameraInstance();
@@ -55,6 +60,11 @@ public class ChamberCameraPreview extends SurfaceView implements SurfaceHolder.C
         mHolder.addCallback(this);
     }
 
+    /**
+     * Surface created.
+     *
+     * @param holder the holder
+     */
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, now tell the camera where to draw the preview.
         try {
@@ -69,6 +79,14 @@ public class ChamberCameraPreview extends SurfaceView implements SurfaceHolder.C
         // empty. Take care of releasing the Camera preview in your activity.
     }
 
+    /**
+     * Surface changed.
+     *
+     * @param holder the holder
+     * @param format the format
+     * @param w      the width
+     * @param h      the height
+     */
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         // If your preview can change or rotate, take care of those events here.
         // Make sure to stop the preview before resizing or reformatting it.
@@ -85,8 +103,6 @@ public class ChamberCameraPreview extends SurfaceView implements SurfaceHolder.C
             // ignore: tried to stop a non-existent preview
         }
 
-        setupCamera(mCamera);
-
         // start preview with new settings
         try {
             mCamera.setPreviewDisplay(mHolder);
@@ -96,11 +112,14 @@ public class ChamberCameraPreview extends SurfaceView implements SurfaceHolder.C
         }
     }
 
-    private void setupCamera(Camera camera) {
+    /**
+     * Camera setup.
+     *
+     * @param camera the camera
+     */
+    public void setupCamera(Camera camera) {
         mCamera = camera;
         Camera.Parameters parameters = mCamera.getParameters();
-
-        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
 
         List<String> supportedWhiteBalance = mCamera.getParameters().getSupportedWhiteBalance();
         if (supportedWhiteBalance != null && supportedWhiteBalance.contains(
@@ -128,11 +147,13 @@ public class ChamberCameraPreview extends SurfaceView implements SurfaceHolder.C
 
         if (focusModes.contains(Camera.Parameters.FOCUS_MODE_FIXED)) {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_FIXED);
-        } else {
+        } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
             // Attempt to set focus to infinity if supported
-            if (focusModes.contains(Camera.Parameters.FOCUS_MODE_INFINITY)) {
-                parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
-            }
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_INFINITY);
+        } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        } else if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         }
 
         if (parameters.getMaxNumMeteringAreas() > 0) {

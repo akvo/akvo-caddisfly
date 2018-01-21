@@ -31,7 +31,9 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -54,6 +56,10 @@ import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import static org.akvo.caddisfly.common.Constants.DEGREES_180;
+import static org.akvo.caddisfly.common.Constants.DEGREES_270;
+import static org.akvo.caddisfly.common.Constants.DEGREES_90;
 
 public class BaseRunTest extends Fragment implements RunTest {
     private static final double SHORT_DELAY = 1;
@@ -135,6 +141,7 @@ public class BaseRunTest extends Fragment implements RunTest {
         // Create our Preview view and set it as the content of our activity.
         mCameraPreview = new ChamberCameraPreview(getActivity());
         mCamera = mCameraPreview.getCamera();
+        mCameraPreview.setupCamera(mCamera);
         binding.cameraView.addView(mCameraPreview);
     }
 
@@ -167,6 +174,13 @@ public class BaseRunTest extends Fragment implements RunTest {
         binding.setVm(model);
 
         initializeTest();
+
+        if (mCalibration != null) {
+            binding.textDilution.setText(String.valueOf(mCalibration.value));
+        } else {
+            binding.textDilution.setText(getResources()
+                    .getQuantityString(R.plurals.dilutions, dilution, dilution));
+        }
 
         return binding.getRoot();
     }
@@ -208,6 +222,25 @@ public class BaseRunTest extends Fragment implements RunTest {
      */
     private void getAnalyzedResult(@NonNull Bitmap bitmap) {
 
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        int rotation;
+        switch (display.getRotation()) {
+            case Surface.ROTATION_0:
+                rotation = DEGREES_90;
+                break;
+            case Surface.ROTATION_180:
+                rotation = DEGREES_270;
+                break;
+            case Surface.ROTATION_270:
+                rotation = DEGREES_180;
+                break;
+            case Surface.ROTATION_90:
+            default:
+                rotation = 0;
+                break;
+        }
+
+        bitmap = ImageUtil.rotateImage(bitmap, rotation);
         Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(bitmap,
                 ChamberTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
@@ -224,6 +257,7 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             ResultDetail resultDetail = SwatchHelper.analyzeColor(mTestInfo.getSwatches().size(),
                     photoColor, mTestInfo.getSwatches());
+            resultDetail.setBitmap(croppedBitmap);
             resultDetail.setDilution(dilution);
 
             results.add(resultDetail);
@@ -236,7 +270,7 @@ public class BaseRunTest extends Fragment implements RunTest {
                     }
                 }
 
-                mListener.onResult(results, mCalibration, croppedBitmap);
+                mListener.onResult(results, mCalibration);
             }
         }
     }
@@ -250,7 +284,6 @@ public class BaseRunTest extends Fragment implements RunTest {
     public void setDilution(int dilution) {
         this.dilution = dilution;
     }
-
 
     void startRepeatingTask() {
         mRunnableCode.run();
@@ -366,6 +399,6 @@ public class BaseRunTest extends Fragment implements RunTest {
     }
 
     public interface OnResultListener {
-        void onResult(ArrayList<ResultDetail> results, Calibration calibration, Bitmap croppedBitmap);
+        void onResult(ArrayList<ResultDetail> results, Calibration calibration);
     }
 }

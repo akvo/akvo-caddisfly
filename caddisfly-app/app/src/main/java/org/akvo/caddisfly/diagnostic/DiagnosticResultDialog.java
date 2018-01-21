@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -70,8 +71,12 @@ public class DiagnosticResultDialog extends DialogFragment {
             getDialog().setTitle(R.string.error);
         } else {
             if (isCalibration) {
-                getDialog().setTitle(String.format("%s: %s", getString(R.string.result),
-                        ColorUtil.getColorRgbString(color)));
+                if (color == Color.TRANSPARENT) {
+                    getDialog().setTitle(R.string.error);
+                } else {
+                    getDialog().setTitle(String.format("%s: %s", getString(R.string.result),
+                            ColorUtil.getColorRgbString(color)));
+                }
             } else {
                 final String resultString = result.getResult();
                 getDialog().setTitle(resultString);
@@ -109,11 +114,13 @@ public class DiagnosticResultDialog extends DialogFragment {
             View rowView = inflater.inflate(R.layout.row_info, parent, false);
 
             if (rowView != null) {
+                ImageView imageView = rowView.findViewById(R.id.imageView);
                 TextView textRgb = rowView.findViewById(R.id.textRgb);
                 TextView textSwatch = rowView.findViewById(R.id.textSwatch);
 
                 ResultDetail result = resultDetails.get(position);
 
+                imageView.setImageBitmap(result.getBitmap());
                 int color = result.getColor();
 
                 textSwatch.setBackgroundColor(color);

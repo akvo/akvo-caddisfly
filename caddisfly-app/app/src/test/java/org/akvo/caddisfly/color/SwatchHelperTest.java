@@ -17,12 +17,13 @@
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.akvo.caddisfly.util;
+package org.akvo.caddisfly.color;
 
 import android.graphics.Color;
 
 import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.ResultDetail;
+import org.akvo.caddisfly.util.ClassUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -224,12 +225,12 @@ public class SwatchHelperTest {
     @Test
     public void testGetAverageColor5() {
         ArrayList<ResultDetail> results = new ArrayList<>();
-        results.add(createNewResult(1.6, Color.rgb(225, 1, 1)));
+        results.add(createNewResult(1.6, Color.rgb(225, 3, 1)));
         results.add(createNewResult(1.8, Color.rgb(225, 1, 2)));
         results.add(createNewResult(1.8, Color.rgb(215, 1, 1)));
-        results.add(createNewResult(1.8, Color.rgb(225, 1, 1)));
-        results.add(createNewResult(1.8, Color.rgb(225, 1, 1)));
-        results.add(createNewResult(1.8, Color.rgb(225, 1, 3)));
+        results.add(createNewResult(1.8, Color.rgb(225, 1, 4)));
+        results.add(createNewResult(1.8, Color.rgb(225, 6, 1)));
+        results.add(createNewResult(1.8, Color.rgb(225, 1, 8)));
 
         int color = SwatchHelper.getAverageColor(results);
         assertEquals(0, color);
@@ -249,4 +250,36 @@ public class SwatchHelperTest {
         assertEquals(Color.rgb(176, 125, 77), color);
 
     }
+
+    @Test
+    public void testGetAverageColor7() {
+        ArrayList<ResultDetail> results = new ArrayList<>();
+
+//        results.add(createNewResult(10, Color.rgb(175, 124, 77)));
+//        results.add(createNewResult(20, Color.rgb(175, 124, 77)));
+        results.add(createNewResult(1.90, Color.rgb(253, 0, 18)));
+        results.add(createNewResult(40, Color.rgb(254, 1, 21)));
+        results.add(createNewResult(0, Color.rgb(254, 1, 19)));
+        results.add(createNewResult(0, Color.rgb(253, 0, 18)));
+        results.add(createNewResult(0, Color.rgb(253, 0, 18)));
+
+        int color = SwatchHelper.getAverageColor(results);
+        assertEquals(Color.rgb(253, 0, 18), color);
+    }
+
+    @Test
+    public void testGetAverageColor8() {
+        ArrayList<ResultDetail> results = new ArrayList<>();
+
+        results.add(createNewResult(1.90, Color.rgb(184, 134, 45)));
+        results.add(createNewResult(40, Color.rgb(182, 135, 45)));
+        results.add(createNewResult(0, Color.rgb(186, 139, 46)));
+        results.add(createNewResult(0, Color.rgb(180, 130, 41)));
+        results.add(createNewResult(0, Color.rgb(181, 134, 44)));
+
+        int color = SwatchHelper.getAverageColor(results);
+        assertEquals(Color.rgb(182, 134, 44), color);
+    }
+
+
 }

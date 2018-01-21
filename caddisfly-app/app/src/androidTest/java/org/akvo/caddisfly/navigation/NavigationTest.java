@@ -339,9 +339,9 @@ public class NavigationTest {
 
         clickExternalSourceButton(0);
 
-        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
+//        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
 
-//        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         //Connect EC Sensor Screen
         takeScreenshot();

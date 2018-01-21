@@ -253,12 +253,6 @@ public class TestInfoViewModel extends AndroidViewModel {
         setImage(imageView, Constants.BRAND_IMAGE_PATH + name + ".webp");
     }
 
-    @BindingAdapter("dilution")
-    public static void setDilution(TextView textView, TestInfo testInfo) {
-        textView.setText(textView.getContext().getResources()
-                .getQuantityString(R.plurals.dilutions, testInfo.getDilution(), testInfo.getDilution()));
-    }
-
     private static void setImage(ImageView imageView, String theName) {
         if (theName != null) {
             Context context = imageView.getContext();
