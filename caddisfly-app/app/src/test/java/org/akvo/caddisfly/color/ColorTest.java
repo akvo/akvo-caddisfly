@@ -78,7 +78,7 @@ public class ColorTest {
     public void testGetRedResultValue() {
         int[] colors = new int[2500];
         for (int i = 0; i < 2500; i++) {
-            colors[i] = Color.rgb(254, 1, 19);;
+            colors[i] = Color.rgb(254, 1, 19);
         }
 
         Bitmap bitmap = Bitmap.createBitmap(colors, 50, 50, Bitmap.Config.ARGB_8888);

@@ -22,9 +22,7 @@ package org.akvo.caddisfly.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -50,9 +48,6 @@ import timber.log.Timber;
  * Set of utility functions to manipulate images.
  */
 public final class ImageUtil {
-
-    private static final int FOUND_CIRCLE_RADIUS = 50;
-    private static final int IMAGE_CENTER_CIRCLE_RADIUS = 20;
 
     private ImageUtil() {
     }
@@ -98,20 +93,6 @@ public final class ImageUtil {
                 Bitmap.Config.ARGB_8888);
         croppedBitmap = ImageUtil.getRoundedShape(croppedBitmap, length);
         croppedBitmap.setHasAlpha(true);
-
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setColor(Color.GREEN);
-        paint.setStrokeWidth(3);
-        paint.setStyle(Paint.Style.STROKE);
-
-        Canvas canvas = new Canvas(bitmap);
-        canvas.drawBitmap(bitmap, new Matrix(), null);
-        canvas.drawCircle(point.x, point.y, FOUND_CIRCLE_RADIUS, paint);
-
-        paint.setColor(Color.YELLOW);
-        paint.setStrokeWidth(2);
-        canvas.drawCircle(bitmap.getWidth() / 2f, bitmap.getHeight() / 2f, IMAGE_CENTER_CIRCLE_RADIUS, paint);
 
         return croppedBitmap;
     }
