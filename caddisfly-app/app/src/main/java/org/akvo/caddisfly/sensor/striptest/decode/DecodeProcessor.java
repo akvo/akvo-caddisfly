@@ -370,8 +370,6 @@ public class DecodeProcessor {
     }
 
     private void storeData() {
-//        long time = System.currentTimeMillis();
-
         // subtract black part and put it in a rectangle. Do the calibration at the same time.
         // 1) determine size of new image array
         // 2) loop over pixels of new image array
@@ -434,7 +432,7 @@ public class DecodeProcessor {
         float c2c2;
 
         float ONE_THIRD = 1.0f / 3.0f;
-//        int count = 0;
+
         // we use a lookup table to speed this thing up.
         Map<String, float[]> colourMap = new HashMap<>();
         String label;
@@ -465,7 +463,8 @@ public class DecodeProcessor {
                 //Apply illumination transform
                 Y = capValue(Y - (illumination[0] * xCard + illumination[1] * yCard +
                         +illumination[2] * xCard * xCard + illumination[3] * yCard * yCard
-                        + illumination[4] * xCard * yCard + illumination[5]) + illumination[6], 0.0f, 255.0f);
+                        + illumination[4] * xCard * yCard + illumination[5])
+                        + illumination[6], 0.0f, 255.0f);
 
                 // from here on, it is all just colour transforms fixed values.
                 // therefore, we try to shortcut this by using a hashMap.
@@ -521,7 +520,8 @@ public class DecodeProcessor {
 
         // get out strip
         float ratioPixelPerMm = widthPixels / widthMm;
-        float[][][] result = ImageUtils.detectStrip(XYZ, widthPixels, heightPixels, testInfo.getStripLength(), ratioPixelPerMm);
+        float[][][] result = ImageUtils.detectStrip(XYZ, widthPixels, heightPixels,
+                testInfo.getStripLength(), ratioPixelPerMm);
 
         // store image in decodeData object
         // NOTE: the image has been transposed in the detectStrip method, so here the rows

@@ -62,32 +62,6 @@
         android:textColor="?android:textColor" />
 
     <TextView
-        android:id="@+id/textRgb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:labelFor="@+id/editRgb"
-        android:text="@string/rgb_example_value"
-        android:textColor="#999999"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/editRgb"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:digits="1234567890.,"
-        android:inputType="numberDecimal"
-        android:maxLength="11"
-        android:maxLines="1"
-        android:paddingTop="3dp"
-        android:textColor="?android:textColor" />
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"

@@ -27,8 +27,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 210
-        versionName "1.0.0 Beta 10"
+        versionCode 211
+        versionName "1.0.0 Beta 10.1"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -122,9 +122,6 @@ dependencies {
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.2'
-
-    // Fotoapparat
-    implementation 'io.fotoapparat.fotoapparat:library:1.5.0'
 
     // Usb
     implementation 'com.github.felHR85:UsbSerial:4.5.1'

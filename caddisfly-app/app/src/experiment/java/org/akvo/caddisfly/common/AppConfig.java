@@ -33,7 +33,7 @@ public final class AppConfig {
     public static final boolean APP_EXPIRY = true;
     public static final int APP_EXPIRY_DAY = 15;
     public static final int APP_EXPIRY_MONTH = 1;
-    public static final int APP_EXPIRY_YEAR = 2018;
+    public static final int APP_EXPIRY_YEAR = 2019;
 
     /**
      * The intent action string used to connect to external app.
@@ -61,8 +61,6 @@ public final class AppConfig {
      *  The url for the experimental tests json config.
      */
     public static final String EXPERIMENT_TESTS_URL = "https://raw.githubusercontent.com/foundation-for-enviromental-monitoring/experimental-tests/master/experimental_tests.json";
-
-    public static final String EXPERIMENT_TESTS_FFEM_URL = "https://raw.githubusercontent.com/foundation-for-enviromental-monitoring/experimental-tests/ffem-app/experimental_tests.json";
 
     private AppConfig() {
     }

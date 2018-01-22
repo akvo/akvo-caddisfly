@@ -30,6 +30,12 @@ import org.akvo.caddisfly.model.TestInfo;
 
 public class ChamberBelowFragment extends BaseRunTest implements RunTest {
 
+    /**
+     * Instance of fragment.
+     *
+     * @param testInfo the test info
+     * @return the fragment
+     */
     public static ChamberBelowFragment newInstance(TestInfo testInfo) {
         ChamberBelowFragment fragment = new ChamberBelowFragment();
         Bundle args = new Bundle();
@@ -48,14 +54,18 @@ public class ChamberBelowFragment extends BaseRunTest implements RunTest {
 
             setupCamera();
 
+            turnFlashOn();
+
             cameraStarted = true;
 
-            camera.start();
-
-            binding.cameraView.setOnClickListener(v -> {
-                binding.cameraView.setOnClickListener(null);
+            binding.startCaptureButton.setVisibility(View.VISIBLE);
+            binding.startCaptureButton.setOnClickListener(view -> {
+                stopPreview();
+                turnFlashOff();
+                binding.startCaptureButton.setVisibility(View.GONE);
                 startRepeatingTask();
             });
+
         }
     }
 

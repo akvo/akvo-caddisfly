@@ -96,6 +96,6 @@ public class BitMatrixCreator {
                 yMin = Math.min(yMin, val);
             }
         }
-        return (int) Math.round(0.5 * (yMax + yMin));
+        return (int) Math.round(0.33333 * (2 * yMax + yMin));
     }
 }

@@ -21,6 +21,7 @@ package org.akvo.caddisfly.sensor.chamber;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -49,6 +50,7 @@ import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.dao.CalibrationDao;
+import org.akvo.caddisfly.diagnostic.DiagnosticResultDialog;
 import org.akvo.caddisfly.diagnostic.DiagnosticSwatchActivity;
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.entity.CalibrationDetail;
@@ -119,7 +121,7 @@ public class ChamberTestActivity extends BaseActivity implements
             if (testInfo.getCameraAbove()) {
                 runTestFragment = ChamberBelowFragment.newInstance(testInfo);
             } else {
-                runTestFragment = ChamberAboveTest.newInstance(testInfo);
+                runTestFragment = ChamberAboveFragment.newInstance(testInfo);
             }
 
             if (getIntent().getBooleanExtra(ConstantKey.RUN_TEST, false)) {
@@ -157,7 +159,6 @@ public class ChamberTestActivity extends BaseActivity implements
 
     private void runTest() {
         if (cameraIsOk) {
-
             runTestFragment.setDilution(currentDilution);
             goToFragment((Fragment) runTestFragment);
         } else {
@@ -361,7 +362,7 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     @Override
-    public void onResult(ArrayList<ResultDetail> resultDetails, Calibration calibration, Bitmap croppedBitmap) {
+    public void onResult(ArrayList<ResultDetail> resultDetails, Calibration calibration) {
 
         if (calibration == null) {
 
@@ -387,11 +388,31 @@ public class ChamberTestActivity extends BaseActivity implements
                         .replace(R.id.fragment_container,
                                 ResultFragment.newInstance(testInfo), null).commit();
 
-                mCroppedBitmap = croppedBitmap;
+                mCroppedBitmap = resultDetails.get(0).getBitmap();
+
+                if (AppPreferences.isDiagnosticMode()) {
+                    showDiagnosticResultDialog(false, result, resultDetails, false, 0);
+                }
+
             } else {
 
-                showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestFailed),
-                        getString(R.string.checkChamberPlacement)), croppedBitmap);
+                if (AppPreferences.isDiagnosticMode()) {
+                    sound.playShortResource(R.raw.err);
+
+                    releaseResources();
+
+                    setResult(Activity.RESULT_CANCELED);
+
+                    fragmentManager.popBackStack();
+
+                    showDiagnosticResultDialog(true, new Result(), resultDetails, false, 0);
+
+                } else {
+
+                    showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.errorTestFailed),
+                            getString(R.string.checkChamberPlacement)),
+                            resultDetails.get(resultDetails.size() - 1).getBitmap());
+                }
             }
 
         } else {
@@ -399,8 +420,14 @@ public class ChamberTestActivity extends BaseActivity implements
             int color = SwatchHelper.getAverageColor(resultDetails);
 
             if (color == Color.TRANSPARENT) {
+
+                if (AppPreferences.isDiagnosticMode()) {
+                    showDiagnosticResultDialog(false, new Result(), resultDetails, true, color);
+                }
+
                 showError(String.format(TWO_SENTENCE_FORMAT, getString(R.string.couldNotCalibrate),
-                        getString(R.string.checkChamberPlacement)), croppedBitmap);
+                        getString(R.string.checkChamberPlacement)),
+                        resultDetails.get(resultDetails.size() - 1).getBitmap());
             } else {
 
                 CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
@@ -408,11 +435,40 @@ public class ChamberTestActivity extends BaseActivity implements
                 calibration.date = new Date().getTime();
                 dao.insert(calibration);
                 CalibrationFile.saveCalibratedData(this, testInfo, calibration, color);
+                loadDetails();
 
                 sound.playShortResource(R.raw.done);
+
+                if (AppPreferences.isDiagnosticMode()) {
+                    showDiagnosticResultDialog(false, new Result(), resultDetails, true, color);
+                }
             }
             fragmentManager.popBackStackImmediate();
         }
+    }
+
+    /**
+     * In diagnostic mode show the diagnostic results dialog.
+     *
+     * @param testFailed    if test has failed then dialog knows to show the retry button
+     * @param result        the result shown to the user
+     * @param resultDetails the result details
+     * @param isCalibration is this a calibration result
+     * @param color         the matched color
+     */
+    private void showDiagnosticResultDialog(boolean testFailed, Result result,
+                                            ArrayList<ResultDetail> resultDetails, boolean isCalibration, int color) {
+        DialogFragment resultFragment = DiagnosticResultDialog.newInstance(
+                testFailed, result, resultDetails, isCalibration, color);
+        final android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        android.app.Fragment prev = getFragmentManager().findFragmentByTag("gridDialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        resultFragment.setCancelable(false);
+        resultFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+        resultFragment.show(ft, "gridDialog");
     }
 
     /**
@@ -460,7 +516,13 @@ public class ChamberTestActivity extends BaseActivity implements
         releaseResources();
 
         alertDialogToBeDestroyed = AlertUtil.showError(this, R.string.error, message, bitmap, R.string.retry,
-                (dialogInterface, i) -> start(),
+                (dialogInterface, i) -> {
+                    if (getIntent().getBooleanExtra(ConstantKey.RUN_TEST, false)) {
+                        start();
+                    } else {
+                        runTest();
+                    }
+                },
                 (dialogInterface, i) -> {
                     dialogInterface.dismiss();
                     releaseResources();

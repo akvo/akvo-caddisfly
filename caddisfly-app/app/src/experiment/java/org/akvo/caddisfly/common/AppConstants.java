@@ -26,8 +26,6 @@ public final class AppConstants {
 
     public static final String APP_FOLDER = "Akvo Caddisfly Experiment";
 
-    public static final String FFEM_FOLDER = "FFEM Caddisfly";
-
     private AppConstants() {
     }
 

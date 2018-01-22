@@ -37,7 +37,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
@@ -251,12 +250,6 @@ public class TestInfoViewModel extends AndroidViewModel {
     @BindingAdapter("imageUrl")
     public static void setImageUrl(ImageView imageView, String name) {
         setImage(imageView, Constants.BRAND_IMAGE_PATH + name + ".webp");
-    }
-
-    @BindingAdapter("dilution")
-    public static void setDilution(TextView textView, TestInfo testInfo) {
-        textView.setText(textView.getContext().getResources()
-                .getQuantityString(R.plurals.dilutions, testInfo.getDilution(), testInfo.getDilution()));
     }
 
     private static void setImage(ImageView imageView, String theName) {

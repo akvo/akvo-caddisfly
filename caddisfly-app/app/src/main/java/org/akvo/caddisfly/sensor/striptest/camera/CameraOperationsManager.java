@@ -37,7 +37,7 @@ import org.akvo.caddisfly.util.ImageUtil;
  */
 
 public class CameraOperationsManager {
-    private static final long AUTO_FOCUS_DELAY = 6000L;
+    private static final long AUTO_FOCUS_DELAY = 5000L;
 
     // A Handler for running camera tasks in the background.
     private Handler mCameraHandler;
@@ -53,8 +53,8 @@ public class CameraOperationsManager {
     private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera camera) {
 
-            if (AppPreferences.isTestMode() && bytes.length > 0) {
-                // Use test image
+            if (bytes != null && bytes.length > 0 && AppPreferences.isTestMode()) {
+                // Use test image if we are in test mode
                 StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
 
 //                ImageUtil.saveImageBytes(camera, bytes, FileHelper.FileType.TEST_IMAGE,
@@ -66,13 +66,19 @@ public class CameraOperationsManager {
             MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
+
     private Runnable runAutoFocus = new Runnable() {
         public void run() {
             if (mCamera != null) {
                 if (!changingExposure) {
-                    mCamera.cancelAutoFocus();
+                    // Check the focus. This is mainly needed in order to restart focus that doesn't run anymore,
+                    // which sometimes happens on samsung devices.
                     mCamera.autoFocus((success, camera) -> {
-                        // do Nothing
+                        // if we are in one of the other modes, we need to run 'cancelAutofocus' in order
+                        // to start the continuous focus again. *sigh*
+                        if (!camera.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                            mCamera.cancelAutoFocus();
+                        }
                     });
                 }
                 mCameraHandler.postDelayed(runAutoFocus, AUTO_FOCUS_DELAY);

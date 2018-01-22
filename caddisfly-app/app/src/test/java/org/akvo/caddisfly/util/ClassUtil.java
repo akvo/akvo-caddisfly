@@ -29,7 +29,7 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 //http://stackoverflow.com/questions/4520216/how-to-add-test-coverage-to-a-private-constructor
-final class ClassUtil {
+public final class ClassUtil {
 
     private ClassUtil() {
     }

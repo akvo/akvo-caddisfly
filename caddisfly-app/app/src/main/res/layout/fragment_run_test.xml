@@ -68,8 +68,7 @@
                 android:textColor="#d6f6fdf6"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:dilution="@{vm.test}"
-                tools:text="No dilution" />
+                tools:text="@string/noDilution" />
 
             <TextView
                 android:id="@+id/textSubtitle"
@@ -78,7 +77,6 @@
                 android:text="@string/placeDevice"
                 android:textColor="#d6f6fdf6"
                 android:textSize="16sp" />
-
         </LinearLayout>
 
         <FrameLayout
@@ -97,7 +95,7 @@
                 android:src="@drawable/place_device"
                 android:visibility="@{vm.test.cameraAbove ? View.GONE : View.VISIBLE}" />
 
-            <io.fotoapparat.view.CameraView
+            <FrameLayout
                 android:id="@+id/camera_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -109,6 +107,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="@{vm.test.cameraAbove ? View.VISIBLE : View.GONE}" />
+
+            <Button
+                android:id="@+id/startCaptureButton"
+                style="@style/Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:enabled="true"
+                android:minWidth="230dp"
+                android:onClick="onStartTestClick"
+                android:text="@string/start"
+                android:theme="?primaryButtonStyle"
+                android:visibility="gone" />
 
         </FrameLayout>
     </LinearLayout>
