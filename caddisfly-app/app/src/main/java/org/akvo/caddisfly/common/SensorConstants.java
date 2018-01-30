@@ -31,8 +31,6 @@ public final class SensorConstants {
     public static final String RESOURCE_ID = "caddisflyResourceUuid";
     public static final String RESPONSE = "response";
     public static final String VALUE = "value";
-    @Deprecated
-    public static final String RESPONSE_COMPAT = "response_compat";
     public static final String LANGUAGE = "language";
     public static final String QUESTION_TITLE = "questionTitle";
 

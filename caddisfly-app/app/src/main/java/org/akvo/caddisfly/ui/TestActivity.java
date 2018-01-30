@@ -56,7 +56,6 @@ import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.helper.SwatchHelper;
-import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -126,8 +125,7 @@ public class TestActivity extends BaseActivity {
         Intent intent = getIntent();
         String type = intent.getType();
         if ((type != null && "text/plain".equals(type))
-                && (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())
-                || AppConfig.FLOW_ACTION_CADDISFLY.equals(intent.getAction()))) {
+                && AppConfig.EXTERNAL_APP_ACTION.equals(intent.getAction())) {
 
             getTestSelectedByExternalApp(fragmentManager, intent);
         }
@@ -163,21 +161,7 @@ public class TestActivity extends BaseActivity {
 
         String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
 
-        if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())) {
-
-            // old version of survey does not expect image in result
-            mCallerExpectsImageInResult = false;
-        }
-
         String uuid = intent.getStringExtra(SensorConstants.RESOURCE_ID);
-        if (uuid == null) {
-
-            //todo: remove when obsolete
-            //UUID was not found so it must be old version survey, look for 5 letter code
-            String code = questionTitle.trim().substring(Math.max(0, questionTitle.length() - 5)).toLowerCase();
-
-            uuid = TestConfigHelper.getUuidFromShortCode(code);
-        }
 
         if (uuid != null) {
             //Get the test config by uuid
@@ -347,17 +331,9 @@ public class TestActivity extends BaseActivity {
             //return the test result to the external app
             Intent intent = new Intent(getIntent());
 
-            //todo: remove when obsolete
-            if (AppConfig.FLOW_ACTION_EXTERNAL_SOURCE.equals(intent.getAction())
-                    && data.hasExtra(SensorConstants.RESPONSE_COMPAT)) {
-                //if survey from old version server then don't send json response
-                intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE_COMPAT));
-                intent.putExtra(SensorConstants.VALUE, data.getStringExtra(SensorConstants.RESPONSE_COMPAT));
-            } else {
-                intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
-                if (testInfo.getHasImage() && mCallerExpectsImageInResult) {
-                    intent.putExtra(ConstantJsonKey.IMAGE, data.getStringExtra(ConstantKey.IMAGE));
-                }
+            intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
+            if (testInfo.getHasImage() && mCallerExpectsImageInResult) {
+                intent.putExtra(ConstantJsonKey.IMAGE, data.getStringExtra(ConstantKey.IMAGE));
             }
 
             this.setResult(Activity.RESULT_OK, intent);
@@ -396,7 +372,6 @@ public class TestActivity extends BaseActivity {
     }
 
     @NonNull
-    @Deprecated
     private String getTestName(@NonNull String title) {
 
         String tempTitle = title;
@@ -404,9 +379,6 @@ public class TestActivity extends BaseActivity {
         if (title.length() > 0) {
             if (title.length() > 30) {
                 tempTitle = title.substring(0, 30);
-            }
-            if (title.contains("-")) {
-                tempTitle = title.substring(0, title.indexOf("-")).trim();
             }
         } else {
             tempTitle = getString(R.string.error);

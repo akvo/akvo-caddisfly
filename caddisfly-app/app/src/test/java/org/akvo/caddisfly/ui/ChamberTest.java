@@ -188,7 +188,7 @@ public class ChamberTest {
     @Test
     public void textExternalWithoutPermission() {
 
-        Intent intent = new Intent(AppConfig.FLOW_ACTION_CADDISFLY);
+        Intent intent = new Intent(AppConfig.EXTERNAL_APP_ACTION);
 
         Bundle data = new Bundle();
         data.putString(CADDISFLY_RESOURCE_ID, Constants.FLUORIDE_ID);
@@ -222,7 +222,7 @@ public class ChamberTest {
 //
 //        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 //
-//        Intent intent = new Intent(AppConfig.FLOW_ACTION_CADDISFLY);
+//        Intent intent = new Intent(AppConfig.EXTERNAL_APP_ACTION);
 //
 //        Bundle data = new Bundle();
 //        data.putString(CADDISFLY_RESOURCE_ID, SensorConstants.FLUORIDE_ID);

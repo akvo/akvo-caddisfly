@@ -146,7 +146,7 @@ public final class TestConfigHelper {
                     // Add calibration details to result
                     subTestJson.put("calibratedDate",
                             new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US)
-                            .format(calibrationDetail.date));
+                                    .format(calibrationDetail.date));
                     subTestJson.put("reagentExpiry", calibrationDetail.expiry);
                     subTestJson.put("reagentBatch", calibrationDetail.batchNumber);
 
@@ -213,21 +213,6 @@ public final class TestConfigHelper {
         JSONObject details = new JSONObject();
         details.put("language", PreferencesUtil.getString(CaddisflyApp.getApp(), R.string.languageKey, ""));
         return details;
-    }
-
-    /**
-     * Returns a Uuid for the given shortCode.
-     *
-     * @param shortCode the test shortCode
-     * @return the Uuid
-     */
-    @Deprecated
-    public static String getUuidFromShortCode(String shortCode) {
-
-        if (!shortCode.isEmpty()) {
-            return getUuidByShortCode(shortCode, Constants.TESTS_META_FILENAME);
-        }
-        return null;
     }
 
     @SuppressWarnings("SameParameterValue")
