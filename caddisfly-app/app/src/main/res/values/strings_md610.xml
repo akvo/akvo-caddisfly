@@ -112,5 +112,7 @@
     <string name="blend_tss">Blend approx. 500 ml of the water sample (e.g. in a blender) at high speed for 2 minutes.</string>
     <string name="stir_blended_water">Stir the blended water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
     <string name="stir_water_sample">Stir the water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
-
+    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero"></string>
+    <string name="add_spoon_cyanide_1"></string>
+    <string name="add_spoon_cyanide_2"></string>
 </resources>

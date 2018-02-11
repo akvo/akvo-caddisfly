@@ -4481,6 +4481,86 @@
       ]
     },
     {
+      "name": "Cyanide",
+      "subtype": "bluetooth",
+      "md610_id": "157",
+      "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "3 drops of Cyanide-13",
+          "reactionTime": 10
+        }
+      ],
+      "sampleQuantity": "2",
+      "ranges": "0.01,0.5",
+      "selectInstruction": "select_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_2ml_sample_8ml_deionized_water_zero",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_spoon_cyanide_1",
+            "image:add_2_spoon"
+          ]
+        },
+        {
+          "section": [
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_spoon_cyanide_2",
+            "image:add_2_spoon"
+          ]
+        },
+        {
+          "section": [
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_liquid",
+            "image:add_liquid"
+          ]
+        },
+        {
+          "section": [
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Cyanide",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Fluoride",
       "subtype": "bluetooth",
       "md610_id": "170",
