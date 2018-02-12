@@ -7,6 +7,8 @@ import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
 
@@ -182,9 +184,9 @@ public class ResultUtils {
     // here, we use points as decimal separator always, as this is also used
     // to format numbers that are returned by json.
     public static String createValueString(float value) {
-        if (value < 1.0f) return String.format(Locale.US, "%.2f", value);
-        if (value < 10.0f) return String.format(Locale.US, "%.1f", value);
-        return String.format(Locale.US, "%.0f", value);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
+        return decimalFormat.format(value);
     }
 
 
@@ -198,6 +200,4 @@ public class ResultUtils {
             return Math.round(value * 10) / 10.0;
         }
     }
-
-
 }
