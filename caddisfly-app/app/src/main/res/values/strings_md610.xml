@@ -112,5 +112,7 @@
     <string name="blend_tss">Blend approx. 500 ml of the water sample (e.g. in a blender) at high speed for 2 minutes.</string>
     <string name="stir_blended_water">Stir the blended water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
     <string name="stir_water_sample">Stir the water sample. Immediately rinse the vial with the water sample and fill with <b>10 ml water sample.</b></string>
-
+    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero">Fill vial (24 mm Ø) with <b>2 ml of your sample</b> and <b>8 ml of deionised water</b>, wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press [*zero*] to perform <b>zero test</b></string>
+    <string name="add_spoon_cyanide_1">Add <b>two level spoons No. 4 (white) of Cyanide-11</b> into the prepared water sample</string>
+    <string name="add_spoon_cyanide_2">Add <b>two level spoons No. 4 (white) of Cyanide-12</b> into the prepared water sample</string>
 </resources>
