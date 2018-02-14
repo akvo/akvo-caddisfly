@@ -1415,6 +1415,76 @@
       ]
     },
     {
+      "name": "Water - Mercury",
+      "subtype": "striptest",
+      "uuid": "af98ac35-dc55-4d86-bbdc-aa4a4e3100c9",
+      "brand": "SenSafe 480048",
+      "groupingType": "INDIVIDUAL",
+      "hasImage": true,
+      "length": 35.5,
+      "height": 8,
+      "instructions": [
+        {
+          "section": [
+            "dip_sample_60_back_forward_250_sample",
+            "image:dip_sample_60_back_forward_250_sample"
+          ]
+        },
+        {
+          "section": [
+            "shake_excess_water_once",
+            "image:shake_excess"
+          ]
+        },
+        {
+          "section": [
+            "fold_place_crc",
+            "image:fold_place_crc"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Mercury",
+          "unit": "mg/l",
+          "timeDelay": 30,
+          "patchPos": 6,
+          "patchWidth": 4.50,
+          "colors": [
+            {
+              "value": 0,
+              "lab": [80.23,-12.47,49.35]
+            },
+            {
+              "value": 0.002,
+              "lab": [78.43,-11.96,50.15]
+            },
+            {
+              "value": 0.005,
+              "lab": [77.99,-10.05,46.11]
+            },
+            {
+              "value": 0.01,
+              "lab": [72.68,-2.14,43.17]
+            },
+            {
+              "value": 0.02,
+              "lab": [64.38,5.06,26.00]
+            },
+            {
+              "value": 0.04,
+              "lab": [57.08,8.36,17.15]
+            },
+            {
+              "value": 0.08,
+              "lab": [54.00,2.91,10.02]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Water - Nitrate - N & Nitrite - N",
       "subtype": "striptest",
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
