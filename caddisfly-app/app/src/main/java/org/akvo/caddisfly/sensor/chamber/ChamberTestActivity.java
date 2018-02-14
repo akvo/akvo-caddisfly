@@ -494,10 +494,6 @@ public class ChamberTestActivity extends BaseActivity implements
                 results, null, -1, resultImageUrl);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
-        // TODO: Remove this when obsolete
-        // Backward compatibility. Return plain text result
-        resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(1));
-
         setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
