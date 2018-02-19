@@ -40,7 +40,6 @@ import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +50,9 @@ import java.util.List;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -99,7 +100,6 @@ public class BluetoothInstructions {
 
     @Test
     @RequiresDevice
-    @Ignore
     public void testInstructionsAll() {
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
@@ -126,13 +126,15 @@ public class BluetoothInstructions {
 
             id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-            int pages = navigateToTest(i, id);
+//            if (id.equalsIgnoreCase("7d0685b49370")) {
+                int pages = navigateToTest(i, id);
 
-            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+//            }
 
         }
 
-//        Log.d("Caddisfly", jsArrayString.toString());
+        Log.d("Caddisfly", jsArrayString.toString());
 
     }
 
@@ -152,15 +154,15 @@ public class BluetoothInstructions {
 //            return;
 //        }
 
-//        TestUtil.sleep(5000);
-//
-//        onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
-//
-//        TestUtil.sleep(2000);
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-//        onView(withText(R.string.test_selected)).perform(click());
-//
-//        onView(withText("Test Instructions")).perform(click());
+        TestUtil.sleep(5000);
+
+        onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
+
+        TestUtil.sleep(2000);
+
+        onView(withText(R.string.test_selected)).perform(click());
 
         onView(withText("Instructions")).perform(click());
 
