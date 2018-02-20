@@ -1420,7 +1420,7 @@
       "brand": "SenSafe 480048",
       "groupingType": "INDIVIDUAL",
       "hasImage": true,
-      "length": 35.5,
+      "length": 71,
       "height": 8,
       "instructions": [
         {
@@ -1437,8 +1437,8 @@
         },
         {
           "section": [
-            "fold_place_crc",
-            "image:fold_place_crc"
+            "place_strip_clr_hg",
+            "image:place_clr"
           ]
         }
       ],
