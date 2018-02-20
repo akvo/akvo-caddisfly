@@ -49,7 +49,7 @@
     <string name="dip_sample_5s">Dip the test strip into the sample for <b>5 seconds</b> and remove.</string>
     <string name="shake_excess_water_off">Shake excess water from the test strip.</string>
     <string name="place_strip_clr">Place the test strip with the patch facing <b>left</b> on the black area of the Colour Reference Card and press <b>Start</b>.</string>
-    <string name="fold_place_crc">Fold the strip and place it with the patch facing <b>left</b> on the black area of the Colour Reference Card and directly press <b>Start</b>.</string>
+    <string name="place_strip_clr_hg">Place a clean test strip below the used test strip so that patch has a white background. Place the stacked strips with the patch facing <b>left</b> on the black area of the Colour Reference Card and press <b>Start</b>.</string>
     <string name="add_5_drops_po4_1">Add <b>5 drops</b> of the <b>PO4-1 Reagent</b> to the sample.</string>
     <string name="place_smaller_container">Place smaller container in the provided rack.</string>
     <string name="add_6_drops_po4_2">Add <b>6 drops</b> of the <b>PO4-2 Reagent</b> to the smaller container.</string>
