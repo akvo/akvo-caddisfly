@@ -110,12 +110,11 @@ public class CbtActivity extends BaseActivity
         if (resultCode == RESULT_OK) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (requestCode == CBT_TEST) {
-                fragmentTransaction.replace(R.id.fragment_container,
-                        CompartmentBagFragment.newInstance(cbtResult), "compartmentFragment")
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                        .addToBackStack(null)
-                        .commit();
-
+                (new Handler()).postDelayed(() -> {
+                    fragmentTransaction.replace(R.id.fragment_container,
+                            CompartmentBagFragment.newInstance(cbtResult), "compartmentFragment")
+                            .commit();
+                }, 500);
             }
         } else {
             onBackPressed();
@@ -146,7 +145,6 @@ public class CbtActivity extends BaseActivity
     public void onClickMatchedButton(View view) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, CbtResultFragment.newInstance(cbtResult), "resultFragment")
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                 .addToBackStack(null)
                 .commit();
     }

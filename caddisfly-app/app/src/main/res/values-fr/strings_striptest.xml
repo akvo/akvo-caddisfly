@@ -23,7 +23,6 @@
     <!--Water-->
     <string name="fill_half_with_sample">Remplissez le flacon à moitié plein avec l\'échantillon d\'eau</string>
     <string name="open_one_foil_and_add_powder">Ouvrez un paquet d\'alluminium et ajoutez le contenu de la poudre dans le flacon</string>
-    <string name="fold_place_crc">Plier la bandelette et mettez la bandelette de test avec le bout cotonné tourné vers la <b>gauche</b> sur la partie noire de la carte colorimétrique de référence et directemant appuyez sur <b>Démarrer</b>.</string>
     <string name="dip_sample_60_back_forward_250_sample">Plongez la bandelette dans <b>250+ ml</b> l\'échantillon et déplacez de l\'avant vers l\'arrière dans l\'échantillon pendant <b>60 secondes</b>.</string>
     <string name="shake_excess_water_once">Secouez <b>une voice</b> l\'excès d\'eau de la bandelette de test.</string>
 

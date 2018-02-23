@@ -98,7 +98,6 @@ public class ManualTestActivity extends BaseActivity
 
             ft.add(R.id.fragment_container,
                     MeasurementInputFragment.newInstance(testInfo), "tubeFragment")
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                     .commit();
         }
     }
@@ -111,7 +110,6 @@ public class ManualTestActivity extends BaseActivity
             if (requestCode == MANUAL_TEST) {
                 fragmentTransaction.replace(R.id.fragment_container,
                         MeasurementInputFragment.newInstance(testInfo), "manualFragment")
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                         .addToBackStack(null)
                         .commit();
             }
