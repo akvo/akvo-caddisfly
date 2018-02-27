@@ -39,7 +39,7 @@
     <!--CBT-->
     <dimen name="cbt_shapes_height">280dp</dimen>
     <dimen name="view_gutter_bottom">20dp</dimen>
-    <dimen name="cbt_shapes_text_size">20sp</dimen>
+    <dimen name="cbt_shapes_text_size">19sp</dimen>
 
     <!--md610-->
     <dimen name="md610_label_title">19sp</dimen>

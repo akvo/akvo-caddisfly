@@ -46,25 +46,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".20" />
+        app:layout_constraintGuide_percent=".25" />
 
     <android.support.constraint.Guideline
         android:id="@+id/bottom_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".75" />
+        app:layout_constraintGuide_percent=".81" />
 
     <TextView
         android:id="@+id/textInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:padding="8dp"
         android:paddingBottom="8dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="8dp"
         android:text="@string/change_colors_to_match"
-        android:textSize="16dp"
+        android:textSize="17dp"
         app:layout_constraintBottom_toTopOf="@+id/compartments"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -77,11 +78,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/textInfo"
-        android:padding="8dp"
         android:paddingBottom="8dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="8dp"
         android:text="@string/click_compartments_to_change"
-        android:textSize="16dp"
+        android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -95,7 +97,7 @@
         android:layout_below="@+id/compartments"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="20dp"
         android:alpha="0.1"
         android:enabled="true"
         android:onClick="onClickMatchedButton"

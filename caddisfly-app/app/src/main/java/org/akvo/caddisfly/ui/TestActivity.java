@@ -372,11 +372,11 @@ public class TestActivity extends BaseActivity {
     }
 
     @NonNull
-    private String getTestName(@NonNull String title) {
+    private String getTestName(String title) {
 
         String tempTitle = title;
         //ensure we have short name to display as title
-        if (title.length() > 0) {
+        if (title != null && title.length() > 0) {
             if (title.length() > 30) {
                 tempTitle = title.substring(0, 30);
             }
