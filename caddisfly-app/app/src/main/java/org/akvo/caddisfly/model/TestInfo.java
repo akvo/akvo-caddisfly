@@ -48,8 +48,8 @@ public class TestInfo implements Parcelable {
             return new TestInfo[size];
         }
     };
-    private DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-    private DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
+    private transient DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+    private transient DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
     @SerializedName("reagents")
     @Expose
     private List<Reagent> reagents = null;
@@ -328,7 +328,11 @@ public class TestInfo implements Parcelable {
                         String[] rangeArray = ranges.split(",");
                         if (rangeArray.length > 1) {
                             return rangeArray[0].trim() + " - " + rangeArray[rangeArray.length - 1].trim();
+                        } else {
+                            return "";
                         }
+                    } else {
+                        return "";
                     }
                 }
             }
