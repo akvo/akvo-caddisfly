@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.Manifest;
 import android.app.Activity;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -66,7 +65,6 @@ public class MainActivity extends BaseActivity {
 
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
 
-    private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
     private final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -85,19 +83,22 @@ public class MainActivity extends BaseActivity {
 
         setTitle(R.string.appName);
 
-        final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
-                AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
+        try {
+            final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
+                    AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
 
-        DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
-        b.textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
+            DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
+            b.textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
 
-        if (AppConfig.APP_EXPIRY && ApkHelper.isNonStoreVersion(this)) {
-            b.textVersionExpiry.setVisibility(View.VISIBLE);
+            if (AppConfig.APP_EXPIRY && ApkHelper.isNonStoreVersion(this)) {
+                b.textVersionExpiry.setVisibility(View.VISIBLE);
+            }
+
+            // If app has expired then close this activity
+            ApkHelper.isAppVersionExpired(this);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        // If app has expired then close this activity
-        ApkHelper.isAppVersionExpired(this);
-
     }
 
     /**
@@ -231,12 +232,6 @@ public class MainActivity extends BaseActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @NonNull
-    @Override
-    public LifecycleRegistry getLifecycle() {
-        return lifecycleRegistry;
     }
 
     /**

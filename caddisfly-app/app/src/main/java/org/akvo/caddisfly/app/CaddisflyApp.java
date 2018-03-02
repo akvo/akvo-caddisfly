@@ -119,64 +119,68 @@ public class CaddisflyApp extends Application {
      */
     public void setAppLanguage(String languageCode, boolean isExternal, Handler handler) {
 
-        Locale locale;
+        try {
+            Locale locale;
 
-        String code = languageCode;
+            String code = languageCode;
 
-        //the languages supported by the app
-        String[] supportedLanguages = getResources().getStringArray(R.array.language_codes);
+            //the languages supported by the app
+            String[] supportedLanguages = getResources().getStringArray(R.array.language_codes);
 
-        //the current system language set in the device settings
-        String currentSystemLanguage = Locale.getDefault().getLanguage().substring(0, 2);
+            //the current system language set in the device settings
+            String currentSystemLanguage = Locale.getDefault().getLanguage().substring(0, 2);
 
-        //the language the system was set to the last time the app was run
-        String previousSystemLanguage = PreferencesUtil.getString(this, R.string.systemLanguageKey, "");
+            //the language the system was set to the last time the app was run
+            String previousSystemLanguage = PreferencesUtil.getString(this, R.string.systemLanguageKey, "");
 
-        //if the system language was changed in the device settings then set that as the app language
-        if (!previousSystemLanguage.equals(currentSystemLanguage)
-                && Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
-            PreferencesUtil.setString(this, R.string.systemLanguageKey, currentSystemLanguage);
-            PreferencesUtil.setString(this, R.string.languageKey, currentSystemLanguage);
-        }
+            //if the system language was changed in the device settings then set that as the app language
+            if (!previousSystemLanguage.equals(currentSystemLanguage)
+                    && Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
+                PreferencesUtil.setString(this, R.string.systemLanguageKey, currentSystemLanguage);
+                PreferencesUtil.setString(this, R.string.languageKey, currentSystemLanguage);
+            }
 
-        if (code == null || !Arrays.asList(supportedLanguages).contains(code)) {
-            //if requested language code is not supported then use language from preferences
-            code = PreferencesUtil.getString(this, R.string.languageKey, "");
-            if (!Arrays.asList(supportedLanguages).contains(code)) {
-                //no language was selected in the app settings so use the system language
-                String currentLanguage = getResources().getConfiguration().locale.getLanguage();
-                if (currentLanguage.equals(currentSystemLanguage)) {
-                    //app is already set to correct language
-                    return;
-                } else if (Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
-                    //set to system language
-                    code = currentSystemLanguage;
-                } else {
-                    //no supported languages found just default to English
-                    code = "en";
+            if (code == null || !Arrays.asList(supportedLanguages).contains(code)) {
+                //if requested language code is not supported then use language from preferences
+                code = PreferencesUtil.getString(this, R.string.languageKey, "");
+                if (!Arrays.asList(supportedLanguages).contains(code)) {
+                    //no language was selected in the app settings so use the system language
+                    String currentLanguage = getResources().getConfiguration().locale.getLanguage();
+                    if (currentLanguage.equals(currentSystemLanguage)) {
+                        //app is already set to correct language
+                        return;
+                    } else if (Arrays.asList(supportedLanguages).contains(currentSystemLanguage)) {
+                        //set to system language
+                        code = currentSystemLanguage;
+                    } else {
+                        //no supported languages found just default to English
+                        code = "en";
+                    }
                 }
             }
-        }
 
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration config = res.getConfiguration();
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration config = res.getConfiguration();
 
-        locale = new Locale(code, Locale.getDefault().getCountry());
+            locale = new Locale(code, Locale.getDefault().getCountry());
 
-        //if the app language is not already set to languageCode then set it now
-        if (!config.locale.getLanguage().substring(0, 2).equalsIgnoreCase(code)
-                || !config.locale.getCountry().equalsIgnoreCase(Locale.getDefault().getCountry())) {
+            //if the app language is not already set to languageCode then set it now
+            if (!config.locale.getLanguage().substring(0, 2).equalsIgnoreCase(code)
+                    || !config.locale.getCountry().equalsIgnoreCase(Locale.getDefault().getCountry())) {
 
-            config.locale = locale;
-            config.setLayoutDirection(locale);
-            res.updateConfiguration(config, dm);
+                config.locale = locale;
+                config.setLayoutDirection(locale);
+                res.updateConfiguration(config, dm);
 
-            //if this session was launched from an external app then do not restart this app
-            if (!isExternal && handler != null) {
-                Message msg = handler.obtainMessage();
-                handler.sendMessage(msg);
+                //if this session was launched from an external app then do not restart this app
+                if (!isExternal && handler != null) {
+                    Message msg = handler.obtainMessage();
+                    handler.sendMessage(msg);
+                }
             }
+        } catch (Exception ignored) {
+            // do nothing
         }
     }
 }

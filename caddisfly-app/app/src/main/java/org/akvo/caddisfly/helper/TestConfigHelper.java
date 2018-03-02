@@ -214,25 +214,4 @@ public final class TestConfigHelper {
         details.put("language", PreferencesUtil.getString(CaddisflyApp.getApp(), R.string.languageKey, ""));
         return details;
     }
-
-    @SuppressWarnings("SameParameterValue")
-    @Nullable
-    private static String getUuidByShortCode(String shortCode, String filename) {
-        // Load the pre-configured tests from the app
-        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(filename);
-        try {
-            JSONArray array = new JSONObject(jsonText).getJSONArray("tests");
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject item = array.getJSONObject(i);
-                if (item.has(ConstantJsonKey.SHORT_CODE)
-                        && shortCode.equalsIgnoreCase(item.getString(ConstantJsonKey.SHORT_CODE))) {
-                    return item.getString(ConstantJsonKey.UUID);
-                }
-            }
-
-        } catch (JSONException e) {
-            Timber.e(e);
-        }
-        return null;
-    }
 }

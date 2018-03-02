@@ -19,11 +19,8 @@
 
 package org.akvo.caddisfly.util;
 
-import android.content.Context;
 import android.content.res.AssetManager;
-import android.graphics.drawable.Drawable;
 
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.helper.FileHelper;
@@ -31,7 +28,6 @@ import org.akvo.caddisfly.helper.FileHelper;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -60,21 +56,6 @@ public final class AssetsManager {
         }
 
         return assetsManager;
-    }
-
-    public static Drawable getImage(Context context, String imageName) {
-
-        String path = context.getResources().getString(R.string.instruction_images);
-        try {
-
-            InputStream ims = context.getAssets().open(path + "/" + imageName.toLowerCase(Locale.US) + ".webp");
-
-            return Drawable.createFromStream(ims, null);
-
-        } catch (IOException ignored) {
-            // do nothing
-        }
-        return null;
     }
 
     public String loadJsonFromAsset(String fileName) {

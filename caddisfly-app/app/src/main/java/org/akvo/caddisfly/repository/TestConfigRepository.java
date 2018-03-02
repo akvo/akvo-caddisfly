@@ -48,7 +48,7 @@ public class TestConfigRepository {
      */
     public List<TestInfo> getTests(TestType testType) {
 
-        List<TestInfo> testInfoList = null;
+        List<TestInfo> testInfoList = new ArrayList<>();
 
         if (testMap.containsKey(testType)) {
             return testMap.get(testType);

@@ -6397,24 +6397,7 @@
           "id": 1,
           "name": "Chromium",
           "unit": "mg/l",
-          "timeDelay": 300,
-          "colors": [
-            {
-              "value": 0
-            },
-            {
-              "value": 0.5
-            },
-            {
-              "value": 1
-            },
-            {
-              "value": 2
-            },
-            {
-              "value": 3
-            }
-          ]
+          "timeDelay": 300
         }
       ]
     },
@@ -6497,24 +6480,7 @@
         {
           "id": 1,
           "name": "Fluoride",
-          "unit": "mg/l",
-          "colors": [
-            {
-              "value": 0
-            },
-            {
-              "value": 0.5
-            },
-            {
-              "value": 1
-            },
-            {
-              "value": 1.5
-            },
-            {
-              "value": 2
-            }
-          ]
+          "unit": "mg/l"
         }
       ]
     },
@@ -6588,30 +6554,7 @@
         {
           "id": 1,
           "name": "Free Chlorine",
-          "unit": "mg/l",
-          "colors": [
-            {
-              "value": 0
-            },
-            {
-              "value": 0.5
-            },
-            {
-              "value": 1
-            },
-            {
-              "value": 1.5
-            },
-            {
-              "value": 2
-            },
-            {
-              "value": 2.5
-            },
-            {
-              "value": 3
-            }
-          ]
+          "unit": "mg/l"
         }
       ]
     },

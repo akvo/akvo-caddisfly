@@ -348,6 +348,8 @@ public class BaseRunTest extends Fragment implements RunTest {
 
         if (mCamera != null) {
             mCamera.stopPreview();
+            mCamera.setPreviewCallback(null);
+            mCameraPreview.getHolder().removeCallback(mCameraPreview);
             mCamera.release();
             mCamera = null;
         }

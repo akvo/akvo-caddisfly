@@ -94,8 +94,6 @@ public class TestActivity extends BaseActivity {
     private final String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
     private final String[] noPermissions = {};
 
-    // old versions of the survey app does not expect image in result
-    private boolean mCallerExpectsImageInResult = true;
     private TestInfo testInfo;
     private boolean cameraIsOk = false;
     private LinearLayout mainLayout;
@@ -332,7 +330,7 @@ public class TestActivity extends BaseActivity {
             Intent intent = new Intent(getIntent());
 
             intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
-            if (testInfo.getHasImage() && mCallerExpectsImageInResult) {
+            if (testInfo.getHasImage()) {
                 intent.putExtra(ConstantJsonKey.IMAGE, data.getStringExtra(ConstantKey.IMAGE));
             }
 
@@ -364,11 +362,13 @@ public class TestActivity extends BaseActivity {
      */
     public void onSiteLinkClick(View view) {
         String url = testInfo.getBrandUrl();
-        if (!url.contains("http://")) {
-            url = "http://" + url;
+        if (url != null) {
+            if (!url.contains("http://")) {
+                url = "http://" + url;
+            }
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(browserIntent);
         }
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
     }
 
     @NonNull

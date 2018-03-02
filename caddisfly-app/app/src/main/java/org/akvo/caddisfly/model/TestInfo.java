@@ -82,7 +82,7 @@ public class TestInfo implements Parcelable {
     private String brand;
     @SerializedName("brandUrl")
     @Expose
-    private String brandUrl;
+    private String brandUrl = "";
     @SerializedName("groupingType")
     @Expose
     private GroupType groupingType;
@@ -107,9 +107,6 @@ public class TestInfo implements Parcelable {
     @SerializedName("results")
     @Expose
     private List<Result> results = new ArrayList<>();
-    @SerializedName("shortCode")
-    @Expose
-    private String shortCode;
     @SerializedName("calibrate")
     @Expose
     private Boolean calibrate = false;
@@ -208,7 +205,6 @@ public class TestInfo implements Parcelable {
         hasImage = tmpHasImage != 0 && tmpHasImage == 1;
         byte tmpCameraAbove = in.readByte();
         cameraAbove = tmpCameraAbove != 0 && tmpCameraAbove == 1;
-        shortCode = in.readString();
         byte tmpCalibrate = in.readByte();
         calibrate = tmpCalibrate != 0 && tmpCalibrate == 1;
         ranges = in.readString();
@@ -432,7 +428,6 @@ public class TestInfo implements Parcelable {
         parcel.writeString(unit);
         parcel.writeByte((byte) (hasImage == null ? 0 : hasImage ? 1 : 2));
         parcel.writeByte((byte) (cameraAbove == null ? 0 : cameraAbove ? 1 : 2));
-        parcel.writeString(shortCode);
         parcel.writeByte((byte) (calibrate == null ? 0 : calibrate ? 1 : 2));
         parcel.writeString(ranges);
         parcel.writeString(defaultColors);
