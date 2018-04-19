@@ -72,7 +72,7 @@ public class CalibrationViewAdapter extends RecyclerView.Adapter<CalibrationView
             holder.textUnit.setText(String.valueOf(result.getUnit()));
 
             //display additional information if we are in diagnostic mode
-            if (AppPreferences.isDiagnosticMode()) {
+            if (AppPreferences.getShowDebugInfo()) {
 
                 holder.textUnit.setVisibility(View.GONE);
 

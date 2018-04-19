@@ -157,6 +157,8 @@ public class TestInfo implements Parcelable {
     private List<Swatch> swatches = new ArrayList<>();
     private Integer decimalPlaces = 0;
 
+    private ResultDetail resultDetail;
+
     public TestInfo() {
     }
 
@@ -576,5 +578,13 @@ public class TestInfo implements Parcelable {
 
     public int getDecimalPlaces() {
         return decimalPlaces;
+    }
+
+    public ResultDetail getResultDetail() {
+        return resultDetail;
+    }
+
+    public void setResultDetail(ResultDetail resultDetail) {
+        this.resultDetail = resultDetail;
     }
 }

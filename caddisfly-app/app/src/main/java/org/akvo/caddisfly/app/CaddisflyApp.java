@@ -32,7 +32,6 @@ import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Arrays;
@@ -69,15 +68,14 @@ public class CaddisflyApp extends Application {
      *
      * @return The version name and number
      */
-    public static String getAppVersion() {
+    public static String getAppVersion(boolean isDiagnostic) {
         String version = "";
         try {
             Context context = getApp();
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 
-            if (AppPreferences.isDiagnosticMode()) {
-                version = String.format("%s %s (Build %s)", context.getString(R.string.version),
-                        packageInfo.versionName, packageInfo.versionCode);
+            if (isDiagnostic) {
+                version = String.format("%s (Build %s)", packageInfo.versionName, packageInfo.versionCode);
             } else {
                 version = String.format("%s %s", context.getString(R.string.version),
                         packageInfo.versionName);

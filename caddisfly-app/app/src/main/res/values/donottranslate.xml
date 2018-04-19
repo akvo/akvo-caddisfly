@@ -55,6 +55,7 @@
     <string name="showDebugMessagesKey">showDebugMessages</string>
     <string name="soundOnKey">soundOn</string>
     <string name="colorDistanceToleranceKey">maxColorDistanceTolerance</string>
+    <string name="colorAverageDistanceToleranceKey">maxAvgColorDistanceTolerance</string>
     <string name="samplingsTimeKey">numberOfSamples</string>
     <string name="hasCameraFlashKey">hasCameraFlash</string>
     <string name="calibrationDateKey">calibrationDateTime</string>
@@ -76,6 +77,7 @@
     <string name="ignoreTimeDelaysKey">ignoreTimeDelays</string>
     <string name="cameraMegaPixelsKey">cameraMegaPixels</string>
     <string name="showMinMegaPixelDialogKey">showMinMegaPixelDialog</string>
+    <string name="maxZoomKey">MaxZoomKey</string>
 
     <!--Diagnostic-->
     <string name="diagnostics">Diagnostics</string>
@@ -112,22 +114,9 @@
     <!--Software Notices-->
     <string name="lovibond_software"><a href="http://www.lovibond.com/">Lovibond Testing Instruction Visuals (MD610)</a></string>
     <string name="apache_software"><a href="https://source.android.com/setup/licenses">Android Open Source Project</a>
-          &#160;&#160;&#8226;&#160;&#160;
-        <a href="https://github.com/bjoernQ/unmock-plugin">Android Unmock Gradle Plugin</a>
-          &#160;&#160;&#8226;&#160;&#160;
-        <a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>
-          &#160;&#160;&#8226;&#160;&#160;
-        <a href="http://commons.apache.org/proper/commons-math/">Commons Math</a>
-          &#160;&#160;&#8226;&#160;&#160;
-        <a href="https://github.com/google/gson">Gson</a>
-          &#160;&#160;&#8226;&#160;&#160;
-        <a href="https://github.com/JakeWharton/timber">Timber</a>
-          &#160;&#160;&#8226;&#160;&#160;
-        <a href="https://github.com/zxing/zxing">ZXing</a>
+          &#160;&#160;&#8226;&#160;&#160;<a href="https://github.com/bjoernQ/unmock-plugin">Android Unmock Gradle Plugin</a>&#160;&#160;&#8226;&#160;&#160;<a href="https://github.com/joel-costigliola/assertj-core">AssertJ</a>&#160;&#160;&#8226;&#160;&#160;<a href="http://commons.apache.org/proper/commons-math/">Commons Math</a>&#160;&#160;&#8226;&#160;&#160;<a href="https://github.com/google/gson">Gson</a>&#160;&#160;&#8226;&#160;&#160;<a href="https://github.com/JakeWharton/timber">Timber</a>&#160;&#160;&#8226;&#160;&#160;<a href="https://github.com/zxing/zxing">ZXing</a>
     </string>
-    <string name="mit_software"><a href="http://robolectric.org/">Robolectric</a>
-          &#160;&#160;&#8226;&#160;&#160;
-        <a href="https://github.com/felHR85/UsbSerial">UsbSerial</a>
+    <string name="mit_software"><a href="http://robolectric.org/">Robolectric</a>&#160;&#160;&#8226;&#160;&#160;<a href="https://github.com/felHR85/UsbSerial">UsbSerial</a>
     </string>
     <string name="cca_software"><a href="https://design.google.com/icons/">Material Icons</a></string>
     <string name="eclipse_software"><a href="https://github.com/junit-team/junit4">Junit 4</a></string>

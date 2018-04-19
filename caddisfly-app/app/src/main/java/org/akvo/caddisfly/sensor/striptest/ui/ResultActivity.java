@@ -94,7 +94,7 @@ public class ResultActivity extends BaseActivity {
 
         buttonSave = findViewById(R.id.button_save);
         buttonSave.setOnClickListener(v -> {
-            Intent intent = new Intent(getIntent());
+            Intent intent = new Intent();
             String path;
 
             if (totalImage != null) {

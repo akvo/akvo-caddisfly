@@ -297,10 +297,7 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private void saveCalibrationDetails(File path) {
         final Context context = getContext();
 
-        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context, mTestInfo,
-                editBatchCode.getText().toString().trim(),
-                Calendar.getInstance().getTimeInMillis(),
-                calendar.getTimeInMillis());
+        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context, mTestInfo, true);
 
         FileUtil.saveToFile(path, editName.getText().toString().trim(), calibrationDetails);
 

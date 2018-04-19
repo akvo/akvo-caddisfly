@@ -31,6 +31,7 @@
     <string name="load">Load</string>
     <string name="swatches">Swatches</string>
     <string name="calibrate">Calibrate</string>
+    <string name="calibration">Calibration</string>
     <string name="calibrated">Calibrated</string>
     <string name="calibrating">Calibrating</string>
     <string name="settings">Settings</string>
@@ -52,6 +53,7 @@
     <string name="runTest">Run Test</string>
     <string name="stage_one"><b>Stage 1:</b></string>
     <string name="stage_two"><b>Stage 2:</b></string>
+    <string name="analyze">Analyse</string>
 
     <!--External-->
     <string name="sensor">Sensor</string>

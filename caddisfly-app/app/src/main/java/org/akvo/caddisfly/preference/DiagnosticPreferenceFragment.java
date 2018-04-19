@@ -58,6 +58,8 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
         setupDistancePreference();
 
+        setupAverageDistancePreference();
+
         return rootView;
     }
 
@@ -111,6 +113,34 @@ public class DiagnosticPreferenceFragment extends PreferenceFragment {
 
                 } catch (Exception e) {
                     value = ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
+                }
+                distancePreference.setText(String.valueOf(value));
+                distancePreference.setSummary(String.valueOf(value));
+                return false;
+            });
+        }
+    }
+
+    private void setupAverageDistancePreference() {
+        final EditTextPreference distancePreference =
+                (EditTextPreference) findPreference(getString(R.string.colorAverageDistanceToleranceKey));
+        if (distancePreference != null) {
+            distancePreference.setSummary(distancePreference.getText());
+
+            distancePreference.setOnPreferenceChangeListener((preference, newValue) -> {
+
+                Object value = newValue;
+                try {
+                    if (Integer.parseInt(String.valueOf(value)) > MAX_TOLERANCE) {
+                        value = MAX_TOLERANCE;
+                    }
+
+                    if (Integer.parseInt(String.valueOf(value)) < 1) {
+                        value = 1;
+                    }
+
+                } catch (Exception e) {
+                    value = ChamberTestConfig.MAX_COLOR_DISTANCE_CALIBRATION;
                 }
                 distancePreference.setText(String.valueOf(value));
                 distancePreference.setSummary(String.valueOf(value));

@@ -146,7 +146,7 @@ public final class TestConfigHelper {
                     // Add calibration details to result
                     subTestJson.put("calibratedDate",
                             new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US)
-                                    .format(calibrationDetail.date));
+                            .format(calibrationDetail.date));
                     subTestJson.put("reagentExpiry", calibrationDetail.expiry);
                     subTestJson.put("reagentBatch", calibrationDetail.batchNumber);
 
@@ -203,7 +203,7 @@ public final class TestConfigHelper {
 
     private static JSONObject getAppDetails() throws JSONException {
         JSONObject details = new JSONObject();
-        details.put("appVersion", CaddisflyApp.getAppVersion());
+        details.put("appVersion", CaddisflyApp.getAppVersion(true));
         // The current active language of the app
         details.put("language", CaddisflyApp.getAppLanguage());
         return details;

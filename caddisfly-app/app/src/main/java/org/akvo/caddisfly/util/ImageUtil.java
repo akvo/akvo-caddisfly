@@ -22,7 +22,9 @@ package org.akvo.caddisfly.util;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -48,6 +50,13 @@ import timber.log.Timber;
  * Set of utility functions to manipulate images.
  */
 public final class ImageUtil {
+
+    //Custom color matrix to convert to GrayScale
+    private static final float[] MATRIX = new float[]{
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0.3f, 0.59f, 0.11f, 0, 0,
+            0, 0, 0, 1, 0};
 
     private ImageUtil() {
     }
@@ -95,6 +104,22 @@ public final class ImageUtil {
         croppedBitmap.setHasAlpha(true);
 
         return croppedBitmap;
+    }
+
+    public static Bitmap getGrayscale(@NonNull Bitmap src) {
+
+        Bitmap dest = Bitmap.createBitmap(
+                src.getWidth(),
+                src.getHeight(),
+                src.getConfig());
+
+        Canvas canvas = new Canvas(dest);
+        Paint paint = new Paint();
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(MATRIX);
+        paint.setColorFilter(filter);
+        canvas.drawBitmap(src, 0, 0, paint);
+
+        return dest;
     }
 
     /**
