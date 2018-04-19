@@ -38,7 +38,7 @@ public final class AppConfig {
     /**
      * The intent action string used by the caddisfly question type.
      */
-    public static final String FLOW_ACTION_CADDISFLY = "org.akvo.flow.action.caddisfly";
+    public static final String EXTERNAL_APP_ACTION = "org.akvo.flow.action.caddisfly";
 
     /**
      * Uri for photos from built in camera.
