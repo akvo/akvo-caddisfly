@@ -31,6 +31,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
@@ -40,6 +41,7 @@ import org.akvo.caddisfly.updater.AlarmService;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Locale;
 
 import timber.log.Timber;
@@ -100,7 +102,6 @@ public class CaddisflyApp extends Application {
      */
     public static void setNextUpdateCheck(Context context, long interval) {
 
-
         if (interval > -1) {
             PreferencesUtil.setLong(context, ConstantKey.NEXT_UPDATE_CHECK,
                     System.currentTimeMillis() + interval);
@@ -116,6 +117,10 @@ public class CaddisflyApp extends Application {
         if (manager != null) {
             manager.setInexactRepeating(AlarmManager.RTC, nextUpdateTime, AlarmManager.INTERVAL_DAY, alarmIntent);
         }
+
+        long nextUpdate = PreferencesUtil.getLong(context, ConstantKey.NEXT_UPDATE_CHECK);
+        String dateString = DateFormat.format("dd/MMM/yyyy hh:mm", new Date(nextUpdate)).toString();
+        Timber.e("Setting up alarm manager: " + dateString);
     }
 
     @Override
