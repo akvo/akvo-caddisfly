@@ -27,6 +27,7 @@ public final class SensorConstants {
     /**
      * Serialization constants.
      */
+    public static final String IMAGE = "image";
     public static final String TYPE_NAME = "caddisfly";
     public static final String RESOURCE_ID = "caddisflyResourceUuid";
     public static final String RESPONSE = "response";

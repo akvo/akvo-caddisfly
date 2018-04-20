@@ -506,7 +506,7 @@ public class ChamberTestActivity extends BaseActivity implements
         // Save photo taken during the test
         String resultImageUrl = UUID.randomUUID().toString() + ".png";
         String path = FileUtil.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
-        resultIntent.putExtra(ConstantKey.IMAGE, path);
+        resultIntent.putExtra(SensorConstants.IMAGE, path);
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,
                 results, null, -1, resultImageUrl);

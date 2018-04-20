@@ -103,7 +103,7 @@ public class ResultActivity extends BaseActivity {
                 path = FileUtil.writeBitmapToExternalStorage(totalImage,
                         "/result-images", totalImageUrl);
 
-                intent.putExtra(ConstantKey.IMAGE, path);
+                intent.putExtra(SensorConstants.IMAGE, path);
 
                 if (path.length() == 0) {
                     totalImageUrl = "";

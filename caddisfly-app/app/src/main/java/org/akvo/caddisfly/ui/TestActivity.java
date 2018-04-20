@@ -328,11 +328,6 @@ public class TestActivity extends BaseActivity {
             //return the test result to the external app
             Intent intent = new Intent(data);
 
-//            intent.putExtra(SensorConstants.RESPONSE, data.getStringExtra(SensorConstants.RESPONSE));
-//            if (testInfo.getHasImage()) {
-//                intent.putExtra(ConstantJsonKey.IMAGE, data.getStringExtra(ConstantKey.IMAGE));
-//            }
-
             this.setResult(Activity.RESULT_OK, intent);
             finish();
         }

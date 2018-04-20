@@ -175,7 +175,7 @@ public class CbtActivity extends BaseActivity
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-        resultIntent.putExtra(ConstantKey.IMAGE, resultImagePath);
+        resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
 
         setResult(Activity.RESULT_OK, resultIntent);
 

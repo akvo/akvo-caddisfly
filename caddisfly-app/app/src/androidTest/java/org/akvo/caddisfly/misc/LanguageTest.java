@@ -84,7 +84,7 @@ public class LanguageTest {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getAppVersion();
+        String version = CaddisflyApp.getAppVersion(true);
 
         onView(withText(version)).check(matches(isDisplayed()));
 
