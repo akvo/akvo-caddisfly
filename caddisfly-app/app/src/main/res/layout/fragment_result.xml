@@ -92,7 +92,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
-                android:onClick="onClickAcceptChamberResult"
+                android:onClick="onClickAcceptResult"
                 android:text="@string/acceptResult"
                 android:theme="?primaryButtonStyle" />
         </LinearLayout>

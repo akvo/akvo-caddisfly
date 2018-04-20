@@ -120,7 +120,7 @@ public class ManualTestActivity extends BaseActivity
 
     @Override
     public void onSubmitResult(String result) {
-        Intent resultIntent = new Intent(getIntent());
+        Intent resultIntent = new Intent();
 
         SparseArray<String> results = new SparseArray<>();
 

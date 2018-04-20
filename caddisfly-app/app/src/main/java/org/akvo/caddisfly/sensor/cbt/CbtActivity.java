@@ -173,7 +173,7 @@ public class CbtActivity extends BaseActivity
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, imageFileName);
 
-        Intent resultIntent = new Intent(getIntent());
+        Intent resultIntent = new Intent();
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         resultIntent.putExtra(ConstantKey.IMAGE, resultImagePath);
 
