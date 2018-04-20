@@ -20,7 +20,6 @@
 package org.akvo.caddisfly.helper;
 
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
@@ -146,7 +145,7 @@ public final class TestConfigHelper {
                     // Add calibration details to result
                     subTestJson.put("calibratedDate",
                             new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US)
-                            .format(calibrationDetail.date));
+                                    .format(calibrationDetail.date));
                     subTestJson.put("reagentExpiry", calibrationDetail.expiry);
                     subTestJson.put("reagentBatch", calibrationDetail.batchNumber);
 

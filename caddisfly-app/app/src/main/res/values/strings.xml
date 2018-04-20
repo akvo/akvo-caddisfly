@@ -234,4 +234,10 @@
     <string name="experiment">Experiment</string>
     <string name="diagnostics_options">Diagnostic Options</string>
 
+    <!--Update-->
+    <string name="update">Update</string>
+    <string name="updateTitle">Update Akvo Caddisfly</string>
+    <string name="updateAvailable">New version available. Update to get the most out of your Caddisfly app</string>
+    <string name="remindLater">Remind later</string>
+
 </resources>
