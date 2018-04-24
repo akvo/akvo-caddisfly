@@ -28,7 +28,9 @@ import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Tap;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
@@ -218,6 +220,17 @@ public final class TestUtil {
         mDevice.waitForIdle();
     }
 
+    public static void swipeDown() {
+        mDevice.waitForIdle();
+        if (isEmulator()) {
+            mDevice.pressBack();
+        } else {
+            mDevice.swipe(300, 350, 300, 650, 4);
+        }
+        mDevice.waitForIdle();
+    }
+
+
     public static void swipeRight(int times) {
         for (int i = 0; i < times; i++) {
             swipeRight();
@@ -277,8 +290,19 @@ public final class TestUtil {
     }
 
     public static void nextSurveyPage(int times) {
+
+        UiObject2 tab = mDevice.findObject(By.text("Fluoride"));
+        if (tab == null || !tab.isSelected()) {
+            for (int i = 0; i < 10; i++) {
+                swipeRight();
+            }
+        }
+
         for (int i = 0; i < times; i++) {
             nextSurveyPage();
         }
+
+        swipeDown();
+
     }
 }

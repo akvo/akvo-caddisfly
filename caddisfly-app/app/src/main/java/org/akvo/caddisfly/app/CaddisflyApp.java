@@ -115,7 +115,8 @@ public class CaddisflyApp extends Application {
                 System.currentTimeMillis());
 
         if (manager != null) {
-            manager.setInexactRepeating(AlarmManager.RTC, nextUpdateTime, AlarmManager.INTERVAL_DAY, alarmIntent);
+            manager.setInexactRepeating(AlarmManager.RTC, nextUpdateTime,
+                    AlarmManager.INTERVAL_DAY * 3, alarmIntent);
         }
 
         long nextUpdate = PreferencesUtil.getLong(context, ConstantKey.NEXT_UPDATE_CHECK);

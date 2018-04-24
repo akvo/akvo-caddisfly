@@ -82,6 +82,7 @@ import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.util.TestUtil.getText;
+import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasToString;
@@ -144,7 +145,7 @@ public class ChamberTest {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getAppVersion(true);
+        String version = CaddisflyApp.getAppVersion(false);
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -241,6 +242,8 @@ public class ChamberTest {
         goToMainScreen();
 
         gotoSurveyForm();
+
+        nextSurveyPage(0);
 
         clickExternalSourceButton(0);
 
@@ -406,7 +409,7 @@ public class ChamberTest {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getAppVersion(true);
+        String version = CaddisflyApp.getAppVersion(false);
 
         onView(withText(version)).check(matches(isDisplayed()));
 
@@ -499,6 +502,8 @@ public class ChamberTest {
         goToMainScreen();
 
         gotoSurveyForm();
+
+        nextSurveyPage(0);
 
         clickExternalSourceButton(1);
 

@@ -85,7 +85,7 @@ public class UpdateCheckTask extends AsyncTask<String, String, String> {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                CaddisflyApp.setNextUpdateCheck(context, AlarmManager.INTERVAL_FIFTEEN_MINUTES);
+                CaddisflyApp.setNextUpdateCheck(context, AlarmManager.INTERVAL_HALF_HOUR);
             } finally {
                 if (connection != null) {
                     connection.disconnect();

@@ -41,7 +41,6 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -117,7 +116,6 @@ public class BluetoothTest {
 
     @Test
     @RequiresDevice
-    @Ignore
     public void bluetoothTest() {
 
         activateTestMode();
@@ -140,7 +138,7 @@ public class BluetoothTest {
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
                                 0)));
-        recyclerView.perform(actionOnItemAtPosition(25, click()));
+        recyclerView.perform(actionOnItemAtPosition(26, click()));
 
         onView(withText("Next")).perform(click());
 
@@ -258,10 +256,9 @@ public class BluetoothTest {
 
         onView(withText(R.string.test_selected)).perform(click());
 
-        onView(withText("Awaiting result"))
-                .check(matches(isDisplayed()));
+        onView(withText("Awaiting result")).check(matches(isDisplayed()));
 
-        onView(withText("Test Instructions")).perform(click());
+        onView(withText("Instructions")).perform(click());
 
         onView(withText(R.string.fill_vial_24_with_10ml_sample_zero))
                 .check(matches(isDisplayed()));

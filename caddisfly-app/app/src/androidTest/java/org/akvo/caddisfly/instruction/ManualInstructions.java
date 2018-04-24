@@ -157,6 +157,8 @@ public class ManualInstructions {
                 String id = testList.get(i).getUuid();
                 id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
+                mDevice.pressBack();
+
                 int pages = navigateToTest(i, id);
 
                 jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");

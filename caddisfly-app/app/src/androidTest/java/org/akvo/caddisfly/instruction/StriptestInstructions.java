@@ -74,6 +74,7 @@ import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -252,11 +253,7 @@ public class StriptestInstructions {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton(TestConstantKeys.NEXT);
-
-        clickExternalSourceButton(TestConstantKeys.NEXT);
-
-        clickExternalSourceButton(TestConstantKeys.NEXT);
+        nextSurveyPage(3);
 
         clickExternalSourceButton(0);
 

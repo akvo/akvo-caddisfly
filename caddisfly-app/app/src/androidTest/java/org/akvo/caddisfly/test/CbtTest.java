@@ -180,6 +180,10 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton2.perform(click());
 
+        sleep(2000);
+
+        mDevice.waitForIdle();
+
         ViewInteraction customShapeButton = onView(
                 allOf(withId(R.id.compartments),
                         isDisplayed()));
@@ -193,15 +197,10 @@ public class CbtTest {
 
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.buttonNext), withText("Next"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fragment_container),
-                                        0),
-                                3),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
+        sleep(1000);
+
+        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+                isDisplayed())).perform(click());
 
         ViewInteraction textView = onView(
                 allOf(withId(R.id.textResult), withText("Very High Risk"),
