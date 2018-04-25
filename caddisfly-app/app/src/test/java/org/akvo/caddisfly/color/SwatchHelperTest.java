@@ -233,7 +233,7 @@ public class SwatchHelperTest {
         results.add(createNewResult(1.8, Color.rgb(225, 1, 8)));
 
         int color = SwatchHelper.getAverageColor(results);
-        assertEquals(0, color);
+        assertEquals(-2162174, color);
     }
 
     @Test

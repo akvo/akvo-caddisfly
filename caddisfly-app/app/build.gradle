@@ -93,6 +93,8 @@ android {
 
     unMock {
         keep "android.graphics.Color"
+        keep "android.preference.PreferenceManager"
+        keep "android.preference.GenericInflater"
     }
 }
 
