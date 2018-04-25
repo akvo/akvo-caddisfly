@@ -213,22 +213,15 @@ public final class TestUtil {
 
     public static void swipeRight() {
         mDevice.waitForIdle();
-        if (isEmulator()) {
             mDevice.swipe(50, 400, 500, 400, 4);
-        } else {
-            mDevice.swipe(50, 400, 500, 400, 4);
-        }
         mDevice.waitForIdle();
     }
 
     private static void swipeDown() {
-        mDevice.waitForIdle();
-        if (isEmulator()) {
-            mDevice.swipe(300, 400, 300, 650, 4);
-        } else {
-            mDevice.swipe(300, 400, 300, 650, 4);
+        for (int i = 0; i < 3; i++) {
+            mDevice.waitForIdle();
+            mDevice.swipe(300, 400, 300, 750, 4);
         }
-        mDevice.waitForIdle();
     }
 
 
@@ -301,13 +294,17 @@ public final class TestUtil {
 
             for (int i = 0; i < 12; i++) {
                 swipeRight();
-                tab = mDevice.findObject(By.text("Fluoride"));
+                tab = mDevice.findObject(By.text(tabName));
                 if (tab != null && tab.isSelected()) {
                     break;
                 }
-            }
-            for (int i = 0; i < times; i++) {
-                clickExternalSourceButton(TestConstantKeys.NEXT);
+                tab = mDevice.findObject(By.text("Fluoride"));
+                if (tab != null && tab.isSelected()) {
+                    for (int j = 0; j < times; j++) {
+                        clickExternalSourceButton(TestConstantKeys.NEXT);
+                    }
+                    break;
+                }
             }
         }
 
