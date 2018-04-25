@@ -174,6 +174,7 @@ public final class TestUtil {
 
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
+                || Build.HOST.startsWith("SWDG2909")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.MODEL.contains("google_sdk")
                 || Build.MODEL.contains("Emulator")
@@ -206,26 +207,26 @@ public final class TestUtil {
 
     private static void swipeLeft() {
         mDevice.waitForIdle();
-        mDevice.swipe(500, 300, 50, 300, 4);
+        mDevice.swipe(500, 400, 50, 400, 4);
         mDevice.waitForIdle();
     }
 
     public static void swipeRight() {
         mDevice.waitForIdle();
         if (isEmulator()) {
-            mDevice.pressBack();
+            mDevice.swipe(50, 400, 500, 400, 4);
         } else {
-            mDevice.swipe(50, 300, 500, 300, 4);
+            mDevice.swipe(50, 400, 500, 400, 4);
         }
         mDevice.waitForIdle();
     }
 
-    public static void swipeDown() {
+    private static void swipeDown() {
         mDevice.waitForIdle();
         if (isEmulator()) {
-            mDevice.pressBack();
+            mDevice.swipe(300, 400, 300, 650, 4);
         } else {
-            mDevice.swipe(300, 350, 300, 650, 4);
+            mDevice.swipe(300, 400, 300, 650, 4);
         }
         mDevice.waitForIdle();
     }
@@ -290,16 +291,24 @@ public final class TestUtil {
     }
 
     public static void nextSurveyPage(int times) {
+        nextSurveyPage(times, "");
+    }
 
-        UiObject2 tab = mDevice.findObject(By.text("Fluoride"));
+    public static void nextSurveyPage(int times, String tabName) {
+
+        UiObject2 tab = mDevice.findObject(By.text(tabName));
         if (tab == null || !tab.isSelected()) {
-            for (int i = 0; i < 10; i++) {
-                swipeRight();
-            }
-        }
 
-        for (int i = 0; i < times; i++) {
-            nextSurveyPage();
+            for (int i = 0; i < 12; i++) {
+                swipeRight();
+                tab = mDevice.findObject(By.text("Fluoride"));
+                if (tab != null && tab.isSelected()) {
+                    break;
+                }
+            }
+            for (int i = 0; i < times; i++) {
+                clickExternalSourceButton(TestConstantKeys.NEXT);
+            }
         }
 
         swipeDown();

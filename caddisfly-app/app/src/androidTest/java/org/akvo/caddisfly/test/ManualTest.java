@@ -126,7 +126,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6);
+        TestUtil.nextSurveyPage(6, "Manual");
 
         clickExternalSourceButton(0, TestConstant.GO_TO_TEST);
 
@@ -194,7 +194,6 @@ public class ManualTest {
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("1234"), closeSoftKeyboard());
 
-
         onView(withText("Submit Result")).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("Turbidity: 1234.0 NTU")));
@@ -206,7 +205,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6);
+        TestUtil.nextSurveyPage(6, "Manual");
 
         clickExternalSourceButton(1, TestConstant.GO_TO_TEST);
 
@@ -297,7 +296,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6);
+        TestUtil.nextSurveyPage(6, "Manual");
 
         clickExternalSourceButton(2, TestConstant.GO_TO_TEST);
 

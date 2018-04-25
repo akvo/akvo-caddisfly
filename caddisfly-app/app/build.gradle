@@ -133,13 +133,13 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.8.0'
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'com.android.support.test:rules:1.0.2-beta1'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2-beta1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 
     // Espresso
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2-beta1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2-beta1'
-    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.2-beta1') {
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.2') {
         exclude group: 'com.android.support'
         exclude group: 'javax.inject'
     }

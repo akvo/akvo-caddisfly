@@ -73,14 +73,14 @@ public class StriptestTest {
 
         activateTestMode();
 
-//        test5in1(false);
-//        testSoilNitrogen(false);
-//        testMerckPH(false);
+        test5in1(false);
+        testSoilNitrogen(false);
+        testMerckPH(false);
         testNitrate100();
 
-//        test5in1(true);
-//        testSoilNitrogen(true);
-//        testMerckPH(true);
+        test5in1(true);
+        testSoilNitrogen(true);
+        testMerckPH(true);
     }
 
     @After
