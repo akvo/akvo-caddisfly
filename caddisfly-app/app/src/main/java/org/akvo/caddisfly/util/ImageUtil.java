@@ -183,7 +183,7 @@ public final class ImageUtil {
                 return true;
             }
         } catch (FileNotFoundException e) {
-            Timber.e(e.getMessage());
+            Timber.e(e);
         } finally {
             if (out != null) {
                 try {
@@ -241,7 +241,7 @@ public final class ImageUtil {
                 exif2.saveAttributes();
             }
         } catch (IOException e) {
-            Timber.e(e.getMessage());
+            Timber.e(e);
         }
     }
 

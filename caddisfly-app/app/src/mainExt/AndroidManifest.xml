@@ -20,17 +20,6 @@
     package="org.akvo.caddisfly">
 
     <application>
-        <activity
-            android:name=".ui.TestActivity"
-            android:screenOrientation="nosensor">
-            <intent-filter>
-                <action android:name="org.akvo.flow.action.caddisfly" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
-            </intent-filter>
-        </activity>
         <service
             android:name=".updater.AlarmService"
             android:enabled="true" />
@@ -44,7 +33,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

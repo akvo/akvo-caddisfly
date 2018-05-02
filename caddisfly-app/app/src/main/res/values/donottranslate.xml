@@ -54,7 +54,7 @@
     <string name="diagnosticModeKey">diagnosticMode</string>
     <string name="showDebugMessagesKey">showDebugMessages</string>
     <string name="soundOnKey">soundOn</string>
-    <string name="colorDistanceToleranceKey">maxColorDistanceTolerance</string>
+    <string name="colorDistanceToleranceKey">colorDistanceTolerance</string>
     <string name="colorAverageDistanceToleranceKey">maxAvgColorDistanceTolerance</string>
     <string name="samplingsTimeKey">numberOfSamples</string>
     <string name="hasCameraFlashKey">hasCameraFlash</string>
@@ -78,6 +78,8 @@
     <string name="cameraMegaPixelsKey">cameraMegaPixels</string>
     <string name="showMinMegaPixelDialogKey">showMinMegaPixelDialog</string>
     <string name="maxZoomKey">MaxZoomKey</string>
+
+    <string name="nextUpdateCheckKey">nextUpdateCheck</string>
 
     <!--Diagnostic-->
     <string name="diagnostics">Diagnostics</string>

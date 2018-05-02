@@ -405,11 +405,10 @@ public class ChamberTestActivity extends BaseActivity implements
                                 ResultFragment.newInstance(testInfo), null).commit();
 
                 if (AppPreferences.getShowDebugInfo()) {
-
                     showDiagnosticResultDialog(false, resultDetail, resultDetails, false);
-
-                    testInfo.setResultDetail(resultDetail);
                 }
+
+                testInfo.setResultDetail(resultDetail);
 
             } else {
 

@@ -42,6 +42,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:paddingBottom="3dp"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
                 android:textColor="#fff"
                 android:textSize="32sp"
                 app:background="@{``}"
@@ -56,7 +58,6 @@
                 android:layout_marginBottom="20dp"
                 android:gravity="center"
                 android:paddingBottom="15dp"
-
                 android:textColor="#e2e2e2"
                 android:textSize="18sp"
                 android:textStyle="bold"

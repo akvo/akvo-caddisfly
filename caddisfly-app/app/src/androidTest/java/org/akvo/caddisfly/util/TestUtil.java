@@ -224,7 +224,6 @@ public final class TestUtil {
         }
     }
 
-
     public static void swipeRight(int times) {
         for (int i = 0; i < times; i++) {
             swipeRight();

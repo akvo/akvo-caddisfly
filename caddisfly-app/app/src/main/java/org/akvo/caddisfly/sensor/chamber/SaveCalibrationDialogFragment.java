@@ -47,7 +47,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.FileUtil;
-import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -300,7 +299,6 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         FileUtil.saveToFile(path, editName.getText().toString().trim(), calibrationDetails);
 
         Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
-
     }
 
     /**

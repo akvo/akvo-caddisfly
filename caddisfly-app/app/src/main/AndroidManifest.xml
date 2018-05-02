@@ -68,6 +68,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.TestActivity"
+            android:screenOrientation="nosensor">
+            <intent-filter>
+                <action android:name="org.akvo.flow.action.caddisfly" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.TestListActivity"
             android:screenOrientation="nosensor" />
         <activity

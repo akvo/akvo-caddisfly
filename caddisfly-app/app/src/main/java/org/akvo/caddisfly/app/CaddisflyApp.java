@@ -19,29 +19,23 @@
 
 package org.akvo.caddisfly.app;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
 import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
-import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.updater.AlarmService;
+import org.akvo.caddisfly.updater.UpdateCheck;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Locale;
 
 import timber.log.Timber;
@@ -94,36 +88,6 @@ public class CaddisflyApp extends Application {
         return version;
     }
 
-    /**
-     * Setup alarm manager to check for app updates.
-     *
-     * @param context  the Context
-     * @param interval wait time before next check
-     */
-    public static void setNextUpdateCheck(Context context, long interval) {
-
-        if (interval > -1) {
-            PreferencesUtil.setLong(context, ConstantKey.NEXT_UPDATE_CHECK,
-                    System.currentTimeMillis() + interval);
-        }
-
-        PendingIntent alarmIntent = PendingIntent.getService(context, 0,
-                new Intent(context, AlarmService.class), 0);
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        long nextUpdateTime = Math.max(PreferencesUtil.getLong(context, ConstantKey.NEXT_UPDATE_CHECK),
-                System.currentTimeMillis());
-
-        if (manager != null) {
-            manager.setInexactRepeating(AlarmManager.RTC, nextUpdateTime,
-                    AlarmManager.INTERVAL_DAY * 3, alarmIntent);
-        }
-
-        long nextUpdate = PreferencesUtil.getLong(context, ConstantKey.NEXT_UPDATE_CHECK);
-        String dateString = DateFormat.format("dd/MMM/yyyy hh:mm", new Date(nextUpdate)).toString();
-        Timber.e("Setting up alarm manager: " + dateString);
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -135,7 +99,7 @@ public class CaddisflyApp extends Application {
 
         app = this;
 
-        setNextUpdateCheck(this, -1);
+        UpdateCheck.setNextUpdateCheck(this, -1);
 
         database = Room.databaseBuilder(getApplicationContext(),
                 CalibrationDatabase.class, DATABASE_NAME)

@@ -23,7 +23,10 @@
         android:title="@string/testing">
         <CheckBoxPreference
             android:key="@string/testModeOnKey"
-            android:title="@string/testModeOn"
-            android:summary="Warning: Do not turn this on for normal usage of the app. For app testing only."/>
+            android:summary="Warning: Do not turn this on for normal usage of the app. For app testing only."
+            android:title="@string/testModeOn" />
+        <Preference
+            android:key="nextUpdateCheck"
+            android:title="Next update check" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

@@ -25,12 +25,9 @@ import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.NotificationScheduler;
 import org.akvo.caddisfly.util.PreferencesUtil;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -85,7 +82,7 @@ public class UpdateCheckTask extends AsyncTask<String, String, String> {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                CaddisflyApp.setNextUpdateCheck(context, AlarmManager.INTERVAL_HALF_HOUR);
+                UpdateCheck.setNextUpdateCheck(context, AlarmManager.INTERVAL_HALF_HOUR);
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -108,27 +105,26 @@ public class UpdateCheckTask extends AsyncTask<String, String, String> {
 
         Context context = contextRef.get();
         int versionCode = ApiUtil.getAppVersionCode(context);
-        int serverVersion = PreferencesUtil.getInt(context, "serverVersionCode", 0);
+        int serverVersion;
 
-        if (result != null) {
-            try {
-                JSONObject jsonMessage = new JSONObject(result);
-                if (jsonMessage.has("version")) {
-                    serverVersion = jsonMessage.getInt("version");
-                    if (serverVersion > versionCode) {
-                        PreferencesUtil.setInt(context, "serverVersionCode", serverVersion);
-                    }
+        try {
+            if (result != null) {
+                serverVersion = Integer.parseInt(result.trim());
+                if (serverVersion > versionCode) {
+                    PreferencesUtil.setInt(context, "serverVersionCode", serverVersion);
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } else {
+                serverVersion = PreferencesUtil.getInt(context, "serverVersionCode", 0);
             }
-        }
 
-        if (serverVersion > versionCode) {
+            if (serverVersion > versionCode) {
 
-            NotificationScheduler.showNotification(context,
-                    contextRef.get().getString(R.string.updateTitle),
-                    contextRef.get().getString(R.string.updateAvailable));
+                NotificationScheduler.showNotification(context,
+                        contextRef.get().getString(R.string.updateTitle),
+                        contextRef.get().getString(R.string.updateAvailable));
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 }
