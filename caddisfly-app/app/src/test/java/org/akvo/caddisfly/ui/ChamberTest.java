@@ -54,6 +54,7 @@ import java.io.File;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
+import static org.akvo.caddisfly.TestConstants.CHAMBER_TESTS_COUNT;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -97,12 +98,11 @@ public class ChamberTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(4, recyclerView.getChildCount());
+        assertSame(CHAMBER_TESTS_COUNT, recyclerView.getChildCount());
 
         assertTestTitle(recyclerView, 0, "Water - Chromium");
         assertTestTitle(recyclerView, 1, "Water - Fluoride");
         assertTestTitle(recyclerView, 2, "Water - Free Chlorine");
-        assertTestTitle(recyclerView, 3, "Water - Free Chlorine");
     }
 
     private void assertTestTitle(RecyclerView recyclerView, int index, String title) {
@@ -188,7 +188,7 @@ public class ChamberTest {
     @Test
     public void textExternalWithoutPermission() {
 
-        Intent intent = new Intent(AppConfig.FLOW_ACTION_CADDISFLY);
+        Intent intent = new Intent(AppConfig.EXTERNAL_APP_ACTION);
 
         Bundle data = new Bundle();
         data.putString(CADDISFLY_RESOURCE_ID, Constants.FLUORIDE_ID);
@@ -222,7 +222,7 @@ public class ChamberTest {
 //
 //        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 //
-//        Intent intent = new Intent(AppConfig.FLOW_ACTION_CADDISFLY);
+//        Intent intent = new Intent(AppConfig.EXTERNAL_APP_ACTION);
 //
 //        Bundle data = new Bundle();
 //        data.putString(CADDISFLY_RESOURCE_ID, SensorConstants.FLUORIDE_ID);

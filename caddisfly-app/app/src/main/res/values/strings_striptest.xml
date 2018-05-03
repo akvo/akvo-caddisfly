@@ -49,6 +49,7 @@
     <string name="dip_sample_5s">Dip the test strip into the sample for <b>5 seconds</b> and remove.</string>
     <string name="shake_excess_water_off">Shake excess water from the test strip.</string>
     <string name="place_strip_clr">Place the test strip with the patch facing <b>left</b> on the black area of the Colour Reference Card and press <b>Start</b>.</string>
+    <string name="place_strip_clr_hg">Place a clean test strip below the used test strip so that patch has a white background. Place the stacked strips with the patch facing <b>left</b> on the black area of the Colour Reference Card and press <b>Start</b>.</string>
     <string name="add_5_drops_po4_1">Add <b>5 drops</b> of the <b>PO4-1 Reagent</b> to the sample.</string>
     <string name="place_smaller_container">Place smaller container in the provided rack.</string>
     <string name="add_6_drops_po4_2">Add <b>6 drops</b> of the <b>PO4-2 Reagent</b> to the smaller container.</string>
@@ -63,6 +64,8 @@
     <string name="as_ins_6">Remove the test strip and immediately from the cap and place the test strip facing <b>left</b> on the Colour Reference Card and press <b>Start</b>.</string>
     <string name="as_ins_7">Fill the square measuring vial to the top with sample (9.6 mL). Pour the sample into the reaction bottle.</string>
     <string name="as_safety">DANGER: Hydrogen and arsine gases are generated during the test. Work in a well-ventilated area away from open flames and other sources of ignition. Review Material Safety Data Sheets for safe handling, storage and disposal information.</string>
+    <string name="dip_sample_60_back_forward_250_sample">Dip the strip into <b>250+ ml </b> sample and move back and forth for <b>60 seconds</b> in sample.</string>
+    <string name="shake_excess_water_once">Shake <b>once </b> the excess water from test strip.</string>
 
     <string name="as_remove_sulfide">Complete the following steps to remove the sulfide before beginning the test procedure:</string>
     <string name="as_remove_sulfide_1">Tear off a small piece of cotton and form a ball the size of a pea.</string>

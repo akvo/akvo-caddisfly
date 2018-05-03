@@ -94,5 +94,7 @@
     <string name="blend_tss">Mélanger env. 500 ml de l\'échantillon d\'eau (par exemple dans un mélangeur) à grande vitesse pendant 2 minutes.</string>
     <string name="stir_blended_water">Remuez l\'échantillon d\'eau incorporeré. Rincez immédiatement le flacon de l\'échantillon d\'eau et remplissez le avec <b>10 ml d\'échantillon d\'eau.</b></string>
     <string name="stir_water_sample">Remuez l\'échantillon d\'eau. Rincez immédiatement le flacon de l\'échantillon d\'eau et remplissez le avec <b>10 ml d\'échantillon d\'eau.</b></string>
-
+    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero">Remplissez le flacon de (24 mm Ø) avec <b>2 ml de votre échantillon  d\'eau </b> et <b>8 ml d\'eau déminéralisée</b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le flacon dans la chambre. Aligner le tube dans la chambre de l\'appareil en tenant compte de la flèche marquée et appuyez sur [*zero*] pour effectuer le <b>test zéro</b></string>
+    <string name="add_spoon_cyanide_1">Ajoutez <b>deux cuillèrée du réactif No. 4 (white) of Cyanide-11</b> au même échantillon d\'eau</string>
+    <string name="add_spoon_cyanide_2">Ajoutez <b>deux cuillèrée du réactif No. 4 (white) of Cyanide-12</b> au même échantillon d\'eau</string>
 </resources>

@@ -25,13 +25,19 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.util.ListViewUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,6 +63,17 @@ public class TestingPreferenceFragment extends PreferenceFragment {
                 setBackgroundColor(view);
                 return true;
             });
+        }
+
+        Preference nextUpdateCheckPreference = findPreference(getString(R.string.nextUpdateCheckKey));
+        if (nextUpdateCheckPreference != null) {
+            if (!ApkHelper.isNonStoreVersion(getActivity())) {
+                long nextUpdateTime = PreferencesUtil.getLong(getActivity(), ConstantKey.NEXT_UPDATE_CHECK);
+                String dateString = DateFormat.format("dd/MMM/yyyy hh:mm", new Date(nextUpdateTime)).toString();
+                nextUpdateCheckPreference.setSummary(dateString);
+            } else {
+                nextUpdateCheckPreference.setSummary("Not installed from Play store");
+            }
         }
 
         return view;

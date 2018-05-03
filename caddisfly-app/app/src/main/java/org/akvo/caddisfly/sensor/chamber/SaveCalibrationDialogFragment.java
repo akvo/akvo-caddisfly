@@ -47,7 +47,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.FileUtil;
-import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -111,23 +110,19 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         editExpiryDate = view.findViewById(R.id.editExpiryDate);
         editBatchCode = view.findViewById(R.id.editBatchCode);
 
-        long milliseconds = PreferencesUtil.getLong(getActivity(),
-                mTestInfo.getUuid(),
-                R.string.calibrationExpiryDateKey);
-        if (milliseconds > new Date().getTime()) {
+        CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
+                .calibrationDao().getCalibrationDetails(mTestInfo.getUuid());
 
-            editBatchCode.setText(PreferencesUtil.getString(activity, mTestInfo.getUuid(),
-                    R.string.batchNumberKey, "").trim());
+        if (calibrationDetail.expiry > new Date().getTime()) {
 
-            long expiryDate = PreferencesUtil.getLong(getContext(), mTestInfo.getUuid(),
-                    R.string.calibrationExpiryDateKey);
-
-            if (expiryDate >= 0) {
-                calendar.setTimeInMillis(expiryDate);
+            if (calibrationDetail.expiry >= 0) {
+                calendar.setTimeInMillis(calibrationDetail.expiry);
 
                 editExpiryDate.setText(new SimpleDateFormat("dd-MMM-yyyy", Locale.US)
-                        .format(new Date(expiryDate)));
+                        .format(new Date(calibrationDetail.expiry)));
             }
+
+            editBatchCode.setText(calibrationDetail.batchNumber);
         }
 
         setupDatePicker(activity);
@@ -191,12 +186,14 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
         date.set(Calendar.SECOND, date.getMinimum(Calendar.SECOND));
         date.set(Calendar.MILLISECOND, date.getMinimum(Calendar.MILLISECOND));
         datePickerDialog.getDatePicker().setMinDate(date.getTimeInMillis());
-        date.add(Calendar.MONTH, mTestInfo.getMonthsValid());
-        date.set(Calendar.HOUR_OF_DAY, date.getMaximum(Calendar.HOUR_OF_DAY));
-        date.set(Calendar.MINUTE, date.getMaximum(Calendar.MINUTE));
-        date.set(Calendar.SECOND, date.getMaximum(Calendar.SECOND));
-        date.set(Calendar.MILLISECOND, date.getMaximum(Calendar.MILLISECOND));
-        datePickerDialog.getDatePicker().setMaxDate(date.getTimeInMillis());
+        if (mTestInfo.getMonthsValid() != null) {
+            date.add(Calendar.MONTH, mTestInfo.getMonthsValid());
+            date.set(Calendar.HOUR_OF_DAY, date.getMaximum(Calendar.HOUR_OF_DAY));
+            date.set(Calendar.MINUTE, date.getMaximum(Calendar.MINUTE));
+            date.set(Calendar.SECOND, date.getMaximum(Calendar.SECOND));
+            date.set(Calendar.MILLISECOND, date.getMaximum(Calendar.MILLISECOND));
+            datePickerDialog.getDatePicker().setMaxDate(date.getTimeInMillis());
+        }
 
         editExpiryDate.setOnFocusChangeListener((view1, b) -> {
             if (b) {
@@ -237,15 +234,15 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
                                 AlertUtil.askQuestion(context, R.string.fileAlreadyExists,
                                         R.string.doYouWantToOverwrite, R.string.overwrite, R.string.cancel, true,
                                         (dialogInterface, i) -> {
-                                            saveCalibrationDetails(path);
                                             saveDetails(testCode);
+                                            saveCalibrationDetails(path);
                                             closeKeyboard(context, editName);
                                             dismiss();
                                         }, null
                                 );
                             } else {
-                                saveCalibrationDetails(path);
                                 saveDetails(testCode);
+                                saveCalibrationDetails(path);
                                 closeKeyboard(context, editName);
                                 dismiss();
                             }
@@ -297,15 +294,11 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
     private void saveCalibrationDetails(File path) {
         final Context context = getContext();
 
-        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context, mTestInfo,
-                editBatchCode.getText().toString().trim(),
-                Calendar.getInstance().getTimeInMillis(),
-                calendar.getTimeInMillis());
+        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context, mTestInfo, true);
 
         FileUtil.saveToFile(path, editName.getText().toString().trim(), calibrationDetails);
 
         Toast.makeText(context, R.string.fileSaved, Toast.LENGTH_SHORT).show();
-
     }
 
     /**
@@ -352,6 +345,12 @@ public class SaveCalibrationDialogFragment extends DialogFragment {
             throw new IllegalArgumentException(context.toString()
                     + " must implement OnCalibrationDetailsSavedListener");
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     public interface OnCalibrationDetailsSavedListener {

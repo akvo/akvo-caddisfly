@@ -98,7 +98,6 @@ public class ManualTestActivity extends BaseActivity
 
             ft.add(R.id.fragment_container,
                     MeasurementInputFragment.newInstance(testInfo), "tubeFragment")
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                     .commit();
         }
     }
@@ -111,7 +110,6 @@ public class ManualTestActivity extends BaseActivity
             if (requestCode == MANUAL_TEST) {
                 fragmentTransaction.replace(R.id.fragment_container,
                         MeasurementInputFragment.newInstance(testInfo), "manualFragment")
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
                         .addToBackStack(null)
                         .commit();
             }
@@ -122,7 +120,7 @@ public class ManualTestActivity extends BaseActivity
 
     @Override
     public void onSubmitResult(String result) {
-        Intent resultIntent = new Intent(getIntent());
+        Intent resultIntent = new Intent();
 
         SparseArray<String> results = new SparseArray<>();
 
@@ -143,7 +141,7 @@ public class ManualTestActivity extends BaseActivity
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, imageFileName);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-        resultIntent.putExtra(ConstantKey.IMAGE, resultImagePath);
+        resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
 
         setResult(Activity.RESULT_OK, resultIntent);
 

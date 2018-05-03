@@ -84,8 +84,6 @@ import org.akvo.caddisfly.util.ApiUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
@@ -139,7 +137,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 @Override
                 public void onScanResult(int callbackType, ScanResult result) {
                     super.onScanResult(callbackType, result);
-                    Timber.d("onScanResult");
                     processResult(result);
                 }
 
@@ -526,7 +523,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 Button buttonConnect = view.findViewById(R.id.button_connect);
 
                 buttonConnect.setOnClickListener(v -> {
-                    Timber.e("clicked " + position);
                     connectToDevice(position);
                 });
 
@@ -541,7 +537,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             } else {
                 viewHolder.deviceName.setText(R.string.unknown_device);
             }
-            Timber.e(device.getAddress());
 
             return view;
         }

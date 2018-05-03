@@ -74,6 +74,7 @@ import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.saveCalibration;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -302,6 +303,8 @@ public class NavigationTest {
 
         gotoSurveyForm();
 
+        nextSurveyPage(0);
+
         clickExternalSourceButton(0);
 
         onView(withId(R.id.button_prepare)).check(matches(isDisplayed()));
@@ -339,18 +342,18 @@ public class NavigationTest {
 
         clickExternalSourceButton(0);
 
-//        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
+        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
+//        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         //Connect EC Sensor Screen
         takeScreenshot();
 
         mDevice.pressBack();
 
-        TestUtil.nextSurveyPage(5);
+        TestUtil.nextSurveyPage(7);
 
-        clickExternalSourceButton(0, TestConstant.USE_EXTERNAL_SOURCE);
+        clickExternalSourceButton(0);
 
         onView(withText(R.string.electricalConductivity)).check(matches(isDisplayed()));
 
@@ -362,29 +365,16 @@ public class NavigationTest {
 
         mDevice.pressBack();
 
-        TestUtil.nextSurveyPage(3);
+        TestUtil.nextSurveyPage(9);
 
         //Unknown test
-        clickExternalSourceButton(0, TestConstant.USE_EXTERNAL_SOURCE);
+        clickExternalSourceButton(0);
 
         onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
 
         mDevice.pressBack();
 
-        TestUtil.swipeRight(7);
-
-        clickExternalSourceButton(0); //Iron
-
-        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()));
-
-        //onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
-
-        //onView(withText(R.string.ok)).perform(click());
-
         mDevice.pressBack();
-
-        //mDevice.pressBack();
-        //onView(withId(android.R.id.button1)).perform(click());
 
     }
 }

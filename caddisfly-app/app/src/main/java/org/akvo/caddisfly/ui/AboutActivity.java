@@ -47,7 +47,7 @@ public class AboutActivity extends BaseActivity {
         ActivityAboutBinding b =
                 DataBindingUtil.setContentView(this, R.layout.activity_about);
 
-        b.textVersion.setText(CaddisflyApp.getAppVersion());
+        b.textVersion.setText(CaddisflyApp.getAppVersion(AppPreferences.isDiagnosticMode()));
 
         setTitle(R.string.about);
     }

@@ -17,54 +17,104 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="20dp"
     tools:context=".sensor.cbt.CompartmentBagFragment">
 
+    <android.support.constraint.Guideline
+        android:id="@+id/left_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/right_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".81" />
+
     <TextView
         android:id="@+id/textInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="10dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="8dp"
         android:text="@string/change_colors_to_match"
-        android:textSize="@dimen/default_text_size" />
+        android:textSize="17dp"
+        app:layout_constraintBottom_toTopOf="@+id/compartments"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInfo2"
+        tools:ignore="SpUsage" />
 
     <TextView
         android:id="@+id/textInfo2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/textInfo"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="10dp"
+        android:paddingBottom="8dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="8dp"
         android:text="@string/click_compartments_to_change"
-        android:textSize="@dimen/default_text_size" />
-
-    <org.akvo.caddisfly.sensor.cbt.CustomShapeButton
-        android:id="@+id/compartments"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/cbt_shapes_height"
-        android:layout_below="@+id/textInfo2" />
+        android:textSize="17dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage" />
 
     <Button
         android:id="@+id/buttonNext"
         style="@style/Button"
-        android:alpha="0.1"
-        android:layout_marginTop="@dimen/view_gutter_bottom"
         android:layout_width="wrap_content"
-        android:layout_below="@+id/compartments"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/compartments"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:alpha="0.1"
         android:enabled="true"
         android:onClick="onClickMatchedButton"
         android:text="@string/next"
-        android:theme="?primaryButtonStyle" />
-</RelativeLayout>
+        android:theme="?primaryButtonStyle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bottom_guideline" />
+
+    <org.akvo.caddisfly.sensor.cbt.CustomShapeButton
+        android:id="@+id/compartments"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_guideline"
+        app:layout_constraintLeft_toLeftOf="@+id/left_guideline"
+        app:layout_constraintRight_toRightOf="@+id/right_guideline"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:layout_optimizationLevel="chains" />
+
+</android.support.constraint.ConstraintLayout>

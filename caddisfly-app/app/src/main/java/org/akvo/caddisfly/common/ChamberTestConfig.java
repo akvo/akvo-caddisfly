@@ -22,6 +22,11 @@ package org.akvo.caddisfly.common;
 public final class ChamberTestConfig {
 
     /**
+     * The delay before starting the test
+     */
+    public static final int DELAY_INITIAL = 4;
+
+    /**
      * The delay seconds between each photo taken by the camera during the analysis.
      */
     public static final int DELAY_BETWEEN_SAMPLING = 4;
@@ -44,12 +49,12 @@ public final class ChamberTestConfig {
     /**
      * Max distance between colors at which the colors are considered to be similar.
      */
-    public static final int MAX_COLOR_DISTANCE_RGB = 40;
+    public static final int MAX_COLOR_DISTANCE_RGB = 50;
 
     /**
      * Max distance between colors for calibration.
      */
-    public static final double MAX_COLOR_DISTANCE_CALIBRATION = 12;
+    public static final int MAX_COLOR_DISTANCE_CALIBRATION = 20;
 
     /**
      * The number of interpolations to generate between range values.

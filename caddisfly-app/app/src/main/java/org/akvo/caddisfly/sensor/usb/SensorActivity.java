@@ -120,17 +120,6 @@ public class SensorActivity extends BaseActivity {
     };
     private int identityCheck = 0;
     private int deviceStatus = 0;
-    private final Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (deviceStatus == 1) {
-                requestResult();
-                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
-            } else {
-                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
-            }
-        }
-    };
     private final Runnable validateDeviceRunnable = new Runnable() {
         @Override
         public void run() {
@@ -158,6 +147,17 @@ public class SensorActivity extends BaseActivity {
                     }
                     handler.postDelayed(runnable, IDENTIFY_DELAY_MILLIS);
                     break;
+            }
+        }
+    };
+    private final Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if (deviceStatus == 1) {
+                requestResult();
+                handler.postDelayed(this, REQUEST_DELAY_MILLIS);
+            } else {
+                handler.postDelayed(validateDeviceRunnable, IDENTIFY_DELAY_MILLIS * 2);
             }
         }
     };
@@ -454,14 +454,10 @@ public class SensorActivity extends BaseActivity {
     public void onClickAcceptResult(View view) {
         // Build the result json to be returned
 
-        Intent resultIntent = new Intent(getIntent());
+        Intent resultIntent = new Intent();
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, EMPTY_STRING);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-
-        // TODO: Remove this when obsolete
-        // Backward compatibility. Return plain text result
-        resultIntent.putExtra(SensorConstants.RESPONSE_COMPAT, results.get(1));
 
         setResult(Activity.RESULT_OK, resultIntent);
 

@@ -27,7 +27,6 @@ public class ConstantJsonKey {
     public static final String IMAGE = "image";
     public static final String NAME = "name";
     public static final String RESULT = "result";
-    public static final String SHORT_CODE = "shortCode";
     public static final String TEST_DATE = "testDate";
     public static final String TYPE = "type";
     public static final String UNIT = "unit";

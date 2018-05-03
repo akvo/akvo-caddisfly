@@ -386,6 +386,19 @@
       ]
     },
     {
+      "name": "Water - Colorimetry - Lovibond MD610 - 157 Cyanide, Liquid and Powder (0.01 - 0.5 mg/l CN)",
+      "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Cyanide",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Colorimetry - Lovibond MD610 - 170 Fluoride, Liquid (0.05 - 2 mg/l F)",
       "uuid": "d839537b-8106-44e8-953a-6060e4dbe59d",
       "brand": "Lovibond",
@@ -498,6 +511,19 @@
         {
           "id": 1,
           "name": "Iron",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Colorimetry - Lovibond MD610 - 240 Manganese, Tablet (0.2 - 4 mg/l Mn)",
+      "uuid": "21c1bc13-51c2-4770-8fae-7d0685b49370",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Manganese",
           "unit": "mg/l"
         }
       ]
@@ -871,6 +897,19 @@
       ]
     },
     {
+      "name": "Water - Test Strips - SenSafe - Mercury (0 - 0.08 mg/l Hg)",
+      "uuid": "af98ac35-dc55-4d86-bbdc-aa4a4e3100c9",
+      "brand": "SenSafe 480048",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Mercury",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Test Strips - Hach - Nitrate (0 - 50 mg/l NO3-N ), Nitrite (0-3 mg/l NO2-N)",
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "brand": "HACH 27454",
@@ -1153,41 +1192,40 @@
       ]
     },
     {
-      "name": "Z - Trial - Colorimetry - Caddisfly - pH (4 - 10)",
-      "uuid": "4d3a7d6d-2f11-49de-9f7f-9e21e840df93",
-      "brand": "Caddisfly",
+      "name": "Water - Lovibond SD 50 pH (0 - 14)",
+      "uuid": "dbd058b6-29ed-4c7f-8b11-fcdae725a518",
+      "brand": "Lovibond",
       "hasImage": true,
       "results": [
         {
           "id": 1,
-          "name": "pH",
-          "unit": ""
+          "name": "pH"
         }
       ]
     },
     {
-      "name": "Z - Trial - Colorimetry - Caddisfly - Nitrate (0 - 100 mg/l)",
-      "uuid": "fcf39bd6-0e37-4523-9cba-19870d2192f8",
-      "brand": "Caddisfly",
+      "name": "Water - Lovibond SD 70 Electrical Conductivity, (0 - 20000 μS/cm)",
+      "uuid": "578c5768-273d-455f-ba12-57a6ced96c17",
+      "brand": "Lovibond",
       "hasImage": true,
       "results": [
         {
-          "name": "Nitrate",
           "id": 1,
-          "unit": "ppm"
+          "name": "Electrical Conductivity",
+          "unit": "μS/cm"
         }
       ]
     },
     {
-      "name": "Z - Trial - Colorimetry - Caddisfly - Phosphate (0 - 2 mg/l)",
-      "uuid": "6fbe9952-7199-4c9d-8664-977236176cc9",
-      "brand": "Caddisfly",
-      "hasImage": true,
+      "name": "Water - DelAgua Turbidity Tube, (0 - 2000 NTU)",
+      "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
+      "brand": "DelAgua",
+      "hasImage": false,
       "results": [
         {
-          "name": "Phosphate",
           "id": 1,
-          "unit": "ppm"
+          "name": "Turbidity",
+          "unit": "NTU"
         }
       ]
     }

@@ -32,20 +32,13 @@ public final class AppConfig {
      */
     public static final boolean APP_EXPIRY = true;
     public static final int APP_EXPIRY_DAY = 15;
-    public static final int APP_EXPIRY_MONTH = 3;
+    public static final int APP_EXPIRY_MONTH = 5;
     public static final int APP_EXPIRY_YEAR = 2018;
 
     /**
-     * The intent action string used to connect to external app.
-     *
-     * @deprecated use {@link #FLOW_ACTION_CADDISFLY} instead
-     */
-    @Deprecated
-    public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
-    /**
      * The intent action string used by the caddisfly question type.
      */
-    public static final String FLOW_ACTION_CADDISFLY = "org.akvo.flow.action.caddisfly";
+    public static final String EXTERNAL_APP_ACTION = "org.akvo.flow.action.caddisfly";
 
     /**
      * Uri for photos from built in camera.
@@ -56,6 +49,12 @@ public final class AppConfig {
      * The sound volume for the beeps and other sound effects.
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;
+
+    /**
+     * The url to check for version updates.
+     */
+    public static final String UPDATE_CHECK_URL
+            = "https://akvoflow-public.s3.amazonaws.com/caddisfly-app-version";
 
     private AppConfig() {
     }

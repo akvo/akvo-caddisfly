@@ -23,6 +23,8 @@
     <!--Water-->
     <string name="fill_half_with_sample">Remplissez le flacon à moitié plein avec l\'échantillon d\'eau</string>
     <string name="open_one_foil_and_add_powder">Ouvrez un paquet d\'alluminium et ajoutez le contenu de la poudre dans le flacon</string>
+    <string name="dip_sample_60_back_forward_250_sample">Plongez la bandelette dans <b>250+ ml</b> l\'échantillon et déplacez de l\'avant vers l\'arrière dans l\'échantillon pendant <b>60 secondes</b>.</string>
+    <string name="shake_excess_water_once">Secouez <b>une voice</b> l\'excès d\'eau de la bandelette de test.</string>
 
     <string name="as_remove_sulfide">Effectuez les étapes suivantes pour éliminer le sulfure avant le début de la procédure du test:</string>
     <string name="as_remove_sulfide_1">Déchirez un petit morceau de coton et formez une balle de la taille d\'un pois.</string>

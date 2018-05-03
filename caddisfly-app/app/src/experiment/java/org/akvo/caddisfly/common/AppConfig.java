@@ -36,16 +36,9 @@ public final class AppConfig {
     public static final int APP_EXPIRY_YEAR = 2019;
 
     /**
-     * The intent action string used to connect to external app.
-     *
-     * @deprecated use {@link #FLOW_ACTION_CADDISFLY} instead
-     */
-    @Deprecated
-    public static final String FLOW_ACTION_EXTERNAL_SOURCE = "org.akvo.flow.action.externalsource";
-    /**
      * The intent action string used by the caddisfly question type.
      */
-    public static final String FLOW_ACTION_CADDISFLY = "org.akvo.flow.action.caddisfly";
+    public static final String EXTERNAL_APP_ACTION = "org.akvo.flow.action.caddisfly";
 
     /**
      * Uri for photos from built in camera.

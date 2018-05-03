@@ -109,7 +109,11 @@ public class CameraOperationsManager {
     public void setDecodeImageCaptureRequest() {
         if (mCameraHandler != null && mCamera != null) {
             try {
-                mCameraHandler.post(() -> mCamera.setOneShotPreviewCallback(previewCallback));
+                mCameraHandler.post(() -> {
+                    if (mCamera != null) {
+                        mCamera.setOneShotPreviewCallback(previewCallback);
+                    }
+                });
             } catch (Exception ignored) {
                 // do nothing
             }

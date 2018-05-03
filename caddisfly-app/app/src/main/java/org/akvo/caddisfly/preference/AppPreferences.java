@@ -77,6 +77,26 @@ public final class AppPreferences {
         }
     }
 
+    /**
+     * The color distance tolerance for when matching colors.
+     *
+     * @return the tolerance value
+     */
+    public static int getAveragingColorDistanceTolerance() {
+        try {
+            if (isDiagnosticMode()) {
+                return Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
+                        R.string.colorAverageDistanceToleranceKey,
+                        String.valueOf(ChamberTestConfig.MAX_COLOR_DISTANCE_CALIBRATION)));
+            } else {
+                return ChamberTestConfig.MAX_COLOR_DISTANCE_CALIBRATION;
+            }
+        } catch (NullPointerException e) {
+            return ChamberTestConfig.MAX_COLOR_DISTANCE_CALIBRATION;
+        }
+    }
+
+
     public static boolean isSoundOn() {
         return !isDiagnosticMode() || PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.soundOnKey, true);
     }
@@ -98,5 +118,10 @@ public final class AppPreferences {
     public static boolean ignoreTimeDelays() {
         return isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreTimeDelaysKey, false);
+    }
+
+    public static boolean useMaxZoom() {
+        return isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.maxZoomKey, false);
     }
 }

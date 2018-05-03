@@ -61,6 +61,8 @@ import static org.akvo.caddisfly.common.Constants.DEGREES_180;
 import static org.akvo.caddisfly.common.Constants.DEGREES_270;
 import static org.akvo.caddisfly.common.Constants.DEGREES_90;
 
+//import timber.log.Timber;
+
 public class BaseRunTest extends Fragment implements RunTest {
     private static final double SHORT_DELAY = 1;
     private final ArrayList<ResultDetail> results = new ArrayList<>();
@@ -76,7 +78,7 @@ public class BaseRunTest extends Fragment implements RunTest {
     private int dilution;
     private Camera mCamera;
     private OnResultListener mListener;
-    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+    private final Camera.PictureCallback mPicture = new Camera.PictureCallback() {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
@@ -240,12 +242,18 @@ public class BaseRunTest extends Fragment implements RunTest {
                 break;
         }
 
-        Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(ImageUtil.rotateImage(bitmap, rotation),
+        Bitmap rotatedBitmap = ImageUtil.rotateImage(bitmap, rotation);
+        Bitmap croppedBitmap = ImageUtil.getCroppedBitmap(rotatedBitmap,
                 ChamberTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
         //Extract the color from the photo which will be used for comparison
         ColorInfo photoColor;
         if (croppedBitmap != null) {
+
+            if (mTestInfo.getResults().get(0).getGrayScale()) {
+                croppedBitmap = ImageUtil.getGrayscale(croppedBitmap);
+            }
+
             photoColor = ColorUtil.getColorFromBitmap(croppedBitmap,
                     ChamberTestConfig.SAMPLE_CROP_LENGTH_DEFAULT);
 
@@ -256,8 +264,11 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             ResultDetail resultDetail = SwatchHelper.analyzeColor(mTestInfo.getSwatches().size(),
                     photoColor, mTestInfo.getSwatches());
-            resultDetail.setBitmap(croppedBitmap);
+            resultDetail.setBitmap(rotatedBitmap);
+            resultDetail.setCroppedBitmap(croppedBitmap);
             resultDetail.setDilution(dilution);
+
+//            Timber.d("Result is: " + String.valueOf(resultDetail.getResult()));
 
             results.add(resultDetail);
 
@@ -301,7 +312,7 @@ public class BaseRunTest extends Fragment implements RunTest {
 
             sound.playShortResource(R.raw.futurebeep2);
 
-            int timeDelay = ChamberTestConfig.DELAY_BETWEEN_SAMPLING;
+            int timeDelay = ChamberTestConfig.DELAY_INITIAL + ChamberTestConfig.DELAY_BETWEEN_SAMPLING;
 
             // If the test has a time delay config then use that otherwise use standard delay
             if (mTestInfo.getResults().get(0).getTimeDelay() > 0) {
@@ -348,6 +359,8 @@ public class BaseRunTest extends Fragment implements RunTest {
 
         if (mCamera != null) {
             mCamera.stopPreview();
+            mCamera.setPreviewCallback(null);
+            mCameraPreview.getHolder().removeCallback(mCameraPreview);
             mCamera.release();
             mCamera = null;
         }

@@ -175,6 +175,9 @@ public final class StringUtil {
     }
 
     public static String getStringByName(Context context, String name) {
+        if (name == null) {
+            return "";
+        }
         return context.getResources().getString(context.getResources()
                 .getIdentifier(name, "string", context.getPackageName()));
     }

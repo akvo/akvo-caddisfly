@@ -70,6 +70,7 @@ import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.saveCalibration;
+import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.is;
@@ -251,6 +252,8 @@ public class CalibrationTest {
         goToMainScreen();
 
         gotoSurveyForm();
+
+        nextSurveyPage(0);
 
         clickExternalSourceButton(0);
 

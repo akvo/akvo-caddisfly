@@ -53,7 +53,6 @@
       "subtype": "sensor",
       "uuid": "f88237b7-be3d-4fac-bbee-ab328eefcd14",
       "deviceId": "WaterEC",
-      "shortCode": "ECOND",
       "brand": "Caddisfly",
       "image": "Caddisfly-Water-EC",
       "imageScale": "centerCrop",
@@ -1409,6 +1408,76 @@
             {
               "value": 8.4,
               "lab": [48.03,62.81,25.06]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Water - Mercury",
+      "subtype": "striptest",
+      "uuid": "af98ac35-dc55-4d86-bbdc-aa4a4e3100c9",
+      "brand": "SenSafe 480048",
+      "groupingType": "INDIVIDUAL",
+      "hasImage": true,
+      "length": 71,
+      "height": 8,
+      "instructions": [
+        {
+          "section": [
+            "dip_sample_60_back_forward_250_sample",
+            "image:dip_sample_60_back_forward_250_sample"
+          ]
+        },
+        {
+          "section": [
+            "shake_excess_water_once",
+            "image:shake_excess"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr_hg",
+            "image:place_clr"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Mercury",
+          "unit": "mg/l",
+          "timeDelay": 30,
+          "patchPos": 6,
+          "patchWidth": 4.50,
+          "colors": [
+            {
+              "value": 0,
+              "lab": [80.23,-12.47,49.35]
+            },
+            {
+              "value": 0.002,
+              "lab": [78.43,-11.96,50.15]
+            },
+            {
+              "value": 0.005,
+              "lab": [77.99,-10.05,46.11]
+            },
+            {
+              "value": 0.01,
+              "lab": [72.68,-2.14,43.17]
+            },
+            {
+              "value": 0.02,
+              "lab": [64.38,5.06,26.00]
+            },
+            {
+              "value": 0.04,
+              "lab": [57.08,8.36,17.15]
+            },
+            {
+              "value": 0.08,
+              "lab": [54.00,2.91,10.02]
             }
           ]
         }
@@ -4481,6 +4550,86 @@
       ]
     },
     {
+      "name": "Cyanide",
+      "subtype": "bluetooth",
+      "md610_id": "157",
+      "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "3 drops of Cyanide-13",
+          "reactionTime": 10
+        }
+      ],
+      "sampleQuantity": "2",
+      "ranges": "0.01,0.5",
+      "selectInstruction": "select_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_2ml_sample_8ml_deionized_water_zero",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_spoon_cyanide_1",
+            "image:add_2_spoon"
+          ]
+        },
+        {
+          "section": [
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_spoon_cyanide_2",
+            "image:add_2_spoon"
+          ]
+        },
+        {
+          "section": [
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_liquid",
+            "image:add_liquid"
+          ]
+        },
+        {
+          "section": [
+            "close_swirl_mix",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Cyanide",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Fluoride",
       "subtype": "bluetooth",
       "md610_id": "170",
@@ -5033,6 +5182,72 @@
         {
           "id": 1,
           "name": "Iron",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Manganese",
+      "subtype": "bluetooth",
+      "md610_id": "240",
+      "uuid": "21c1bc13-51c2-4770-8fae-7d0685b49370",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "Manganese LR No 1",
+          "code": "SDT349-50",
+          "reactionTime": 5
+        },
+        {
+          "name": "Manganese LR No 2",
+          "code": "SDT350-50"
+        }
+      ],
+      "ranges": "0.2,4",
+      "selectInstruction": "select_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Manganese",
           "unit": "mg/l"
         }
       ]
@@ -6167,7 +6382,6 @@
       "name": "Water - Chromium",
       "subtype": "cuvette",
       "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
-      "shortCode": "CHROM",
       "brand": "Caddisfly",
       "imageScale": "centerCrop",
       "calibrate": true,
@@ -6183,24 +6397,7 @@
           "id": 1,
           "name": "Chromium",
           "unit": "mg/l",
-          "timeDelay": 300,
-          "colors": [
-            {
-              "value": 0
-            },
-            {
-              "value": 0.5
-            },
-            {
-              "value": 1
-            },
-            {
-              "value": 2
-            },
-            {
-              "value": 3
-            }
-          ]
+          "timeDelay": 300
         }
       ]
     },
@@ -6208,7 +6405,6 @@
       "name": "Water - Fluoride",
       "subtype": "cuvette",
       "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
-      "shortCode": "FLUOR",
       "brand": "Caddisfly",
       "imageScale": "centerCrop",
       "calibrate": true,
@@ -6284,116 +6480,7 @@
         {
           "id": 1,
           "name": "Fluoride",
-          "unit": "mg/l",
-          "colors": [
-            {
-              "value": 0
-            },
-            {
-              "value": 0.5
-            },
-            {
-              "value": 1
-            },
-            {
-              "value": 1.5
-            },
-            {
-              "value": 2
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Water - Free Chlorine",
-      "subtype": "cuvette",
-      "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
-      "shortCode": "CHLOR",
-      "brand": "Caddisfly",
-      "imageScale": "centerCrop",
-      "calibrate": true,
-      "ranges": "0,0.25,0.5,0.75,1.0",
-      "monthsValid": 24,
-      "hasImage": true,
-      "instructions": [
-        {
-          "section": [
-            "bc_rinse",
-            "image:bc_rinse"
-          ]
-        },
-        {
-          "section": [
-            "bc_frc_1",
-            "image:bc_add_powder"
-          ]
-        },
-        {
-          "section": [
-            "bc_frc_2",
-            "image:bc_fill"
-          ]
-        },
-        {
-          "section": [
-            "bc_screw",
-            "image:bc_screw_frc"
-          ]
-        },
-        {
-          "section": [
-            "bc_shake",
-            "image:bc_shake"
-          ]
-        },
-        {
-          "section": [
-            "bc_wipe_bottom",
-            "image:bc_wipe_bottom"
-          ]
-        },
-        {
-          "section": [
-            "bc_wipe_camera",
-            "image:bc_wipe_camera"
-          ]
-        },
-        {
-          "section": [
-            "bc_place_chamber",
-            "image:bc_place_chamber"
-          ]
-        },
-        {
-          "section": [
-            "bc_place_phone",
-            "image:bc_place_phone"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "Free Chlorine",
-          "unit": "mg/l",
-          "colors": [
-            {
-              "value": 0
-            },
-            {
-              "value": 0.25
-            },
-            {
-              "value": 0.5
-            },
-            {
-              "value": 0.75
-            },
-            {
-              "value": 1.0
-            }
-          ]
+          "unit": "mg/l"
         }
       ]
     },
@@ -6467,30 +6554,7 @@
         {
           "id": 1,
           "name": "Free Chlorine",
-          "unit": "mg/l",
-          "colors": [
-            {
-              "value": 0
-            },
-            {
-              "value": 0.5
-            },
-            {
-              "value": 1
-            },
-            {
-              "value": 1.5
-            },
-            {
-              "value": 2
-            },
-            {
-              "value": 2.5
-            },
-            {
-              "value": 3
-            }
-          ]
+          "unit": "mg/l"
         }
       ]
     },

@@ -237,7 +237,7 @@ public final class TestHelper {
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        String version = CaddisflyApp.getAppVersion();
+        String version = CaddisflyApp.getAppVersion(false);
 
         onView(withText(version)).check(matches(isDisplayed()));
 

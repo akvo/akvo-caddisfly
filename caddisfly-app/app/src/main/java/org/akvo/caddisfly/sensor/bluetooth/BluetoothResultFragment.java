@@ -129,7 +129,7 @@ public class BluetoothResultFragment extends Fragment {
         mAcceptButton.setOnClickListener(view12 -> {
             // Build the result json to be returned
 
-            Intent resultIntent = new Intent(getActivity().getIntent());
+            Intent resultIntent = new Intent();
 
             JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,
                     results, null, -1, "");
