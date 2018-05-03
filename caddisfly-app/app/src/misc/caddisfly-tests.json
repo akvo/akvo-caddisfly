@@ -386,6 +386,19 @@
       ]
     },
     {
+      "name": "Water - Colorimetry - Lovibond MD610 - 157 Cyanide, Liquid and Powder (0.01 - 0.5 mg/l CN)",
+      "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Cyanide",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Colorimetry - Lovibond MD610 - 170 Fluoride, Liquid (0.05 - 2 mg/l F)",
       "uuid": "d839537b-8106-44e8-953a-6060e4dbe59d",
       "brand": "Lovibond",
@@ -498,6 +511,19 @@
         {
           "id": 1,
           "name": "Iron",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Colorimetry - Lovibond MD610 - 240 Manganese, Tablet (0.2 - 4 mg/l Mn)",
+      "uuid": "21c1bc13-51c2-4770-8fae-7d0685b49370",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Manganese",
           "unit": "mg/l"
         }
       ]
@@ -867,6 +893,19 @@
           "id": 5,
           "name": "pH",
           "unit": ""
+        }
+      ]
+    },
+    {
+      "name": "Water - Test Strips - SenSafe - Mercury (0 - 0.08 mg/l Hg)",
+      "uuid": "af98ac35-dc55-4d86-bbdc-aa4a4e3100c9",
+      "brand": "SenSafe 480048",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Mercury",
+          "unit": "mg/l"
         }
       ]
     },
