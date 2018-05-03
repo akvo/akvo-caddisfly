@@ -78,7 +78,11 @@ public class Result implements Parcelable {
     @SerializedName("colors")
     @Expose
     private List<ColorItem> colorItems = new ArrayList<>();
+    @SerializedName("grayScale")
+    @Expose
+    private Boolean grayScale = false;
     private String result;
+    private String displayResult;
     private boolean highLevelsFound;
 
     public Result() {
@@ -101,6 +105,8 @@ public class Result implements Parcelable {
         } else {
             colorItems = null;
         }
+        byte tmpGrayScale = in.readByte();
+        grayScale = tmpGrayScale != 0 && tmpGrayScale == 1;
     }
 
     public Integer getId() {
@@ -185,6 +191,10 @@ public class Result implements Parcelable {
         this.colorItems = colorItems;
     }
 
+    public Boolean getGrayScale() {
+        return grayScale;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -233,30 +243,51 @@ public class Result implements Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(colorItems);
         }
+        dest.writeByte((byte) (grayScale == null ? 0 : grayScale ? 1 : 2));
     }
 
     public String getResult() {
-        return result;
+        return getResult(Locale.getDefault());
+    }
+
+    /**
+     * Result in required format.
+     *
+     * @return the result
+     */
+    public String getResult(Locale locale) {
+        if (locale == Locale.US) {
+            return result;
+        } else {
+            return displayResult;
+        }
     }
 
     public void setResult(double resultDouble, int dilution, Integer maxDilution) {
 
-        // determine if high levels of contaminant
-        double maxResult = colorItems.get(colorItems.size() - 1).getValue();
-        highLevelsFound = resultDouble > maxResult * 0.98;
+        if (colorItems.size() > 0) {
+            // determine if high levels of contaminant
+            double maxResult = colorItems.get(colorItems.size() - 1).getValue();
+            highLevelsFound = resultDouble > maxResult * 0.98;
 
-        double finalResult = resultDouble * dilution;
+            double finalResult = resultDouble * dilution;
 
-        // if no more can dilution can be performed then set result to highest value
-        if (highLevelsFound && dilution >= maxDilution) {
-            finalResult = maxResult * dilution;
-        }
+            // if no more dilution can be performed then set result to highest value
+            if (highLevelsFound && dilution >= maxDilution) {
+                finalResult = maxResult * dilution;
+            }
 
-        result = String.format(Locale.getDefault(), "%.2f", finalResult);
+            displayResult = String.format(Locale.getDefault(), "%.2f", finalResult);
+            result = String.format(Locale.US, "%.2f", finalResult);
 
-        // Add 'greater than' symbol if result could be an unknown high value
-        if (highLevelsFound) {
-            result = "> " + result;
+            // Add 'greater than' symbol if result could be an unknown high value
+            if (highLevelsFound) {
+                displayResult = "> " + displayResult;
+                result = "> " + result;
+            }
+        } else {
+            displayResult = String.format(Locale.getDefault(), "%.2f", resultDouble);
+            result = String.format(Locale.US, "%.2f", resultDouble);
         }
     }
 

@@ -39,6 +39,7 @@ import org.robolectric.shadows.ShadowLooper;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
+import static org.akvo.caddisfly.TestConstants.STRIP_TESTS_COUNT;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -66,14 +67,14 @@ public class StripsTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(20, recyclerView.getChildCount());
+        assertSame(STRIP_TESTS_COUNT, recyclerView.getChildCount());
 
         TestInfoAdapter adapter = (TestInfoAdapter) recyclerView.getAdapter();
         recyclerView.getAdapter();
         assertEquals("Water - Total Iron",
-                adapter.getItemAt(18).getName());
+                adapter.getItemAt(19).getName());
         assertEquals("Water - Total Iron",
-                ((TextView) recyclerView.getChildAt(18).findViewById(R.id.text_title)).getText());
+                ((TextView) recyclerView.getChildAt(19).findViewById(R.id.text_title)).getText());
     }
 
     @Test
@@ -111,7 +112,7 @@ public class StripsTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(20, recyclerView.getChildCount());
+        assertSame(STRIP_TESTS_COUNT, recyclerView.getChildCount());
 
         recyclerView.getChildAt(1).performClick();
 

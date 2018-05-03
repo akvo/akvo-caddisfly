@@ -28,7 +28,9 @@ import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Tap;
 import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import android.support.test.runner.lifecycle.Stage;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiObject;
+import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
@@ -172,6 +174,7 @@ public final class TestUtil {
 
     public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
+                || Build.HOST.startsWith("SWDG2909")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.MODEL.contains("google_sdk")
                 || Build.MODEL.contains("Emulator")
@@ -204,18 +207,21 @@ public final class TestUtil {
 
     private static void swipeLeft() {
         mDevice.waitForIdle();
-        mDevice.swipe(500, 300, 50, 300, 4);
+        mDevice.swipe(500, 400, 50, 400, 4);
         mDevice.waitForIdle();
     }
 
     public static void swipeRight() {
         mDevice.waitForIdle();
-        if (isEmulator()) {
-            mDevice.pressBack();
-        } else {
-            mDevice.swipe(50, 300, 500, 300, 4);
-        }
+            mDevice.swipe(50, 400, 500, 400, 4);
         mDevice.waitForIdle();
+    }
+
+    private static void swipeDown() {
+        for (int i = 0; i < 3; i++) {
+            mDevice.waitForIdle();
+            mDevice.swipe(300, 400, 300, 750, 4);
+        }
     }
 
     public static void swipeRight(int times) {
@@ -277,8 +283,31 @@ public final class TestUtil {
     }
 
     public static void nextSurveyPage(int times) {
-        for (int i = 0; i < times; i++) {
-            nextSurveyPage();
+        nextSurveyPage(times, "");
+    }
+
+    public static void nextSurveyPage(int times, String tabName) {
+
+        UiObject2 tab = mDevice.findObject(By.text(tabName));
+        if (tab == null || !tab.isSelected()) {
+
+            for (int i = 0; i < 12; i++) {
+                swipeRight();
+                tab = mDevice.findObject(By.text(tabName));
+                if (tab != null && tab.isSelected()) {
+                    break;
+                }
+                tab = mDevice.findObject(By.text("Fluoride"));
+                if (tab != null && tab.isSelected()) {
+                    for (int j = 0; j < times; j++) {
+                        clickExternalSourceButton(TestConstantKeys.NEXT);
+                    }
+                    break;
+                }
+            }
         }
+
+        swipeDown();
+
     }
 }

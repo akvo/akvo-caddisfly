@@ -21,7 +21,6 @@ package org.akvo.caddisfly.instruction;
 
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -132,10 +131,6 @@ public class ManualInstructions {
     @RequiresDevice
     public void testInstructionsAll() {
 
-        mActivityTestRule.launchActivity(new Intent());
-
-        mDevice.waitForIdle();
-
         goToMainScreen();
 
         onView(withId(R.id.actionSettings)).perform(click());
@@ -159,6 +154,8 @@ public class ManualInstructions {
 
                 int pages = navigateToTest(i, id);
 
+                mDevice.pressBack();
+
                 jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
             }
@@ -172,7 +169,7 @@ public class ManualInstructions {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6);
+        TestUtil.nextSurveyPage(6, "Manual");
 
         clickExternalSourceButton(index, TestConstantKeys.GO_TO_TEST);
 
@@ -214,7 +211,7 @@ public class ManualInstructions {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6);
+        TestUtil.nextSurveyPage(6, "Manual");
 
         clickExternalSourceButton(1, TestConstantKeys.GO_TO_TEST);
 

@@ -27,6 +27,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import org.akvo.caddisfly.common.Constants;
+import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -166,7 +167,13 @@ public class ChamberCameraPreview extends SurfaceView implements SurfaceHolder.C
 
         parameters.setExposureCompensation(EXPOSURE_COMPENSATION);
 
-        parameters.setZoom(0);
+        if (parameters.isZoomSupported()) {
+            if (AppPreferences.useMaxZoom()) {
+                parameters.setZoom(parameters.getMaxZoom());
+            } else {
+                parameters.setZoom(0);
+            }
+        }
 
         mCamera.setDisplayOrientation(Constants.DEGREES_90);
 

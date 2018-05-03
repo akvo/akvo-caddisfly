@@ -40,6 +40,7 @@ import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,6 +101,7 @@ public class BluetoothInstructions {
 
     @Test
     @RequiresDevice
+    @Ignore
     public void testInstructionsAll() {
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
@@ -127,9 +129,9 @@ public class BluetoothInstructions {
             id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
 //            if (id.equalsIgnoreCase("7d0685b49370")) {
-                int pages = navigateToTest(i, id);
+            int pages = navigateToTest(i, id);
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 //            }
 
         }
@@ -182,10 +184,12 @@ public class BluetoothInstructions {
                 TestUtil.sleep(300);
                 Espresso.pressBack();
                 TestUtil.sleep(300);
-//                Espresso.pressBack();
-//                TestUtil.sleep(300);
-//                Espresso.pressBack();
-//                TestUtil.sleep(600);
+                Espresso.pressBack();
+                TestUtil.sleep(300);
+                Espresso.pressBack();
+                TestUtil.sleep(600);
+                Espresso.pressBack();
+                TestUtil.sleep(600);
                 break;
             }
         }

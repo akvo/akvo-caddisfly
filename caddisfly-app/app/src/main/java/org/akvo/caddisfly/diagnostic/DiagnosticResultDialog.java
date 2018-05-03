@@ -11,10 +11,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.ResultDetail;
 import org.akvo.caddisfly.util.ColorUtil;
 
@@ -24,26 +24,24 @@ import java.util.Locale;
 public class DiagnosticResultDialog extends DialogFragment {
 
     private ArrayList<ResultDetail> resultDetails;
-    private Result result;
+    private ResultDetail result;
 
     /**
      * Instance of dialog.
      *
      * @param testFailed    did test fail
-     * @param result        the result
+     * @param resultDetail  the result
      * @param resultDetails the result details
      * @param isCalibration is this in calibration mode
-     * @param color         the color
      * @return the dialog
      */
-    public static DialogFragment newInstance(boolean testFailed, Result result,
+    public static DialogFragment newInstance(boolean testFailed, ResultDetail resultDetail,
                                              ArrayList<ResultDetail> resultDetails,
-                                             boolean isCalibration, int color) {
+                                             boolean isCalibration) {
         DiagnosticResultDialog fragment = new DiagnosticResultDialog();
         Bundle args = new Bundle();
-        fragment.result = result;
+        fragment.result = resultDetail;
         fragment.resultDetails = resultDetails;
-        args.putInt("color", color);
         args.putBoolean("testFailed", testFailed);
         args.putBoolean("isCalibration", isCalibration);
         fragment.setArguments(args);
@@ -60,26 +58,42 @@ public class DiagnosticResultDialog extends DialogFragment {
         listResults.setAdapter(new ResultListAdapter());
 
         boolean testFailed = getArguments().getBoolean("testFailed");
-        int color = getArguments().getInt("color");
-
         boolean isCalibration = getArguments().getBoolean("isCalibration");
+
+        Button buttonColorExtract = view.findViewById(R.id.buttonColorExtract);
+        Button buttonSwatchColor = view.findViewById(R.id.buttonSwatchColor);
+        TextView textExtractedRgb = view.findViewById(R.id.textExtractedRgb);
+        TextView textSwatchRgb = view.findViewById(R.id.textSwatchRgb);
+//        TextView textDimension = view.findViewById(R.id.textDimension);
+        TextView textDistance = view.findViewById(R.id.textDistance);
+//        TextView textQuality = view.findViewById(R.id.textQuality);
 
         Button buttonCancel = view.findViewById(R.id.buttonCancel);
         Button buttonRetry = view.findViewById(R.id.buttonRetry);
 
+        buttonColorExtract.setBackgroundColor(result.getColor());
+        buttonSwatchColor.setBackgroundColor(result.getMatchedColor());
+
+        textExtractedRgb.setText(String.format("%s", ColorUtil.getColorRgbString(result.getColor())));
+        textSwatchRgb.setText(String.format("%s", ColorUtil.getColorRgbString(result.getMatchedColor())));
+
+        textDistance.setText(String.format(Locale.getDefault(), "D: %.2f", result.getDistance()));
+        //textQuality.setText(String.format(Locale.getDefault(), "Q: %.0f%%", result.getQuality()));
+
         if (testFailed) {
-            getDialog().setTitle(R.string.error);
+            getDialog().setTitle(R.string.no_result);
         } else {
             if (isCalibration) {
-                if (color == Color.TRANSPARENT) {
+                TableLayout tableDetails = view.findViewById(R.id.tableDetails);
+                tableDetails.setVisibility(View.GONE);
+                if (result.getColor() == Color.TRANSPARENT) {
                     getDialog().setTitle(R.string.error);
                 } else {
                     getDialog().setTitle(String.format("%s: %s", getString(R.string.result),
-                            ColorUtil.getColorRgbString(color)));
+                            ColorUtil.getColorRgbString(result.getColor())));
                 }
             } else {
-                final String resultString = result.getResult();
-                getDialog().setTitle(resultString);
+                getDialog().setTitle(String.format(Locale.getDefault(), "%.2f %s", result.getResult(), ""));
             }
         }
 
@@ -120,7 +134,7 @@ public class DiagnosticResultDialog extends DialogFragment {
 
                 ResultDetail result = resultDetails.get(position);
 
-                imageView.setImageBitmap(result.getBitmap());
+                imageView.setImageBitmap(result.getCroppedBitmap());
                 int color = result.getColor();
 
                 textSwatch.setBackgroundColor(color);

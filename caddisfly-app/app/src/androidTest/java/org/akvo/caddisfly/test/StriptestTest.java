@@ -277,7 +277,7 @@ public class StriptestTest {
                         childAtPosition(
                                 withClassName(is("android.widget.LinearLayout")),
                                 0)));
-        recyclerView.perform(actionOnItemAtPosition(11, click()));
+        recyclerView.perform(actionOnItemAtPosition(12, click()));
 
         sleep(1000);
 

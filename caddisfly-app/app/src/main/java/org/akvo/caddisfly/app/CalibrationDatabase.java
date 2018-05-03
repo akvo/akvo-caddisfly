@@ -27,7 +27,7 @@ import org.akvo.caddisfly.dao.CalibrationDao;
 import org.akvo.caddisfly.entity.Calibration;
 import org.akvo.caddisfly.entity.CalibrationDetail;
 
-@Database(entities = {Calibration.class, CalibrationDetail.class}, version = 1, exportSchema = false)
+@Database(entities = {Calibration.class, CalibrationDetail.class}, version = 3, exportSchema = false)
 public abstract class CalibrationDatabase extends RoomDatabase {
     public abstract CalibrationDao calibrationDao();
 }

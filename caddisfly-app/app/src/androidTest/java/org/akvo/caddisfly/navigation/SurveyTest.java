@@ -22,16 +22,19 @@ package org.akvo.caddisfly.navigation;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
+import android.widget.DatePicker;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -39,11 +42,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.text.DecimalFormatSymbols;
+import java.util.Calendar;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
@@ -62,6 +68,7 @@ import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.saveCalibration;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasToString;
@@ -103,6 +110,8 @@ public class SurveyTest {
     @RequiresDevice
     public void testChangeTestType() {
 
+        goToMainScreen();
+
         onView(withText(R.string.calibrate)).perform(click());
 
         onView(withText(currentHashMap.get("fluoride"))).perform(click());
@@ -114,6 +123,24 @@ public class SurveyTest {
                             .getDecorView())))).check(matches(isDisplayed()));
             return;
         }
+
+        onView(withId(R.id.fabEditCalibration)).perform(click());
+
+        onView(withId(R.id.editBatchCode))
+                .perform(typeText("NEW BATCH"), closeSoftKeyboard());
+
+        onView(withId(R.id.editExpiryDate)).perform(click());
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE, 364);
+        onView(withClassName((Matchers.equalTo(DatePicker.class.getName()))))
+                .perform(PickerActions.setDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
+                        date.get(Calendar.DATE)));
+
+        onView(withId(android.R.id.button1)).perform(click());
+
+        onView(withText(R.string.save)).perform(click());
+
 
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
 
@@ -133,9 +160,9 @@ public class SurveyTest {
 
 //        onView(withText(currentHashMap.get("chlorine"))).perform(click());
 
-        onView(withText("Caddisfly, 0 - 1")).perform(click());
+        onView(withText("Caddisfly, 0 - 3.0")).perform(click());
 
-        onView(withText("1" + dfs.getDecimalSeparator() + "00")).check(matches(isDisplayed()));
+        onView(withText("1" + dfs.getDecimalSeparator() + "0")).check(matches(isDisplayed()));
 
 //        onView(withText("0" + dfs.getDecimalSeparator() + "5 mg/l")).check(matches(isDisplayed()));
 
@@ -176,6 +203,8 @@ public class SurveyTest {
         goToMainScreen();
 
         gotoSurveyForm();
+
+        nextSurveyPage(0);
 
         clickExternalSourceButton(0);
 

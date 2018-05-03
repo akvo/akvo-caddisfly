@@ -27,8 +27,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 214
-        versionName "MCM CBT Test 4"
+        versionCode 215
+        versionName "1.0.0 Beta 10.2"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -41,7 +41,7 @@ android {
         }
         experiment {
             applicationIdSuffix ".experiment"
-            versionName "Experiment Beta 10.3"
+            versionName "Experiment Beta 10.2"
             buildConfigField 'boolean', 'showExperimentalTests', 'true'
         }
     }
@@ -93,6 +93,8 @@ android {
 
     unMock {
         keep "android.graphics.Color"
+        keep "android.preference.PreferenceManager"
+        keep "android.preference.GenericInflater"
     }
 }
 
@@ -131,13 +133,13 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.8.0'
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'com.android.support.test:rules:1.0.2-alpha1'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2-alpha1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 
     // Espresso
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2-alpha1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2-alpha1'
-    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.2-alpha1') {
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
+    androidTestImplementation('com.android.support.test.espresso:espresso-contrib:3.0.2') {
         exclude group: 'com.android.support'
         exclude group: 'javax.inject'
     }

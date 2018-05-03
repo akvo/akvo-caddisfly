@@ -20,17 +20,19 @@
     package="org.akvo.caddisfly">
 
     <application>
-        <activity
-            android:name=".ui.TestActivity"
-            android:screenOrientation="nosensor">
+        <service
+            android:name=".updater.AlarmService"
+            android:enabled="true" />
+
+        <receiver android:name=".updater.NotificationCancelReceiver" />
+        <receiver android:name=".updater.UpdateAppReceiver" />
+        <receiver
+            android:name=".updater.BootReceiver"
+            android:enabled="true">
             <intent-filter>
-                <action android:name="org.akvo.flow.action.caddisfly" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="text/plain" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </activity>
+        </receiver>
     </application>
 
 </manifest>

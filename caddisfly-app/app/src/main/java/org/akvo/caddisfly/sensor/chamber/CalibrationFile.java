@@ -48,11 +48,7 @@ public class CalibrationFile {
         }
 
         //Save a backup of the calibration details
-        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context,
-                testInfo,
-                "batch",
-                23432,
-                2432342);
+        final String calibrationDetails = SwatchHelper.generateCalibrationFile(context, testInfo, true);
 
         final File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, testInfo.getUuid());
 

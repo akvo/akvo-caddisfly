@@ -26,11 +26,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -55,6 +57,8 @@ public final class ApkHelper {
             final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
                     AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
 
+            appExpiryDate.add(Calendar.DAY_OF_MONTH, 1);
+
             GregorianCalendar now = new GregorianCalendar();
             if (now.after(appExpiryDate)) {
 
@@ -70,7 +74,9 @@ public final class ApkHelper {
 
                 builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                     dialogInterface.dismiss();
-                    activity.startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
+                    if (!BuildConfig.showExperimentalTests) {
+                        activity.startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
+                    }
                     activity.finish();
                 });
 

@@ -172,7 +172,6 @@ public class DeviceControlActivity extends BaseActivity
             if (!result) {
                 finish();
             }
-            Timber.d("Connect request result=" + result);
         }
     }
 

@@ -39,6 +39,7 @@ import org.robolectric.shadows.ShadowLooper;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
+import static org.akvo.caddisfly.TestConstants.MD610_TESTS_COUNT;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -66,12 +67,12 @@ public class PhotometerTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(51, recyclerView.getAdapter().getItemCount());
+        assertSame(MD610_TESTS_COUNT, recyclerView.getAdapter().getItemCount());
 
         assertEquals("Fluoride",
-                ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(25).getName());
+                ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(26).getName());
         assertEquals("170 Fluoride",
-                ((TextView) recyclerView.getChildAt(25).findViewById(R.id.text_title)).getText());
+                ((TextView) recyclerView.getChildAt(26).findViewById(R.id.text_title)).getText());
     }
 
     @Test
@@ -114,7 +115,7 @@ public class PhotometerTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(51, recyclerView.getAdapter().getItemCount());
+        assertSame(MD610_TESTS_COUNT, recyclerView.getAdapter().getItemCount());
 
         recyclerView.getChildAt(1).performClick();
 

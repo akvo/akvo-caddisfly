@@ -44,8 +44,8 @@
             android:textColor="#faf1f1"
             android:textSize="34dp"
             android:textStyle="bold"
-            tools:text="High Risk"
-            tools:ignore="SpUsage" />
+            tools:ignore="SpUsage"
+            tools:text="High Risk" />
 
         <TextView
             android:id="@+id/textResult1"
@@ -55,8 +55,8 @@
             android:textColor="#faf1f1"
             android:textSize="26dp"
             android:textStyle="bold"
-            tools:text="Possibly Unsafe"
-            tools:ignore="SpUsage" />
+            tools:ignore="SpUsage"
+            tools:text="Possibly Unsafe" />
     </LinearLayout>
 
     <LinearLayout
@@ -75,8 +75,8 @@
             android:layout_gravity="center_horizontal"
             android:textColor="#fff9f9"
             android:textSize="41dp"
-            tools:text="> 100"
-            tools:ignore="SpUsage" />
+            tools:ignore="SpUsage"
+            tools:text="> 100" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -106,8 +106,8 @@
             android:layout_gravity="center_horizontal"
             android:textColor="#fcf6f6"
             android:textSize="36dp"
-            tools:text="9435.1"
-            tools:ignore="SpUsage" />
+            tools:ignore="SpUsage"
+            tools:text="9435.1" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -39,6 +39,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
+import static org.akvo.caddisfly.TestConstants.SENSOR_TESTS_COUNT;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -65,7 +66,7 @@ public class SensorsTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(3, recyclerView.getChildCount());
+        assertSame(SENSOR_TESTS_COUNT, recyclerView.getChildCount());
 
         assertEquals("Soil - Electrical Conductivity",
                 ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(0).getName());
@@ -87,7 +88,7 @@ public class SensorsTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(3, recyclerView.getChildCount());
+        assertSame(SENSOR_TESTS_COUNT, recyclerView.getChildCount());
 
         assertEquals("Soil - Electrical Conductivity",
                 ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(0).getName());

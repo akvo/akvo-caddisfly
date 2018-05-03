@@ -20,7 +20,6 @@
 package org.akvo.caddisfly.helper;
 
 import android.os.Build;
-import android.support.annotation.Nullable;
 import android.util.SparseArray;
 
 import org.akvo.caddisfly.R;
@@ -203,7 +202,7 @@ public final class TestConfigHelper {
 
     private static JSONObject getAppDetails() throws JSONException {
         JSONObject details = new JSONObject();
-        details.put("appVersion", CaddisflyApp.getAppVersion());
+        details.put("appVersion", CaddisflyApp.getAppVersion(true));
         // The current active language of the app
         details.put("language", CaddisflyApp.getAppLanguage());
         return details;
