@@ -27,7 +27,7 @@ public class AlarmService extends Service {
         if (!ApkHelper.isNonStoreVersion(this)) {
             if (NetUtil.isNetworkAvailable(this)) {
 
-                UpdateCheck.setNextUpdateCheck(this, AlarmManager.INTERVAL_DAY * 3);
+                UpdateCheck.setNextUpdateCheck(this, AlarmManager.INTERVAL_DAY * 2);
 
                 UpdateCheckTask updateCheckTask = new UpdateCheckTask(this);
                 Date todayDate = Calendar.getInstance().getTime();

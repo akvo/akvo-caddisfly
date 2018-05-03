@@ -82,6 +82,7 @@ public class Result implements Parcelable {
     @Expose
     private Boolean grayScale = false;
     private String result;
+    private String displayResult;
     private boolean highLevelsFound;
 
     public Result() {
@@ -246,7 +247,20 @@ public class Result implements Parcelable {
     }
 
     public String getResult() {
-        return result;
+        return getResult(Locale.getDefault());
+    }
+
+    /**
+     * Result in required format.
+     *
+     * @return the result
+     */
+    public String getResult(Locale locale) {
+        if (locale == Locale.US) {
+            return result;
+        } else {
+            return displayResult;
+        }
     }
 
     public void setResult(double resultDouble, int dilution, Integer maxDilution) {
@@ -263,14 +277,17 @@ public class Result implements Parcelable {
                 finalResult = maxResult * dilution;
             }
 
-            result = String.format(Locale.getDefault(), "%.2f", finalResult);
+            displayResult = String.format(Locale.getDefault(), "%.2f", finalResult);
+            result = String.format(Locale.US, "%.2f", finalResult);
 
             // Add 'greater than' symbol if result could be an unknown high value
             if (highLevelsFound) {
+                displayResult = "> " + displayResult;
                 result = "> " + result;
             }
         } else {
-            result = String.format(Locale.getDefault(), "%.2f", resultDouble);
+            displayResult = String.format(Locale.getDefault(), "%.2f", resultDouble);
+            result = String.format(Locale.US, "%.2f", resultDouble);
         }
     }
 

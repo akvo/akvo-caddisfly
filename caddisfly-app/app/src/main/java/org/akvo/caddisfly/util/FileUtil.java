@@ -228,13 +228,12 @@ public final class FileUtil {
      * @return absolute path name of saved file, or empty string on failure.
      */
     @SuppressWarnings("SameParameterValue")
-    public static String writeBitmapToExternalStorage(Bitmap bitmap, String dirPath, String fileName) {
+    public static String writeBitmapToExternalStorage(Bitmap bitmap, FileHelper.FileType fileType, String fileName) {
         // Find the root of the external storage
         // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
         // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder
 
-        File root = Environment.getExternalStorageDirectory();
-        File dir = new File(root.getAbsolutePath() + FileHelper.ROOT_DIRECTORY + dirPath);
+        File dir = FileHelper.getFilesDir(fileType);
         File file = new File(dir, fileName);
 
         // check if directory exists and if not, create it

@@ -34,7 +34,7 @@ public class UpdateCheck {
 
             if (manager != null) {
                 manager.setInexactRepeating(AlarmManager.RTC, nextUpdateTime,
-                        AlarmManager.INTERVAL_DAY * 3, alarmIntent);
+                        AlarmManager.INTERVAL_DAY * 2, alarmIntent);
             }
         }
     }

@@ -75,6 +75,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import timber.log.Timber;
@@ -499,12 +500,13 @@ public class ChamberTestActivity extends BaseActivity implements
 
         for (int i = 0; i < testInfo.getResults().size(); i++) {
             Result result = testInfo.getResults().get(i);
-            results.put(i + 1, result.getResult());
+            results.put(i + 1, result.getResult(Locale.US));
         }
 
         // Save photo taken during the test
         String resultImageUrl = UUID.randomUUID().toString() + ".png";
-        String path = FileUtil.writeBitmapToExternalStorage(croppedBitmap, "/result-images", resultImageUrl);
+        String path = FileUtil.writeBitmapToExternalStorage(croppedBitmap,
+                FileHelper.FileType.RESULT_IMAGE, resultImageUrl);
         resultIntent.putExtra(SensorConstants.IMAGE, path);
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,

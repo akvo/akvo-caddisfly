@@ -60,8 +60,8 @@ public class NotificationScheduler {
                 .setSound(alarmSound)
                 .setSmallIcon(R.mipmap.ic_notification)
                 .setColor(ContextCompat.getColor(context, R.color.primary))
-                .addAction(0, "Later", snoozePendingIntent)
-                .addAction(0, "Update", pendingIntent)
+                .addAction(0, context.getString(R.string.later), snoozePendingIntent)
+                .addAction(0, context.getString(R.string.update_now), pendingIntent)
                 .setContentIntent(pendingIntent).build();
 
         NotificationManager notificationManager =
