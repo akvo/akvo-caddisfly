@@ -44,7 +44,6 @@ import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,6 +60,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
+import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -86,18 +86,6 @@ public class CbtInstructions {
                 mDevice.pressBack();
             }
         }
-    }
-
-    @Before
-    public void setUp() {
-
-        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
-
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
     }
 
     private static void CheckTextInTable(@StringRes int resourceId) {
@@ -141,6 +129,18 @@ public class CbtInstructions {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
+    }
+
+    @Before
+    public void setUp() {
+
+        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
+
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
+        prefs.edit().clear().apply();
+
+        resetLanguage();
     }
 
     @Test
@@ -270,7 +270,8 @@ public class CbtInstructions {
         onView(withContentDescription("7")).check(matches(hasDrawable()));
 
         ViewInteraction appCompatTextView14 = onView(
-                allOf(withId(R.id.button_instructions), withText("Read Instructions"),
+                allOf(withId(R.id.button_instructions), withText(
+                        getString(mActivityTestRule.getActivity(), R.string.read_instructions)),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.TableLayout")),

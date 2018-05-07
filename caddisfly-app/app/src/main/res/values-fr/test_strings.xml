@@ -30,5 +30,5 @@
     <!--Akvo Flow -->
     <string name="unnamedDataPoint">Donnée non nommée</string>
     <string name="addDataPoint">CRÉER UN NOUVEAU POINT</string>
-    <string name="goToText">Go to test</string>
+    <string name="goToText">Tester</string>
 </resources>

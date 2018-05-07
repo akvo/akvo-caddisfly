@@ -16,23 +16,8 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.akvo.caddisfly">
+<manifest package="org.akvo.caddisfly">
 
-    <application>
-        <service
-            android:name=".updater.AlarmService"
-            android:enabled="true" />
-
-        <receiver android:name=".updater.NotificationCancelReceiver" />
-        <receiver android:name=".updater.UpdateAppReceiver" />
-        <receiver
-            android:name=".updater.BootReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-    </application>
+    <application />
 
 </manifest>
