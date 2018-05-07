@@ -365,13 +365,21 @@ public final class TestHelper {
 
         mDevice.waitForIdle();
 
-        goToMainScreen();
+        sleep(5000);
+
+        mDevice.waitForIdle();
+
+        Espresso.pressBack();
 
         onView(withId(R.id.actionSettings)).perform(click());
 
         onView(withText(R.string.language)).perform(click());
 
         onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
+
+        mDevice.waitForIdle();
+
+        sleep(5000);
 
         mDevice.waitForIdle();
 

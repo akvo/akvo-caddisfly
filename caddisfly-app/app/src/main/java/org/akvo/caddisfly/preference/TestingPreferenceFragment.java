@@ -65,17 +65,6 @@ public class TestingPreferenceFragment extends PreferenceFragment {
             });
         }
 
-        Preference nextUpdateCheckPreference = findPreference(getString(R.string.nextUpdateCheckKey));
-        if (nextUpdateCheckPreference != null) {
-            if (!ApkHelper.isNonStoreVersion(getActivity())) {
-                long nextUpdateTime = PreferencesUtil.getLong(getActivity(), ConstantKey.NEXT_UPDATE_CHECK);
-                String dateString = DateFormat.format("dd/MMM/yyyy hh:mm", new Date(nextUpdateTime)).toString();
-                nextUpdateCheckPreference.setSummary(dateString);
-            } else {
-                nextUpdateCheckPreference.setSummary("Not installed from Play store");
-            }
-        }
-
         return view;
     }
 

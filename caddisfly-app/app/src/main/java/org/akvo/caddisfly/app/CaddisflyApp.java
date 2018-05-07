@@ -32,7 +32,6 @@ import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.updater.UpdateCheck;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Arrays;
@@ -98,8 +97,6 @@ public class CaddisflyApp extends Application {
         }
 
         app = this;
-
-        UpdateCheck.setNextUpdateCheck(this, -1);
 
         database = Room.databaseBuilder(getApplicationContext(),
                 CalibrationDatabase.class, DATABASE_NAME)
