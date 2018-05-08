@@ -179,11 +179,18 @@ public class TestConfigRepository {
                             List<Calibration> calibrations = dao.getAll(testInfo.getUuid());
 
                             if (calibrations.size() < 1) {
-                                // get any calibrations saved by previous version of the app
-                                calibrations = getBackedUpCalibrations(testInfo);
 
-                                if (calibrations.size() < 1) {
-                                    calibrations = getPlaceHolderCalibrations(testInfo);
+                                calibrations = getPlaceHolderCalibrations(testInfo);
+
+                                // get any calibrations saved by previous version of the app
+                                List<Calibration> calibrationsOld = getBackedUpCalibrations(testInfo);
+
+                                for (Calibration calibration : calibrations) {
+                                    for (Calibration calibrationOld : calibrationsOld) {
+                                        if (calibration.value == calibrationOld.value) {
+                                            calibration.color = calibrationOld.color;
+                                        }
+                                    }
                                 }
 
                                 if (calibrations.size() > 0) {
