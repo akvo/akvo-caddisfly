@@ -205,13 +205,6 @@ public class ChamberTestActivity extends BaseActivity implements
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        setTitle(R.string.calibration);
-    }
-
-    @Override
     protected void onDestroy() {
         sound.release();
         super.onDestroy();
