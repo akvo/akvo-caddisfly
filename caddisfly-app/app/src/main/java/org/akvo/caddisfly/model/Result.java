@@ -268,7 +268,7 @@ public class Result implements Parcelable {
         if (colorItems.size() > 0) {
             // determine if high levels of contaminant
             double maxResult = colorItems.get(colorItems.size() - 1).getValue();
-            highLevelsFound = resultDouble > maxResult * 0.98;
+            highLevelsFound = resultDouble > maxResult * 0.95;
 
             double finalResult = resultDouble * dilution;
 
