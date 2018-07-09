@@ -224,7 +224,7 @@ public final class TestHelper {
         boolean found = false;
         while (!found) {
             try {
-                onView(withId(R.id.buttonCalibrate)).check(matches(isDisplayed()));
+                onView(withId(R.id.actionSettings)).check(matches(isDisplayed()));
                 found = true;
             } catch (NoMatchingViewException e) {
                 Espresso.pressBack();

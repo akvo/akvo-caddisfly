@@ -21,7 +21,6 @@ package org.akvo.caddisfly.util;
 
 import android.app.Activity;
 import android.os.Build;
-import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.GeneralClickAction;
 import android.support.test.espresso.action.Press;
@@ -53,7 +52,6 @@ import timber.log.Timber;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
@@ -67,60 +65,6 @@ public final class TestUtil {
 
     private TestUtil() {
     }
-
-    public static String getText(final Matcher<View> matcher) {
-        final String[] stringHolder = {null};
-        onView(matcher).perform(new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextView.class);
-            }
-
-            @Override
-            public String getDescription() {
-                return "getting text from a TextView";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                TextView tv = (TextView) view; //Save, because of check in getConstraints()
-                stringHolder[0] = tv.getText().toString();
-            }
-        });
-        return stringHolder[0];
-    }
-
-//    private static Matcher<View> withBackgroundColor(final int color) {
-//        Checks.checkNotNull(color);
-//        return new BoundedMatcher<View, Button>(Button.class) {
-//            @Override
-//            public boolean matchesSafely(Button button) {
-//                int buttonColor = ((ColorDrawable) button.getBackground()).getColor();
-//                return Color.red(color) == Color.red(buttonColor) &&
-//                        Color.green(color) == Color.green(buttonColor) &&
-//                        Color.blue(color) == Color.blue(buttonColor);
-//            }
-//
-//            @Override
-//            public void describeTo(Description description) {
-//                description.appendText("with background color: " + color);
-//            }
-//        };
-//    }
-//
-//    private static Matcher<String> isEmpty() {
-//        return new TypeSafeMatcher<String>() {
-//            @Override
-//            public boolean matchesSafely(String target) {
-//                return target.length() == 0;
-//            }
-//
-//            @Override
-//            public void describeTo(Description description) {
-//                description.appendText("is empty");
-//            }
-//        };
-//    }
 
     public static void sleep(int time) {
         try {
@@ -213,7 +157,7 @@ public final class TestUtil {
 
     public static void swipeRight() {
         mDevice.waitForIdle();
-            mDevice.swipe(50, 400, 500, 400, 4);
+        mDevice.swipe(50, 400, 500, 400, 4);
         mDevice.waitForIdle();
     }
 
@@ -221,18 +165,6 @@ public final class TestUtil {
         for (int i = 0; i < 3; i++) {
             mDevice.waitForIdle();
             mDevice.swipe(300, 400, 300, 750, 4);
-        }
-    }
-
-    public static void swipeRight(int times) {
-        for (int i = 0; i < times; i++) {
-            swipeRight();
-        }
-    }
-
-    public static void swipeLeft(int times) {
-        for (int i = 0; i < times; i++) {
-            swipeLeft();
         }
     }
 
