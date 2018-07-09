@@ -123,15 +123,7 @@ public class TestListActivity extends BaseActivity
      */
     private void navigateToTestDetails() {
 
-        if (testInfo.getSubtype() == TestType.CHAMBER_TEST) {
-            if (permissionsDelegate.hasPermissions(permissions)) {
-                startTest();
-            } else {
-                permissionsDelegate.requestPermissions(permissions);
-            }
-        } else {
-            startTest();
-        }
+        startTest();
     }
 
     private void startTest() {
@@ -147,14 +139,10 @@ public class TestListActivity extends BaseActivity
             return;
         }
 
-        if (testInfo.getSubtype() == TestType.CHAMBER_TEST) {
-            startCalibration();
-        } else {
-            Intent intent = new Intent(this, TestActivity.class);
-            intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-            intent.putExtra("internal", true);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(this, TestActivity.class);
+        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+        intent.putExtra("internal", true);
+        startActivity(intent);
     }
 
     private void startCalibration() {

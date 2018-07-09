@@ -49,7 +49,6 @@ import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
-import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
@@ -71,7 +70,6 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 import java.lang.ref.WeakReference;
-import java.util.Date;
 
 import timber.log.Timber;
 
@@ -131,22 +129,6 @@ public class TestActivity extends BaseActivity {
             if (testInfo.getSubtype() == TestType.SENSOR
                     && !this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
                 ErrorMessages.alertFeatureNotSupported(this, true);
-            } else if (testInfo.getSubtype() == TestType.CHAMBER_TEST) {
-
-                if (!SwatchHelper.isSwatchListValid(testInfo)) {
-                    ErrorMessages.alertCalibrationIncomplete(this, testInfo);
-                    return;
-                }
-
-                CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
-                        .calibrationDao().getCalibrationDetails(testInfo.getUuid());
-
-                if (calibrationDetail != null) {
-                    long milliseconds = calibrationDetail.expiry;
-                    if (milliseconds > 0 && milliseconds <= new Date().getTime()) {
-                        ErrorMessages.alertCalibrationExpired(this);
-                    }
-                }
             }
         }
     }
@@ -236,9 +218,6 @@ public class TestActivity extends BaseActivity {
                 break;
             case CBT:
                 startCbtTest();
-                break;
-            case CHAMBER_TEST:
-                startChamberTest();
                 break;
             case MANUAL:
                 startManualTest();

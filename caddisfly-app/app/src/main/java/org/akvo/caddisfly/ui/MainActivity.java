@@ -59,8 +59,6 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import static org.akvo.caddisfly.model.TestType.CHAMBER_TEST;
-
 public class MainActivity extends BaseActivity {
 
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
@@ -197,7 +195,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void startCalibrate() {
-        navigationController.navigateToTestType(CHAMBER_TEST);
+
     }
 
     public void onCbtClick(View view) {
