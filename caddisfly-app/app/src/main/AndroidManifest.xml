@@ -153,14 +153,6 @@
             android:enabled="true" />
         <!-- /USB -->
 
-
-        <!-- Diagnostic -->
-        <activity
-            android:name=".ui.DiagnosticInfoActivity"
-            android:parentActivityName=".preference.SettingsActivity"
-            android:screenOrientation="nosensor" />
-        <!-- /Diagnostic -->
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="org.akvo.caddisfly.fileprovider"

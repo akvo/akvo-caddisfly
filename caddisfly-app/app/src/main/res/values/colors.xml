@@ -45,7 +45,6 @@
     <color name="button_green">#00a79d</color>
     <color name="button_green_selected">#007f77</color>
 
-    <color name="error_background">#2afac900</color>
     <color name="destructive">#ff0000</color>
 
     <!-- StripTest -->

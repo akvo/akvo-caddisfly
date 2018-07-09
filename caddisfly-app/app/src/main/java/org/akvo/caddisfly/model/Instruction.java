@@ -42,7 +42,7 @@ public class Instruction implements Parcelable {
     };
     @SerializedName("section")
     @Expose
-    public List<String> section = null;
+    public List<String> section;
     @SerializedName("image")
     @Expose
     public String image;

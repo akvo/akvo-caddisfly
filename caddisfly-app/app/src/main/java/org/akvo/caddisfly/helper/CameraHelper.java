@@ -20,13 +20,9 @@
 package org.akvo.caddisfly.helper;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.support.annotation.StringRes;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 

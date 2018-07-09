@@ -29,11 +29,6 @@
     <string name="other">Other</string>
     <string name="save">Save</string>
     <string name="load">Load</string>
-    <string name="swatches">Swatches</string>
-    <string name="calibrate">Calibrate</string>
-    <string name="calibration">Calibration</string>
-    <string name="calibrated">Calibrated</string>
-    <string name="calibrating">Calibrating</string>
     <string name="settings">Settings</string>
     <string name="about">About</string>
     <string name="name">Name</string>
@@ -41,7 +36,6 @@
     <string name="deleted">Deleted</string>
     <string name="required">Required</string>
     <string name="survey">Survey</string>
-    <string name="expires">Expires</string>
     <string name="success" tools:ignore="UnusedResources">Success</string>
     <string name="done" tools:ignore="UnusedResources">Done</string>
     <string name="result">Result</string>
@@ -50,7 +44,6 @@
     <string name="language">Language</string>
     <string name="notSupported">Not Supported</string>
     <string name="cameraBusy">Camera Busy</string>
-    <string name="runTest">Run Test</string>
     <string name="stage_one"><b>Stage 1:</b></string>
     <string name="stage_two"><b>Stage 2:</b></string>
     <string name="analyze">Analyse</string>
@@ -58,28 +51,6 @@
     <!--External-->
     <string name="sensor">Sensor</string>
     <string name="sensors">Sensors</string>
-
-    <!--Calibration Screen-->
-    <string name="calibrationIsInvalid">Invalid calibration</string>
-    <string name="tryRecalibrating">Try recalibrating</string>
-    <string name="reagentExpiry">Reagent expiry</string>
-    <string name="reagentBatch">Reagent batch</string>
-    <string name="rgb_example_value">RGB (e.g. 255.255.255)</string>
-    <string name="expired">Expired</string>
-    <string name="couldNotCalibrate">Could not calibrate</string>
-
-    <!--Dilution Selection Dialog-->
-    <string name="dilution">Dilution</string>
-    <string name="selectDilution">Select amount of dilution</string>
-    <plurals name="dilutions">
-        <item quantity="one">No Dilution</item>
-        <item quantity="many">%1$d Times Dilution</item>
-        <item quantity="other">%1$d Times Dilution</item>
-    </plurals>
-    <string name="noDilution">No Dilution</string>
-    <string name="timesDilution" tools:ignore="PluralsCandidate">%1$d Times Dilution</string>
-    <string name="customDilution">Custom Dilution</string>
-    <string name="enterDilutionFactor">Enter Dilution Factor</string>
 
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connecting to Device</string>
@@ -100,7 +71,6 @@
 
     <string name="selectTest">Select Test</string>
     <string name="awaitingResult">Awaiting result</string>
-    <string name="calibrationDetails">Calibration Details</string>
 
     <string name="customTests">Custom tests</string>
 
@@ -172,11 +142,9 @@
     <string name="cannotCalibrate">Cannot calibrate</string>
     <string name="errorCameraFlashRequired">A camera flash was not found on this device</string>
     <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
-    <string name="doYouWantToCalibrate">Do you want to calibrate now?</string>
 
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Could not load configuration information</string>
-    <string name="calibrateWithNewReagent">Recalibrate with fresh reagent</string>
 
     <!--Test Progress Screen-->
     <string name="placeDevice">Place device face down on a flat surface</string>
@@ -185,10 +153,6 @@
     <string name="errorTestFailed">Colour does not match any calibrated colours.</string>
     <string name="chamberNotFound">Could not complete test.</string>
     <string name="checkChamberPlacement">Check that the chamber has been placed correctly.</string>
-
-    <!--Result Screen-->
-    <string name="highLevelsFound">High level of contamination</string>
-    <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Try again with %1$d times dilution</string>
 
     <!--EC Sensor Calibration-->
     <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>

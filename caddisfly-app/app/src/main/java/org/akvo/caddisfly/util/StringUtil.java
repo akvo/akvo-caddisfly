@@ -134,9 +134,6 @@ public final class StringUtil {
                         if (finalTopic.equalsIgnoreCase("sulfide")) {
                             DialogFragment newFragment = new SulfideDialogFragment();
                             newFragment.show(context.getSupportFragmentManager(), "sulfideDialog");
-                        } else {
-                            DialogFragment newFragment = new DilutionDialogFragment();
-                            newFragment.show(context.getSupportFragmentManager(), "dilutionDialog");
                         }
                     }
 
@@ -197,22 +194,4 @@ public final class StringUtil {
             return builder.create();
         }
     }
-
-    public static class DilutionDialogFragment extends DialogFragment {
-        @NonNull
-        @SuppressLint("InflateParams")
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            LayoutInflater inflater = getActivity().getLayoutInflater();
-
-            builder.setView(inflater.inflate(R.layout.dialog_dilution_instruction, null))
-                    // Add action buttons
-                    .setPositiveButton(R.string.ok, (dialog, id) -> dialog.dismiss());
-
-
-            return builder.create();
-        }
-    }
-
 }

@@ -25,19 +25,13 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.NonNull;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.util.ListViewUtil;
-import org.akvo.caddisfly.util.PreferencesUtil;
-
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.

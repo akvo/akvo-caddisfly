@@ -30,10 +30,6 @@
     <string name="other">Autre</string>
     <string name="save">Enregistrer</string>
     <string name="load">Charger</string>
-    <string name="swatches">Echantillons</string>
-    <string name="calibrate">Etalonner</string>
-    <string name="calibrated">Etalonné</string>
-    <string name="calibrating">En cours d\'étalonnage</string>
     <string name="settings">Paramètres</string>
     <string name="about">A propos</string>
     <string name="name">Nom</string>
@@ -49,28 +45,19 @@
     <string name="notSupported">Non pris en charge</string>
     <string name="phoneDoesNotSupport">Cet appareil ne peut assurer cette fonctionnalité</string>
     <!--Main Screen-->
-    <string name="cannotCalibrate">Impossible d\'étalonner</string>
     <string name="errorCameraFlashRequired">Le flash de l\'appareil est introuvable</string>
     <string name="cannotStartTest">Impossible de commencer le test</string>
-    <string name="errorCalibrationIncomplete">L\'étalonnage du %1$s est incomplet</string>
-    <string name="doYouWantToCalibrate">Voulez-vous étalonner maintenant?</string>
     <!--Settings Screen-->
     <string name="language">Langue</string>
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Impossible de charger les informations de configuration</string>
     <string name="pleaseContactSupport">Veuillez contacter le service technique</string>
-    <string name="calibrationIsInvalid">Etalonnage invalide</string>
-    <string name="tryRecalibrating">Essayez d\'étalonner à nouveau</string>
     <!--Test Progress Screen-->
     <string name="placeDevice">Placez le téléphone sur une surface plane, face vers le bas</string>
     <string name="errorTestInterrupted">Le test s\'est interrompu. Ne déplacez pas le téléphone pendant la durée du test</string>
     <string name="errorTestFailed">Couleur de la solution hors étalonnage. Vérifiez l\'emplacement de la cartouche</string>
     <!--Result Screen-->
     <string name="result">Résultat</string>
-    <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Réessayez avec une dilution par %1$d</string>
-    <!--Dilution Selection Dialog-->
-    <string name="noDilution">Pas de dilution</string>
-    <string name="timesDilution" tools:ignore="PluralsCandidate">Dilution par %1$d</string>
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connexion à l\'appareil en cours</string>
     <string name="acceptResult">Accepter le résultat</string>

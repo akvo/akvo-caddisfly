@@ -30,9 +30,6 @@
     <string name="save">Simpan</string>
     <string name="load">Memuat</string>
     <string name="swatches">Contoh</string>
-    <string name="calibrate">Kalibrasi</string>
-    <string name="calibrated">Sudah terkalibrasi</string>
-    <string name="calibrating">Sedang proses kalibrasi</string>
     <string name="settings">Pengaturan</string>
     <string name="about">Tentang</string>
     <string name="name">Nama</string>
@@ -52,18 +49,6 @@
     <!--External-->
     <string name="sensor">Sensor</string>
     <string name="sensors">Sensor-sensor</string>
-    <!--Calibration Screen-->
-    <string name="calibrationIsInvalid">Kalibrasi tidak benar</string>
-    <string name="tryRecalibrating">Mencoba kalibrasi</string>
-    <string name="reagentExpiry">Kadaluarsa bahan reaksi</string>
-    <string name="reagentBatch">Tumpukan bahan reaksi</string>
-    <string name="rgb_example_value">RGB (misal: 255.255.255)</string>
-    <string name="expired">Telah kadaluarsa</string>
-    <!--Dilution Selection Dialog-->
-    <string name="dilution">Pengenceran</string>
-    <string name="selectDilution">Pilih jumlah pengenceran</string>
-    <string name="noDilution">Tidak ada pengenceran</string>
-    <string name="timesDilution" tools:ignore="PluralsCandidate">%1$d kali pengenceran</string>
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Menghubungkan ke Perangkat</string>
     <string name="acceptResult">Menerima hasil</string>
@@ -122,11 +107,8 @@
     <string name="tryRestarting">Jika masalah terus muncul, mohon matikan dan nyalakan kembali perangkat ini</string>
     <string name="cannotCalibrate">Tidak dapat mengkalibrasi</string>
     <string name="errorCameraFlashRequired">Lampu kamera tidak dapat ditemukan dalam perangkat ini</string>
-    <string name="errorCalibrationIncomplete">Kalibrasi untuk %1$s tidak selesai</string>
-    <string name="doYouWantToCalibrate">Apakah Anda ingin kalibrasi sekarang?</string>
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Tidak dapat memuat informasi konfigurasi</string>
-    <string name="calibrateWithNewReagent">Kalibrasi ulang dengan bahan reaksi baru</string>
     <!--Test Progress Screen-->
     <string name="placeDevice">Tempatkan perangkat menghadap bawah pada permukaan datar</string>
     <string name="errorTestInterrupted">Uji coba terganggu</string>
@@ -134,9 +116,6 @@
     <string name="errorTestFailed">Warna tidak cocok warna kalibrasi manapun.</string>
     <string name="chamberNotFound">Tidak dapat menyelesaikan uji coba</string>
     <string name="checkChamberPlacement">Periksa ruang telah ditempatkan dengan baik.</string>
-    <!--Result Screen-->
-    <string name="highLevelsFound">Kontaminasi level tinggi</string>
-    <string name="tryWithDilutedSample" tools:ignore="PluralsCandidate">Coba lagi dengan %1$d kali pengenceran</string>
     <!--EC Sensor Calibration-->
     <string name="incorrectCalibrationCanAffect">Kalibrasi yang salah akan mempengaruhi kelayakan fungsi sensor</string>
     <string name="sensorNotFound">Sensor tidak ditemukan</string>
