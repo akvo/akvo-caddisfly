@@ -135,7 +135,7 @@ public class CbtTest {
         // Put the drawable in a bundle.
         Bundle bundle = new Bundle();
         bundle.putParcelable("data", BitmapFactory.decodeResource(
-                mIntentsRule.getActivity().getResources(), R.drawable.place_device));
+                mIntentsRule.getActivity().getResources(), R.drawable.closer));
 
         // Create the Intent that will include the bundle.
         Intent resultData = new Intent();
