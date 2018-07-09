@@ -21,7 +21,6 @@ package org.akvo.caddisfly.preference;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.common.ChamberTestConfig;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 /**
@@ -45,58 +44,6 @@ public final class AppPreferences {
         PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
     }
 
-    /**
-     * The number of photos to take during the test.
-     *
-     * @return number of samples to take
-     */
-    public static int getSamplingTimes() {
-        int samplingTimes;
-        if (isDiagnosticMode()) {
-            samplingTimes = Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    R.string.samplingsTimeKey, String.valueOf(ChamberTestConfig.SAMPLING_COUNT_DEFAULT)));
-        } else {
-            samplingTimes = ChamberTestConfig.SAMPLING_COUNT_DEFAULT;
-        }
-        //Add skip count as the first few samples may not be valid
-        return samplingTimes + ChamberTestConfig.SKIP_SAMPLING_COUNT;
-    }
-
-    /**
-     * The color distance tolerance for when matching colors.
-     *
-     * @return the tolerance value
-     */
-    public static int getColorDistanceTolerance() {
-        if (isDiagnosticMode()) {
-            return Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                    R.string.colorDistanceToleranceKey,
-                    String.valueOf(ChamberTestConfig.MAX_COLOR_DISTANCE_RGB)));
-        } else {
-            return ChamberTestConfig.MAX_COLOR_DISTANCE_RGB;
-        }
-    }
-
-    /**
-     * The color distance tolerance for when matching colors.
-     *
-     * @return the tolerance value
-     */
-    public static int getAveragingColorDistanceTolerance() {
-        try {
-            if (isDiagnosticMode()) {
-                return Integer.parseInt(PreferencesUtil.getString(CaddisflyApp.getApp(),
-                        R.string.colorAverageDistanceToleranceKey,
-                        String.valueOf(ChamberTestConfig.MAX_COLOR_DISTANCE_CALIBRATION)));
-            } else {
-                return ChamberTestConfig.MAX_COLOR_DISTANCE_CALIBRATION;
-            }
-        } catch (NullPointerException e) {
-            return ChamberTestConfig.MAX_COLOR_DISTANCE_CALIBRATION;
-        }
-    }
-
-
     public static boolean isSoundOn() {
         return !isDiagnosticMode() || PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.soundOnKey, true);
     }
@@ -111,17 +58,8 @@ public final class AppPreferences {
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
     }
 
-    public static boolean useExternalCamera() {
-        return PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.useExternalCameraKey, false);
-    }
-
     public static boolean ignoreTimeDelays() {
         return isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreTimeDelaysKey, false);
-    }
-
-    public static boolean useMaxZoom() {
-        return isDiagnosticMode()
-                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.maxZoomKey, false);
     }
 }

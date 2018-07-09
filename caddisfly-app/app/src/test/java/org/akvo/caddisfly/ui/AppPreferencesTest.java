@@ -83,11 +83,6 @@ public class AppPreferencesTest {
         }
     }
 
-    @Test
-    public void checkSamplingTimes() {
-        assertEquals(7, AppPreferences.getSamplingTimes());
-    }
-
     private void checkDiagnosticPreference(@StringRes int key, Object defaultValue,
                                            String methodName, Object newValue) {
         Method method;

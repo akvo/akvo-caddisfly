@@ -1,34 +1,21 @@
 package org.akvo.caddisfly.repository;
 
-
-import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.dao.CalibrationDao;
-import org.akvo.caddisfly.entity.Calibration;
-import org.akvo.caddisfly.entity.CalibrationDetail;
-import org.akvo.caddisfly.helper.SwatchHelper;
-import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.TestConfig;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AssetsManager;
-import org.akvo.caddisfly.util.PreferencesUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class TestConfigRepository {
 
@@ -177,94 +164,6 @@ public class TestConfigRepository {
         }
 
         return null;
-    }
-
-    private List<Calibration> getPlaceHolderCalibrations(TestInfo testInfo) {
-        List<Calibration> calibrations = new ArrayList<>();
-
-        for (ColorItem colorItem : testInfo.getResults().get(0).getColors()) {
-            Calibration calibration = new Calibration();
-            calibration.uid = testInfo.getUuid();
-            calibration.color = Color.TRANSPARENT;
-            calibration.value = colorItem.getValue();
-            calibrations.add(calibration);
-        }
-
-        return calibrations;
-    }
-
-    private List<Calibration> getBackedUpCalibrations(TestInfo testInfo) {
-        List<Calibration> calibrations = new ArrayList<>();
-
-        Context context = CaddisflyApp.getApp();
-
-        List<ColorItem> colors = testInfo.getResults().get(0).getColors();
-        for (ColorItem color : colors) {
-            String key = String.format(Locale.US, "%s-%.2f",
-                    testInfo.getUuid(), color.getValue());
-            Calibration calibration = new Calibration();
-            calibration.uid = testInfo.getUuid();
-            calibration.color = PreferencesUtil.getInt(context, key, 0);
-            calibration.value = color.getValue();
-            calibrations.add(calibration);
-        }
-
-        CalibrationDetail calibrationDetail = new CalibrationDetail();
-        calibrationDetail.uid = testInfo.getUuid();
-        long date = PreferencesUtil.getLong(context,
-                testInfo.getUuid(), R.string.calibrationDateKey);
-        if (date > 0) {
-            calibrationDetail.date = date;
-        }
-        long expiry = PreferencesUtil.getLong(context,
-                testInfo.getUuid(), R.string.calibrationExpiryDateKey);
-        if (expiry > 0) {
-            calibrationDetail.expiry = expiry;
-        }
-        calibrationDetail.batchNumber = PreferencesUtil.getString(context,
-                testInfo.getUuid(), R.string.batchNumberKey, "");
-
-        CalibrationDao dao = CaddisflyApp.getApp().getDb().calibrationDao();
-        dao.insert(calibrationDetail);
-
-        if (calibrations.size() < 1) {
-            try {
-                calibrations = SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            boolean colorFound = false;
-            for (Calibration calibration : calibrations) {
-                if (calibration.color != 0) {
-                    colorFound = true;
-                }
-            }
-            if (!colorFound) {
-                try {
-                    calibrations = SwatchHelper.loadCalibrationFromFile(testInfo, "_AutoBackup");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return calibrations;
-    }
-
-    private void convertRangePropertyToArray(TestInfo testInfo) {
-        // If colors are defined as comma delimited range values then create array
-        try {
-            if (testInfo.getResults().get(0).getColors().size() == 0
-                    && !testInfo.getRanges().isEmpty()) {
-                String[] values = testInfo.getRanges().split(",");
-                for (String value : values) {
-                    testInfo.getResults().get(0).getColors()
-                            .add(new ColorItem(Double.parseDouble(value)));
-                }
-            }
-        } catch (NumberFormatException ignored) {
-            // do nothing
-        }
     }
 
     public void clear() {

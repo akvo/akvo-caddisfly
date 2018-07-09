@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.model;
 
-import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -27,7 +26,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import org.akvo.caddisfly.entity.Calibration;
-import org.akvo.caddisfly.helper.SwatchHelper;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -156,8 +154,6 @@ public class TestInfo implements Parcelable {
     private int dilution = 1;
     private List<Swatch> swatches = new ArrayList<>();
     private Integer decimalPlaces = 0;
-
-    private ResultDetail resultDetail;
 
     public TestInfo() {
     }
@@ -500,42 +496,6 @@ public class TestInfo implements Parcelable {
         return calibrations;
     }
 
-    public void setCalibrations(List<Calibration> calibrations) {
-        this.swatches.clear();
-
-        Result result = results.get(0);
-
-        List<Calibration> newCalibrations = new ArrayList<>();
-
-        for (ColorItem colorItem : result.getColors()) {
-
-            Calibration newCalibration = new Calibration(colorItem.getValue(), Color.TRANSPARENT);
-            newCalibration.uid = uuid;
-
-            for (int i = calibrations.size() - 1; i >= 0; i--) {
-                Calibration calibration = calibrations.get(i);
-                if (calibration.value == colorItem.getValue()) {
-                    newCalibration.color = calibration.color;
-                    newCalibration.date = calibration.date;
-                    colorItem.setRgb(calibration.color);
-                }
-            }
-
-            Swatch swatch = new Swatch(newCalibration.value, newCalibration.color, Color.TRANSPARENT);
-            swatches.add(swatch);
-
-            String text = Double.toString(Math.abs(newCalibration.value));
-            if (newCalibration.value % 1 != 0) {
-                decimalPlaces = Math.max(text.length() - text.indexOf('.') - 1, decimalPlaces);
-            }
-
-            newCalibrations.add(newCalibration);
-        }
-
-        this.calibrations = newCalibrations;
-        swatches = SwatchHelper.generateGradient(swatches);
-    }
-
     public int getDilution() {
         return dilution;
     }
@@ -560,31 +520,8 @@ public class TestInfo implements Parcelable {
         this.swatches = swatches;
     }
 
-    public Integer getMonthsValid() {
-        return monthsValid;
-    }
-
     public Boolean getHasImage() {
         return hasImage;
     }
 
-    public int getMaxDilution() {
-        if (dilutions.size() > 0) {
-            return dilutions.get(dilutions.size() - 1);
-        } else {
-            return 1;
-        }
-    }
-
-    public int getDecimalPlaces() {
-        return decimalPlaces;
-    }
-
-    public ResultDetail getResultDetail() {
-        return resultDetail;
-    }
-
-    public void setResultDetail(ResultDetail resultDetail) {
-        this.resultDetail = resultDetail;
-    }
 }

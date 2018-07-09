@@ -18,24 +18,10 @@ import java.util.List;
  */
 public class NavigationController {
 
-    Context context;
+    private Context context;
 
     public NavigationController(Context context) {
         this.context = context;
-    }
-
-    public void navigateToTest(String uuid) {
-
-        final TestListViewModel viewModel =
-                ViewModelProviders.of((FragmentActivity) context).get(TestListViewModel.class);
-
-        TestInfo testInfo = viewModel.getTestInfo(uuid);
-
-        final Intent intent = new Intent(context, TestActivity.class);
-        intent.putExtra("internal", true);
-        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-        context.startActivity(intent);
-
     }
 
     public void navigateToTestType(TestType testType) {
