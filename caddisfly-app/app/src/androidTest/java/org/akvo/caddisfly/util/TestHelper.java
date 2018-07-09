@@ -45,7 +45,6 @@ import android.util.DisplayMetrics;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.TestConstants;
-import org.akvo.caddisfly.helper.FileHelper;
 import org.hamcrest.Matchers;
 
 import java.io.File;
@@ -308,12 +307,6 @@ public final class TestHelper {
         } catch (UiObjectNotFoundException e) {
             Timber.e(e);
         }
-    }
-
-    public static void saveCalibration(String name, String id) {
-        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, id);
-
-        FileUtil.saveToFile(path, name, CALIBRATION_HASH_MAP.get(name));
     }
 
     public static void gotoSurveyForm() {

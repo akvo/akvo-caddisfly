@@ -522,9 +522,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
                 Button buttonConnect = view.findViewById(R.id.button_connect);
 
-                buttonConnect.setOnClickListener(v -> {
-                    connectToDevice(position);
-                });
+                buttonConnect.setOnClickListener(v -> connectToDevice(position));
 
             } else {
                 viewHolder = (ViewHolder) view.getTag();

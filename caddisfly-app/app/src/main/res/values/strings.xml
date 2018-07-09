@@ -56,11 +56,8 @@
     <string name="deviceConnecting">Connecting to Device</string>
     <string name="acceptResult">Accept Result</string>
 
-    <!--EC Sensor Calibration-->
+    <!--Sensor-->
     <string name="deviceConnectSensor">Connect sensor</string>
-    <string name="calibratePoint">Calibrate %.0f μS/cm</string>
-    <string name="calibrationSuccessful">Calibration Successful</string>
-    <string name="sensorCalibrated">EC Sensor has been calibrated</string>
     <string name="celsius">°Celsius</string>
     <string name="dipSensorInSample">Dip sensor in sample</string>
 
@@ -139,31 +136,11 @@
     <string name="cameraNotAvailable">Camera not available</string>
     <string name="cameraRequired">A back facing camera is required for colorimetric analysis</string>
     <string name="tryRestarting">If the problem continues, restart this device</string>
-    <string name="cannotCalibrate">Cannot calibrate</string>
     <string name="errorCameraFlashRequired">A camera flash was not found on this device</string>
     <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
 
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Could not load configuration information</string>
-
-    <!--Test Progress Screen-->
-    <string name="placeDevice">Place device face down on a flat surface</string>
-    <string name="errorTestInterrupted">Test was interrupted.</string>
-    <string name="doNotMoveDeviceDuringTest">Do not move the phone during the test</string>
-    <string name="errorTestFailed">Colour does not match any calibrated colours.</string>
-    <string name="chamberNotFound">Could not complete test.</string>
-    <string name="checkChamberPlacement">Check that the chamber has been placed correctly.</string>
-
-    <!--EC Sensor Calibration-->
-    <string name="incorrectCalibrationCanAffect">Incorrect calibration can affect the proper functioning of the sensor</string>
-    <string name="sensorNotFound">Sensor not found</string>
-    <string name="cleanTheEcSensor">Clean the EC Sensor properly</string>
-    <string name="getEcSolutionReady">Get ready the fluid with EC of %.0f μS/cm</string>
-    <string name="dipEcSensorInSolution">Dip EC Sensor in the fluid and press Go</string>
-    <string name="errorCalibrationExpired">Calibration is past its reagent expiry date</string>
-    <string name="orderFreshBatch">Please order a fresh batch of reagent and recalibrate</string>
-    <string name="highLevelRecommendation">Due to high level of contamination, it is recommended to test with dilution</string>
-    <string name="prepareSolutionsForCalibration">Prepare 6 solutions with these EC values</string>
 
     <!--Bluetooth-->
     <string name="nearby_devices">Nearby devices</string>

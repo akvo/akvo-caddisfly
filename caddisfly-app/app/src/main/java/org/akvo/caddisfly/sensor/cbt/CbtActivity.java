@@ -110,11 +110,9 @@ public class CbtActivity extends BaseActivity
         if (resultCode == RESULT_OK) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (requestCode == CBT_TEST) {
-                (new Handler()).postDelayed(() -> {
-                    fragmentTransaction.replace(R.id.fragment_container,
-                            CompartmentBagFragment.newInstance(cbtResult), "compartmentFragment")
-                            .commit();
-                }, 500);
+                (new Handler()).postDelayed(() -> fragmentTransaction.replace(R.id.fragment_container,
+                        CompartmentBagFragment.newInstance(cbtResult), "compartmentFragment")
+                        .commit(), 500);
             }
         } else {
             onBackPressed();

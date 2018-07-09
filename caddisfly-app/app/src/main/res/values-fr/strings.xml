@@ -61,13 +61,6 @@
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connexion à l\'appareil en cours</string>
     <string name="acceptResult">Accepter le résultat</string>
-    <!--EC Sensor Calibration-->
-    <string name="warning">Attention</string>
-    <string name="incorrectCalibrationCanAffect">Un étalonnage incorrect peut affecter le fonctionnement du capteur</string>
-    <string name="sensorNotFound">Capteur introuvable</string>
-    <string name="deviceConnectSensor">Veuillez connecter le capteur de conductivité Akvo et réessayez</string>
-    <string name="calibrationSuccessful">Etalonnage réussi avec succès</string>
-    <string name="sensorCalibrated">Le capteur d\'EC est étalonné</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>

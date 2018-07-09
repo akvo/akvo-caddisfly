@@ -52,11 +52,8 @@
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Menghubungkan ke Perangkat</string>
     <string name="acceptResult">Menerima hasil</string>
-    <!--EC Sensor Calibration-->
+    <!--Sensor-->
     <string name="deviceConnectSensor">Menghubungkan sensor</string>
-    <string name="calibratePoint">Kalibrasi %.0f μS/cm</string>
-    <string name="calibrationSuccessful">Kalibrasi Sukses</string>
-    <string name="sensorCalibrated">Sensor EC telah dikalibrasi</string>
     <string name="celsius">°Celsius</string>
     <string name="dipSensorInSample">Celup sensor dalam sampel</string>
     <!--About Screen-->
@@ -105,26 +102,11 @@
     <string name="cameraNotAvailable">Kamera tidak tersedia</string>
     <string name="cameraRequired">Kamera hadap belakang dibutuhkan untuk analisa ukuran warna</string>
     <string name="tryRestarting">Jika masalah terus muncul, mohon matikan dan nyalakan kembali perangkat ini</string>
-    <string name="cannotCalibrate">Tidak dapat mengkalibrasi</string>
-    <string name="errorCameraFlashRequired">Lampu kamera tidak dapat ditemukan dalam perangkat ini</string>
     <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Tidak dapat memuat informasi konfigurasi</string>
-    <!--Test Progress Screen-->
-    <string name="placeDevice">Tempatkan perangkat menghadap bawah pada permukaan datar</string>
-    <string name="errorTestInterrupted">Uji coba terganggu</string>
-    <string name="doNotMoveDeviceDuringTest">Dilarang menggerakan handphone ketika uji coba berlangsung</string>
-    <string name="errorTestFailed">Warna tidak cocok warna kalibrasi manapun.</string>
-    <string name="chamberNotFound">Tidak dapat menyelesaikan uji coba</string>
-    <string name="checkChamberPlacement">Periksa ruang telah ditempatkan dengan baik.</string>
     <!--EC Sensor Calibration-->
-    <string name="incorrectCalibrationCanAffect">Kalibrasi yang salah akan mempengaruhi kelayakan fungsi sensor</string>
     <string name="sensorNotFound">Sensor tidak ditemukan</string>
-    <string name="cleanTheEcSensor">Bersihkan Sensor EC dengan benar</string>
-    <string name="getEcSolutionReady">Persiapkan %.0f μS/cm cairan EC</string>
     <string name="dipEcSensorInSolution">Celupkan Sensor EC dalam cairan lalu tekan mulai</string>
-    <string name="errorCalibrationExpired">Kalibrasi telah melampaui batas kadaluarsa bahan reaksi</string>
-    <string name="orderFreshBatch">Mohon menggunakan bahan reaksi yang baru dan kalibrasi ulang</string>
-    <string name="highLevelRecommendation">Dikarenakan kontaminasi level tinggi, direkomendasikan untuk uji coba dengan pengenceran</string>
     <!--StripTest-->
     <string name="prepare_camera_instruction">Jangan mengambil sampel dahulu. Tahan kamera diatas kartu warna dan sesuaikan posisi sampai proses pemeriksaan sukses.</string>
     <string name="prepareSolutionsForCalibration">Persiapkan 6 solusi dengan menggunakan nilai EC ini</string>

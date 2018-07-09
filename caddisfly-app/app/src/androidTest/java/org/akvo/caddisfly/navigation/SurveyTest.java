@@ -21,60 +21,22 @@ package org.akvo.caddisfly.navigation;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.contrib.PickerActions;
 import android.support.test.filters.LargeTest;
-import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.widget.DatePicker;
 
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.text.DecimalFormatSymbols;
-import java.util.Calendar;
-
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.onData;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.currentHashMap;
-import static org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
-import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
-import static org.akvo.caddisfly.util.TestHelper.saveCalibration;
-import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
-import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
-import static org.akvo.caddisfly.util.TestUtil.sleep;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasToString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.startsWith;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -106,123 +68,4 @@ public class SurveyTest {
         resetLanguage();
     }
 
-    @Test
-    @RequiresDevice
-    public void testChangeTestType() {
-
-        goToMainScreen();
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
-
-        if (TestUtil.isEmulator()) {
-
-            onView(withText(R.string.errorCameraFlashRequired))
-                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
-                            .getDecorView())))).check(matches(isDisplayed()));
-            return;
-        }
-
-        onView(withId(R.id.fabEditCalibration)).perform(click());
-
-        onView(withId(R.id.editBatchCode))
-                .perform(typeText("NEW BATCH"), closeSoftKeyboard());
-
-        onView(withId(R.id.editExpiryDate)).perform(click());
-
-        Calendar date = Calendar.getInstance();
-        date.add(Calendar.DATE, 364);
-        onView(withClassName((Matchers.equalTo(DatePicker.class.getName()))))
-                .perform(PickerActions.setDate(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
-                        date.get(Calendar.DATE)));
-
-        onView(withId(android.R.id.button1)).perform(click());
-
-        onView(withText(R.string.save)).perform(click());
-
-
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-
-        onView(allOf(withId(R.id.calibrationList),
-                childAtPosition(withClassName(is("android.widget.RelativeLayout")),
-                        3))).perform(actionOnItemAtPosition(4, click()));
-
-//        onView(withText("0" + dfs.getDecimalSeparator() + "0 mg/l")).check(matches(isDisplayed()));
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-//        onView(withText(currentHashMap.get("chlorine"))).perform(click());
-
-        onView(withText("Caddisfly, 0 - 3.0")).perform(click());
-
-        onView(withText("1" + dfs.getDecimalSeparator() + "0")).check(matches(isDisplayed()));
-
-//        onView(withText("0" + dfs.getDecimalSeparator() + "5 mg/l")).check(matches(isDisplayed()));
-
-    }
-
-    @Test
-    @RequiresDevice
-    public void testStartASurvey() {
-
-        saveCalibration("TestValid", Constants.FLUORIDE_ID);
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
-
-        enterDiagnosticMode();
-
-        goToMainScreen();
-
-        onView(withText(R.string.calibrate)).perform(click());
-
-        onView(withText(currentHashMap.get("fluoride"))).perform(click());
-
-        if (TestUtil.isEmulator()) {
-
-            onView(withText(R.string.errorCameraFlashRequired))
-                    .inRoot(withDecorView(not(is(mActivityRule.getActivity().getWindow()
-                            .getDecorView())))).check(matches(isDisplayed()));
-            return;
-        }
-
-        onView(withId(R.id.menuLoad)).perform(click());
-
-        sleep(1000);
-
-        onData(hasToString(startsWith("TestValid"))).perform(click());
-
-        goToMainScreen();
-
-        gotoSurveyForm();
-
-        nextSurveyPage(0);
-
-        clickExternalSourceButton(0);
-
-        onView(withId(R.id.button_prepare)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.button_prepare)).perform(click());
-
-        onView(withId(R.id.buttonNoDilution)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.buttonDilution1)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.buttonDilution2)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.buttonNoDilution)).perform(click());
-
-        //onView(withId(R.id.buttonStart)).perform(click());
-
-        mDevice.waitForWindowUpdate("", 1000);
-
-    }
 }
