@@ -147,9 +147,6 @@ public class NavigationTest {
 
         onView(withText(R.string.fluoride)).check(matches(isDisplayed()));
 
-//        //Calibration incomplete
-        takeScreenshot();
-
         mDevice.pressBack();
 
         clickExternalSourceButton(TestConstant.NEXT);

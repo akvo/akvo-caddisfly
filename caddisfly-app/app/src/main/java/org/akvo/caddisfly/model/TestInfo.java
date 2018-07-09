@@ -94,21 +94,12 @@ public class TestInfo implements Parcelable {
     @SerializedName("hasImage")
     @Expose
     private Boolean hasImage = false;
-    @SerializedName("cameraAbove")
-    @Expose
-    private Boolean cameraAbove = false;
     @SerializedName("results")
     @Expose
     private List<Result> results = new ArrayList<>();
     @SerializedName("ranges")
     @Expose
     private String ranges;
-    @SerializedName("defaultColors")
-    @Expose
-    private String defaultColors;
-    @SerializedName("hueTrend")
-    @Expose
-    private Integer hueTrend = 0;
     @SerializedName("monthsValid")
     @Expose
     private Integer monthsValid;
@@ -139,7 +130,6 @@ public class TestInfo implements Parcelable {
     @SerializedName("imageScale")
     @Expose
     private String imageScale;
-    private List<Swatch> swatches = new ArrayList<>();
     private Integer decimalPlaces = 0;
 
     public TestInfo() {
@@ -161,9 +151,6 @@ public class TestInfo implements Parcelable {
         in.readTypedList(reagents, Reagent.CREATOR);
         uuid = in.readString();
 
-        swatches = new ArrayList<>();
-        in.readTypedList(swatches, Swatch.CREATOR);
-
         brand = in.readString();
         brandUrl = in.readString();
         String tmpGroupingType = in.readString();
@@ -184,15 +171,7 @@ public class TestInfo implements Parcelable {
         unit = in.readString();
         byte tmpHasImage = in.readByte();
         hasImage = tmpHasImage != 0 && tmpHasImage == 1;
-        byte tmpCameraAbove = in.readByte();
-        cameraAbove = tmpCameraAbove != 0 && tmpCameraAbove == 1;
         ranges = in.readString();
-        defaultColors = in.readString();
-        if (in.readByte() == 0) {
-            hueTrend = null;
-        } else {
-            hueTrend = in.readInt();
-        }
         if (in.readByte() == 0) {
             monthsValid = null;
         } else {
@@ -221,10 +200,6 @@ public class TestInfo implements Parcelable {
         } else {
             decimalPlaces = in.readInt();
         }
-    }
-
-    public boolean getCameraAbove() {
-        return cameraAbove == null ? false : cameraAbove;
     }
 
     public boolean getIsGroup() {
@@ -376,7 +351,6 @@ public class TestInfo implements Parcelable {
         parcel.writeStringList(tags);
         parcel.writeTypedList(reagents);
         parcel.writeString(uuid);
-        parcel.writeTypedList(swatches);
         parcel.writeString(brand);
         parcel.writeString(brandUrl);
         parcel.writeString(String.valueOf(groupingType));
@@ -395,15 +369,7 @@ public class TestInfo implements Parcelable {
         }
         parcel.writeString(unit);
         parcel.writeByte((byte) (hasImage == null ? 0 : hasImage ? 1 : 2));
-        parcel.writeByte((byte) (cameraAbove == null ? 0 : cameraAbove ? 1 : 2));
         parcel.writeString(ranges);
-        parcel.writeString(defaultColors);
-        if (hueTrend == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeInt(hueTrend);
-        }
         if (monthsValid == null) {
             parcel.writeByte((byte) 0);
         } else {
@@ -459,14 +425,6 @@ public class TestInfo implements Parcelable {
 
     public String getResponseFormat() {
         return responseFormat;
-    }
-
-    public List<Swatch> getSwatches() {
-        return swatches;
-    }
-
-    public void setSwatches(List<Swatch> swatches) {
-        this.swatches = swatches;
     }
 
     public Boolean getHasImage() {
