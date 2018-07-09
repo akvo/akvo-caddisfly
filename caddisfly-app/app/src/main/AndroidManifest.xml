@@ -159,9 +159,6 @@
             android:name=".ui.DiagnosticInfoActivity"
             android:parentActivityName=".preference.SettingsActivity"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".diagnostic.DiagnosticSwatchActivity"
-            android:screenOrientation="nosensor" />
         <!-- /Diagnostic -->
 
         <provider
