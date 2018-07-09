@@ -49,7 +49,6 @@
     <string name="cannotStartTest">Impossible de commencer le test</string>
     <!--Settings Screen-->
     <string name="language">Langue</string>
-    <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Impossible de charger les informations de configuration</string>
     <string name="pleaseContactSupport">Veuillez contacter le service technique</string>
     <!--Test Progress Screen-->

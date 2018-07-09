@@ -82,9 +82,6 @@
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
     <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
 
-    <!--Diagnostic Mode: Save / Load Calibration-->
-    <string name="notFound">Not Found</string>
-
     <!--CBT-->
     <string name="mpn">MPN/100ml</string>
 

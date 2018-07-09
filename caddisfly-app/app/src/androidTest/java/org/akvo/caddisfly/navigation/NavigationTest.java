@@ -137,9 +137,6 @@ public class NavigationTest {
 
         goToMainScreen();
 
-        //Dilution dialog
-        takeScreenshot();
-
         TestUtil.goBack(5);
 
         mActivityRule.launchActivity(new Intent());

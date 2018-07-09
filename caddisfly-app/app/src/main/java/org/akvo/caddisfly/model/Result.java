@@ -262,37 +262,4 @@ public class Result implements Parcelable {
             return displayResult;
         }
     }
-
-    public void setResult(double resultDouble, int dilution, Integer maxDilution) {
-
-        if (colorItems.size() > 0) {
-            // determine if high levels of contaminant
-            double maxResult = colorItems.get(colorItems.size() - 1).getValue();
-            highLevelsFound = resultDouble > maxResult * 0.95;
-
-            double finalResult = resultDouble * dilution;
-
-            // if no more dilution can be performed then set result to highest value
-            if (highLevelsFound && dilution >= maxDilution) {
-                finalResult = maxResult * dilution;
-            }
-
-            displayResult = String.format(Locale.getDefault(), "%.2f", finalResult);
-            result = String.format(Locale.US, "%.2f", finalResult);
-
-            // Add 'greater than' symbol if result could be an unknown high value
-            if (highLevelsFound) {
-                displayResult = "> " + displayResult;
-                result = "> " + result;
-            }
-        } else {
-            displayResult = String.format(Locale.getDefault(), "%.2f", resultDouble);
-            result = String.format(Locale.US, "%.2f", resultDouble);
-        }
-    }
-
-    public boolean highLevelsFound() {
-
-        return highLevelsFound;
-    }
 }

@@ -25,8 +25,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.akvo.caddisfly.entity.Calibration;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -72,9 +70,6 @@ public class TestInfo implements Parcelable {
     @SerializedName("uuid")
     @Expose
     private String uuid;
-    @SerializedName("calibration")
-    @Expose
-    private String calibration;
     @SerializedName("brand")
     @Expose
     private String brand;
@@ -114,9 +109,6 @@ public class TestInfo implements Parcelable {
     @SerializedName("hueTrend")
     @Expose
     private Integer hueTrend = 0;
-    @SerializedName("dilutions")
-    @Expose
-    private List<Integer> dilutions = new ArrayList<>();
     @SerializedName("monthsValid")
     @Expose
     private Integer monthsValid;
@@ -147,8 +139,6 @@ public class TestInfo implements Parcelable {
     @SerializedName("imageScale")
     @Expose
     private String imageScale;
-    private List<Calibration> calibrations = new ArrayList<>();
-    private int dilution = 1;
     private List<Swatch> swatches = new ArrayList<>();
     private Integer decimalPlaces = 0;
 
@@ -170,10 +160,6 @@ public class TestInfo implements Parcelable {
         reagents = new ArrayList<>();
         in.readTypedList(reagents, Reagent.CREATOR);
         uuid = in.readString();
-        calibration = in.readString();
-
-        calibrations = new ArrayList<>();
-        in.readTypedList(calibrations, Calibration.CREATOR);
 
         swatches = new ArrayList<>();
         in.readTypedList(swatches, Swatch.CREATOR);
@@ -207,7 +193,6 @@ public class TestInfo implements Parcelable {
         } else {
             hueTrend = in.readInt();
         }
-        in.readList(this.dilutions, (java.lang.Integer.class.getClassLoader()));
         if (in.readByte() == 0) {
             monthsValid = null;
         } else {
@@ -294,10 +279,6 @@ public class TestInfo implements Parcelable {
         }
     }
 
-    public List<Integer> getDilutions() {
-        return dilutions;
-    }
-
     public String getMinMaxRange() {
 
         if (results != null && results.size() > 0) {
@@ -328,14 +309,6 @@ public class TestInfo implements Parcelable {
                         return "";
                     }
                 }
-            }
-
-            if (dilutions.size() > 1) {
-                int maxDilution = dilutions.get(Math.min(dilutions.size() - 1, 2));
-                int maxColors = results.get(0).getColors().size() - 1;
-                String text = String.format(" (Upto %s with dilution)",
-                        maxDilution * results.get(0).getColors().get(maxColors).getValue());
-                return minMaxRange.toString() + text;
             }
 
             return minMaxRange.toString();
@@ -403,8 +376,6 @@ public class TestInfo implements Parcelable {
         parcel.writeStringList(tags);
         parcel.writeTypedList(reagents);
         parcel.writeString(uuid);
-        parcel.writeString(calibration);
-        parcel.writeTypedList(calibrations);
         parcel.writeTypedList(swatches);
         parcel.writeString(brand);
         parcel.writeString(brandUrl);
@@ -433,7 +404,6 @@ public class TestInfo implements Parcelable {
             parcel.writeByte((byte) 1);
             parcel.writeInt(hueTrend);
         }
-        parcel.writeList(dilutions);
         if (monthsValid == null) {
             parcel.writeByte((byte) 0);
         } else {
@@ -481,21 +451,6 @@ public class TestInfo implements Parcelable {
 
     public double getStripLength() {
         return length;
-    }
-
-    public List<Calibration> getCalibrations() {
-        if (calibrations == null) {
-            calibrations = new ArrayList<>();
-        }
-        return calibrations;
-    }
-
-    public int getDilution() {
-        return dilution;
-    }
-
-    public void setDilution(int dilution) {
-        this.dilution = Math.max(1, dilution);
     }
 
     public String getDeviceId() {

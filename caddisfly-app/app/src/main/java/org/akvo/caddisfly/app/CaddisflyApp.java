@@ -20,9 +20,6 @@
 package org.akvo.caddisfly.app;
 
 import android.app.Application;
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -30,7 +27,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
@@ -44,14 +40,6 @@ import timber.log.Timber;
 
 public class CaddisflyApp extends Application {
 
-    static final Migration MIGRATION_1_3 = new Migration(1, 3) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-            // no changes to schema
-        }
-    };
-    private static final String DATABASE_NAME = "calibration";
-    private static CalibrationDatabase database;
     private static CaddisflyApp app; // Singleton
 
     /**
@@ -107,15 +95,6 @@ public class CaddisflyApp extends Application {
 
         app = this;
 
-        database = Room.databaseBuilder(getApplicationContext(),
-                CalibrationDatabase.class, DATABASE_NAME)
-                .allowMainThreadQueries()
-                .addMigrations(MIGRATION_1_3)
-                .build();
-    }
-
-    public CalibrationDatabase getDb() {
-        return database;
     }
 
     /**

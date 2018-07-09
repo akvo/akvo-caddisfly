@@ -79,7 +79,6 @@
     <string name="verifySensorDetails">Verify sensor details</string>
     <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
     <string name="ecSensorId">EC Sensor Id</string>
-    <string name="testWithDilution">Test with Dilution</string>
 
     <!--StripTest-->
     <string name="brightness">Brightness</string>
@@ -137,9 +136,6 @@
     <string name="cameraRequired">A back facing camera is required for colorimetric analysis</string>
     <string name="tryRestarting">If the problem continues, restart this device</string>
     <string name="errorCameraFlashRequired">A camera flash was not found on this device</string>
-    <string name="errorCalibrationIncomplete">Calibration for %1$s is incomplete</string>
-
-    <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Could not load configuration information</string>
 
     <!--Bluetooth-->

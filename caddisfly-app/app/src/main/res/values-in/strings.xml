@@ -71,7 +71,6 @@
     <string name="verifySensorDetails">Verifikasi detail sensor</string>
     <string name="enterAnIdForSensor">Masukan identitas untuk sensor ini</string>
     <string name="ecSensorId">Identitas Sensor EC</string>
-    <string name="testWithDilution">Uji coba dengan Pengenceran</string>
     <!--StripTest-->
     <string name="instructions">Instruksi</string>
     <string name="prepare_test">Mempersiapkan uji coba</string>
@@ -102,9 +101,8 @@
     <string name="cameraNotAvailable">Kamera tidak tersedia</string>
     <string name="cameraRequired">Kamera hadap belakang dibutuhkan untuk analisa ukuran warna</string>
     <string name="tryRestarting">Jika masalah terus muncul, mohon matikan dan nyalakan kembali perangkat ini</string>
-    <!--Calibration Screen-->
     <string name="errorLoadingConfiguration">Tidak dapat memuat informasi konfigurasi</string>
-    <!--EC Sensor Calibration-->
+    <!--EC Sensor-->
     <string name="sensorNotFound">Sensor tidak ditemukan</string>
     <string name="dipEcSensorInSolution">Celupkan Sensor EC dalam cairan lalu tekan mulai</string>
     <!--StripTest-->
