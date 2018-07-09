@@ -36,14 +36,12 @@ import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.ActivityTestListBinding;
-import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.repository.TestConfigRepository;
-import org.akvo.caddisfly.sensor.chamber.ChamberTestActivity;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ConfigDownloader;
 
@@ -143,24 +141,6 @@ public class TestListActivity extends BaseActivity
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         intent.putExtra("internal", true);
         startActivity(intent);
-    }
-
-    private void startCalibration() {
-        //Only start the colorimetry calibration if the device has a camera flash
-        if (AppPreferences.useExternalCamera()
-                || CameraHelper.hasFeatureCameraFlash(this,
-                R.string.cannotCalibrate, R.string.ok, null)) {
-
-            final Intent intent;
-            if (testInfo.getResults().get(0).getColors().size() > 0) {
-                intent = new Intent(this, ChamberTestActivity.class);
-            } else {
-                ErrorMessages.alertCouldNotLoadConfig(this);
-                return;
-            }
-            intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-            startActivity(intent);
-        }
     }
 
     @Override

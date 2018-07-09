@@ -126,9 +126,6 @@
         <activity
             android:name=".sensor.bluetooth.DeviceScanActivity"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.chamber.ChamberTestActivity"
-            android:screenOrientation="nosensor" />
 
         <service
             android:name=".sensor.bluetooth.BluetoothLeService"

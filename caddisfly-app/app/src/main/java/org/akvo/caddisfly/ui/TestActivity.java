@@ -53,14 +53,12 @@ import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
-import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceControlActivity;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
-import org.akvo.caddisfly.sensor.chamber.ChamberTestActivity;
 import org.akvo.caddisfly.sensor.manual.ManualTestActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.usb.SensorActivity;
@@ -260,25 +258,6 @@ public class TestActivity extends BaseActivity {
         intent = new Intent(this, ManualTestActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
-    }
-
-    private void startChamberTest() {
-
-        //Only start the colorimetry calibration if the device has a camera flash
-        if (AppPreferences.useExternalCamera()
-                || CameraHelper.hasFeatureCameraFlash(this,
-                R.string.cannotStartTest, R.string.ok, null)) {
-
-            if (!SwatchHelper.isSwatchListValid(testInfo)) {
-                ErrorMessages.alertCalibrationIncomplete(this, testInfo);
-                return;
-            }
-
-            Intent intent = new Intent(this, ChamberTestActivity.class);
-            intent.putExtra(ConstantKey.RUN_TEST, true);
-            intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-            startActivityForResult(intent, REQUEST_TEST);
-        }
     }
 
     private void startSensorTest() {
