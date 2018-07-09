@@ -170,15 +170,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void onCalibrateClick(View view) {
-
-        if (permissionsDelegate.hasPermissions(permissions)) {
-            startCalibrate();
-        } else {
-            permissionsDelegate.requestPermissions(permissions);
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,

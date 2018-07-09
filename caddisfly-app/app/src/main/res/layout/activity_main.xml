@@ -116,21 +116,6 @@
                     android:textColor="?longButtonText"
                     android:theme="?longButtonStyle" />
 
-                <Button
-                    android:id="@+id/buttonCalibrate"
-                    style="@style/ListButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical|start"
-                    android:minHeight="80dp"
-                    android:onClick="onCalibrateClick"
-                    android:paddingEnd="16dp"
-                    android:paddingStart="16dp"
-                    android:text="@string/calibrate"
-                    android:textAlignment="viewStart"
-                    android:textColor="?longButtonText"
-                    android:theme="?longButtonStyle" />
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
