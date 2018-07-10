@@ -61,7 +61,9 @@
 
                 <Button
                     android:id="@+id/buttonLaunchApp"
-                    style="@style/Button"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:textAllCaps="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -70,6 +72,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="10dp"
                     android:enabled="true"
+                    android:textSize="18sp"
                     android:minWidth="230dp"
                     android:onClick="onLaunchAppClick"
                     android:text="Go to Akvo Flow"
