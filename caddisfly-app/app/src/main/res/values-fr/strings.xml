@@ -40,26 +40,18 @@
     <string name="success">Succès</string>
     <string name="done">Effectué</string>
 
-    <!--Messages-->
+    <string name="result">Résultat</string>
     <string name="pleaseWait">Veuillez attendre…</string>
-    <string name="notSupported">Non pris en charge</string>
-    <string name="phoneDoesNotSupport">Cet appareil ne peut assurer cette fonctionnalité</string>
-    <!--Main Screen-->
-    <string name="errorCameraFlashRequired">Le flash de l\'appareil est introuvable</string>
-    <string name="cannotStartTest">Impossible de commencer le test</string>
-    <!--Settings Screen-->
     <string name="language">Langue</string>
+    <string name="notSupported">Non pris en charge</string>
+
+    <string name="phoneDoesNotSupport">Cet appareil ne peut assurer cette fonctionnalité</string>
+    <string name="cannotStartTest">Impossible de commencer le test</string>
     <string name="errorLoadingConfiguration">Impossible de charger les informations de configuration</string>
     <string name="pleaseContactSupport">Veuillez contacter le service technique</string>
-    <!--Test Progress Screen-->
-    <string name="placeDevice">Placez le téléphone sur une surface plane, face vers le bas</string>
-    <string name="errorTestInterrupted">Le test s\'est interrompu. Ne déplacez pas le téléphone pendant la durée du test</string>
-    <string name="errorTestFailed">Couleur de la solution hors étalonnage. Vérifiez l\'emplacement de la cartouche</string>
-    <!--Result Screen-->
-    <string name="result">Résultat</string>
-    <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connexion à l\'appareil en cours</string>
     <string name="acceptResult">Accepter le résultat</string>
+
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>

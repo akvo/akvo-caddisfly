@@ -322,21 +322,25 @@ public class BluetoothResultFragment extends Fragment {
             for (Result subTest : testInfo.getResults()) {
                 if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
 
-                    if (subTest.getId() == 1) {
-                        layoutResult1.setVisibility(View.VISIBLE);
-                        textName1.setText(subTest.getName());
-                        textUnit1.setText(subTest.getUnit());
-                        textResult1.setText(result);
-                    } else if (subTest.getId() == 2) {
-                        layoutResult2.setVisibility(View.VISIBLE);
-                        textName2.setText(subTest.getName());
-                        textUnit2.setText(subTest.getUnit());
-                        textResult2.setText(result);
-                    } else if (subTest.getId() == 3) {
-                        layoutResult3.setVisibility(View.VISIBLE);
-                        textName3.setText(subTest.getName());
-                        textUnit3.setText(subTest.getUnit());
-                        textResult3.setText(result);
+                    switch (subTest.getId()) {
+                        case 1:
+                            layoutResult1.setVisibility(View.VISIBLE);
+                            textName1.setText(subTest.getName());
+                            textUnit1.setText(subTest.getUnit());
+                            textResult1.setText(result);
+                            break;
+                        case 2:
+                            layoutResult2.setVisibility(View.VISIBLE);
+                            textName2.setText(subTest.getName());
+                            textUnit2.setText(subTest.getUnit());
+                            textResult2.setText(result);
+                            break;
+                        case 3:
+                            layoutResult3.setVisibility(View.VISIBLE);
+                            textName3.setText(subTest.getName());
+                            textUnit3.setText(subTest.getUnit());
+                            textResult3.setText(result);
+                            break;
                     }
 
                     results.put(subTest.getId(), result);

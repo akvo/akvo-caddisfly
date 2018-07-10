@@ -81,17 +81,22 @@ public class SensorActivity extends BaseActivity {
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-            if (UsbService.ACTION_USB_PERMISSION_NOT_GRANTED.equals(arg1.getAction())) {
-                Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
-                displayNotConnectedView();
-            } else if (UsbService.ACTION_NO_USB.equals(arg1.getAction())) {
-                displayNotConnectedView();
-            } else if (UsbService.ACTION_USB_DISCONNECTED.equals(arg1.getAction())) {
-                Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
-                displayNotConnectedView();
-            } else if (UsbService.ACTION_USB_NOT_SUPPORTED.equals(arg1.getAction())) {
-                Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
-                displayNotConnectedView();
+            switch (arg1.getAction()) {
+                case UsbService.ACTION_USB_PERMISSION_NOT_GRANTED:
+                    Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+                    displayNotConnectedView();
+                    break;
+                case UsbService.ACTION_NO_USB:
+                    displayNotConnectedView();
+                    break;
+                case UsbService.ACTION_USB_DISCONNECTED:
+                    Toast.makeText(arg0, "USB disconnected", Toast.LENGTH_SHORT).show();
+                    displayNotConnectedView();
+                    break;
+                case UsbService.ACTION_USB_NOT_SUPPORTED:
+                    Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
+                    displayNotConnectedView();
+                    break;
             }
         }
     };

@@ -38,15 +38,24 @@
     <string name="survey">Survey</string>
     <string name="success" tools:ignore="UnusedResources">Success</string>
     <string name="done" tools:ignore="UnusedResources">Done</string>
+
     <string name="result">Result</string>
-    <string name="warning">Warning</string>
     <string name="pleaseWait">Please wait…</string>
     <string name="language">Language</string>
     <string name="notSupported">Not Supported</string>
     <string name="cameraBusy">Camera Busy</string>
+
     <string name="stage_one"><b>Stage 1:</b></string>
     <string name="stage_two"><b>Stage 2:</b></string>
     <string name="analyze">Analyse</string>
+    <string name="us_cm">μS/cm</string>
+    <string name="ms_cm">ms/cm</string>
+    <string name="select_unit">Select unit</string>
+    <string name="submitResult">Submit Result</string>
+    <string name="view_results">View results</string>
+    <string name="warning">Warning</string>
+
+    <string name="instructions">Instructions</string>
 
     <!--External-->
     <string name="sensor">Sensor</string>
@@ -61,11 +70,6 @@
     <string name="celsius">°Celsius</string>
     <string name="dipSensorInSample">Dip sensor in sample</string>
 
-    <!--About Screen-->
-    <string name="waterQualitySystem">Water &amp; Soil Quality System</string>
-    <string name="copyrightMessage">Copyright © Stichting Akvo</string>
-    <string name="legalInformation">Legal Information</string>
-
     <string name="selectTest">Select Test</string>
     <string name="awaitingResult">Awaiting result</string>
 
@@ -79,38 +83,6 @@
     <string name="verifySensorDetails">Verify sensor details</string>
     <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
     <string name="ecSensorId">EC Sensor Id</string>
-
-    <!--StripTest-->
-    <string name="brightness">Brightness</string>
-    <string name="measure_instruction">Put strip on black area with colour patches to the left. Hold camera above colour card until measurement is complete.</string>
-    <string name="imageQuality">Image quality</string>
-    <string name="instructions">Instructions</string>
-    <string name="shadows">Shadows</string>
-    <string name="prepare_test">Prepare for test</string>
-    <string name="taking_photo">Taking photo</string>
-    <string name="waiting">Waiting</string>
-    <string name="waiting_for">Waiting for %s</string>
-    <string name="success_quality_checks">Success! Quality check passed</string>
-    <string name="prepareForCalibration">Prepare for calibration</string>
-    <string name="stripTest">Strip Test</string>
-    <string name="no_result">No result</string>
-    <string name="continue_anyway">Continue anyway</string>
-    <string name="just_a_moment">Just a moment…</string>
-    <string name="checking_image_quality">Checking image quality</string>
-    <string name="seconds">Sec.</string>
-    <string name="detecting_color_card">Looking for colour card</string>
-    <string name="ready_for_photo">Ready for photo</string>
-    <string name="do_not_show_again">Do not show again</string>
-    <string name="stop_test">Stop test</string>
-    <string name="noData">No data</string>
-    <string name="error_calibrating">Calibration failed</string>
-    <string name="camera_not_good">The camera does not meet the minimum requirements.\n\nFor best results, at least 8 megapixel camera required.</string>
-    <string name="qualityCheckFailed">Quality check failed</string>
-    <string name="shadows_detected">Shadows/reflections detected</string>
-    <string name="better_light_required">Better light required</string>
-    <string name="tilt_camera_in_direction">Tilt camera in direction of arrow</string>
-    <string name="move_camera_closer">Move camera closer to the card</string>
-    <string name="avoid_shadows_on_card">Please avoid shadows on the card</string>
 
     <!--Alerts-->
     <string name="cannotStartTest">Cannot start test</string>
@@ -135,7 +107,6 @@
     <string name="cameraNotAvailable">Camera not available</string>
     <string name="cameraRequired">A back facing camera is required for colorimetric analysis</string>
     <string name="tryRestarting">If the problem continues, restart this device</string>
-    <string name="errorCameraFlashRequired">A camera flash was not found on this device</string>
     <string name="errorLoadingConfiguration">Could not load configuration information</string>
 
     <!--Bluetooth-->
@@ -149,16 +120,10 @@
     <string name="scanning">Scanning…</string>
     <string name="searching_for_device">Searching for bluetooth devices</string>
 
-    <string name="view_results">View results</string>
-
-    <!--Manual-->
-    <string name="take_photo_meter_result">Take a photo of the meter screen displaying the measurement result</string>
-    <string name="enter_measured_value">Enter the measured value</string>
-    <string name="us_cm">μS/cm</string>
-    <string name="ms_cm">ms/cm</string>
-    <string name="select_unit">Select unit</string>
-    <string name="submitResult">Submit Result</string>
-    <string name="take_photo_compartments">Take a photo of the compartment bag</string>
+    <!--About Screen-->
+    <string name="waterQualitySystem">Water &amp; Soil Quality System</string>
+    <string name="copyrightMessage">Copyright © Stichting Akvo</string>
+    <string name="legalInformation">Legal Information</string>
 
     <!--Software notices-->
     <string name="software_incorporates_material">This software incorporates material from the projects listed below</string>

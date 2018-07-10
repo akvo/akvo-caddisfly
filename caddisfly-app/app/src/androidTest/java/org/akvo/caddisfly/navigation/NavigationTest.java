@@ -32,7 +32,6 @@ import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -143,28 +142,7 @@ public class NavigationTest {
 
         gotoSurveyForm();
 
-        clickExternalSourceButton(1);
-
-        onView(withText(R.string.fluoride)).check(matches(isDisplayed()));
-
-        mDevice.pressBack();
-
-        clickExternalSourceButton(TestConstant.NEXT);
-
-        clickExternalSourceButton(TestConstant.NEXT);
-
-        clickExternalSourceButton(0);
-
-        onView(withText(R.string.chromium)).check(matches(isDisplayed()));
-
-//        onView(withText(R.string.cannotStartTest)).check(matches(isDisplayed()));
-
-        //Connect EC Sensor Screen
-        takeScreenshot();
-
-        mDevice.pressBack();
-
-        TestUtil.nextSurveyPage(7);
+        TestUtil.nextSurveyPage(7, "Electrical Conductivity");
 
         clickExternalSourceButton(0);
 

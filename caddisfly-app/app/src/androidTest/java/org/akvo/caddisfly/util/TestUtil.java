@@ -97,7 +97,7 @@ public final class TestUtil {
         }
     }
 
-    public static boolean clickListViewItem(String name) {
+    static boolean clickListViewItem(String name) {
         UiScrollable listView = new UiScrollable(new UiSelector());
         listView.setMaxSearchSwipes(4);
         listView.waitForExists(3000);
@@ -240,6 +240,6 @@ public final class TestUtil {
         }
 
         swipeDown();
-
+        mDevice.waitForIdle();
     }
 }

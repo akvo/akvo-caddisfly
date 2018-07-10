@@ -23,6 +23,8 @@
     <string name="cbt">E.coli - Aquagenx CBT</string>
 
     <string name="read_instructions">Read Instructions</string>
+    <string name="take_photo_compartments">Take a photo of the compartment bag</string>
+
     <string name="confidenceInterval">Upper 95&#37; Confidence Interval</string>
     <string name="take_photo_of_cbt">Take a photo of the compartment bag</string>
     <string name="below25Degrees">Below 25 °C</string>

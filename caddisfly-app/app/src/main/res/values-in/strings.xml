@@ -29,7 +29,6 @@
     <string name="other">Lainnya</string>
     <string name="save">Simpan</string>
     <string name="load">Memuat</string>
-    <string name="swatches">Contoh</string>
     <string name="settings">Pengaturan</string>
     <string name="about">Tentang</string>
     <string name="name">Nama</string>
@@ -37,31 +36,33 @@
     <string name="deleted">Terhapus</string>
     <string name="required">Wajib</string>
     <string name="survey">Survei</string>
-    <string name="expires">Berakhir</string>
     <string name="success" tools:ignore="UnusedResources">Sukses</string>
     <string name="done" tools:ignore="UnusedResources">Selesai</string>
+
     <string name="result">Hasil</string>
-    <string name="warning">Peringatan</string>
     <string name="pleaseWait">Mohon tunggu..</string>
     <string name="language">Bahasa</string>
     <string name="notSupported">Tidak mendukung</string>
     <string name="cameraBusy">Kamera Sibuk</string>
+
+    <string name="warning">Peringatan</string>
+
     <!--External-->
     <string name="sensor">Sensor</string>
     <string name="sensors">Sensor-sensor</string>
+
+    <string name="instructions">Instruksi</string>
+
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Menghubungkan ke Perangkat</string>
     <string name="acceptResult">Menerima hasil</string>
+
     <!--Sensor-->
     <string name="deviceConnectSensor">Menghubungkan sensor</string>
     <string name="celsius">°Celsius</string>
     <string name="dipSensorInSample">Celup sensor dalam sampel</string>
-    <!--About Screen-->
-    <string name="waterQualitySystem">Sistem kualitas Air &amp; Tanah</string>
-    <string name="copyrightMessage">Hak Cipta © Stichting Akvo</string>
-    <string name="legalInformation">Informasi Hukum</string>
+
     <string name="selectTest">Pilih uji coba</string>
-    <string name="calibrationDetails">Detail Kalibrasi</string>
     <string name="customTests">Penyesuaian uji coba</string>
     <string name="deviceConnected">Perangkat terhubung</string>
     <string name="go">Mulai</string>
@@ -71,8 +72,8 @@
     <string name="verifySensorDetails">Verifikasi detail sensor</string>
     <string name="enterAnIdForSensor">Masukan identitas untuk sensor ini</string>
     <string name="ecSensorId">Identitas Sensor EC</string>
+
     <!--StripTest-->
-    <string name="instructions">Instruksi</string>
     <string name="prepare_test">Mempersiapkan uji coba</string>
     <string name="success_quality_checks">Sukses ! Pemeriksaan kualitas terlewati</string>
     <string name="prepareForCalibration">Persiapkan kalibrasi</string>
@@ -82,19 +83,21 @@
     <string name="detecting_color_card">Mencari kartu warna</string>
     <string name="do_not_show_again">Jangan tampilkan lagi</string>
     <string name="stop_test">Hentikan uji coba</string>
+
     <!--Alerts-->
     <string name="cannotStartTest">Tidak dapat memulai uji coba</string>
     <string name="errorTestNotAvailable">Uji coba yang diminta tidak tersedia</string>
     <string name="pleaseContactSupport">Mohon hubungi bantuan teknisi</string>
+
     <!--Permission-->
     <string name="storagePermission">Dibutuhkan perizinan mengatur penyimpanan</string>
     <string name="cameraAndStoragePermissions">Dibutuhkan perizinan kamera &amp; penyimpanan</string>
+
     <!--Sensor-->
     <string name="incorrectDevice">Perangkat salah</string>
     <string name="expectedDeviceNotFound">Sensor yang diharapkan tidak ditemukan.</string>
-  <string name="connectCorrectSensor">
-    <Data><![CDATA[Sambung ke <b>%s</b> sensor.]]></Data>
-  </string>
+    <string name="connectCorrectSensor"><Data><![CDATA[Sambung ke <b>%s</b> sensor.]]></Data></string>
+
     <!--Messages-->
     <string name="phoneDoesNotSupport">Perangkat ini tidak mendukung fitur ini</string>
     <string name="cannotUseCamera">Tidak dapat menggunakan kamera. Pastikan lamou kamera mati dan tutup semua aplikasi yang menggunakan kamera</string>
@@ -102,11 +105,18 @@
     <string name="cameraRequired">Kamera hadap belakang dibutuhkan untuk analisa ukuran warna</string>
     <string name="tryRestarting">Jika masalah terus muncul, mohon matikan dan nyalakan kembali perangkat ini</string>
     <string name="errorLoadingConfiguration">Tidak dapat memuat informasi konfigurasi</string>
+
     <!--EC Sensor-->
     <string name="sensorNotFound">Sensor tidak ditemukan</string>
     <string name="dipEcSensorInSolution">Celupkan Sensor EC dalam cairan lalu tekan mulai</string>
+
     <!--StripTest-->
     <string name="prepare_camera_instruction">Jangan mengambil sampel dahulu. Tahan kamera diatas kartu warna dan sesuaikan posisi sampai proses pemeriksaan sukses.</string>
-    <string name="prepareSolutionsForCalibration">Persiapkan 6 solusi dengan menggunakan nilai EC ini</string>
     <string name="camera_not_good">Kamera tidak memenuhi untuk persyaratan minimal.\n\nUntuk hasil terbaik, setidaknya gunakan kamera dengan resolusi 8 megapixel</string>
+
+    <!--About Screen-->
+    <string name="waterQualitySystem">Sistem kualitas Air &amp; Tanah</string>
+    <string name="copyrightMessage">Hak Cipta © Stichting Akvo</string>
+    <string name="legalInformation">Informasi Hukum</string>
+
 </resources>

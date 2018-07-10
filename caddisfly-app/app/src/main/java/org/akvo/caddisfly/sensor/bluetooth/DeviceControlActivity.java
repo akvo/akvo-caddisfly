@@ -101,18 +101,23 @@ public class DeviceControlActivity extends BaseActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                //updateConnectionState(R.string.connected);
-                invalidateOptionsMenu();
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
-                //updateConnectionState(R.string.disconnected);
-                Toast.makeText(DeviceControlActivity.this,
-                        "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
-                finish();
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-                setGattServices(mBluetoothLeService.getSupportedGattServices());
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+            switch (action) {
+                case BluetoothLeService.ACTION_GATT_CONNECTED:
+                    //updateConnectionState(R.string.connected);
+                    invalidateOptionsMenu();
+                    break;
+                case BluetoothLeService.ACTION_GATT_DISCONNECTED:
+                    //updateConnectionState(R.string.disconnected);
+                    Toast.makeText(DeviceControlActivity.this,
+                            "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
+                    finish();
+                    break;
+                case BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED:
+                    setGattServices(mBluetoothLeService.getSupportedGattServices());
+                    break;
+                case BluetoothLeService.ACTION_DATA_AVAILABLE:
+                    displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                    break;
             }
         }
     };

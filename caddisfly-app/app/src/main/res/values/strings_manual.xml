@@ -20,6 +20,9 @@
 
 <resources>
 
+    <string name="take_photo_meter_result">Take a photo of the meter screen displaying the measurement result</string>
+    <string name="enter_measured_value">Enter the measured value</string>
+
     <string name="sd_on">Press briefly (*sd_on_off*) to turn device on.</string>
     <string name="sd_50_dip_sample">Remove protective cap, rinse the electrode with distilled water and immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Stir the sensor gently while it is in the sample. Press briefly (*sd_on_off*) to freeze / unfreeze the measurement.</string>
     <string name="sd_fill_photo_fill_in">Take a photo of the screen with the measurement and fill in the measurement value.</string>
