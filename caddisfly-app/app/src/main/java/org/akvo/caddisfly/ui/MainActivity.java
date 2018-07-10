@@ -22,7 +22,6 @@ package org.akvo.caddisfly.ui;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,11 +34,8 @@ import android.widget.Toast;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConfig;
-import org.akvo.caddisfly.common.NavigationController;
 import org.akvo.caddisfly.databinding.ActivityMainBinding;
 import org.akvo.caddisfly.helper.ApkHelper;
-import org.akvo.caddisfly.helper.ErrorMessages;
-import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -54,15 +50,12 @@ import java.util.Locale;
 public class MainActivity extends BaseActivity {
 
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
-    private NavigationController navigationController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         CaddisflyApp.getApp().setAppLanguage(null, false, null);
-
-        navigationController = new NavigationController(this);
 
         ActivityMainBinding b = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
@@ -138,27 +131,6 @@ public class MainActivity extends BaseActivity {
         viewModel.clearTests();
     }
 
-    public void onStripTestsClick(@SuppressWarnings("unused") View view) {
-        navigationController.navigateToTestType(TestType.STRIP_TEST);
-    }
-
-    public void onBluetoothDeviceClick(@SuppressWarnings("unused") View view) {
-        navigationController.navigateToTestType(TestType.BLUETOOTH);
-    }
-
-    public void onSensorsClick(@SuppressWarnings("unused") View view) {
-        boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
-        if (hasOtg) {
-            navigationController.navigateToTestType(TestType.SENSOR);
-        } else {
-            ErrorMessages.alertFeatureNotSupported(this, false);
-        }
-    }
-
-    public void onCbtClick(@SuppressWarnings("unused") View view) {
-        navigationController.navigateToTestType(TestType.CBT);
-    }
-
     public void onSettingsClick(@SuppressWarnings("unused") MenuItem item) {
         final Intent intent = new Intent(this, SettingsActivity.class);
         startActivityForResult(intent, 100);
@@ -198,6 +170,5 @@ public class MainActivity extends BaseActivity {
             }
         }
     }
-
 }
 
