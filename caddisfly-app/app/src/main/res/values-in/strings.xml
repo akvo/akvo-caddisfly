@@ -23,27 +23,21 @@
     <string name="retry">Coba lagi</string>
     <string name="cancel">Batalkan</string>
     <string name="start">Mulai</string>
-    <string name="delete">Hapus</string>
     <string name="error">Ada kesalahan</string>
     <string name="general">Umum</string>
     <string name="other">Lainnya</string>
     <string name="save">Simpan</string>
-    <string name="load">Memuat</string>
     <string name="settings">Pengaturan</string>
     <string name="about">Tentang</string>
-    <string name="name">Nama</string>
     <string name="version">Versi</string>
-    <string name="deleted">Terhapus</string>
     <string name="required">Wajib</string>
     <string name="survey">Survei</string>
     <string name="success" tools:ignore="UnusedResources">Sukses</string>
     <string name="done" tools:ignore="UnusedResources">Selesai</string>
 
     <string name="result">Hasil</string>
-    <string name="pleaseWait">Mohon tunggu..</string>
     <string name="language">Bahasa</string>
     <string name="notSupported">Tidak mendukung</string>
-    <string name="cameraBusy">Kamera Sibuk</string>
 
     <string name="warning">Peringatan</string>
 
@@ -65,11 +59,8 @@
     <string name="selectTest">Pilih uji coba</string>
     <string name="customTests">Penyesuaian uji coba</string>
     <string name="deviceConnected">Perangkat terhubung</string>
-    <string name="go">Mulai</string>
     <string name="next">Selanjutnya</string>
-    <string name="saving">Menyimpan</string>
     <string name="sensorDetails">Detail Sensor</string>
-    <string name="verifySensorDetails">Verifikasi detail sensor</string>
     <string name="enterAnIdForSensor">Masukan identitas untuk sensor ini</string>
     <string name="ecSensorId">Identitas Sensor EC</string>
 
@@ -100,10 +91,6 @@
 
     <!--Messages-->
     <string name="phoneDoesNotSupport">Perangkat ini tidak mendukung fitur ini</string>
-    <string name="cannotUseCamera">Tidak dapat menggunakan kamera. Pastikan lamou kamera mati dan tutup semua aplikasi yang menggunakan kamera</string>
-    <string name="cameraNotAvailable">Kamera tidak tersedia</string>
-    <string name="cameraRequired">Kamera hadap belakang dibutuhkan untuk analisa ukuran warna</string>
-    <string name="tryRestarting">Jika masalah terus muncul, mohon matikan dan nyalakan kembali perangkat ini</string>
     <string name="errorLoadingConfiguration">Tidak dapat memuat informasi konfigurasi</string>
 
     <!--EC Sensor-->

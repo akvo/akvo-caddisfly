@@ -464,11 +464,13 @@ public class BitmapUtils {
             result.copyPixelsFromBuffer(map);
             channel.close();
             randomAccessFile.close();
+            //noinspection ResultOfMethodCallIgnored
             outputFile.delete();
             return result;
         } catch (final Exception ignored) {
         } finally {
             if (outputFile != null)
+                //noinspection ResultOfMethodCallIgnored
                 outputFile.delete();
         }
         return null;

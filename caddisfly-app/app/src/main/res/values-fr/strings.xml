@@ -24,24 +24,19 @@
     <string name="retry">Réessayer</string>
     <string name="cancel">Annuler</string>
     <string name="start">Commencer</string>
-    <string name="delete">Supprimer</string>
     <string name="error">Erreur</string>
     <string name="general">Général</string>
     <string name="other">Autre</string>
     <string name="save">Enregistrer</string>
-    <string name="load">Charger</string>
     <string name="settings">Paramètres</string>
     <string name="about">A propos</string>
-    <string name="name">Nom</string>
     <string name="version" tools:ignore="UnusedResources">Version</string>
-    <string name="deleted">Effacé</string>
     <string name="required">Obligatoire</string>
     <string name="survey">Enquête</string>
     <string name="success">Succès</string>
     <string name="done">Effectué</string>
 
     <string name="result">Résultat</string>
-    <string name="pleaseWait">Veuillez attendre…</string>
     <string name="language">Langue</string>
     <string name="notSupported">Non pris en charge</string>
 
