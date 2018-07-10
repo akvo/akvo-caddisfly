@@ -138,7 +138,8 @@ public class InstructionFragment extends Fragment {
         return rootView;
     }
 
-    private void showInstruction(@NonNull LinearLayout linearLayout, @NonNull String instruction, int style) {
+    private void showInstruction(@NonNull LinearLayout linearLayout, @NonNull String instruction,
+                                 @SuppressWarnings("SameParameterValue") int style) {
         TextView textView = new TextView(getActivity());
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.mediumTextSize));

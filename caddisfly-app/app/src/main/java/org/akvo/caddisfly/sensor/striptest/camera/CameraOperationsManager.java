@@ -23,7 +23,6 @@ import android.content.Context;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -31,6 +30,8 @@ import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StriptestHandler;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
 import org.akvo.caddisfly.util.ImageUtil;
+
+import timber.log.Timber;
 
 /**
  * Created by markwestra on 19/07/2017
@@ -170,7 +171,7 @@ public class CameraOperationsManager {
      */
     private void startCameraThread() {
         if (StripMeasureActivity.DEBUG) {
-            Log.d("Caddisfly", "Starting camera background thread");
+            Timber.d("Starting camera background thread");
         }
         HandlerThread mCameraThread = new HandlerThread("CameraBackground");
         mCameraThread.start();

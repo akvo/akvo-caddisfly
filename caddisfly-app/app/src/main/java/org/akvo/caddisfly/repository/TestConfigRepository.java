@@ -1,7 +1,6 @@
 package org.akvo.caddisfly.repository;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class TestConfigRepository {
 
@@ -86,7 +87,7 @@ public class TestConfigRepository {
 
 
         } catch (Exception e) {
-            Log.e("error parsing", e.toString());
+            Timber.e(e);
         }
 
         testMap.put(testType, testInfoList);

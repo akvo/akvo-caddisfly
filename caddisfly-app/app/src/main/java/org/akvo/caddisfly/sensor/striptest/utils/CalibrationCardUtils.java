@@ -2,7 +2,6 @@ package org.akvo.caddisfly.sensor.striptest.utils;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardException;
@@ -21,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import timber.log.Timber;
+
 import static org.akvo.caddisfly.sensor.striptest.qrdetector.MathUtils.distance;
 import static org.akvo.caddisfly.sensor.striptest.utils.MathUtils.meanMedianMax;
 
@@ -32,7 +33,7 @@ public class CalibrationCardUtils {
 
     private static final int VERSION_NUMBER_NOT_FOUND_CODE = 0;
     /*
-    * Samples known "white" points on the color card, and creates an array
+     * Samples known "white" points on the color card, and creates an array
      */
     private static final int NUM_SAMPLES_PER_LINE = 10;
     private final static float PATCH_SAMPLE_FRACTION = 0.5f;
@@ -97,7 +98,7 @@ public class CalibrationCardUtils {
                     index++;
                 }
             } catch (Exception e) {
-                Log.e(TAG, "Error sample line into new row");
+                Timber.e("Error sample line into new row");
                 return VERSION_NUMBER_NOT_FOUND_CODE;
             }
 
@@ -125,7 +126,7 @@ public class CalibrationCardUtils {
                 // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
                 // which is too small.
                 if (lengthPattern < 20) {
-                    Log.e(TAG, "Length of pattern too small");
+                    Timber.e("Length of pattern too small");
                     return VERSION_NUMBER_NOT_FOUND_CODE;
                 }
 
@@ -295,7 +296,7 @@ public class CalibrationCardUtils {
     }
 
     /*
-    * measure colour patches on colour card and create an array
+     * measure colour patches on colour card and create an array
      */
     public static Map<String, float[]> measurePatches(CalibrationCardData calCardData, DecodeData decodeData) {
         PerspectiveTransform cardToImageTransform = decodeData.getCardToImageTransform();

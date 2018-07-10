@@ -22,7 +22,6 @@ package org.akvo.caddisfly.sensor.striptest.ui;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.TextSwitcher;
 
 import org.akvo.caddisfly.R;
@@ -41,6 +40,8 @@ import org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView;
 import java.util.ArrayList;
 import java.util.List;
 
+import timber.log.Timber;
+
 public final class StriptestHandler extends Handler {
     // Message types
     public static final int START_PREVIEW_MESSAGE = 1;
@@ -57,8 +58,12 @@ public final class StriptestHandler extends Handler {
     private static final int DECODE_IMAGE_CAPTURE_FAILED_MESSAGE = 3;
     private static final CalibrationCardData mCalCardData = new CalibrationCardData();
     private static State mState;
+    private static int decodeFailedCount = 0;
+    private static int successCount = 0;
+    private static int nextPatch;
+    private static int numPatches;
+    private static boolean captureNextImage;
     private final List<TimeDelayDetail> mPatchTimeDelays = new ArrayList<>();
-    private final String TAG = "Caddisfly - handler";
     // camera manager instance
     private final CameraOperationsManager mCameraOpsManager;
     // finder pattern indicator view
@@ -73,11 +78,6 @@ public final class StriptestHandler extends Handler {
     private int shadowQualityFailedCount = 0;
     private int tiltFailedCount = 0;
     private int distanceFailedCount = 0;
-    private static int decodeFailedCount = 0;
-    private static int successCount = 0;
-    private static int nextPatch;
-    private static int numPatches;
-    private static boolean captureNextImage;
     private String currentMessage = "";
     private String currentShadowMessage = "";
     private String newMessage = "";
@@ -90,7 +90,7 @@ public final class StriptestHandler extends Handler {
     StriptestHandler(Context context1, Context context, CameraOperationsManager cameraOpsManager,
                      FinderPatternIndicatorView finderPatternIndicatorView, TestInfo testInfo) {
         if (StripMeasureActivity.DEBUG) {
-            Log.d(TAG, "in constructor striptestHandler");
+            Timber.d("in constructor striptestHandler");
         }
 
         mListener = (StripMeasureListener) context1;
@@ -134,7 +134,7 @@ public final class StriptestHandler extends Handler {
         switch (message.what) {
             case START_PREVIEW_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "START_PREVIEW_MESSAGE received in striptest handler");
+                    Timber.d("START_PREVIEW_MESSAGE received in striptest handler");
                 }
                 // start the image capture request.
                 mCameraOpsManager.startAutofocus();
@@ -161,7 +161,7 @@ public final class StriptestHandler extends Handler {
 
             case DECODE_IMAGE_CAPTURED_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "DECODE_IMAGE_CAPTURED_MESSAGE received in striptest handler");
+                    Timber.d("DECODE_IMAGE_CAPTURED_MESSAGE received in striptest handler");
                 }
 
                 // update timer
@@ -194,7 +194,7 @@ public final class StriptestHandler extends Handler {
 
             case DECODE_IMAGE_CAPTURE_FAILED_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "DECODE_IMAGE_CAPTURE_FAILED_MESSAGE received in striptest handler");
+                    Timber.d("DECODE_IMAGE_CAPTURE_FAILED_MESSAGE received in striptest handler");
                     mDecodeData.clearData();
                     mFinderPatternIndicatorView.clearAll();
                     mCameraOpsManager.setDecodeImageCaptureRequest();
@@ -203,10 +203,10 @@ public final class StriptestHandler extends Handler {
 
             case DECODE_SUCCEEDED_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "DECODE_SUCCEEDED_MESSAGE received in striptest handler");
+                    Timber.d("DECODE_SUCCEEDED_MESSAGE received in striptest handler");
                     FinderPatternInfo fpInfo = mDecodeData.getPatternInfo();
                     if (fpInfo != null) {
-                        Log.d(TAG, "found codes:" + fpInfo.getBottomLeft().toString() + "," +
+                        Timber.d("found codes:" + fpInfo.getBottomLeft().toString() + "," +
                                 fpInfo.getBottomRight().toString() + "," +
                                 fpInfo.getTopLeft().toString() + "," +
                                 fpInfo.getTopRight().toString() + ",");
@@ -274,7 +274,7 @@ public final class StriptestHandler extends Handler {
 
             case DECODE_FAILED_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "DECODE_FAILED_MESSAGE received in striptest handler");
+                    Timber.d("DECODE_FAILED_MESSAGE received in striptest handler");
                 }
                 decodeFailedCount++;
                 mDecodeData.clearData();
@@ -288,7 +288,7 @@ public final class StriptestHandler extends Handler {
 
             case CHANGE_EXPOSURE_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "exposure - CHANGE_EXPOSURE_MESSAGE received in striptest handler, with argument:" + message.arg1);
+                    Timber.d("exposure - CHANGE_EXPOSURE_MESSAGE received in striptest handler, with argument:%s", message.arg1);
                 }
 
                 int direction = message.arg1;
@@ -301,7 +301,7 @@ public final class StriptestHandler extends Handler {
 
             case EXPOSURE_OK_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "exposure - EXPOSURE_OK_MESSAGE received in striptest handler");
+                    Timber.d("exposure - EXPOSURE_OK_MESSAGE received in striptest handler");
                 }
 
                 if (mDecodeData.isCardVersionEstablished()) {
@@ -332,7 +332,7 @@ public final class StriptestHandler extends Handler {
 
             case SHADOW_QUALITY_FAILED_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "SHADOW_QUALITY_FAILED_MESSAGE received in striptest handler");
+                    Timber.d("SHADOW_QUALITY_FAILED_MESSAGE received in striptest handler");
                 }
 
                 shadowQualityFailedCount = Math.min(8, shadowQualityFailedCount + 1);
@@ -359,7 +359,7 @@ public final class StriptestHandler extends Handler {
 
             case SHADOW_QUALITY_OK_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "SHADOW_QUALITY_OK_MESSAGE received in striptest handler");
+                    Timber.d("SHADOW_QUALITY_OK_MESSAGE received in striptest handler");
                 }
 
                 shadowQualityFailedCount = Math.max(0, shadowQualityFailedCount - 1);
@@ -382,7 +382,7 @@ public final class StriptestHandler extends Handler {
 
             case CALIBRATION_DONE_MESSAGE:
                 if (StripMeasureActivity.DEBUG) {
-                    Log.d(TAG, "CALIBRATION_DONE_MESSAGE received in striptest handler");
+                    Timber.d("CALIBRATION_DONE_MESSAGE received in striptest handler");
                 }
                 int quality = qualityPercentage(mDecodeData.getDeltaEStats());
                 if (mFragment != null) {

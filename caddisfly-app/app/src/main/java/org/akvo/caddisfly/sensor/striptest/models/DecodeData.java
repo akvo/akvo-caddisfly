@@ -232,6 +232,7 @@ public class DecodeData {
         this.previewHeight = previewHeight;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean getDistanceOk() {
         return distanceOk;
     }
