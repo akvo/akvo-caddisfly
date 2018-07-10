@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +57,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+
+import timber.log.Timber;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmaps;
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createErrorImage;
@@ -114,7 +115,7 @@ public class ResultActivity extends BaseActivity {
             }
 
             JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo,
-                    resultStringValues, brackets, -1, totalImageUrl);
+                    resultStringValues, brackets, totalImageUrl);
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
             setResult(RESULT_OK, intent);
@@ -171,7 +172,7 @@ public class ResultActivity extends BaseActivity {
 
             // check if we have the corresponding image
             if (!patchImageMap.containsKey(delay)) {
-                Log.d("Caddisfly", "patch not found!");
+                Timber.d("patch not found!");
                 patchResult.setMeasured(false);
                 return null;
             }

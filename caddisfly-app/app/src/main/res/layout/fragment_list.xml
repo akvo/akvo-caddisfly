@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:focusable="true"
             android:longClickable="false"
-            app:layoutManager="LinearLayoutManager" />
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
     </LinearLayout>
 </layout>

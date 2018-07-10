@@ -825,45 +825,6 @@
       ]
     },
     {
-      "name": "Water - Colorimetry - Caddisfly - Fluoride (0 - 2 mg/l F)",
-      "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
-      "brand": "Caddisfly",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Fluoride",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
-      "name": "Water - Colorimetry - Caddisfly - Free Chlorine (0 - 1 mg/l Cl2)",
-      "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
-      "brand": "Caddisfly",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Free Chlorine",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
-      "name": "Water - Colorimetry - Caddisfly - Free Chlorine (0 - 3 mg/l Cl2)",
-      "uuid": "a2413119-38eb-4959-92ee-cc169fdbb0fc",
-      "brand": "Caddisfly",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Free Chlorine",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
       "name": "Water - Test Strips - Hach - Chlorine (0 - 10 mg/l Cl2), Hardness (0 - 425 mg/l CaCO3), Alkalinity (0 - 240 mg/l CaCO3), pH (6.2-8.4)",
       "uuid": "2456d482-dbec-466c-8387-411a4093f6b6",
       "brand": "HACH 2755250",
@@ -1100,19 +1061,6 @@
           "id": 2,
           "name": "Temperature",
           "unit": "°Celsius"
-        }
-      ]
-    },
-    {
-      "name": "Water - Colorimetry - Caddisfly - Chromium",
-      "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
-      "brand": "Caddisfly",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Chromium",
-          "unit": "mg/l"
         }
       ]
     },

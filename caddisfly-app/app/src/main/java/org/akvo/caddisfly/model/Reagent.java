@@ -49,7 +49,7 @@ public class Reagent implements Parcelable {
     @Expose
     public Integer reactionTime;
 
-    protected Reagent(Parcel in) {
+    private Reagent(Parcel in) {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.code = ((String) in.readValue((String.class.getClassLoader())));
         this.reactionTime = ((Integer) in.readValue((Integer.class.getClassLoader())));

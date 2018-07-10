@@ -35,6 +35,8 @@ import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.StringUtil;
 
+import java.util.Objects;
+
 public class CbtResultFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
 
@@ -75,7 +77,7 @@ public class CbtResultFragment extends BaseFragment {
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
 
-        String[] results = StringUtil.getStringResourceByName(getActivity(),
+        String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
                 mpnValue.getRiskCategory()).toString().split("/");
 
         textResult.setText(results[0].trim());

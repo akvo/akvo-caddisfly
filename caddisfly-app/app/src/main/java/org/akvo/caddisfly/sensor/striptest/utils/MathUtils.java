@@ -5,25 +5,25 @@ import java.util.Arrays;
 /**
  * Created by markwestra on 16/06/2017
  */
-public class MathUtils {
+class MathUtils {
 
-    public static float mean(float[] m) {
-        float sum = 0;
-        for (float aM : m) {
-            sum += aM;
-        }
-        return sum / m.length;
-    }
-
-    public static float median(float[] m) {
-        Arrays.sort(m);
-        int middle = m.length / 2;
-        if (m.length % 2 == 1) {
-            return m[middle];
-        } else {
-            return (m[middle - 1] + m[middle]) / 2.0f;
-        }
-    }
+//    public static float mean(float[] m) {
+//        float sum = 0;
+//        for (float aM : m) {
+//            sum += aM;
+//        }
+//        return sum / m.length;
+//    }
+//
+//    public static float median(float[] m) {
+//        Arrays.sort(m);
+//        int middle = m.length / 2;
+//        if (m.length % 2 == 1) {
+//            return m[middle];
+//        } else {
+//            return (m[middle - 1] + m[middle]) / 2.0f;
+//        }
+//    }
 
     public static float[] meanMedianMax(float[] m) {
         // compute mean

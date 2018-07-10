@@ -2,16 +2,13 @@ package org.akvo.caddisfly.sensor.striptest.models;
 
 import android.media.Image;
 
-import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPattern;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPatternInfo;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.PerspectiveTransform;
-import org.akvo.caddisfly.util.ImageUtil;
 import org.apache.commons.math3.linear.RealMatrix;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +25,8 @@ public class DecodeData {
     private byte[] decodeImageByteArray;
     private int decodeWidth;
     private int decodeHeight;
-    private int previewWidth;
-    private int previewHeight;
+//    private int previewWidth;
+//    private int previewHeight;
     private FinderPatternInfo patternInfo;
     private List<FinderPattern> finderPatternsFound;
     private int tilt;
@@ -37,14 +34,14 @@ public class DecodeData {
     private PerspectiveTransform cardToImageTransform;
     private List<float[]> shadowPoints;
     private float[][] whitePointArray;
-    private float percentageShadow;
+//    private float percentageShadow;
     private float[] deltaEStats;
-    private Map<Integer, Integer> versionNumberMap;
-    private Map<String, int[]> measuredPatchRGB;
-    private Map<String, int[]> calibrationPatchRGB;
+    private final Map<Integer, Integer> versionNumberMap;
+//    private Map<String, int[]> measuredPatchRGB;
+//    private Map<String, int[]> calibrationPatchRGB;
     private float[] illumData;
     private RealMatrix calMatrix;
-    private Map<Integer, float[][][]> stripImageMap;
+    private final Map<Integer, float[][][]> stripImageMap;
     private int stripPixelWidth;
     private TestInfo testInfo;
 
@@ -128,14 +125,6 @@ public class DecodeData {
         this.finderPatternsFound = finderPatternsFound;
     }
 
-    public Image getDecodeImage() {
-        return decodeImage;
-    }
-
-    public void setDecodeImage(Image decodeImage) {
-        this.decodeImage = decodeImage;
-    }
-
     public FinderPatternInfo getPatternInfo() {
         return patternInfo;
     }
@@ -176,13 +165,13 @@ public class DecodeData {
         this.whitePointArray = whitePointArray;
     }
 
-    public float getPercentageShadow() {
-        return percentageShadow;
-    }
+//    public float getPercentageShadow() {
+//        return percentageShadow;
+//    }
 
-    public void setPercentageShadow(float percentageShadow) {
-        this.percentageShadow = percentageShadow;
-    }
+//    public void setPercentageShadow(float percentageShadow) {
+//        this.percentageShadow = percentageShadow;
+//    }
 
     public float[] getDeltaEStats() {
         return deltaEStats;
@@ -192,21 +181,13 @@ public class DecodeData {
         this.deltaEStats = deltaE2000Stats;
     }
 
-    public Map<String, int[]> getMeasuredPatchRGB() {
-        return measuredPatchRGB;
-    }
+//    public void setMeasuredPatchRGB(Map<String, int[]> measuredPatchRGB) {
+//        this.measuredPatchRGB = measuredPatchRGB;
+//    }
 
-    public void setMeasuredPatchRGB(Map<String, int[]> measuredPatchRGB) {
-        this.measuredPatchRGB = measuredPatchRGB;
-    }
-
-    public Map<String, int[]> getCalibrationPatchRGB() {
-        return calibrationPatchRGB;
-    }
-
-    public void setCalibrationPatchRGB(Map<String, int[]> calibrationPatchRGB) {
-        this.calibrationPatchRGB = calibrationPatchRGB;
-    }
+//    public void setCalibrationPatchRGB(Map<String, int[]> calibrationPatchRGB) {
+//        this.calibrationPatchRGB = calibrationPatchRGB;
+//    }
 
     public byte[] getDecodeImageByteArray() {
         return decodeImageByteArray;
@@ -216,22 +197,15 @@ public class DecodeData {
         this.decodeImageByteArray = decodeImageByteArray;
     }
 
-    public int getPreviewWidth() {
-        return previewWidth;
-    }
+//    public void setPreviewWidth(int previewWidth) {
+//        this.previewWidth = previewWidth;
+//    }
 
-    public void setPreviewWidth(int previewWidth) {
-        this.previewWidth = previewWidth;
-    }
+//    public void setPreviewHeight(int previewHeight) {
+//        this.previewHeight = previewHeight;
+//    }
 
-    public int getPreviewHeight() {
-        return previewHeight;
-    }
-
-    public void setPreviewHeight(int previewHeight) {
-        this.previewHeight = previewHeight;
-    }
-
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean getDistanceOk() {
         return distanceOk;
     }
@@ -281,8 +255,8 @@ public class DecodeData {
         this.patternInfo = null;
         this.decodeImageByteArray = null;
         this.shadowPoints = null;
-        this.measuredPatchRGB = null;
-        this.calibrationPatchRGB = null;
+//        this.measuredPatchRGB = null;
+//        this.calibrationPatchRGB = null;
         this.tilt = DecodeProcessor.NO_TILT;
         this.distanceOk = true;
         calMatrix = null;
@@ -290,8 +264,8 @@ public class DecodeData {
     }
 
     //todo remove debug code
-    public void saveImage() {
-        ImageUtil.saveImage(decodeImageByteArray, FileHelper.FileType.TEST_IMAGE,
-                String.valueOf(Calendar.getInstance().getTimeInMillis()));
-    }
+//    public void saveImage() {
+//        ImageUtil.saveImage(decodeImageByteArray, FileHelper.FileType.TEST_IMAGE,
+//                String.valueOf(Calendar.getInstance().getTimeInMillis()));
+//    }
 }

@@ -23,7 +23,6 @@ import android.content.Context;
 import android.hardware.Camera;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.util.Log;
 
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
@@ -31,6 +30,8 @@ import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StriptestHandler;
 import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
 import org.akvo.caddisfly.util.ImageUtil;
+
+import timber.log.Timber;
 
 /**
  * Created by markwestra on 19/07/2017
@@ -50,24 +51,24 @@ public class CameraOperationsManager {
     //debug code
     private byte[] bytes;
 
-    private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
+    private final Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera camera) {
 
             if (bytes != null && bytes.length > 0 && AppPreferences.isTestMode()) {
                 // Use test image if we are in test mode
-                StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
+                StriptestHandler.getDecodeData().setDecodeImageByteArray(bytes);
 
 //                ImageUtil.saveImageBytes(camera, bytes, FileHelper.FileType.TEST_IMAGE,
 //                        String.valueOf(Calendar.getInstance().getTimeInMillis()));
             } else {
                 // store image for later use
-                StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
+                StriptestHandler.getDecodeData().setDecodeImageByteArray(imageData);
             }
             MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
 
-    private Runnable runAutoFocus = new Runnable() {
+    private final Runnable runAutoFocus = new Runnable() {
         public void run() {
             if (mCamera != null) {
                 if (!changingExposure) {
@@ -170,7 +171,7 @@ public class CameraOperationsManager {
      */
     private void startCameraThread() {
         if (StripMeasureActivity.DEBUG) {
-            Log.d("Caddisfly", "Starting camera background thread");
+            Timber.d("Starting camera background thread");
         }
         HandlerThread mCameraThread = new HandlerThread("CameraBackground");
         mCameraThread.start();

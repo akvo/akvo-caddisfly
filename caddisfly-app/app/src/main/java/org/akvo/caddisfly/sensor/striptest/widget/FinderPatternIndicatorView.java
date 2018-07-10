@@ -51,7 +51,7 @@ public class FinderPatternIndicatorView extends View {
     private final Paint paint2;
     private final Bitmap arrowBitmap;
     private final Bitmap closerBitmap;
-    private Matrix matrix = new Matrix();
+    private final Matrix matrix = new Matrix();
     private List<FinderPattern> patterns;
     private boolean shadowGrid[][];
     private int previewScreenHeight;
@@ -142,7 +142,7 @@ public class FinderPatternIndicatorView extends View {
         invalidate();
     }
 
-    public void showShadow(List<float[]> shadowPoints, float percentage, PerspectiveTransform cardToImageTransform) {
+    public void showShadow(List<float[]> shadowPoints, PerspectiveTransform cardToImageTransform) {
         shadowGrid = new boolean[GRID_H + 5][GRID_V + 5];
         int xGrid;
         int yGrid;
@@ -160,10 +160,10 @@ public class FinderPatternIndicatorView extends View {
         invalidate();
     }
 
-    public void setColor(int color) {
-        paint.setColor(color);
-    }
-
+//    public void setColor(int color) {
+//        paint.setColor(color);
+//    }
+//
     @Override
     public void onDraw(@NonNull Canvas canvas) {
         if (patterns != null) {

@@ -36,6 +36,7 @@ import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,7 +88,9 @@ public class BluetoothResultFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_bluetooth_result, container, false);
 
-        testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+        if (getArguments() != null) {
+            testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+        }
 
         Button buttonInstructions = view.findViewById(R.id.button_instructions);
         buttonInstructions.setOnClickListener(view1 -> {
@@ -130,13 +133,15 @@ public class BluetoothResultFragment extends Fragment {
             // Build the result json to be returned
 
             Intent resultIntent = new Intent();
+            Activity activity = getActivity();
+            if (activity != null) {
+                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,
+                        results, null, "");
+                resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
-            JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,
-                    results, null, -1, "");
-            resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-
-            getActivity().setResult(Activity.RESULT_OK, resultIntent);
-            getActivity().finish();
+                activity.setResult(Activity.RESULT_OK, resultIntent);
+                activity.finish();
+            }
 
         });
 
@@ -147,7 +152,8 @@ public class BluetoothResultFragment extends Fragment {
         if (AppPreferences.isDiagnosticMode()) {
             LinearLayout layoutTitle = view.findViewById(R.id.layoutTitleBar);
             if (layoutTitle != null) {
-                layoutTitle.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.diagnostic));
+                layoutTitle.setBackgroundColor(ContextCompat.getColor(
+                        Objects.requireNonNull(getActivity()), R.color.diagnostic));
             }
         }
 
@@ -227,7 +233,6 @@ public class BluetoothResultFragment extends Fragment {
                         ranges[1] = m.group(2);
                         ranges[0] = "null";
                         unit = m.group(3);
-                        //String formula = m.group(4);
                     }
                 }
 
@@ -322,21 +327,25 @@ public class BluetoothResultFragment extends Fragment {
             for (Result subTest : testInfo.getResults()) {
                 if (subTest.getMd610Id().equalsIgnoreCase(md610Id)) {
 
-                    if (subTest.getId() == 1) {
-                        layoutResult1.setVisibility(View.VISIBLE);
-                        textName1.setText(subTest.getName());
-                        textUnit1.setText(subTest.getUnit());
-                        textResult1.setText(result);
-                    } else if (subTest.getId() == 2) {
-                        layoutResult2.setVisibility(View.VISIBLE);
-                        textName2.setText(subTest.getName());
-                        textUnit2.setText(subTest.getUnit());
-                        textResult2.setText(result);
-                    } else if (subTest.getId() == 3) {
-                        layoutResult3.setVisibility(View.VISIBLE);
-                        textName3.setText(subTest.getName());
-                        textUnit3.setText(subTest.getUnit());
-                        textResult3.setText(result);
+                    switch (subTest.getId()) {
+                        case 1:
+                            layoutResult1.setVisibility(View.VISIBLE);
+                            textName1.setText(subTest.getName());
+                            textUnit1.setText(subTest.getUnit());
+                            textResult1.setText(result);
+                            break;
+                        case 2:
+                            layoutResult2.setVisibility(View.VISIBLE);
+                            textName2.setText(subTest.getName());
+                            textUnit2.setText(subTest.getUnit());
+                            textResult2.setText(result);
+                            break;
+                        case 3:
+                            layoutResult3.setVisibility(View.VISIBLE);
+                            textName3.setText(subTest.getName());
+                            textUnit3.setText(subTest.getUnit());
+                            textResult3.setText(result);
+                            break;
                     }
 
                     results.put(subTest.getId(), result);

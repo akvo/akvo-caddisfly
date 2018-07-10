@@ -55,7 +55,7 @@ public class AboutActivity extends BaseActivity {
     /**
      * Displays legal information.
      */
-    public void onSoftwareNoticesClick(View view) {
+    public void onSoftwareNoticesClick(@SuppressWarnings("unused") View view) {
         NoticesDialogFragment dialog = NoticesDialogFragment.newInstance();
         dialog.show(getFragmentManager(), "NoticesDialog");
     }
@@ -63,7 +63,7 @@ public class AboutActivity extends BaseActivity {
     /**
      * Disables diagnostic mode.
      */
-    public void disableDiagnosticsMode(View view) {
+    public void disableDiagnosticsMode(@SuppressWarnings("unused") View view) {
         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
                 Toast.LENGTH_SHORT).show();
 
@@ -86,7 +86,7 @@ public class AboutActivity extends BaseActivity {
     /**
      * Turn on diagnostic mode if user clicks on version section CHANGE_MODE_MIN_CLICKS times.
      */
-    public void switchToDiagnosticMode(View view) {
+    public void switchToDiagnosticMode(@SuppressWarnings("unused") View view) {
         if (!AppPreferences.isDiagnosticMode()) {
             clickCount++;
 

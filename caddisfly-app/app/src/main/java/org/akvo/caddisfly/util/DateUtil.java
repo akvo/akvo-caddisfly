@@ -19,13 +19,7 @@
 
 package org.akvo.caddisfly.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-import timber.log.Timber;
 
 /**
  * Utility functions for date and time.
@@ -65,15 +59,5 @@ public final class DateUtil {
 
         return (int) ((calendar2.getTimeInMillis()
                 - calendar1.getTimeInMillis()) / (1000 * 60 * 60));
-    }
-
-    public static Date convertStringToDate(String dateString, String format) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
-        try {
-            return simpleDateFormat.parse(dateString.trim());
-        } catch (ParseException e) {
-            Timber.e(e);
-        }
-        return null;
     }
 }

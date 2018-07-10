@@ -126,9 +126,6 @@
         <activity
             android:name=".sensor.bluetooth.DeviceScanActivity"
             android:screenOrientation="nosensor" />
-        <activity
-            android:name=".sensor.chamber.ChamberTestActivity"
-            android:screenOrientation="nosensor" />
 
         <service
             android:name=".sensor.bluetooth.BluetoothLeService"
@@ -155,17 +152,6 @@
             android:name=".usb.UsbService"
             android:enabled="true" />
         <!-- /USB -->
-
-
-        <!-- Diagnostic -->
-        <activity
-            android:name=".ui.DiagnosticInfoActivity"
-            android:parentActivityName=".preference.SettingsActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name=".diagnostic.DiagnosticSwatchActivity"
-            android:screenOrientation="nosensor" />
-        <!-- /Diagnostic -->
 
         <provider
             android:name="android.support.v4.content.FileProvider"

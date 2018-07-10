@@ -138,7 +138,7 @@ public class SettingsActivity extends BaseActivity
         return true;
     }
 
-    public void onDisableDiagnostics(MenuItem item) {
+    public void onDisableDiagnostics(@SuppressWarnings("unused") MenuItem item) {
         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
                 Toast.LENGTH_SHORT).show();
 

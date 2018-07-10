@@ -126,7 +126,7 @@ public class SwatchView extends View {
 
         for (int resultIndex = 0; resultIndex < testInfo.getResults().size(); resultIndex++) {
             List<ColorItem> colors = testInfo.getResults().get(resultIndex).getColors();
-            if (colors.size() > 0) {
+            if (colors != null && colors.size() > 0) {
 
                 lineCount += 1;
 
@@ -165,7 +165,7 @@ public class SwatchView extends View {
             if (testInfo != null) {
                 for (int resultIndex = 0; resultIndex < testInfo.getResults().size(); resultIndex++) {
                     List<ColorItem> colors = testInfo.getResults().get(resultIndex).getColors();
-                    if (colors.size() > 0) {
+                    if (colors != null && colors.size() > 0) {
                         float colorCount = colors.size();
 
                         if (blockWidth == 0) {

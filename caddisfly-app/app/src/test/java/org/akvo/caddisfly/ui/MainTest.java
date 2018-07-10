@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,10 +34,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
-import org.robolectric.shadows.ShadowApplication;
-import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.ShadowPackageManager;
 
 import static junit.framework.Assert.assertEquals;
@@ -60,7 +56,7 @@ public class MainTest {
     }
 
     @Test
-    public void onCreateShouldInflateTheMenu() throws Exception {
+    public void onCreateShouldInflateTheMenu() {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         Toolbar toolbar = activity.findViewById(R.id.toolbar);
@@ -71,7 +67,7 @@ public class MainTest {
     }
 
     @Test
-    public void onClickSettings() throws Exception {
+    public void onClickSettings() {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         ActionMenuItemView button = activity.findViewById(R.id.actionSettings);
@@ -85,7 +81,7 @@ public class MainTest {
     }
 
     @Test
-    public void sensors() throws Exception {
+    public void sensors() {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         Button button = activity.findViewById(R.id.buttonSensors);
@@ -107,7 +103,7 @@ public class MainTest {
     }
 
     @Test
-    public void stripTest() throws Exception {
+    public void stripTest() {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         Button button = activity.findViewById(R.id.buttonStripTest);
@@ -121,7 +117,7 @@ public class MainTest {
     }
 
     @Test
-    public void md610() throws Exception {
+    public void md610() {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         Button button = activity.findViewById(R.id.buttonBluetooth);
@@ -135,7 +131,7 @@ public class MainTest {
     }
 
     @Test
-    public void cbt() throws Exception {
+    public void cbt() {
         Activity activity = Robolectric.setupActivity(MainActivity.class);
 
         Button button = activity.findViewById(R.id.buttonCbt);
@@ -147,37 +143,4 @@ public class MainTest {
                     intent.getComponent().getClassName());
         }
     }
-
-    @Test
-    public void clickingCalibrate() throws Exception {
-
-        String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-        ActivityController controller = Robolectric.buildActivity(MainActivity.class).create().start();
-        Activity activity = (Activity) controller.get();
-
-        Button button = activity.findViewById(R.id.buttonCalibrate);
-
-        button.performClick();
-
-        Intent nextIntent = shadowOf(activity).getNextStartedActivity();
-
-        assertNull(nextIntent);
-
-        ShadowApplication application = shadowOf(activity.getApplication());
-        application.grantPermissions(permissions);
-        controller.resume();
-
-        button.performClick();
-
-        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
-
-        button.performClick();
-        Intent intent = shadowOf(activity).getNextStartedActivity();
-        if (intent.getComponent() != null) {
-            assertEquals(TestListActivity.class.getCanonicalName(),
-                    intent.getComponent().getClassName());
-        }
-    }
-
 }

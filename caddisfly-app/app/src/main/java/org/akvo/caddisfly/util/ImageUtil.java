@@ -21,13 +21,6 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Point;
-import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.media.ExifInterface;
 import android.text.TextUtils;
@@ -51,129 +44,8 @@ import timber.log.Timber;
  */
 public final class ImageUtil {
 
-    //Custom color matrix to convert to GrayScale
-    private static final float[] MATRIX = new float[]{
-            0.3f, 0.59f, 0.11f, 0, 0,
-            0.3f, 0.59f, 0.11f, 0, 0,
-            0.3f, 0.59f, 0.11f, 0, 0,
-            0, 0, 0, 1, 0};
-
     private ImageUtil() {
     }
-
-    /**
-     * Decode bitmap from byte array.
-     *
-     * @param bytes the byte array
-     * @return the bitmap
-     */
-    public static Bitmap getBitmap(@NonNull byte[] bytes) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inMutable = true;
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-    }
-
-    /**
-     * Crop a bitmap to a square shape with  given length.
-     *
-     * @param bitmap the bitmap to crop
-     * @param length the length of the sides
-     * @return the cropped bitmap
-     */
-    @SuppressWarnings("SameParameterValue")
-    public static Bitmap getCroppedBitmap(@NonNull Bitmap bitmap, int length) {
-
-        int[] pixels = new int[length * length];
-
-        int centerX = bitmap.getWidth() / 2;
-        int centerY = bitmap.getHeight() / 2;
-        Point point;
-
-        point = new Point(centerX, centerY);
-        bitmap.getPixels(pixels, 0, length,
-                point.x - (length / 2),
-                point.y - (length / 2),
-                length,
-                length);
-
-        Bitmap croppedBitmap = Bitmap.createBitmap(pixels, 0, length,
-                length,
-                length,
-                Bitmap.Config.ARGB_8888);
-        croppedBitmap = ImageUtil.getRoundedShape(croppedBitmap, length);
-        croppedBitmap.setHasAlpha(true);
-
-        return croppedBitmap;
-    }
-
-    public static Bitmap getGrayscale(@NonNull Bitmap src) {
-
-        Bitmap dest = Bitmap.createBitmap(
-                src.getWidth(),
-                src.getHeight(),
-                src.getConfig());
-
-        Canvas canvas = new Canvas(dest);
-        Paint paint = new Paint();
-        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(MATRIX);
-        paint.setColorFilter(filter);
-        canvas.drawBitmap(src, 0, 0, paint);
-
-        return dest;
-    }
-
-    /**
-     * Crop bitmap image into a round shape.
-     *
-     * @param bitmap   the bitmap
-     * @param diameter the diameter of the resulting image
-     * @return the rounded bitmap
-     */
-    private static Bitmap getRoundedShape(@NonNull Bitmap bitmap, int diameter) {
-
-        Bitmap resultBitmap = Bitmap.createBitmap(diameter,
-                diameter, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(resultBitmap);
-        Path path = new Path();
-        path.addCircle(((float) diameter - 1) / 2,
-                ((float) diameter - 1) / 2,
-                (((float) diameter) / 2),
-                Path.Direction.CCW
-        );
-
-        canvas.clipPath(path);
-        resultBitmap.setHasAlpha(true);
-        canvas.drawBitmap(bitmap,
-                new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
-                new Rect(0, 0, diameter, diameter), null
-        );
-        return resultBitmap;
-    }
-
-    /*
-    public static void saveImage(@NonNull byte[] data, String subfolder, String fileName) {
-
-        File path = FileHelper.getFilesDir(FileHelper.FileType.IMAGE, subfolder);
-
-        File photo = new File(path, fileName + ".jpg");
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(photo.getPath());
-            fos.write(data);
-        } catch (Exception ignored) {
-
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    Timber.e(e);
-                }
-            }
-        }
-    }
-*/
 
     private static boolean saveImage(Bitmap bitmap, String filename) {
         OutputStream out = null;
@@ -330,27 +202,6 @@ public final class ImageUtil {
         return inSampleSize;
     }
 
-    /*
-        public static void saveImageBytes(Camera camera, byte[] data, FileHelper.FileType fileType, String fileName) {
-            try {
-                Camera.Parameters parameters = camera.getParameters();
-                Camera.Size size = parameters.getPreviewSize();
-                YuvImage image = new YuvImage(data, parameters.getPreviewFormat(),
-                        size.width, size.height, null);
-
-                File path = FileHelper.getFilesDir(fileType);
-                File file = new File(path, fileName + ".jpg");
-
-                FileOutputStream fileStream = new FileOutputStream(file);
-                image.compressToJpeg(new Rect(0, 0, image.getWidth(),
-                        image.getHeight()), 100, fileStream);
-
-            } catch (FileNotFoundException e) {
-                Timber.e(e);
-            }
-        }
-    */
-
     /**
      * load the  bytes from a file.
      *
@@ -375,11 +226,5 @@ public final class ImageUtil {
         }
 
         return new byte[0];
-    }
-
-    public static Bitmap rotateImage(@NonNull Bitmap in, int angle) {
-        Matrix mat = new Matrix();
-        mat.postRotate(angle);
-        return Bitmap.createBitmap(in, 0, 0, in.getWidth(), in.getHeight(), mat, true);
     }
 }

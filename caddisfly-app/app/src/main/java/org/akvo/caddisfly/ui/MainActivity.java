@@ -19,23 +19,17 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
@@ -45,11 +39,9 @@ import org.akvo.caddisfly.common.NavigationController;
 import org.akvo.caddisfly.databinding.ActivityMainBinding;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
-import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
-import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
@@ -59,16 +51,9 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import static org.akvo.caddisfly.model.TestType.CHAMBER_TEST;
-
 public class MainActivity extends BaseActivity {
 
-    private static final float SNACK_BAR_LINE_SPACING = 1.4f;
-
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
-    private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
-    private final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private ActivityMainBinding b;
     private NavigationController navigationController;
 
     @Override
@@ -79,7 +64,7 @@ public class MainActivity extends BaseActivity {
 
         navigationController = new NavigationController(this);
 
-        b = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityMainBinding b = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         setTitle(R.string.appName);
 
@@ -136,7 +121,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void onDisableDiagnosticsClick(View view) {
+    public void onDisableDiagnosticsClick(@SuppressWarnings("unused") View view) {
 
         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
                 Toast.LENGTH_SHORT).show();
@@ -153,15 +138,15 @@ public class MainActivity extends BaseActivity {
         viewModel.clearTests();
     }
 
-    public void onStripTestsClick(View view) {
+    public void onStripTestsClick(@SuppressWarnings("unused") View view) {
         navigationController.navigateToTestType(TestType.STRIP_TEST);
     }
 
-    public void onBluetoothDeviceClick(View view) {
+    public void onBluetoothDeviceClick(@SuppressWarnings("unused") View view) {
         navigationController.navigateToTestType(TestType.BLUETOOTH);
     }
 
-    public void onSensorsClick(View view) {
+    public void onSensorsClick(@SuppressWarnings("unused") View view) {
         boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
         if (hasOtg) {
             navigationController.navigateToTestType(TestType.SENSOR);
@@ -170,50 +155,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void onCalibrateClick(View view) {
-
-        if (permissionsDelegate.hasPermissions(permissions)) {
-            startCalibrate();
-        } else {
-            permissionsDelegate.requestPermissions(permissions);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
-            startCalibrate();
-        } else {
-            Snackbar snackbar = Snackbar
-                    .make(b.mainLayout, getString(R.string.storagePermission),
-                            Snackbar.LENGTH_LONG)
-                    .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(this));
-
-            TypedValue typedValue = new TypedValue();
-            getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-
-            snackbar.setActionTextColor(typedValue.data);
-            View snackView = snackbar.getView();
-            TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
-            textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
-            textView.setTextColor(Color.WHITE);
-            snackbar.show();
-        }
-    }
-
-    private void startCalibrate() {
-        navigationController.navigateToTestType(CHAMBER_TEST);
-    }
-
-    public void onCbtClick(View view) {
+    public void onCbtClick(@SuppressWarnings("unused") View view) {
         navigationController.navigateToTestType(TestType.CBT);
     }
 
-    public void onSettingsClick(MenuItem item) {
+    public void onSettingsClick(@SuppressWarnings("unused") MenuItem item) {
         final Intent intent = new Intent(this, SettingsActivity.class);
         startActivityForResult(intent, 100);
     }

@@ -139,7 +139,7 @@ public class ManualTestActivity extends BaseActivity
 
         results.put(1, result);
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, imageFileName);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null,  imageFileName);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
 

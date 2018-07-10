@@ -37,18 +37,13 @@
     <dimen name="text_margin_bottom">15dp</dimen>
 
     <!--CBT-->
-    <dimen name="cbt_shapes_height">280dp</dimen>
     <dimen name="view_gutter_bottom">20dp</dimen>
     <dimen name="cbt_shapes_text_size">19sp</dimen>
 
     <!--md610-->
     <dimen name="md610_label_title">19sp</dimen>
-    <dimen name="md610_label_superscript">15sp</dimen>
-    <dimen name="md610_label_subtitle">15sp</dimen>
-    <dimen name="md610_label_reagent_code">21sp</dimen>
 
     <!-- StripTest -->
     <dimen name="quality_check_view_height">36dp</dimen>
-    <dimen name="fab_margin">0dp</dimen>
 
 </resources>

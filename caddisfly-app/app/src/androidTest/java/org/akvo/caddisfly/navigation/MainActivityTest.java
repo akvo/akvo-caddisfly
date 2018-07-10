@@ -56,9 +56,6 @@ public class MainActivityTest {
 
     @Test
     public void testMainActivityButtons() {
-        onView(withText("Calibrate")).perform(click());
-
-        pressBack();
 
         onView(withText("Strip Test")).perform(click());
 

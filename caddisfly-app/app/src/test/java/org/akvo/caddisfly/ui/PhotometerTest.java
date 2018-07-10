@@ -54,7 +54,7 @@ public class PhotometerTest {
     }
 
     @Test
-    public void testCount() throws Exception {
+    public void testCount() {
 
         Intent intent = new Intent();
         intent.putExtra(ConstantKey.TYPE, TestType.BLUETOOTH);
@@ -76,7 +76,7 @@ public class PhotometerTest {
     }
 
     @Test
-    public void sensorTitles() throws Exception {
+    public void sensorTitles() {
         Intent intent = new Intent();
         intent.putExtra(ConstantKey.TYPE, TestType.BLUETOOTH);
 

@@ -42,16 +42,16 @@ public class Instruction implements Parcelable {
     };
     @SerializedName("section")
     @Expose
-    public List<String> section = null;
+    public final List<String> section;
     @SerializedName("image")
     @Expose
-    public String image;
+    private final String image;
     @SerializedName("layout")
     @Expose
-    public String layout;
+    private final String layout;
     @SerializedName("testStage")
     @Expose
-    public int testStage;
+    public final int testStage;
 
     private Instruction(Parcel in) {
         section = in.createStringArrayList();

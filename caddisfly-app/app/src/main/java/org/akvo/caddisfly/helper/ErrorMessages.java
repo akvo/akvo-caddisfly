@@ -20,12 +20,8 @@
 package org.akvo.caddisfly.helper;
 
 import android.app.Activity;
-import android.content.Intent;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.chamber.ChamberTestActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 
 public class ErrorMessages {
@@ -66,56 +62,6 @@ public class ErrorMessages {
                 activity.getString(R.string.pleaseContactSupport));
         AlertUtil.showError(activity, R.string.error, message, null, R.string.ok,
                 (dialogInterface, i) -> dialogInterface.dismiss(), null, null);
-    }
-
-    /**
-     * Alert message for calibration incomplete or invalid.
-     */
-    public static void alertCalibrationIncomplete(Activity activity, TestInfo testInfo) {
-
-        String message = activity.getString(R.string.errorCalibrationIncomplete, testInfo.getName());
-        message = String.format(MESSAGE_TWO_LINE_FORMAT, message,
-                activity.getString(R.string.doYouWantToCalibrate));
-
-        AlertUtil.showAlert(activity, R.string.cannotStartTest, message, R.string.calibrate,
-                (dialogInterface, i) -> {
-
-                    final Intent intent = new Intent(activity, ChamberTestActivity.class);
-                    intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-                    activity.startActivity(intent);
-
-                    activity.setResult(Activity.RESULT_CANCELED);
-                    dialogInterface.dismiss();
-                }, (dialogInterface, i) -> {
-                    activity.setResult(Activity.RESULT_CANCELED);
-                    dialogInterface.dismiss();
-                    activity.finish();
-                },
-                dialogInterface -> {
-                    activity.setResult(Activity.RESULT_CANCELED);
-                    dialogInterface.dismiss();
-                    activity.finish();
-                }
-        );
-    }
-
-    public static void alertCalibrationExpired(Activity activity) {
-
-        String message = String.format(MESSAGE_TWO_LINE_FORMAT,
-                activity.getString(R.string.errorCalibrationExpired),
-                activity.getString(R.string.orderFreshBatch));
-
-        AlertUtil.showAlert(activity, R.string.cannotStartTest,
-                message, R.string.ok,
-                (dialogInterface, i) -> {
-                    dialogInterface.dismiss();
-                    activity.finish();
-                }, null,
-                dialogInterface -> {
-                    dialogInterface.dismiss();
-                    activity.finish();
-                }
-        );
     }
 
 }

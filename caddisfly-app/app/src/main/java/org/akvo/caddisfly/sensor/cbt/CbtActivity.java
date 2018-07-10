@@ -37,6 +37,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
@@ -110,11 +111,9 @@ public class CbtActivity extends BaseActivity
         if (resultCode == RESULT_OK) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             if (requestCode == CBT_TEST) {
-                (new Handler()).postDelayed(() -> {
-                    fragmentTransaction.replace(R.id.fragment_container,
-                            CompartmentBagFragment.newInstance(cbtResult), "compartmentFragment")
-                            .commit();
-                }, 500);
+                (new Handler()).postDelayed(() -> fragmentTransaction.replace(R.id.fragment_container,
+                        CompartmentBagFragment.newInstance(cbtResult), "compartmentFragment")
+                        .commit(), 500);
             }
         } else {
             onBackPressed();
@@ -142,6 +141,7 @@ public class CbtActivity extends BaseActivity
         cbtResult = key;
     }
 
+    @SuppressWarnings("unused")
     public void onClickMatchedButton(View view) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, CbtResultFragment.newInstance(cbtResult), "resultFragment")
@@ -150,6 +150,7 @@ public class CbtActivity extends BaseActivity
     }
 
 
+    @SuppressWarnings("unused")
     public void onClickAcceptResult(View view) {
 
         SparseArray<String> results = new SparseArray<>();
@@ -171,7 +172,7 @@ public class CbtActivity extends BaseActivity
         results.put(2, mpnValue.getMpn());
         results.put(3, mpnValue.getConfidence());
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, imageFileName);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, imageFileName);
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
@@ -196,7 +197,7 @@ public class CbtActivity extends BaseActivity
         @SuppressLint("InflateParams")
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
             LayoutInflater inflater = getActivity().getLayoutInflater();
 
             builder.setView(inflater.inflate(R.layout.dialog_incubation_times, null))

@@ -54,7 +54,7 @@ public class SensorsTest {
     }
 
     @Test
-    public void sensorCount() throws Exception {
+    public void sensorCount() {
         Intent intent = new Intent();
         intent.putExtra(ConstantKey.TYPE, TestType.SENSOR);
 
@@ -76,7 +76,7 @@ public class SensorsTest {
 
 
     @Test
-    public void sensorTitles() throws Exception {
+    public void sensorTitles() {
         Intent intent = new Intent();
         intent.putExtra(ConstantKey.TYPE, TestType.SENSOR);
 
