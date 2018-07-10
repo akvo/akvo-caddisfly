@@ -48,6 +48,7 @@ import org.akvo.caddisfly.ui.InstructionFragment;
 import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -101,7 +102,7 @@ public class DeviceControlActivity extends BaseActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            switch (action) {
+            switch (Objects.requireNonNull(action)) {
                 case BluetoothLeService.ACTION_GATT_CONNECTED:
                     //updateConnectionState(R.string.connected);
                     invalidateOptionsMenu();

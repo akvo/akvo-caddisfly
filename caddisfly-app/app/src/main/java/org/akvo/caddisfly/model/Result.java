@@ -29,7 +29,6 @@ import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Result implements Parcelable {
 
@@ -47,48 +46,42 @@ public class Result implements Parcelable {
     };
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private final Integer id;
     @SerializedName("md610_id")
     @Expose
-    private String md610Id;
+    private final String md610Id;
     @SerializedName("name")
     @Expose
-    private String name;
+    private final String name;
     @SerializedName("unit")
     @Expose
-    private String unit = "";
+    private final String unit;
     @SerializedName("formula")
     @Expose
-    private String formula = "";
+    private final String formula;
     @SerializedName("unitChoice")
     @Expose
-    private String unitChoice = "";
+    private final String unitChoice;
     @SerializedName("patchPos")
     @Expose
-    private Double patchPos;
+    private final Double patchPos;
     @SerializedName("patchWidth")
     @Expose
-    private Double patchWidth;
+    private final Double patchWidth;
     @SerializedName("timeDelay")
     @Expose
-    private Integer timeDelay = 0;
+    private final Integer timeDelay;
     @SerializedName("testStage")
     @Expose
-    private Integer testStage = 1;
+    private final Integer testStage;
     @SerializedName("colors")
     @Expose
-    private List<ColorItem> colorItems = new ArrayList<>();
+    private final List<ColorItem> colorItems;
     @SerializedName("grayScale")
     @Expose
-    private Boolean grayScale = false;
-    private String result;
-    private String displayResult;
-    private boolean highLevelsFound;
+    private final Boolean grayScale;
 
-    public Result() {
-    }
-
-    protected Result(Parcel in) {
+    private Result(Parcel in) {
         id = in.readByte() == 0x00 ? null : in.readInt();
         md610Id = in.readString();
         name = in.readString();
@@ -113,10 +106,6 @@ public class Result implements Parcelable {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getMd610Id() {
         return md610Id;
     }
@@ -125,20 +114,12 @@ public class Result implements Parcelable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
+        return unit == null ? "" : unit;
     }
 
     public String getFormula() {
-        return formula;
+        return formula == null ? "" : formula;
     }
 
     public String getUnitChoice() {
@@ -149,16 +130,8 @@ public class Result implements Parcelable {
         return patchPos;
     }
 
-    public void setPatchPos(Double patchPos) {
-        this.patchPos = patchPos;
-    }
-
     public Double getPatchWidth() {
         return patchWidth;
-    }
-
-    public void setPatchWidth(Double patchWidth) {
-        this.patchWidth = patchWidth;
     }
 
     /**
@@ -171,28 +144,16 @@ public class Result implements Parcelable {
             // use the id as seconds when ignoring actual timeDelay
             return id;
         } else {
-            return timeDelay;
+            return timeDelay == null ? 0 : timeDelay;
         }
     }
 
-    public void setTimeDelay(Integer timeDelay) {
-        this.timeDelay = timeDelay;
-    }
-
     public Integer getTestStage() {
-        return testStage;
+        return testStage == null ? 1 : testStage;
     }
 
     public List<ColorItem> getColors() {
-        return colorItems;
-    }
-
-    public void setColorItems(List<ColorItem> colorItems) {
-        this.colorItems = colorItems;
-    }
-
-    public Boolean getGrayScale() {
-        return grayScale;
+        return colorItems == null ? new ArrayList<>() : colorItems;
     }
 
     @Override
@@ -244,22 +205,5 @@ public class Result implements Parcelable {
             dest.writeList(colorItems);
         }
         dest.writeByte((byte) (grayScale == null ? 0 : grayScale ? 1 : 2));
-    }
-
-    public String getResult() {
-        return getResult(Locale.getDefault());
-    }
-
-    /**
-     * Result in required format.
-     *
-     * @return the result
-     */
-    public String getResult(Locale locale) {
-        if (locale == Locale.US) {
-            return result;
-        } else {
-            return displayResult;
-        }
     }
 }

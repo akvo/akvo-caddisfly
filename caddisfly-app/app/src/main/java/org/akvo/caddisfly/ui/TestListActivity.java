@@ -52,7 +52,6 @@ public class TestListActivity extends BaseActivity
     private static final int REQUEST_SYNC_PERMISSION = 101;
 
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
-    private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final String[] storagePermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private TestListFragment fragment;
     private TestInfo testInfo;

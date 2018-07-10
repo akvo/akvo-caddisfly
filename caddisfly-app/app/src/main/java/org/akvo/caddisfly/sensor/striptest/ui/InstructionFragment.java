@@ -44,6 +44,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -163,7 +164,8 @@ public class InstructionFragment extends Fragment {
         textView.setLineSpacing(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5.0f,
                 getResources().getDisplayMetrics()), 1.0f);
 
-        Spanned spanned = StringUtil.getStringResourceByName(getContext(), instruction);
+        Spanned spanned = StringUtil.getStringResourceByName(
+                Objects.requireNonNull(getContext()), instruction);
         if (!instruction.isEmpty()) {
             textView.append(spanned);
             linearLayout.addView(textView);

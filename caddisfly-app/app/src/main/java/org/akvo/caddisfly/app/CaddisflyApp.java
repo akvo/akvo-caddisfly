@@ -55,11 +55,6 @@ public class CaddisflyApp extends Application {
         app = value;
     }
 
-    public static String getAppLanguage() {
-        Configuration config = getApp().getResources().getConfiguration();
-        return config.locale.getLanguage().substring(0, 2);
-    }
-
     /**
      * Gets the app version.
      *

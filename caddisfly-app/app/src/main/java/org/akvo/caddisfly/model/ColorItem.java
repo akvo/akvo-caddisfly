@@ -47,7 +47,7 @@ public class ColorItem implements Parcelable {
     private Double value;
     @SerializedName("lab")
     @Expose
-    private List<Double> lab = null;
+    private final List<Double> lab;
     private Integer rgb;
 
     private ColorItem(Parcel in) {
@@ -65,10 +65,6 @@ public class ColorItem implements Parcelable {
         }
     }
 
-    public ColorItem(double value) {
-        this.value = value;
-    }
-
     public Double getValue() {
         return value;
     }
@@ -79,10 +75,6 @@ public class ColorItem implements Parcelable {
 
     public List<Double> getLab() {
         return lab;
-    }
-
-    public void setLab(List<Double> lab) {
-        this.lab = lab;
     }
 
     public int getRgb() {

@@ -54,7 +54,7 @@ public final class StriptestHandler extends Handler {
     public static final int SHADOW_QUALITY_FAILED_MESSAGE = 9;
     public static final int CALIBRATION_DONE_MESSAGE = 10;
     public static final int IMAGE_SAVED_MESSAGE = 11;
-    public static final DecodeData mDecodeData = new DecodeData();
+    private static final DecodeData mDecodeData = new DecodeData();
     private static final int DECODE_IMAGE_CAPTURE_FAILED_MESSAGE = 3;
     private static final CalibrationCardData mCalCardData = new CalibrationCardData();
     private static State mState;
@@ -311,7 +311,7 @@ public final class StriptestHandler extends Handler {
                     // version number
                     if (mCalCardData != null && mCalCardData.getVersion() != version) {
                         try {
-                            CalibrationCardUtils.readCalibrationFile(context, mCalCardData, version);
+                            CalibrationCardUtils.readCalibrationFile(mCalCardData, version);
                         } catch (CalibrationCardException e) {
                             // keep going
                             mDecodeData.clearData();
@@ -349,7 +349,7 @@ public final class StriptestHandler extends Handler {
                 }
 
                 mFinderPatternIndicatorView.showShadow(mDecodeData.getShadowPoints(),
-                        mDecodeData.getPercentageShadow(), mDecodeData.getCardToImageTransform());
+                        mDecodeData.getCardToImageTransform());
 
                 // start another decode image capture request
                 mDecodeData.clearData();
@@ -375,7 +375,7 @@ public final class StriptestHandler extends Handler {
                 }
 
                 mFinderPatternIndicatorView.showShadow(mDecodeData.getShadowPoints(),
-                        mDecodeData.getPercentageShadow(), mDecodeData.getCardToImageTransform());
+                        mDecodeData.getCardToImageTransform());
 
                 mDecodeProcessor.startCalibration();
                 break;

@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
 public class TestInfoViewModel extends AndroidViewModel {
 
     private static TestInfo testInfo;
-    public ObservableField<TestInfo> test = new ObservableField<>();
+    private final ObservableField<TestInfo> test = new ObservableField<>();
 
     public TestInfoViewModel(@NonNull Application application) {
         super(application);

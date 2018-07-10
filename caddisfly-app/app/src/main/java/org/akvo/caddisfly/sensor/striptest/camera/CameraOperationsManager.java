@@ -51,24 +51,24 @@ public class CameraOperationsManager {
     //debug code
     private byte[] bytes;
 
-    private Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
+    private final Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera camera) {
 
             if (bytes != null && bytes.length > 0 && AppPreferences.isTestMode()) {
                 // Use test image if we are in test mode
-                StriptestHandler.mDecodeData.setDecodeImageByteArray(bytes);
+                StriptestHandler.getDecodeData().setDecodeImageByteArray(bytes);
 
 //                ImageUtil.saveImageBytes(camera, bytes, FileHelper.FileType.TEST_IMAGE,
 //                        String.valueOf(Calendar.getInstance().getTimeInMillis()));
             } else {
                 // store image for later use
-                StriptestHandler.mDecodeData.setDecodeImageByteArray(imageData);
+                StriptestHandler.getDecodeData().setDecodeImageByteArray(imageData);
             }
             MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
 
-    private Runnable runAutoFocus = new Runnable() {
+    private final Runnable runAutoFocus = new Runnable() {
         public void run() {
             if (mCamera != null) {
                 if (!changingExposure) {

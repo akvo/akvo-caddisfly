@@ -44,8 +44,8 @@ public class TestInfo implements Parcelable {
             return new TestInfo[size];
         }
     };
-    private transient DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-    private transient DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
+    private final transient DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+    private final transient DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
     @SerializedName("reagents")
     @Expose
     private List<Reagent> reagents = null;
@@ -320,16 +320,8 @@ public class TestInfo implements Parcelable {
         return instructions;
     }
 
-    public void setInstructions(List<Instruction> instructions) {
-        this.instructions = instructions;
-    }
-
     public String getImage() {
         return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getImageScale() {

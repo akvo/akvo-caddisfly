@@ -30,7 +30,7 @@ import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import timber.log.Timber;
@@ -177,7 +177,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         parameters.setFocusMode(focusMode);
 
         Camera.Area cardArea = new Camera.Area(new Rect(-1000, -1000, -167, 1000), 1);
-        List<Camera.Area> cardAreaList = Arrays.asList(cardArea);
+        List<Camera.Area> cardAreaList = Collections.singletonList(cardArea);
         if (parameters.getMaxNumFocusAreas() > 0) {
             parameters.setFocusAreas(cardAreaList);
         }

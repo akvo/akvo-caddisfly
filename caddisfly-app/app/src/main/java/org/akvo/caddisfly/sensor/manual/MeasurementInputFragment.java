@@ -41,7 +41,7 @@ import org.akvo.caddisfly.ui.BaseFragment;
 
 public class MeasurementInputFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
-    EditText editResult;
+    private EditText editResult;
     private OnSubmitResultListener mListener;
 
     /**

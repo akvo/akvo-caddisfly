@@ -41,6 +41,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.widget.CenteredImageSpan;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -184,7 +185,7 @@ public final class StringUtil {
         @SuppressLint("InflateParams")
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
             LayoutInflater inflater = getActivity().getLayoutInflater();
 
             builder.setView(inflater.inflate(R.layout.dialog_sulfide_instruction, null))

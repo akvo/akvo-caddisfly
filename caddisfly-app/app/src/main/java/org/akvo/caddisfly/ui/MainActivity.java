@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void onDisableDiagnosticsClick(View view) {
+    public void onDisableDiagnosticsClick(@SuppressWarnings("unused") View view) {
 
         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
                 Toast.LENGTH_SHORT).show();
@@ -138,15 +138,15 @@ public class MainActivity extends BaseActivity {
         viewModel.clearTests();
     }
 
-    public void onStripTestsClick(View view) {
+    public void onStripTestsClick(@SuppressWarnings("unused") View view) {
         navigationController.navigateToTestType(TestType.STRIP_TEST);
     }
 
-    public void onBluetoothDeviceClick(View view) {
+    public void onBluetoothDeviceClick(@SuppressWarnings("unused") View view) {
         navigationController.navigateToTestType(TestType.BLUETOOTH);
     }
 
-    public void onSensorsClick(View view) {
+    public void onSensorsClick(@SuppressWarnings("unused") View view) {
         boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
         if (hasOtg) {
             navigationController.navigateToTestType(TestType.SENSOR);
@@ -155,11 +155,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void onCbtClick(View view) {
+    public void onCbtClick(@SuppressWarnings("unused") View view) {
         navigationController.navigateToTestType(TestType.CBT);
     }
 
-    public void onSettingsClick(MenuItem item) {
+    public void onSettingsClick(@SuppressWarnings("unused") MenuItem item) {
         final Intent intent = new Intent(this, SettingsActivity.class);
         startActivityForResult(intent, 100);
     }

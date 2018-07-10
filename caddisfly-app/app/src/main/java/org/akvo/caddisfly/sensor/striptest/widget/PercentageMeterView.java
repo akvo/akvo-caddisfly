@@ -38,7 +38,7 @@ public class PercentageMeterView extends View {
     private float percentage = Float.NaN;
 
     // Red to green colour scale
-    private int[][] colours = {{230, 53, 46}, {234, 91, 47}, {240, 132, 45}, {232, 168, 52}, {247, 211, 43}, {212, 216, 57}, {169, 204, 57},
+    private final int[][] colours = {{230, 53, 46}, {234, 91, 47}, {240, 132, 45}, {232, 168, 52}, {247, 211, 43}, {212, 216, 57}, {169, 204, 57},
             {112, 186, 68}, {58, 171, 75}, {6, 155, 85}};
 
     public PercentageMeterView(@NonNull Context context) {

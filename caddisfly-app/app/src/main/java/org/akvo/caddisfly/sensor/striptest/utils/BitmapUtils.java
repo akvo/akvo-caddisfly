@@ -21,6 +21,7 @@ import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.List;
+import java.util.Objects;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueString;
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
@@ -209,7 +210,7 @@ public class BitmapUtils {
         }
 
         // resize
-        return Bitmap.createScaledBitmap(bmpRGB, IMG_WIDTH, height, false);
+        return Bitmap.createScaledBitmap(Objects.requireNonNull(bmpRGB), IMG_WIDTH, height, false);
     }
 
     // ----------------------------------------- individual ----------------------------------------

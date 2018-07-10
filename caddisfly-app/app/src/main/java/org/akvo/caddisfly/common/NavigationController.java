@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class NavigationController {
 
-    private Context context;
+    private final Context context;
 
     public NavigationController(Context context) {
         this.context = context;

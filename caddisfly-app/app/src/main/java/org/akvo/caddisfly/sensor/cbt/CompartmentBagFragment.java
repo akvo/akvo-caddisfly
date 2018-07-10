@@ -33,6 +33,8 @@ import android.widget.Button;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
 
+import java.util.Objects;
+
 public class CompartmentBagFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final int BUTTON_ENABLE_DELAY = 1500;
@@ -93,7 +95,7 @@ public class CompartmentBagFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle(R.string.setCompartmentColors);
+        Objects.requireNonNull(getActivity()).setTitle(R.string.setCompartmentColors);
     }
 
 

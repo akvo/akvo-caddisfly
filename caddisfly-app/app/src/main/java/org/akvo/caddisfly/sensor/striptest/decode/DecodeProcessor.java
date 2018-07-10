@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by mark westra on 17/05/2017
@@ -192,7 +193,7 @@ public class DecodeProcessor {
             }
 
             // compute and store tilt and distance check
-            decodeData.setTilt(getDegrees(getTilt(patternInfo)));
+            decodeData.setTilt(getDegrees(Objects.requireNonNull(getTilt(patternInfo))));
             decodeData.setDistanceOk(distanceOk(patternInfo, decodeHeight));
 
             // store finder patterns
@@ -345,7 +346,7 @@ public class DecodeProcessor {
 
             // compute percentage of good points
             float devPercent = 100f - (100.0f * numDev) / points.length;
-            decodeData.setPercentageShadow(Math.min(Math.max(50f, devPercent), 100f));
+//            decodeData.setPercentageShadow(Math.min(Math.max(50f, devPercent), 100f));
 
             // if the percentage of good point is under the limit (something like 90%), we fail the test
             if (devPercent < Constants.SHADOW_PERCENTAGE_LIMIT) {
@@ -567,8 +568,8 @@ public class DecodeProcessor {
 //        Map<String, float[]> patchXYZMap = CalibrationCardUtils.linearRGBtoXYZ(patchRGBMap);
 
         // Set calibration goal RGB values so we can display them later
-        Map<String, int[]> patchCalRGBMap = CalibrationCardUtils.XYZtoRGBint(calXYZMap);
-        StriptestHandler.getDecodeData().setCalibrationPatchRGB(patchCalRGBMap);
+//        Map<String, int[]> patchCalRGBMap = CalibrationCardUtils.XYZtoRGBint(calXYZMap);
+//        StriptestHandler.getDecodeData().setCalibrationPatchRGB(patchCalRGBMap);
 
         // measure the distance in terms of deltaE2000
 //        float[] deltaE2000Stats = CalibrationCardUtils.deltaE2000stats(calXYZMap, patchXYZMap);
@@ -586,8 +587,8 @@ public class DecodeProcessor {
 //        String[] worst = CalibrationCardUtils.worstPatches(calXYZMap, resultXYZMap);
 
         // set calibrated colours so we can display them
-        Map<String, int[]> patchRGBCalMap = CalibrationCardUtils.XYZtoRGBint(resultXYZMap);
-        decodeData.setMeasuredPatchRGB(patchRGBCalMap);
+//        Map<String, int[]> patchRGBCalMap = CalibrationCardUtils.XYZtoRGBint(resultXYZMap);
+//        decodeData.setMeasuredPatchRGB(patchRGBCalMap);
 
         // set deltaE2000 stats
         decodeData.setDeltaEStats(deltaE2000Stats);

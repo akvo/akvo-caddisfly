@@ -183,7 +183,7 @@ public class TestActivity extends BaseActivity {
      *
      * @param view the View
      */
-    public void onStartTestClick(View view) {
+    public void onStartTestClick(@SuppressWarnings("unused") View view) {
 
         String[] checkPermissions = permissions;
 
@@ -296,7 +296,7 @@ public class TestActivity extends BaseActivity {
      *
      * @param view the View
      */
-    public void onInstructionsClick(View view) {
+    public void onInstructionsClick(@SuppressWarnings("unused") View view) {
 
         InstructionFragment instructionFragment = InstructionFragment.getInstance(testInfo);
 
@@ -312,7 +312,7 @@ public class TestActivity extends BaseActivity {
      *
      * @param view the View
      */
-    public void onSiteLinkClick(View view) {
+    public void onSiteLinkClick(@SuppressWarnings("unused") View view) {
         String url = testInfo.getBrandUrl();
         if (url != null) {
             if (!url.contains("http://")) {
@@ -440,7 +440,7 @@ public class TestActivity extends BaseActivity {
      *
      * @param view the view
      */
-    public void onClickIncubationTimes(View view) {
+    public void onClickIncubationTimes(@SuppressWarnings("unused") View view) {
         DialogFragment newFragment = new CbtActivity.IncubationTimesDialogFragment();
         newFragment.show(getSupportFragmentManager(), "incubationTimes");
     }
