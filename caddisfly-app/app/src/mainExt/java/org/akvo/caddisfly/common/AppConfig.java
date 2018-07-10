@@ -50,6 +50,11 @@ public final class AppConfig {
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;
 
+    /**
+     * To launch Flow app.
+     */
+    public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
+
     private AppConfig() {
     }
 

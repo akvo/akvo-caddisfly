@@ -29,7 +29,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?primaryBackgroundStyle"
             android:orientation="vertical">
 
             <include layout="@layout/toolbar" />
@@ -41,9 +40,61 @@
                 android:orientation="vertical"
                 android:paddingTop="1dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30dp"
+                    android:text="Launch from survey"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingMultiplier="1.3"
+                    android:padding="20dp"
+                    android:text="To use Akvo Caddisfly, launch Akvo Flow and select a water or soil quality question in a survey form."
+                    android:textColor="#333"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/buttonLaunchApp"
+                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="10dp"
+                    android:enabled="true"
+                    android:minWidth="230dp"
+                    android:onClick="onLaunchAppClick"
+                    android:text="Go to Akvo Flow"
+                    android:theme="?primaryButtonStyle" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/button_instructions"
+                        android:layout_centerHorizontal="true"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="40dp"
+                        android:layout_alignParentBottom="true"
+                        android:onClick="onUserGuideClick"
+                        android:text="Read the user guide"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="20dp"
+                        android:drawablePadding="10dp"
+                        android:drawableStart="@drawable/ic_help_outline"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/textVersionExpiry"

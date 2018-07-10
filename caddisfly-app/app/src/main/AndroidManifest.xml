@@ -58,6 +58,8 @@
             android:name=".ui.MainActivity"
             android:label="@string/appName"
             android:screenOrientation="nosensor"
+            android:autoRemoveFromRecents="true"
+            android:excludeFromRecents="true"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

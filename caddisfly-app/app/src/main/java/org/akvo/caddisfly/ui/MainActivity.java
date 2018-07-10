@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -68,9 +69,9 @@ public class MainActivity extends BaseActivity {
             DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
             b.textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
 
-            if (AppConfig.APP_EXPIRY && ApkHelper.isNonStoreVersion(this)) {
-                b.textVersionExpiry.setVisibility(View.VISIBLE);
-            }
+//            if (AppConfig.APP_EXPIRY && ApkHelper.isNonStoreVersion(this)) {
+//                b.textVersionExpiry.setVisibility(View.VISIBLE);
+//            }
 
             // If app has expired then close this activity
             ApkHelper.isAppVersionExpired(this);
@@ -158,6 +159,26 @@ public class MainActivity extends BaseActivity {
     public void onAboutClick(MenuItem item) {
         final Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
+    }
+
+    public void onLaunchAppClick(View view) {
+        Intent intent = getPackageManager()
+                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            finishAndRemoveTask();
+        } else {
+            int pid = android.os.Process.myPid();
+            android.os.Process.killProcess(pid);
+        }
+    }
+
+    public void onUserGuideClick(View view) {
+
     }
 
     /**
