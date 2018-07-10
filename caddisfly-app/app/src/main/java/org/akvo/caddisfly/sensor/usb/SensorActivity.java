@@ -56,6 +56,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -81,7 +82,7 @@ public class SensorActivity extends BaseActivity {
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context arg0, Intent arg1) {
-            switch (arg1.getAction()) {
+            switch (Objects.requireNonNull(arg1.getAction())) {
                 case UsbService.ACTION_USB_PERMISSION_NOT_GRANTED:
                     Toast.makeText(arg0, "USB Permission not granted", Toast.LENGTH_SHORT).show();
                     displayNotConnectedView();
@@ -456,12 +457,13 @@ public class SensorActivity extends BaseActivity {
         b.imageUsbConnection.animate().alpha(0f).setDuration(ANIMATION_DURATION);
     }
 
+    @SuppressWarnings("unused")
     public void onClickAcceptResult(View view) {
         // Build the result json to be returned
 
         Intent resultIntent = new Intent();
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, -1, EMPTY_STRING);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, EMPTY_STRING);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
         setResult(Activity.RESULT_OK, resultIntent);

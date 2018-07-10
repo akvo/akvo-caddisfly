@@ -115,7 +115,7 @@ public class ResultActivity extends BaseActivity {
             }
 
             JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo,
-                    resultStringValues, brackets, -1, totalImageUrl);
+                    resultStringValues, brackets, totalImageUrl);
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
             setResult(RESULT_OK, intent);
