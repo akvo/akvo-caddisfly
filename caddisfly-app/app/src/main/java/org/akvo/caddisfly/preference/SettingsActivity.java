@@ -151,6 +151,8 @@ public class SettingsActivity extends BaseActivity
         clearTests();
 
         removeAllFragments();
+
+        finish();
     }
 
     private void clearTests() {

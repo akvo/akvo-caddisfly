@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -178,7 +179,9 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onUserGuideClick(View view) {
-
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(AppConfig.PRODUCT_SUPPORT_URL));
+        startActivity(browserIntent);
     }
 
     /**
