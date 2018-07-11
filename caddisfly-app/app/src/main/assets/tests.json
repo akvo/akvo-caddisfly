@@ -6522,6 +6522,7 @@
       "subtype": "manual",
       "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
       "brand": "Lovibond AF106",
+      "imageScale": "centerCrop",
       "hasImage": false,
       "instructions": [
         {
