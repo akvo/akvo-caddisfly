@@ -1176,6 +1176,23 @@
           "unit": "NTU"
         }
       ]
+    },
+    {
+      "name": "Water - Chlorine pH HR POOLTESTER",
+      "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
+      "brand": "Lovibond AF106",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Chlorine",
+          "unit": "mg/l"
+        },
+        {
+          "id": 2,
+          "name": "pH"
+        }
+      ]
     }
   ]
 }
