@@ -231,7 +231,6 @@ public class BluetoothResultFragment extends Fragment {
                     if (m.find()) {
                         ranges[0] = m.group(1);
                         ranges[1] = m.group(2);
-                        ranges[0] = "null";
                         unit = m.group(3);
                     }
                 }
@@ -255,11 +254,7 @@ public class BluetoothResultFragment extends Fragment {
                         }
 
                         if (isText) {
-                            if (ranges.length > 1) {
-                                result = handleOutOfRangeResult(ranges, result);
-                            } else {
-                                return false;
-                            }
+                            result = handleOutOfRangeResult(ranges, result);
                         }
 
                         showResults(result, md610Id);

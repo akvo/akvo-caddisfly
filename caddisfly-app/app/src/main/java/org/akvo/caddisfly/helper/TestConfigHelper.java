@@ -135,7 +135,7 @@ public final class TestConfigHelper {
 
             resultJson.put(ConstantJsonKey.RESULT, resultsJsonArray);
 
-            if (!resultImageUrl.isEmpty()) {
+            if (resultImageUrl != null && !resultImageUrl.isEmpty()) {
                 resultJson.put(ConstantJsonKey.IMAGE, resultImageUrl);
             }
 
