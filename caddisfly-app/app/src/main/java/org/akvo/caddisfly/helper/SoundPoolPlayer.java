@@ -46,18 +46,6 @@ public class SoundPoolPlayer {
         //noinspection deprecation
         mPlayer = new SoundPool(4, AudioManager.STREAM_ALARM, 0);
 
-        //beep sound for every photo taken during a test
-        mSounds.put(R.raw.beep, this.mPlayer.load(context, R.raw.beep, 1));
-
-        //long beep sound if the contamination in the water sample is very high
-        mSounds.put(R.raw.beep_long, this.mPlayer.load(context, R.raw.beep_long, 1));
-
-        //done sound when the test completes successfully
-        mSounds.put(R.raw.done, this.mPlayer.load(context, R.raw.done, 1));
-
-        //error sound when the test fails
-        mSounds.put(R.raw.err, this.mPlayer.load(context, R.raw.err, 1));
-
         //low beep sound
         mSounds.put(R.raw.futurebeep2, this.mPlayer.load(context, R.raw.futurebeep2, 1));
 
