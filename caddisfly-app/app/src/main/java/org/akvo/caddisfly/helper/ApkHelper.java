@@ -24,6 +24,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import org.akvo.caddisfly.BuildConfig;
@@ -77,7 +78,11 @@ public final class ApkHelper {
                     if (!BuildConfig.showExperimentalTests) {
                         activity.startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
                     }
-                    activity.finish();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        activity.finishAndRemoveTask();
+                    } else {
+                        activity.finish();
+                    }
                 });
 
                 final AlertDialog alertDialog = builder.create();
