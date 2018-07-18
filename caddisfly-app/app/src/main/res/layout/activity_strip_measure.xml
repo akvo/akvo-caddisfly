@@ -67,8 +67,7 @@
                 android:id="@+id/layout_cameraPlaceholder"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight=".75"
-                android:background="@color/background" />
+                android:layout_weight=".75" />
         </LinearLayout>
 
         <FrameLayout
