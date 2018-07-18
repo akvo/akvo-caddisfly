@@ -56,10 +56,10 @@
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/appName"
-            android:screenOrientation="nosensor"
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
+            android:label="@string/appName"
+            android:screenOrientation="nosensor"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -96,20 +96,23 @@
             android:screenOrientation="nosensor" />
         <!-- /CBT -->
 
-
         <!-- Manual Test -->
         <activity
             android:name=".sensor.manual.ManualTestActivity"
             android:screenOrientation="nosensor" />
         <!-- /Manual Tests -->
 
+        <!-- Pool Test -->
+        <activity
+            android:name=".sensor.manual.PoolTestActivity"
+            android:screenOrientation="nosensor" />
+        <!-- /Pool Test -->
 
         <!-- USB Sensor -->
         <activity
             android:name=".sensor.usb.SensorActivity"
             android:screenOrientation="nosensor" />
         <!-- /USB Sensor -->
-
 
         <!-- StripTest -->
         <activity
@@ -119,7 +122,6 @@
             android:name=".sensor.striptest.ui.ResultActivity"
             android:screenOrientation="nosensor" />
         <!-- /StripTest -->
-
 
         <!-- Bluetooth -->
         <activity
@@ -133,7 +135,6 @@
             android:name=".sensor.bluetooth.BluetoothLeService"
             android:enabled="true" />
         <!-- /Bluetooth -->
-
 
         <!-- USB -->
         <activity

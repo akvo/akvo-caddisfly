@@ -60,6 +60,7 @@ import org.akvo.caddisfly.sensor.bluetooth.DeviceControlActivity;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
 import org.akvo.caddisfly.sensor.manual.ManualTestActivity;
+import org.akvo.caddisfly.sensor.manual.PoolTestActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.usb.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -220,6 +221,9 @@ public class TestActivity extends BaseActivity {
             case MANUAL:
                 startManualTest();
                 break;
+            case MANUAL_POOL:
+                startPoolTest();
+                break;
             case SENSOR:
                 startSensorTest();
                 break;
@@ -232,6 +236,13 @@ public class TestActivity extends BaseActivity {
                 break;
             default:
         }
+    }
+
+    private void startPoolTest() {
+        Intent intent;
+        intent = new Intent(this, PoolTestActivity.class);
+        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+        startActivityForResult(intent, REQUEST_TEST);
     }
 
     private void startBluetoothTest() {

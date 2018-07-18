@@ -46,6 +46,12 @@ public enum TestType {
     MANUAL,
 
     /**
+     * Lovibond pool tester
+     */
+    @SerializedName("manual")
+    MANUAL_POOL,
+
+    /**
      * External bluetooth testing device.
      */
     @SerializedName("bluetooth")
