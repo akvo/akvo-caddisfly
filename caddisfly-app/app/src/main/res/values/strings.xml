@@ -34,6 +34,7 @@
     <string name="survey">Survey</string>
     <string name="success" tools:ignore="UnusedResources">Success</string>
     <string name="done" tools:ignore="UnusedResources">Done</string>
+    <string name="close">Close</string>
 
     <string name="result">Result</string>
     <string name="language">Language</string>
@@ -121,5 +122,15 @@
     <string name="eclipse_public_license">Eclipse Public License 1.0</string>
     <string name="experiment">Experiment</string>
     <string name="diagnostics_options">Diagnostic Options</string>
+
+    <!--Intro-->
+    <string name="connect_with_app">Connect with Akvo Flow</string>
+    <string name="a_water_quality_testing_solution">A water quality testing solution supporting over 20 parameters, like pH, E.coli or free chlorine.</string>
+    <string name="test_water_quality_using">Test water quality using connected colorimetry, microbiology, sensor and strip tests.</string>
+    <string name="app_is_integrated">Akvo Caddisfly is integrated with Akvo Flow, a data collection and monitoring tool.</string>
+    <string name="to_conduct_a_water_quality_test">To conduct a water quality test go to Flow and select the Caddisfly question.</string>
+    <string name="go_to_akvo_flow">Go to Akvo Flow</string>
+    <string name="notFound">Not Found</string>
+    <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
 
 </resources>

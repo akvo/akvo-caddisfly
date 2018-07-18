@@ -31,11 +31,12 @@ import org.akvo.caddisfly.R;
 
 public class PageIndicatorView extends View {
 
-    private static final float DISTANCE = 24;
-    private static final int BULLET_RADIUS = 6;
+    private static final float DISTANCE = 34;
+    private static final int BULLET_RADIUS = 8;
 
     @NonNull
     private final Paint fillPaint;
+    private final Paint strokePaint;
     private int pageCount;
     private int activePage;
 
@@ -51,9 +52,16 @@ public class PageIndicatorView extends View {
         super(context, attrs, defStyleAttr);
 
         fillPaint = new Paint();
-        fillPaint.setStyle(Paint.Style.FILL);
-        fillPaint.setColor(ContextCompat.getColor(context, R.color.accent));
+        fillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        fillPaint.setStrokeWidth(2);
+        fillPaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
         fillPaint.setAntiAlias(true);
+
+        strokePaint = new Paint();
+        strokePaint.setStyle(Paint.Style.STROKE);
+        strokePaint.setStrokeWidth(2);
+        strokePaint.setColor(ContextCompat.getColor(context, R.color.colorAccent));
+        strokePaint.setAntiAlias(true);
     }
 
     public void setPageCount(int value) {
@@ -79,10 +87,10 @@ public class PageIndicatorView extends View {
             for (int i = 0; i < pageCount; i++) {
                 if (activePage == i) {
                     canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
-                            BULLET_RADIUS * 2, fillPaint);
+                            BULLET_RADIUS, fillPaint);
                 } else {
                     canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
-                            BULLET_RADIUS, fillPaint);
+                            BULLET_RADIUS, strokePaint);
                 }
             }
         }
