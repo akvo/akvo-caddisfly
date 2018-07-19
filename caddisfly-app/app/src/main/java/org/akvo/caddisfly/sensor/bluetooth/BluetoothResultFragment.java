@@ -41,6 +41,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static org.akvo.caddisfly.common.AppConfig.STOP_ANIMATIONS;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -123,7 +124,7 @@ public class BluetoothResultFragment extends Fragment {
 
         ProgressBar progressBar = view.findViewById(R.id.progressBar);
 
-        if (AppPreferences.isTestMode()) {
+        if (AppPreferences.isTestMode() || STOP_ANIMATIONS) {
             progressBar.setVisibility(View.GONE);
         }
 

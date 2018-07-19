@@ -31,16 +31,10 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -60,12 +54,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
@@ -93,33 +86,12 @@ public class CbtTest {
         }
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
-
     @Before
     public void setUp() {
 
         loadData(mIntentsRule.getActivity(), mCurrentLanguage);
 
         clearPreferences(mIntentsRule);
-
-        resetLanguage();
 
         stubCameraIntent();
     }
@@ -146,32 +118,15 @@ public class CbtTest {
     }
 
     @Test
-    public void startCbtTest() {
+    public void cbtTest() {
 
-        cbtTest(false);
+        gotoSurveyForm();
 
-        cbtTest(true);
-    }
+        TestUtil.nextSurveyPage("Coliforms");
 
-    public void cbtTest(boolean external) {
+        clickExternalSourceButton(0);
 
-        if (external) {
-
-            gotoSurveyForm();
-
-            TestUtil.nextSurveyPage(8);
-
-            clickExternalSourceButton(0);
-
-            mDevice.waitForIdle();
-
-        } else {
-
-            goToMainScreen();
-
-            onView(withText(R.string.cbt)).perform(click());
-
-        }
+        mDevice.waitForIdle();
 
         sleep(1000);
 
@@ -288,10 +243,8 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        if (external) {
-            assertNotNull(mDevice.findObject(By.text("Health Risk Category (Based on MPN and Confidence Interval): Very High Risk / Unsafe ")));
-            assertNotNull(mDevice.findObject(By.text("MPN: > 100 MPN/100ml")));
-            assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 9435.1 ")));
-        }
+        assertNotNull(mDevice.findObject(By.text("Health Risk Category (Based on MPN and Confidence Interval): Very High Risk / Unsafe ")));
+        assertNotNull(mDevice.findObject(By.text("MPN: > 100 MPN/100ml")));
+        assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 9435.1 ")));
     }
 }

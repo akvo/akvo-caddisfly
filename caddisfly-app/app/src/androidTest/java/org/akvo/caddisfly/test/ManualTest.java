@@ -23,11 +23,9 @@ package org.akvo.caddisfly.test;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
@@ -38,7 +36,6 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.TestConstant;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -61,12 +58,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertNotNull;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -92,11 +89,7 @@ public class ManualTest {
 
         loadData(mIntentsRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mIntentsRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mIntentsRule);
     }
 
     @Before
@@ -126,9 +119,9 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6, "Manual");
+        TestUtil.nextSurveyPage("Manual");
 
-        clickExternalSourceButton(0, TestConstant.GO_TO_TEST);
+        clickExternalSourceButton(0);
 
         SystemClock.sleep(3000);
 
@@ -205,9 +198,9 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6, "Manual");
+        TestUtil.nextSurveyPage("Manual");
 
-        clickExternalSourceButton(1, TestConstant.GO_TO_TEST);
+        clickExternalSourceButton(1);
 
         SystemClock.sleep(3000);
 
@@ -296,9 +289,9 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6, "Manual");
+        TestUtil.nextSurveyPage("Manual");
 
-        clickExternalSourceButton(2, TestConstant.GO_TO_TEST);
+        clickExternalSourceButton(2);
 
         SystemClock.sleep(3000);
 
@@ -379,7 +372,7 @@ public class ManualTest {
 
         assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
 
-        clickExternalSourceButton(2, TestConstant.GO_TO_TEST);
+        clickExternalSourceButton(2);
 
         SystemClock.sleep(3000);
 

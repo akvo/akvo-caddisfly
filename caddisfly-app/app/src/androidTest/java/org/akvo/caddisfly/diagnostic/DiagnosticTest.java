@@ -19,8 +19,6 @@
 
 package org.akvo.caddisfly.diagnostic;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
@@ -37,16 +35,17 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -71,18 +70,14 @@ public class DiagnosticTest {
 
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mActivityRule);
     }
 
     @Test
     @RequiresDevice
     public void testDiagnosticMode() {
 
-        onView(withId(R.id.actionSettings)).perform(click());
+        onView(withId(R.id.button_info)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -90,7 +85,9 @@ public class DiagnosticTest {
             onView(withId(R.id.textVersion)).perform(click());
         }
 
-        goToMainScreen();
+        onView(withId(R.id.actionSettings)).perform(click());
+
+        pressBack();
 
         onView(withId(R.id.fabDisableDiagnostics)).check(matches(isDisplayed()));
 
