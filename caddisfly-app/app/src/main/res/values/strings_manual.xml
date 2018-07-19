@@ -37,4 +37,12 @@
     <string name="sd_70_rinse">Rinse the sensor with distilled water (never touch the electrode with anything) and place the protective cap back.</string>
     <string name="sd_70_maintenance">Regularly check the calibration of the device and recalibrate if necessary. For calibration instructions: see the product manual in the box.</string>
 
+    <!--PoolTester-->
+    <string name="pt_open_lid">Open the lid of the tester.</string>
+    <string name="pt_fill_compartments">Fill the three compartments until the edge with the water sample. Avoid touching the water sample or the inside of the tester.</string>
+    <string name="pt_add_reagent_1">Add the Phenol Red tablet reagent directly from the foil in the left compartment (pH Phenol Red). Avoid touching the reagent tablets.</string>
+    <string name="pt_add_reagent_2">Add the DPD No.1 tablet directly from the foil in the right (Cl DPD) compartment. Avoid touching the reagent tablets.</string>
+    <string name="pt_close_shake">Close the box with the lid and shake until the reagents are dissolved. Be sure to place the lid correctly with the arrow facing you.</string>
+    <string name="pt_read_result">Find out which colour of the pH or free chlorine interval best matches with your sample and tap the subsequent intervals in the fill-in interface.</string>
+
 </resources>

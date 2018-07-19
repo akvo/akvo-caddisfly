@@ -77,7 +77,7 @@ public class InstructionFragment extends Fragment {
         b.imagePageLeft.setOnClickListener(view ->
                 b.viewPager.setCurrentItem(Math.max(0, b.viewPager.getCurrentItem() - 1)));
 
-
+        b.pagerIndicator.showDots(true);
         b.pagerIndicator.setPageCount(mSectionsPagerAdapter.getCount());
 
         b.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
