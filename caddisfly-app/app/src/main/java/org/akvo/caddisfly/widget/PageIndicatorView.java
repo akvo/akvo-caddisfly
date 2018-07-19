@@ -39,6 +39,7 @@ public class PageIndicatorView extends View {
     private final Paint strokePaint;
     private int pageCount;
     private int activePage;
+    private boolean showDots;
 
     public PageIndicatorView(@NonNull Context context) {
         this(context, null);
@@ -89,10 +90,19 @@ public class PageIndicatorView extends View {
                     canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
                             BULLET_RADIUS, fillPaint);
                 } else {
-                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
-                            BULLET_RADIUS, strokePaint);
+                    if (showDots) {
+                        canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
+                                BULLET_RADIUS / 2, fillPaint);
+                    } else {
+                        canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
+                                BULLET_RADIUS, strokePaint);
+                    }
                 }
             }
         }
+    }
+
+    public void showDots(boolean value) {
+        showDots = value;
     }
 }
