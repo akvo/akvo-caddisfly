@@ -119,6 +119,8 @@ public class DeviceControlActivity extends BaseActivity
                 case BluetoothLeService.ACTION_DATA_AVAILABLE:
                     displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
                     break;
+                default:
+                    break;
             }
         }
     };

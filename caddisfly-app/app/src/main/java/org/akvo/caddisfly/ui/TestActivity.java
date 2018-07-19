@@ -123,11 +123,9 @@ public class TestActivity extends BaseActivity {
             getTestSelectedByExternalApp(fragmentManager, intent);
         }
 
-        if (testInfo != null) {
-            if (testInfo.getSubtype() == TestType.SENSOR
-                    && !this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
-                ErrorMessages.alertFeatureNotSupported(this, true);
-            }
+        if (testInfo != null && testInfo.getSubtype() == TestType.SENSOR
+                && !this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
+            ErrorMessages.alertFeatureNotSupported(this, true);
         }
     }
 

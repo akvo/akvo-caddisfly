@@ -167,11 +167,11 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    public void onNextClicked(View view) {
+    public void onNextClicked(@SuppressWarnings("unused") View view) {
         b.viewPager.setCurrentItem(1, true);
     }
 
-    public void onOkClicked(View view) {
+    public void onOkClicked(@SuppressWarnings("unused") View view) {
         Intent intent = getPackageManager()
                 .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
         if (intent != null) {

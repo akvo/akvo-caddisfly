@@ -55,11 +55,6 @@ public final class AppConfig {
      */
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 
-    /**
-     * Url for user guide and product support
-     */
-    public static final String PRODUCT_SUPPORT_URL = "http://flowsupport.akvo.org/container/show/akvo-caddisfly";
-
     private AppConfig() {
     }
 
