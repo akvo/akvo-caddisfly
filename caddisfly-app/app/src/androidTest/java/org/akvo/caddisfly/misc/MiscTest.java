@@ -19,8 +19,6 @@
 
 package org.akvo.caddisfly.misc;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
@@ -42,10 +40,10 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -69,29 +67,19 @@ public class MiscTest {
 
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mActivityRule);
     }
 
     @Test
     public void testSoftwareNotices() {
 
-        onView(withId(R.id.actionSettings)).perform(click());
+        onView(withId(R.id.button_info)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
         onView(withText(R.string.legalInformation)).check(matches(isDisplayed())).perform(click());
 
         Espresso.pressBack();
-
-        Espresso.pressBack();
-
-        onView(withText(R.string.language)).perform(click());
-
-        onView(withText(R.string.cancel)).perform(click());
 
     }
 }

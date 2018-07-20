@@ -20,8 +20,6 @@
 package org.akvo.caddisfly.instruction;
 
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.StringRes;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
@@ -30,17 +28,11 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -60,13 +52,15 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.getString;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -112,44 +106,23 @@ public class CbtInstructions {
         textView3.check(matches(withText(text)));
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
-
     @Before
     public void setUp() {
 
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mActivityTestRule);
     }
 
     @Test
     @FlakyTest
     public void cbtInstructions() {
 
-        goToMainScreen();
+        gotoSurveyForm();
 
-        onView(withText("E.coli - Aquagenx CBT")).perform(click());
+        TestUtil.nextSurveyPage("Coliforms");
+
+        clickExternalSourceButton(0);
 
         ViewInteraction textView = onView(
                 allOf(withText("www.aquagenx.com"),
@@ -338,9 +311,11 @@ public class CbtInstructions {
     @FlakyTest
     public void cbtInstructionsAll() {
 
-        goToMainScreen();
+        gotoSurveyForm();
 
-        onView(withText("E.coli - Aquagenx CBT")).perform(click());
+        TestUtil.nextSurveyPage("Coliforms");
+
+        clickExternalSourceButton(0);
 
         takeScreenshot("ed4db0fd3386", -1);
 
@@ -362,8 +337,6 @@ public class CbtInstructions {
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestUtil.sleep(600);
-                Espresso.pressBack();
                 TestUtil.sleep(600);
                 Espresso.pressBack();
                 break;

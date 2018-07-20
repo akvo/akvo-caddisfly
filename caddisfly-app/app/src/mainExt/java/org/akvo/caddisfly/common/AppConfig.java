@@ -27,6 +27,11 @@ import org.akvo.caddisfly.BuildConfig;
 public final class AppConfig {
 
     /**
+     * Stop animations only for running Espresso UI tests
+     */
+    public static final boolean STOP_ANIMATIONS = false;
+
+    /**
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
@@ -54,11 +59,6 @@ public final class AppConfig {
      * To launch Flow app.
      */
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
-
-    /**
-     * Url for user guide and product support
-     */
-    public static final String PRODUCT_SUPPORT_URL = "http://flowsupport.akvo.org/container/show/akvo-caddisfly";
 
     private AppConfig() {
     }

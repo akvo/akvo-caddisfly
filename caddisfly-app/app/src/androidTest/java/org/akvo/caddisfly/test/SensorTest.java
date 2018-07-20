@@ -19,9 +19,7 @@
 
 package org.akvo.caddisfly.test;
 
-import android.content.SharedPreferences;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.LargeTest;
@@ -29,16 +27,10 @@ import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -55,6 +47,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.currentHashMap;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
@@ -62,7 +55,7 @@ import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
@@ -85,46 +78,17 @@ public class SensorTest {
         }
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
-
     @Before
     public void setUp() {
 
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mActivityRule);
     }
 
     @Test
     @RequiresDevice
     public void eCTest() {
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.buttonSensors), withText("Sensors"),
-                        withParent(withId(R.id.mainLayout)),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
 
         onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest))).check(matches(isDisplayed()));
 
@@ -200,12 +164,6 @@ public class SensorTest {
                         isDisplayed()));
         appCompatImageButton2.perform(click());
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonSensors), withText("Sensors"),
-                        withParent(withId(R.id.mainLayout)),
-                        isDisplayed()));
-        appCompatButton.perform(click());
-
         onView(allOf(withId(R.id.textToolbarTitle), withText(R.string.selectTest))).check(matches(isDisplayed()));
 
         ViewInteraction relativeLayout1 = onView(
@@ -235,7 +193,7 @@ public class SensorTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(7);
+        TestUtil.nextSurveyPage("Sensors");
 
         clickExternalSourceButton("useExternalSource");
 
@@ -270,7 +228,7 @@ public class SensorTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(7);
+        TestUtil.nextSurveyPage("Sensors");
 
         clickExternalSourceButton(0);
 

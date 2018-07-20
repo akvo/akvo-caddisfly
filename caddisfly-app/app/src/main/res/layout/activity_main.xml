@@ -31,9 +31,7 @@
             android:id="@+id/button_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
             android:background="@android:color/transparent"
-            android:onClick="onAboutClick"
             android:padding="16dp"
             android:src="@drawable/ic_about_info"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +41,7 @@
             android:id="@+id/viewPager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/intro_top_margin"
             app:layout_constraintTop_toBottomOf="@+id/button_info" />
 
         <org.akvo.caddisfly.widget.PageIndicatorView
@@ -79,15 +77,17 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:onClick="onOkClicked"
-            android:paddingBottom="16dp"
+            android:paddingBottom="20dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:paddingTop="16dp"
-            android:text="@string/go_to_akvo_flow"
+            android:paddingTop="20dp"
+            android:text="@string/go_to_external_app"
+            android:textSize="15dp"
             android:theme="?primaryButtonStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="SpUsage" />
 
     </android.support.constraint.ConstraintLayout>
 

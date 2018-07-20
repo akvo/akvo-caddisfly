@@ -369,15 +369,15 @@ public class CalibrationCardUtils {
 //    }
 
     // XYZ to clamped and integer RGB (for testing purposes)
-    public static Map<String, int[]> XYZtoRGBint(Map<String, float[]> patchXYZMap) {
-        Map<String, int[]> patchRGBMap = new HashMap<>();
-        for (String label : patchXYZMap.keySet()) {
-            float[] XYZ = patchXYZMap.get(label);
-            int[] RGB = ColorUtils.XYZtoRGBint(XYZ);
-            patchRGBMap.put(label, RGB);
-        }
-        return patchRGBMap;
-    }
+//    public static Map<String, int[]> XYZtoRGBint(Map<String, float[]> patchXYZMap) {
+//        Map<String, int[]> patchRGBMap = new HashMap<>();
+//        for (String label : patchXYZMap.keySet()) {
+//            float[] XYZ = patchXYZMap.get(label);
+//            int[] RGB = ColorUtils.XYZtoRGBint(XYZ);
+//            patchRGBMap.put(label, RGB);
+//        }
+//        return patchRGBMap;
+//    }
 
     public static Map<String, float[]> calCardXYZ(Map<String, CalibrationCardData.CalValue> calValues) {
         Map<String, float[]> patchXYZMap = new HashMap<>();

@@ -214,11 +214,7 @@ public final class TestUtil {
         clickExternalSourceButton(TestConstantKeys.NEXT);
     }
 
-    public static void nextSurveyPage(int times) {
-        nextSurveyPage(times, "");
-    }
-
-    public static void nextSurveyPage(int times, String tabName) {
+    public static void nextSurveyPage(String tabName) {
 
         UiObject2 tab = mDevice.findObject(By.text(tabName));
         if (tab == null || !tab.isSelected()) {
@@ -231,8 +227,14 @@ public final class TestUtil {
                 }
                 tab = mDevice.findObject(By.text("Fluoride"));
                 if (tab != null && tab.isSelected()) {
-                    for (int j = 0; j < times; j++) {
+                    for (int j = 0; j < 20; j++) {
+                        mDevice.waitForIdle();
                         clickExternalSourceButton(TestConstantKeys.NEXT);
+                        sleep(300);
+                        tab = mDevice.findObject(By.text(tabName));
+                        if (tab != null && tab.isSelected()) {
+                            break;
+                        }
                     }
                     break;
                 }

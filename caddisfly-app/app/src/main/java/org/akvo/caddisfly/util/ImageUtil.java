@@ -21,7 +21,6 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 import android.support.media.ExifInterface;
 import android.text.TextUtils;
 
@@ -69,35 +68,35 @@ public final class ImageUtil {
         return false;
     }
 
-    /**
-     * Save an image.
-     *
-     * @param data     the image data
-     * @param fileType the folder to save in
-     * @param fileName the name of the file
-     */
-    public static void saveImage(@NonNull byte[] data, FileHelper.FileType fileType, String fileName) {
-
-        File path = FileHelper.getFilesDir(fileType);
-
-        File file = new File(path, fileName + ".yuv");
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file.getPath());
-            fos.write(data);
-        } catch (Exception ignored) {
-            // do nothing
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    Timber.e(e);
-                }
-            }
-        }
-    }
+//    /**
+//     * Save an image.
+//     *
+//     * @param data     the image data
+//     * @param fileType the folder to save in
+//     * @param fileName the name of the file
+//     */
+//    public static void saveImage(@NonNull byte[] data, FileHelper.FileType fileType, String fileName) {
+//
+//        File path = FileHelper.getFilesDir(fileType);
+//
+//        File file = new File(path, fileName + ".yuv");
+//
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(file.getPath());
+//            fos.write(data);
+//        } catch (Exception ignored) {
+//            // do nothing
+//        } finally {
+//            if (fos != null) {
+//                try {
+//                    fos.close();
+//                } catch (IOException e) {
+//                    Timber.e(e);
+//                }
+//            }
+//        }
+//    }
 
     private static void checkOrientation(String originalImage, String resizedImage) {
         try {

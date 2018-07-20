@@ -27,9 +27,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.TestConstants;
@@ -38,12 +35,10 @@ import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,6 +59,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
@@ -71,8 +67,8 @@ import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
@@ -96,48 +92,24 @@ public class StriptestInstructions {
         }
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
-
     @Before
     public void setUp() {
 
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
-//        SharedPreferences prefs =
-//                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
-//        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mActivityTestRule);
     }
 
     @Test
     public void instructionsTest() {
 
-        onView(withText("Strip Test")).perform(click());
+        gotoSurveyForm();
 
-        ViewInteraction linearLayout1 = onView(
-                allOf(childAtPosition(
-                        withId(R.id.list_types),
-                        3),
-                        isDisplayed()));
-        linearLayout1.perform(click());
+        TestUtil.nextSurveyPage("Soil Striptest");
+
+        clickExternalSourceButton(1);
+
+        mDevice.waitForIdle();
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.button_instructions), withText("Instructions"),
@@ -237,12 +209,6 @@ public class StriptestInstructions {
                         isDisplayed()));
         button2.check(matches(isDisplayed()));
 
-        pressBack();
-
-        pressBack();
-
-        onView(withText("Strip Test")).check(matches(isDisplayed()));
-
     }
 
     @Test
@@ -252,7 +218,7 @@ public class StriptestInstructions {
 
         gotoSurveyForm();
 
-        nextSurveyPage(3, "Strip Tests");
+        nextSurveyPage("Strip Tests");
 
         clickExternalSourceButton(0);
 
@@ -356,6 +322,7 @@ public class StriptestInstructions {
     }
 
     @Test
+    @Ignore
     @RequiresDevice
     public void testInstructionsAll() {
 

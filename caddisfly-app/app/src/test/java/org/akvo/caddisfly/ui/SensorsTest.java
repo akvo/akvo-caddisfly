@@ -54,29 +54,7 @@ public class SensorsTest {
     }
 
     @Test
-    public void sensorCount() {
-        Intent intent = new Intent();
-        intent.putExtra(ConstantKey.TYPE, TestType.SENSOR);
-
-        ActivityController controller = Robolectric.buildActivity(TestListActivity.class, intent).create();
-
-        controller.start().visible();
-
-        Activity activity = (Activity) controller.get();
-
-        RecyclerView recyclerView = activity.findViewById(R.id.list_types);
-
-        assertSame(SENSOR_TESTS_COUNT, recyclerView.getChildCount());
-
-        assertEquals("Soil - Electrical Conductivity",
-                ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(0).getName());
-        assertEquals("Soil - Electrical Conductivity",
-                ((TextView) recyclerView.getChildAt(0).findViewById(R.id.text_title)).getText());
-    }
-
-
-    @Test
-    public void sensorTitles() {
+    public void sensorTitlesAndCount() {
         Intent intent = new Intent();
         intent.putExtra(ConstantKey.TYPE, TestType.SENSOR);
 

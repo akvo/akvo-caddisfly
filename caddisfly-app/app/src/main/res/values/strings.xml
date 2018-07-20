@@ -129,7 +129,7 @@
     <string name="test_water_quality_using">Test water quality using connected colorimetry, microbiology, sensor and strip tests.</string>
     <string name="app_is_integrated">Akvo Caddisfly is integrated with Akvo Flow, a data collection and monitoring tool.</string>
     <string name="to_conduct_a_water_quality_test">To conduct a water quality test go to Flow and select the Caddisfly question.</string>
-    <string name="go_to_akvo_flow">Go to Akvo Flow</string>
+    <string name="go_to_external_app">Go to Akvo Flow</string>
     <string name="notFound">Not Found</string>
     <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
 

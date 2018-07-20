@@ -98,6 +98,8 @@ public class SensorActivity extends BaseActivity {
                     Toast.makeText(arg0, "USB device not supported", Toast.LENGTH_SHORT).show();
                     displayNotConnectedView();
                     break;
+                default:
+                    break;
             }
         }
     };

@@ -101,6 +101,10 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        b.buttonInfo.setOnClickListener(view -> {
+            final Intent intent = new Intent(getBaseContext(), AboutActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void hideActionBar() {
@@ -113,8 +117,7 @@ public class MainActivity extends BaseActivity {
     private void setStatusBackgroundColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black_main));
         }
@@ -124,7 +127,6 @@ public class MainActivity extends BaseActivity {
         IntroFragmentAdapter adapter = new IntroFragmentAdapter(
                 getSupportFragmentManager());
         b.viewPager.setAdapter(adapter);
-//        b.viewPager.addOnPageChangeListener(b.pagerIndicator);
     }
 
     @Override
@@ -165,11 +167,11 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
-    public void onNextClicked(View view) {
+    public void onNextClicked(@SuppressWarnings("unused") View view) {
         b.viewPager.setCurrentItem(1, true);
     }
 
-    public void onOkClicked(View view) {
+    public void onOkClicked(@SuppressWarnings("unused") View view) {
         Intent intent = getPackageManager()
                 .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
         if (intent != null) {
@@ -199,11 +201,6 @@ public class MainActivity extends BaseActivity {
                 android.os.Process.killProcess(pid);
             }
         }, delay);
-    }
-
-    public void onAboutClick(View view) {
-        final Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
     }
 
     /**

@@ -27,17 +27,11 @@ import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -50,7 +44,6 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
@@ -58,8 +51,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
+import static org.akvo.caddisfly.util.TestHelper.loadData;
+import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -70,7 +67,6 @@ public class BluetoothTest {
 
     @Rule
     public GrantPermissionRule mRuntimePermissionRule = GrantPermissionRule.grant(ACCESS_COARSE_LOCATION);
-
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -85,27 +81,10 @@ public class BluetoothTest {
         }
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
-
     @Before
     public void setup() {
+        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
+
         TestHelper.clearPreferences(mActivityTestRule);
     }
 
@@ -120,25 +99,11 @@ public class BluetoothTest {
 
         activateTestMode();
 
-        goToMainScreen();
+        gotoSurveyForm();
 
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.buttonBluetooth), withText("MD 610 Photometer"),
-                        childAtPosition(
-                                allOf(withId(R.id.mainLayout),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                1)),
-                                2),
-                        isDisplayed()));
-        appCompatButton.perform(click());
+        TestUtil.nextSurveyPage("MD610");
 
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.list_types),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)));
-        recyclerView.perform(actionOnItemAtPosition(26, click()));
+        clickExternalSourceButton(1);
 
         onView(withText("Next")).perform(click());
 

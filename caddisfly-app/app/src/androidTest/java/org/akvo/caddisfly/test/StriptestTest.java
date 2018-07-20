@@ -21,25 +21,21 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
 
 public class StriptestTest {
 
@@ -64,7 +60,6 @@ public class StriptestTest {
 
         clearPreferences(mActivityRule);
 
-        resetLanguage();
     }
 
     @Test
@@ -73,14 +68,11 @@ public class StriptestTest {
 
         activateTestMode();
 
-        test5in1(false);
-        testSoilNitrogen(false);
-        testMerckPH(false);
-        testNitrate100();
+        testSoilNitrogen();
 
-        test5in1(true);
-        testSoilNitrogen(true);
-        testMerckPH(true);
+        testNitrate100();
+        test5in1();
+        testMerckPH();
     }
 
     @After
@@ -88,26 +80,15 @@ public class StriptestTest {
         clearPreferences(mActivityRule);
     }
 
-    private void test5in1(boolean external) {
+    private void test5in1() {
 
-        if (external) {
+        gotoSurveyForm();
 
-            gotoSurveyForm();
+        TestUtil.nextSurveyPage("Strip Tests");
 
-            TestUtil.nextSurveyPage(3);
+        clickExternalSourceButton(3);
 
-            clickExternalSourceButton(3);
-
-            mDevice.waitForIdle();
-
-        } else {
-
-            goToMainScreen();
-
-            onView(withText(R.string.stripTest)).perform(click());
-
-            onView(withText("Water - Chlorine, Hardness, Alkalinity, pH")).perform(click());
-        }
+        mDevice.waitForIdle();
 
         sleep(1000);
 
@@ -161,35 +142,22 @@ public class StriptestTest {
 
         onView(withText("Save")).perform(click());
 
-        if (external) {
-            assertNotNull(mDevice.findObject(By.text("Total Chlorine: 0.0 mg/l")));
-            assertNotNull(mDevice.findObject(By.text("Free Chlorine: 0.15 mg/l")));
-            assertNotNull(mDevice.findObject(By.text("Total Hardness:  gpg")));
-            assertNotNull(mDevice.findObject(By.text("Total Alkalinity: 32.0 mg/l")));
-            assertNotNull(mDevice.findObject(By.text("pH: 6.2 ")));
-        }
+        assertNotNull(mDevice.findObject(By.text("Total Chlorine: 0.0 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Free Chlorine: 0.15 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Total Hardness:  gpg")));
+        assertNotNull(mDevice.findObject(By.text("Total Alkalinity: 32.0 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("pH: 6.2 ")));
     }
 
-    private void testSoilNitrogen(boolean external) {
+    private void testSoilNitrogen() {
 
-        if (external) {
+        gotoSurveyForm();
 
-            gotoSurveyForm();
+        TestUtil.nextSurveyPage("Soil Striptest");
 
-            TestUtil.nextSurveyPage(3);
+        clickExternalSourceButton(0);
 
-            clickExternalSourceButton(2);
-
-            mDevice.waitForIdle();
-
-        } else {
-
-            goToMainScreen();
-
-            onView(withText(R.string.stripTest)).perform(click());
-
-            onView(withText("Soil - Nitrogen")).perform(click());
-        }
+        mDevice.waitForIdle();
 
         sleep(1000);
 
@@ -213,33 +181,20 @@ public class StriptestTest {
 
         onView(withText("Save")).perform(click());
 
-        if (external) {
-            assertNotNull(mDevice.findObject(By.text("Nitrogen: 205.075 mg/l")));
-            assertNotNull(mDevice.findObject(By.text("Nitrate Nitrogen: 41.0 mg/l")));
-            assertNotNull(mDevice.findObject(By.text("Nitrite Nitrogen: 0.01 mg/l")));
-        }
+        assertNotNull(mDevice.findObject(By.text("Nitrogen: 205.075 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Nitrate Nitrogen: 41.0 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Nitrite Nitrogen: 0.01 mg/l")));
     }
 
-    private void testMerckPH(boolean external) {
+    private void testMerckPH() {
 
-        if (external) {
+        gotoSurveyForm();
 
-            gotoSurveyForm();
+        TestUtil.nextSurveyPage("Strip Tests");
 
-            TestUtil.nextSurveyPage(3);
+        clickExternalSourceButton(2);
 
-            clickExternalSourceButton(1);
-
-            mDevice.waitForIdle();
-
-        } else {
-
-            goToMainScreen();
-
-            onView(withText(R.string.stripTest)).perform(click());
-
-            onView(withText("Soil - pH (0 - 14)")).perform(click());
-        }
+        mDevice.waitForIdle();
 
         sleep(1000);
 
@@ -262,22 +217,16 @@ public class StriptestTest {
 
         onView(withText("Save")).perform(click());
 
-        if (external) {
-            assertNotNull(mDevice.findObject(By.text("pH: 4.7 ")));
-        }
+        assertNotNull(mDevice.findObject(By.text("pH: 4.7 ")));
     }
 
     private void testNitrate100() {
-        goToMainScreen();
 
-        onView(withText(R.string.stripTest)).perform(click());
+        gotoSurveyForm();
 
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.list_types),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)));
-        recyclerView.perform(actionOnItemAtPosition(12, click()));
+        nextSurveyPage("Strip Tests");
+
+        clickExternalSourceButton(5);
 
         sleep(1000);
 
