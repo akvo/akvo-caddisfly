@@ -29,6 +29,6 @@ public final class TestConstants {
     public static final int SENSOR_TESTS_COUNT = 3;
     public static final int STRIP_TESTS_COUNT = 21;
     public static final int MD610_TESTS_COUNT = 53;
-    public static final int MANUAL_TESTS_COUNT = 3;
+    public static final int MANUAL_TESTS_COUNT = 4;
 
 }

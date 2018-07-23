@@ -48,7 +48,7 @@ public enum TestType {
     /**
      * Lovibond pool tester
      */
-    @SerializedName("manual")
+    @SerializedName("manual_pool")
     MANUAL_POOL,
 
     /**

@@ -60,7 +60,6 @@ import org.akvo.caddisfly.sensor.bluetooth.DeviceControlActivity;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
 import org.akvo.caddisfly.sensor.manual.ManualTestActivity;
-import org.akvo.caddisfly.sensor.manual.PoolTestActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.usb.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -237,10 +236,17 @@ public class TestActivity extends BaseActivity {
     }
 
     private void startPoolTest() {
-        Intent intent;
-        intent = new Intent(this, PoolTestActivity.class);
-        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-        startActivityForResult(intent, REQUEST_TEST);
+
+        AlertUtil.showAlert(this, R.string.notSupported,
+                "Feature not implemented as yet",
+                R.string.ok, (dialogInterface, i) -> finish(),
+                null, null);
+
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment_container,
+//                SwatchSelectFragment.newInstance(cbtResult), "swatchSelect")
+//                .addToBackStack(null)
+//                .commit();
     }
 
     private void startBluetoothTest() {

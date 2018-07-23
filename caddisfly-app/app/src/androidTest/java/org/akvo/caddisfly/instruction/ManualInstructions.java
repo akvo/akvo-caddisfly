@@ -91,11 +91,8 @@ public class ManualInstructions {
 
     @Before
     public void setUp() {
-
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
-
         clearPreferences(mActivityTestRule);
-
     }
 
     @Test
@@ -106,25 +103,23 @@ public class ManualInstructions {
                 ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
 
         List<TestInfo> testList = viewModel.getTests(TestType.MANUAL);
+        testList.addAll(viewModel.getTests(TestType.MANUAL_POOL));
 
         for (int i = 0; i < TestConstants.MANUAL_TESTS_COUNT; i++) {
-
             TestInfo testInfo = testList.get(i);
 
-            if (testInfo.getSubtype() == TestType.MANUAL) {
-                String id = testInfo.getUuid();
-                id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            String id = testInfo.getUuid();
+            id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-                int pages = navigateToTest(i, id);
+            int pages = navigateToTest(i, id);
 
-                onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
+            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
 
-                onView(withText(testInfo.getName())).check(matches(isDisplayed()));
+            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
 
-                mDevice.pressBack();
+            mDevice.pressBack();
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-            }
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
         Log.d("Caddisfly", jsArrayString.toString());
     }
