@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.model;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -42,12 +43,12 @@ public class ColorItem implements Parcelable {
             return new ColorItem[size];
         }
     };
-    @SerializedName("value")
-    @Expose
-    private Double value;
     @SerializedName("lab")
     @Expose
     private final List<Double> lab;
+    @SerializedName("value")
+    @Expose
+    private Double value;
     private Integer rgb;
 
     private ColorItem(Parcel in) {
@@ -63,6 +64,12 @@ public class ColorItem implements Parcelable {
         } else {
             rgb = in.readInt();
         }
+    }
+
+    public ColorItem(double value, int r, int g, int b) {
+        this.value = value;
+        this.rgb = Color.rgb(r, g, b);
+        this.lab = null;
     }
 
     public Double getValue() {
