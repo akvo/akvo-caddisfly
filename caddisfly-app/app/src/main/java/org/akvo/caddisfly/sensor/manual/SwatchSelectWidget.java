@@ -18,20 +18,21 @@ import java.util.Locale;
 
 public class SwatchSelectWidget extends View {
 
-    //    private final Path mPath = new Path();
-    //    private final Paint fillPaint = new Paint();
-//    private final Paint fillSelectPaint = new Paint();
     private final Paint buttonPaint = new Paint();
-    //    private final Paint greenSelectPaint = new Paint();
     private final Paint strokePaint = new Paint();
-    //    private final Paint markerPaint = new Paint();
     private final Paint textPaint = new Paint();
     private final Paint backgroundPaint = new Paint();
-    private final Paint textBoxPaint = new Paint();
+    private final Paint textBoxLeftPaint = new Paint();
+    private final Paint textBoxRightPaint = new Paint();
     private final Paint nameTextPaint = new Paint();
     private final Paint subTitlePaint = new Paint();
     private final List<ColorItem> clColors = new ArrayList<>();
     private final List<ColorItem> phColors = new ArrayList<>();
+    private final List<Rect> phButtons = new ArrayList<>();
+    private final List<Rect> clButtons = new ArrayList<>();
+    private final Paint buttonSelectPaint = new Paint();
+    private final Paint buttonShadowPaint = new Paint();
+
     //    Rect textRect;
     Rect nameBounds = new Rect();
     private boolean area1 = false;
@@ -39,16 +40,14 @@ public class SwatchSelectWidget extends View {
     private boolean area3 = false;
     private boolean area4 = false;
     private boolean area5 = false;
-    private boolean active1 = false;
     private Rect rect1;
     private String mKey;
     private int buttonWidth;
     private int buttonHeight;
     private int textBoxWidth;
     private int gutterWidth = 10;
-    private int radius;
 
-//    /**
+    //    /**
 //     * Sets the text size for a Paint object so a given string of text will be a
 //     * given width.
 //     *
@@ -71,6 +70,9 @@ public class SwatchSelectWidget extends View {
 //        // Set the paint for that size.
 //        paint.setTextSize(desiredTextSize);
 //    }
+    private int radius;
+    private int activeLeft = -1;
+    private int activeRight = -1;
 
     public SwatchSelectWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -84,9 +86,11 @@ public class SwatchSelectWidget extends View {
         backgroundPaint.setStyle(Paint.Style.FILL);
         backgroundPaint.setColor(Color.rgb(130, 130, 130));
 
-        textBoxPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        textBoxPaint.setColor(Color.rgb(255, 255, 255));
-        textBoxPaint.setStrokeWidth(1);
+        textBoxLeftPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        textBoxLeftPaint.setColor(Color.rgb(255, 255, 255));
+
+        textBoxRightPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        textBoxRightPaint.setColor(Color.rgb(255, 255, 255));
 
         nameTextPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         nameTextPaint.setColor(Color.rgb(50, 50, 50));
@@ -102,20 +106,19 @@ public class SwatchSelectWidget extends View {
 //        int sizeInPx = context.getResources().getDimensionPixelSize(R.dimen.cbt_shapes_text_size);
         subTitlePaint.setTextSize(40);
 
-
-        // fill
-//        fillPaint.setStyle(Paint.Style.FILL);
-//        fillPaint.setColor(Color.rgb(229, 239, 97));
-//        fillSelectPaint.setColor(Color.rgb(240, 250, 97));
-
-//        buttonPaint.setColor(Color.rgb(200, 200, 200));
         buttonPaint.setStyle(Paint.Style.FILL);
         buttonPaint.setAntiAlias(true);
-//        greenSelectPaint.setColor(Color.rgb(200, 200, 200));
-//
-//        markerPaint.setStyle(Paint.Style.STROKE);
-//        markerPaint.setColor(Color.rgb(219, 210, 39));
-//        markerPaint.setStrokeWidth(20);
+
+        buttonSelectPaint.setStyle(Paint.Style.STROKE);
+        buttonSelectPaint.setAntiAlias(true);
+        buttonSelectPaint.setColor(Color.GREEN);
+        buttonSelectPaint.setStrokeWidth(5);
+
+        buttonShadowPaint.setStyle(Paint.Style.STROKE);
+        buttonShadowPaint.setAntiAlias(true);
+        buttonShadowPaint.setColor(Color.rgb(50, 50, 50));
+        buttonShadowPaint.setStrokeWidth(4);
+
 
         textPaint.setStyle(Paint.Style.FILL);
 //        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -149,12 +152,25 @@ public class SwatchSelectWidget extends View {
             float x = event.getX();
             float y = event.getY();
 
+            for (int i = 0; i < phButtons.size(); i++) {
+                if (phButtons.get(i).contains((int) x, (int) y)) {
+                    activeLeft = i;
+                    break;
+                }
+            }
+
+            for (int i = 0; i < clButtons.size(); i++) {
+                if (clButtons.get(i).contains((int) x, (int) y)) {
+                    activeRight = i;
+                    break;
+                }
+            }
+
             invalidate();
 
             return true;
         } else if (action == MotionEvent.ACTION_UP) {
 
-            active1 = false;
             invalidate();
 
             performClick();
@@ -201,19 +217,12 @@ public class SwatchSelectWidget extends View {
         canvas.drawRect(rect1, backgroundPaint);
         canvas.drawRect(rect1, strokePaint);
 
-//        if (textRect == null) {
-//            textRect = new Rect(left + horizontalMargin, top, left + gutterWidth, top + buttonHeight);
-//        }
-
-//        drawRectText("pH", textRect, nameTextPaint, canvas);
-
-//        Paint.FontMetrics fm = nameTextPaint.getFontMetrics();
-//        int titleHeight = (int) (fm.bottom - fm.top + fm.leading);
-
         nameTextPaint.getTextBounds("pH", 0, "pH".length(), nameBounds);
-//        float value = nameTextPaint.measureText("pH");
         int titleHeight = nameBounds.height();
-//
+
+        phButtons.clear();
+        clButtons.clear();
+
         canvas.drawText("pH", left + horizontalMargin, top + titleHeight, nameTextPaint);
         canvas.drawText("Phenol Red", left + horizontalMargin + nameBounds.right + horizontalMargin,
                 top + titleHeight, subTitlePaint);
@@ -221,7 +230,8 @@ public class SwatchSelectWidget extends View {
             String valueString = String.format(Locale.US, "%.1f", phColors.get(i).getValue());
             drawLeftButton(valueString, phColors.get(i).getRgb(), canvas,
                     gutterWidth + titleHeight + top + verticalMargin + (i * (buttonHeight + verticalMargin)),
-                    left + horizontalMargin);
+                    left + horizontalMargin, activeLeft == i);
+
         }
 
         left = getMeasuredWidth() - horizontalMargin - buttonWidth - textBoxWidth - gutterWidth;
@@ -233,35 +243,69 @@ public class SwatchSelectWidget extends View {
             String valueString = String.format(Locale.US, "%.1f", clColors.get(i).getValue());
             drawRightButton(valueString, clColors.get(i).getRgb(), canvas,
                     gutterWidth + titleHeight + top + verticalMargin + (i * (buttonHeight + verticalMargin)),
-                    left);
+                    left, activeRight == i);
         }
     }
 
-    private void drawLeftButton(String text, int color, Canvas canvas, int top, int left) {
+    private void drawLeftButton(String text, int color, Canvas canvas, int top, int left, boolean isActive) {
 
         Rect textRect = new Rect(left, top, left + textBoxWidth, top + buttonHeight);
-        drawRectText(text, textRect, textPaint, canvas);
-
         Rect buttonRect = new Rect(left + textBoxWidth + gutterWidth, top,
                 left + textBoxWidth + buttonWidth, top + buttonHeight);
 
+        if (isActive) {
+            canvas.drawRect(new Rect(buttonRect.left - gutterWidth - textBoxWidth, buttonRect.top - 2,
+                    buttonRect.right, buttonRect.bottom + 5), buttonShadowPaint);
+
+            canvas.drawCircle(left + textBoxWidth + buttonWidth, top + radius,
+                    radius + 3, buttonSelectPaint);
+
+            canvas.drawRect(new Rect(buttonRect.left - 3 - gutterWidth - textBoxWidth, buttonRect.top - 3,
+                    buttonRect.right, buttonRect.bottom + 3), buttonSelectPaint);
+        }
+
+        if (activeLeft > -1) {
+            textBoxLeftPaint.setColor(phColors.get(activeLeft).getRgb());
+        }
+
+        canvas.drawRect(textRect, textBoxLeftPaint);
+        drawRectText(text, textRect, textPaint, canvas);
         buttonPaint.setColor(color);
         canvas.drawRect(buttonRect, buttonPaint);
         canvas.drawCircle(left + textBoxWidth + buttonWidth, top + radius, radius, buttonPaint);
+
+        phButtons.add(buttonRect);
+
     }
 
-    private void drawRightButton(String text, int color, Canvas canvas, int top, int left) {
+    private void drawRightButton(String text, int color, Canvas canvas, int top, int left, boolean isActive) {
 
-        Rect buttonRect = new Rect(left, top,
-                left + buttonWidth, top + buttonHeight);
+        Rect textRect = new Rect(left + buttonWidth + gutterWidth, top,
+                left + buttonWidth + textBoxWidth + gutterWidth, top + buttonHeight);
+        Rect buttonRect = new Rect(left, top, left + buttonWidth, top + buttonHeight);
 
+        if (isActive) {
+            canvas.drawRect(new Rect(buttonRect.left, buttonRect.top - 2,
+                    buttonRect.right + gutterWidth + textBoxWidth, buttonRect.bottom + 5), buttonShadowPaint);
+
+            canvas.drawCircle(left, top + radius,
+                    radius + 3, buttonSelectPaint);
+
+            canvas.drawRect(new Rect(buttonRect.left, buttonRect.top - 3,
+                    buttonRect.right + 3 + gutterWidth + textBoxWidth, buttonRect.bottom + 3), buttonSelectPaint);
+        }
+
+        if (activeRight > -1) {
+            textBoxRightPaint.setColor(clColors.get(activeRight).getRgb());
+        }
+
+        canvas.drawRect(textRect, textBoxRightPaint);
+        drawRectText(text, textRect, textPaint, canvas);
         buttonPaint.setColor(color);
         canvas.drawRect(buttonRect, buttonPaint);
         canvas.drawCircle(left, top + radius, radius, buttonPaint);
 
-        Rect textRect = new Rect(left + buttonWidth + gutterWidth, top,
-                left + buttonWidth + textBoxWidth + gutterWidth, top + buttonHeight);
-        drawRectText(text, textRect, textPaint, canvas);
+        clButtons.add(buttonRect);
 
     }
 
@@ -286,7 +330,6 @@ public class SwatchSelectWidget extends View {
     }
 
     private void drawRectText(String text, Rect r, Paint paint, Canvas canvas) {
-        canvas.drawRect(r, textBoxPaint);
         int cHeight = r.height();
         int cWidth = r.width();
         paint.setTextAlign(Paint.Align.LEFT);
