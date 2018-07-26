@@ -7,11 +7,11 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.ColorItem;
 
 import java.util.ArrayList;
@@ -23,10 +23,12 @@ public class SwatchSelectWidget extends View {
     private final Paint buttonPaint = new Paint();
     private final Paint borderPaint = new Paint();
     private final Paint textPaint = new Paint();
+    private final Paint textSelectedPaint = new Paint();
     private final Paint backgroundPaint = new Paint();
     private final Paint textBoxLeftPaint = new Paint();
     private final Paint textBoxRightPaint = new Paint();
     private final Paint nameTextPaint = new Paint();
+    private final Paint trianglePaint = new Paint();
     private final Paint subTitlePaint = new Paint();
     private final List<ColorItem> clColors = new ArrayList<>();
     private final List<ColorItem> phColors = new ArrayList<>();
@@ -58,6 +60,10 @@ public class SwatchSelectWidget extends View {
         backgroundPaint.setAntiAlias(true);
         backgroundPaint.setColor(Color.rgb(130, 130, 130));
 
+        trianglePaint.setStyle(Paint.Style.FILL);
+        trianglePaint.setColor(Color.rgb(80, 80, 80));
+        trianglePaint.setAntiAlias(true);
+
         textBoxLeftPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         textBoxLeftPaint.setColor(Color.rgb(255, 255, 255));
 
@@ -68,8 +74,9 @@ public class SwatchSelectWidget extends View {
         nameTextPaint.setColor(Color.rgb(50, 50, 50));
         nameTextPaint.setStrokeWidth(2);
         nameTextPaint.setAntiAlias(true);
-//        int sizeInPx = context.getResources().getDimensionPixelSize(R.dimen.cbt_shapes_text_size);
-        nameTextPaint.setTextSize(70);
+
+        //        int sizeInPx = context.getResources().getDimensionPixelSize(R.dimen.cbt_shapes_text_size);
+//        nameTextPaint.setTextSize(70);
 
         subTitlePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         subTitlePaint.setColor(Color.rgb(50, 50, 50));
@@ -92,10 +99,13 @@ public class SwatchSelectWidget extends View {
         buttonShadowPaint.setStrokeWidth(4);
 
         textPaint.setStyle(Paint.Style.FILL);
-//        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        textPaint.setColor(Color.rgb(30, 30, 30));
-        int sizeInPx = context.getResources().getDimensionPixelSize(R.dimen.cbt_shapes_text_size);
-        textPaint.setTextSize(sizeInPx);
+        textPaint.setColor(Color.rgb(110, 110, 110));
+//        int sizeInPx = context.getResources().getDimensionPixelSize(R.dimen.cbt_shapes_text_size);
+//        textPaint.setTextSize(sizeInPx);
+
+        textSelectedPaint.setStyle(Paint.Style.FILL);
+        textSelectedPaint.setColor(Color.rgb(0, 0, 0));
+        textSelectedPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
         phColors.add(new ColorItem(8, 159, 45, 68));
         phColors.add(new ColorItem(7.8, 173, 67, 75));
@@ -112,6 +122,32 @@ public class SwatchSelectWidget extends View {
         clColors.add(new ColorItem(0.6, 209, 149, 160));
         clColors.add(new ColorItem(0.3, 224, 186, 189));
         clColors.add(new ColorItem(0.1, 214, 192, 184));
+    }
+
+    //stackoverflow.com/questions/12166476/android-canvas-drawtext-set-font-size-from-width
+
+    /**
+     * Sets the text size for a Paint object so a given string of text will be a
+     * given width.
+     *
+     * @param paint        the Paint to set the text size for
+     * @param desiredWidth the desired width
+     * @param text         the text that should be that width
+     */
+    private static void setTextSizeForWidth(Paint paint, float desiredWidth, String text) {
+
+        final float testTextSize = 48f;
+
+        // Get the bounds of the text, using our testTextSize.
+        paint.setTextSize(testTextSize);
+        Rect bounds = new Rect();
+        paint.getTextBounds(text, 0, text.length(), bounds);
+
+        // Calculate the desired size as a proportion of our testTextSize.
+        float desiredTextSize = testTextSize * desiredWidth / bounds.width();
+
+        // Set the paint for that size.
+        paint.setTextSize(desiredTextSize);
     }
 
     // stackoverflow.com/questions/5896234/how-to-use-android-canvas-to-draw-a-rectangle-with-only-topleft-and-topright-cor
@@ -222,15 +258,16 @@ public class SwatchSelectWidget extends View {
         super.onDraw(canvas);
 
         int left = 0;
-        int top = 30;
-        int verticalMargin = 20;
+        int top = (int) (getMeasuredHeight() * 0.04);
+        int verticalMargin;
         int horizontalMargin = 20;
         int right = getWidth();
         int bottom = (int) (getHeight() - borderPaint.getStrokeWidth());
 
         buttonWidth = getMeasuredWidth() / 5;
         textBoxWidth = getMeasuredWidth() / 6;
-        buttonHeight = (getMeasuredHeight() - top - verticalMargin) / 10;
+        buttonHeight = (getMeasuredHeight() - top) / 9;
+        verticalMargin = (int) (buttonHeight * 0.1);
         radius = buttonHeight / 2;
 
         if (rect1 == null) {
@@ -247,30 +284,43 @@ public class SwatchSelectWidget extends View {
         lidPath.quadTo((getMeasuredWidth() / 4) * 3, -50, getMeasuredWidth() + 50, 50);
         canvas.drawPath(lidPath, backgroundPaint);
 
-        drawTriangle((getMeasuredWidth() / 2) - 10, 40, 20,
-                20, true, nameTextPaint, canvas);
-
-        nameTextPaint.getTextBounds("pH", 0, "pH".length(), nameBounds);
-        int titleHeight = nameBounds.height();
+        int triangleSize = (int) (getMeasuredWidth() * 0.03);
+        drawTriangle((getMeasuredWidth() / 2) - triangleSize / 2, top + verticalMargin, triangleSize,
+                triangleSize, trianglePaint, canvas);
 
         phButtons.clear();
         clButtons.clear();
 
-        canvas.drawText("pH", left + horizontalMargin, top + titleHeight, nameTextPaint);
-        canvas.drawText("Phenol Red", left + horizontalMargin + nameBounds.right + horizontalMargin,
+        String name1 = "pH";
+        setTextSizeForWidth(nameTextPaint, (float) (textBoxWidth * 0.7), name1);
+        nameTextPaint.getTextBounds(name1, 0, name1.length(), nameBounds);
+        int titleHeight = nameBounds.height();
+        canvas.drawText(name1, left + horizontalMargin, top + titleHeight, nameTextPaint);
+
+        titleHeight = nameBounds.height() + verticalMargin;
+
+        String reagent1 = "Phenol Red";
+        setTextSizeForWidth(subTitlePaint, (float) (buttonWidth * 1.2), reagent1);
+        canvas.drawText(reagent1, left + horizontalMargin + nameBounds.right + horizontalMargin,
                 top + titleHeight, subTitlePaint);
+
+        setTextSizeForWidth(textPaint, (float) (textBoxWidth * 0.4), "2.0");
+        setTextSizeForWidth(textSelectedPaint, (float) (textBoxWidth * 0.5), "2.0");
+
         for (int i = 0; i < 7; i++) {
             String valueString = String.format(Locale.US, "%.1f", phColors.get(i).getValue());
             drawLeftButton(valueString, phColors.get(i).getRgb(), canvas,
                     gutterWidth + titleHeight + top + verticalMargin + (i * (buttonHeight + verticalMargin)),
                     left + horizontalMargin, activeLeft == i);
-
         }
 
         left = getMeasuredWidth() - horizontalMargin - buttonWidth - textBoxWidth - gutterWidth;
         canvas.drawText("Cl", left - radius, top + titleHeight, nameTextPaint);
         canvas.drawText("DPD", left + nameBounds.right - radius, top + titleHeight, subTitlePaint);
-        canvas.drawText("mg/l", getMeasuredWidth() - horizontalMargin - 80, top + titleHeight, subTitlePaint);
+
+        String unit = "mg/l";
+        subTitlePaint.getTextBounds(unit, 0, unit.length(), nameBounds);
+        canvas.drawText(unit, getMeasuredWidth() - horizontalMargin - nameBounds.width(), top + titleHeight, subTitlePaint);
 
         for (int i = 0; i < 7; i++) {
             String valueString = String.format(Locale.US, "%.1f", clColors.get(i).getValue());
@@ -289,6 +339,12 @@ public class SwatchSelectWidget extends View {
         Rect leftRect = new Rect(buttonRect.left - gutterWidth - textBoxWidth, buttonRect.top - 2,
                 buttonRect.right, buttonRect.bottom + 5);
 
+        if (activeLeft > -1) {
+            textBoxLeftPaint.setColor(phColors.get(activeLeft).getRgb());
+        }
+
+        canvas.drawRect(textRect, textBoxLeftPaint);
+
         if (isActive) {
 
             canvas.drawRect(leftRect, buttonShadowPaint);
@@ -298,14 +354,12 @@ public class SwatchSelectWidget extends View {
 
             canvas.drawRect(new Rect(buttonRect.left - 3 - gutterWidth - textBoxWidth, buttonRect.top - 3,
                     buttonRect.right, buttonRect.bottom + 3), buttonSelectPaint);
+
+            drawRectText(text, textRect, textSelectedPaint, canvas);
+        } else {
+            drawRectText(text, textRect, textPaint, canvas);
         }
 
-        if (activeLeft > -1) {
-            textBoxLeftPaint.setColor(phColors.get(activeLeft).getRgb());
-        }
-
-        canvas.drawRect(textRect, textBoxLeftPaint);
-        drawRectText(text, textRect, textPaint, canvas);
         buttonPaint.setColor(color);
         canvas.drawRect(buttonRect, buttonPaint);
         canvas.drawCircle(left + textBoxWidth + buttonWidth, top + radius, radius, buttonPaint);
@@ -322,6 +376,12 @@ public class SwatchSelectWidget extends View {
         Rect rightRect = new Rect(buttonRect.left, buttonRect.top - 2,
                 buttonRect.right + gutterWidth + textBoxWidth, buttonRect.bottom + 5);
 
+        if (activeRight > -1) {
+            textBoxRightPaint.setColor(clColors.get(activeRight).getRgb());
+        }
+
+        canvas.drawRect(textRect, textBoxRightPaint);
+
         if (isActive) {
             canvas.drawRect(rightRect, buttonShadowPaint);
 
@@ -330,14 +390,13 @@ public class SwatchSelectWidget extends View {
 
             canvas.drawRect(new Rect(buttonRect.left, buttonRect.top - 3,
                     buttonRect.right + 3 + gutterWidth + textBoxWidth, buttonRect.bottom + 3), buttonSelectPaint);
+
+            drawRectText(text, textRect, textSelectedPaint, canvas);
+
+        } else {
+            drawRectText(text, textRect, textPaint, canvas);
         }
 
-        if (activeRight > -1) {
-            textBoxRightPaint.setColor(clColors.get(activeRight).getRgb());
-        }
-
-        canvas.drawRect(textRect, textBoxRightPaint);
-        drawRectText(text, textRect, textPaint, canvas);
         buttonPaint.setColor(color);
         canvas.drawRect(buttonRect, buttonPaint);
         canvas.drawCircle(left, top + radius, radius, buttonPaint);
@@ -385,11 +444,13 @@ public class SwatchSelectWidget extends View {
         canvas.drawText(text, x, y, paint);
     }
 
-    private void drawTriangle(int x, int y, int width, int height, boolean inverted, Paint paint, Canvas canvas) {
+    //stackoverflow.com/questions/3501126/how-to-draw-a-filled-triangle-in-android-canvas
+    private void drawTriangle(int x, int y, int width, int height,
+                              Paint paint, Canvas canvas) {
 
         Point p1 = new Point(x, y);
         int pointX = x + width / 2;
-        int pointY = inverted ? y + height : y - height;
+        int pointY = y + height;
 
         Point p2 = new Point(pointX, pointY);
         Point p3 = new Point(x + width, y);

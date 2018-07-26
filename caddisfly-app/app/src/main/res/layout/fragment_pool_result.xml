@@ -26,9 +26,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layoutFooter"
+        android:layout_alignParentTop="true"
         android:layout_below="@id/toolbar">
 
         <LinearLayout
@@ -41,36 +41,18 @@
 
     <LinearLayout
         android:id="@+id/layoutFooter"
-        style=" ?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?primaryBackgroundStyle"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button_cancel"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:text="@string/cancel"
-            android:textColor="#aaa"
-            android:textSize="17sp"
-            android:visibility="gone" />
+        android:gravity="center_horizontal">
 
         <Button
             android:id="@+id/button_save"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:letterSpacing="0.01"
-            android:padding="20dp"
+            style="@style/Button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="33dp"
             android:text="@string/save"
-            android:textColor="#ccc"
-            android:textSize="17sp"
-            tools:targetApi="lollipop" />
+            android:theme="?primaryButtonStyle" />
 
     </LinearLayout>
 </RelativeLayout>

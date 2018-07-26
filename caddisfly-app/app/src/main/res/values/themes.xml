@@ -39,7 +39,7 @@
         <item name="primaryButtonColor">@color/button_green</item>
         <item name="secondaryButtonStyle">@style/AppTheme.Button.Cyan</item>
         <item name="longButtonText">@color/button_text_soft</item>
-        <item name="primaryBackgroundStyle">@color/primary_background</item>
+        <item name="primaryBackgroundStyle">@color/colorAccent</item>
         <item name="toolbarHeight">@dimen/toolbar_height</item>
         <item name="toolbarMargin">@dimen/toolbar_margin</item>
         <item name="progressTint">@color/yellow</item>
