@@ -19,39 +19,50 @@
 
 package org.akvo.caddisfly.sensor.manual;
 
-import android.graphics.Color;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.TestConfigHelper;
-import org.akvo.caddisfly.model.MpnValue;
+import org.akvo.caddisfly.model.Result;
+import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseFragment;
-import org.akvo.caddisfly.util.StringUtil;
+import org.json.JSONObject;
 
 import java.util.Objects;
+
+import static android.app.Activity.RESULT_OK;
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
 public class PoolTestResultFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
 
-    private String mResult;
+    private TestInfo testInfo;
+    private LinearLayout layout;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
+     * @param testInfo the test info
      * @return A new instance of fragment CbtResultFragment.
      */
-    public static PoolTestResultFragment newInstance(String result) {
+    public static PoolTestResultFragment newInstance(TestInfo testInfo) {
         PoolTestResultFragment fragment = new PoolTestResultFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, result);
+        args.putParcelable(ARG_PARAM1, testInfo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,62 +71,41 @@ public class PoolTestResultFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mResult = getArguments().getString(ARG_PARAM1);
+            testInfo = getArguments().getParcelable(ARG_PARAM1);
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cbt_result, container, false);
+        View view = inflater.inflate(R.layout.fragment_pool_result, container, false);
 
-        TextView textResult = view.findViewById(R.id.textResult);
-        TextView textResult1 = view.findViewById(R.id.textResult1);
-        LinearLayout layoutResult = view.findViewById(R.id.layoutResult);
-        LinearLayout layoutResult1 = view.findViewById(R.id.layoutResult1);
-        LinearLayout layoutResult2 = view.findViewById(R.id.layoutResult2);
+        layout = view.findViewById(R.id.layout_results);
+        layout.removeAllViews();
 
-        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
-
-        String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
-                mpnValue.getRiskCategory()).toString().split("/");
-
-        textResult.setText(results[0].trim());
-        if (results.length > 1) {
-            textResult1.setText(results[1].trim());
+        for (Result result : testInfo.getResults()) {
+            String valueString = createValueUnitString(result.getResultValue(), result.getUnit());
+            inflateView(result.getName(), valueString);
         }
 
-        if (Double.parseDouble(mpnValue.getConfidence()) > 9000) {
-            layoutResult.setBackgroundColor(Color.rgb(210, 23, 23));
-            layoutResult1.setBackgroundColor(Color.rgb(191, 3, 3));
-            layoutResult2.setBackgroundColor(Color.rgb(210, 23, 23));
-            textResult.setTextColor(Color.WHITE);
-        } else if (Double.parseDouble(mpnValue.getConfidence()) > 100) {
-            layoutResult.setBackgroundColor(Color.rgb(190, 70, 6));
-            layoutResult1.setBackgroundColor(Color.rgb(180, 63, 30));
-            layoutResult2.setBackgroundColor(Color.rgb(190, 70, 6));
-        } else if (Double.parseDouble(mpnValue.getConfidence()) > 50) {
-            layoutResult.setBackgroundColor(Color.rgb(186, 133, 16));
-            layoutResult1.setBackgroundColor(Color.rgb(196, 143, 10));
-            layoutResult2.setBackgroundColor(Color.rgb(186, 133, 16));
-        } else if (Double.parseDouble(mpnValue.getConfidence()) > 10) {
-            layoutResult.setBackgroundColor(Color.rgb(176, 173, 30));
-            layoutResult1.setBackgroundColor(Color.rgb(186, 163, 20));
-            layoutResult2.setBackgroundColor(Color.rgb(176, 173, 30));
-        } else if (Double.parseDouble(mpnValue.getConfidence()) > 3) {
-            layoutResult.setBackgroundColor(Color.rgb(142, 163, 20));
-            layoutResult1.setBackgroundColor(Color.rgb(150, 153, 20));
-            layoutResult2.setBackgroundColor(Color.rgb(142, 163, 20));
-        } else {
-            layoutResult.setBackgroundColor(Color.rgb(84, 183, 30));
-            layoutResult1.setBackgroundColor(Color.rgb(94, 173, 20));
-            layoutResult2.setBackgroundColor(Color.rgb(84, 183, 30));
-        }
+        Button buttonSave = view.findViewById(R.id.button_save);
+        buttonSave.setOnClickListener(v -> {
+            Intent intent = new Intent();
 
-        TextView textResult2 = view.findViewById(R.id.textResult2);
-        TextView textResult3 = view.findViewById(R.id.textResult3);
-        textResult2.setText(mpnValue.getMpn());
-        textResult3.setText(mpnValue.getConfidence());
+            SparseArray<String> results = new SparseArray<>();
+
+            results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
+            results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
+
+            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo,
+                    results, null, null);
+
+            if (getActivity() != null) {
+                intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
+                getActivity().setResult(RESULT_OK, intent);
+                getActivity().finish();
+            }
+        });
 
         return view;
     }
@@ -126,6 +116,22 @@ public class PoolTestResultFragment extends BaseFragment {
 
         if (getActivity() != null) {
             getActivity().setTitle(R.string.result);
+        }
+    }
+
+    @SuppressLint("InflateParams")
+    private void inflateView(String patchDescription, String valueString) {
+        LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(getActivity())
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout itemResult;
+        if (inflater != null) {
+            itemResult = (LinearLayout) inflater.inflate(R.layout.item_result, null, false);
+            TextView textTitle = itemResult.findViewById(R.id.text_title);
+            textTitle.setText(patchDescription);
+
+            TextView textResult = itemResult.findViewById(R.id.text_result);
+            textResult.setText(valueString);
+            layout.addView(itemResult);
         }
     }
 

@@ -80,6 +80,7 @@ public class Result implements Parcelable {
     @SerializedName("grayScale")
     @Expose
     private final Boolean grayScale;
+    private Float resultValue;
 
     private Result(Parcel in) {
         id = in.readByte() == 0x00 ? null : in.readInt();
@@ -100,6 +101,7 @@ public class Result implements Parcelable {
         }
         byte tmpGrayScale = in.readByte();
         grayScale = tmpGrayScale != 0 && tmpGrayScale == 1;
+        resultValue = in.readByte() == 0x00 ? null : in.readFloat();
     }
 
     public Integer getId() {
@@ -205,5 +207,20 @@ public class Result implements Parcelable {
             dest.writeList(colorItems);
         }
         dest.writeByte((byte) (grayScale == null ? 0 : grayScale ? 1 : 2));
+        if (resultValue == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeDouble(resultValue);
+        }
+
+    }
+
+    public float getResultValue() {
+        return resultValue;
+    }
+
+    public void setResultValue(float resultValue) {
+        this.resultValue = resultValue;
     }
 }

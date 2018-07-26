@@ -6565,14 +6565,14 @@
       "results": [
         {
           "id": 1,
-          "name": "Chlorine",
-          "unit": "mg/l",
-          "range": "0.1-3.0"
+          "name": "pH",
+          "range": "6.8-8.2"
         },
         {
           "id": 2,
-          "name": "pH",
-          "range": "6.8-8.2"
+          "name": "Chlorine",
+          "unit": "mg/l",
+          "range": "0.1-3.0"
         }
       ]
     }

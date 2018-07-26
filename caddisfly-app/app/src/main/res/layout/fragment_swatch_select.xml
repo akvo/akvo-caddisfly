@@ -33,7 +33,7 @@
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="8dp"
-        android:text="Select the colors that match the water sample colors in the box."
+        android:text="Select the intervals that match the water sample colors in the box."
         android:textSize="17dp"
         tools:ignore="SpUsage" />
 
@@ -41,8 +41,8 @@
         android:id="@+id/compartments"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@id/buttonNext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

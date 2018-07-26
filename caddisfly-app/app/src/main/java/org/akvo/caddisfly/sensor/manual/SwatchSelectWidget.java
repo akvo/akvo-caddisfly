@@ -33,43 +33,14 @@ public class SwatchSelectWidget extends View {
     private final Paint buttonSelectPaint = new Paint();
     private final Paint buttonShadowPaint = new Paint();
 
-    //    Rect textRect;
     Rect nameBounds = new Rect();
-    private boolean area1 = false;
-    private boolean area2 = false;
-    private boolean area3 = false;
-    private boolean area4 = false;
-    private boolean area5 = false;
     private Rect rect1;
-    private String mKey;
+    private float[] mKey;
     private int buttonWidth;
     private int buttonHeight;
     private int textBoxWidth;
     private int gutterWidth = 10;
 
-    //    /**
-//     * Sets the text size for a Paint object so a given string of text will be a
-//     * given width.
-//     *
-//     * @param paint        the Paint to set the text size for
-//     * @param desiredWidth the desired width
-//     * @param text         the text that should be that width
-//     */
-//    private static void setTextSizeForWidth(Paint paint, float desiredWidth, String text) {
-//
-//        final float testTextSize = 48f;
-//
-//        // Get the bounds of the text, using our testTextSize.
-//        paint.setTextSize(testTextSize);
-//        Rect bounds = new Rect();
-//        paint.getTextBounds(text, 0, text.length(), bounds);
-//
-//        // Calculate the desired size as a proportion of our testTextSize.
-//        float desiredTextSize = testTextSize * desiredWidth / bounds.width();
-//
-//        // Set the paint for that size.
-//        paint.setTextSize(desiredTextSize);
-//    }
     private int radius;
     private int activeLeft = -1;
     private int activeRight = -1;
@@ -119,7 +90,6 @@ public class SwatchSelectWidget extends View {
         buttonShadowPaint.setColor(Color.rgb(50, 50, 50));
         buttonShadowPaint.setStrokeWidth(4);
 
-
         textPaint.setStyle(Paint.Style.FILL);
 //        textPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         textPaint.setColor(Color.rgb(30, 30, 30));
@@ -141,7 +111,6 @@ public class SwatchSelectWidget extends View {
         clColors.add(new ColorItem(0.6, 209, 149, 160));
         clColors.add(new ColorItem(0.3, 224, 186, 189));
         clColors.add(new ColorItem(0.1, 214, 192, 184));
-
     }
 
     @Override
@@ -178,7 +147,7 @@ public class SwatchSelectWidget extends View {
             return true;
         }
 
-        getKey();
+//        getKey();
 
         return false;
     }
@@ -253,9 +222,12 @@ public class SwatchSelectWidget extends View {
         Rect buttonRect = new Rect(left + textBoxWidth + gutterWidth, top,
                 left + textBoxWidth + buttonWidth, top + buttonHeight);
 
+        Rect leftRect = new Rect(buttonRect.left - gutterWidth - textBoxWidth, buttonRect.top - 2,
+                buttonRect.right, buttonRect.bottom + 5);
+
         if (isActive) {
-            canvas.drawRect(new Rect(buttonRect.left - gutterWidth - textBoxWidth, buttonRect.top - 2,
-                    buttonRect.right, buttonRect.bottom + 5), buttonShadowPaint);
+
+            canvas.drawRect(leftRect, buttonShadowPaint);
 
             canvas.drawCircle(left + textBoxWidth + buttonWidth, top + radius,
                     radius + 3, buttonSelectPaint);
@@ -274,8 +246,7 @@ public class SwatchSelectWidget extends View {
         canvas.drawRect(buttonRect, buttonPaint);
         canvas.drawCircle(left + textBoxWidth + buttonWidth, top + radius, radius, buttonPaint);
 
-        phButtons.add(buttonRect);
-
+        phButtons.add(leftRect);
     }
 
     private void drawRightButton(String text, int color, Canvas canvas, int top, int left, boolean isActive) {
@@ -284,9 +255,11 @@ public class SwatchSelectWidget extends View {
                 left + buttonWidth + textBoxWidth + gutterWidth, top + buttonHeight);
         Rect buttonRect = new Rect(left, top, left + buttonWidth, top + buttonHeight);
 
+        Rect rightRect = new Rect(buttonRect.left, buttonRect.top - 2,
+                buttonRect.right + gutterWidth + textBoxWidth, buttonRect.bottom + 5);
+
         if (isActive) {
-            canvas.drawRect(new Rect(buttonRect.left, buttonRect.top - 2,
-                    buttonRect.right + gutterWidth + textBoxWidth, buttonRect.bottom + 5), buttonShadowPaint);
+            canvas.drawRect(rightRect, buttonShadowPaint);
 
             canvas.drawCircle(left, top + radius,
                     radius + 3, buttonSelectPaint);
@@ -305,28 +278,37 @@ public class SwatchSelectWidget extends View {
         canvas.drawRect(buttonRect, buttonPaint);
         canvas.drawCircle(left, top + radius, radius, buttonPaint);
 
-        clButtons.add(buttonRect);
-
+        clButtons.add(rightRect);
     }
 
-    public String getKey() {
-        mKey = (area1 ? "1" : "0")
-                + (area2 ? "1" : "0")
-                + (area3 ? "1" : "0")
-                + (area4 ? "1" : "0")
-                + (area5 ? "1" : "0");
+    public float[] getKey() {
+        float[] result = new float[2];
 
-        return mKey;
+        if (activeLeft > -1) {
+            result[0] = phColors.get(activeLeft).getValue().floatValue();
+        }
+        if (activeRight > -1) {
+            result[1] = clColors.get(activeRight).getValue().floatValue();
+        }
+        return result;
     }
 
-    public void setKey(String key) {
+    public void setKey(float[] key) {
         mKey = key;
-        String[] values = mKey.split("");
-        area1 = values[1].equals("1");
-        area2 = values[2].equals("1");
-        area3 = values[3].equals("1");
-        area4 = values[4].equals("1");
-        area5 = values[5].equals("1");
+        if (key != null) {
+
+            for (int i = 0; i < phColors.size(); i++) {
+                if (phColors.get(i).getValue().floatValue() == key[0]) {
+                    activeLeft = i;
+                }
+            }
+
+            for (int i = 0; i < clColors.size(); i++) {
+                if (clColors.get(i).getValue().floatValue() == key[1]) {
+                    activeRight = i;
+                }
+            }
+        }
     }
 
     private void drawRectText(String text, Rect r, Paint paint, Canvas canvas) {

@@ -41,12 +41,12 @@ public class SwatchSelectFragment extends BaseFragment {
     private static final int ANIMATION_DURATION_MILLIS = 500;
     private static final float BUTTON_START_ALPHA = 0.1f;
     private OnSwatchSelectListener mListener;
-    private String mKey = "00000";
+    private float[] mKey;
 
-    public static SwatchSelectFragment newInstance(String key) {
+    public static SwatchSelectFragment newInstance(float[] key) {
         SwatchSelectFragment fragment = new SwatchSelectFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, key);
+        args.putFloatArray(ARG_PARAM1, key);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +55,7 @@ public class SwatchSelectFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mKey = getArguments().getString(ARG_PARAM1);
+            mKey = getArguments().getFloatArray(ARG_PARAM1);
         }
     }
 
@@ -73,6 +73,18 @@ public class SwatchSelectFragment extends BaseFragment {
             animation.setDuration(ANIMATION_DURATION_MILLIS);
             buttonNext.startAnimation(animation);
         }, BUTTON_ENABLE_DELAY);
+
+        final SwatchSelectWidget swatchSelect = view.findViewById(R.id.compartments);
+
+        swatchSelect.setKey(mKey);
+
+        swatchSelect.setOnClickListener(v -> {
+            mKey = swatchSelect.getKey();
+
+            if (mListener != null) {
+                mListener.onSwatchSelect(mKey);
+            }
+        });
 
         buttonNext.setEnabled(false);
         buttonNext.setAlpha(BUTTON_START_ALPHA);
@@ -105,6 +117,6 @@ public class SwatchSelectFragment extends BaseFragment {
     }
 
     public interface OnSwatchSelectListener {
-        void onCompartmentBagSelect(String key);
+        void onSwatchSelect(float[] key);
     }
 }

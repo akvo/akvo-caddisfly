@@ -23,6 +23,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/background_white_black_line_bottom"
     android:orientation="vertical"
+    android:paddingBottom="10dp"
     tools:context=".sensor.striptest.ui.ResultActivity">
 
     <TextView
@@ -48,7 +49,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:paddingEnd="@dimen/activity_horizontal_margin"
             android:paddingStart="@dimen/activity_horizontal_margin"

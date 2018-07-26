@@ -13,17 +13,15 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.TestConfigHelper;
-import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONObject;
 
 public class PoolTestActivity extends BaseActivity
         implements SwatchSelectFragment.OnSwatchSelectListener {
 
     private FragmentManager fragmentManager;
-    private String cbtResult = "00000";
+    private float[] poolTestResults;
     private TestInfo testInfo;
 
     @Override
@@ -45,19 +43,21 @@ public class PoolTestActivity extends BaseActivity
     private void startTest() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,
-                SwatchSelectFragment.newInstance(cbtResult), "swatchSelect")
+                SwatchSelectFragment.newInstance(poolTestResults), "swatchSelect")
                 .commit();
     }
 
-    public void onCompartmentBagSelect(String key) {
-        cbtResult = key;
+    public void onSwatchSelect(float[] key) {
+        poolTestResults = key;
+        testInfo.getResults().get(0).setResultValue(key[0]);
+        testInfo.getResults().get(1).setResultValue(key[1]);
     }
 
     @SuppressWarnings("unused")
     public void onClickMatchedButton(View view) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,
-                PoolTestResultFragment.newInstance(cbtResult), "resultFragment")
+                PoolTestResultFragment.newInstance(testInfo), "resultFragment")
                 .addToBackStack(null)
                 .commit();
     }
@@ -67,12 +67,6 @@ public class PoolTestActivity extends BaseActivity
     public void onClickAcceptResult(View view) {
 
         SparseArray<String> results = new SparseArray<>();
-
-        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(cbtResult);
-
-        results.put(1, StringUtil.getStringResourceByName(this, mpnValue.getRiskCategory()).toString());
-        results.put(2, mpnValue.getMpn());
-        results.put(3, mpnValue.getConfidence());
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, null);
 
@@ -92,5 +86,4 @@ public class PoolTestActivity extends BaseActivity
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
