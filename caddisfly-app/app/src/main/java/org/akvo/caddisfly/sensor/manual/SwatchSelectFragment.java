@@ -98,7 +98,6 @@ public class SwatchSelectFragment extends BaseFragment {
         Objects.requireNonNull(getActivity()).setTitle(R.string.setCompartmentColors);
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

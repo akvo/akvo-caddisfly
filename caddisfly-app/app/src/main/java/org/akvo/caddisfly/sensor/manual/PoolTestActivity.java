@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
@@ -55,13 +57,25 @@ public class PoolTestActivity extends BaseActivity
 
     @SuppressWarnings("unused")
     public void onClickMatchedButton(View view) {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,
-                PoolTestResultFragment.newInstance(testInfo), "resultFragment")
-                .addToBackStack(null)
-                .commit();
-    }
+        if (poolTestResults == null || poolTestResults[0] == 0 || poolTestResults[1] == 0) {
 
+            Toast toast = Toast.makeText(this, "Select the color intervals before continuing",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.BOTTOM, 0, 300);
+
+            View view1 = toast.getView();
+            toast.getView().setPadding(20, 20, 20, 20);
+            view1.setBackgroundResource(R.color.error_background);
+
+            toast.show();
+        } else {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container,
+                    PoolTestResultFragment.newInstance(testInfo), "resultFragment")
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
 
     @SuppressWarnings("unused")
     public void onClickAcceptResult(View view) {

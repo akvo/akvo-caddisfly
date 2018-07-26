@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -19,7 +21,7 @@ import java.util.Locale;
 public class SwatchSelectWidget extends View {
 
     private final Paint buttonPaint = new Paint();
-    private final Paint strokePaint = new Paint();
+    private final Paint borderPaint = new Paint();
     private final Paint textPaint = new Paint();
     private final Paint backgroundPaint = new Paint();
     private final Paint textBoxLeftPaint = new Paint();
@@ -34,13 +36,12 @@ public class SwatchSelectWidget extends View {
     private final Paint buttonShadowPaint = new Paint();
 
     Rect nameBounds = new Rect();
+    Path lidPath = new Path();
     private Rect rect1;
-    private float[] mKey;
     private int buttonWidth;
     private int buttonHeight;
     private int textBoxWidth;
     private int gutterWidth = 10;
-
     private int radius;
     private int activeLeft = -1;
     private int activeRight = -1;
@@ -48,13 +49,13 @@ public class SwatchSelectWidget extends View {
     public SwatchSelectWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        // stroke
-        strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setColor(Color.rgb(100, 100, 100));
-        strokePaint.setStrokeWidth(5);
+        borderPaint.setStyle(Paint.Style.STROKE);
+        borderPaint.setColor(Color.rgb(100, 100, 100));
+        borderPaint.setAntiAlias(true);
+        borderPaint.setStrokeWidth(5);
 
-        // fill
         backgroundPaint.setStyle(Paint.Style.FILL);
+        backgroundPaint.setAntiAlias(true);
         backgroundPaint.setColor(Color.rgb(130, 130, 130));
 
         textBoxLeftPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -113,6 +114,59 @@ public class SwatchSelectWidget extends View {
         clColors.add(new ColorItem(0.1, 214, 192, 184));
     }
 
+    // stackoverflow.com/questions/5896234/how-to-use-android-canvas-to-draw-a-rectangle-with-only-topleft-and-topright-cor
+    public static Path RoundedRect(
+            float left, float top, float right, float bottom, float rx, float ry,
+            boolean tl, boolean tr, boolean br, boolean bl
+    ) {
+        Path path = new Path();
+        if (rx < 0) rx = 0;
+        if (ry < 0) ry = 0;
+        float width = right - left;
+        float height = bottom - top;
+        if (rx > width / 2) rx = width / 2;
+        if (ry > height / 2) ry = height / 2;
+        float widthMinusCorners = (width - (2 * rx));
+        float heightMinusCorners = (height - (2 * ry));
+
+        path.moveTo(right, top + ry);
+        if (tr)
+            path.rQuadTo(0, -ry, -rx, -ry);//top-right corner
+        else {
+            path.rLineTo(0, -ry);
+            path.rLineTo(-rx, 0);
+        }
+        path.rLineTo(-widthMinusCorners, 0);
+        if (tl)
+            path.rQuadTo(-rx, 0, -rx, ry); //top-left corner
+        else {
+            path.rLineTo(-rx, 0);
+            path.rLineTo(0, ry);
+        }
+        path.rLineTo(0, heightMinusCorners);
+
+        if (bl)
+            path.rQuadTo(0, ry, rx, ry);//bottom-left corner
+        else {
+            path.rLineTo(0, ry);
+            path.rLineTo(rx, 0);
+        }
+
+        path.rLineTo(widthMinusCorners, 0);
+        if (br)
+            path.rQuadTo(rx, 0, rx, -ry); //bottom-right corner
+        else {
+            path.rLineTo(rx, 0);
+            path.rLineTo(0, -ry);
+        }
+
+        path.rLineTo(0, -heightMinusCorners);
+
+        path.close();//Given close, last lineto can be removed.
+
+        return path;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getActionMasked();
@@ -168,23 +222,33 @@ public class SwatchSelectWidget extends View {
         super.onDraw(canvas);
 
         int left = 0;
-        int top = 6;
+        int top = 30;
         int verticalMargin = 20;
         int horizontalMargin = 20;
         int right = getWidth();
-        int bottom = (int) (getHeight() - strokePaint.getStrokeWidth());
+        int bottom = (int) (getHeight() - borderPaint.getStrokeWidth());
 
         buttonWidth = getMeasuredWidth() / 5;
         textBoxWidth = getMeasuredWidth() / 6;
-        buttonHeight = getMeasuredHeight() / 10;
+        buttonHeight = (getMeasuredHeight() - top - verticalMargin) / 10;
         radius = buttonHeight / 2;
 
         if (rect1 == null) {
-            rect1 = new Rect(0, 0, right, bottom);
+            rect1 = new Rect(4, top, right - 4, bottom);
         }
 
-        canvas.drawRect(rect1, backgroundPaint);
-        canvas.drawRect(rect1, strokePaint);
+        Path borderPath = RoundedRect(rect1.left, rect1.top, rect1.right, rect1.bottom, 30, 30,
+                false, false, true, true);
+        canvas.drawPath(borderPath, borderPaint);
+        canvas.drawPath(borderPath, backgroundPaint);
+
+        lidPath.moveTo(-50, 50);
+        lidPath.quadTo(getMeasuredWidth() / 4, -50, getMeasuredWidth() / 2, 50);
+        lidPath.quadTo((getMeasuredWidth() / 4) * 3, -50, getMeasuredWidth() + 50, 50);
+        canvas.drawPath(lidPath, backgroundPaint);
+
+        drawTriangle((getMeasuredWidth() / 2) - 10, 40, 20,
+                20, true, nameTextPaint, canvas);
 
         nameTextPaint.getTextBounds("pH", 0, "pH".length(), nameBounds);
         int titleHeight = nameBounds.height();
@@ -294,9 +358,7 @@ public class SwatchSelectWidget extends View {
     }
 
     public void setKey(float[] key) {
-        mKey = key;
         if (key != null) {
-
             for (int i = 0; i < phColors.size(); i++) {
                 if (phColors.get(i).getValue().floatValue() == key[0]) {
                     activeLeft = i;
@@ -321,5 +383,25 @@ public class SwatchSelectWidget extends View {
         float x = r.left + (cWidth / 2f - bounds.width() / 2f - bounds.left);
         float y = r.top + (cHeight / 2f + bounds.height() / 2f - bounds.bottom);
         canvas.drawText(text, x, y, paint);
+    }
+
+    private void drawTriangle(int x, int y, int width, int height, boolean inverted, Paint paint, Canvas canvas) {
+
+        Point p1 = new Point(x, y);
+        int pointX = x + width / 2;
+        int pointY = inverted ? y + height : y - height;
+
+        Point p2 = new Point(pointX, pointY);
+        Point p3 = new Point(x + width, y);
+
+
+        Path path = new Path();
+        path.setFillType(Path.FillType.EVEN_ODD);
+        path.moveTo(p1.x, p1.y);
+        path.lineTo(p2.x, p2.y);
+        path.lineTo(p3.x, p3.y);
+        path.close();
+
+        canvas.drawPath(path, paint);
     }
 }
