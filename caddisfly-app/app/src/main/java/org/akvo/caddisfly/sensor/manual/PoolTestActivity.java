@@ -39,14 +39,13 @@ public class PoolTestActivity extends BaseActivity
 
         setTitle(testInfo.getName());
 
-        startCbtTest();
+        startTest();
     }
 
-    private void startCbtTest() {
+    private void startTest() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,
                 SwatchSelectFragment.newInstance(cbtResult), "swatchSelect")
-                .addToBackStack(null)
                 .commit();
     }
 

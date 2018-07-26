@@ -65,18 +65,6 @@ public class SwatchSelectFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_swatch_select, container, false);
 
-        final SwatchSelectWidget swatchSelectWidget = view.findViewById(R.id.compartments);
-
-        swatchSelectWidget.setKey(mKey);
-
-        swatchSelectWidget.setOnClickListener(v -> {
-            mKey = swatchSelectWidget.getKey();
-
-            if (mListener != null) {
-                mListener.onCompartmentBagSelect(mKey);
-            }
-        });
-
         final Button buttonNext = view.findViewById(R.id.buttonNext);
         (new Handler()).postDelayed(() -> {
             buttonNext.setEnabled(true);
