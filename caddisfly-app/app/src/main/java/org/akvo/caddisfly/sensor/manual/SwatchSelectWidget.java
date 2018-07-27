@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -341,6 +342,9 @@ public class SwatchSelectWidget extends View {
 
         if (activeLeft > -1) {
             textBoxLeftPaint.setColor(phColors.get(activeLeft).getRgb());
+            textPaint.setColor(getDarkerColor(phColors.get(activeLeft).getRgb()));
+        } else {
+            textPaint.setColor(Color.rgb(110, 110, 110));
         }
 
         canvas.drawRect(textRect, textBoxLeftPaint);
@@ -367,6 +371,10 @@ public class SwatchSelectWidget extends View {
         phButtons.add(leftRect);
     }
 
+    private int getDarkerColor(int color) {
+        return ColorUtils.blendARGB(color, Color.BLACK, 0.2f);
+    }
+
     private void drawRightButton(String text, int color, Canvas canvas, int top, int left, boolean isActive) {
 
         Rect textRect = new Rect(left + buttonWidth + gutterWidth, top,
@@ -378,6 +386,9 @@ public class SwatchSelectWidget extends View {
 
         if (activeRight > -1) {
             textBoxRightPaint.setColor(clColors.get(activeRight).getRgb());
+            textPaint.setColor(getDarkerColor(clColors.get(activeRight).getRgb()));
+        } else {
+            textPaint.setColor(Color.rgb(110, 110, 110));
         }
 
         canvas.drawRect(textRect, textBoxRightPaint);
