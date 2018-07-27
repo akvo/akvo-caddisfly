@@ -88,7 +88,6 @@ public class TestActivity extends BaseActivity {
 
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
-    private final String[] noPermissions = {};
 
     private TestInfo testInfo;
     private boolean cameraIsOk = false;
@@ -188,11 +187,13 @@ public class TestActivity extends BaseActivity {
 
         switch (testInfo.getSubtype()) {
             case SENSOR:
-                checkPermissions = noPermissions;
-                break;
+                startTest();
+                return;
             case MANUAL:
+            case MANUAL_POOL:
                 if (!testInfo.getHasImage()) {
-                    checkPermissions = noPermissions;
+                    startTest();
+                    return;
                 }
                 break;
             case BLUETOOTH:

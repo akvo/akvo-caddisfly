@@ -59,13 +59,15 @@ public class PoolTestActivity extends BaseActivity
     public void onClickMatchedButton(View view) {
         if (poolTestResults == null || poolTestResults[0] == 0 || poolTestResults[1] == 0) {
 
-            Toast toast = Toast.makeText(this, "Select the color intervals before continuing",
-                    Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(this, R.string.select_colors_before_continue,
+                    Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.BOTTOM, 0, 300);
 
             View view1 = toast.getView();
-            toast.getView().setPadding(20, 20, 20, 20);
-            view1.setBackgroundResource(R.color.error_background);
+            if (view1 != null) {
+                view1.setPadding(20, 20, 20, 20);
+                view1.setBackgroundResource(R.color.error_background);
+            }
 
             toast.show();
         } else {

@@ -44,5 +44,8 @@
     <string name="pt_add_reagent_2">Add the DPD No.1 tablet directly from the foil in the right (Cl DPD) compartment. Avoid touching the reagent tablets.</string>
     <string name="pt_close_shake">Close the box with the lid and shake until the reagents are dissolved. Be sure to place the lid correctly with the arrow facing you.</string>
     <string name="pt_read_result">Find out which colour of the pH or free chlorine interval best matches with your sample and tap the subsequent intervals in the fill-in interface.</string>
+    <string name="select_color_intervals">Select color intervals</string>
+    <string name="select_colors_before_continue">Select the color intervals before continuing</string>
+    <string name="pt_select_intervals">Select the intervals that match the water sample colors in the box.</string>
 
 </resources>

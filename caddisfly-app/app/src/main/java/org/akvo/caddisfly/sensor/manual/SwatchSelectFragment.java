@@ -95,7 +95,7 @@ public class SwatchSelectFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Objects.requireNonNull(getActivity()).setTitle(R.string.setCompartmentColors);
+        Objects.requireNonNull(getActivity()).setTitle(R.string.select_color_intervals);
     }
 
     @Override

@@ -173,8 +173,8 @@ public class TestInfoViewModel extends AndroidViewModel {
             llp.setMargins(0, 0, 0, 20);
 
             final AppCompatImageView imageView = new AppCompatImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setImageResource(resourceId);
+            imageView.setAdjustViewBounds(true);
             imageView.setLayoutParams(llp);
             imageView.setContentDescription(imageName);
 

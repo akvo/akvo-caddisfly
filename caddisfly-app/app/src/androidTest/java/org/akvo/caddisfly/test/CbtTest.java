@@ -135,7 +135,7 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        sleep(2000);
+        sleep(3000);
 
         mDevice.waitForIdle();
 

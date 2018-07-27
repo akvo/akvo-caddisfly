@@ -33,7 +33,7 @@
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="8dp"
-        android:text="Select the intervals that match the water sample colors in the box."
+        android:text="@string/pt_select_intervals"
         android:textSize="17dp"
         tools:ignore="SpUsage" />
 
