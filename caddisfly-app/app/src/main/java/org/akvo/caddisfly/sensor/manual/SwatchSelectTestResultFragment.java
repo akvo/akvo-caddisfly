@@ -46,7 +46,7 @@ import java.util.Objects;
 import static android.app.Activity.RESULT_OK;
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
-public class PoolTestResultFragment extends BaseFragment {
+public class SwatchSelectTestResultFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
 
     private TestInfo testInfo;
@@ -59,8 +59,8 @@ public class PoolTestResultFragment extends BaseFragment {
      * @param testInfo the test info
      * @return A new instance of fragment CbtResultFragment.
      */
-    public static PoolTestResultFragment newInstance(TestInfo testInfo) {
-        PoolTestResultFragment fragment = new PoolTestResultFragment();
+    public static SwatchSelectTestResultFragment newInstance(TestInfo testInfo) {
+        SwatchSelectTestResultFragment fragment = new SwatchSelectTestResultFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_PARAM1, testInfo);
         fragment.setArguments(args);
@@ -78,7 +78,7 @@ public class PoolTestResultFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pool_result, container, false);
+        View view = inflater.inflate(R.layout.fragment_swatch_select_result, container, false);
 
         layout = view.findViewById(R.id.layout_results);
         layout.removeAllViews();

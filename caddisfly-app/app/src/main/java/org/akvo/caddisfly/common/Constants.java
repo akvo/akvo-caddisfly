@@ -25,7 +25,7 @@ public class Constants {
     public static final String TESTS_META_FILENAME = "tests.json";
 
     public static final String CBT_ID = "e40d4764-e73f-46dd-a598-ed4db0fd3386";
-    public static final String POOL_TEST_ID = "520ba67c-233f-4dc7-a2ad-17d86047d7c4";
+    public static final String SWATCH_SELECT_TEST_ID = "520ba67c-233f-4dc7-a2ad-17d86047d7c4";
 
     public static final String MPN_TABLE_FILENAME = "most-probable-number.json";
 

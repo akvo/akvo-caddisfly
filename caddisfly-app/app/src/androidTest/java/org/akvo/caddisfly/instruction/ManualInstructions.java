@@ -103,7 +103,7 @@ public class ManualInstructions {
                 ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
 
         List<TestInfo> testList = viewModel.getTests(TestType.MANUAL);
-        testList.addAll(viewModel.getTests(TestType.MANUAL_POOL));
+        testList.addAll(viewModel.getTests(TestType.MANUAL_COLOR_SELECT));
 
         for (int i = 0; i < TestConstants.MANUAL_TESTS_COUNT; i++) {
             TestInfo testInfo = testList.get(i);

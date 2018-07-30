@@ -404,7 +404,7 @@ public class ManualTest {
     }
 
     @Test
-    public void runPoolTest() {
+    public void runSwatchSelectTest() {
 
         gotoSurveyForm();
 

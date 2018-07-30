@@ -60,7 +60,7 @@ import org.akvo.caddisfly.sensor.bluetooth.DeviceControlActivity;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
 import org.akvo.caddisfly.sensor.manual.ManualTestActivity;
-import org.akvo.caddisfly.sensor.manual.PoolTestActivity;
+import org.akvo.caddisfly.sensor.manual.SwatchSelectTestActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.usb.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -190,7 +190,7 @@ public class TestActivity extends BaseActivity {
                 startTest();
                 return;
             case MANUAL:
-            case MANUAL_POOL:
+            case MANUAL_COLOR_SELECT:
                 if (!testInfo.getHasImage()) {
                     startTest();
                     return;
@@ -220,8 +220,8 @@ public class TestActivity extends BaseActivity {
             case MANUAL:
                 startManualTest();
                 break;
-            case MANUAL_POOL:
-                startPoolTest();
+            case MANUAL_COLOR_SELECT:
+                startSwatchSelectTest();
                 break;
             case SENSOR:
                 startSensorTest();
@@ -237,9 +237,9 @@ public class TestActivity extends BaseActivity {
         }
     }
 
-    private void startPoolTest() {
+    private void startSwatchSelectTest() {
         Intent intent;
-        intent = new Intent(this, PoolTestActivity.class);
+        intent = new Intent(this, SwatchSelectTestActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
     }

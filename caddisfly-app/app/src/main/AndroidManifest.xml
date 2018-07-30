@@ -102,11 +102,11 @@
             android:screenOrientation="nosensor" />
         <!-- /Manual Tests -->
 
-        <!-- Pool Test -->
+        <!-- Manual Swatch Select Test -->
         <activity
-            android:name=".sensor.manual.PoolTestActivity"
+            android:name=".sensor.manual.SwatchSelectTestActivity"
             android:screenOrientation="nosensor" />
-        <!-- /Pool Test -->
+        <!-- /Manual Swatch Select Test -->
 
         <!-- USB Sensor -->
         <activity

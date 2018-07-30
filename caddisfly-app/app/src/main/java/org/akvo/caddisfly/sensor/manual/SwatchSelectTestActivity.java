@@ -19,11 +19,11 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONObject;
 
-public class PoolTestActivity extends BaseActivity
+public class SwatchSelectTestActivity extends BaseActivity
         implements SwatchSelectFragment.OnSwatchSelectListener {
 
     private FragmentManager fragmentManager;
-    private float[] poolTestResults;
+    private float[] testResults;
     private TestInfo testInfo;
 
     @Override
@@ -45,19 +45,19 @@ public class PoolTestActivity extends BaseActivity
     private void startTest() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,
-                SwatchSelectFragment.newInstance(poolTestResults), "swatchSelect")
+                SwatchSelectFragment.newInstance(testResults), "swatchSelect")
                 .commit();
     }
 
     public void onSwatchSelect(float[] key) {
-        poolTestResults = key;
+        testResults = key;
         testInfo.getResults().get(0).setResultValue(key[0]);
         testInfo.getResults().get(1).setResultValue(key[1]);
     }
 
     @SuppressWarnings("unused")
     public void onClickMatchedButton(View view) {
-        if (poolTestResults == null || poolTestResults[0] == 0 || poolTestResults[1] == 0) {
+        if (testResults == null || testResults[0] == 0 || testResults[1] == 0) {
 
             Toast toast = Toast.makeText(this, R.string.select_colors_before_continue,
                     Toast.LENGTH_SHORT);
@@ -73,7 +73,7 @@ public class PoolTestActivity extends BaseActivity
         } else {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment_container,
-                    PoolTestResultFragment.newInstance(testInfo), "resultFragment")
+                    SwatchSelectTestResultFragment.newInstance(testInfo), "resultFragment")
                     .addToBackStack(null)
                     .commit();
         }

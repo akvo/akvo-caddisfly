@@ -32,7 +32,7 @@ import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.repository.TestConfigRepository;
-import org.akvo.caddisfly.sensor.manual.PoolTestActivity;
+import org.akvo.caddisfly.sensor.manual.SwatchSelectTestActivity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -49,13 +49,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
-public class PoolTest {
+public class ManualSwatchSelectTest {
 
     @Test
     public void titleIsCorrect() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.POOL_TEST_ID);
+        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.SWATCH_SELECT_TEST_ID);
 
         Intent intent = new Intent();
         Bundle data = new Bundle();
@@ -67,14 +67,14 @@ public class PoolTest {
 
         Activity activity = (Activity) controller.get();
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
-        assertEquals(textView.getText(), "Water - Chlorine pH HR POOLTESTER");
+        assertEquals(textView.getText(), "Water - Chlorine pH HR TESTER");
     }
 
     @Test
     public void clickingInstructions() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.POOL_TEST_ID);
+        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.SWATCH_SELECT_TEST_ID);
 
         Intent intent = new Intent();
         Bundle data = new Bundle();
@@ -100,7 +100,7 @@ public class PoolTest {
     public void clickingNext() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.POOL_TEST_ID);
+        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.SWATCH_SELECT_TEST_ID);
 
         Intent intent = new Intent();
         Bundle data = new Bundle();
@@ -117,7 +117,7 @@ public class PoolTest {
 
         Intent nextIntent2 = shadowOf(activity).getNextStartedActivity();
         if (nextIntent2.getComponent() != null) {
-            assertEquals(PoolTestActivity.class.getCanonicalName(),
+            assertEquals(SwatchSelectTestActivity.class.getCanonicalName(),
                     nextIntent2.getComponent().getClassName());
         }
     }
@@ -126,14 +126,14 @@ public class PoolTest {
     public void selectResults() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.POOL_TEST_ID);
+        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.SWATCH_SELECT_TEST_ID);
 
         Intent intent = new Intent();
         Bundle data = new Bundle();
         data.putParcelable(ConstantKey.TEST_INFO, testInfo);
         intent.putExtras(data);
 
-        ActivityController controller = Robolectric.buildActivity(PoolTestActivity.class, intent).create().start();
+        ActivityController controller = Robolectric.buildActivity(SwatchSelectTestActivity.class, intent).create().start();
         Activity activity = (Activity) controller.get();
 
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
