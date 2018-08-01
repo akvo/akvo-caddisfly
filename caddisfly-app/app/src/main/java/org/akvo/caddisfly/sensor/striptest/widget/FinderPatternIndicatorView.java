@@ -98,7 +98,7 @@ public class FinderPatternIndicatorView extends View {
         this.previewScreenWidth = screenWidth;
         this.mFinderPatternViewWidth = screenWidth;
         this.decodeWidth = previewWidth;
-        this.decodeHeight = decodeHeight;
+        this.decodeHeight = previewHeight;
         this.mFinderPatternViewHeight = (int) Math.round(screenWidth * Constants.CROP_FINDER_PATTERN_FACTOR);
 
         // we divide the previewHeight into a number of parts
