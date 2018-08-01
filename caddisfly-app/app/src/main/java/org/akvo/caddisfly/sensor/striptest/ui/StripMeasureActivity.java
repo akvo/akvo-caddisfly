@@ -306,4 +306,10 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sound.release();
+    }
 }
