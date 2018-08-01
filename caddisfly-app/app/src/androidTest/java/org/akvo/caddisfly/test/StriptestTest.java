@@ -94,7 +94,7 @@ public class StriptestTest {
 
             gotoSurveyForm();
 
-            TestUtil.nextSurveyPage(3);
+            TestUtil.nextSurveyPage(4);
 
             clickExternalSourceButton(3);
 
@@ -178,7 +178,7 @@ public class StriptestTest {
 
             TestUtil.nextSurveyPage(3);
 
-            clickExternalSourceButton(2);
+            clickExternalSourceButton(0);
 
             mDevice.waitForIdle();
 
@@ -226,9 +226,9 @@ public class StriptestTest {
 
             gotoSurveyForm();
 
-            TestUtil.nextSurveyPage(3);
+            TestUtil.nextSurveyPage(4);
 
-            clickExternalSourceButton(1);
+            clickExternalSourceButton(2);
 
             mDevice.waitForIdle();
 

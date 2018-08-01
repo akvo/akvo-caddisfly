@@ -252,7 +252,7 @@ public class StriptestInstructions {
 
         gotoSurveyForm();
 
-        nextSurveyPage(3, "Strip Tests");
+        nextSurveyPage(4, "Strip Tests");
 
         clickExternalSourceButton(0);
 
