@@ -116,7 +116,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         // So we don't want to do actual work on it - just coordinate.
         // The camera and the decoder get their own thread.
         if (mStriptestHandler == null) {
-            mStriptestHandler = new StriptestHandler(this, getApplicationContext(),
+            mStriptestHandler = new StriptestHandler(this,
                     mCameraOpsManager, mFinderPatternIndicatorView, testInfo);
         }
 
