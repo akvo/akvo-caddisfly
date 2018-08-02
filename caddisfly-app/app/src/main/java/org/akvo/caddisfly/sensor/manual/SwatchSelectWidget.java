@@ -108,7 +108,7 @@ public class SwatchSelectWidget extends View {
         textSelectedPaint.setColor(Color.rgb(0, 0, 0));
         textSelectedPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
-        phColors.add(new ColorItem(8, 159, 45, 68));
+        phColors.add(new ColorItem(8.2, 159, 45, 68));
         phColors.add(new ColorItem(7.8, 173, 67, 75));
         phColors.add(new ColorItem(7.6, 184, 96, 83));
         phColors.add(new ColorItem(7.4, 197, 120, 98));
