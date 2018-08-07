@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.helper;
 
+import android.graphics.Color;
 import android.util.SparseArray;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -50,8 +51,6 @@ import static org.akvo.caddisfly.common.Constants.MPN_TABLE_FILENAME_AGRICULTURE
  */
 public final class TestConfigHelper {
 
-    private static HashMap<String, MpnValue> mpnTable;
-
     private TestConfigHelper() {
     }
 
@@ -59,14 +58,40 @@ public final class TestConfigHelper {
      * Get the most probable number for the key.
      */
     public static MpnValue getMpnValueForKey(String key, String sampleQuantity) {
-        if (mpnTable == null) {
-            if (sampleQuantity.equals("10")) {
-                mpnTable = loadMpnTable(MPN_TABLE_FILENAME_AGRICULTURE);
-            } else {
-                mpnTable = loadMpnTable(MPN_TABLE_FILENAME);
-            }
+        String fileName = MPN_TABLE_FILENAME;
+
+        if (sampleQuantity.equals("10")) {
+            fileName = MPN_TABLE_FILENAME_AGRICULTURE;
         }
-        return mpnTable.get(key);
+
+        HashMap<String, MpnValue> mpnTable = loadMpnTable(fileName);
+
+        MpnValue mpnValue = mpnTable.get(key);
+
+        populateDisplayColors(mpnValue, fileName);
+
+        return mpnValue;
+    }
+
+    private static void populateDisplayColors(MpnValue mpnValue, String fileName) {
+        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(fileName);
+        try {
+            JSONArray array = new JSONObject(jsonText).getJSONArray("displayColors");
+
+            for (int j = array.length() - 1; j >= 0; j--) {
+                JSONObject item = array.getJSONObject(j);
+
+                int threshold = item.getInt("threshold");
+
+                if (mpnValue.getConfidence() > threshold) {
+                    mpnValue.setBackgroundColor1(Color.parseColor(item.getString("background1")));
+                    mpnValue.setBackgroundColor2(Color.parseColor(item.getString("background2")));
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private static HashMap<String, MpnValue> loadMpnTable(String mpnTableFilename) {
@@ -82,7 +107,7 @@ public final class TestConfigHelper {
 
                 String key = item.getString("key");
 
-                mapper.put(key, new MpnValue(item.getString("mpn"), item.getString("confidence"),
+                mapper.put(key, new MpnValue(item.getString("mpn"), item.getDouble("confidence"),
                         item.getString("riskCategory")));
             }
 

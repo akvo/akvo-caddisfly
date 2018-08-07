@@ -21,10 +21,12 @@ package org.akvo.caddisfly.model;
 
 public class MpnValue {
     private final String mpn;
-    private final String confidence;
+    private final double confidence;
     private final String riskCategory;
+    private int backgroundColor1;
+    private int backgroundColor2;
 
-    public MpnValue(String mpn, String confidence, String riskCategory) {
+    public MpnValue(String mpn, double confidence, String riskCategory) {
 
         this.mpn = mpn;
         this.confidence = confidence;
@@ -35,11 +37,27 @@ public class MpnValue {
         return mpn;
     }
 
-    public String getConfidence() {
+    public double getConfidence() {
         return confidence;
     }
 
     public String getRiskCategory() {
         return riskCategory;
+    }
+
+    public int getBackgroundColor1() {
+        return backgroundColor1;
+    }
+
+    public void setBackgroundColor1(int backgroundColor1) {
+        this.backgroundColor1 = backgroundColor1;
+    }
+
+    public int getBackgroundColor2() {
+        return backgroundColor2;
+    }
+
+    public void setBackgroundColor2(int backgroundColor2) {
+        this.backgroundColor2 = backgroundColor2;
     }
 }

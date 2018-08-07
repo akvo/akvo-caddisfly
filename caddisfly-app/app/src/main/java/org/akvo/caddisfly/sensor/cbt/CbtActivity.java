@@ -150,7 +150,6 @@ public class CbtActivity extends BaseActivity
                 .commit();
     }
 
-
     @SuppressWarnings("unused")
     public void onClickAcceptResult(View view) {
 
@@ -171,7 +170,7 @@ public class CbtActivity extends BaseActivity
 
         results.put(1, StringUtil.getStringResourceByName(this, mpnValue.getRiskCategory()).toString());
         results.put(2, mpnValue.getMpn());
-        results.put(3, mpnValue.getConfidence());
+        results.put(3, String.valueOf(mpnValue.getConfidence()));
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, imageFileName);
 
