@@ -11,79 +11,79 @@
       "key": "00010",
       "mpn": "10",
       "confidence": "47.4",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "00001",
       "mpn": "10",
       "confidence": "51.4",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "10000",
       "mpn": "11",
       "confidence": "51.6",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "01000",
       "mpn": "12",
       "confidence": "56.4",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "00100",
       "mpn": "15",
       "confidence": "63.2",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "00011",
       "mpn": "20",
       "confidence": "66.4",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "10010",
       "mpn": "21",
       "confidence": "68.5",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "10001",
       "mpn": "21",
       "confidence": "78.10",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "01010",
       "mpn": "24",
       "confidence": "78.1",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "01001",
       "mpn": "24",
       "confidence": "81.2",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "11000",
       "mpn": "26",
       "confidence": "83.8",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "10011",
       "mpn": "32",
       "confidence": "85.1",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "01011",
       "mpn": "37",
       "confidence": "97",
-      "riskCategory": "probably_safe"
+      "riskCategory": "low_risk_compliant"
     },
     {
       "key": "00101",
@@ -185,7 +185,7 @@
       "key": "11110",
       "mpn": "483",
       "confidence": "3519.1",
-      "riskCategory": "likely_non_compliant"
+      "riskCategory": "very_high_risk"
     },
     {
       "key": "11111",
