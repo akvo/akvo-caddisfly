@@ -6379,6 +6379,94 @@
       ]
     },
     {
+      "name": "Water - E.coli",
+      "subtype": "cbt",
+      "uuid": "5baa9d29-b271-4521-b05f-4bfd645c26cf",
+      "brand": "Aquagenx",
+      "sampleQuantity": "10",
+      "imageScale": "centerCrop",
+      "brandUrl": "www.aquagenx.com",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "1.put_on_gloves",
+            "2.collect_10ml_water_sample. avoid_touching_with_bare_hands",
+            "3.add_90ml_distilled_water",
+            "image:cbt_dilution"
+          ]
+        },
+        {
+          "section": [
+            "4.open_growth_medium_sachet",
+            "5.dissolve_medium_in_sample",
+            "image:2"
+          ]
+        },
+        {
+          "section": [
+            "6.medium_dissolves. when_medium_dissolved",
+            "image:3"
+          ]
+        },
+        {
+          "section": [
+            "7.label_compartment_bag",
+            "8.tear_perforated_seam. rub_sides_of_compartment",
+            "9.slowly_pour_sample_into_bag. fill_evenly_across_bag. leave_test_bud_carrier",
+            "image:4"
+          ]
+        },
+        {
+          "section": [
+            "10.attach_seal_clip. snap_rod_shaped",
+            "image:5"
+          ]
+        },
+        {
+          "section": [
+            "11.roll_fold_bag. close_top_of_bag",
+            "image:6"
+          ]
+        },
+        {
+          "section": [
+            "12.let_incubate",
+            "include:incubation_table",
+            "image:7"
+          ]
+        },
+        {
+          "section": [
+            "13.take_photo_of_incubated",
+            "14.change_colors_to_match. click_compartments_to_change",
+            "image:8"
+          ]
+        },
+        {
+          "section": [
+            "15.clean_cbt",
+            "image:9"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Agricultural Waters Single Sample Water Quality (Based on MPN and Confidence Interval)"
+        },
+        {
+          "id": 2,
+          "name": "MPN",
+          "unit": "MPN/100ml"
+        },
+        {
+          "id": 3,
+          "name": "Upper 95% Confidence Interval"
+        }
+      ]
+    },
+    {
       "name": "Lovibond SD 50 pH meter",
       "subtype": "manual",
       "uuid": "dbd058b6-29ed-4c7f-8b11-fcdae725a518",

@@ -43,6 +43,8 @@
     <string name="click_compartments_to_change">Cliquez sur les compartiments pour changer de couleur.</string>
     <string name="clean_cbt">Après avoir comptabilisé les résultats du test: ouvrez le sac et ajoutez 3 comprimés de chlore au sommet du sac. Agitez le sac jusqu\'à la dissolution des comprimés de chlore. Laissez  reposer pendant 45 minutes. Après les 45 minutes, versez le contenu du liquide dans un évier, une toilette ou un trou dans le sol et retirez en toute sécurité le sac vide. Conservez la pince en plastique pour une réutilisation.</string>
 
+    <string name="collect_10ml_water_sample">Collectez <b>10 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
+
     <string name="temperature">Température</string>
     <string name="incubation_time">Temps d\'incubation</string>
     <string name="temperature_34_44">35 – 44.5°C</string>

@@ -750,7 +750,7 @@
       ]
     },
     {
-      "name": "Water - Microbiology - Aquagenx CBT - E.coli (MPN)",
+      "name": "Drinking Water - Microbiology - Aquagenx CBT - E.coli (0-100 MPN)",
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
       "brand": "Aquagenx",
       "hasImage": true,
@@ -758,6 +758,29 @@
         {
           "id": 1,
           "name": "Health Risk Category (Based on MPN and Confidence Interval)",
+          "unit": ""
+        },
+        {
+          "id": 2,
+          "name": "MPN",
+          "unit": "MPN/100ml"
+        },
+        {
+          "id": 3,
+          "name": "Upper 95% Confidence Interval",
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": "Surface Water - Microbiology - Aquagenx CBT - E.coli (0-1000 MPN)",
+      "uuid": "5baa9d29-b271-4521-b05f-4bfd645c26cf",
+      "brand": "Aquagenx",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Agricultural Waters Single Sample Water Quality (Based on MPN and Confidence Interval)",
           "unit": ""
         },
         {
