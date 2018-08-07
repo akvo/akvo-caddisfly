@@ -28,7 +28,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 222
-        versionName "1.0.0 (Prototype 4)"
+        versionName "1.0.0 (Prototype 5)"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }

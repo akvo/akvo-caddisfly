@@ -1,0 +1,197 @@
+{
+  "comment": "This file contains the MPN table.",
+  "rows": [
+    {
+      "key": "00000",
+      "mpn": "0",
+      "confidence": "28.7",
+      "riskCategory": "very_low_risk_safe"
+    },
+    {
+      "key": "00010",
+      "mpn": "10",
+      "confidence": "47.4",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "00001",
+      "mpn": "10",
+      "confidence": "51.4",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "10000",
+      "mpn": "11",
+      "confidence": "51.6",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "01000",
+      "mpn": "12",
+      "confidence": "56.4",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "00100",
+      "mpn": "15",
+      "confidence": "63.2",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "00011",
+      "mpn": "20",
+      "confidence": "66.4",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "10010",
+      "mpn": "21",
+      "confidence": "68.5",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "10001",
+      "mpn": "21",
+      "confidence": "78.10",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "01010",
+      "mpn": "24",
+      "confidence": "78.1",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "01001",
+      "mpn": "24",
+      "confidence": "81.2",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "11000",
+      "mpn": "26",
+      "confidence": "83.8",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "10011",
+      "mpn": "32",
+      "confidence": "85.1",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "01011",
+      "mpn": "37",
+      "confidence": "97",
+      "riskCategory": "probably_safe"
+    },
+    {
+      "key": "00101",
+      "mpn": "31",
+      "confidence": "104.6",
+      "riskCategory": "low_risk_compliant"
+    },
+    {
+      "key": "00110",
+      "mpn": "32",
+      "confidence": "109.4",
+      "riskCategory": "low_risk_compliant"
+    },
+    {
+      "key": "10100",
+      "mpn": "34",
+      "confidence": "113.6",
+      "riskCategory": "low_risk_compliant"
+    },
+    {
+      "key": "11001",
+      "mpn": "39",
+      "confidence": "118.2",
+      "riskCategory": "low_risk_compliant"
+    },
+    {
+      "key": "11010",
+      "mpn": "40",
+      "confidence": "125.3",
+      "riskCategory": "low_risk_compliant"
+    },
+    {
+      "key": "01100",
+      "mpn": "47",
+      "confidence": "129.3",
+      "riskCategory": "higher_risk"
+    },
+    {
+      "key": "00111",
+      "mpn": "52",
+      "confidence": "147.3",
+      "riskCategory": "higher_risk"
+    },
+    {
+      "key": "11011",
+      "mpn": "54",
+      "confidence": "168.7",
+      "riskCategory": "higher_risk"
+    },
+    {
+      "key": "10101",
+      "mpn": "56",
+      "confidence": "171.4",
+      "riskCategory": "higher_risk"
+    },
+    {
+      "key": "10110",
+      "mpn": "59",
+      "confidence": "211.9",
+      "riskCategory": "higher_risk"
+    },
+    {
+      "key": "10111",
+      "mpn": "85",
+      "confidence": "227.5",
+      "riskCategory": "higher_risk"
+    },
+    {
+      "key": "01101",
+      "mpn": "91",
+      "confidence": "370.4",
+      "riskCategory": "higher_risk"
+    },
+    {
+      "key": "01110",
+      "mpn": "96",
+      "confidence": "376.8",
+      "riskCategory": "higher_risk"
+    },
+    {
+      "key": "11100",
+      "mpn": "136",
+      "confidence": "563.5",
+      "riskCategory": "likely_non_compliant"
+    },
+    {
+      "key": "01111",
+      "mpn": "171",
+      "confidence": "830.6",
+      "riskCategory": "likely_non_compliant"
+    },
+    {
+      "key": "11101",
+      "mpn": "326",
+      "confidence": "1455.5",
+      "riskCategory": "likely_non_compliant"
+    },
+    {
+      "key": "11110",
+      "mpn": "483",
+      "confidence": "3519.1",
+      "riskCategory": "likely_non_compliant"
+    },
+    {
+      "key": "11111",
+      "mpn": "> 1000",
+      "confidence": "94351",
+      "riskCategory": "very_high_risk"
+    }
+  ]
+}
