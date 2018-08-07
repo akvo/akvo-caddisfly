@@ -247,4 +247,66 @@ public class CbtTest {
         assertNotNull(mDevice.findObject(By.text("MPN: > 100 MPN/100ml")));
         assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 9435.1 ")));
     }
+
+    @Test
+    public void cbtDilutionTest() {
+
+        gotoSurveyForm();
+
+        TestUtil.nextSurveyPage("Coliforms");
+
+        clickExternalSourceButton(1);
+
+        mDevice.waitForIdle();
+
+        sleep(1000);
+
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.button_prepare), withText("Next"),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
+
+        sleep(3000);
+
+        mDevice.waitForIdle();
+
+        ViewInteraction customShapeButton = onView(
+                allOf(withId(R.id.compartments),
+                        isDisplayed()));
+        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
+
+        customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f));
+
+        customShapeButton.perform(TestUtil.clickPercent(0.5f, 0.5f));
+
+        customShapeButton.perform(TestUtil.clickPercent(0.7f, 0.1f));
+
+        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
+
+        sleep(1000);
+
+        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+                isDisplayed())).perform(click());
+
+        onView(withText("Very High Risk")).check(matches(isDisplayed()));
+        onView(withText("Non-compliant")).check(matches(isDisplayed()));
+        onView(withText("> 1000")).check(matches(isDisplayed()));
+        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withText("94351.0")).check(matches(isDisplayed()));
+        onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
+
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.buttonAcceptResult), withText("Accept Result"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.fragment_container),
+                                        0),
+                                3),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
+
+        assertNotNull(mDevice.findObject(By.text("Agricultural Waters Single Sample Water Quality (Based on MPN and Confidence Interval): Very High Risk / Non-compliant ")));
+        assertNotNull(mDevice.findObject(By.text("MPN: > 1000 MPN/100ml")));
+        assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 94351.0 ")));
+    }
 }

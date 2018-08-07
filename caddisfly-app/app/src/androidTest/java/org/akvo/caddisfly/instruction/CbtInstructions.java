@@ -20,25 +20,36 @@
 package org.akvo.caddisfly.instruction;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.StringRes;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.FlakyTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.TestConstants;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
+import org.akvo.caddisfly.viewmodel.TestListViewModel;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -61,6 +72,7 @@ import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -68,6 +80,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class CbtInstructions {
 
+    private final StringBuilder jsArrayString = new StringBuilder();
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -306,42 +319,72 @@ public class CbtInstructions {
         button1.check(matches(isDisplayed()));
     }
 
-
     @Test
-    @FlakyTest
-    public void cbtInstructionsAll() {
+    @RequiresDevice
+    public void testInstructionsAll() {
+
+        final TestListViewModel viewModel =
+                ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
+
+        List<TestInfo> testList = viewModel.getTests(TestType.CBT);
+
+        for (int i = 0; i < TestConstants.CBT_TESTS_COUNT; i++) {
+            TestInfo testInfo = testList.get(i);
+
+            String id = testInfo.getUuid();
+            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+
+            int pages = navigateToTest(i, id);
+
+            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
+
+            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
+
+            mDevice.pressBack();
+
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+        }
+        Log.d("Caddisfly", jsArrayString.toString());
+    }
+
+    private int navigateToTest(int index, String id) {
 
         gotoSurveyForm();
 
         TestUtil.nextSurveyPage("Coliforms");
 
-        clickExternalSourceButton(0);
+        clickExternalSourceButton(index);
 
-        takeScreenshot("ed4db0fd3386", -1);
+        mDevice.waitForIdle();
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
+        sleep(1000);
 
+        takeScreenshot(id, -1);
+
+        mDevice.waitForIdle();
+
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+
+        int pages = 0;
         for (int i = 0; i < 17; i++) {
+            pages++;
 
             try {
-                takeScreenshot("ed4db0fd3386", i);
+                takeScreenshot(id, i);
 
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestUtil.sleep(600);
-                Espresso.pressBack();
+                sleep(600);
+                Random random = new Random(Calendar.getInstance().getTimeInMillis());
+                if (random.nextBoolean()) {
+                    Espresso.pressBack();
+                } else {
+                    mDevice.pressBack();
+                }
                 break;
             }
         }
-
+        return pages;
     }
 }
