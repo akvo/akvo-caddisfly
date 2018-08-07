@@ -42,6 +42,7 @@ import java.util.Locale;
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.common.Constants.MPN_TABLE_FILENAME;
+import static org.akvo.caddisfly.common.Constants.MPN_TABLE_FILENAME_AGRICULTURE;
 
 
 /**
@@ -57,18 +58,22 @@ public final class TestConfigHelper {
     /**
      * Get the most probable number for the key.
      */
-    public static MpnValue getMpnValueForKey(String key) {
+    public static MpnValue getMpnValueForKey(String key, String sampleQuantity) {
         if (mpnTable == null) {
-            mpnTable = loadMpnTable();
+            if (sampleQuantity.equals("10")) {
+                mpnTable = loadMpnTable(MPN_TABLE_FILENAME_AGRICULTURE);
+            } else {
+                mpnTable = loadMpnTable(MPN_TABLE_FILENAME);
+            }
         }
         return mpnTable.get(key);
     }
 
-    private static HashMap<String, MpnValue> loadMpnTable() {
+    private static HashMap<String, MpnValue> loadMpnTable(String mpnTableFilename) {
 
         HashMap<String, MpnValue> mapper = new HashMap<>();
 
-        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(MPN_TABLE_FILENAME);
+        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(mpnTableFilename);
         try {
             JSONArray array = new JSONObject(jsonText).getJSONArray("rows");
 

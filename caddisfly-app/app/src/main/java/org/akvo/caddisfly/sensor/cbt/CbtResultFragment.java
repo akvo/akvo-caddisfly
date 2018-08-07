@@ -38,9 +38,11 @@ import org.akvo.caddisfly.util.StringUtil;
 import java.util.Objects;
 
 public class CbtResultFragment extends BaseFragment {
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_RESULT = "result";
+    private static final String ARG_SAMPLE_QTY = "sample_quantity";
 
     private String mResult;
+    private String mSampleQuantity;
 
     /**
      * Use this factory method to create a new instance of
@@ -48,10 +50,11 @@ public class CbtResultFragment extends BaseFragment {
      *
      * @return A new instance of fragment CbtResultFragment.
      */
-    public static CbtResultFragment newInstance(String result) {
+    public static CbtResultFragment newInstance(String result, String sampleQuantity) {
         CbtResultFragment fragment = new CbtResultFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, result);
+        args.putString(ARG_RESULT, result);
+        args.putString(ARG_SAMPLE_QTY, sampleQuantity);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,7 +63,8 @@ public class CbtResultFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mResult = getArguments().getString(ARG_PARAM1);
+            mResult = getArguments().getString(ARG_RESULT);
+            mSampleQuantity = getArguments().getString(ARG_SAMPLE_QTY);
         }
     }
 
@@ -75,7 +79,7 @@ public class CbtResultFragment extends BaseFragment {
         LinearLayout layoutResult1 = view.findViewById(R.id.layoutResult1);
         LinearLayout layoutResult2 = view.findViewById(R.id.layoutResult2);
 
-        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
+        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult, mSampleQuantity);
 
         String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
                 mpnValue.getRiskCategory()).toString().split("/");

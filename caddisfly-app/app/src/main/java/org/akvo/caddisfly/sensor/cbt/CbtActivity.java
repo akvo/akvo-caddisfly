@@ -144,7 +144,8 @@ public class CbtActivity extends BaseActivity
     @SuppressWarnings("unused")
     public void onClickMatchedButton(View view) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, CbtResultFragment.newInstance(cbtResult), "resultFragment")
+        fragmentTransaction.replace(R.id.fragment_container,
+                CbtResultFragment.newInstance(cbtResult, testInfo.getSampleQuantity()), "resultFragment")
                 .addToBackStack(null)
                 .commit();
     }
@@ -166,7 +167,7 @@ public class CbtActivity extends BaseActivity
             Toast.makeText(this, R.string.delete_error, Toast.LENGTH_SHORT).show();
         }
 
-        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(cbtResult);
+        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(cbtResult, testInfo.getSampleQuantity());
 
         results.put(1, StringUtil.getStringResourceByName(this, mpnValue.getRiskCategory()).toString());
         results.put(2, mpnValue.getMpn());

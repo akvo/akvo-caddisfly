@@ -28,6 +28,7 @@ public class Constants {
     public static final String SWATCH_SELECT_TEST_ID = "520ba67c-233f-4dc7-a2ad-17d86047d7c4";
 
     public static final String MPN_TABLE_FILENAME = "most-probable-number.json";
+    public static final String MPN_TABLE_FILENAME_AGRICULTURE = "most-probable-number-agriculture.json";
 
     public static final int MIN_CAMERA_MEGA_PIXELS = 5;
 
