@@ -476,4 +476,17 @@ public class SwatchSelectWidget extends View {
 
         canvas.drawPath(path, paint);
     }
+
+    public void setRange(int i) {
+        if (i == 2){
+            clColors.clear();
+            clColors.add(new ColorItem(6, 169, 59, 92));
+            clColors.add(new ColorItem(5, 181, 78, 110));
+            clColors.add(new ColorItem(3, 194, 100, 124));
+            clColors.add(new ColorItem(2, 194, 121, 133));
+            clColors.add(new ColorItem(1.5, 209, 149, 160));
+            clColors.add(new ColorItem(1, 224, 186, 189));
+            clColors.add(new ColorItem(0.5, 214, 192, 184));
+        }
+    }
 }

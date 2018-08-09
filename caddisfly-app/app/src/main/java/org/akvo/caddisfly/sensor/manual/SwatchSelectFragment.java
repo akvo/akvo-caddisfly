@@ -36,17 +36,20 @@ import org.akvo.caddisfly.ui.BaseFragment;
 import java.util.Objects;
 
 public class SwatchSelectFragment extends BaseFragment {
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_KEY = "param1";
+    private static final String ARG_RANGE = "range";
     private static final int BUTTON_ENABLE_DELAY = 1500;
     private static final int ANIMATION_DURATION_MILLIS = 500;
     private static final float BUTTON_START_ALPHA = 0.1f;
     private OnSwatchSelectListener mListener;
     private float[] mKey;
+    private boolean mRange;
 
-    public static SwatchSelectFragment newInstance(float[] key) {
+    public static SwatchSelectFragment newInstance(float[] key, boolean isHighRange) {
         SwatchSelectFragment fragment = new SwatchSelectFragment();
         Bundle args = new Bundle();
-        args.putFloatArray(ARG_PARAM1, key);
+        args.putFloatArray(ARG_KEY, key);
+        args.putBoolean(ARG_RANGE, isHighRange);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +58,8 @@ public class SwatchSelectFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mKey = getArguments().getFloatArray(ARG_PARAM1);
+            mKey = getArguments().getFloatArray(ARG_KEY);
+            mRange = getArguments().getBoolean(ARG_RANGE);
         }
     }
 
@@ -75,6 +79,10 @@ public class SwatchSelectFragment extends BaseFragment {
         }, BUTTON_ENABLE_DELAY);
 
         final SwatchSelectWidget swatchSelect = view.findViewById(R.id.compartments);
+
+        if (mRange){
+            swatchSelect.setRange(2);
+        }
 
         swatchSelect.setKey(mKey);
 
