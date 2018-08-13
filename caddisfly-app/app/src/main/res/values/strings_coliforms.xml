@@ -55,18 +55,17 @@
 
     <string name="low_risk_safe">Low Risk / Safe</string>
     <string name="probably_safe">Intermediate Risk / Probably Safe</string>
-    <string name="possibly_safe">Intermediate Risk / Possibly Safe</string>
+    <string name="intermediate_possibly_safe">Intermediate Risk / Possibly Safe</string>
     <string name="possibly_unsafe">High Risk / Possibly Unsafe</string>
     <string name="probably_unsafe">High Risk / Probably Unsafe</string>
-    <string name="unsafe">Very High Risk / Unsafe</string>
+    <string name="very_high_risk_unsafe">Very High Risk / Unsafe</string>
+
+    <string name="low_risk_probably_safe">Low Risk / Probably Safe</string>
+    <string name="low_risk_possibly_safe">Low Risk / Possibly Safe</string>
+    <string name="very_unsafe">Very Unsafe</string>
 
     <string name="collect_10ml_water_sample">Collect <b>10 ml</b> water sample with bottle or Thio Bag.</string>
     <string name="add_90ml_distilled_water">Add <b>90 ml</b> of distilled water to the water sample with a pipette</string>
-    <string name="very_low_risk_safe">Very Low Risk / Compliant</string>
-    <string name="low_risk_compliant">Low Risk / Compliant</string>
-    <string name="higher_risk">Higher Risk / Likely Compliant</string>
-    <string name="likely_non_compliant">Higher Risk / Likely Non-Compliant</string>
-    <string name="very_high_risk">Very High Risk / Non-compliant</string>
 
     <string name="temperature">Temperature</string>
     <string name="incubation_time">Incubation Time</string>

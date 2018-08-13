@@ -121,13 +121,6 @@ public class ResultActivity extends BaseActivity {
             setResult(RESULT_OK, intent);
             finish();
         });
-
-        buttonCancel = findViewById(R.id.button_cancel);
-        buttonCancel.setOnClickListener(v -> {
-            Intent intent = new Intent(getIntent());
-            setResult(RESULT_CANCELED, intent);
-            finish();
-        });
     }
 
     @Override
@@ -257,7 +250,6 @@ public class ResultActivity extends BaseActivity {
 
         // show buttons
         buttonSave.setVisibility(View.VISIBLE);
-        buttonCancel.setVisibility(View.VISIBLE);
     }
 
     private void createView(TestInfo testInfo, List<PatchResult> patchResultList) {

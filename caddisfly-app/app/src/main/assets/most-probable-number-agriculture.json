@@ -12,22 +12,27 @@
       "background2": "#969914"
     },
     {
-      "threshold": 100,
+      "threshold": 110,
       "background1": "#b0ad1e",
       "background2": "#baa314"
     },
     {
-      "threshold": 500,
+      "threshold": 300,
       "background1": "#ba8510",
       "background2": "#c48f0a"
     },
     {
-      "threshold": 1000,
+      "threshold": 500,
       "background1": "#be4606",
       "background2": "#b43f1e"
     },
     {
-      "threshold": 3000,
+      "threshold": 1000,
+      "background1": "#d21717",
+      "background2": "#bf0303"
+    },
+    {
+      "threshold": 5000,
       "background1": "#d21717",
       "background2": "#bf0303"
     }
@@ -37,193 +42,193 @@
       "key": "00000",
       "mpn": "0",
       "confidence": 28.7,
-      "riskCategory": "very_low_risk_safe"
+      "riskCategory": "low_risk_safe"
     },
     {
       "key": "00010",
       "mpn": "10",
-      "confidence": 47.4,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 51.4,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "00001",
       "mpn": "10",
-      "confidence": 51.4,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 47.4,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "10000",
       "mpn": "11",
       "confidence": 51.6,
-      "riskCategory": "low_risk_compliant"
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "01000",
       "mpn": "12",
       "confidence": 56.4,
-      "riskCategory": "low_risk_compliant"
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "00100",
       "mpn": "15",
-      "confidence": 63.2,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 78.1,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "00011",
       "mpn": "20",
-      "confidence": 66.4,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 63.2,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "10010",
       "mpn": "21",
       "confidence": 68.5,
-      "riskCategory": "low_risk_compliant"
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "10001",
       "mpn": "21",
-      "confidence": 78.10,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 66.4,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "01010",
       "mpn": "24",
       "confidence": 78.1,
-      "riskCategory": "low_risk_compliant"
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "01001",
       "mpn": "24",
       "confidence": 81.2,
-      "riskCategory": "low_risk_compliant"
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "11000",
       "mpn": "26",
-      "confidence": 83.8,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 85.1,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "10011",
       "mpn": "32",
-      "confidence": 85.1,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 83.8,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "01011",
       "mpn": "37",
       "confidence": 97,
-      "riskCategory": "low_risk_compliant"
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "00101",
       "mpn": "31",
-      "confidence": 104.6,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 113.6,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "00110",
       "mpn": "32",
-      "confidence": 109.4,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 118.2,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "10100",
       "mpn": "34",
-      "confidence": 113.6,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 125.3,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "11001",
       "mpn": "39",
-      "confidence": 118.2,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 104.3,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "11010",
       "mpn": "40",
-      "confidence": 125.3,
-      "riskCategory": "low_risk_compliant"
+      "confidence": 109.4,
+      "riskCategory": "low_risk_probably_safe"
     },
     {
       "key": "01100",
       "mpn": "47",
-      "confidence": 129.3,
-      "riskCategory": "higher_risk"
+      "confidence": 227.5,
+      "riskCategory": "low_risk_possibly_safe"
     },
     {
       "key": "00111",
       "mpn": "52",
       "confidence": 147.3,
-      "riskCategory": "higher_risk"
+      "riskCategory": "low_risk_possibly_safe"
     },
     {
       "key": "11011",
       "mpn": "54",
-      "confidence": 168.7,
-      "riskCategory": "higher_risk"
+      "confidence": 129.3,
+      "riskCategory": "low_risk_possibly_safe"
     },
     {
       "key": "10101",
       "mpn": "56",
       "confidence": 171.4,
-      "riskCategory": "higher_risk"
+      "riskCategory": "low_risk_possibly_safe"
     },
     {
       "key": "10110",
-      "mpn": "59",
-      "confidence": 211.9,
-      "riskCategory": "higher_risk"
+      "mpn": "58",
+      "confidence": 168.7,
+      "riskCategory": "low_risk_possibly_safe"
     },
     {
       "key": "10111",
-      "mpn": "85",
-      "confidence": 227.5,
-      "riskCategory": "higher_risk"
+      "mpn": "84",
+      "confidence": 211.9,
+      "riskCategory": "low_risk_possibly_safe"
     },
     {
       "key": "01101",
       "mpn": "91",
       "confidence": 370.4,
-      "riskCategory": "higher_risk"
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "01110",
       "mpn": "96",
       "confidence": 376.8,
-      "riskCategory": "higher_risk"
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "11100",
       "mpn": "136",
-      "confidence": 563.5,
-      "riskCategory": "likely_non_compliant"
+      "confidence": 830.6,
+      "riskCategory": "high_risk_probably_unsafe"
     },
     {
       "key": "01111",
       "mpn": "171",
-      "confidence": 830.6,
-      "riskCategory": "likely_non_compliant"
+      "confidence": 563.5,
+      "riskCategory": "high_risk_probably_unsafe"
     },
     {
       "key": "11101",
       "mpn": "326",
       "confidence": 1455.5,
-      "riskCategory": "likely_non_compliant"
+      "riskCategory": "very_high_risk_unsafe"
     },
     {
       "key": "11110",
       "mpn": "483",
       "confidence": 3519.1,
-      "riskCategory": "very_high_risk"
+      "riskCategory": "very_high_risk_unsafe"
     },
     {
       "key": "11111",
-      "mpn": "> 1000",
+      "mpn": ">1000",
       "confidence": 94351,
-      "riskCategory": "very_high_risk"
+      "riskCategory": "very_unsafe"
     }
   ]
 }
