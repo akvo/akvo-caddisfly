@@ -67,7 +67,7 @@ public class ManualSwatchSelectTest {
 
         Activity activity = (Activity) controller.get();
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
-        assertEquals(textView.getText(), "Water - Chlorine pH HR TESTER");
+        assertEquals(textView.getText(), "Water - Chlorine pH LR TESTER");
     }
 
     @Test

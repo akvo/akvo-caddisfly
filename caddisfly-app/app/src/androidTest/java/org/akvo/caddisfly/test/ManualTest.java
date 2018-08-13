@@ -64,7 +64,6 @@ import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -400,77 +399,6 @@ public class ManualTest {
         onView(withText("Submit Result")).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
-
-    }
-
-    @Test
-    public void runSwatchSelectTest() {
-
-        gotoSurveyForm();
-
-        TestUtil.nextSurveyPage("Manual");
-
-        clickExternalSourceButton(3);
-
-        SystemClock.sleep(2000);
-
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
-
-        mDevice.waitForIdle();
-
-        SystemClock.sleep(3000);
-
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
-
-        SystemClock.sleep(2000);
-
-        ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
-
-        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
-
-        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.5f));
-
-        sleep(1000);
-
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
-
-        onView(withText("pH")).check(matches(isDisplayed()));
-
-        onView(withText("7.4")).check(matches(isDisplayed()));
-
-        onView(withText("Chlorine")).check(matches(isDisplayed()));
-
-        onView(withText("1.0 mg/l")).check(matches(isDisplayed()));
-
-        pressBack();
-
-        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.7f));
-
-        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.3f));
-
-        sleep(1000);
-
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
-
-        onView(withText("pH")).check(matches(isDisplayed()));
-
-        onView(withText("7.2")).check(matches(isDisplayed()));
-
-        onView(withText("Chlorine")).check(matches(isDisplayed()));
-
-        onView(withText("2.0 mg/l")).check(matches(isDisplayed()));
-
-        pressBack();
-
-        sleep(3000);
-
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
-
-        onView(withText("Save")).perform(click());
-
-        assertNotNull(mDevice.findObject(By.text("pH: 7.2 ")));
-
-        assertNotNull(mDevice.findObject(By.text("Chlorine: 2.0 mg/l")));
 
     }
 }
