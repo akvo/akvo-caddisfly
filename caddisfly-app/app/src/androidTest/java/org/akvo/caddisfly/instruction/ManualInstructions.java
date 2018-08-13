@@ -103,7 +103,6 @@ public class ManualInstructions {
                 ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
 
         List<TestInfo> testList = viewModel.getTests(TestType.MANUAL);
-        testList.addAll(viewModel.getTests(TestType.MANUAL_COLOR_SELECT));
 
         for (int i = 0; i < TestConstants.MANUAL_TESTS_COUNT; i++) {
             TestInfo testInfo = testList.get(i);
@@ -111,7 +110,7 @@ public class ManualInstructions {
             String id = testInfo.getUuid();
             id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-            int pages = navigateToTest(i, id);
+            int pages = navigateToTest("Manual", i, id);
 
             onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
 
@@ -124,11 +123,39 @@ public class ManualInstructions {
         Log.d("Caddisfly", jsArrayString.toString());
     }
 
-    private int navigateToTest(int index, String id) {
+    @Test
+    @RequiresDevice
+    public void testInstructionsSwatchSelect() {
+
+        final TestListViewModel viewModel =
+                ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
+
+        List<TestInfo> testList = viewModel.getTests(TestType.MANUAL_COLOR_SELECT);
+
+        for (int i = 0; i < TestConstants.MANUAL_SELECT_TESTS_COUNT; i++) {
+            TestInfo testInfo = testList.get(i);
+
+            String id = testInfo.getUuid();
+            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+
+            int pages = navigateToTest("Manual 2", i, id);
+
+            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
+
+            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
+
+            mDevice.pressBack();
+
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+        }
+        Log.d("Caddisfly", jsArrayString.toString());
+    }
+
+    private int navigateToTest(String tabName, int index, String id) {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual");
+        TestUtil.nextSurveyPage(tabName);
 
         clickExternalSourceButton(index);
 

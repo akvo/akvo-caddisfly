@@ -36,7 +36,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?primaryBackgroundStyle"
+        android:background="#014378"
         android:keepScreenOn="true"
         android:orientation="vertical"
         tools:context=".sensor.ec.SensorActivity"

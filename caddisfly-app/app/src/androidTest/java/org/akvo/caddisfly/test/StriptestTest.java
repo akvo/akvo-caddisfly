@@ -137,7 +137,6 @@ public class StriptestTest {
         textView12.check(matches(withText("No Result")));
 
 //        onView(withText("No Result")).check(matches(isDisplayed()));
-        onView(withText("Cancel")).check(matches(isDisplayed()));
         onView(withText("Save")).check(matches(isDisplayed()));
 
         onView(withText("Save")).perform(click());
@@ -176,7 +175,6 @@ public class StriptestTest {
         onView(withText("41.0 mg/l")).check(matches(isDisplayed()));
         onView(withText("Nitrite Nitrogen")).check(matches(isDisplayed()));
         onView(withText("0.01 mg/l")).check(matches(isDisplayed()));
-        onView(withText("Cancel")).check(matches(isDisplayed()));
         onView(withText("Save")).check(matches(isDisplayed()));
 
         onView(withText("Save")).perform(click());
@@ -212,7 +210,6 @@ public class StriptestTest {
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()));
 
-        onView(withText("Cancel")).check(matches(isDisplayed()));
         onView(withText("Save")).check(matches(isDisplayed()));
 
         onView(withText("Save")).perform(click());
@@ -243,7 +240,6 @@ public class StriptestTest {
         onView(withText("14.5 mg/l")).check(matches(isDisplayed()));
         onView(withText("Nitrite")).check(matches(isDisplayed()));
         onView(withText("1.9 mg/l")).check(matches(isDisplayed()));
-        onView(withText("Cancel")).check(matches(isDisplayed()));
         onView(withText("Save")).check(matches(isDisplayed()));
 
         onView(withText("Save")).perform(click());
