@@ -44,6 +44,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.intent.Intents.intending;
@@ -169,7 +170,7 @@ public class CbtTest {
         textView.check(matches(withText("Very High Risk")));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.textResult2), withText("> 100"),
+                allOf(withId(R.id.textResult2), withText(">100"),
                         childAtPosition(
                                 allOf(withId(R.id.layoutResult1),
                                         childAtPosition(
@@ -177,7 +178,7 @@ public class CbtTest {
                                                 1)),
                                 0),
                         isDisplayed()));
-        textView3.check(matches(withText("> 100")));
+        textView3.check(matches(withText(">100")));
 
         ViewInteraction textView2 = onView(
                 allOf(withText("MPN/100ml"),
@@ -244,7 +245,7 @@ public class CbtTest {
         appCompatButton4.perform(click());
 
         assertNotNull(mDevice.findObject(By.text("Health Risk Category (Based on MPN and Confidence Interval): Very High Risk / Unsafe ")));
-        assertNotNull(mDevice.findObject(By.text("MPN: > 100 MPN/100ml")));
+        assertNotNull(mDevice.findObject(By.text("MPN: >100 MPN/100ml")));
         assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 9435.1 ")));
     }
 
@@ -283,14 +284,68 @@ public class CbtTest {
 
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
 
-        sleep(1000);
+        sleep(100);
+
+        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+                isDisplayed())).perform(click());
+
+        onView(withText("Very Unsafe")).check(matches(isDisplayed()));
+        onView(withText(">1000")).check(matches(isDisplayed()));
+        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withText("94351.0")).check(matches(isDisplayed()));
+        onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
+
+        pressBack();
+
+        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
+
+        sleep(3000);
+
+        mDevice.waitForIdle();
 
         onView(allOf(withId(R.id.buttonNext), withText("Next"),
                 isDisplayed())).perform(click());
 
         onView(withText("Very High Risk")).check(matches(isDisplayed()));
-        onView(withText("Non-compliant")).check(matches(isDisplayed()));
-        onView(withText("> 1000")).check(matches(isDisplayed()));
+        onView(withText("Unsafe")).check(matches(isDisplayed()));
+        onView(withText("483")).check(matches(isDisplayed()));
+        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withText("3519.1")).check(matches(isDisplayed()));
+        onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
+
+        pressBack();
+
+        customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f));
+
+        sleep(3000);
+
+        mDevice.waitForIdle();
+
+        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+                isDisplayed())).perform(click());
+
+        onView(withText("Low Risk")).check(matches(isDisplayed()));
+        onView(withText("Possibly Safe")).check(matches(isDisplayed()));
+        onView(withText("58")).check(matches(isDisplayed()));
+        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withText("168.7")).check(matches(isDisplayed()));
+        onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
+
+        pressBack();
+
+        customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f));
+
+        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
+
+        sleep(3000);
+
+        mDevice.waitForIdle();
+
+        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+                isDisplayed())).perform(click());
+
+        onView(withText("Very Unsafe")).check(matches(isDisplayed()));
+        onView(withText(">1000")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
         onView(withText("94351.0")).check(matches(isDisplayed()));
         onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
@@ -305,8 +360,8 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("Agricultural Waters Single Sample Water Quality (Based on MPN and Confidence Interval): Very High Risk / Non-compliant ")));
-        assertNotNull(mDevice.findObject(By.text("MPN: > 1000 MPN/100ml")));
+        assertNotNull(mDevice.findObject(By.text("Recreational and Irrigation Water Health Risk Category (Based on MPN and Upper 95% Confidence Level): Very Unsafe ")));
+        assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")));
         assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 94351.0 ")));
     }
 }
