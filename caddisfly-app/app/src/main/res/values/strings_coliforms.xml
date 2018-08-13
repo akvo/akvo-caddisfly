@@ -62,10 +62,11 @@
 
     <string name="low_risk_probably_safe">Low Risk / Probably Safe</string>
     <string name="low_risk_possibly_safe">Low Risk / Possibly Safe</string>
+    <string name="high_risk_probably_unsafe">High Risk / Probably Unsafe</string>
     <string name="very_unsafe">Very Unsafe</string>
 
-    <string name="collect_10ml_water_sample">Collect <b>10 ml</b> water sample with bottle or Thio Bag.</string>
-    <string name="add_90ml_distilled_water">Add <b>90 ml</b> of distilled water to the water sample with a pipette</string>
+    <string name="collect_10ml_water_sample">Collect <b>10 ml</b> water sample with Thio Bag (or bottle).</string>
+    <string name="add_90ml_distilled_water">Add <b>90 ml</b> of distilled water to the water sample.</string>
 
     <string name="temperature">Temperature</string>
     <string name="incubation_time">Incubation Time</string>
