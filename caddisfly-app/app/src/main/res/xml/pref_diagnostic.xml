@@ -24,26 +24,5 @@
         <CheckBoxPreference
             android:key="@string/ignoreTimeDelaysKey"
             android:title="@string/ignoreTimeDelays" />
-        <EditTextPreference
-            android:defaultValue="5"
-            android:dialogMessage="A number from 1 to 5"
-            android:key="@string/samplingsTimeKey"
-            android:maxLength="2"
-            android:numeric="integer"
-            android:title="Sampling times" />
-        <EditTextPreference
-            android:defaultValue="50"
-            android:dialogMessage="Enter a value below 400"
-            android:key="@string/colorDistanceToleranceKey"
-            android:maxLength="3"
-            android:numeric="integer"
-            android:title="Max swatch color distance" />
-        <EditTextPreference
-            android:defaultValue="20"
-            android:dialogMessage="Enter a value below 400"
-            android:key="@string/colorAverageDistanceToleranceKey"
-            android:maxLength="3"
-            android:numeric="integer"
-            android:title="Max averaging color distance" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

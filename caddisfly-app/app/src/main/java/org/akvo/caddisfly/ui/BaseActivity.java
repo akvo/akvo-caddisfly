@@ -113,6 +113,9 @@ public abstract class BaseActivity extends AppCompatActivity {
      * This serves as a visual indication as to what mode the app is running in.
      */
     protected void changeActionBarStyleBasedOnCurrentMode() {
+
+        invalidateOptionsMenu();
+
         if (AppPreferences.isDiagnosticMode()) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(

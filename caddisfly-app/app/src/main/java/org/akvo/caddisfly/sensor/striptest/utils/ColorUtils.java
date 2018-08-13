@@ -44,20 +44,20 @@ public class ColorUtils {
     }
 
     // linear sRGB D65 scaled [0..1 ]to XYZ D65 scaled [0 .. 100]
-    public static float[] linearRGBtoXYZ(float[] RGB) {
-
-        // next we apply a transformation matrix to get XYZ D65
-        float[] XYZ = new float[3];
-        XYZ[0] = 0.4124564f * RGB[0] + 0.3575761f * RGB[1] + 0.1804375f * RGB[2];
-        XYZ[1] = 0.2126729f * RGB[0] + 0.7151522f * RGB[1] + 0.0721750f * RGB[2];
-        XYZ[2] = 0.0193339f * RGB[0] + 0.1191920f * RGB[1] + 0.9503041f * RGB[2];
-
-        // and we scale to 0..100
-        XYZ[0] *= 100f;
-        XYZ[1] *= 100f;
-        XYZ[2] *= 100f;
-        return XYZ;
-    }
+//    public static float[] linearRGBtoXYZ(float[] RGB) {
+//
+//        // next we apply a transformation matrix to get XYZ D65
+//        float[] XYZ = new float[3];
+//        XYZ[0] = 0.4124564f * RGB[0] + 0.3575761f * RGB[1] + 0.1804375f * RGB[2];
+//        XYZ[1] = 0.2126729f * RGB[0] + 0.7151522f * RGB[1] + 0.0721750f * RGB[2];
+//        XYZ[2] = 0.0193339f * RGB[0] + 0.1191920f * RGB[1] + 0.9503041f * RGB[2];
+//
+//        // and we scale to 0..100
+//        XYZ[0] *= 100f;
+//        XYZ[1] *= 100f;
+//        XYZ[2] *= 100f;
+//        return XYZ;
+//    }
 
     // XYZ D65 to gamma-corrected sRGB D65
     // according to http://www.brucelindbloom.com/index.html?Eqn_ChromAdapt.html

@@ -96,10 +96,10 @@ public final class AlertUtil {
                 R.string.cancel, true, false, positiveListener, negativeListener, cancelListener);
     }
 
-    public static void showAlert(@NonNull Context context, @StringRes int title, @StringRes int message,
-                                 DialogInterface.OnClickListener positiveListener,
-                                 DialogInterface.OnClickListener negativeListener,
-                                 DialogInterface.OnCancelListener cancelListener) {
+    private static void showAlert(@NonNull Context context, @StringRes int title, @StringRes int message,
+                                  DialogInterface.OnClickListener positiveListener,
+                                  DialogInterface.OnClickListener negativeListener,
+                                  DialogInterface.OnCancelListener cancelListener) {
 
         showAlert(context, context.getString(title), context.getString(message), R.string.ok, R.string.cancel,
                 true, false, positiveListener, negativeListener, cancelListener);

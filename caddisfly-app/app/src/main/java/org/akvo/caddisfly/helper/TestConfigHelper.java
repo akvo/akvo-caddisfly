@@ -19,22 +19,18 @@
 
 package org.akvo.caddisfly.helper;
 
-import android.os.Build;
+import android.graphics.Color;
 import android.util.SparseArray;
 
-import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.ConstantJsonKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
-import org.akvo.caddisfly.entity.Calibration;
-import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.model.GroupType;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AssetsManager;
-import org.akvo.caddisfly.util.PreferencesUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +43,7 @@ import java.util.Locale;
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.common.Constants.MPN_TABLE_FILENAME;
+import static org.akvo.caddisfly.common.Constants.MPN_TABLE_FILENAME_AGRICULTURE;
 
 
 /**
@@ -54,29 +51,54 @@ import static org.akvo.caddisfly.common.Constants.MPN_TABLE_FILENAME;
  */
 public final class TestConfigHelper {
 
-    // Files
-    private static final int BIT_MASK = 0x00FFFFFF;
-
-    private static HashMap<String, MpnValue> mpnTable;
-
     private TestConfigHelper() {
     }
 
     /**
      * Get the most probable number for the key.
      */
-    public static MpnValue getMpnValueForKey(String key) {
-        if (mpnTable == null) {
-            mpnTable = loadMpnTable();
+    public static MpnValue getMpnValueForKey(String key, String sampleQuantity) {
+        String fileName = MPN_TABLE_FILENAME;
+
+        if (sampleQuantity.equals("10")) {
+            fileName = MPN_TABLE_FILENAME_AGRICULTURE;
         }
-        return mpnTable.get(key);
+
+        HashMap<String, MpnValue> mpnTable = loadMpnTable(fileName);
+
+        MpnValue mpnValue = mpnTable.get(key);
+
+        populateDisplayColors(mpnValue, fileName);
+
+        return mpnValue;
     }
 
-    private static HashMap<String, MpnValue> loadMpnTable() {
+    private static void populateDisplayColors(MpnValue mpnValue, String fileName) {
+        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(fileName);
+        try {
+            JSONArray array = new JSONObject(jsonText).getJSONArray("displayColors");
+
+            for (int j = array.length() - 1; j >= 0; j--) {
+                JSONObject item = array.getJSONObject(j);
+
+                int threshold = item.getInt("threshold");
+
+                if (mpnValue.getConfidence() > threshold) {
+                    mpnValue.setBackgroundColor1(Color.parseColor(item.getString("background1")));
+                    mpnValue.setBackgroundColor2(Color.parseColor(item.getString("background2")));
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static HashMap<String, MpnValue> loadMpnTable(String mpnTableFilename) {
 
         HashMap<String, MpnValue> mapper = new HashMap<>();
 
-        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(MPN_TABLE_FILENAME);
+        String jsonText = AssetsManager.getInstance().loadJsonFromAsset(mpnTableFilename);
         try {
             JSONArray array = new JSONObject(jsonText).getJSONArray("rows");
 
@@ -85,7 +107,7 @@ public final class TestConfigHelper {
 
                 String key = item.getString("key");
 
-                mapper.put(key, new MpnValue(item.getString("mpn"), item.getString("confidence"),
+                mapper.put(key, new MpnValue(item.getString("mpn"), item.getDouble("confidence"),
                         item.getString("riskCategory")));
             }
 
@@ -102,13 +124,11 @@ public final class TestConfigHelper {
      *
      * @param testInfo       information about the test
      * @param results        the results for the test
-     * @param color          the color extracted
      * @param resultImageUrl the url of the image
      * @return the result in json format
      */
     public static JSONObject getJsonResult(TestInfo testInfo, SparseArray<String> results,
-                                           SparseArray<String> brackets, int color,
-                                           String resultImageUrl) {
+                                           SparseArray<String> brackets, String resultImageUrl) {
 
         JSONObject resultJson = new JSONObject();
 
@@ -136,26 +156,6 @@ public final class TestConfigHelper {
                     }
                 }
 
-                if (color > -1) {
-                    subTestJson.put("resultColor", Integer.toHexString(color & BIT_MASK));
-
-                    CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
-                            .calibrationDao().getCalibrationDetails(testInfo.getUuid());
-
-                    // Add calibration details to result
-                    subTestJson.put("calibratedDate",
-                            new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US)
-                                    .format(calibrationDetail.date));
-                    subTestJson.put("reagentExpiry", calibrationDetail.expiry);
-                    subTestJson.put("reagentBatch", calibrationDetail.batchNumber);
-
-                    JSONArray calibrationSwatches = new JSONArray();
-                    for (Calibration calibration : testInfo.getCalibrations()) {
-                        calibrationSwatches.put(Integer.toHexString(calibration.color & BIT_MASK));
-                    }
-                    subTestJson.put("calibration", calibrationSwatches);
-                }
-
                 resultsJsonArray.put(subTestJson);
 
                 if (testInfo.getGroupingType() == GroupType.GROUP) {
@@ -165,7 +165,7 @@ public final class TestConfigHelper {
 
             resultJson.put(ConstantJsonKey.RESULT, resultsJsonArray);
 
-            if (!resultImageUrl.isEmpty()) {
+            if (resultImageUrl != null && !resultImageUrl.isEmpty()) {
                 resultJson.put(ConstantJsonKey.IMAGE, resultImageUrl);
             }
 
@@ -173,14 +173,8 @@ public final class TestConfigHelper {
             resultJson.put(ConstantJsonKey.TEST_DATE, new SimpleDateFormat(Constants.DATE_TIME_FORMAT, Locale.US)
                     .format(Calendar.getInstance().getTime()));
 
-            // Add user preference details to the result
-            resultJson.put(ConstantJsonKey.USER, TestConfigHelper.getUserPreferences());
-
             // Add app details to the result
             resultJson.put(ConstantJsonKey.APP, TestConfigHelper.getAppDetails());
-
-            // Add standard diagnostic details to the result
-            resultJson.put(ConstantJsonKey.DEVICE, TestConfigHelper.getDeviceDetails());
 
         } catch (JSONException e) {
             Timber.e(e);
@@ -188,29 +182,9 @@ public final class TestConfigHelper {
         return resultJson;
     }
 
-    private static JSONObject getDeviceDetails() throws JSONException {
-        JSONObject details = new JSONObject();
-        details.put("model", Build.MODEL);
-        details.put("product", Build.PRODUCT);
-        details.put("manufacturer", Build.MANUFACTURER);
-        details.put("os", "Android - " + Build.VERSION.RELEASE + " ("
-                + Build.VERSION.SDK_INT + ")");
-        details.put("country", Locale.getDefault().getCountry());
-        details.put("language", Locale.getDefault().getLanguage());
-        return details;
-    }
-
     private static JSONObject getAppDetails() throws JSONException {
         JSONObject details = new JSONObject();
         details.put("appVersion", CaddisflyApp.getAppVersion(true));
-        // The current active language of the app
-        details.put("language", CaddisflyApp.getAppLanguage());
-        return details;
-    }
-
-    private static JSONObject getUserPreferences() throws JSONException {
-        JSONObject details = new JSONObject();
-        details.put("language", PreferencesUtil.getString(CaddisflyApp.getApp(), R.string.languageKey, ""));
         return details;
     }
 }

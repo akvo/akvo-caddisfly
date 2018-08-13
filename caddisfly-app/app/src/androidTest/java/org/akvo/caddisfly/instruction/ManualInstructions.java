@@ -21,9 +21,6 @@ package org.akvo.caddisfly.instruction;
 
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.SharedPreferences;
-import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.RequiresDevice;
@@ -31,21 +28,15 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.TestConstantKeys;
 import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -64,17 +55,19 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.getString;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
-import static org.hamcrest.Matchers.allOf;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.core.AllOf.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -96,86 +89,52 @@ public class ManualInstructions {
         }
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
-
     @Before
     public void setUp() {
-
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
-
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mActivityTestRule);
     }
 
     @Test
     @RequiresDevice
     public void testInstructionsAll() {
 
-        goToMainScreen();
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        mDevice.waitForIdle();
-
-        goToMainScreen();
-
-        TestUtil.sleep(1000);
-
         final TestListViewModel viewModel =
                 ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
 
         List<TestInfo> testList = viewModel.getTests(TestType.MANUAL);
+        testList.addAll(viewModel.getTests(TestType.MANUAL_COLOR_SELECT));
 
         for (int i = 0; i < TestConstants.MANUAL_TESTS_COUNT; i++) {
+            TestInfo testInfo = testList.get(i);
 
-            if (testList.get(i).getSubtype() == TestType.MANUAL) {
-                String id = testList.get(i).getUuid();
-                id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            String id = testInfo.getUuid();
+            id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-                int pages = navigateToTest(i, id);
+            int pages = navigateToTest(i, id);
 
-                mDevice.pressBack();
+            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
 
-            }
+            mDevice.pressBack();
+
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
-
-//        Log.e("Caddisfly", jsArrayString.toString());
-
+        Log.d("Caddisfly", jsArrayString.toString());
     }
 
     private int navigateToTest(int index, String id) {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6, "Manual");
+        TestUtil.nextSurveyPage("Manual");
 
-        clickExternalSourceButton(index, TestConstantKeys.GO_TO_TEST);
+        clickExternalSourceButton(index);
 
         mDevice.waitForIdle();
 
-        TestUtil.sleep(1000);
+        sleep(1000);
 
         takeScreenshot(id, -1);
 
@@ -193,7 +152,7 @@ public class ManualInstructions {
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestUtil.sleep(600);
+                sleep(600);
                 Random random = new Random(Calendar.getInstance().getTimeInMillis());
                 if (random.nextBoolean()) {
                     Espresso.pressBack();
@@ -211,11 +170,11 @@ public class ManualInstructions {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage(6, "Manual");
+        TestUtil.nextSurveyPage("Manual");
 
-        clickExternalSourceButton(1, TestConstantKeys.GO_TO_TEST);
+        clickExternalSourceButton(1);
 
-        SystemClock.sleep(6000);
+        sleep(1000);
 
         //onView(allOf(withId(R.id.textTitle), withText("Lovibond SD 50 pH me..."))).check(matches(isDisplayed()));
 
@@ -229,13 +188,11 @@ public class ManualInstructions {
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        onView(withText(R.string.sd_on))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.sd_on)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.sd_50_dip_sample))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.sd_50_dip_sample)).check(matches(isDisplayed()));
 
     }
 }

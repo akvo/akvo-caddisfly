@@ -77,7 +77,7 @@ public class InstructionFragment extends Fragment {
         b.imagePageLeft.setOnClickListener(view ->
                 b.viewPager.setCurrentItem(Math.max(0, b.viewPager.getCurrentItem() - 1)));
 
-
+        b.pagerIndicator.showDots(true);
         b.pagerIndicator.setPageCount(mSectionsPagerAdapter.getCount());
 
         b.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -134,7 +134,7 @@ public class InstructionFragment extends Fragment {
          * @param instruction The information to to display
          * @return The instance
          */
-        public static PlaceholderFragment newInstance(Instruction instruction) {
+        static PlaceholderFragment newInstance(Instruction instruction) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putParcelable(ARG_SECTION_NUMBER, instruction);
@@ -162,7 +162,7 @@ public class InstructionFragment extends Fragment {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);

@@ -27,12 +27,17 @@ import org.akvo.caddisfly.BuildConfig;
 public final class AppConfig {
 
     /**
+     * Stop animations only for running Espresso UI tests
+     */
+    public static final boolean STOP_ANIMATIONS = false;
+
+    /**
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
     public static final boolean APP_EXPIRY = true;
     public static final int APP_EXPIRY_DAY = 15;
-    public static final int APP_EXPIRY_MONTH = 5;
+    public static final int APP_EXPIRY_MONTH = 8;
     public static final int APP_EXPIRY_YEAR = 2018;
 
     /**
@@ -49,6 +54,11 @@ public final class AppConfig {
      * The sound volume for the beeps and other sound effects.
      */
     public static final float SOUND_EFFECTS_VOLUME = 0.99f;
+
+    /**
+     * To launch Flow app.
+     */
+    public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 
     private AppConfig() {
     }

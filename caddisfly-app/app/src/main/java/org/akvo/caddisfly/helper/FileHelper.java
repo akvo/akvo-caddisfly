@@ -34,10 +34,7 @@ public final class FileHelper {
      * The user created configuration file name.
      */
     // Folders
-    public static final String ROOT_DIRECTORY = File.separator + AppConstants.APP_FOLDER;
-
-    private static final String DIR_CALIBRATION = ROOT_DIRECTORY
-            + File.separator + "calibration"; // Calibration files
+    private static final String ROOT_DIRECTORY = File.separator + AppConstants.APP_FOLDER;
 
     private static final String DIR_CONFIG = ROOT_DIRECTORY
             + File.separator + "custom-config"; // Custom config json folder
@@ -82,9 +79,6 @@ public final class FileHelper {
     public static File getFilesDir(FileType type, String subPath) {
         String path;
         switch (type) {
-            case CALIBRATION:
-                path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CALIBRATION;
-                break;
             case CUSTOM_CONFIG:
                 path = FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CONFIG;
                 break;
@@ -123,7 +117,7 @@ public final class FileHelper {
      * The different types of files.
      */
     public enum FileType {
-        CALIBRATION, CUSTOM_CONFIG, EXP_CONFIG, CARD, TEST_IMAGE, RESULT_IMAGE
+        CUSTOM_CONFIG, EXP_CONFIG, CARD, TEST_IMAGE, RESULT_IMAGE
     }
 
 }

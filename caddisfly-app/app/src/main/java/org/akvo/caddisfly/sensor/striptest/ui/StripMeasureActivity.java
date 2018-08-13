@@ -289,10 +289,10 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
      */
     public void setPreviewProperties(int w, int h, int previewImageWidth, int previewImageHeight) {
         if (mCamera != null && mCameraPreview != null) {
-            StriptestHandler.mDecodeData.setPreviewWidth(w);
-            StriptestHandler.mDecodeData.setPreviewHeight(h);
-            StriptestHandler.mDecodeData.setDecodeWidth(previewImageWidth);
-            StriptestHandler.mDecodeData.setDecodeHeight(previewImageHeight);
+//            StriptestHandler.getDecodeData().setPreviewWidth(w);
+//            StriptestHandler.getDecodeData().setPreviewHeight(h);
+            StriptestHandler.getDecodeData().setDecodeWidth(previewImageWidth);
+            StriptestHandler.getDecodeData().setDecodeHeight(previewImageHeight);
 
             mFinderPatternIndicatorView.setMeasure(w, h, previewImageWidth, previewImageHeight);
         }

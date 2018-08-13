@@ -20,33 +20,36 @@
 package org.akvo.caddisfly.instruction;
 
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.annotation.StringRes;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.FlakyTest;
+import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
+import android.util.Log;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.TestConstants;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import org.akvo.caddisfly.viewmodel.TestListViewModel;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -60,13 +63,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.getString;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -74,6 +80,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class CbtInstructions {
 
+    private final StringBuilder jsArrayString = new StringBuilder();
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -112,44 +119,23 @@ public class CbtInstructions {
         textView3.check(matches(withText(text)));
     }
 
-    private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }
-
     @Before
     public void setUp() {
 
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityTestRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mActivityTestRule);
     }
 
     @Test
     @FlakyTest
     public void cbtInstructions() {
 
-        goToMainScreen();
+        gotoSurveyForm();
 
-        onView(withText("E.coli - Aquagenx CBT")).perform(click());
+        TestUtil.nextSurveyPage("Coliforms");
+
+        clickExternalSourceButton(0);
 
         ViewInteraction textView = onView(
                 allOf(withText("www.aquagenx.com"),
@@ -333,42 +319,72 @@ public class CbtInstructions {
         button1.check(matches(isDisplayed()));
     }
 
-
     @Test
-    @FlakyTest
-    public void cbtInstructionsAll() {
+    @RequiresDevice
+    public void testInstructionsAll() {
 
-        goToMainScreen();
+        final TestListViewModel viewModel =
+                ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
 
-        onView(withText("E.coli - Aquagenx CBT")).perform(click());
+        List<TestInfo> testList = viewModel.getTests(TestType.CBT);
 
-        takeScreenshot("ed4db0fd3386", -1);
+        for (int i = 0; i < TestConstants.CBT_TESTS_COUNT; i++) {
+            TestInfo testInfo = testList.get(i);
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
+            String id = testInfo.getUuid();
+            id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
+            int pages = navigateToTest(i, id);
+
+            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
+
+            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
+
+            mDevice.pressBack();
+
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+        }
+        Log.d("Caddisfly", jsArrayString.toString());
+    }
+
+    private int navigateToTest(int index, String id) {
+
+        gotoSurveyForm();
+
+        TestUtil.nextSurveyPage("Coliforms");
+
+        clickExternalSourceButton(index);
+
+        mDevice.waitForIdle();
+
+        sleep(1000);
+
+        takeScreenshot(id, -1);
+
+        mDevice.waitForIdle();
+
+        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+
+        int pages = 0;
         for (int i = 0; i < 17; i++) {
+            pages++;
 
             try {
-                takeScreenshot("ed4db0fd3386", i);
+                takeScreenshot(id, i);
 
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestUtil.sleep(600);
-                Espresso.pressBack();
-                TestUtil.sleep(600);
-                Espresso.pressBack();
+                sleep(600);
+                Random random = new Random(Calendar.getInstance().getTimeInMillis());
+                if (random.nextBoolean()) {
+                    Espresso.pressBack();
+                } else {
+                    mDevice.pressBack();
+                }
                 break;
             }
         }
-
+        return pages;
     }
 }

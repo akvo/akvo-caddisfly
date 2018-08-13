@@ -19,15 +19,11 @@
 
 package org.akvo.caddisfly.model;
 
-import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import org.akvo.caddisfly.entity.Calibration;
-import org.akvo.caddisfly.helper.SwatchHelper;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -48,8 +44,8 @@ public class TestInfo implements Parcelable {
             return new TestInfo[size];
         }
     };
-    private transient DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-    private transient DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
+    private final transient DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+    private final transient DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
     @SerializedName("reagents")
     @Expose
     private List<Reagent> reagents = null;
@@ -74,9 +70,6 @@ public class TestInfo implements Parcelable {
     @SerializedName("uuid")
     @Expose
     private String uuid;
-    @SerializedName("calibration")
-    @Expose
-    private String calibration;
     @SerializedName("brand")
     @Expose
     private String brand;
@@ -101,27 +94,12 @@ public class TestInfo implements Parcelable {
     @SerializedName("hasImage")
     @Expose
     private Boolean hasImage = false;
-    @SerializedName("cameraAbove")
-    @Expose
-    private Boolean cameraAbove = false;
     @SerializedName("results")
     @Expose
     private List<Result> results = new ArrayList<>();
-    @SerializedName("calibrate")
-    @Expose
-    private Boolean calibrate = false;
     @SerializedName("ranges")
     @Expose
     private String ranges;
-    @SerializedName("defaultColors")
-    @Expose
-    private String defaultColors;
-    @SerializedName("hueTrend")
-    @Expose
-    private Integer hueTrend = 0;
-    @SerializedName("dilutions")
-    @Expose
-    private List<Integer> dilutions = new ArrayList<>();
     @SerializedName("monthsValid")
     @Expose
     private Integer monthsValid;
@@ -152,12 +130,7 @@ public class TestInfo implements Parcelable {
     @SerializedName("imageScale")
     @Expose
     private String imageScale;
-    private List<Calibration> calibrations = new ArrayList<>();
-    private int dilution = 1;
-    private List<Swatch> swatches = new ArrayList<>();
     private Integer decimalPlaces = 0;
-
-    private ResultDetail resultDetail;
 
     public TestInfo() {
     }
@@ -177,13 +150,6 @@ public class TestInfo implements Parcelable {
         reagents = new ArrayList<>();
         in.readTypedList(reagents, Reagent.CREATOR);
         uuid = in.readString();
-        calibration = in.readString();
-
-        calibrations = new ArrayList<>();
-        in.readTypedList(calibrations, Calibration.CREATOR);
-
-        swatches = new ArrayList<>();
-        in.readTypedList(swatches, Swatch.CREATOR);
 
         brand = in.readString();
         brandUrl = in.readString();
@@ -205,18 +171,7 @@ public class TestInfo implements Parcelable {
         unit = in.readString();
         byte tmpHasImage = in.readByte();
         hasImage = tmpHasImage != 0 && tmpHasImage == 1;
-        byte tmpCameraAbove = in.readByte();
-        cameraAbove = tmpCameraAbove != 0 && tmpCameraAbove == 1;
-        byte tmpCalibrate = in.readByte();
-        calibrate = tmpCalibrate != 0 && tmpCalibrate == 1;
         ranges = in.readString();
-        defaultColors = in.readString();
-        if (in.readByte() == 0) {
-            hueTrend = null;
-        } else {
-            hueTrend = in.readInt();
-        }
-        in.readList(this.dilutions, (java.lang.Integer.class.getClassLoader()));
         if (in.readByte() == 0) {
             monthsValid = null;
         } else {
@@ -245,10 +200,6 @@ public class TestInfo implements Parcelable {
         } else {
             decimalPlaces = in.readInt();
         }
-    }
-
-    public boolean getCameraAbove() {
-        return cameraAbove == null ? false : cameraAbove;
     }
 
     public boolean getIsGroup() {
@@ -303,10 +254,6 @@ public class TestInfo implements Parcelable {
         }
     }
 
-    public List<Integer> getDilutions() {
-        return dilutions;
-    }
-
     public String getMinMaxRange() {
 
         if (results != null && results.size() > 0) {
@@ -337,14 +284,6 @@ public class TestInfo implements Parcelable {
                         return "";
                     }
                 }
-            }
-
-            if (dilutions.size() > 1) {
-                int maxDilution = dilutions.get(Math.min(dilutions.size() - 1, 2));
-                int maxColors = results.get(0).getColors().size() - 1;
-                String text = String.format(" (Upto %s with dilution)",
-                        maxDilution * results.get(0).getColors().get(maxColors).getValue());
-                return minMaxRange.toString() + text;
             }
 
             return minMaxRange.toString();
@@ -381,16 +320,8 @@ public class TestInfo implements Parcelable {
         return instructions;
     }
 
-    public void setInstructions(List<Instruction> instructions) {
-        this.instructions = instructions;
-    }
-
     public String getImage() {
         return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getImageScale() {
@@ -412,9 +343,6 @@ public class TestInfo implements Parcelable {
         parcel.writeStringList(tags);
         parcel.writeTypedList(reagents);
         parcel.writeString(uuid);
-        parcel.writeString(calibration);
-        parcel.writeTypedList(calibrations);
-        parcel.writeTypedList(swatches);
         parcel.writeString(brand);
         parcel.writeString(brandUrl);
         parcel.writeString(String.valueOf(groupingType));
@@ -433,17 +361,7 @@ public class TestInfo implements Parcelable {
         }
         parcel.writeString(unit);
         parcel.writeByte((byte) (hasImage == null ? 0 : hasImage ? 1 : 2));
-        parcel.writeByte((byte) (cameraAbove == null ? 0 : cameraAbove ? 1 : 2));
-        parcel.writeByte((byte) (calibrate == null ? 0 : calibrate ? 1 : 2));
         parcel.writeString(ranges);
-        parcel.writeString(defaultColors);
-        if (hueTrend == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeInt(hueTrend);
-        }
-        parcel.writeList(dilutions);
         if (monthsValid == null) {
             parcel.writeByte((byte) 0);
         } else {
@@ -493,57 +411,6 @@ public class TestInfo implements Parcelable {
         return length;
     }
 
-    public List<Calibration> getCalibrations() {
-        if (calibrations == null) {
-            calibrations = new ArrayList<>();
-        }
-        return calibrations;
-    }
-
-    public void setCalibrations(List<Calibration> calibrations) {
-        this.swatches.clear();
-
-        Result result = results.get(0);
-
-        List<Calibration> newCalibrations = new ArrayList<>();
-
-        for (ColorItem colorItem : result.getColors()) {
-
-            Calibration newCalibration = new Calibration(colorItem.getValue(), Color.TRANSPARENT);
-            newCalibration.uid = uuid;
-
-            for (int i = calibrations.size() - 1; i >= 0; i--) {
-                Calibration calibration = calibrations.get(i);
-                if (calibration.value == colorItem.getValue()) {
-                    newCalibration.color = calibration.color;
-                    newCalibration.date = calibration.date;
-                    colorItem.setRgb(calibration.color);
-                }
-            }
-
-            Swatch swatch = new Swatch(newCalibration.value, newCalibration.color, Color.TRANSPARENT);
-            swatches.add(swatch);
-
-            String text = Double.toString(Math.abs(newCalibration.value));
-            if (newCalibration.value % 1 != 0) {
-                decimalPlaces = Math.max(text.length() - text.indexOf('.') - 1, decimalPlaces);
-            }
-
-            newCalibrations.add(newCalibration);
-        }
-
-        this.calibrations = newCalibrations;
-        swatches = SwatchHelper.generateGradient(swatches);
-    }
-
-    public int getDilution() {
-        return dilution;
-    }
-
-    public void setDilution(int dilution) {
-        this.dilution = Math.max(1, dilution);
-    }
-
     public String getDeviceId() {
         return deviceId;
     }
@@ -552,39 +419,8 @@ public class TestInfo implements Parcelable {
         return responseFormat;
     }
 
-    public List<Swatch> getSwatches() {
-        return swatches;
-    }
-
-    public void setSwatches(List<Swatch> swatches) {
-        this.swatches = swatches;
-    }
-
-    public Integer getMonthsValid() {
-        return monthsValid;
-    }
-
     public Boolean getHasImage() {
         return hasImage;
     }
 
-    public int getMaxDilution() {
-        if (dilutions.size() > 0) {
-            return dilutions.get(dilutions.size() - 1);
-        } else {
-            return 1;
-        }
-    }
-
-    public int getDecimalPlaces() {
-        return decimalPlaces;
-    }
-
-    public ResultDetail getResultDetail() {
-        return resultDetail;
-    }
-
-    public void setResultDetail(ResultDetail resultDetail) {
-        this.resultDetail = resultDetail;
-    }
 }

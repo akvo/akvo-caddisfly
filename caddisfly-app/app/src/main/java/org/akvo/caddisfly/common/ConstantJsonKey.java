@@ -22,7 +22,6 @@ package org.akvo.caddisfly.common;
 public class ConstantJsonKey {
     public static final String APP = "app";
     public static final String BRACKET = "bracket";
-    public static final String DEVICE = "device";
     public static final String ID = "id";
     public static final String IMAGE = "image";
     public static final String NAME = "name";
@@ -30,7 +29,6 @@ public class ConstantJsonKey {
     public static final String TEST_DATE = "testDate";
     public static final String TYPE = "type";
     public static final String UNIT = "unit";
-    public static final String USER = "user";
     public static final String UUID = "uuid";
     public static final String VALUE = "value";
 }

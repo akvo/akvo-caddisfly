@@ -10,12 +10,8 @@ public class ConstantKey {
     public static final String BOTTOM_RIGHT = NAMESPACE_PREFIX + "bottom_right";
 
     public static final String TEST_INFO = NAMESPACE_PREFIX + "testInfo";
-    public static final String RUN_TEST = NAMESPACE_PREFIX + "runTest";
-
     public static final String TEST_STAGE = NAMESPACE_PREFIX + "testStage";
 
     public static final String TYPE = NAMESPACE_PREFIX + "type";
-
-    public static final String NEXT_UPDATE_CHECK = NAMESPACE_PREFIX + "lastUpdateCheck";
 }
 

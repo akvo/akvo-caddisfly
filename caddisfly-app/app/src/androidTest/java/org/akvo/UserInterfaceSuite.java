@@ -1,23 +1,15 @@
 package org.akvo;
 
 import org.akvo.caddisfly.diagnostic.DiagnosticTest;
-import org.akvo.caddisfly.misc.LanguageTest;
-import org.akvo.caddisfly.misc.MiscTest;
-import org.akvo.caddisfly.navigation.NavigationTest;
-import org.akvo.caddisfly.navigation.StripTestNavigation;
-import org.akvo.caddisfly.ui.CalibrationTest;
-import org.akvo.caddisfly.ui.SensorsUiTest;
+import org.akvo.caddisfly.test.CbtTest;
+import org.akvo.caddisfly.ui.IntroTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 // Runs all unit tests.
 @RunWith(Suite.class)
-@Suite.SuiteClasses({CalibrationTest.class,
-        DiagnosticTest.class,
-        LanguageTest.class,
-        MiscTest.class,
-        NavigationTest.class,
-        SensorsUiTest.class,
-        StripTestNavigation.class})
+@Suite.SuiteClasses({DiagnosticTest.class,
+        CbtTest.class,
+        IntroTest.class})
 public class UserInterfaceSuite {
 }

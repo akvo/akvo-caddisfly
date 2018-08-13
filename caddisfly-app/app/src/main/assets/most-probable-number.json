@@ -1,197 +1,229 @@
 {
   "comment": "This file contains the MPN table.",
+  "displayColors": [
+    {
+      "threshold": 0,
+      "background1": "#54b71e",
+      "background2": "#5ead14"
+    },
+    {
+      "threshold": 3,
+      "background1": "#8ea314",
+      "background2": "#969914"
+    },
+    {
+      "threshold": 10,
+      "background1": "#b0ad1e",
+      "background2": "#baa314"
+    },
+    {
+      "threshold": 50,
+      "background1": "#ba8510",
+      "background2": "#c48f0a"
+    },
+    {
+      "threshold": 100,
+      "background1": "#be4606",
+      "background2": "#b43f1e"
+    },
+    {
+      "threshold": 9000,
+      "background1": "#d21717",
+      "background2": "#bf0303"
+    }
+  ],
   "rows": [
     {
       "key": "00000",
       "mpn": "0",
-      "confidence": "2.87",
+      "confidence": 2.87,
       "riskCategory": "low_risk_safe"
     },
     {
       "key": "00010",
       "mpn": "1",
-      "confidence": "5.14",
+      "confidence": 5.14,
       "riskCategory": "probably_safe"
     },
     {
       "key": "00001",
       "mpn": "1",
-      "confidence": "4.74",
+      "confidence": 4.74,
       "riskCategory": "probably_safe"
     },
     {
       "key": "10000",
       "mpn": "1.1",
-      "confidence": "5.16",
+      "confidence": 5.16,
       "riskCategory": "probably_safe"
     },
     {
       "key": "01000",
       "mpn": "1.2",
-      "confidence": "5.64",
+      "confidence": 5.64,
       "riskCategory": "probably_safe"
     },
     {
       "key": "00100",
       "mpn": "1.5",
-      "confidence": "7.81",
+      "confidence": 7.81,
       "riskCategory": "probably_safe"
     },
     {
       "key": "00011",
       "mpn": "2",
-      "confidence": "6.32",
+      "confidence": 6.32,
       "riskCategory": "probably_safe"
     },
     {
       "key": "10010",
       "mpn": "2.1",
-      "confidence": "6.85",
+      "confidence": 6.85,
       "riskCategory": "probably_safe"
     },
     {
       "key": "10001",
       "mpn": "2.1",
-      "confidence": "6.64",
+      "confidence": 6.64,
       "riskCategory": "probably_safe"
     },
     {
       "key": "01010",
       "mpn": "2.4",
-      "confidence": "7.81",
+      "confidence": 7.81,
       "riskCategory": "probably_safe"
     },
     {
       "key": "01001",
       "mpn": "2.4",
-      "confidence": "8.12",
+      "confidence": 8.12,
       "riskCategory": "probably_safe"
     },
     {
       "key": "11000",
       "mpn": "2.6",
-      "confidence": "8.51",
+      "confidence": 8.51,
       "riskCategory": "probably_safe"
     },
     {
       "key": "10011",
       "mpn": "3.2",
-      "confidence": "8.38",
+      "confidence": 8.38,
       "riskCategory": "probably_safe"
     },
     {
       "key": "01011",
       "mpn": "3.7",
-      "confidence": "9.7",
+      "confidence": 9.7,
       "riskCategory": "probably_safe"
     },
     {
       "key": "00101",
       "mpn": "3.1",
-      "confidence": "11.36",
-      "riskCategory": "possibly_safe"
+      "confidence": 11.36,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "00110",
       "mpn": "3.2",
-      "confidence": "11.82",
-      "riskCategory": "possibly_safe"
+      "confidence": 11.82,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "10100",
       "mpn": "3.4",
-      "confidence": "12.53",
-      "riskCategory": "possibly_safe"
+      "confidence": 12.53,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "11001",
       "mpn": "3.9",
-      "confidence": "10.43",
-      "riskCategory": "possibly_safe"
+      "confidence": 10.43,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "11010",
       "mpn": "4",
-      "confidence": "10.94",
-      "riskCategory": "possibly_safe"
+      "confidence": 10.94,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "01100",
       "mpn": "4.7",
-      "confidence": "22.75",
-      "riskCategory": "possibly_safe"
+      "confidence": 22.75,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "00111",
       "mpn": "5.2",
-      "confidence": "14.73",
-      "riskCategory": "possibly_safe"
+      "confidence": 14.73,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "11011",
       "mpn": "5.4",
-      "confidence": "12.93",
-      "riskCategory": "possibly_safe"
+      "confidence": 12.93,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "10101",
       "mpn": "5.6",
-      "confidence": "17.14",
-      "riskCategory": "possibly_safe"
+      "confidence": 17.14,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "10110",
       "mpn": "5.8",
-      "confidence": "16.87",
-      "riskCategory": "possibly_safe"
+      "confidence": 16.87,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "10111",
       "mpn": "8.4",
-      "confidence": "21.19",
-      "riskCategory": "possibly_safe"
+      "confidence": 21.19,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "01101",
       "mpn": "9.1",
-      "confidence": "37.04",
-      "riskCategory": "possibly_safe"
+      "confidence": 37.04,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "01110",
       "mpn": "9.6",
-      "confidence": "37.68",
-      "riskCategory": "possibly_safe"
+      "confidence": 37.68,
+      "riskCategory": "intermediate_possibly_safe"
     },
     {
       "key": "11100",
       "mpn": "13.6",
-      "confidence": "83.06",
+      "confidence": 83.06,
       "riskCategory": "possibly_unsafe"
     },
     {
       "key": "01111",
       "mpn": "17.1",
-      "confidence": "56.35",
+      "confidence": 56.35,
       "riskCategory": "possibly_unsafe"
     },
     {
       "key": "11101",
       "mpn": "32.6",
-      "confidence": "145.55",
+      "confidence": 145.55,
       "riskCategory": "probably_unsafe"
     },
     {
       "key": "11110",
       "mpn": "48.3",
-      "confidence": "351.91",
+      "confidence": 351.91,
       "riskCategory": "probably_unsafe"
     },
     {
       "key": "11111",
-      "mpn": "> 100",
-      "confidence": "9435.1",
-      "riskCategory": "unsafe"
+      "mpn": ">100",
+      "confidence": 9435.1,
+      "riskCategory": "very_high_risk_unsafe"
     }
   ]
 }

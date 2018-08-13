@@ -48,9 +48,7 @@ public class DiagnosticOptionsPreferenceFragment extends PreferenceFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.card_row, container, false);
-
         rootView.setBackgroundColor(Color.rgb(255, 240, 220));
-
         return rootView;
     }
 

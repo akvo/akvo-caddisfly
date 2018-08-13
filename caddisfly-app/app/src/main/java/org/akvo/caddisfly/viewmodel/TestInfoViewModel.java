@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
 public class TestInfoViewModel extends AndroidViewModel {
 
     private static TestInfo testInfo;
-    public ObservableField<TestInfo> test = new ObservableField<>();
+    private final ObservableField<TestInfo> test = new ObservableField<>();
 
     public TestInfoViewModel(@NonNull Application application) {
         super(application);
@@ -166,23 +166,15 @@ public class TestInfoViewModel extends AndroidViewModel {
 
         if (resourceId > 0) {
 
-            double divisor = 3;
-            if (displayMetrics.densityDpi > 250) {
-                divisor = 2.4;
-            }
-
-            if (size.y > displayMetrics.heightPixels) {
-                divisor += 0.3;
-            }
-
             LinearLayout.LayoutParams llp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    (int) (displayMetrics.heightPixels / divisor));
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
 
             llp.setMargins(0, 0, 0, 20);
 
             final AppCompatImageView imageView = new AppCompatImageView(context);
             imageView.setImageResource(resourceId);
+            imageView.setAdjustViewBounds(true);
             imageView.setLayoutParams(llp);
             imageView.setContentDescription(imageName);
 

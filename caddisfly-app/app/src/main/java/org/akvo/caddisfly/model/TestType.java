@@ -25,12 +25,6 @@ import com.google.gson.annotations.SerializedName;
  * The different types of testing methods.
  */
 public enum TestType {
-    /**
-     * Liquid reagent is mixed with sample and color is analysed from the resulting
-     * color change in the solution.
-     */
-    @SerializedName("cuvette")
-    CHAMBER_TEST,
 
     /**
      * Strip paper is dipped into the sample and color is analysed from the resulting
@@ -50,6 +44,12 @@ public enum TestType {
      */
     @SerializedName("manual")
     MANUAL,
+
+    /**
+     * Lovibond tester - manual swatch select
+     */
+    @SerializedName("manual_color_select")
+    MANUAL_COLOR_SELECT,
 
     /**
      * External bluetooth testing device.

@@ -19,57 +19,42 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.Manifest;
 import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.util.TypedValue;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.WindowManager;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConfig;
-import org.akvo.caddisfly.common.NavigationController;
 import org.akvo.caddisfly.databinding.ActivityMainBinding;
 import org.akvo.caddisfly.helper.ApkHelper;
-import org.akvo.caddisfly.helper.ErrorMessages;
-import org.akvo.caddisfly.helper.PermissionsDelegate;
-import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
-import org.akvo.caddisfly.util.ApiUtil;
+import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
-import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 import java.lang.ref.WeakReference;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-
-import static org.akvo.caddisfly.model.TestType.CHAMBER_TEST;
 
 public class MainActivity extends BaseActivity {
 
-    private static final float SNACK_BAR_LINE_SPACING = 1.4f;
-
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
-    private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
-    private final String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private ActivityMainBinding b;
-    private NavigationController navigationController;
+    ActivityMainBinding b;
+
+    private int INTRO_PAGE_COUNT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,56 +62,78 @@ public class MainActivity extends BaseActivity {
 
         CaddisflyApp.getApp().setAppLanguage(null, false, null);
 
-        navigationController = new NavigationController(this);
-
         b = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         setTitle(R.string.appName);
 
         try {
-            final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
-                    AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
-
-            DateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.US);
-            b.textVersionExpiry.setText(String.format("Version expiry: %s", df.format(appExpiryDate.getTime())));
-
-            if (AppConfig.APP_EXPIRY && ApkHelper.isNonStoreVersion(this)) {
-                b.textVersionExpiry.setVisibility(View.VISIBLE);
-            }
-
             // If app has expired then close this activity
             ApkHelper.isAppVersionExpired(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    /**
-     * Show the diagnostic mode layout.
-     */
-    private void switchLayoutForDiagnosticOrUserMode() {
-        if (AppPreferences.isDiagnosticMode()) {
-            findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
-        } else {
-            if (findViewById(R.id.layoutDiagnostics).getVisibility() == View.VISIBLE) {
-                findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
+        hideActionBar();
+        setUpViews();
+
+        b.pageIndicator.setPageCount(INTRO_PAGE_COUNT);
+
+        b.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == 1) {
+                    b.buttonNext.setVisibility(View.GONE);
+                    b.buttonOk.setVisibility(View.VISIBLE);
+                } else {
+                    b.buttonNext.setVisibility(View.VISIBLE);
+                    b.buttonOk.setVisibility(View.GONE);
+                }
             }
+
+            @Override
+            public void onPageSelected(int position) {
+                b.pageIndicator.setActiveIndex(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        b.buttonInfo.setOnClickListener(view -> {
+            final Intent intent = new Intent(getBaseContext(), AboutActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void hideActionBar() {
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.hide();
         }
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+    private void setStatusBackgroundColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black_main));
         }
+    }
+
+    private void setUpViews() {
+        IntroFragmentAdapter adapter = new IntroFragmentAdapter(
+                getSupportFragmentManager());
+        b.viewPager.setAdapter(adapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        switchLayoutForDiagnosticOrUserMode();
+        setStatusBackgroundColor();
 
         CaddisflyApp.getApp().setAppLanguage(null, false, refreshHandler);
 
@@ -136,84 +143,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void onDisableDiagnosticsClick(View view) {
-
-        Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
-                Toast.LENGTH_SHORT).show();
-
-        AppPreferences.disableDiagnosticMode();
-
-        switchLayoutForDiagnosticOrUserMode();
-
-        changeActionBarStyleBasedOnCurrentMode();
-
-        final TestListViewModel viewModel =
-                ViewModelProviders.of(this).get(TestListViewModel.class);
-
-        viewModel.clearTests();
-    }
-
-    public void onStripTestsClick(View view) {
-        navigationController.navigateToTestType(TestType.STRIP_TEST);
-    }
-
-    public void onBluetoothDeviceClick(View view) {
-        navigationController.navigateToTestType(TestType.BLUETOOTH);
-    }
-
-    public void onSensorsClick(View view) {
-        boolean hasOtg = getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST);
-        if (hasOtg) {
-            navigationController.navigateToTestType(TestType.SENSOR);
-        } else {
-            ErrorMessages.alertFeatureNotSupported(this, false);
-        }
-    }
-
-    public void onCalibrateClick(View view) {
-
-        if (permissionsDelegate.hasPermissions(permissions)) {
-            startCalibrate();
-        } else {
-            permissionsDelegate.requestPermissions(permissions);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (permissionsDelegate.resultGranted(requestCode, grantResults)) {
-            startCalibrate();
-        } else {
-            Snackbar snackbar = Snackbar
-                    .make(b.mainLayout, getString(R.string.storagePermission),
-                            Snackbar.LENGTH_LONG)
-                    .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(this));
-
-            TypedValue typedValue = new TypedValue();
-            getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-
-            snackbar.setActionTextColor(typedValue.data);
-            View snackView = snackbar.getView();
-            TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
-            textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
-            textView.setTextColor(Color.WHITE);
-            snackbar.show();
-        }
-    }
-
-    private void startCalibrate() {
-        navigationController.navigateToTestType(CHAMBER_TEST);
-    }
-
-    public void onCbtClick(View view) {
-        navigationController.navigateToTestType(TestType.CBT);
-    }
-
-    public void onSettingsClick(MenuItem item) {
+    public void onSettingsClick(@SuppressWarnings("unused") MenuItem item) {
         final Intent intent = new Intent(this, SettingsActivity.class);
         startActivityForResult(intent, 100);
     }
@@ -229,9 +159,48 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        if (AppPreferences.isDiagnosticMode()) {
+            getMenuInflater().inflate(R.menu.menu_main_diagnostic, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
         return true;
+    }
+
+    public void onNextClicked(@SuppressWarnings("unused") View view) {
+        b.viewPager.setCurrentItem(1, true);
+    }
+
+    public void onOkClicked(@SuppressWarnings("unused") View view) {
+        Intent intent = getPackageManager()
+                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME);
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            closeApp(1000);
+        } else {
+            alertDependantAppNotFound();
+        }
+    }
+
+    private void alertDependantAppNotFound() {
+        String message = String.format("%s\r\n\r\n%s", "Akvo Flow is not installed.",
+                "Please install the Akvo Flow app from your instance.");
+
+        AlertUtil.showAlert(this, R.string.notFound, message, R.string.close,
+                (dialogInterface, i) -> closeApp(0),
+                null, null);
+    }
+
+    private void closeApp(int delay) {
+        (new Handler()).postDelayed(() -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                finishAndRemoveTask();
+            } else {
+                int pid = android.os.Process.myPid();
+                android.os.Process.killProcess(pid);
+            }
+        }, delay);
     }
 
     /**
@@ -253,5 +222,27 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    public class IntroFragmentAdapter extends FragmentStatePagerAdapter {
+
+        private static final int FIRST_PAGE = 0;
+
+        IntroFragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == FIRST_PAGE) {
+                return Intro1Fragment.newInstance();
+            } else {
+                return Intro2Fragment.newInstance();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return INTRO_PAGE_COUNT;
+        }
+    }
 }
 

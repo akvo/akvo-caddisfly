@@ -49,20 +49,18 @@ import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.common.SensorConstants;
-import org.akvo.caddisfly.entity.CalibrationDetail;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
-import org.akvo.caddisfly.helper.SwatchHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceControlActivity;
 import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
-import org.akvo.caddisfly.sensor.chamber.ChamberTestActivity;
 import org.akvo.caddisfly.sensor.manual.ManualTestActivity;
+import org.akvo.caddisfly.sensor.manual.SwatchSelectTestActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.usb.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
@@ -71,7 +69,6 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 import java.lang.ref.WeakReference;
-import java.util.Date;
 
 import timber.log.Timber;
 
@@ -91,7 +88,6 @@ public class TestActivity extends BaseActivity {
 
     private final String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final String[] bluetoothPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION};
-    private final String[] noPermissions = {};
 
     private TestInfo testInfo;
     private boolean cameraIsOk = false;
@@ -127,27 +123,9 @@ public class TestActivity extends BaseActivity {
             getTestSelectedByExternalApp(fragmentManager, intent);
         }
 
-        if (testInfo != null) {
-            if (testInfo.getSubtype() == TestType.SENSOR
-                    && !this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
-                ErrorMessages.alertFeatureNotSupported(this, true);
-            } else if (testInfo.getSubtype() == TestType.CHAMBER_TEST) {
-
-                if (!SwatchHelper.isSwatchListValid(testInfo)) {
-                    ErrorMessages.alertCalibrationIncomplete(this, testInfo);
-                    return;
-                }
-
-                CalibrationDetail calibrationDetail = CaddisflyApp.getApp().getDb()
-                        .calibrationDao().getCalibrationDetails(testInfo.getUuid());
-
-                if (calibrationDetail != null) {
-                    long milliseconds = calibrationDetail.expiry;
-                    if (milliseconds > 0 && milliseconds <= new Date().getTime()) {
-                        ErrorMessages.alertCalibrationExpired(this);
-                    }
-                }
-            }
+        if (testInfo != null && testInfo.getSubtype() == TestType.SENSOR
+                && !this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
+            ErrorMessages.alertFeatureNotSupported(this, true);
         }
     }
 
@@ -203,17 +181,19 @@ public class TestActivity extends BaseActivity {
      *
      * @param view the View
      */
-    public void onStartTestClick(View view) {
+    public void onStartTestClick(@SuppressWarnings("unused") View view) {
 
         String[] checkPermissions = permissions;
 
         switch (testInfo.getSubtype()) {
             case SENSOR:
-                checkPermissions = noPermissions;
-                break;
+                startTest();
+                return;
             case MANUAL:
+            case MANUAL_COLOR_SELECT:
                 if (!testInfo.getHasImage()) {
-                    checkPermissions = noPermissions;
+                    startTest();
+                    return;
                 }
                 break;
             case BLUETOOTH:
@@ -237,11 +217,11 @@ public class TestActivity extends BaseActivity {
             case CBT:
                 startCbtTest();
                 break;
-            case CHAMBER_TEST:
-                startChamberTest();
-                break;
             case MANUAL:
                 startManualTest();
+                break;
+            case MANUAL_COLOR_SELECT:
+                startSwatchSelectTest();
                 break;
             case SENSOR:
                 startSensorTest();
@@ -255,6 +235,13 @@ public class TestActivity extends BaseActivity {
                 break;
             default:
         }
+    }
+
+    private void startSwatchSelectTest() {
+        Intent intent;
+        intent = new Intent(this, SwatchSelectTestActivity.class);
+        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+        startActivityForResult(intent, REQUEST_TEST);
     }
 
     private void startBluetoothTest() {
@@ -281,25 +268,6 @@ public class TestActivity extends BaseActivity {
         intent = new Intent(this, ManualTestActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
-    }
-
-    private void startChamberTest() {
-
-        //Only start the colorimetry calibration if the device has a camera flash
-        if (AppPreferences.useExternalCamera()
-                || CameraHelper.hasFeatureCameraFlash(this,
-                R.string.cannotStartTest, R.string.ok, null)) {
-
-            if (!SwatchHelper.isSwatchListValid(testInfo)) {
-                ErrorMessages.alertCalibrationIncomplete(this, testInfo);
-                return;
-            }
-
-            Intent intent = new Intent(this, ChamberTestActivity.class);
-            intent.putExtra(ConstantKey.RUN_TEST, true);
-            intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-            startActivityForResult(intent, REQUEST_TEST);
-        }
     }
 
     private void startSensorTest() {
@@ -338,7 +306,7 @@ public class TestActivity extends BaseActivity {
      *
      * @param view the View
      */
-    public void onInstructionsClick(View view) {
+    public void onInstructionsClick(@SuppressWarnings("unused") View view) {
 
         InstructionFragment instructionFragment = InstructionFragment.getInstance(testInfo);
 
@@ -354,7 +322,7 @@ public class TestActivity extends BaseActivity {
      *
      * @param view the View
      */
-    public void onSiteLinkClick(View view) {
+    public void onSiteLinkClick(@SuppressWarnings("unused") View view) {
         String url = testInfo.getBrandUrl();
         if (url != null) {
             if (!url.contains("http://")) {
@@ -482,7 +450,7 @@ public class TestActivity extends BaseActivity {
      *
      * @param view the view
      */
-    public void onClickIncubationTimes(View view) {
+    public void onClickIncubationTimes(@SuppressWarnings("unused") View view) {
         DialogFragment newFragment = new CbtActivity.IncubationTimesDialogFragment();
         newFragment.show(getSupportFragmentManager(), "incubationTimes");
     }

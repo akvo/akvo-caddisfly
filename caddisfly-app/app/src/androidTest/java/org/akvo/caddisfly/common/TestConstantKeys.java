@@ -21,10 +21,7 @@ package org.akvo.caddisfly.common;
 
 public final class TestConstantKeys {
 
-    public static final String FLUORIDE = "fluoride";
     public static final String LANGUAGE = "language";
-    public static final String USE_EXTERNAL_SOURCE = "useExternalSource";
-    public static final String GO_TO_TEST = "goToTest";
     public static final String NEXT = "next";
 
 }

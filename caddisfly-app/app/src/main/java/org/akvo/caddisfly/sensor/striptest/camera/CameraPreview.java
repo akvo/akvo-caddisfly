@@ -23,7 +23,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -31,16 +30,16 @@ import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * Created by linda on 7/7/15
  */
 @SuppressWarnings("deprecation")
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-
-    private static final String TAG = "CameraPreview";
 
     private static final int MIN_CAMERA_WIDTH = 1300;
     private final Camera mCamera;
@@ -70,7 +69,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             mCamera.setPreviewDisplay(holder);
         } catch (Exception e) {
-            Log.d("", "Error setting camera preview: " + e.getMessage());
+            Timber.d("Error setting camera preview: %s", e.getMessage());
         }
     }
 
@@ -112,7 +111,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(holder);
             mPreviewWidth = bestSize.width;
             mPreviewHeight = bestSize.height;
-            Log.e(TAG, "Preview width in cameraPreview: " + mPreviewWidth);
+            Timber.e("Preview width in cameraPreview: %s", mPreviewWidth);
 
             activity.setPreviewProperties(w, h, mPreviewWidth, mPreviewHeight);
             activity.initPreviewFragment();
@@ -124,7 +123,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
                 });
             }
         } catch (IOException e) {
-            Log.e(TAG, e.getMessage(), e);
+            Timber.e(e);
         }
     }
 
@@ -160,7 +159,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         //preview size
         assert bestSize != null;
         parameters.setPreviewSize(bestSize.width, bestSize.height);
-        Log.d("Caddisfly", "Preview size set to:" + bestSize.width + "," + bestSize.height);
+        Timber.d("Preview size set to:" + bestSize.width + "," + bestSize.height);
 
         // default focus mode
         String focusMode = Camera.Parameters.FOCUS_MODE_AUTO;
@@ -178,7 +177,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         parameters.setFocusMode(focusMode);
 
         Camera.Area cardArea = new Camera.Area(new Rect(-1000, -1000, -167, 1000), 1);
-        List<Camera.Area> cardAreaList = Arrays.asList(cardArea);
+        List<Camera.Area> cardAreaList = Collections.singletonList(cardArea);
         if (parameters.getMaxNumFocusAreas() > 0) {
             parameters.setFocusAreas(cardAreaList);
         }
@@ -202,7 +201,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         try {
             mCamera.setParameters(parameters);
         } catch (Exception e) {
-            Log.e(TAG, "Error setting camera parameters: " + e.getMessage(), e);
+            Timber.e(e, "Error setting camera parameters: %s", e.getMessage());
         }
         return bestSize;
     }

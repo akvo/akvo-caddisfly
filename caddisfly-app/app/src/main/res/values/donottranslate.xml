@@ -33,20 +33,12 @@
         <item>fr</item>
     </string-array>
 
-    <string name="saveImages">Save images and data</string>
-
     <string name="aquagenx_link">www.aquagenx.com</string>
 
     <string name="number_1">1.</string>
     <string name="number_2">2.</string>
     <string name="number_3">3.</string>
     <string name="number_4">4.</string>
-    <string name="number_5">5.</string>
-    <string name="number_6">5.</string>
-
-    <!--paths to assets-->
-    <string name="striptest_images">images/brand</string>
-    <string name="instruction_images">images/instructions</string>
 
     <!--Keys-->
     <string name="languageKey">language</string>
@@ -54,38 +46,18 @@
     <string name="diagnosticModeKey">diagnosticMode</string>
     <string name="showDebugMessagesKey">showDebugMessages</string>
     <string name="soundOnKey">soundOn</string>
-    <string name="colorDistanceToleranceKey">colorDistanceTolerance</string>
-    <string name="colorAverageDistanceToleranceKey">maxAvgColorDistanceTolerance</string>
-    <string name="samplingsTimeKey">numberOfSamples</string>
-    <string name="hasCameraFlashKey">hasCameraFlash</string>
-    <string name="calibrationDateKey">calibrationDateTime</string>
-    <string name="calibrationExpiryDateKey">calibrationExpiryDate</string>
-    <string name="batchNumberKey">batchNumber</string>
     <string name="themeChangedKey">themeChanged</string>
-    <string name="saveImagesDataKey">saveImagesData</string>
-    <string name="totalSuccessfulCalibrationsKey">totalSuccessfulCalibrations</string>
-    <string name="totalFailedCalibrationsKey">totalFailedCalibrations</string>
-    <string name="totalSuccessfulTestsKey">totalSuccessfulTests</string>
-    <string name="totalFailedTestsKey">totalFailedTests</string>
     <string name="refreshKey">refresh</string>
     <string name="testModeOnKey">testModeOn</string>
-
-    <string name="ledRgbKey">ledRgb</string>
-    <string name="useExternalCameraKey">useExternalCamera</string>
-    <string name="useFlashModeKey">useFlashMode</string>
 
     <string name="ignoreTimeDelaysKey">ignoreTimeDelays</string>
     <string name="cameraMegaPixelsKey">cameraMegaPixels</string>
     <string name="showMinMegaPixelDialogKey">showMinMegaPixelDialog</string>
-    <string name="maxZoomKey">MaxZoomKey</string>
-
-    <string name="nextUpdateCheckKey">nextUpdateCheck</string>
 
     <!--Diagnostic-->
     <string name="diagnostics">Diagnostics</string>
     <string name="debuggingOn">Show debug info</string>
     <string name="sound">Sound</string>
-    <string name="diagnosticsUser">Diagnostics in User Mode Also</string>
     <string name="ignoreTimeDelays">Ignore time delays</string>
     <string name="debugging">Debugging</string>
     <string name="download_experimental_tests">Download experimental tests</string>
@@ -94,19 +66,6 @@
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>
     <string name="diagnosticModeDisabled">Diagnostic mode disabled</string>
-
-    <!--Diagnostic Mode: Save / Load Calibration-->
-    <string name="saveInvalidFileName">Invalid file name</string>
-    <string name="fileAlreadyExists">File already exists</string>
-    <string name="doYouWantToOverwrite">Do you want to overwrite the file?</string>
-    <string name="overwrite">Overwrite</string>
-    <string name="loadCalibration">Load Calibration</string>
-    <string name="notFound">Not Found</string>
-    <string name="loadFilesNotAvailable">There are no previously saved calibrations</string>
-    <string name="deleteConfirm">Selected items will be deleted</string>
-    <string name="errorLoadingFile">Could not load file. Check file for errors.</string>
-    <string name="fileSaved">File saved</string>
-    <string name="calibrationLoaded">%1$s loaded</string>
 
     <!--CBT-->
     <string name="mpn">MPN/100ml</string>

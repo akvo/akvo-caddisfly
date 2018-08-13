@@ -54,7 +54,7 @@ public class StripsTest {
     }
 
     @Test
-    public void testCount() throws Exception {
+    public void testCount() {
 
         Intent intent = new Intent();
         intent.putExtra(ConstantKey.TYPE, TestType.STRIP_TEST);
@@ -78,7 +78,7 @@ public class StripsTest {
     }
 
     @Test
-    public void testTitles() throws Exception {
+    public void testTitles() {
         Intent intent = new Intent();
         intent.putExtra(ConstantKey.TYPE, TestType.STRIP_TEST);
 

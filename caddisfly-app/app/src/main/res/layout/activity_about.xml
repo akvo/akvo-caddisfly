@@ -105,7 +105,7 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:text="@string/legalInformation"
-                    android:textColor="@color/accent"
+                    android:textColor="@color/colorLinks"
                     android:textSize="15sp" />
 
             </LinearLayout>

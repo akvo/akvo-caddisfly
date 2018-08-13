@@ -6379,182 +6379,91 @@
       ]
     },
     {
-      "name": "Water - Chromium",
-      "subtype": "cuvette",
-      "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
-      "brand": "Caddisfly",
+      "name": "Water - E.coli",
+      "subtype": "cbt",
+      "uuid": "5baa9d29-b271-4521-b05f-4bfd645c26cf",
+      "brand": "Aquagenx",
+      "sampleQuantity": "10",
       "imageScale": "centerCrop",
-      "calibrate": true,
-      "ranges": "0,0.5,1,2,3",
-      "dilutions": [1,2,5],
-      "monthsValid": 3,
-      "hasImage": true,
-      "instructions": [
-
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "Chromium",
-          "unit": "mg/l",
-          "timeDelay": 300
-        }
-      ]
-    },
-    {
-      "name": "Water - Fluoride",
-      "subtype": "cuvette",
-      "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
-      "brand": "Caddisfly",
-      "imageScale": "centerCrop",
-      "calibrate": true,
-      "ranges": "0,0.5,1,1.5,2",
-      "defaultColors": "FD13AB,FE217C,F53A48,E75D28,D36B0B",
-      "hueTrend": 1,
-      "dilutions": [1,2,5],
-      "monthsValid": 12,
+      "brandUrl": "www.aquagenx.com",
       "hasImage": true,
       "instructions": [
         {
           "section": [
-            "bc_rinse",
-            "image:bc_rinse"
+            "1.put_on_gloves",
+            "2.collect_10ml_water_sample. avoid_touching_with_bare_hands",
+            "3.add_90ml_distilled_water",
+            "image:cbt_dilution"
           ]
         },
         {
           "section": [
-            "bc_fill",
-            "image:bc_fill"
+            "4.open_growth_medium_sachet",
+            "image:1",
+            "5.dissolve_medium_in_sample",
+            "image:2"
           ]
         },
         {
           "section": [
-            "bc_add_capsule",
-            "image:bc_add_capsule"
+            "6.medium_dissolves. when_medium_dissolved",
+            "image:3"
           ]
         },
         {
           "section": [
-            "bc_screw",
-            "image:bc_screw"
+            "7.label_compartment_bag",
+            "8.tear_perforated_seam. rub_sides_of_compartment",
+            "9.slowly_pour_sample_into_bag. fill_evenly_across_bag. leave_test_bud_carrier",
+            "image:4"
           ]
         },
         {
           "section": [
-            "bc_shake",
-            "image:bc_shake"
+            "10.attach_seal_clip. snap_rod_shaped",
+            "image:5"
           ]
         },
         {
           "section": [
-            "bc_wipe_bottom",
-            "image:bc_wipe_bottom"
+            "11.roll_fold_bag. close_top_of_bag",
+            "image:6"
           ]
         },
         {
           "section": [
-            "bc_wipe_camera",
-            "image:bc_wipe_camera"
+            "12.let_incubate",
+            "include:incubation_table",
+            "image:7"
           ]
         },
         {
           "section": [
-            "bc_place_chamber",
-            "image:bc_place_chamber"
+            "13.take_photo_of_incubated",
+            "14.change_colors_to_match. click_compartments_to_change",
+            "image:8"
           ]
         },
         {
           "section": [
-            "bc_select_dilution",
-            "image:bc_select_dilution"
-          ]
-        },
-        {
-          "section": [
-            "bc_place_phone",
-            "image:bc_place_phone"
+            "15.clean_cbt",
+            "image:9"
           ]
         }
       ],
       "results": [
         {
           "id": 1,
-          "name": "Fluoride",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
-      "name": "Water - Free Chlorine",
-      "subtype": "cuvette",
-      "uuid": "a2413119-38eb-4959-92ee-cc169fdbb0fc",
-      "brand": "Caddisfly",
-      "imageScale": "centerCrop",
-      "calibrate": true,
-      "ranges": "0,0.5,1.0,1.5,2.0,2.5,3.0",
-      "monthsValid": 24,
-      "hasImage": true,
-      "instructions": [
-        {
-          "section": [
-            "bc_rinse",
-            "image:bc_rinse"
-          ]
+          "name": "Recreational and Irrigation Water Health Risk Category (Based on MPN and Upper 95% Confidence Level)"
         },
         {
-          "section": [
-            "bc_frc_1",
-            "image:bc_add_powder"
-          ]
+          "id": 2,
+          "name": "MPN",
+          "unit": "MPN/100ml"
         },
         {
-          "section": [
-            "bc_frc_2",
-            "image:bc_fill"
-          ]
-        },
-        {
-          "section": [
-            "bc_screw",
-            "image:bc_screw_frc"
-          ]
-        },
-        {
-          "section": [
-            "bc_shake",
-            "image:bc_shake"
-          ]
-        },
-        {
-          "section": [
-            "bc_wipe_bottom",
-            "image:bc_wipe_bottom"
-          ]
-        },
-        {
-          "section": [
-            "bc_wipe_camera",
-            "image:bc_wipe_camera"
-          ]
-        },
-        {
-          "section": [
-            "bc_place_chamber",
-            "image:bc_place_chamber"
-          ]
-        },
-        {
-          "section": [
-            "bc_place_phone",
-            "image:bc_place_phone"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "Free Chlorine",
-          "unit": "mg/l"
+          "id": 3,
+          "name": "Upper 95% Confidence Interval"
         }
       ]
     },
@@ -6694,6 +6603,124 @@
           "id": 1,
           "name": "Turbidity",
           "unit": "NTU"
+        }
+      ]
+    },
+    {
+      "name": "Water - Chlorine pH LR TESTER",
+      "subtype": "manual_color_select",
+      "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
+      "brand": "Lovibond AF106",
+      "imageScale": "centerCrop",
+      "hasImage": false,
+      "instructions": [
+        {
+          "section": [
+            "1.pt_open_lid",
+            "image:pt_1_open"
+          ]
+        },
+        {
+          "section": [
+            "2.pt_fill_compartments",
+            "image:pt_2_fill"
+          ]
+        },
+        {
+          "section": [
+            "3.pt_add_reagent_1",
+            "image:pt_3_reagent_1"
+          ]
+        },
+        {
+          "section": [
+            "4.pt_add_reagent_2",
+            "image:pt_4_reagent_2"
+          ]
+        },
+        {
+          "section": [
+            "5.pt_close_shake",
+            "image:pt_5_shake"
+          ]
+        },
+        {
+          "section": [
+            "6.pt_read_result",
+            "image:pt_6_interface_lr"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "pH",
+          "range": "6.8-8.2"
+        },
+        {
+          "id": 2,
+          "name": "Chlorine",
+          "unit": "mg/l",
+          "range": "0.1-3.0"
+        }
+      ]
+    },
+    {
+      "name": "Water - Chlorine pH HR TESTER",
+      "subtype": "manual_color_select",
+      "uuid": "63e0e106-6ff6-4f57-a169-a32a4a821d42",
+      "brand": "Lovibond AF106",
+      "imageScale": "centerCrop",
+      "hasImage": false,
+      "instructions": [
+        {
+          "section": [
+            "1.pt_open_lid",
+            "image:pt_1_open"
+          ]
+        },
+        {
+          "section": [
+            "2.pt_fill_compartments",
+            "image:pt_2_fill"
+          ]
+        },
+        {
+          "section": [
+            "3.pt_add_reagent_1",
+            "image:pt_3_reagent_1"
+          ]
+        },
+        {
+          "section": [
+            "4.pt_add_reagent_2",
+            "image:pt_4_reagent_2"
+          ]
+        },
+        {
+          "section": [
+            "5.pt_close_shake",
+            "image:pt_5_shake"
+          ]
+        },
+        {
+          "section": [
+            "6.pt_read_result",
+            "image:pt_6_interface_hr"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "pH",
+          "range": "6.8-8.2"
+        },
+        {
+          "id": 2,
+          "name": "Chlorine",
+          "unit": "mg/l",
+          "range": "0.5-6.0"
         }
       ]
     }

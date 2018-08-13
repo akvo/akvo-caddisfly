@@ -36,6 +36,7 @@
 package org.akvo.caddisfly.ui;
 
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,8 +66,9 @@ public class TestInfoAdapter extends RecyclerView.Adapter<TestInfoAdapter.TestIn
         notifyItemRangeInserted(0, testList.size());
     }
 
+    @NonNull
     @Override
-    public TestInfoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TestInfoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         TestItemBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.test_item,
                         parent, false);
@@ -75,7 +77,7 @@ public class TestInfoAdapter extends RecyclerView.Adapter<TestInfoAdapter.TestIn
     }
 
     @Override
-    public void onBindViewHolder(TestInfoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TestInfoViewHolder holder, int position) {
         holder.binding.setTestInfo(mTestList.get(position));
         holder.binding.executePendingBindings();
     }

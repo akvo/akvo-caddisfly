@@ -19,9 +19,7 @@
 
 package org.akvo.caddisfly.instruction;
 
-import android.content.SharedPreferences;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.LargeTest;
@@ -58,11 +56,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
+import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
-import static org.akvo.caddisfly.util.TestHelper.resetLanguage;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.hamcrest.Matchers.allOf;
@@ -74,7 +73,7 @@ import static org.hamcrest.Matchers.is;
 public class BluetoothInstructions {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
-    private StringBuilder jsArrayString = new StringBuilder();
+    private final StringBuilder jsArrayString = new StringBuilder();
 
     @BeforeClass
     public static void initialize() {
@@ -92,16 +91,12 @@ public class BluetoothInstructions {
 
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(mActivityRule.getActivity());
-        prefs.edit().clear().apply();
-
-        resetLanguage();
+        clearPreferences(mActivityRule);
     }
 
     @Test
-    @RequiresDevice
     @Ignore
+    @RequiresDevice
     public void testInstructionsAll() {
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
@@ -114,9 +109,11 @@ public class BluetoothInstructions {
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        goToMainScreen();
+        gotoSurveyForm();
 
-        onView(withText("MD 610 Photometer")).perform(click());
+        TestUtil.nextSurveyPage("MD610");
+
+        clickExternalSourceButton(1);
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
         List<TestInfo> testList = testConfigRepository.getTests(TestType.BLUETOOTH);

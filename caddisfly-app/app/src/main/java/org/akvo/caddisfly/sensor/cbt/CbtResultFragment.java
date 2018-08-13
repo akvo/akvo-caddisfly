@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.sensor.cbt;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,10 +34,14 @@ import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.StringUtil;
 
+import java.util.Objects;
+
 public class CbtResultFragment extends BaseFragment {
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_RESULT = "result";
+    private static final String ARG_SAMPLE_QTY = "sample_quantity";
 
     private String mResult;
+    private String mSampleQuantity;
 
     /**
      * Use this factory method to create a new instance of
@@ -46,10 +49,11 @@ public class CbtResultFragment extends BaseFragment {
      *
      * @return A new instance of fragment CbtResultFragment.
      */
-    public static CbtResultFragment newInstance(String result) {
+    public static CbtResultFragment newInstance(String result, String sampleQuantity) {
         CbtResultFragment fragment = new CbtResultFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, result);
+        args.putString(ARG_RESULT, result);
+        args.putString(ARG_SAMPLE_QTY, sampleQuantity);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,7 +62,8 @@ public class CbtResultFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mResult = getArguments().getString(ARG_PARAM1);
+            mResult = getArguments().getString(ARG_RESULT);
+            mSampleQuantity = getArguments().getString(ARG_SAMPLE_QTY);
         }
     }
 
@@ -73,9 +78,9 @@ public class CbtResultFragment extends BaseFragment {
         LinearLayout layoutResult1 = view.findViewById(R.id.layoutResult1);
         LinearLayout layoutResult2 = view.findViewById(R.id.layoutResult2);
 
-        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult);
+        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult, mSampleQuantity);
 
-        String[] results = StringUtil.getStringResourceByName(getActivity(),
+        String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
                 mpnValue.getRiskCategory()).toString().split("/");
 
         textResult.setText(results[0].trim());
@@ -83,37 +88,14 @@ public class CbtResultFragment extends BaseFragment {
             textResult1.setText(results[1].trim());
         }
 
-        if (Double.parseDouble(mpnValue.getConfidence()) > 9000) {
-            layoutResult.setBackgroundColor(Color.rgb(210, 23, 23));
-            layoutResult1.setBackgroundColor(Color.rgb(191, 3, 3));
-            layoutResult2.setBackgroundColor(Color.rgb(210, 23, 23));
-            textResult.setTextColor(Color.WHITE);
-        } else if (Double.parseDouble(mpnValue.getConfidence()) > 100) {
-            layoutResult.setBackgroundColor(Color.rgb(190, 70, 6));
-            layoutResult1.setBackgroundColor(Color.rgb(180, 63, 30));
-            layoutResult2.setBackgroundColor(Color.rgb(190, 70, 6));
-        } else if (Double.parseDouble(mpnValue.getConfidence()) > 50) {
-            layoutResult.setBackgroundColor(Color.rgb(186, 133, 16));
-            layoutResult1.setBackgroundColor(Color.rgb(196, 143, 10));
-            layoutResult2.setBackgroundColor(Color.rgb(186, 133, 16));
-        } else if (Double.parseDouble(mpnValue.getConfidence()) > 10) {
-            layoutResult.setBackgroundColor(Color.rgb(176, 173, 30));
-            layoutResult1.setBackgroundColor(Color.rgb(186, 163, 20));
-            layoutResult2.setBackgroundColor(Color.rgb(176, 173, 30));
-        } else if (Double.parseDouble(mpnValue.getConfidence()) > 3) {
-            layoutResult.setBackgroundColor(Color.rgb(142, 163, 20));
-            layoutResult1.setBackgroundColor(Color.rgb(150, 153, 20));
-            layoutResult2.setBackgroundColor(Color.rgb(142, 163, 20));
-        } else {
-            layoutResult.setBackgroundColor(Color.rgb(84, 183, 30));
-            layoutResult1.setBackgroundColor(Color.rgb(94, 173, 20));
-            layoutResult2.setBackgroundColor(Color.rgb(84, 183, 30));
-        }
+        layoutResult.setBackgroundColor(mpnValue.getBackgroundColor1());
+        layoutResult1.setBackgroundColor(mpnValue.getBackgroundColor2());
+        layoutResult2.setBackgroundColor(mpnValue.getBackgroundColor1());
 
         TextView textResult2 = view.findViewById(R.id.textResult2);
         TextView textResult3 = view.findViewById(R.id.textResult3);
         textResult2.setText(mpnValue.getMpn());
-        textResult3.setText(mpnValue.getConfidence());
+        textResult3.setText(String.valueOf(mpnValue.getConfidence()));
 
         return view;
     }

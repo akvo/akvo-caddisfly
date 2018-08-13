@@ -201,7 +201,7 @@ public final class PreferencesUtil {
      * @param defaultValue default value
      * @return the stored string value
      */
-    public static String getString(Context context, String keyId, String defaultValue) {
+    private static String getString(Context context, String keyId, String defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         return sharedPreferences.getString(keyId, defaultValue);
@@ -257,7 +257,7 @@ public final class PreferencesUtil {
      * @param context the context
      * @param key     the key id
      */
-    public static void removeKey(Context context, String key) {
+    private static void removeKey(Context context, String key) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         Editor editor = sharedPreferences.edit();

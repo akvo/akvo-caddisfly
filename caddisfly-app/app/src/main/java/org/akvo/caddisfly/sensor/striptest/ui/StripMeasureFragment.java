@@ -30,7 +30,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import org.akvo.caddisfly.R;
@@ -68,7 +67,7 @@ public class StripMeasureFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         progressBar = view.findViewById(R.id.progressBar);
@@ -118,9 +117,9 @@ public class StripMeasureFragment extends Fragment {
         MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.START_PREVIEW_MESSAGE, 0);
     }
 
-    public void showError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
+//    public void showError(String message) {
+//        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+//    }
 
     // TODO figure out messages
 //    void showMessage(@StringRes int id) {

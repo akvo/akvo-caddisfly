@@ -39,14 +39,13 @@ import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.TestConstants;
-import org.akvo.caddisfly.helper.FileHelper;
-import org.hamcrest.Matchers;
 
 import java.io.File;
 import java.util.HashMap;
@@ -56,7 +55,6 @@ import java.util.Map;
 
 import timber.log.Timber;
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -187,12 +185,16 @@ public final class TestHelper {
                 + "2.5=255  101  24\n"
                 + "3.0=255  121  14\n");
 
-        if ("en".equals(languageCode)) {
-            currentHashMap = STRING_HASH_MAP_EN;
-        } else if ("in".equals(languageCode)) {
-            currentHashMap = STRING_HASH_MAP_IN;
-        } else {
-            currentHashMap = STRING_HASH_MAP_FR;
+        switch (languageCode) {
+            case "en":
+                currentHashMap = STRING_HASH_MAP_EN;
+                break;
+            case "in":
+                currentHashMap = STRING_HASH_MAP_IN;
+                break;
+            default:
+                currentHashMap = STRING_HASH_MAP_FR;
+                break;
         }
     }
 
@@ -224,7 +226,7 @@ public final class TestHelper {
         boolean found = false;
         while (!found) {
             try {
-                onView(withId(R.id.buttonCalibrate)).check(matches(isDisplayed()));
+                onView(withId(R.id.button_info)).check(matches(isDisplayed()));
                 found = true;
             } catch (NoMatchingViewException e) {
                 Espresso.pressBack();
@@ -233,7 +235,8 @@ public final class TestHelper {
     }
 
     public static void activateTestMode() {
-        onView(withId(R.id.actionSettings)).perform(click());
+
+        onView(withId(R.id.button_info)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
@@ -243,20 +246,14 @@ public final class TestHelper {
 
         enterDiagnosticMode();
 
-        goToMainScreen();
-
         onView(withId(R.id.actionSettings)).perform(click());
 
         clickListViewItem("Test Mode");
     }
 
     public static void clickExternalSourceButton(int index) {
-        clickExternalSourceButton(index, TestConstant.GO_TO_TEST);
-    }
 
-    public static void clickExternalSourceButton(int index, String text) {
-
-        String buttonText = currentHashMap.get(text);
+        String buttonText = currentHashMap.get(TestConstant.GO_TO_TEST);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             buttonText = buttonText.toUpperCase();
@@ -265,12 +262,23 @@ public final class TestHelper {
         findButtonInScrollable(buttonText);
 
         List<UiObject2> buttons = mDevice.findObjects(By.text(buttonText));
-        buttons.get(index).click();
+
+        if (index < buttons.size()) {
+            buttons.get(index).click();
+        } else {
+            UiScrollable listView = new UiScrollable(new UiSelector());
+            try {
+                listView.scrollToEnd(1);
+            } catch (UiObjectNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            List<UiObject2> buttons1 = mDevice.findObjects(By.text(buttonText));
+            buttons1.get(buttons1.size() - 1).click();
+        }
 
         // New Android OS seems to popup a button for external app
-        if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.M
-                && (text.equals(TestConstant.USE_EXTERNAL_SOURCE)
-                || text.equals(TestConstant.GO_TO_TEST))) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
             sleep(1000);
             mDevice.findObject(By.text("Akvo Caddisfly")).click();
             sleep(1000);
@@ -310,12 +318,6 @@ public final class TestHelper {
         }
     }
 
-    public static void saveCalibration(String name, String id) {
-        File path = FileHelper.getFilesDir(FileHelper.FileType.CALIBRATION, id);
-
-        FileUtil.saveToFile(path, name, CALIBRATION_HASH_MAP.get(name));
-    }
-
     public static void gotoSurveyForm() {
 
         Context context = InstrumentationRegistry.getInstrumentation().getContext();
@@ -349,43 +351,42 @@ public final class TestHelper {
     }
 
     public static void leaveDiagnosticMode() {
-        goToMainScreen();
         onView(withId(R.id.fabDisableDiagnostics)).perform(click());
     }
 
-    public static void resetLanguage() {
-
-        goToMainScreen();
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        onView(withText(R.string.language)).perform(click());
-
-        onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
-
-        mDevice.waitForIdle();
-
-        sleep(5000);
-
-        mDevice.waitForIdle();
-
-        Espresso.pressBack();
-
-        onView(withId(R.id.actionSettings)).perform(click());
-
-        onView(withText(R.string.language)).perform(click());
-
-        onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
-
-        mDevice.waitForIdle();
-
-        sleep(5000);
-
-        mDevice.waitForIdle();
-
-        goToMainScreen();
-
-    }
+//    public static void resetLanguage() {
+//
+//        goToMainScreen();
+//
+//        onView(withId(R.id.actionSettings)).perform(click());
+//
+//        onView(withText(R.string.language)).perform(click());
+//
+//        onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
+//
+//        mDevice.waitForIdle();
+//
+//        sleep(5000);
+//
+//        mDevice.waitForIdle();
+//
+//        Espresso.pressBack();
+//
+//        onView(withId(R.id.actionSettings)).perform(click());
+//
+//        onView(withText(R.string.language)).perform(click());
+//
+//        onData(Matchers.hasToString(Matchers.startsWith(currentHashMap.get("language")))).perform(click());
+//
+//        mDevice.waitForIdle();
+//
+//        sleep(5000);
+//
+//        mDevice.waitForIdle();
+//
+//        goToMainScreen();
+//
+//    }
 
     public static void clearPreferences(ActivityTestRule activityTestRule) {
         SharedPreferences prefs =

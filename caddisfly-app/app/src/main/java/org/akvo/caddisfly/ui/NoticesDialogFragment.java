@@ -62,7 +62,7 @@ public class NoticesDialogFragment extends DialogFragment {
                 makeEverythingClickable((ViewGroup) vg.getChildAt(i));
             } else if (vg.getChildAt(i) instanceof TextView) {
                 TextView tv = (TextView) vg.getChildAt(i);
-                tv.setLinkTextColor(getResources().getColor(R.color.accent));
+                tv.setLinkTextColor(getResources().getColor(R.color.colorLinks));
                 tv.setMovementMethod(LinkMovementMethod.getInstance());
             }
         }

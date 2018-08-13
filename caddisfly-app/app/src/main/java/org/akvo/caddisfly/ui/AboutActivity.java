@@ -20,8 +20,11 @@
 package org.akvo.caddisfly.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +32,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.databinding.ActivityAboutBinding;
 import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 /**
@@ -39,6 +43,8 @@ public class AboutActivity extends BaseActivity {
     private static final int CHANGE_MODE_MIN_CLICKS = 10;
 
     private int clickCount = 0;
+
+    NoticesDialogFragment dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +61,15 @@ public class AboutActivity extends BaseActivity {
     /**
      * Displays legal information.
      */
-    public void onSoftwareNoticesClick(View view) {
-        NoticesDialogFragment dialog = NoticesDialogFragment.newInstance();
+    public void onSoftwareNoticesClick(@SuppressWarnings("unused") View view) {
+        dialog = NoticesDialogFragment.newInstance();
         dialog.show(getFragmentManager(), "NoticesDialog");
     }
 
     /**
      * Disables diagnostic mode.
      */
-    public void disableDiagnosticsMode(View view) {
+    public void disableDiagnosticsMode(@SuppressWarnings("unused") View view) {
         Toast.makeText(getBaseContext(), getString(R.string.diagnosticModeDisabled),
                 Toast.LENGTH_SHORT).show();
 
@@ -86,7 +92,7 @@ public class AboutActivity extends BaseActivity {
     /**
      * Turn on diagnostic mode if user clicks on version section CHANGE_MODE_MIN_CLICKS times.
      */
-    public void switchToDiagnosticMode(View view) {
+    public void switchToDiagnosticMode(@SuppressWarnings("unused") View view) {
         if (!AppPreferences.isDiagnosticMode()) {
             clickCount++;
 
@@ -116,6 +122,7 @@ public class AboutActivity extends BaseActivity {
      * Show the diagnostic mode layout.
      */
     private void switchLayoutForDiagnosticOrUserMode() {
+        invalidateOptionsMenu();
         if (AppPreferences.isDiagnosticMode()) {
             findViewById(R.id.layoutDiagnostics).setVisibility(View.VISIBLE);
         } else {
@@ -125,4 +132,22 @@ public class AboutActivity extends BaseActivity {
         }
     }
 
+    public void onSettingsClick(@SuppressWarnings("unused") MenuItem item) {
+        final Intent intent = new Intent(this, SettingsActivity.class);
+        startActivityForResult(intent, 100);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (AppPreferences.isDiagnosticMode()) {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
+        return true;
+    }
+
+    public void onHomeClick(View view) {
+        if (dialog!= null) {
+            dialog.dismiss();
+        }
+    }
 }

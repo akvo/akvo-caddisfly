@@ -750,7 +750,7 @@
       ]
     },
     {
-      "name": "Water - Microbiology - Aquagenx CBT - E.coli (MPN)",
+      "name": "Drinking Water - Microbiology - Aquagenx CBT - E.coli (0-100 MPN)",
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
       "brand": "Aquagenx",
       "hasImage": true,
@@ -758,6 +758,29 @@
         {
           "id": 1,
           "name": "Health Risk Category (Based on MPN and Confidence Interval)",
+          "unit": ""
+        },
+        {
+          "id": 2,
+          "name": "MPN",
+          "unit": "MPN/100ml"
+        },
+        {
+          "id": 3,
+          "name": "Upper 95% Confidence Interval",
+          "unit": ""
+        }
+      ]
+    },
+    {
+      "name": "Surface Water - Microbiology - Aquagenx CBT - E.coli (0-1000 MPN)",
+      "uuid": "5baa9d29-b271-4521-b05f-4bfd645c26cf",
+      "brand": "Aquagenx",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Agricultural Waters Single Sample Water Quality (Based on MPN and Confidence Interval)",
           "unit": ""
         },
         {
@@ -820,45 +843,6 @@
         {
           "id": 1,
           "name": "Chloride",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
-      "name": "Water - Colorimetry - Caddisfly - Fluoride (0 - 2 mg/l F)",
-      "uuid": "f0f3c1dd-89af-49f1-83e7-bcc31c3006cf",
-      "brand": "Caddisfly",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Fluoride",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
-      "name": "Water - Colorimetry - Caddisfly - Free Chlorine (0 - 1 mg/l Cl2)",
-      "uuid": "c3535e72-ff77-4225-9f4a-41d3288780c6",
-      "brand": "Caddisfly",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Free Chlorine",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
-      "name": "Water - Colorimetry - Caddisfly - Free Chlorine (0 - 3 mg/l Cl2)",
-      "uuid": "a2413119-38eb-4959-92ee-cc169fdbb0fc",
-      "brand": "Caddisfly",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Free Chlorine",
           "unit": "mg/l"
         }
       ]
@@ -1104,19 +1088,6 @@
       ]
     },
     {
-      "name": "Water - Colorimetry - Caddisfly - Chromium",
-      "uuid": "d488672f-9a4c-4aa4-82eb-8a95c40d0296",
-      "brand": "Caddisfly",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Chromium",
-          "unit": "mg/l"
-        }
-      ]
-    },
-    {
       "name": "Soil - Test Strips  - Hach - Nitrogen (mg/l)",
       "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",
       "brand": "HACH 27454",
@@ -1204,7 +1175,7 @@
       ]
     },
     {
-      "name": "Water - Lovibond SD 70 Electrical Conductivity, (0 - 20000 μS/cm)",
+      "name": "Water - Lovibond SD 70 Electrical Conductivity (0 - 20000 μS/cm)",
       "uuid": "578c5768-273d-455f-ba12-57a6ced96c17",
       "brand": "Lovibond",
       "hasImage": true,
@@ -1217,7 +1188,7 @@
       ]
     },
     {
-      "name": "Water - DelAgua Turbidity Tube, (0 - 2000 NTU)",
+      "name": "Water - DelAgua Turbidity Tube (0 - 2000 NTU)",
       "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
       "brand": "DelAgua",
       "hasImage": false,
@@ -1226,6 +1197,40 @@
           "id": 1,
           "name": "Turbidity",
           "unit": "NTU"
+        }
+      ]
+    },
+    {
+      "name": "Water - Lovibond Chlorine pH LR TESTER Chlorine (0.1 - 3.0 mg/l Cl), pH (6.8 - 8.2)",
+      "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
+      "brand": "Lovibond AF106",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Chlorine",
+          "unit": "mg/l"
+        },
+        {
+          "id": 2,
+          "name": "pH"
+        }
+      ]
+    },
+    {
+      "name": "Water - Lovibond Chlorine pH HR TESTER Chlorine (0.5 - 6.0 mg/l Cl), pH (6.8 - 8.2)",
+      "uuid": "63e0e106-6ff6-4f57-a169-a32a4a821d42",
+      "brand": "Lovibond AF106",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Chlorine",
+          "unit": "mg/l"
+        },
+        {
+          "id": 2,
+          "name": "pH"
         }
       ]
     }
