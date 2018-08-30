@@ -360,7 +360,7 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("Recreational and Irrigation Water Health Risk Category (Based on MPN and Upper 95% Confidence Level): Very Unsafe ")));
+        assertNotNull(mDevice.findObject(By.text("US EPA Recreational Health Risk Category Based on MPN and Upper 95% Confidence Level: Very Unsafe ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")));
         assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 94351.0 ")));
     }
