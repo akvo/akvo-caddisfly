@@ -52,7 +52,8 @@ public class ImageUtils {
     // returns cut-out and rotated resulting strip as mat
     // TODO handle no-strip case
     @SuppressWarnings("UnusedParameters")
-    public static float[][][] detectStrip(float[][][] image, int width, int height, double stripLength, double ratioPixelPerMm) {
+    public static float[][][] detectStrip(float[][][] image, int width, int height,
+                                          double stripLength, double ratioPixelPerMm) {
         // we need to check if there is a strip on the black area. We
         // combine this with computing a first approximation of line through length of the strip,
         // as we go through all the points anyway.
@@ -191,40 +192,20 @@ public class ImageUtils {
 
         boolean found = false;
 
-        // moving from the left, determine the first point that crosses the threshold
-        double posLeft = 0;
-        while (!found && posLeft < width) {
-            if (colCount[(int) posLeft] > threshold) {
+        // use known length of strip to determine right side
+        double posRight = width - 1;
+
+        // moving from the right, determine the first point that crosses the threshold
+        while (!found && posRight > 0) {
+            if (colCount[(int) posRight] > threshold) {
                 found = true;
             } else {
-                posLeft++;
+                posRight--;
             }
         }
 
-        //use known length of strip to determine right side
-        double posRight = posLeft + (stripLength * ratioPixelPerMm);
-
-//        found = false;
-
-        // moving from the right, determine the first point that crosses the threshold
-//        int posRightTemp = width - 1;
-//        while (!found && posRightTemp > 0) {
-//            if (colCount[posRightTemp] > threshold) {
-//                found = true;
-//            } else {
-//                posRightTemp--;
-//            }
-//        }
-
-        // if there is a big difference in the right position determined by the two above methods
-        // then ignore the first method above and determine the left position by second method only
-//        if (Math.abs(posRightTemp - posRight) > 3) {
-//            // use known length of strip to determine left side
-//            posLeft = posRightTemp - (stripLength * ratioPixelPerMm);
-//            posRight = posRightTemp;
-//        }
-
-        int start = (int) Math.round(posLeft);
+        // use known length of strip to determine left side
+        int start = (int) Math.round((posRight - (stripLength * ratioPixelPerMm)));
         int end = (int) Math.round(posRight);
 
         // cut out final strip

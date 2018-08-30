@@ -121,22 +121,10 @@ public class StriptestTest {
                         isDisplayed()));
         textView11.check(matches(withText("No Result")));
 
-//        onView(withText("No Result")).check(matches(isDisplayed()));
-        onView(withText("Total Alkalinity")).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
-        onView(withText("32.0 mg/l")).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
-        onView(withText("pH")).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
+//        onView(withText("Total Alkalinity")).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
+//        onView(withText("32.0 mg/l")).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
+//        onView(withText("pH")).perform(ViewActions.scrollTo()).check(matches(isDisplayed()));
 
-        ViewInteraction textView12 = onView(
-                allOf(withId(R.id.text_result), withText("No Result"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                0),
-                        isDisplayed()));
-        textView12.check(matches(withText("No Result")));
-
-//        onView(withText("No Result")).check(matches(isDisplayed()));
         onView(withText("Save")).check(matches(isDisplayed()));
 
         onView(withText("Save")).perform(click());
@@ -174,14 +162,14 @@ public class StriptestTest {
         onView(withText("Nitrate Nitrogen")).check(matches(isDisplayed()));
         onView(withText("41.0 mg/l")).check(matches(isDisplayed()));
         onView(withText("Nitrite Nitrogen")).check(matches(isDisplayed()));
-        onView(withText("0.01 mg/l")).check(matches(isDisplayed()));
+        onView(withText("0.03 mg/l")).check(matches(isDisplayed()));
         onView(withText("Save")).check(matches(isDisplayed()));
 
         onView(withText("Save")).perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("Nitrogen: 205.075 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Nitrogen: 205.15 mg/l")));
         assertNotNull(mDevice.findObject(By.text("Nitrate Nitrogen: 41.0 mg/l")));
-        assertNotNull(mDevice.findObject(By.text("Nitrite Nitrogen: 0.01 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Nitrite Nitrogen: 0.03 mg/l")));
     }
 
     private void testMerckPH() {
@@ -206,7 +194,7 @@ public class StriptestTest {
 
         onView(withText("Result")).check(matches(isDisplayed()));
         onView(withText("pH")).check(matches(isDisplayed()));
-        onView(withText("4.7")).check(matches(isDisplayed()));
+        onView(withText("4.8")).check(matches(isDisplayed()));
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()));
 
@@ -214,7 +202,7 @@ public class StriptestTest {
 
         onView(withText("Save")).perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("pH: 4.7 ")));
+        assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")));
     }
 
     private void testNitrate100() {
