@@ -750,7 +750,7 @@
       ]
     },
     {
-      "name": "Drinking Water - Microbiology - Aquagenx CBT - E.coli (0-100 MPN)",
+      "name": "Water - Microbiology - Aquagenx CBT - E.coli - drinking water (0-100 MPN)",
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
       "brand": "Aquagenx",
       "hasImage": true,
@@ -773,7 +773,7 @@
       ]
     },
     {
-      "name": "Surface Water - Microbiology - Aquagenx CBT - E.coli (0-1000 MPN)",
+      "name": "Water - Microbiology - Aquagenx CBT - E.coli - surface water (0-1000 MPN)",
       "uuid": "5baa9d29-b271-4521-b05f-4bfd645c26cf",
       "brand": "Aquagenx",
       "hasImage": true,

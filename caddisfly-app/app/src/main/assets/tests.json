@@ -4944,7 +4944,7 @@
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0.02,1",
+      "ranges": "0.02,3",
       "selectInstruction": "select_test_instruction",
       "instructions": [
         {
