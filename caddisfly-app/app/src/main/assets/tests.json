@@ -1317,7 +1317,7 @@
         {
           "id": 3,
           "name": "Total Hardness",
-          "unit": "gpg",
+          "unit": "mg/l",
           "timeDelay": 30,
           "patchPos": 30.5,
           "patchWidth": 6,

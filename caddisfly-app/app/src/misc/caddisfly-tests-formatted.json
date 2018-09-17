@@ -866,7 +866,7 @@
         {
           "id": 3,
           "name": "Total Hardness",
-          "unit": "gpg"
+          "unit": "mg/l"
         },
         {
           "id": 4,
