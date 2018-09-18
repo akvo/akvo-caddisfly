@@ -54,3 +54,6 @@ build/
 *~
 
 notes.md
+
+# Sentry config
+sentry.properties

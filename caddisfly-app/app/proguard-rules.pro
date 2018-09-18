@@ -41,3 +41,8 @@
 -keep class * implements com.google.gson.JsonDeserializer
 
 ##---------------End: proguard configuration for Gson  ----------
+
+-keepattributes LineNumberTable,SourceFile
+-dontwarn org.slf4j.**
+-dontwarn javax.**
+-keep class io.sentry.event.Event { *; }

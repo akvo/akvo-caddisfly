@@ -111,7 +111,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.setPreviewDisplay(holder);
             mPreviewWidth = bestSize.width;
             mPreviewHeight = bestSize.height;
-            Timber.e("Preview width in cameraPreview: %s", mPreviewWidth);
+            Timber.d("Preview width in cameraPreview: %s", mPreviewWidth);
 
             activity.setPreviewProperties(w, h, mPreviewWidth, mPreviewHeight);
             activity.initPreviewFragment();

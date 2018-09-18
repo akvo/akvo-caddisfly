@@ -31,11 +31,14 @@ import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.logging.SentryTree;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Arrays;
 import java.util.Locale;
 
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
 import timber.log.Timber;
 
 public class CaddisflyApp extends Application {
@@ -84,8 +87,13 @@ public class CaddisflyApp extends Application {
         super.onCreate();
         setApp(this);
 
+        String sentryDsn = "";
+        Sentry.init(sentryDsn, new AndroidSentryClientFactory(getApplicationContext()));
+
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new SentryTree());
         }
 
         app = this;
