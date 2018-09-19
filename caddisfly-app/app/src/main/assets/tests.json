@@ -560,6 +560,53 @@
       ]
     },
     {
+      "name": "Soil - Phosphate",
+      "subtype": "striptest",
+      "uuid": "5613d944-c10b-4b59-a779-cc7349dc8fa9",
+      "brand": "Quantofix 91320",
+      "groupingType": "INDIVIDUAL",
+      "hasImage": true,
+      "length": 95,
+      "height": 5.5,
+      "results": [
+        {
+          "id": 1,
+          "name": "Phosphate",
+          "unit": "mg/l",
+          "formula": "(%1$f * 5)",
+          "timeDelay": 60,
+          "patchPos": 4.5,
+          "patchWidth": 5.0,
+          "colors": [
+            {
+              "value": 0,
+              "lab": [74.71,-20.57,-4.38]
+            },
+            {
+              "value": 3,
+              "lab": [71.23,-23.00,-5.53]
+            },
+            {
+              "value": 10,
+              "lab": [66.84,-25.71,-7.51]
+            },
+            {
+              "value": 25,
+              "lab": [60.84,-28.04,-9.24]
+            },
+            {
+              "value": 50,
+              "lab": [54.84,-28.63,-10.56]
+            },
+            {
+              "value": 100,
+              "lab": [47.26,-27.97,-10.45]
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Soil - Phosphorous",
       "subtype": "striptest",
       "uuid": "7cb666ea-7913-4511-9ae4-18f78e67aa09",
