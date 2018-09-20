@@ -72,9 +72,9 @@ public class StripsTest {
         TestInfoAdapter adapter = (TestInfoAdapter) recyclerView.getAdapter();
         recyclerView.getAdapter();
         assertEquals("Water - Total Iron",
-                adapter.getItemAt(19).getName());
+                adapter.getItemAt(20).getName());
         assertEquals("Water - Total Iron",
-                ((TextView) recyclerView.getChildAt(19).findViewById(R.id.text_title)).getText());
+                ((TextView) recyclerView.getChildAt(20).findViewById(R.id.text_title)).getText());
     }
 
     @Test

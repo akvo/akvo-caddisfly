@@ -88,7 +88,7 @@ public class SwatchSelectTest {
 
         TestUtil.nextSurveyPage("Manual 2");
 
-        clickExternalSourceButton(0);
+        clickExternalSourceButton(1);
 
         SystemClock.sleep(2000);
 
@@ -159,7 +159,7 @@ public class SwatchSelectTest {
 
         TestUtil.nextSurveyPage("Manual 2");
 
-        clickExternalSourceButton(1);
+        clickExternalSourceButton(0);
 
         SystemClock.sleep(2000);
 

@@ -22,7 +22,9 @@ public final class AppTest {
             "android.permission.WAKE_LOCK",
             "android.permission.CAMERA",
             "android.permission.BLUETOOTH",
-            "android.permission.WRITE_EXTERNAL_STORAGE"
+            "android.permission.WRITE_EXTERNAL_STORAGE",
+            "android.permission.INTERNET",
+            "android.permission.ACCESS_NETWORK_STATE"
     };
 
     private static final String MERGED_MANIFEST =

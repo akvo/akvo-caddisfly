@@ -211,7 +211,7 @@ public final class TestUtil {
     }
 
     public static void nextSurveyPage() {
-        clickExternalSourceButton(TestConstantKeys.NEXT);
+        swipeLeft();
     }
 
     public static void nextSurveyPage(String tabName) {
@@ -229,7 +229,7 @@ public final class TestUtil {
                 if (tab != null && tab.isSelected()) {
                     for (int j = 0; j < 20; j++) {
                         mDevice.waitForIdle();
-                        clickExternalSourceButton(TestConstantKeys.NEXT);
+                        swipeLeft();
                         sleep(300);
                         tab = mDevice.findObject(By.text(tabName));
                         if (tab != null && tab.isSelected()) {
