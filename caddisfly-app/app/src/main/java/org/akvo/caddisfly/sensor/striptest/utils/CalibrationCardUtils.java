@@ -122,7 +122,7 @@ public class CalibrationCardUtils {
                 // We put the minimum size at 20 pixels, which would correspond to a module size of less than 2 pixels,
                 // which is too small.
                 if (lengthPattern < 20) {
-                    Timber.e("Length of pattern too small");
+                    Timber.d("Length of pattern too small");
                     return VERSION_NUMBER_NOT_FOUND_CODE;
                 }
 

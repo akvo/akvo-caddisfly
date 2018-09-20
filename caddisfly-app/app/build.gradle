@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 229
-        versionName "1.0.0.1"
+        versionCode 230
+        versionName "1.0.1"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -58,7 +58,8 @@ android {
 
     buildTypes {
         debug {
-            debuggable false
+            debuggable true
+            buildConfigField "String", "sentryDsn", "\"\""
         }
     }
 
@@ -78,6 +79,7 @@ android {
 //            shrinkResources true
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            zipAlignEnabled true
+//            buildConfigField "String", "sentryDsn", "\"${sentryDsn}\""
 //        }
 //    }
 
@@ -100,8 +102,8 @@ android {
 }
 
 sentry {
-    autoProguardConfig false
-    autoUpload false
+    autoProguardConfig true
+    autoUpload true
 }
 
 dependencies {

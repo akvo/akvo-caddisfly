@@ -87,17 +87,17 @@ public class CaddisflyApp extends Application {
         super.onCreate();
         setApp(this);
 
-        String sentryDsn = "";
-        Sentry.init(sentryDsn, new AndroidSentryClientFactory(getApplicationContext()));
-
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         } else {
+            String sentryDsn = decrypt(BuildConfig.sentryDsn);
+            if (!sentryDsn.isEmpty()) {
+                Sentry.init(sentryDsn, new AndroidSentryClientFactory(getApplicationContext()));
+            }
             Timber.plant(new SentryTree());
         }
 
         app = this;
-
     }
 
     /**
@@ -171,5 +171,16 @@ public class CaddisflyApp extends Application {
         } catch (Exception ignored) {
             // do nothing
         }
+    }
+
+    // https://stackoverflow.com/a/52164101
+    public static String decrypt(String str){
+        str = str.replace("-", "");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < str.length(); i+=3) {
+            String hex =  str.substring(i+1, i+3);
+            result.append((char) (Integer.parseInt(hex, 16) ^ (Integer.parseInt(String.valueOf(str.charAt(i))))));
+        }
+        return result.toString();
     }
 }
