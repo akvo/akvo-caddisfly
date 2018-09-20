@@ -21,7 +21,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ddd"
+    android:background="#eee"
     tools:context=".sensor.striptest.ui.ResultActivity">
 
     <include layout="@layout/toolbar" />
@@ -58,7 +58,7 @@
             android:letterSpacing="0.01"
             android:padding="20dp"
             android:text="@string/save"
-            android:textColor="#ccc"
+            android:textColor="#fff"
             android:textSize="17sp"
             android:visibility="visible"
             tools:targetApi="lollipop" />
