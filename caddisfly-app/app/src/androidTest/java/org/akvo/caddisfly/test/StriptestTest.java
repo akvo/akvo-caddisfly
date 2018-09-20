@@ -131,7 +131,7 @@ public class StriptestTest {
 
         assertNotNull(mDevice.findObject(By.text("Total Chlorine: 0.0 mg/l")));
         assertNotNull(mDevice.findObject(By.text("Free Chlorine: 0.15 mg/l")));
-        assertNotNull(mDevice.findObject(By.text("Total Hardness:  gpg")));
+        assertNotNull(mDevice.findObject(By.text("Total Hardness:  mg/l")));
         assertNotNull(mDevice.findObject(By.text("Total Alkalinity: 32.0 mg/l")));
         assertNotNull(mDevice.findObject(By.text("pH: 6.2 ")));
     }
