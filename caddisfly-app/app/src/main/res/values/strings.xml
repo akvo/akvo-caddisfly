@@ -132,5 +132,6 @@
     <string name="go_to_external_app">Go to Akvo Flow</string>
     <string name="notFound">Not Found</string>
     <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
+    <string name="simulateCrash">Simulate Crash</string>
 
 </resources>

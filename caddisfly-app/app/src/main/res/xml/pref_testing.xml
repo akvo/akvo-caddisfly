@@ -25,5 +25,10 @@
             android:key="@string/testModeOnKey"
             android:summary="Warning: Do not turn this on for normal usage of the app. For app testing only."
             android:title="@string/testModeOn" />
+
+        <Preference
+            android:key="@string/simulateCrashKey"
+            android:summary="This sends a dummy crash report"
+            android:title="@string/simulateCrash" />
     </org.akvo.caddisfly.preference.PreferenceCategoryCustom>
 </PreferenceScreen>

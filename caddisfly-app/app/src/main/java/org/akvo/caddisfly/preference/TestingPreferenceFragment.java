@@ -29,9 +29,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ListViewUtil;
+import org.akvo.caddisfly.util.PreferencesUtil;
+
+import java.util.Calendar;
+
+import timber.log.Timber;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +66,29 @@ public class TestingPreferenceFragment extends PreferenceFragment {
             });
         }
 
+        Preference simulateCrashPreference = findPreference(getString(R.string.simulateCrashKey));
+        if (simulateCrashPreference != null) {
+            simulateCrashPreference.setOnPreferenceClickListener(preference -> {
+                if (Calendar.getInstance().getTimeInMillis() - PreferencesUtil.getLong(getActivity(),
+                        "lastCrashReportSentKey") > 60000) {
+                    AlertUtil.askQuestion(getActivity(), R.string.simulateCrash, R.string.simulateCrash,
+                            R.string.ok, R.string.cancel, true, (dialogInterface, i) -> {
+                                PreferencesUtil.setLong(getActivity(), "lastCrashReportSentKey",
+                                        Calendar.getInstance().getTimeInMillis());
+                                try {
+                                    throw new Exception("Simulated crash test");
+                                } catch (Exception e) {
+                                    Timber.e(e);
+                                }
+                            }, null);
+                } else {
+                    Toast.makeText(getActivity(), "Wait 1 minute before sending again",
+                            Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            });
+        }
+
         return view;
     }
 
@@ -69,7 +99,6 @@ public class TestingPreferenceFragment extends PreferenceFragment {
             view.setBackgroundColor(Color.rgb(255, 240, 220));
         }
     }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

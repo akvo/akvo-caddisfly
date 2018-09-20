@@ -53,6 +53,7 @@
     <string name="ignoreTimeDelaysKey">ignoreTimeDelays</string>
     <string name="cameraMegaPixelsKey">cameraMegaPixels</string>
     <string name="showMinMegaPixelDialogKey">showMinMegaPixelDialog</string>
+    <string name="simulateCrashKey">simulateCrash</string>
 
     <!--Diagnostic-->
     <string name="diagnostics">Diagnostics</string>
