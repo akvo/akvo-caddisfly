@@ -568,6 +568,43 @@
       "hasImage": true,
       "length": 95,
       "height": 5.5,
+      "instructions": [
+        {
+          "section": [
+            "collect_5ml_mehlich_sample"
+          ]
+        },
+        {
+          "section": [
+            "add_5_drops_reagent_1",
+            "swirl_to_mix_reagent"
+          ]
+        },
+        {
+          "section": [
+            "put_6_drops_of_reagent_in_another_container",
+            "place_tube_in_provided_rack"
+          ]
+        },
+        {
+          "section": [
+            "dip_strip_15_seconds_and_remove",
+            "shake_excess_water"
+          ]
+        },
+        {
+          "section": [
+            "dip_strip_15_seconds_in_reagent_and_remove",
+            "shake_excess_water"
+          ]
+        },
+        {
+          "section": [
+            "place_strip_clr",
+            "image:place_clr"
+          ]
+        }
+      ],
       "results": [
         {
           "id": 1,
