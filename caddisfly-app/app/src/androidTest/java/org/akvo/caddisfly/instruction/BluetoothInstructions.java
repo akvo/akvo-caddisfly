@@ -21,7 +21,6 @@ package org.akvo.caddisfly.instruction;
 
 import android.os.Environment;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
@@ -38,7 +37,6 @@ import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,12 +48,11 @@ import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
+import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
@@ -63,9 +60,6 @@ import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
-import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
 
 @SuppressWarnings("PMD.NcssMethodCount")
 @RunWith(AndroidJUnit4.class)
@@ -95,9 +89,10 @@ public class BluetoothInstructions {
     }
 
     @Test
-    @Ignore
     @RequiresDevice
     public void testInstructionsAll() {
+
+        activateTestMode();
 
         String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
 
@@ -113,7 +108,7 @@ public class BluetoothInstructions {
 
         TestUtil.nextSurveyPage("MD610");
 
-        clickExternalSourceButton(1);
+        clickExternalSourceButton(2);
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
         List<TestInfo> testList = testConfigRepository.getTests(TestType.BLUETOOTH);
@@ -125,11 +120,11 @@ public class BluetoothInstructions {
 
             id = id.substring(id.lastIndexOf("-") + 1, id.length());
 
-//            if (id.equalsIgnoreCase("7d0685b49370")) {
-            int pages = navigateToTest(i, id);
+            if (id.equalsIgnoreCase("e14626afa5b0")) {
+                int pages = navigateToTest(3, id);
 
-            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-//            }
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+            }
 
         }
 
@@ -139,12 +134,12 @@ public class BluetoothInstructions {
 
     private int navigateToTest(int index, String id) {
 
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.list_types),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)));
-        recyclerView.perform(actionOnItemAtPosition(index, click()));
+//        ViewInteraction recyclerView = onView(
+//                allOf(withId(R.id.list_types),
+//                        childAtPosition(
+//                                withClassName(is("android.widget.LinearLayout")),
+//                                0)));
+//        recyclerView.perform(actionOnItemAtPosition(index, click()));
 
 //        if (TestUtil.isEmulator()) {
 //            onView(withText("Bluetooth not supported."))
@@ -155,11 +150,11 @@ public class BluetoothInstructions {
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-        TestUtil.sleep(5000);
+//        TestUtil.sleep(5000);
 
-        onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
+//        onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
 
-        TestUtil.sleep(2000);
+//        TestUtil.sleep(2000);
 
         onView(withText(R.string.test_selected)).perform(click());
 
@@ -170,10 +165,12 @@ public class BluetoothInstructions {
             pages++;
 
             try {
+                TestUtil.sleep(6000);
 
                 takeScreenshot(id, i);
 
                 onView(withId(R.id.image_pageRight)).perform(click());
+
 
             } catch (Exception e) {
                 TestUtil.sleep(300);
@@ -183,10 +180,6 @@ public class BluetoothInstructions {
                 TestUtil.sleep(300);
                 Espresso.pressBack();
                 TestUtil.sleep(300);
-                Espresso.pressBack();
-                TestUtil.sleep(600);
-                Espresso.pressBack();
-                TestUtil.sleep(600);
                 break;
             }
         }

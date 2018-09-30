@@ -425,6 +425,19 @@
       ]
     },
     {
+      "name": "Water - Colorimetry - Lovibond MD610 - 191 Calcium Hardness, Tablet (0 - 500 mg/l CaCO3)",
+      "uuid": "072cab32-3e4c-41f3-8378-e14626afa5b0",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Calcium Hardness",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Colorimetry - Lovibond MD610 - 200 Total Hardness, Tablet (2 - 50 mg/l CaCO3)",
       "uuid": "d4d57975-5e87-4ba9-b9d1-09ec2eb8f500",
       "brand": "Lovibond",
@@ -464,7 +477,7 @@
       ]
     },
     {
-      "name": "Water - Colorimetry - Lovibond MD610 - 222 Iron, Powder (0.02 - 1 mg/l Fe 2+/3+)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 222 Iron, Powder (0.02 - 3 mg/l Fe 2+/3+)",
       "uuid": "7a9457b0-96c2-487d-b3d3-c52c50fb2279",
       "brand": "Lovibond",
       "hasImage": false,
@@ -1132,6 +1145,19 @@
         {
           "id": 1,
           "name": "Phosphorous",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Soil - Test Strips - Quantofix - Phosphate (0 - 100 mg/l PO4)",
+      "uuid": "5613d944-c10b-4b59-a779-cc7349dc8fa9",
+      "brand": "Quantofix 91320",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Phosphate",
           "unit": "mg/l"
         }
       ]

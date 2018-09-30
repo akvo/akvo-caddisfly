@@ -4844,6 +4844,74 @@
       ]
     },
     {
+      "name": "Calcium Hardness",
+      "subtype": "bluetooth",
+      "md610_id": "191",
+      "uuid": "072cab32-3e4c-41f3-8378-e14626afa5b0",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "CALCIO H No.1",
+          "code": "517761BT",
+          "reactionTime": 2
+        },
+        {
+          "name": "CALCIO H No. 2",
+          "code": "517761BT",
+          "reactionTime": 2
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0,500",
+      "selectInstruction": "select_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_dissolve",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Calcium Hardness",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Total Hardness",
       "subtype": "bluetooth",
       "md610_id": "200",
