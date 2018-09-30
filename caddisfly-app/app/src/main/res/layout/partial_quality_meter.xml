@@ -22,7 +22,6 @@
     android:layout_height="wrap_content"
     android:layout_alignParentStart="true"
     android:layout_alignParentTop="true"
-    android:background="@android:color/background_light"
     android:baselineAligned="false"
     android:orientation="vertical"
     android:paddingTop="@dimen/activity_vertical_margin">
@@ -37,6 +36,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/imageQuality"
-        android:textColor="@android:color/tertiary_text_dark" />
+        android:textColor="#5e5e5e" />
 
 </LinearLayout>

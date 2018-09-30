@@ -28,7 +28,7 @@
     <color name="text_primary">#d9222222</color>
     <color name="text_secondary">#d9161616</color>
 
-    <color name="colorLinks">#027e94</color>
+    <color name="links">#007fa6</color>
 
     <color name="primary_background">#014378</color>
     <color name="button_text">#fff</color>

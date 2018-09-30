@@ -35,6 +35,10 @@
     <string name="success" tools:ignore="UnusedResources">Success</string>
     <string name="done" tools:ignore="UnusedResources">Done</string>
     <string name="close">Close</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="navigate_up">Navigate up</string>
+    <string name="logo">Logo</string>
 
     <string name="result">Result</string>
     <string name="language">Language</string>
@@ -70,7 +74,6 @@
     <string name="customTests">Custom tests</string>
 
     <string name="deviceConnected">Device connected</string>
-    <string name="next">Next</string>
     <string name="sensorDetails">Sensor Details</string>
     <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
     <string name="ecSensorId">EC Sensor Id</string>

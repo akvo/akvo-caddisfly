@@ -61,7 +61,6 @@ public class RowView extends TableRow {
 
         textNumber = (TextView) tableRow.getChildAt(0);
         textPara = (TextView) tableRow.getChildAt(1);
-        textPara.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public RowView(Context context) {
@@ -78,5 +77,9 @@ public class RowView extends TableRow {
 
     public String getString() {
         return textPara.getText().toString();
+    }
+
+    public void enableLinks(boolean b) {
+        textPara.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

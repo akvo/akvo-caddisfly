@@ -116,6 +116,10 @@ public class TestInfoViewModel extends AndroidViewModel {
                     }
                     rowView.append(StringUtil.toInstruction((AppCompatActivity) context,
                             testInfo, sentences[j].trim()));
+
+                    if (StringUtil.getStringResourceByName(context, sentences[j]).toString().contains("[/a]")) {
+                        rowView.enableLinks(true);
+                    }
                 }
 
                 // set an id for the view to be able to find it for unit testing

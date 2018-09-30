@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:paddingEnd="3dp"
         android:paddingStart="0dp"
-        android:textColor="#76797b"
+        android:textColor="#696969"
         android:textSize="16sp"
         android:textStyle="bold"
         tools:text="1." />

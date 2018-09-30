@@ -72,7 +72,7 @@
                     android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:textStyle="normal"
                     tools:text="Version 1.0" />
 
@@ -80,8 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|top"
-                    android:layout_marginTop="10dp"
-                    android:contentDescription="@null"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/logo"
                     android:minHeight="80dp"
                     android:minWidth="80dp"
                     android:src="@mipmap/ic_launcher" />
@@ -102,10 +102,10 @@
                     android:onClick="onSoftwareNoticesClick"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
+                    android:paddingTop="7dp"
+                    android:paddingBottom="7dp"
                     android:text="@string/legalInformation"
-                    android:textColor="@color/colorLinks"
+                    android:textColor="@color/links"
                     android:textSize="15sp" />
 
             </LinearLayout>
