@@ -35,4 +35,7 @@ public class Constants {
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm";
 
     public static final int DEGREES_90 = 90;
+
+    // Automated Testing
+    public static final String BLUETOOTH_TEST_DATA = "DT01;1813246;V012.013.4.003.065;V012.013.4.003.065;191;Ca-hardness 2 T;0-500 mg/l CaCO3;8;0;0;2003-01-01;00:12:26;0;0;0;1;0;4;Overrange; CaCO3;;;; ";
 }

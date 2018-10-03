@@ -42,7 +42,9 @@ import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.ui.InstructionFragment;
 import org.akvo.caddisfly.util.StringUtil;
@@ -160,7 +162,12 @@ public class DeviceControlActivity extends BaseActivity
         ft.commit();
 
         layoutSelectTest = findViewById(R.id.selectTestLayout);
-        findViewById(R.id.buttonTestSelected).setOnClickListener(v -> showWaitingView());
+        findViewById(R.id.buttonTestSelected).setOnClickListener(v -> {
+            showWaitingView();
+            if (AppPreferences.isTestMode()) {
+                (new Handler()).postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 3000);
+            }
+        });
 
         SpannableStringBuilder selectionInstruction = StringUtil.toInstruction(this, testInfo,
                 String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),

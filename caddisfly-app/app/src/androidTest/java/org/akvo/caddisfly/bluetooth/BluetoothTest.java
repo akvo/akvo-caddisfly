@@ -25,10 +25,15 @@ import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.TestConstants;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
@@ -38,6 +43,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.List;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
@@ -50,6 +57,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
@@ -91,6 +100,59 @@ public class BluetoothTest {
     @After
     public void tearDown() {
         TestHelper.clearPreferences(mActivityTestRule);
+    }
+
+    @Test
+    @RequiresDevice
+    public void testResultData() {
+
+        activateTestMode();
+
+        mDevice.waitForWindowUpdate("", 2000);
+
+        gotoSurveyForm();
+
+        TestUtil.nextSurveyPage("MD610");
+
+        clickExternalSourceButton(2);
+
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        List<TestInfo> testList = testConfigRepository.getTests(TestType.BLUETOOTH);
+        for (int i = 0; i < TestConstants.MD610_TESTS_COUNT; i++) {
+
+            assertEquals(testList.get(i).getSubtype(), TestType.BLUETOOTH);
+
+            String id = testList.get(i).getUuid();
+
+            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+
+            if (id.equalsIgnoreCase("e14626afa5b0")) {
+                onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+
+                TestUtil.sleep(1000);
+
+                onView(withText(R.string.test_selected)).perform(click());
+
+                TestUtil.sleep(4000);
+
+                onView(withText(R.string.result)).check(matches(isDisplayed()));
+
+                onView(withText(">500")).check(matches(isDisplayed()));
+
+                onView(withText("mg/l")).check(matches(isDisplayed()));
+
+                onView(withText(R.string.acceptResult)).check(matches(isDisplayed()));
+
+                onView(withText(R.string.acceptResult)).perform(click());
+
+                break;
+            }
+        }
+
+        assertNotNull(mDevice.findObject(By.text("3. Calcium Hardness")));
+
+        assertNotNull(mDevice.findObject(By.text("Calcium Hardness: >500 mg/l")));
+
     }
 
     @Test
