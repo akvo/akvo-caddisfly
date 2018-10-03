@@ -19,6 +19,8 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -26,6 +28,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -35,7 +38,6 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
@@ -45,6 +47,7 @@ import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.util.AlertUtil;
+import org.akvo.caddisfly.util.AnimatedColor;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.lang.ref.WeakReference;
@@ -55,6 +58,7 @@ public class MainActivity extends BaseActivity {
     ActivityMainBinding b;
 
     private int INTRO_PAGE_COUNT = 2;
+    AnimatedColor statusBarColors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,15 +118,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void setStatusBackgroundColor() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black_main));
-        }
-    }
-
     private void setUpViews() {
         IntroFragmentAdapter adapter = new IntroFragmentAdapter(
                 getSupportFragmentManager());
@@ -133,7 +128,18 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        setStatusBackgroundColor();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (AppPreferences.isDiagnosticMode()) {
+                statusBarColors = new AnimatedColor(
+                        ContextCompat.getColor(this, R.color.diagnostic_status),
+                        ContextCompat.getColor(this, R.color.black_main));
+            } else {
+                statusBarColors = new AnimatedColor(
+                        ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                        ContextCompat.getColor(this, R.color.black_main));
+            }
+            animateStatusBar();
+        }
 
         CaddisflyApp.getApp().setAppLanguage(null, false, refreshHandler);
 
@@ -243,6 +249,16 @@ public class MainActivity extends BaseActivity {
         public int getCount() {
             return INTRO_PAGE_COUNT;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void animateStatusBar() {
+        ValueAnimator animator = ObjectAnimator.ofFloat(0f, 1f).setDuration(1000);
+        animator.addUpdateListener(animation -> {
+            float v = (float) animation.getAnimatedValue();
+            getWindow().setStatusBarColor(statusBarColors.with(v));
+        });
+        animator.start();
     }
 }
 
