@@ -464,7 +464,7 @@
       ]
     },
     {
-      "name": "Water - Colorimetry - Lovibond MD610 - 222 Iron, Powder (0.02 - 1 mg/l Fe 2+/3+)",
+      "name": "Water - Colorimetry - Lovibond MD610 - 222 Iron, Powder (0.02 - 3 mg/l Fe 2+/3+)",
       "uuid": "7a9457b0-96c2-487d-b3d3-c52c50fb2279",
       "brand": "Lovibond",
       "hasImage": false,
@@ -866,7 +866,7 @@
         {
           "id": 3,
           "name": "Total Hardness",
-          "unit": "gpg"
+          "unit": "mg/l"
         },
         {
           "id": 4,
@@ -1132,6 +1132,19 @@
         {
           "id": 1,
           "name": "Phosphorous",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Soil - Test Strips - Quantofix - Phosphate (0 - 100 mg/l PO4)",
+      "uuid": "5613d944-c10b-4b59-a779-cc7349dc8fa9",
+      "brand": "Quantofix 91320",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Phosphate",
           "unit": "mg/l"
         }
       ]
