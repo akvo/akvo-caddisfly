@@ -66,11 +66,11 @@
 
                 <TextView
                     android:id="@+id/textVersion"
-                    android:onClick="switchToDiagnosticMode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center"
+                    android:onClick="switchToDiagnosticMode"
                     android:padding="10dp"
                     android:textSize="15sp"
                     android:textStyle="normal"
@@ -82,8 +82,8 @@
                     android:layout_gravity="center_horizontal|top"
                     android:layout_marginTop="8dp"
                     android:contentDescription="@string/logo"
-                    android:minHeight="80dp"
                     android:minWidth="80dp"
+                    android:minHeight="80dp"
                     android:src="@mipmap/ic_launcher" />
 
                 <TextView
@@ -98,15 +98,19 @@
 
                 <TextView
                     android:id="@+id/textLinkSoftwareNotices"
-                    android:layout_width="wrap_content"
+                    style="@style/LinkTextViewStyle"
                     android:onClick="onSoftwareNoticesClick"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:paddingTop="7dp"
-                    android:paddingBottom="7dp"
-                    android:text="@string/legalInformation"
-                    android:textColor="@color/links"
-                    android:textSize="15sp" />
+                    android:paddingTop="18dp"
+                    android:paddingBottom="12dp"
+                    android:text="@string/legalInformation" />
+
+                <TextView
+                    android:id="@+id/textLinkTermsOfService"
+                    style="@style/LinkTextViewStyle"
+                    android:onClick="onTermsOfServicesClick"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="14dp"
+                    android:text="@string/terms_of_service" />
 
             </LinearLayout>
         </LinearLayout>
@@ -123,8 +127,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/text_margin_bottom"
                 android:layout_marginStart="16dp"
+                android:layout_marginBottom="@dimen/text_margin_bottom"
                 android:ellipsize="none"
                 android:gravity="start"
                 android:singleLine="true"
@@ -136,13 +140,13 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fabDisableDiagnostics"
-                android:onClick="disableDiagnosticsMode"
                 style="@style/floating_action_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/textDiagnostics"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
+                android:onClick="disableDiagnosticsMode"
                 android:src="@drawable/ic_revert_24dp"
                 app:backgroundTint="@color/diagnostic"
                 tools:ignore="RelativeOverlap" />

@@ -20,9 +20,12 @@
 package org.akvo.caddisfly.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +37,8 @@ import org.akvo.caddisfly.databinding.ActivityAboutBinding;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
+
+import static org.akvo.caddisfly.common.AppConfig.TERMS_OF_USE_URL;
 
 /**
  * Activity to display info about the app.
@@ -149,5 +154,14 @@ public class AboutActivity extends BaseActivity {
         if (dialog!= null) {
             dialog.dismiss();
         }
+    }
+
+    public void onTermsOfServicesClick(View view) {
+        openUrl(this, TERMS_OF_USE_URL);
+    }
+
+    public void openUrl(@NonNull Context context, String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        context.startActivity(browserIntent);
     }
 }

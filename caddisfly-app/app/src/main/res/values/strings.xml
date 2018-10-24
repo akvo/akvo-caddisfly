@@ -17,7 +17,7 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <!--Common-->
     <string name="ok">OK</string>
     <string name="retry">Retry</string>
@@ -114,6 +114,7 @@
     <string name="waterQualitySystem">Water &amp; Soil Quality System</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
     <string name="legalInformation">Legal Information</string>
+    <string name="terms_of_service">Terms of Service</string>
 
     <!--Software notices-->
     <string name="software_incorporates_material">This software incorporates material from the projects listed below</string>
