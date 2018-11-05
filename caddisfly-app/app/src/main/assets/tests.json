@@ -6875,6 +6875,71 @@
           "range": "0.5-6.0"
         }
       ]
+    },
+    {
+      "name": "Water - Fluoride",
+      "subtype": "manual",
+      "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
+      "brand": "Lovibond Checkit",
+      "imageScale": "centerCrop",
+      "ranges": "0,2",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "image:ci_checkit_comparator_uses"
+          ]
+        },
+        {
+          "section": [
+            "1. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "2. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "3. add_one_tablet_to_other_cell",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "7. read_result_and_record",
+            "image:ci_read_result_and_record"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Fluoride",
+          "unit": "mg/l"
+        }
+      ]
     }
   ]
 }

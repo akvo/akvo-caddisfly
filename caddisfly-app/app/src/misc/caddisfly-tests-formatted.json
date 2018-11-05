@@ -1259,6 +1259,19 @@
           "name": "pH"
         }
       ]
+    },
+    {
+      "name": "Water - Comparator - Lovibond CHECKIT - Fluoride - 0-2 mg/l",
+      "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
+      "brand": "Lovibond Checkit",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Fluoride",
+          "unit": "mg/l"
+        }
+      ]
     }
   ]
 }

@@ -48,4 +48,13 @@
     <string name="select_colors_before_continue">Select the colour intervals before continuing</string>
     <string name="pt_select_intervals">Select the intervals that match the water sample colours in the box.</string>
 
+    <string name="checkit_comparator_uses">The Checkit Comparator uses two cells and a coloured disc.</string>
+    <string name="fill_both_cells">Fill both cells to the 10 ml mark</string>
+    <string name="close_one_cell">Close one cell with a lid and place it in the left-hand space of the comparator. It acts as a blank.</string>
+    <string name="add_one_tablet_to_other_cell">Add one tablet to the other cell, and close it with a lid. Swirl the cell until the tablet has dissolved</string>
+    <string name="place_second_cell">Place the second cell in the right-hand space of the comparator.</string>
+    <string name="insert_colored_disk">Insert the coloured disk in the comparator.</string>
+    <string name="match_colors_by_rotating">By rotating the disk, match the two colours against daylight, looking AWAY from the sun.</string>
+    <string name="read_result_and_record">Read of the result and record the number.</string>
+
 </resources>
