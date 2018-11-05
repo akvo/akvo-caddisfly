@@ -33,8 +33,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
@@ -85,7 +83,6 @@ public class ResultActivity extends BaseActivity {
     private String totalImageUrl;
     private LinearLayout layout;
     private TestInfo testInfo;
-    private FirebaseAnalytics mFirebaseAnalytics;
 
     public static void setDecodeData(DecodeData decodeData) {
         mDecodeData = decodeData;
@@ -95,8 +92,6 @@ public class ResultActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strip_result);
-
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         setTitle(R.string.result);
 
@@ -125,15 +120,6 @@ public class ResultActivity extends BaseActivity {
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
             setResult(RESULT_OK, intent);
-
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, testInfo.getUuid());
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, testInfo.getName());
-            bundle.putString("Brand", testInfo.getBrand());
-            bundle.putString("Type", testInfo.getSubtype().toString());
-            bundle.putString("Range", testInfo.getRanges());
-            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "test");
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
             finish();
         });
