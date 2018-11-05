@@ -136,6 +136,9 @@ dependencies {
     // Usb
     implementation 'com.github.felHR85:UsbSerial:4.5.1'
 
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.4'
+
     // Sentry
     implementation 'io.sentry:sentry-android:1.7.9'
 
@@ -156,7 +159,7 @@ dependencies {
     }
 
     // Robolectric
-    testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation 'org.robolectric:robolectric:4.0'
     testImplementation "org.robolectric:shadows-support-v4:3.4-rc2"
 
     // UIAutomator
@@ -165,3 +168,4 @@ dependencies {
     // Unmock
     unmock 'org.robolectric:android-all:4.3_r2-robolectric-0'
 }
+apply plugin: 'com.google.gms.google-services'
