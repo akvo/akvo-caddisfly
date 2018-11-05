@@ -59,4 +59,4 @@ notes.md
 sentry.properties
 
 # Firebase
-google-services.json
+app/google-services.json
