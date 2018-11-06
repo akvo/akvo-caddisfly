@@ -57,6 +57,3 @@ notes.md
 
 # Sentry config
 sentry.properties
-
-# Firebase
-app/google-services.json
