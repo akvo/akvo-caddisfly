@@ -6877,12 +6877,75 @@
       ]
     },
     {
-      "name": "Water - Fluoride",
+      "name": "Water - Chlorine (free)",
       "subtype": "manual",
       "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
       "brand": "Lovibond Checkit",
-      "imageScale": "centerCrop",
-      "ranges": "0,2",
+      "ranges": "0,3.5",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "image:ci_checkit_comparator_uses"
+          ]
+        },
+        {
+          "section": [
+            "1. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "2. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "3. add_one_tablet_to_other_cell",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "7. read_result_and_record",
+            "image:ci_read_result_and_record"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Chlorine",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Fluoride",
+      "subtype": "manual",
+      "uuid": "ac6410bf-b5a3-4040-8048-ddf381223a3b",
+      "brand": "Lovibond Checkit",
+      "ranges": "0.2,2",
       "instructions": [
         {
           "section": [
@@ -6937,6 +7000,198 @@
         {
           "id": 1,
           "name": "Fluoride",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Iron",
+      "subtype": "manual",
+      "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",
+      "brand": "Lovibond Checkit",
+      "ranges": "0,1",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "image:ci_checkit_comparator_uses"
+          ]
+        },
+        {
+          "section": [
+            "1. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "2. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "3. add_one_tablet_to_other_cell",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "7. read_result_and_record",
+            "image:ci_read_result_and_record"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Iron",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Nitrate",
+      "subtype": "manual",
+      "uuid": "e4934b9f-bdc7-41a3-aca6-883bf6e9ff63",
+      "brand": "Lovibond Checkit",
+      "ranges": "0,1",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "image:ci_checkit_comparator_uses"
+          ]
+        },
+        {
+          "section": [
+            "1. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "2. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "3. add_one_tablet_to_other_cell",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "7. read_result_and_record",
+            "image:ci_read_result_and_record"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Nitrate",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Phosphate",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond Checkit",
+      "ranges": "0,2.5",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "image:ci_checkit_comparator_uses"
+          ]
+        },
+        {
+          "section": [
+            "1. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "2. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "3. add_one_tablet_to_other_cell",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "7. read_result_and_record",
+            "image:ci_read_result_and_record"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Phosphate",
           "unit": "mg/l"
         }
       ]
