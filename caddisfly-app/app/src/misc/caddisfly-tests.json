@@ -1955,7 +1955,6 @@
       "sample": "Soil",
       "device": "Sensor",
       "brand": "Caddisfly",
-      "hasImage": false,
       "results": [
         {
           "id": 1,
@@ -1976,7 +1975,6 @@
       "sample": "Soil",
       "device": "Sensor",
       "brand": "Caddisfly",
-      "hasImage": false,
       "results": [
         {
           "id": 1,
@@ -1992,7 +1990,6 @@
       "sample": "Water",
       "device": "Sensor",
       "brand": "Caddisfly",
-      "hasImage": false,
       "results": [
         {
           "id": 1,
@@ -2048,7 +2045,6 @@
       "device": "Turbidity Tube",
       "brand": "DelAgua",
       "model": "Tube",
-      "hasImage": false,
       "results": [
         {
           "id": 1,
@@ -2065,7 +2061,6 @@
       "device": "Tester",
       "brand": "Lovibond",
       "model": "Tester",
-      "hasImage": false,
       "results": [
         {
           "id": 1,
@@ -2088,7 +2083,6 @@
       "device": "Tester",
       "brand": "Lovibond",
       "model": "Tester",
-      "hasImage": false,
       "results": [
         {
           "id": 1,
