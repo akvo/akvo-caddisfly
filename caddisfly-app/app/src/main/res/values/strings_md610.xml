@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -18,7 +17,7 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="md610_photometer">MD 610 Photometer</string>
     <string name="check_bluetooth_turned_on">Check that MD610 and its bluetooth are both turned on</string>

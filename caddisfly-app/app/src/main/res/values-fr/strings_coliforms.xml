@@ -27,7 +27,6 @@
     <string name="dissolve_medium_in_sample">Dissoudre le bourgeon dans l\'échantillon pendant 10 à 12 minutes maximum en remuant périodiquement la bouteille ou en pressant le bourrelet d\'essai dans le sac Thio pour favoriser la libération du milieu de son support en plastique</string>
     <string name="medium_dissolves">Le bourgeon se dissout à partir de son support en plastique.</string>
     <string name="when_medium_dissolved">Lorsque le bourgeon est complètement dissous, le support plastique devient blanc ou presque blanc.</string>
-    <string name="label_compartment_bag">Étiqueter le sac de compartiment avec un marqueur permanent avant de le remplir.</string>
     <string name="tear_perforated_seam">Retirer la couture perforée qui se trouve au dessus du sac.</string>
     <string name="rub_sides_of_compartment">Frottez les côtés au sommet de chaque compartiment pour ouvrir le sac, utilisez les languettes blanches en haut du sac pour garder le sac ouvert en versant l\'echantillon dans les compartiments du sac.</string>
     <string name="slowly_pour_sample_into_bag">Verser lentement l\'échantillon dans le sac en inclinant doucement et en serrant le sac pour repartir l\'échantillon dans les cinq compartiments.</string>
@@ -41,7 +40,6 @@
     <string name="take_photo_of_incubated">Prenez une photo de l\'échantillon incubé.</string>
     <string name="change_colors_to_match">Changez les couleurs sur l\'écran du téléphone pour les faire correspondre aux couleurs de l\'échantillon dans les compartiments du sac.</string>
     <string name="click_compartments_to_change">Cliquez sur les compartiments pour changer de couleur.</string>
-    <string name="clean_cbt">Après avoir comptabilisé les résultats du test: ouvrez le sac et ajoutez 3 comprimés de chlore au sommet du sac. Agitez le sac jusqu\'à la dissolution des comprimés de chlore. Laissez  reposer pendant 45 minutes. Après les 45 minutes, versez le contenu du liquide dans un évier, une toilette ou un trou dans le sol et retirez en toute sécurité le sac vide. Conservez la pince en plastique pour une réutilisation.</string>
 
     <string name="collect_10ml_water_sample">Collectez <b>10 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
 
