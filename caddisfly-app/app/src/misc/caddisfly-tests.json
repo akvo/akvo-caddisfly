@@ -1498,6 +1498,7 @@
     {
       "name": "Chlorine, Hardness, Alkalinity, pH",
       "uuid": "2456d482-dbec-466c-8387-411a4093f6b6",
+      "multiParameter": "true",
       "sample": "Water",
       "device": "Test Strip",
       "product": "2755250",
@@ -2057,6 +2058,7 @@
     {
       "name": "Chlorine, pH",
       "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
+      "multiParameter": "true",
       "sample": "Water",
       "device": "Tester",
       "brand": "Lovibond",
@@ -2079,6 +2081,7 @@
     {
       "name": "Chlorine, pH",
       "uuid": "63e0e106-6ff6-4f57-a169-a32a4a821d42",
+      "multiParameter": "true",
       "sample": "Water",
       "device": "Tester",
       "brand": "Lovibond",
