@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -18,7 +17,7 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="cbt">E.coli - Aquagenx CBT</string>
 
@@ -37,7 +36,7 @@
     <string name="dissolve_medium_in_sample">Dissolve medium in sample for 10 – 12 minutes maximum by periodically swirling the bottle or squeezing the test bud in the Thio Bag to promote release of the medium from its plastic carrier</string>
     <string name="medium_dissolves">The medium dissolves from its plastic carrier.</string>
     <string name="when_medium_dissolved">When medium is completely dissolved, the plastic carrier turns white or nearly white.</string>
-    <string name="label_compartment_bag">Label the compartment bag with a permanent marker before filling</string>
+    <string name="label_compartment_bag">Label bag and/or attach barcode asset tag to compartment bag.</string>
     <string name="tear_perforated_seam">Tear off perforated seam at top of the bag.</string>
     <string name="rub_sides_of_compartment">Rub sides at the top of each compartment to open the bag, use the white tabs at top of the bag to keep the bag open while pouring.</string>
     <string name="slowly_pour_sample_into_bag">Slowly pour sample into bag while gently tilting and squeezing bag to distribute sample amongst five compartments.</string>
@@ -51,7 +50,7 @@
     <string name="take_photo_of_incubated">Take photo of the incubated sample.</string>
     <string name="change_colors_to_match">Change the colours in the interface to match the colours of the sample in the bag compartments.</string>
     <string name="click_compartments_to_change">Click the compartments to change colour.</string>
-    <string name="clean_cbt">After having scored the testing results: open the bag and add 3 chlorine tablets to top of bag. Agitate bag until chlorine tablets dissolve. Let bag stand for 45 minutes. After 45 minutes, pour liquid contents into a sink, toilet or hole in the ground and safely dispose of the empty bag. Retain plastic clip for reuse.</string>
+    <string name="clean_cbt">After having scored the testing results: add 1–2 ml of liquid bleach (NaOCl) or sufficient free chlorine tablets (calcium hypochlorite or sodium dichloroisocyanurate) to provide about 100 milligrams of free chlorine. After 45 minutes, pour contents into a sink, toilet or hole in ground and safely dispose the empty compartment bag. Retain plastic seal clip for reuse.</string>
 
     <string name="low_risk_safe">Low Risk / Safe</string>
     <string name="probably_safe">Intermediate Risk / Probably Safe</string>
