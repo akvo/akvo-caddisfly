@@ -78,7 +78,6 @@ public class ResultActivity extends BaseActivity {
     private final SparseArray<String> resultStringValues = new SparseArray<>();
     private final SparseArray<String> brackets = new SparseArray<>();
     private Button buttonSave;
-    private Button buttonCancel;
     private Bitmap totalImage;
     private String totalImageUrl;
     private LinearLayout layout;
