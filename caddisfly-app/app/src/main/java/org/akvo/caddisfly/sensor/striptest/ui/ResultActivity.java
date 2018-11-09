@@ -92,7 +92,6 @@ public class ResultActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strip_result);
-
         setTitle(R.string.result);
 
         buttonSave = findViewById(R.id.button_save);
@@ -120,7 +119,6 @@ public class ResultActivity extends BaseActivity {
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
             setResult(RESULT_OK, intent);
-
             finish();
         });
     }

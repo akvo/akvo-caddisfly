@@ -21,14 +21,13 @@
 
 buildscript {
     repositories {
-        google()
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath 'de.mobilej.unmock:UnMockPlugin:0.6.4'
         classpath 'io.sentry:sentry-android-gradle-plugin:1.7.9'
-        classpath 'com.google.gms:google-services:4.0.1'
     }
 }
 
