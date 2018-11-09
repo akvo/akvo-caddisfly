@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 233
-        versionName "1.0.2"
+        versionCode 234
+        versionName "1.0.2.1"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -156,7 +156,7 @@ dependencies {
     }
 
     // Robolectric
-    testImplementation 'org.robolectric:robolectric:3.8'
+    testImplementation 'org.robolectric:robolectric:4.0'
     testImplementation "org.robolectric:shadows-support-v4:3.4-rc2"
 
     // UIAutomator
