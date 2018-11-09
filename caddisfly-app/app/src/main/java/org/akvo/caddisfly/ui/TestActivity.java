@@ -115,9 +115,16 @@ public class TestActivity extends BaseActivity {
             }
         }
 
+        setTitle(R.string.appName);
+
+        // Stop if the app version has expired
+        if (ApkHelper.isAppVersionExpired(this)) {
+            return;
+        }
+
         Intent intent = getIntent();
         String type = intent.getType();
-        if ((type != null && "text/plain".equals(type))
+        if (("text/plain".equals(type))
                 && AppConfig.EXTERNAL_APP_ACTION.equals(intent.getAction())) {
 
             getTestSelectedByExternalApp(fragmentManager, intent);
@@ -161,15 +168,9 @@ public class TestActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        // Stop if the app version has expired
-        if (ApkHelper.isAppVersionExpired(this)) {
-            return;
-        }
-
         if (testInfo != null) {
             if (testInfo.getSubtype() == TestType.BLUETOOTH) {
                 setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
-
             } else {
                 setTitle(testInfo.getName());
             }
