@@ -120,6 +120,13 @@ public class TestActivity extends BaseActivity {
             }
         }
 
+        setTitle(R.string.appName);
+
+        // Stop if the app version has expired
+        if (ApkHelper.isAppVersionExpired(this)) {
+            return;
+        }
+
         Intent intent = getIntent();
         String type = intent.getType();
         if (("text/plain".equals(type))
@@ -166,15 +173,9 @@ public class TestActivity extends BaseActivity {
     protected void onStart() {
         super.onStart();
 
-        // Stop if the app version has expired
-        if (ApkHelper.isAppVersionExpired(this)) {
-            return;
-        }
-
         if (testInfo != null) {
             if (testInfo.getSubtype() == TestType.BLUETOOTH) {
                 setTitle(String.format("%s. %s", testInfo.getMd610Id(), testInfo.getName()));
-
             } else {
                 setTitle(testInfo.getName());
             }

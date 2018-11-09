@@ -94,7 +94,7 @@ public class CalibrationCardUtils {
                     index++;
                 }
             } catch (Exception e) {
-                Timber.e("Error sample line into new row");
+                Timber.d("Error sample line into new row");
                 return VERSION_NUMBER_NOT_FOUND_CODE;
             }
 
