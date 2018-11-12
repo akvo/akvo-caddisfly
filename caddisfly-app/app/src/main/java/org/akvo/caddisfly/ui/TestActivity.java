@@ -43,6 +43,8 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConfig;
@@ -92,12 +94,15 @@ public class TestActivity extends BaseActivity {
     private TestInfo testInfo;
     private boolean cameraIsOk = false;
     private LinearLayout mainLayout;
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_test);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -296,6 +301,23 @@ public class TestActivity extends BaseActivity {
         if (requestCode == REQUEST_TEST && resultCode == Activity.RESULT_OK) {
             //return the test result to the external app
             Intent intent = new Intent(data);
+
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, testInfo.getUuid());
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, testInfo.getName());
+            bundle.putString("Brand", testInfo.getBrand());
+            bundle.putString("Type", testInfo.getSubtype().toString().toLowerCase());
+            bundle.putString("Range", testInfo.getRanges());
+
+            String instanceName = getIntent().getStringExtra(SensorConstants.FLOW_INSTANCE_NAME);
+
+            if (instanceName != null && !instanceName.isEmpty()) {
+                bundle.putString("Instance", instanceName);
+                bundle.putString("InstanceTest", instanceName + "," + testInfo.getName() + "," + testInfo.getUuid());
+            }
+
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "test");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
             this.setResult(Activity.RESULT_OK, intent);
             finish();

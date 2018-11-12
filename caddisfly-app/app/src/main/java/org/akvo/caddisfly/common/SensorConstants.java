@@ -33,6 +33,7 @@ public final class SensorConstants {
     public static final String RESPONSE = "response";
     public static final String LANGUAGE = "language";
     public static final String QUESTION_TITLE = "questionTitle";
+    public static final String FLOW_INSTANCE_NAME = "instanceName";
 
     private SensorConstants() {
     }
