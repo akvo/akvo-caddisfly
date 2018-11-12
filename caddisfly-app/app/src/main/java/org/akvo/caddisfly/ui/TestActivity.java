@@ -308,7 +308,14 @@ public class TestActivity extends BaseActivity {
             bundle.putString("Brand", testInfo.getBrand());
             bundle.putString("Type", testInfo.getSubtype().toString().toLowerCase());
             bundle.putString("Range", testInfo.getRanges());
-            bundle.putString("Instance", getIntent().getStringExtra(SensorConstants.FLOW_INSTANCE_NAME));
+
+            String instanceName = getIntent().getStringExtra(SensorConstants.FLOW_INSTANCE_NAME);
+
+            if (instanceName != null && !instanceName.isEmpty()) {
+                bundle.putString("Instance", instanceName);
+                bundle.putString("InstanceTest", instanceName + "," + testInfo.getName() + "," + testInfo.getUuid());
+            }
+
             bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "test");
             mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 

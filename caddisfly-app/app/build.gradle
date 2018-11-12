@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 234
-        versionName "1.0.2.1"
+        versionCode 235
+        versionName "1.0.3"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -136,6 +136,9 @@ dependencies {
     // Usb
     implementation 'com.github.felHR85:UsbSerial:4.5.1'
 
+    // Firebase
+    implementation 'com.google.firebase:firebase-core:16.0.5'
+
     // Sentry
     implementation 'io.sentry:sentry-android:1.7.10'
 
@@ -165,3 +168,4 @@ dependencies {
     // Unmock
     unmock 'org.robolectric:android-all:4.3_r2-robolectric-0'
 }
+apply plugin: 'com.google.gms.google-services'
