@@ -6939,6 +6939,68 @@
       ]
     },
     {
+      "name": "Water - Fluoride",
+      "subtype": "manual",
+      "uuid": "ac6410bf-b5a3-4040-8048-ddf381223a3b",
+      "brand": "Lovibond Checkit",
+      "reagents": [
+        {
+          "name": "SPADNS",
+          "code": "467481"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.2,2",
+      "hasImage": true,
+      "imageScale": "centerCrop",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_one_cell_other_deionized",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. pipet_reagent_close_cells",
+            "image:ci_swirl_gently"
+          ]
+        },
+        {
+          "section": [
+            "4. place_sample_left_space",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_deionized_right_space",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Fluoride",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Iron",
       "subtype": "manual",
       "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",

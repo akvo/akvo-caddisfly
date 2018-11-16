@@ -1279,6 +1279,24 @@
       ]
     },
     {
+      "name": "Water - Lovibond CHECKIT Comparator - Fluoride (0.2 - 2 mg/l F)",
+      "uuid": "ac6410bf-b5a3-4040-8048-ddf381223a3b",
+      "sample": "Water",
+      "device": "Tester",
+      "brand": "Lovibond",
+      "model": "CHECKIT Comparator",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Fluoride",
+          "chemical": "F",
+          "unit": "mg/l",
+          "range": "0.2-2"
+        }
+      ]
+    },
+    {
       "name": "Water - Lovibond CHECKIT Comparator - Iron (0 - 10 mg/l Fe)",
       "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",
       "sample": "Water",

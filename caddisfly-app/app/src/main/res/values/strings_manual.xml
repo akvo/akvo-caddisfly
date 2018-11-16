@@ -72,4 +72,10 @@
     <string name="wait_for_color_reaction_3">Wait <b>%reactionTime3</b> for complete colour reaction.</string>
     <string name="place_cell_right_space">Place this cell in the right-hand space of the comparator.</string>
 
+    <!--Fluoride Checkit-->
+    <string name="place_sample_left_space">Place the cell with the water sample to the left-hand space of the comparator.</string>
+    <string name="fill_one_cell_other_deionized">Fill one cell to the 10 ml mark. Fill the other cell with deionized water to the 10ml mark.</string>
+    <string name="pipet_reagent_close_cells">Pipet 2 ml %reagent1 Reagent Solution to each cell. Close the cells with lids and swirl gently.</string>
+    <string name="place_deionized_right_space">Place the cell with the deionized water to the right-hand space of the comparator.</string>
+
 </resources>
