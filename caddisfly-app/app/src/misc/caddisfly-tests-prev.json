@@ -425,6 +425,19 @@
       ]
     },
     {
+      "name": "Water - Colorimetry - Lovibond MD610 - 191 Calcium Hardness, Tablet (0 - 500 mg/l CaCO3)",
+      "uuid": "072cab32-3e4c-41f3-8378-e14626afa5b0",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Calcium Hardness",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Colorimetry - Lovibond MD610 - 200 Total Hardness, Tablet (2 - 50 mg/l CaCO3)",
       "uuid": "d4d57975-5e87-4ba9-b9d1-09ec2eb8f500",
       "brand": "Lovibond",

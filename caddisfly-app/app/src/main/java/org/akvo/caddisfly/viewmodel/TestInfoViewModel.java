@@ -28,8 +28,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,16 +108,20 @@ public class TestInfoViewModel extends AndroidViewModel {
 
                 String[] sentences = (text + ". ").split("\\.\\s+");
 
+                LinearLayout labelView = new LinearLayout(context);
                 for (int j = 0; j < sentences.length; j++) {
                     if (j > 0) {
-                        rowView.append(new SpannableString(" "));
+                        rowView.append(new SpannableString(". "));
                     }
                     rowView.append(StringUtil.toInstruction((AppCompatActivity) context,
                             testInfo, sentences[j].trim()));
-
-                    if (StringUtil.getStringResourceByName(context, sentences[j]).toString().contains("[/a]")) {
+                    String sentence = StringUtil.getStringResourceByName(context, sentences[j]).toString();
+                    if (sentence.contains("[/a]")) {
                         rowView.enableLinks(true);
                     }
+
+                    // Set reagent in the string
+                    replaceReagentTags(labelView, context, sentence);
                 }
 
                 // set an id for the view to be able to find it for unit testing
@@ -127,19 +129,15 @@ public class TestInfoViewModel extends AndroidViewModel {
 
                 linearLayout.addView(rowView);
 
-                SpannableStringBuilder builder = new SpannableStringBuilder();
-                Spanned spanned2 = StringUtil.getStringResourceByName(context, text);
-                builder.append(spanned2);
-
-                // Set reagent in the string
-                replaceReagentTags(linearLayout, context, builder);
+                linearLayout.addView(labelView);
             }
         }
     }
 
-    private static void replaceReagentTags(LinearLayout linearLayout, Context context, SpannableStringBuilder builder) {
+    private static void replaceReagentTags(LinearLayout linearLayout, Context context, String sentence) {
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
         for (int j = 1; j < 5; j++) {
-            Matcher m2 = Pattern.compile("%reagent" + j).matcher(builder);
+            Matcher m2 = Pattern.compile("%reagent" + j).matcher(sentence);
             while (m2.find()) {
                 String code = testInfo.getReagent(j - 1).code;
                 if (!code.isEmpty()) {
@@ -163,7 +161,7 @@ public class TestInfoViewModel extends AndroidViewModel {
     private static void insertImage(LinearLayout linearLayout, Context context, Point size,
                                     DisplayMetrics displayMetrics, int i, String text) {
 
-        String imageName = text.substring(text.indexOf(":") + 1, text.length());
+        String imageName = text.substring(text.indexOf(":") + 1);
 
         int resourceId = context.getResources().getIdentifier("drawable/in_" + imageName,
                 "id", BuildConfig.APPLICATION_ID);

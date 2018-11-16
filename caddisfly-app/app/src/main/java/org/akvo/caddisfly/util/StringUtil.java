@@ -40,6 +40,7 @@ import android.view.View;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.widget.CenteredImageSpan;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -105,7 +106,10 @@ public final class StringUtil {
         for (int i = 1; i < 5; i++) {
             Matcher m2 = Pattern.compile("%reactionTime" + i).matcher(builder);
             while (m2.find()) {
-                builder.replace(m2.start(), m2.end(), testInfo.getReagent(i - 1).reactionTime.toString());
+                builder.replace(m2.start(), m2.end(),
+                        context.getResources().getQuantityString(R.plurals.minutes,
+                                testInfo.getReagent(i - 1).reactionTime,
+                                testInfo.getReagent(i - 1).reactionTime));
             }
         }
 
@@ -131,7 +135,7 @@ public final class StringUtil {
                 String finalTopic = topic;
                 ClickableSpan clickableSpan = new ClickableSpan() {
                     @Override
-                    public void onClick(View textView) {
+                    public void onClick(@NotNull View textView) {
                         if (finalTopic.equalsIgnoreCase("sulfide")) {
                             DialogFragment newFragment = new SulfideDialogFragment();
                             newFragment.show(context.getSupportFragmentManager(), "sulfideDialog");
@@ -139,7 +143,7 @@ public final class StringUtil {
                     }
 
                     @Override
-                    public void updateDrawState(TextPaint ds) {
+                    public void updateDrawState(@NotNull TextPaint ds) {
                         super.updateDrawState(ds);
                         ds.setUnderlineText(false);
                     }

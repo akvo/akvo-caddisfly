@@ -1261,15 +1261,56 @@
       ]
     },
     {
-      "name": "Water - Comparator - Lovibond CHECKIT - Fluoride - 0-2 mg/l",
+      "name": "Water - Lovibond CHECKIT Comparator - Chlorine (0 - 4 mg/l Cl)",
       "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
-      "brand": "Lovibond Checkit",
-      "hasImage": false,
+      "sample": "Water",
+      "device": "Tester",
+      "brand": "Lovibond",
+      "model": "CHECKIT Comparator",
+      "hasImage": true,
       "results": [
         {
           "id": 1,
-          "name": "Fluoride",
-          "unit": "mg/l"
+          "name": "Chlorine",
+          "chemical": "Cl",
+          "unit": "mg/l",
+          "range": "0-4"
+        }
+      ]
+    },
+    {
+      "name": "Water - Lovibond CHECKIT Comparator - Iron (0 - 10 mg/l Fe)",
+      "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",
+      "sample": "Water",
+      "device": "Tester",
+      "brand": "Lovibond",
+      "model": "CHECKIT Comparator",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Iron",
+          "chemical": "Fe",
+          "unit": "mg/l",
+          "range": "0-10"
+        }
+      ]
+    },
+    {
+      "name": "Water - Lovibond CHECKIT Comparator - Phosphate (0 - 2.5 mg/l PO4)",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "sample": "Water",
+      "device": "Tester",
+      "brand": "Lovibond",
+      "model": "CHECKIT Comparator",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Phosphate",
+          "chemical": "PO4",
+          "unit": "mg/l",
+          "range": "0-2.5"
         }
       ]
     }

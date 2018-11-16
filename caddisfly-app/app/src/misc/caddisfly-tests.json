@@ -7,12 +7,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "ALKA-M-PHOTOMETER",
-          "code": "513210BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -29,12 +23,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "ALKA-M-HR PHOTOMETER",
-          "code": "513240BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -51,16 +39,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "ALUMINIUM No. 1",
-          "code": "515460BT"
-        },
-        {
-          "name": "ALUMINIUM No. 2",
-          "code": "515470BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -77,16 +55,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "AMMONIA No. 1",
-          "code": "512580BT"
-        },
-        {
-          "name": "AMMONIA No. 2",
-          "code": "512590BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -103,14 +71,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Vario Ammonia Salicylate F10 (Vario Ammonia Salicylate F5)"
-        },
-        {
-          "name": "Vario Ammonia Cyanurate F10 (Vario Ammonia Salicylate F5)"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -127,14 +87,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Vario Ammonia Salicylate F5"
-        },
-        {
-          "name": "Vario Ammonia Cyanurate F5"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -151,14 +103,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Vario Ammonia Salicylate F5"
-        },
-        {
-          "name": "Vario Ammonia Cyanurate F5"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -175,16 +119,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "CHLORIDE T1",
-          "code": "515910BT"
-        },
-        {
-          "name": "CHLORIDE T2",
-          "code": "515920BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -201,14 +135,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "20 drops KS251 (Chloride Reagent A)"
-        },
-        {
-          "name": "20 drops KS253 (Chloride Reagent B)"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -225,16 +151,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "DPD No. 1",
-          "code": "511050BT"
-        },
-        {
-          "name": "DPD No. 3",
-          "code": "511080BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -261,12 +177,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "DPD No. 1",
-          "code": "511050BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -283,14 +193,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution"
-        },
-        {
-          "name": "3 drops of DPD 3 solution"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -317,11 +219,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -338,16 +235,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "DPD No. 1 HR",
-          "code": "511500BT"
-        },
-        {
-          "name": "DPD No. 3 HR",
-          "code": "511590BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -374,12 +261,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "DPD No. 1 HR",
-          "code": "511500BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -396,14 +277,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "VARIO Chlorine FREE-DPD/F10"
-        },
-        {
-          "name": "VARIO Chlorine TOTAL-DPD/F10"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -430,11 +303,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "VARIO Chlorine FREE-DPD/F10"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -451,14 +319,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "VARIO Chlorine FREE-DPD/F10"
-        },
-        {
-          "name": "VARIO Chlorine TOTAL-DPD/F10"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -485,11 +345,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "VARIO Chlorine FREE-DPD/F10"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -506,14 +361,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "PERSULF.RGT FOR CR"
-        },
-        {
-          "name": "CHROMIUM HEXAVALENT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -540,11 +387,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "CHROMIUM HEXAVALENT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -561,14 +403,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "PERSULF.RGT FOR CR"
-        },
-        {
-          "name": "CHROMIUM HEXAVALENT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -633,11 +467,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "3 drops of Cyanide-13"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -654,11 +483,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "2 ml SPADNS"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -675,12 +499,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "CALCHECK",
-          "code": "515650"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -697,16 +515,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "CALCIO H No.1",
-          "code": "517761BT"
-        },
-        {
-          "name": "CALCIO H No. 2",
-          "code": "517761BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -723,12 +531,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "HARDCHECK P",
-          "code": "515660BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -745,12 +547,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "HARDCHECK P",
-          "code": "515660BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -767,12 +563,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "IRON LR",
-          "code": "515370BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -789,11 +579,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Vario Ferro F10"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -810,11 +595,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Vario IRON TPTZ F10"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -831,11 +611,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "10 drops KS61 (Ferrozine/Thioglycolate)"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -852,14 +627,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "10 drops KS63 (Thioglycolate)"
-        },
-        {
-          "name": "10 drops KS160 (Total Hardness Buffer)"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -876,16 +643,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Manganese LR No 1",
-          "code": "SDT349-50"
-        },
-        {
-          "name": "Manganese LR No 2",
-          "code": "SDT350-50"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -902,11 +659,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Vario Nitrate Chromotropic"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -923,14 +675,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "NITRATE TEST"
-        },
-        {
-          "name": "NITRITE LR"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -947,12 +691,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "NITRITE LR",
-          "code": "512310BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -969,11 +707,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Vario Nitri 3"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -990,16 +723,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "PHOSPHATE LR No. 1",
-          "code": "513040BT"
-        },
-        {
-          "name": "PHOSPHATE LR No. 2",
-          "code": "513050BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1016,16 +739,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "PHOSPHATE HR P1",
-          "code": "515810BT"
-        },
-        {
-          "name": "PHOSPHATE HR P2",
-          "code": "515820BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1042,11 +755,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "VARIO Phosphate Rgt. F10"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1063,14 +771,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "25 drops KS228 (Ammonium Molybdate)"
-        },
-        {
-          "name": "25 drops of KS229 (Ammonium Metavanadate)"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1087,12 +787,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "BROMOCRESOLPURPLE PHOTOMETER",
-          "code": "515700BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1108,12 +802,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "PHENOL RED PHOTOMETER",
-          "code": "511770BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1129,11 +817,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "6 drops of PHENOL RED solution"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1149,12 +832,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "THYMOLBLUE PHOTOMETER",
-          "code": "515710"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1170,12 +847,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Potassium T",
-          "code": "515670"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1192,12 +863,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "Sulfate T",
-          "code": "515450BT"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1214,11 +879,6 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
-      "reagents": [
-        {
-          "name": "VARIO Sulpha 4/F10"
-        }
-      ],
       "results": [
         {
           "id": 1,
@@ -1311,7 +971,7 @@
       ]
     },
     {
-      "name": "Chlorine (free)",
+      "name": "Chlorine",
       "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
       "sample": "Water",
       "device": "Tester",
@@ -1322,26 +982,9 @@
         {
           "id": 1,
           "name": "Chlorine",
+          "chemical": "Cl",
           "unit": "mg/l",
-          "range": "0-3.5"
-        }
-      ]
-    },
-    {
-      "name": "Fluoride",
-      "uuid": "ac6410bf-b5a3-4040-8048-ddf381223a3b",
-      "sample": "Water",
-      "device": "Tester",
-      "brand": "Lovibond",
-      "model": "CHECKIT Comparator",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Fluoride",
-          "chemical": "F",
-          "unit": "mg/l",
-          "range": "0.2-2"
+          "range": "0-4"
         }
       ]
     },
@@ -1357,27 +1000,9 @@
         {
           "id": 1,
           "name": "Iron",
-          "chemical": "Fe 2+/3+",
+          "chemical": "Fe",
           "unit": "mg/l",
-          "range": "0-1"
-        }
-      ]
-    },
-    {
-      "name": "Nitrate",
-      "uuid": "e4934b9f-bdc7-41a3-aca6-883bf6e9ff63",
-      "sample": "Water",
-      "device": "Tester",
-      "brand": "Lovibond",
-      "model": "CHECKIT Comparator",
-      "hasImage": true,
-      "results": [
-        {
-          "id": 1,
-          "name": "Nitrate",
-          "chemical": "NO3",
-          "unit": "mg/l",
-          "range": "0-1"
+          "range": "0-10"
         }
       ]
     },
