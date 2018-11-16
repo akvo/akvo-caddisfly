@@ -1007,6 +1007,24 @@
       ]
     },
     {
+      "name": "Nitrate",
+      "uuid": "e4934b9f-bdc7-41a3-aca6-883bf6e9ff63",
+      "sample": "Water",
+      "device": "Tester",
+      "brand": "Lovibond",
+      "model": "CHECKIT Comparator",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Nitrate",
+          "chemical": "NO3",
+          "unit": "mg/l",
+          "range": "0-1"
+        }
+      ]
+    },
+    {
       "name": "Phosphate",
       "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
       "sample": "Water",

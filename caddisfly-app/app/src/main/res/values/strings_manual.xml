@@ -58,4 +58,18 @@
     <string name="place_second_cell">Place the second cell in the right-hand space of the comparator.</string>
     <string name="match_colors_by_rotating">By rotating the disc, match the two colours against daylight, looking AWAY from the sun.</string>
 
+    <!--Nitrate Checkit-->
+    <string name="fill_one_cell">Fill one cell to the 10 ml mark.</string>
+    <string name="close_the_cell">Close the cell with a lid and place it in the left-hand space of the comparator. It acts as a blank.</string>
+    <string name="fill_nitrate_tube">Fill the Nitrate Test Tube to the 20 ml mark.</string>
+    <string name="add_one_level_spoon">Add one level spoon full %reagent1 Powder and a %reagent2 Tablet to the Test Tube. <b>Don\'t crush the tablet!</b></string>
+    <string name="close_with_lid_shake">Close it with a lid and shake for <b>1 minute</b>.</string>
+    <string name="allow_minute_flocculation">Allow <b>1 minute</b> for the flocculation of the NITRATE-Test Powder.</string>
+    <string name="invert_test_tube">Invert the Test Tube two or three times to complete the flocculation.</string>
+    <string name="allow_time_complete_sediment">Allow <b>2 minutes</b> time for complete sediment of NITRATE-Test Powder.</string>
+    <string name="fill_clear_solution">Fill one cell to the 10 ml mark with the clear solution of the Test Tube.</string>
+    <string name="add_tablet_crush_stir">Add one %reagent3 Tablet to this cell, crush it and mix it with a clean stirring rod. Close it with the lid.</string>
+    <string name="wait_for_color_reaction_3">Wait <b>%reactionTime3</b> for complete colour reaction.</string>
+    <string name="place_cell_right_space">Place this cell in the right-hand space of the comparator.</string>
+
 </resources>
