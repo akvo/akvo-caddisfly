@@ -248,7 +248,7 @@ public class DeviceControlActivity extends BaseActivity
 
         showWaitingView();
 
-        Matcher m = Pattern.compile("DT01;.*?;;;;").matcher(mData);
+        Matcher m = Pattern.compile("DT01;((?!DT01;).)*?;;;;").matcher(mData);
 
         if (m.find()) {
 
