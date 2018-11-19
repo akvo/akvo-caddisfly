@@ -267,13 +267,17 @@ public class DeviceControlActivity extends BaseActivity
             dlg.show();
             new Handler().postDelayed(() -> {
 
-                if (mBluetoothResultFragment.displayData(fullData)) {
+                try {
+                    if (mBluetoothResultFragment.displayData(fullData)) {
 
-                    resultReceived = true;
-                    setTitle("Result");
-                } else {
-                    registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-                    showSelectTestView();
+                        resultReceived = true;
+                        setTitle("Result");
+                    } else {
+                        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+                        showSelectTestView();
+                    }
+                } catch (Exception e) {
+                    Timber.e("Bluetooth data error: %s", fullData);
                 }
 
                 dlg.dismiss();
