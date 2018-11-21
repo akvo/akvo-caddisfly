@@ -70,6 +70,8 @@ public class DeviceControlActivity extends BaseActivity
     private boolean resultReceived = false;
     private TestInfo testInfo;
 
+    Handler handler;
+
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
     // to manage Service lifecycle.
@@ -165,7 +167,8 @@ public class DeviceControlActivity extends BaseActivity
         findViewById(R.id.buttonTestSelected).setOnClickListener(v -> {
             showWaitingView();
             if (AppPreferences.isTestMode()) {
-                (new Handler()).postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 3000);
+                handler = new Handler();
+                handler.postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 5000);
             }
         });
 
@@ -195,6 +198,9 @@ public class DeviceControlActivity extends BaseActivity
         super.onPause();
         try {
             unregisterReceiver(mGattUpdateReceiver);
+            if (handler != null) {
+                handler.removeCallbacksAndMessages(null);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -266,7 +272,6 @@ public class DeviceControlActivity extends BaseActivity
             dlg.setCancelable(false);
             dlg.show();
             new Handler().postDelayed(() -> {
-
                 try {
                     if (mBluetoothResultFragment.displayData(fullData)) {
 

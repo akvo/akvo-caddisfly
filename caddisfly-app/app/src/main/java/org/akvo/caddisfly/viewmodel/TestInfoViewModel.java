@@ -111,7 +111,7 @@ public class TestInfoViewModel extends AndroidViewModel {
                 LinearLayout labelView = new LinearLayout(context);
                 for (int j = 0; j < sentences.length; j++) {
                     if (j > 0) {
-                        rowView.append(new SpannableString(". "));
+                        rowView.append(new SpannableString(" "));
                     }
                     rowView.append(StringUtil.toInstruction((AppCompatActivity) context,
                             testInfo, sentences[j].trim()));
