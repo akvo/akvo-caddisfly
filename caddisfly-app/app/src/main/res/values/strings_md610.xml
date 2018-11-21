@@ -91,7 +91,7 @@
     <string name="press_enter_wait_2">Press (*enter*) and wait for a <b>reaction period of %reactionTime2</b></string>
     <string name="remix">Remix the solution</string>
     <string name="insert_16mm_adapter">Insert the adapter for 16 mm Ø vials</string>
-    <string name="reaction_tube_1ml_sample">Open one white capped reaction vial and add <b>1 ml of the water sample</b>. Close the cap tightly.</string>
+    <string name="reaction_tube_1ml_sample">Open the NitraX reagent A vial and add <b>1 ml of the water sample</b>. Close the cap tightly.</string>
     <string name="reaction_tube_2ml_blank">Open one white capped reaction vial and add <b>2 ml deionised water</b> (this is the blank)</string>
     <string name="reaction_tube_2ml_sample">Open another white capped reaction vial and add <b>2 ml of the water sample</b> (this is the sample).</string>
     <string name="reaction_tube_1_tenth_ml_blank">Open one white capped reaction vial and add <b>0.1 ml deionised water</b> (this is the blank)</string>
