@@ -28,8 +28,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 233
-        versionName "1.0.2"
+        versionCode 235
+        versionName "1.0.3"
         resConfigs "en", "en_US", "fr", "in"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -137,10 +137,10 @@ dependencies {
     implementation 'com.github.felHR85:UsbSerial:4.5.1'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:16.0.4'
+    implementation 'com.google.firebase:firebase-core:16.0.5'
 
     // Sentry
-    implementation 'io.sentry:sentry-android:1.7.9'
+    implementation 'io.sentry:sentry-android:1.7.10'
 
     // Testing
     testImplementation 'junit:junit:4.12'
