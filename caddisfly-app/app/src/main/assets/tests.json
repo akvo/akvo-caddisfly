@@ -6875,6 +6875,371 @@
           "range": "0.5-6.0"
         }
       ]
+    },
+    {
+      "name": "Water - Chlorine",
+      "subtype": "manual",
+      "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
+      "brand": "Lovibond Checkit",
+      "reagents": [
+        {
+          "name": "DPD No.1 (R)",
+          "code": "511310BT"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0,4",
+      "hasImage": true,
+      "imageScale": "centerCrop",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Chlorine",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Fluoride",
+      "subtype": "manual",
+      "uuid": "ac6410bf-b5a3-4040-8048-ddf381223a3b",
+      "brand": "Lovibond Checkit",
+      "reagents": [
+        {
+          "name": "SPADNS",
+          "code": "467481"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.2,2",
+      "hasImage": true,
+      "imageScale": "centerCrop",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_one_cell_other_deionized",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. pipet_reagent_close_cells",
+            "image:ci_swirl_gently"
+          ]
+        },
+        {
+          "section": [
+            "4. place_sample_left_space",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_deionized_right_space",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Fluoride",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Iron",
+      "subtype": "manual",
+      "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",
+      "brand": "Lovibond Checkit",
+      "reagents": [
+        {
+          "name": "IRON HR",
+          "code": "515380",
+          "reactionTime": 1
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0,10",
+      "hasImage": true,
+      "imageScale": "centerCrop",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_tablet_crush_swirl. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Iron",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Nitrate",
+      "subtype": "manual",
+      "uuid": "e4934b9f-bdc7-41a3-aca6-883bf6e9ff63",
+      "brand": "Lovibond Checkit",
+      "reagents": [
+        {
+          "name": "NITRATE-Test",
+          "code": "465230",
+          "reactionTime": 1
+        },
+        {
+          "name": "NITRATE-Test",
+          "code": "502810",
+          "reactionTime": 2
+        },
+        {
+          "name": "NITRITE LR",
+          "code": "512310",
+          "reactionTime": 10
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0,1",
+      "hasImage": true,
+      "imageScale": "centerCrop",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_one_cell",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_the_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. fill_nitrate_tube",
+            "image:fill_nitrate_tube"
+          ]
+        },
+        {
+          "section": [
+            "5. add_one_level_spoon",
+            "image:add_one_level_spoon"
+          ]
+        },
+        {
+          "section": [
+            "6. close_with_lid_shake",
+            "image:ci_swirl_gently"
+          ]
+        },
+        {
+          "section": [
+            "7. allow_minute_flocculation",
+            "image:allow_minute_flocculation"
+          ]
+        },
+        {
+          "section": [
+            "8. invert_test_tube",
+            "image:invert_test_tube"
+          ]
+        },
+        {
+          "section": [
+            "9. allow_time_complete_sediment",
+            "image:allow_time_complete_sediment"
+          ]
+        },
+        {
+          "section": [
+            "10. fill_clear_solution",
+            "image:fill_clear_solution"
+          ]
+        },
+        {
+          "section": [
+            "11. add_tablet_crush_stir. wait_for_color_reaction_3",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "12. place_cell_right_space",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "13. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Nitrate",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Phosphate",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond Checkit",
+      "reagents": [
+        {
+          "name": "Phospate 3",
+          "code": "535200",
+          "reactionTime": 2
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0,2.5",
+      "hasImage": true,
+      "imageScale": "centerCrop",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_powder_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_powder_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Phosphate",
+          "unit": "mg/l"
+        }
+      ]
     }
   ]
 }

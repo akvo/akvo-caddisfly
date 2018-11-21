@@ -204,11 +204,12 @@ public class CbtInstructions {
         onView(withContentDescription("1")).check(matches(hasDrawable()));
 
         ViewInteraction imageView = onView(
-                allOf(childAtPosition(
+                allOf(withContentDescription("1"),
                         childAtPosition(
-                                IsInstanceOf.instanceOf(android.widget.ScrollView.class),
-                                0),
-                        3),
+                                childAtPosition(
+                                        IsInstanceOf.instanceOf(android.widget.ScrollView.class),
+                                        0),
+                                6),
                         isDisplayed()));
         imageView.check(matches(isDisplayed()));
 

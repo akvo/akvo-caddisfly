@@ -19,7 +19,6 @@
 
 <resources>
 
-    <string name="analyze">Analyze</string>
     <string name="prepare_camera_instruction">Don\'t take sample yet. Hold camera above color card and adjust position until check succeeds.</string>
     <string name="detecting_color_card">Looking for color card</string>
 

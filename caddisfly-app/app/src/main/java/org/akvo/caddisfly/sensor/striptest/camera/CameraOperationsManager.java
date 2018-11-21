@@ -82,7 +82,9 @@ public class CameraOperationsManager {
                         }
                     });
                 }
-                mCameraHandler.postDelayed(runAutoFocus, AUTO_FOCUS_DELAY);
+                if (mCameraHandler != null) {
+                    mCameraHandler.postDelayed(runAutoFocus, AUTO_FOCUS_DELAY);
+                }
             }
         }
     };
