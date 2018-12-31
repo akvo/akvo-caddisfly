@@ -27,6 +27,11 @@ import org.akvo.caddisfly.BuildConfig;
 public final class AppConfig {
 
     /**
+     * Stop animations only for running Espresso UI tests
+     */
+    public static final boolean STOP_ANIMATIONS = false;
+
+    /**
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
@@ -34,6 +39,11 @@ public final class AppConfig {
     public static final int APP_EXPIRY_DAY = 15;
     public static final int APP_EXPIRY_MONTH = 1;
     public static final int APP_EXPIRY_YEAR = 2019;
+
+    /**
+     * Url to policies and terms
+     */
+    public static final String TERMS_OF_USE_URL = "https://akvo.org/help/akvo-policies-and-terms-2/";
 
     /**
      * The intent action string used by the caddisfly question type.
@@ -54,6 +64,11 @@ public final class AppConfig {
      *  The url for the experimental tests json config.
      */
     public static final String EXPERIMENT_TESTS_URL = "";
+
+    /**
+     * To launch Flow app.
+     */
+    public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 
     private AppConfig() {
     }

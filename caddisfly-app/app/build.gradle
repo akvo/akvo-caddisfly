@@ -40,8 +40,8 @@ android {
         mainExt {
             buildConfigField 'boolean', 'showExperimentalTests', 'false'
         }
-        experiment {
-            applicationIdSuffix ".experiment"
+        tryout {
+            applicationIdSuffix ".tryout"
             versionName "Experiment Beta 10.21"
             buildConfigField 'boolean', 'showExperimentalTests', 'true'
         }
