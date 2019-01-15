@@ -268,13 +268,13 @@ public class ResultActivity extends BaseActivity {
 
             String patchDescription = patchResult.getPatch().getName();
             String unit = patchResult.getPatch().getUnit();
-            String valueString = createValueUnitString(patchResult.getValue(), unit);
+            String valueString = createValueUnitString(patchResult.getValue(), unit, getString(R.string.no_result));
 
             // create image to display on screen
             Bitmap resultImage = createResultImageGroup(patchResultList);
             inflateView(patchDescription, valueString, resultImage);
 
-            Bitmap valueImage = createValueBitmap(patchResult);
+            Bitmap valueImage = createValueBitmap(patchResult, getString(R.string.no_result));
             totalImage = concatTwoBitmaps(valueImage, resultImage);
         } else {
             // create view in case the strip is of type INDIVIDUAL
@@ -286,13 +286,13 @@ public class ResultActivity extends BaseActivity {
                 // create strings for description, unit, and value
                 String patchDescription = patchResult.getPatch().getName();
                 String unit = patchResult.getPatch().getUnit();
-                String valueString = createValueUnitString(patchResult.getValue(), unit);
+                String valueString = createValueUnitString(patchResult.getValue(), unit, getString(R.string.no_result));
 
                 // create image to display on screen
                 Bitmap resultImage = createResultImageSingle(patchResult, testInfo);
                 inflateView(patchDescription, valueString, resultImage);
 
-                Bitmap valueImage = createValueBitmap(patchResult);
+                Bitmap valueImage = createValueBitmap(patchResult, getString(R.string.no_result));
                 resultImage = concatTwoBitmaps(valueImage, resultImage);
                 totalImage = concatTwoBitmaps(totalImage, resultImage);
             }
@@ -395,14 +395,14 @@ public class ResultActivity extends BaseActivity {
                                 displayResult.getFormula(), results));
                     } catch (Exception e) {
                         inflateView(patchDescription, createValueUnitString(
-                                -1, unit), null);
+                                -1, unit, getString(R.string.no_result)), null);
                         return;
                     }
 
                     resultStringValues.put(displayResult.getId(), String.valueOf(calculatedResult));
 
                     inflateView(patchDescription, createValueUnitString(
-                            (float) calculatedResult, unit), null);
+                            (float) calculatedResult, unit, getString(R.string.no_result)), null);
                 }
             }
         }

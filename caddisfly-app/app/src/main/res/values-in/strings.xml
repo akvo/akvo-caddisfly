@@ -57,7 +57,6 @@
     <string name="dipSensorInSample">Celup sensor dalam sampel</string>
 
     <string name="selectTest">Pilih uji coba</string>
-    <string name="customTests">Penyesuaian uji coba</string>
     <string name="deviceConnected">Perangkat terhubung</string>
     <string name="next">Selanjutnya</string>
     <string name="sensorDetails">Detail Sensor</string>
@@ -67,7 +66,6 @@
     <!--StripTest-->
     <string name="prepare_test">Mempersiapkan uji coba</string>
     <string name="success_quality_checks">Sukses ! Pemeriksaan kualitas terlewati</string>
-    <string name="prepareForCalibration">Persiapkan kalibrasi</string>
     <string name="stripTest">Uji Coba Kepingan</string>
     <string name="continue_anyway">Lanjutkan saja</string>
     <string name="seconds">Detik</string>
@@ -92,10 +90,6 @@
     <!--Messages-->
     <string name="phoneDoesNotSupport">Perangkat ini tidak mendukung fitur ini</string>
     <string name="errorLoadingConfiguration">Tidak dapat memuat informasi konfigurasi</string>
-
-    <!--EC Sensor-->
-    <string name="sensorNotFound">Sensor tidak ditemukan</string>
-    <string name="dipEcSensorInSolution">Celupkan Sensor EC dalam cairan lalu tekan mulai</string>
 
     <!--StripTest-->
     <string name="prepare_camera_instruction">Jangan mengambil sampel dahulu. Tahan kamera diatas kartu warna dan sesuaikan posisi sampai proses pemeriksaan sukses.</string>

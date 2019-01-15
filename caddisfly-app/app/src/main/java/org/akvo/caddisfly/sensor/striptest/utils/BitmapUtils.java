@@ -138,11 +138,11 @@ public class BitmapUtils {
 
     // creates bitmap with description, value and unit.
     // it is only included when we send the image to the server.
-    public static Bitmap createValueBitmap(PatchResult patchResult) {
+    public static Bitmap createValueBitmap(PatchResult patchResult, String defaultString) {
         Bitmap resultImage = Bitmap.createBitmap(IMG_WIDTH, VALUE_HEIGHT, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(resultImage);
         String unit = patchResult.getPatch().getUnit();
-        String valueString = createValueUnitString(patchResult.getValue(), unit);
+        String valueString = createValueUnitString(patchResult.getValue(), unit, defaultString);
         valueString = patchResult.getPatch().getName() + ": " + valueString + "  " + patchResult.getBracket();
 
         // create paint

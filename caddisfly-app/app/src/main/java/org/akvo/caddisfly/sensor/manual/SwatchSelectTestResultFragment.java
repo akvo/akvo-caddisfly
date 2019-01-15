@@ -84,7 +84,8 @@ public class SwatchSelectTestResultFragment extends BaseFragment {
         layout.removeAllViews();
 
         for (Result result : testInfo.getResults()) {
-            String valueString = createValueUnitString(result.getResultValue(), result.getUnit());
+            String valueString = createValueUnitString(result.getResultValue(), result.getUnit(),
+                    getString(R.string.no_result));
             inflateView(result.getName(), valueString);
         }
 

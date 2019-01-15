@@ -74,7 +74,7 @@
             android:textSize="14sp"
             android:textStyle="normal"
             android:visibility="@{testInfo.isGroup ? View.VISIBLE : View.GONE}"
-            tools:text="@string/customTests" />
+            tools:text="@string/stripTest" />
 
         <LinearLayout
             android:layout_width="match_parent"

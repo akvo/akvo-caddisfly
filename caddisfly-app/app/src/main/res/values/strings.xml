@@ -52,12 +52,12 @@
     <string name="select_unit">Select unit</string>
     <string name="submitResult">Submit Result</string>
     <string name="warning">Warning</string>
+    <string name="notFound">Not Found</string>
 
     <string name="instructions">Instructions</string>
 
     <plurals name="minutes">
         <item quantity="one">%1$d minute</item>
-        <item quantity="many">%1$d minutes</item>
         <item quantity="other">%1$d minutes</item>
     </plurals>
 
@@ -76,8 +76,6 @@
 
     <string name="selectTest">Select Test</string>
     <string name="awaitingResult">Awaiting result</string>
-
-    <string name="customTests">Custom tests</string>
 
     <string name="deviceConnected">Device connected</string>
     <string name="sensorDetails">Sensor Details</string>
@@ -130,8 +128,6 @@
     <string name="cca_license">CC BY 4.0 International</string>
     <string name="software_notices">Software Notices</string>
     <string name="eclipse_public_license">Eclipse Public License 1.0</string>
-    <string name="experiment">Experiment</string>
-    <string name="diagnostics_options">Diagnostic Options</string>
 
     <!--Intro-->
     <string name="connect_with_app">Connect with Akvo Flow</string>
@@ -140,8 +136,6 @@
     <string name="app_is_integrated">Akvo Caddisfly is integrated with Akvo Flow, a data collection and monitoring tool.</string>
     <string name="to_conduct_a_water_quality_test">To conduct a water quality test go to Flow and select the Caddisfly question.</string>
     <string name="go_to_external_app">Go to Akvo Flow</string>
-    <string name="notFound">Not Found</string>
     <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
-    <string name="simulateCrash">Simulate Crash</string>
 
 </resources>

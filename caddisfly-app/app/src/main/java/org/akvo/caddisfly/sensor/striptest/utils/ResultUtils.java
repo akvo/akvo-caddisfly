@@ -168,8 +168,8 @@ public class ResultUtils {
     }
 
     // creates formatted string including unit from float value
-    public static String createValueUnitString(float value, String unit) {
-        String valueString = "No Result";
+    public static String createValueUnitString(float value, String unit, String defaultString) {
+        String valueString = defaultString;
         if (value > -1) {
             if (value < 1.0) {
                 valueString = String.format(Locale.US, "%.2f %s", value, unit);
