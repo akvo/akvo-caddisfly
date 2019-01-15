@@ -30,9 +30,9 @@
     <string name="electricalConductivity">Water - Electrical Conductivity</string>
 
     <!--Akvo Flow -->
-    <string name="unnamedDataPoint">Unnamed data point</string>
+    <string name="unnamedDataPoint">Punto sin nombre</string>
     <string name="addDataPoint">Add Data Point</string>
-    <string name="goToTest">Go to test</string>
+    <string name="goToTest">Ir a la prueba</string>
     <string name="useExternalSource">Use External Source</string>
 
 </resources>

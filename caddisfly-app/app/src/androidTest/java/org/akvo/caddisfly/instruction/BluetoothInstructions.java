@@ -65,9 +65,9 @@ import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class BluetoothInstructions {
+    private final StringBuilder jsArrayString = new StringBuilder();
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
-    private final StringBuilder jsArrayString = new StringBuilder();
 
     @BeforeClass
     public static void initialize() {
@@ -118,7 +118,7 @@ public class BluetoothInstructions {
 
             String id = testList.get(i).getUuid();
 
-            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            id = id.substring(id.lastIndexOf("-") + 1);
 
             if (id.equalsIgnoreCase("e14626afa5b0")) {
                 int pages = navigateToTest(3, id);
@@ -158,7 +158,7 @@ public class BluetoothInstructions {
 
         onView(withText(R.string.test_selected)).perform(click());
 
-        onView(withText("Instructions")).perform(click());
+        onView(withText(R.string.instructions)).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {

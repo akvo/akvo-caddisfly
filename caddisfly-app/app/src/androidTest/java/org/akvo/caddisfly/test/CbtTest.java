@@ -27,10 +27,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.filters.LargeTest;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
@@ -55,6 +55,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -132,7 +133,7 @@ public class CbtTest {
         sleep(1000);
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_prepare), withText("Next"),
+                allOf(withId(R.id.button_prepare), withText(R.string.next),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -155,11 +156,15 @@ public class CbtTest {
 
         sleep(1000);
 
-        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
                 isDisplayed())).perform(click());
 
+        String[] riskText = getString(mIntentsRule.getActivity(), R.string.very_high_risk_unsafe).split("/");
+        String risk1 = riskText[0].trim();
+        String risk2 = riskText[1].trim();
+
         ViewInteraction textView = onView(
-                allOf(withId(R.id.textResult), withText("Very High Risk"),
+                allOf(withId(R.id.textResult), withText(risk1),
                         childAtPosition(
                                 allOf(withId(R.id.layoutResult),
                                         childAtPosition(
@@ -167,7 +172,7 @@ public class CbtTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Very High Risk")));
+        textView.check(matches(withText(risk1)));
 
         ViewInteraction textView3 = onView(
                 allOf(withId(R.id.textResult2), withText(">100"),
@@ -203,7 +208,7 @@ public class CbtTest {
         textView4.check(matches(withText("9435.1")));
 
         ViewInteraction textView5 = onView(
-                allOf(withText("Upper 95% Confidence Interval"),
+                allOf(withText(R.string.confidenceInterval),
                         childAtPosition(
                                 allOf(withId(R.id.layoutResult2),
                                         childAtPosition(
@@ -211,10 +216,10 @@ public class CbtTest {
                                                 2)),
                                 1),
                         isDisplayed()));
-        textView5.check(matches(withText("Upper 95% Confidence Interval")));
+        textView5.check(matches(withText(R.string.confidenceInterval)));
 
         ViewInteraction textView6 = onView(
-                allOf(withId(R.id.textResult1), withText("Unsafe"),
+                allOf(withId(R.id.textResult1), withText(risk2),
                         childAtPosition(
                                 allOf(withId(R.id.layoutResult),
                                         childAtPosition(
@@ -222,7 +227,7 @@ public class CbtTest {
                                                 0)),
                                 1),
                         isDisplayed()));
-        textView6.check(matches(withText("Unsafe")));
+        textView6.check(matches(withText(risk2)));
 
         ViewInteraction button = onView(
                 allOf(withId(R.id.buttonAcceptResult),
@@ -235,7 +240,7 @@ public class CbtTest {
         button.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.buttonAcceptResult), withText("Accept Result"),
+                allOf(withId(R.id.buttonAcceptResult), withText(R.string.acceptResult),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.fragment_container),
@@ -244,7 +249,8 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("Health Risk Category (Based on MPN and Confidence Interval): Very High Risk / Unsafe ")));
+        assertNotNull(mDevice.findObject(By.text("Health Risk Category (Based on MPN and Confidence Interval): "
+                + getString(mIntentsRule.getActivity(), R.string.very_high_risk_unsafe) + " ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >100 MPN/100ml")));
         assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 9435.1 ")));
     }
@@ -263,7 +269,7 @@ public class CbtTest {
         sleep(1000);
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_prepare), withText("Next"),
+                allOf(withId(R.id.button_prepare), withText(R.string.next),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -286,14 +292,14 @@ public class CbtTest {
 
         sleep(100);
 
-        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
                 isDisplayed())).perform(click());
 
-        onView(withText("Very Unsafe")).check(matches(isDisplayed()));
+        onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
         onView(withText(">1000")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
         onView(withText("94351.0")).check(matches(isDisplayed()));
-        onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
+        onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -303,15 +309,19 @@ public class CbtTest {
 
         mDevice.waitForIdle();
 
-        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
                 isDisplayed())).perform(click());
 
-        onView(withText("Very High Risk")).check(matches(isDisplayed()));
-        onView(withText("Unsafe")).check(matches(isDisplayed()));
+        String[] riskText = getString(mIntentsRule.getActivity(), R.string.very_high_risk_unsafe).split("/");
+        String risk1 = riskText[0].trim();
+        String risk2 = riskText[1].trim();
+
+        onView(withText(risk1)).check(matches(isDisplayed()));
+        onView(withText(risk2)).check(matches(isDisplayed()));
         onView(withText("483")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
         onView(withText("3519.1")).check(matches(isDisplayed()));
-        onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
+        onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -321,15 +331,18 @@ public class CbtTest {
 
         mDevice.waitForIdle();
 
-        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
                 isDisplayed())).perform(click());
 
-        onView(withText("Low Risk")).check(matches(isDisplayed()));
-        onView(withText("Possibly Safe")).check(matches(isDisplayed()));
+        riskText = getString(mIntentsRule.getActivity(), R.string.low_risk_possibly_safe).split("/");
+        risk1 = riskText[0].trim();
+        risk2 = riskText[1].trim();
+        onView(withText(risk1)).check(matches(isDisplayed()));
+        onView(withText(risk2)).check(matches(isDisplayed()));
         onView(withText("58")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
         onView(withText("168.7")).check(matches(isDisplayed()));
-        onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
+        onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -341,17 +354,17 @@ public class CbtTest {
 
         mDevice.waitForIdle();
 
-        onView(allOf(withId(R.id.buttonNext), withText("Next"),
+        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
                 isDisplayed())).perform(click());
 
-        onView(withText("Very Unsafe")).check(matches(isDisplayed()));
+        onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
         onView(withText(">1000")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
         onView(withText("94351.0")).check(matches(isDisplayed()));
-        onView(withText("Upper 95% Confidence Interval")).check(matches(isDisplayed()));
+        onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.buttonAcceptResult), withText("Accept Result"),
+                allOf(withId(R.id.buttonAcceptResult), withText(R.string.acceptResult),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.fragment_container),
@@ -360,7 +373,8 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("US EPA Recreational Health Risk Category Based on MPN and Upper 95% Confidence Level: Very Unsafe ")));
+        assertNotNull(mDevice.findObject(By.text("US EPA Recreational Health Risk Category Based on MPN and Upper 95% Confidence Level: "
+                + getString(mIntentsRule.getActivity(), R.string.very_unsafe) + " ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")));
         assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 94351.0 ")));
     }

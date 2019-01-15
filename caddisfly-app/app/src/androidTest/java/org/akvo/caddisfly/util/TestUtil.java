@@ -40,7 +40,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.TestConstantKeys;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -54,7 +53,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 
@@ -165,6 +163,13 @@ public final class TestUtil {
         for (int i = 0; i < 3; i++) {
             mDevice.waitForIdle();
             mDevice.swipe(300, 400, 300, 750, 4);
+        }
+    }
+
+    public static void swipeUp() {
+        for (int i = 0; i < 3; i++) {
+            mDevice.waitForIdle();
+            mDevice.swipe(200, 750, 200, 600, 4);
         }
     }
 

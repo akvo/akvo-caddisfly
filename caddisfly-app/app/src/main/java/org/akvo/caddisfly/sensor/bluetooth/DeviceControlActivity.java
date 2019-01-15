@@ -67,11 +67,9 @@ public class DeviceControlActivity extends BaseActivity
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
+    Handler handler;
     private boolean resultReceived = false;
     private TestInfo testInfo;
-
-    Handler handler;
-
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
     // to manage Service lifecycle.
@@ -276,7 +274,7 @@ public class DeviceControlActivity extends BaseActivity
                     if (mBluetoothResultFragment.displayData(fullData)) {
 
                         resultReceived = true;
-                        setTitle("Result");
+                        setTitle(R.string.result);
                     } else {
                         registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
                         showSelectTestView();

@@ -24,7 +24,6 @@
     <string name="read_instructions">Read Instructions</string>
     <string name="take_photo_compartments">Take a photo of the compartment bag</string>
     <string name="confidenceInterval">Upper 95&#37; Confidence Interval</string>
-    <string name="below25Degrees">Below 25 °C</string>
     <string name="setCompartmentColors">Set compartment colors</string>
 
     <string name="put_on_gloves">Put on plastic gloves</string>
@@ -69,7 +68,7 @@
     <string name="temperature_34_44">35 – 44.5°C</string>
     <string name="temperature_31_34">31 – 34°C</string>
     <string name="temperature_25_30">25 – 30°C</string>
-    <string name="below_25">Below 25 °C</string>
+    <string name="below25Degrees">Below 25 °C</string>
     <string name="hours_20_24">20 – 24 hours</string>
     <string name="hours_24_30">24 – 30 hours</string>
     <string name="hours_40_48">40 – 48 hours</string>

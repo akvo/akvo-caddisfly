@@ -29,10 +29,10 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.filters.LargeTest;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
@@ -125,7 +125,7 @@ public class CheckitTest {
 
         SystemClock.sleep(3000);
 
-        onView(withText("Instructions")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
 
         onView(withText(R.string.checkit_comparator_uses))
                 .check(matches(isDisplayed()));
@@ -156,12 +156,12 @@ public class CheckitTest {
                 .check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+                allOf(withContentDescription(R.string.navigate_up),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        onView(withText("Instructions")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
 
         onView(withText(R.string.insert_colored_disk))
                 .check(matches(isDisplayed()));
@@ -175,7 +175,7 @@ public class CheckitTest {
 
         pressBack();
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -189,17 +189,17 @@ public class CheckitTest {
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
 
-        onView(withText("Submit Result")).perform(click());
+        onView(withText(R.string.submitResult)).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("4.1"), closeSoftKeyboard());
 
-        onView(withText("Submit Result")).perform(click());
+        onView(withText(R.string.submitResult)).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("3.98"), closeSoftKeyboard());
 
-        onView(withText("Submit Result")).perform(click());
+        onView(withText(R.string.submitResult)).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("Chlorine: 3.98 mg/l")));
 

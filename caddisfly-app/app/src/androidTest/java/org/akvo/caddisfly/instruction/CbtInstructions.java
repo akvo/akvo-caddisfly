@@ -25,11 +25,11 @@ import android.support.annotation.StringRes;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.FlakyTest;
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.filters.LargeTest;
 import android.util.Log;
 
 import org.akvo.caddisfly.R;
@@ -188,7 +188,8 @@ public class CbtInstructions {
         button3.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
+                allOf(withId(R.id.button_instructions),
+                        withText(TestHelper.getString(mActivityTestRule.getActivity(), R.string.instructions)),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
@@ -266,9 +267,11 @@ public class CbtInstructions {
                                 2)));
         appCompatTextView14.perform(scrollTo(), click());
 
-        onView(withText("Below 25 °C")).check(matches(isDisplayed()));
+        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
+                R.string.below25Degrees))).check(matches(isDisplayed()));
 
-        onView(withText("Incubate in a portable incubator, preferably at 35 – 37 °C for 48 hours or put in or near another heat source.")).check(matches(isDisplayed()));
+        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
+                R.string.incubate_in_portable))).check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
@@ -304,7 +307,8 @@ public class CbtInstructions {
         TestUtil.nextPage();
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+                allOf(withContentDescription(
+                        TestHelper.getString(mActivityTestRule.getActivity(), R.string.navigate_up)),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
@@ -333,7 +337,7 @@ public class CbtInstructions {
             TestInfo testInfo = testList.get(i);
 
             String id = testInfo.getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            id = id.substring(id.lastIndexOf("-") + 1);
 
             int pages = navigateToTest(i, id);
 

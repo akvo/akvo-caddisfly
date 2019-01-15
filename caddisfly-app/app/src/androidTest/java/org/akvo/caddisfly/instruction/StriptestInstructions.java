@@ -22,11 +22,11 @@ package org.akvo.caddisfly.instruction;
 
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.filters.LargeTest;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.TestConstants;
@@ -112,7 +112,7 @@ public class StriptestInstructions {
         mDevice.waitForIdle();
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
+                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
@@ -162,7 +162,7 @@ public class StriptestInstructions {
                 .check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+                allOf(withContentDescription(R.string.navigate_up),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
@@ -178,7 +178,7 @@ public class StriptestInstructions {
         button1.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
+                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
@@ -232,7 +232,7 @@ public class StriptestInstructions {
                 .check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
+                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
@@ -258,7 +258,7 @@ public class StriptestInstructions {
                 .perform(swipeLeft());
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+                allOf(withContentDescription(R.string.navigate_up),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
@@ -284,7 +284,7 @@ public class StriptestInstructions {
         button1.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
+                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
@@ -315,7 +315,7 @@ public class StriptestInstructions {
                         isDisplayed()));
         button2.check(matches(isDisplayed()));
 
-        onView(allOf(withContentDescription("Navigate up"),
+        onView(allOf(withContentDescription(R.string.navigate_up),
                 withParent(withId(R.id.toolbar)),
                 isDisplayed())).perform(click());
 
@@ -338,7 +338,7 @@ public class StriptestInstructions {
             assertEquals(testList.get(i).getSubtype(), TestType.STRIP_TEST);
 
             String id = testList.get(i).getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            id = id.substring(id.lastIndexOf("-") + 1);
 
 //            if (id.equalsIgnoreCase("aa4a4e3100c9")) {
             navigateToTest(i, id);

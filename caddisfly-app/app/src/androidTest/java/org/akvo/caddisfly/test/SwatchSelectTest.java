@@ -23,10 +23,10 @@ package org.akvo.caddisfly.test;
 import android.os.SystemClock;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.intent.rule.IntentsTestRule;
+import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.filters.LargeTest;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
@@ -92,13 +92,13 @@ public class SwatchSelectTest {
 
         SystemClock.sleep(2000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         mDevice.waitForIdle();
 
         SystemClock.sleep(3000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         SystemClock.sleep(2000);
 
@@ -110,7 +110,7 @@ public class SwatchSelectTest {
 
         sleep(1000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         onView(withText("pH")).check(matches(isDisplayed()));
 
@@ -128,7 +128,7 @@ public class SwatchSelectTest {
 
         sleep(1000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         onView(withText("pH")).check(matches(isDisplayed()));
 
@@ -142,9 +142,9 @@ public class SwatchSelectTest {
 
         sleep(3000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-        onView(withText("Save")).perform(click());
+        onView(withText(R.string.save)).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("pH: 7.2 ")));
 
@@ -163,13 +163,13 @@ public class SwatchSelectTest {
 
         SystemClock.sleep(2000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         mDevice.waitForIdle();
 
         SystemClock.sleep(3000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         SystemClock.sleep(2000);
 
@@ -181,7 +181,7 @@ public class SwatchSelectTest {
 
         sleep(1000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         onView(withText("pH")).check(matches(isDisplayed()));
 
@@ -199,7 +199,7 @@ public class SwatchSelectTest {
 
         sleep(1000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         onView(withText("pH")).check(matches(isDisplayed()));
 
@@ -213,9 +213,9 @@ public class SwatchSelectTest {
 
         sleep(3000);
 
-        onView(withText("Next")).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-        onView(withText("Save")).perform(click());
+        onView(withText(R.string.save)).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("pH: 7.2 ")));
 

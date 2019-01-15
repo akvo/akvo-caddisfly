@@ -153,13 +153,13 @@ public class SensorTest {
         onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+                allOf(withContentDescription(R.string.navigate_up),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
         ViewInteraction appCompatImageButton2 = onView(
-                allOf(withContentDescription("Navigate up"),
+                allOf(withContentDescription(R.string.navigate_up),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton2.perform(click());

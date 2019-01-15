@@ -56,9 +56,8 @@ public class MainActivity extends BaseActivity {
 
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
     ActivityMainBinding b;
-
-    private int INTRO_PAGE_COUNT = 2;
     AnimatedColor statusBarColors;
+    private int INTRO_PAGE_COUNT = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +77,8 @@ public class MainActivity extends BaseActivity {
         }
 
         hideActionBar();
-        setUpViews();
+
+        (new Handler()).postDelayed(this::setUpViews, 10);
 
         b.pageIndicator.setPageCount(INTRO_PAGE_COUNT);
 
@@ -209,6 +209,16 @@ public class MainActivity extends BaseActivity {
         }, delay);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    private void animateStatusBar() {
+        ValueAnimator animator = ObjectAnimator.ofFloat(0f, 1f).setDuration(1000);
+        animator.addUpdateListener(animation -> {
+            float v = (float) animation.getAnimatedValue();
+            getWindow().setStatusBarColor(statusBarColors.with(v));
+        });
+        animator.start();
+    }
+
     /**
      * Handler to restart the app after language has been changed.
      */
@@ -249,16 +259,6 @@ public class MainActivity extends BaseActivity {
         public int getCount() {
             return INTRO_PAGE_COUNT;
         }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void animateStatusBar() {
-        ValueAnimator animator = ObjectAnimator.ofFloat(0f, 1f).setDuration(1000);
-        animator.addUpdateListener(animation -> {
-            float v = (float) animation.getAnimatedValue();
-            getWindow().setStatusBarColor(statusBarColors.with(v));
-        });
-        animator.start();
     }
 }
 

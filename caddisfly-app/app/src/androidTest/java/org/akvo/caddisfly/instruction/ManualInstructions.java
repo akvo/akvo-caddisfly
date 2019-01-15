@@ -23,11 +23,11 @@ package org.akvo.caddisfly.instruction;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.filters.LargeTest;
 import android.util.Log;
 
 import org.akvo.caddisfly.R;
@@ -108,7 +108,7 @@ public class ManualInstructions {
             TestInfo testInfo = testList.get(i);
 
             String id = testInfo.getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            id = id.substring(id.lastIndexOf("-") + 1);
 
             int pages = navigateToTest("Manual", i, id);
 
@@ -136,7 +136,7 @@ public class ManualInstructions {
             TestInfo testInfo = testList.get(i);
 
             String id = testInfo.getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            id = id.substring(id.lastIndexOf("-") + 1);
 
             int pages = navigateToTest("Manual 2", i, id);
 
@@ -206,7 +206,7 @@ public class ManualInstructions {
         //onView(allOf(withId(R.id.textTitle), withText("Lovibond SD 50 pH me..."))).check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions), withText("Instructions"),
+                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),

@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 236
         versionName "1.0.4"
         resConfigs "en", "en_US", "fr", "in", "es"

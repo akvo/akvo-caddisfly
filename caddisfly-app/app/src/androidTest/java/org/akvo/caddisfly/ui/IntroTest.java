@@ -10,6 +10,7 @@ import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.TestHelper;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -26,8 +27,12 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertNotNull;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode;
+import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode;
+import static org.akvo.caddisfly.util.TestHelper.loadData;
+import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
@@ -54,6 +59,14 @@ public class IntroTest {
             nextSurveyPage("Fluoride");
             mDevice.pressBack();
         }
+    }
+
+    @Before
+    public void setUp() {
+
+        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
+
+        clearPreferences(mActivityTestRule);
     }
 
     @Test
@@ -131,7 +144,8 @@ public class IntroTest {
 
         mDevice.waitForIdle();
 
-        assertNotNull(mDevice.findObject(By.text("Unnamed data point")));
+        assertNotNull(mDevice.findObject(By.text(
+                getString(mActivityTestRule.getActivity(), R.string.unnamedDataPoint))));
     }
 
     @Test
@@ -148,13 +162,14 @@ public class IntroTest {
 
         mDevice.waitForIdle();
 
-        assertNotNull(mDevice.findObject(By.text("Unnamed data point")));
+        assertNotNull(mDevice.findObject(By.text(
+                getString(mActivityTestRule.getActivity(), R.string.unnamedDataPoint))));
 
     }
 
     private void navigateUp() {
         ViewInteraction imageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+                allOf(withContentDescription(R.string.navigate_up),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(

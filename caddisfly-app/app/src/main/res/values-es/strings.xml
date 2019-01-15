@@ -17,6 +17,7 @@
     <string name="success" tools:ignore="UnusedResources">Éxito</string>
     <string name="done" tools:ignore="UnusedResources">Hecho</string>
     <string name="next">El siguiente</string>
+    <string name="navigate_up">Desplazarse hacia arriba</string>
     <string name="result">Resultado</string>
     <string name="language">Idioma</string>
     <string name="notSupported">No soportado</string>

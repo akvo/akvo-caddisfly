@@ -68,13 +68,14 @@ import static org.akvo.caddisfly.util.TestUtil.sleep;
 public final class TestHelper {
 
     private static final Map<String, String> STRING_HASH_MAP_EN = new HashMap<>();
+    private static final Map<String, String> STRING_HASH_MAP_ES = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_FR = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_IN = new HashMap<>();
     private static final Map<String, String> CALIBRATION_HASH_MAP = new HashMap<>();
     private static final boolean TAKE_SCREENSHOTS = false;
     public static Map<String, String> currentHashMap;
     public static UiDevice mDevice;
-    public static String mCurrentLanguage = "en";
+    public static String mCurrentLanguage = "fr";
     @SuppressWarnings("FieldCanBeLocal")
     private static int mCounter;
 
@@ -83,10 +84,13 @@ public final class TestHelper {
 
     private static void addString(String key, String... values) {
         STRING_HASH_MAP_EN.put(key, values[0]);
-        STRING_HASH_MAP_FR.put(key, values[1]);
-        if (values.length > 2) {
-            STRING_HASH_MAP_IN.put(key, values[2]);
+        if (values.length > 1) {
+            STRING_HASH_MAP_ES.put(key, values[1]);
+            STRING_HASH_MAP_FR.put(key, values[2]);
+            STRING_HASH_MAP_IN.put(key, values[3]);
         } else {
+            STRING_HASH_MAP_ES.put(key, values[0]);
+            STRING_HASH_MAP_FR.put(key, values[0]);
             STRING_HASH_MAP_IN.put(key, values[0]);
         }
     }
@@ -112,6 +116,7 @@ public final class TestHelper {
         mCurrentLanguage = languageCode;
 
         STRING_HASH_MAP_EN.clear();
+        STRING_HASH_MAP_ES.clear();
         STRING_HASH_MAP_FR.clear();
         STRING_HASH_MAP_IN.clear();
         CALIBRATION_HASH_MAP.clear();
@@ -123,18 +128,18 @@ public final class TestHelper {
         config.locale = new Locale(languageCode);
         Resources res = new Resources(assets, metrics, config);
 
-        addString(TestConstant.LANGUAGE, "English", "Français", "Bahasa Indonesia");
-        addString("otherLanguage", "Français", "English");
-        addString(TestConstant.FLUORIDE, "Water - Fluoride", res.getString(R.string.fluoride));
-        addString("chlorine", "Water - Free Chlorine", res.getString(R.string.freeChlorine));
-        addString("survey", "Survey", res.getString(R.string.survey));
-        addString("sensors", "Sensors", res.getString(R.string.sensors));
-        addString("electricalConductivity", "Water - Electrical Conductivity", res.getString(R.string.electricalConductivity));
-        addString("unnamedDataPoint", "Unnamed data point", res.getString(R.string.unnamedDataPoint));
-        addString("createNewDataPoint", "Add Data Point", res.getString(R.string.addDataPoint));
-        addString(TestConstant.USE_EXTERNAL_SOURCE, "Use External Source", res.getString(R.string.useExternalSource));
-        addString(TestConstant.GO_TO_TEST, "Go to test", res.getString(R.string.goToText));
-        addString("next", "Next", res.getString(R.string.next));
+        addString(TestConstant.LANGUAGE, "English", "Español", "Français", "Bahasa Indonesia");
+//        addString("otherLanguage", "Français", "English");
+        addString(TestConstant.FLUORIDE, res.getString(R.string.fluoride));
+        addString("chlorine", res.getString(R.string.freeChlorine));
+        addString("survey", res.getString(R.string.survey));
+        addString("sensors", res.getString(R.string.sensors));
+        addString("electricalConductivity", res.getString(R.string.electricalConductivity));
+        addString("unnamedDataPoint", res.getString(R.string.unnamedDataPoint));
+        addString("createNewDataPoint", res.getString(R.string.addDataPoint));
+        addString(TestConstant.USE_EXTERNAL_SOURCE, res.getString(R.string.useExternalSource));
+        addString(TestConstant.GO_TO_TEST, res.getString(R.string.goToTest));
+        addString("next", res.getString(R.string.next));
 
         // Restore device-specific locale
         new Resources(assets, metrics, currentResources.getConfiguration());
@@ -188,6 +193,9 @@ public final class TestHelper {
         switch (languageCode) {
             case "en":
                 currentHashMap = STRING_HASH_MAP_EN;
+                break;
+            case "es":
+                currentHashMap = STRING_HASH_MAP_ES;
                 break;
             case "in":
                 currentHashMap = STRING_HASH_MAP_IN;

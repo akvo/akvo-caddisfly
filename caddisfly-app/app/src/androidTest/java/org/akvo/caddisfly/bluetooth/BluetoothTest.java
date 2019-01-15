@@ -21,13 +21,13 @@ package org.akvo.caddisfly.bluetooth;
 
 
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.RequiresDevice;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.filters.LargeTest;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.TestConstants;
@@ -124,7 +124,7 @@ public class BluetoothTest {
 
             String id = testList.get(i).getUuid();
 
-            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            id = id.substring(id.lastIndexOf("-") + 1);
 
             if (id.equalsIgnoreCase("e14626afa5b0")) {
                 onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
@@ -133,7 +133,7 @@ public class BluetoothTest {
 
                 onView(withText(R.string.test_selected)).perform(click());
 
-                TestUtil.sleep(6000);
+                TestUtil.sleep(7000);
 
                 onView(withText(R.string.result)).check(matches(isDisplayed()));
 
@@ -167,11 +167,11 @@ public class BluetoothTest {
 
         clickExternalSourceButton(1);
 
-        onView(withText("Next")).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
-        onView(withText("Test Selected")).perform(click());
+        onView(withText(R.string.test_selected)).perform(click());
 
-        onView(withText("Instructions")).perform(click());
+        onView(withText(R.string.instructions)).perform(click());
 
         onView(withText(R.string.fill_vial_24_with_10ml_sample_zero))
                 .check(matches(isDisplayed()));
@@ -233,7 +233,7 @@ public class BluetoothTest {
         TestHelper.clearPreferences(mActivityTestRule);
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_prepare), withText("Next"),
+                allOf(withId(R.id.button_prepare), withText(R.string.next),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
@@ -251,7 +251,7 @@ public class BluetoothTest {
         }
 
         ViewInteraction appCompatButton3 = onView(
-                allOf(withId(android.R.id.button1), withText("Retry"),
+                allOf(withId(android.R.id.button1), withText(R.string.retry),
                         childAtPosition(
                                 allOf(withClassName(is("com.android.internal.widget.ButtonBarLayout")),
                                         childAtPosition(
@@ -302,7 +302,7 @@ public class BluetoothTest {
 
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription("Navigate up"),
+                allOf(withContentDescription(R.string.navigate_up),
                         childAtPosition(
                                 allOf(withId(R.id.toolbar),
                                         childAtPosition(

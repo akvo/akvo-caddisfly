@@ -30,7 +30,7 @@ public final class AppTest {
     };
 
     private static final String MERGED_MANIFEST =
-            "build/intermediates/merged_manifests/mainExtDebug/processMainExtDebugManifest/merged/AndroidManifest.xml";
+            "build/intermediates/merged_manifests/mainExtDebug/AndroidManifest.xml";
 
     @Test
     public void shouldMatchPermissions() {
