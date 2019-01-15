@@ -20,15 +20,17 @@ public final class AppTest {
             "android.permission.ACCESS_COARSE_LOCATION",
             "android.permission.BLUETOOTH_ADMIN",
             "android.permission.WAKE_LOCK",
+            "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE",
             "android.permission.CAMERA",
             "android.permission.BLUETOOTH",
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.INTERNET",
-            "android.permission.ACCESS_NETWORK_STATE"
+            "android.permission.ACCESS_NETWORK_STATE",
+            "com.google.android.c2dm.permission.RECEIVE"
     };
 
     private static final String MERGED_MANIFEST =
-            "build/intermediates/manifests/full/mainExt/debug/AndroidManifest.xml";
+            "build/intermediates/merged_manifests/mainExtDebug/processMainExtDebugManifest/merged/AndroidManifest.xml";
 
     @Test
     public void shouldMatchPermissions() {

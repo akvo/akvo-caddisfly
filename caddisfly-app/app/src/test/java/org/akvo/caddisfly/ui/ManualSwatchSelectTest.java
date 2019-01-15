@@ -22,6 +22,7 @@ package org.akvo.caddisfly.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
@@ -142,7 +143,7 @@ public class ManualSwatchSelectTest {
         TextView textView2 = activity.findViewById(R.id.textInfo2);
         assertEquals(textView2.getText(), activity.getString(R.string.pt_select_intervals));
 
-        ShadowSystemClock.sleep(3000);
+        SystemClock.sleep(3000);
 
         Button button = activity.findViewById(R.id.buttonNext);
         button.performClick();
