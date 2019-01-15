@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--Common-->
+    <string name="ok">OK</string>
+    <string name="retry">Reintentar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="start">Comenzar</string>
+    <string name="error">Error</string>
+    <string name="general">General</string>
+    <string name="other">Otro</string>
+    <string name="save">Guardar</string>
+    <string name="settings">Ajustes</string>
+    <string name="about">Sobre</string>
+    <string name="version">Versión</string>
+    <string name="required">Obligatorio</string>
+    <string name="survey">Encuesta</string>
+    <string name="success" tools:ignore="UnusedResources">Éxito</string>
+    <string name="done" tools:ignore="UnusedResources">Hecho</string>
+    <string name="next">El siguiente</string>
+    <string name="result">Resultado</string>
+    <string name="language">Idioma</string>
+    <string name="notSupported">No soportado</string>
+    <string name="warning">Advertencia</string>
+    <string name="instructions">Los instrucciones</string>
+    <!--External-->
+    <string name="sensor">Sensor</string>
+    <string name="sensors">Sensores</string>
+    <!--Sensor Details Screen-->
+    <string name="deviceConnecting">Conectándose al dispositivo</string>
+    <string name="acceptResult">Aceptar resultado</string>
+    <!--Sensor-->
+    <string name="deviceConnectSensor">Conecte el sensor</string>
+    <string name="celsius">°Celsius</string>
+    <string name="dipSensorInSample">Sumergir el sensor en la muestra</string>
+    <string name="selectTest">Seleccione prueba</string>
+    <string name="awaitingResult">En espera para el resultado</string>
+    <string name="deviceConnected">Dispositivo conectado</string>
+    <string name="sensorDetails">Detalles del sensor</string>
+    <string name="enterAnIdForSensor">Ingrese una identificación para este sensor</string>
+    <string name="ecSensorId">ID del sensor conductividad eléctrica</string>
+    <!--Alerts-->
+    <string name="cannotStartTest">No se puede iniciar la prueba</string>
+    <string name="errorTestNotAvailable">La prueba solicitada no está disponible</string>
+    <string name="pleaseContactSupport">Por favor, póngase en contacto con el soporte técnico</string>
+    <string name="versionExpired">Versión expirada</string>
+    <string name="thisVersionHasExpired">Esta versión de la aplicación ha caducado.</string>
+    <string name="uninstallAndInstallFromStore">Por favor, desinstale y luego instale la última versión de Play Store.</string>
+    <!--Permission-->
+    <string name="storagePermission">Se requiere permiso de almacenamiento</string>
+    <string name="cameraAndStoragePermissions">Cámara &amp; se requieren permisos de almacenamiento</string>
+    <!--Sensor-->
+    <string name="incorrectDevice">Dispositivo incorrecto</string>
+    <string name="expectedDeviceNotFound">No se encontró el sensor esperado.</string>
+    <string name="connectCorrectSensor">
+    <Data><![CDATA[Conectar el/la <b>%s</b> sensor ]]></Data>
+  </string>
+    <!--Messages-->
+    <string name="phoneDoesNotSupport">Esta función no es compatible con este dispositivo.</string>
+    <string name="errorLoadingConfiguration">No se pudo cargar la información de configuración</string>
+    <!--Bluetooth-->
+    <string name="nearby_devices">Dispositivos cercanos</string>
+    <string name="connect_device">Conectate a tu dispositivo</string>
+    <string name="to_turn_bluetooth_on">Para activar el bluetooth:</string>
+    <string name="connect">Conectar</string>
+    <string name="error_bluetooth_not_supported">Bluetooth no es compatible.</string>
+    <string name="location_permission">Se requiere permiso de ubicación para la conexión Bluetooth</string>
+    <string name="unknown_device">Desconocido</string>
+    <string name="scanning">Escaneado...</string>
+    <string name="searching_for_device">Buscando dispositivos bluetooth</string>
+    <!--About Screen-->
+    <string name="waterQualitySystem">Agua &amp; Sistema de calidad del suelo</string>
+    <string name="copyrightMessage">Derechos de autor © Stichting Akvo</string>
+    <string name="legalInformation">Información legal</string>
+    <!--Software notices-->
+    <!--Intro-->
+</resources>

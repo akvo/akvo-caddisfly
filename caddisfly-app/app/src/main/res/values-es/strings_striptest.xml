@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly.
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="brightness">El brillo</string>
+    <string name="prepare_test">Prepararse para la prueba</string>
+    <string name="taking_photo">Tomando foto</string>
+    <string name="success_quality_checks">¡Éxito! Control de calidad certificado</string>
+    <string name="stripTest">Prueba de tira</string>
+    <string name="no_result">Sin resultados</string>
+    <string name="continue_anyway">Continuar</string>
+    <string name="just_a_moment">Espera un momento por favor</string>
+    <string name="seconds">Sec.</string>
+    <string name="detecting_color_card">Buscando tarjeta de color</string>
+    <string name="ready_for_photo">Listo para la foto</string>
+    <string name="do_not_show_again">No mostrar de nuevo</string>
+    <string name="stop_test">Detener la prueba</string>
+    <string name="camera_not_good">La cámara no cumple con los requisitos mínimos. \n\n Para obtener los mejores resultados, se requieren al menos 8 megapíxeles de cámara.</string>
+</resources>

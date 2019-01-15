@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly.
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="cbt">E.coli - Aquagenx CBT</string>
+
+    <string name="read_instructions">Lea las instrucciones</string>
+    <string name="take_photo_compartments">Tome una foto de la bolsa de compartimiento</string>
+    <string name="confidenceInterval">Superior 95 &#37; Intervalo de confianza</string>
+    <string name="below25Degrees">Por debajo de 25 ºC</string>
+    <string name="setCompartmentColors">Establecer colores de los compartimentos.</string>
+
+    <string name="put_on_gloves">Ponerse tus guantes de de seguro</string>
+    <string name="collect_100ml_water_sample">Recoger <b>100 ml </b> de muestra de agua con botella o bolsa de Thio.</string>
+    <string name="avoid_touching_with_bare_hands">Evite tocar el interior de la botella, la tapa o la bolsa Thio con las manos descubiertas.</string>
+    <string name="open_growth_medium_sachet">Abra la bolsita de medio de crecimiento y agregue la yema de prueba directamente a la muestra de la bolsita</string>
+    <string name="dissolve_medium_in_sample">Disuelva el medio en la muestra para 10 – 12 minutos (máximo) haciendo girar periódicamente la botella o apretando el botón de prueba en la bolsa Thio para promover la liberación del medio de su portador de plástico</string>
+    <string name="medium_dissolves">El medio se disuelve de su portador de plástico.</string>
+    <string name="when_medium_dissolved">Cuando el medio está completamente disuelto, el portador de plástico se vuelve blanco o casi blanco.</string>
+    <string name="tear_perforated_seam">Rasgar la costura perforada en la parte superior de la bolsa.</string>
+    <string name="rub_sides_of_compartment">Frote los lados en la parte superior de cada compartimiento para abrir la bolsa, use las lengüetas blancas en la parte superior de la bolsa para mantener la bolsa abierta mientras se vierte.</string>
+    <string name="slowly_pour_sample_into_bag">Vierta lentamente la muestra en la bolsa mientras la inclina y aprieta suavemente para distribuir la muestra entre los cinco compartimentos.</string>
+    <string name="fill_evenly_across_bag"><b>Llene uniformemente a través de la bolsa hasta la línea de llenado negra</b>.</string>
+    <string name="leave_test_bud_carrier">Deje el portador del brote de prueba en una botella o bolsa Thio mientras lo vierte.</string>
+    <string name="attach_seal_clip">Coloque el clip de sellado en la bolsa por encima de la línea de llenado y por debajo de las aberturas superiores del compartimiento.</string>
+    <string name="snap_rod_shaped">Coloque la parte con forma de varilla del clip del otro lado de la bolsa en forma de U para bloquearla en su lugar.</string>
+    <string name="roll_fold_bag">Después de colocar el clip, la bolsa se puede mantener vertical u horizontal.</string>
+    <string name="close_top_of_bag">Cierre la parte superior de la bolsa con el sello amarillo Whirl-Pak y luego baje la bolsa hacia el clip del sello <b>(paso 1)</b> y doble los extremos amarillos <b>(paso 2)</b>.</string>
+    <string name="let_incubate">Deje que la muestra se incube, dependiendo de la temperatura ambiente:</string>
+    <string name="take_photo_of_incubated">Tome una foto de la muestra incubada.</string>
+    <string name="change_colors_to_match">Cambie los colores en la interfaz para que coincidan con los colores de la muestra en los compartimientos de la bolsa.</string>
+    <string name="click_compartments_to_change">Haga clic en los compartimentos para cambiar de color.</string>
+    <string name="low_risk_safe">Riesgo bajo / seguro</string>
+    <string name="probably_safe">Riesgo intermedio / probablemente seguro</string>
+    <string name="intermediate_possibly_safe">Riesgo intermedio / posiblemente seguro</string>
+    <string name="possibly_unsafe">Alto riesgo / posiblemente inseguro</string>
+    <string name="probably_unsafe">Alto riesgo / Probablemente inseguro</string>
+    <string name="very_high_risk_unsafe">Muy alto riesgo / inseguro</string>
+    <string name="high_risk_probably_unsafe">Alto riesgo / Probablemente inseguro</string>
+    <string name="temperature">Temperatura</string>
+    <string name="incubation_time">Tiempo de incubación</string>
+    <string name="temperature_34_44">35 – 44.5°C</string>
+    <string name="temperature_31_34">31 – 34°C</string>
+    <string name="temperature_25_30">25 – 30°C</string>
+    <string name="below_25">Por debajo de 25 ºC</string>
+    <string name="hours_20_24">20 – 24 horas</string>
+    <string name="hours_24_30">24 – 30 horas</string>
+    <string name="hours_40_48">40 – 48 horas</string>
+    <string name="incubate_in_portable">Incubar en una incubadora portátil, preferiblemente a 35 – 37 ° C durante 48 horas o colocar en o cerca de otra fuente de calor.</string>
+    <string name="in_addition_to_portable">Además de las incubadoras portátiles, las muestras se pueden mantener a una temperatura de 25 ° C a 44.5 ° C usando: bolsas / refrigeradores térmicos; proximidad a fuentes de calor para humanos y alimentos; incubadora de aves o reptiles, o cerca de serpentines de refrigeradores o respiraderos de calefacción de habitaciones.</string>
+
+</resources>
