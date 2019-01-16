@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -18,7 +17,14 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="cbt">E.coli - Aquagenx CBT</string>
+
+    <string name="read_instructions">Lire les instructions</string>
+    <string name="take_photo_compartments">Prenez une photo du sac à compartiment</string>
+    <string name="confidenceInterval">Intervalle de confiance supérieur à 95&#37;</string>
+    <string name="setCompartmentColors">Définir les couleurs des compartiments</string>
 
     <string name="put_on_gloves">Portez des gants en plastique</string>
     <string name="collect_100ml_water_sample">Collectez <b>100 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
@@ -27,6 +33,7 @@
     <string name="dissolve_medium_in_sample">Dissoudre le bourgeon dans l\'échantillon pendant 10 à 12 minutes maximum en remuant périodiquement la bouteille ou en pressant le bourrelet d\'essai dans le sac Thio pour favoriser la libération du milieu de son support en plastique</string>
     <string name="medium_dissolves">Le bourgeon se dissout à partir de son support en plastique.</string>
     <string name="when_medium_dissolved">Lorsque le bourgeon est complètement dissous, le support plastique devient blanc ou presque blanc.</string>
+    <string name="label_compartment_bag">Étiqueter le sac et/ou apposer l\'étiquette à code à barres sur le sac à compartiment.</string>
     <string name="tear_perforated_seam">Retirer la couture perforée qui se trouve au dessus du sac.</string>
     <string name="rub_sides_of_compartment">Frottez les côtés au sommet de chaque compartiment pour ouvrir le sac, utilisez les languettes blanches en haut du sac pour garder le sac ouvert en versant l\'echantillon dans les compartiments du sac.</string>
     <string name="slowly_pour_sample_into_bag">Verser lentement l\'échantillon dans le sac en inclinant doucement et en serrant le sac pour repartir l\'échantillon dans les cinq compartiments.</string>
@@ -40,21 +47,32 @@
     <string name="take_photo_of_incubated">Prenez une photo de l\'échantillon incubé.</string>
     <string name="change_colors_to_match">Changez les couleurs sur l\'écran du téléphone pour les faire correspondre aux couleurs de l\'échantillon dans les compartiments du sac.</string>
     <string name="click_compartments_to_change">Cliquez sur les compartiments pour changer de couleur.</string>
+    <string name="clean_cbt">Après avoir noté les résultats du test : ajouter 1–2 ml d\'eau de Javel liquide (NaOCl) ou suffisamment de comprimés de chlore libre (hypochlorite de calcium ou dichloroisocyanurate de sodium) pour obtenir environ 100 milligrammes de chlore libre. Après 45 minutes, verser le contenu dans un évier, une toilette ou un trou dans le sol et jeter le sac de compartiment vide en toute sécurité. Conservez le clip en plastique pour le réutiliser.</string>
 
-    <string name="collect_10ml_water_sample">Collectez <b>10 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
+    <string name="low_risk_safe">Faible risque / Sûr</string>
+    <string name="probably_safe">Risque intermédiaire / Probablement sûr</string>
+    <string name="intermediate_possibly_safe">Risque intermédiaire / Possiblement sûr</string>
+    <string name="possibly_unsafe">Risque élevé / Possiblement dangereux</string>
+    <string name="probably_unsafe">Risque élevé / Probablement dangereux</string>
+    <string name="very_high_risk_unsafe">Risque très élevé / dangereux</string>
+    <string name="low_risk_probably_safe">Risque intermédiaire / Probablement sûr</string>
+    <string name="low_risk_possibly_safe">Risque intermédiaire / Possiblement sûr</string>
+    <string name="high_risk_probably_unsafe">Risque très élevé / dangereux</string>
+    <string name="very_unsafe">Très dangereux</string>
+
+    <string name="collect_10ml_water_sample">Collecter <b>10 ml</b> d\'échantillon d\'eau avec Thio Bag (ou bouteille).</string>
+    <string name="add_90ml_distilled_water">Ajouter <b>90 ml</b> d\'eau distillée à l\'échantillon d\'eau.</string>
 
     <string name="temperature">Température</string>
     <string name="incubation_time">Temps d\'incubation</string>
     <string name="temperature_34_44">35 – 44.5°C</string>
     <string name="temperature_31_34">31 – 34°C</string>
     <string name="temperature_25_30">25 – 30°C</string>
-    <string name="below_25">Au-dessous de 25 ° C</string>
+    <string name="below25Degrees">En dessous de 25 °C</string>
     <string name="hours_20_24">20 – 24 heures</string>
     <string name="hours_24_30">24 – 30 heures</string>
     <string name="hours_40_48">40 – 48 heures</string>
     <string name="incubate_in_portable">Incuber dans un incubateur portatif, de préférence entre 35 et 37 ° C pendant 48 heures, ou mettre dans ou à proximité d\'une autre source de chaleur.</string>
     <string name="in_addition_to_portable">En plus des incubateurs portables, les échantillons peuvent être maintenus entre 25 ° C et 44.5 ° C en utilisant: des refroidisseurs / sachets thermiques; proximité des sources de chaleur pour les humains et les aliments; l\'incubateur de volaille ou de reptile, ou près des bobines du réfrigérateur ou des évents de chauffage de la pièce.</string>
-
-    <string name="read_instructions">Lire les instructions</string>
 
 </resources>

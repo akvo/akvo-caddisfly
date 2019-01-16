@@ -66,7 +66,7 @@
     <string name="error_bluetooth_not_supported">Bluetooth no es compatible.</string>
     <string name="location_permission">Se requiere permiso de ubicación para la conexión Bluetooth</string>
     <string name="unknown_device">Desconocido</string>
-    <string name="scanning">Escaneado...</string>
+    <string name="scanning">Escaneado…</string>
     <string name="searching_for_device">Buscando dispositivos bluetooth</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Agua &amp; Sistema de calidad del suelo</string>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -18,7 +17,25 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="md610_photometer">Photomètre MD 610</string>
+    <string name="check_bluetooth_turned_on">Vérifiez que le MD610 et son bluetooth sont tous les deux allumés.</string>
+    <string name="to_turn_md610_on">Pour allumer le MD 610 :</string>
+
+    <string name="press_on_button"><![CDATA[Appuyez sur (*on*)]]></string>
+    <string name="press_mode_button"><![CDATA[Appuyez sur (*mode*) pour accéder au menu.]]></string>
+    <string name="select_bluetooth"><![CDATA[Appuyez sur (*down*) pour faire défiler jusqu\'à Bluetooth et appuyez sur(*enter*)]]></string>
+    <string name="turn_bluetooth_on"><![CDATA[Appuyez sur (*shift*) + (*1*) pour activer le bluetooth.]]></string>
+    <string name="escape_to_menu"><![CDATA[Appuyez sur (*enter*) et (*esc*) pour revenir au menu principal.]]></string>
+    <string name="perform_test"><![CDATA[Effectuez le test <b>%1$s</b> sur le MD 610 et appuyez sur (*f3*) lorsque vous êtes prêt.]]></string>
+    <string name="select_correct_test"><![CDATA[Sélectionner le bon test et réessayer.]]></string>
+    <string name="data_does_not_match">Les données reçues ne correspondent pas au type de test prévu.</string>
+    <string name="incorrect_test_selected">Mauvais test sélectionné</string>
+    <string name="select_test"><![CDATA[Sélectionner <b>%1$s</b> test sur MD610]]></string>
+    <string name="test_selected">Test sélectionné</string>
+    <string name="to_select_test">Sélectionner le test</string>
+    <string name="test_instructions">Instructions pour le test</string>
 
     <string name="select_test_instruction"><![CDATA[Appuyez sur * (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test, puis appuyez sur (*enter*)]]></string>
     <string name="select_diff_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test et appuyez sur (*enter*). Sélectionnez <b>\'diff\'</b> puis appuyez sur (*enter*)]]></string>
@@ -29,7 +46,7 @@
     <string name="fill_vial_16_with_10ml_sample">Remplissez un flacon propre de (16 mm Ø) avec <b>10 ml d\'échantillon d\'eau</b>.</string>
     <string name="fill_2nd_vial_16_with_10ml_sample">Remplissez un deuxième flacon propre de (16 mm Ø) avec <b>10 ml de l\'échantillon d\'eau</b>.</string>
     <string name="fill_vial_24_with_10ml_sample_zero">Remplissez le flacon de (24 mm Ø) avec <b>10 ml de votre échantillon d\'eau</b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le dans le tube. Alignez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
-    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero">Remplissez le flacon de (24 mm Ø) avec <b>1 ml de votre échantillon  d\'eau </b> et <b>9 ml d\'eau déminéralisée</b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le flacon dans la chambre. Aligner le tube dans la chambre de l\'appareil en tenant compte de la flèche marquée et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero">Remplissez le flacon de (24 mm Ø) avec <b>1 ml de votre échantillon d\'eau </b> et <b>9 ml d\'eau déminéralisée</b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le flacon dans la chambre. Aligner le tube dans la chambre de l\'appareil en tenant compte de la flèche marquée et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
     <string name="fill_vial_24_with_10ml_deionized_water">Remplissez un flacon propre de (24 mm Ø) avec <b>10 ml d\'eau déminéralisée (celui-ci est la cuvette de calibrage)</b>.</string>
     <string name="fill_vial_24_with_10ml_sample">Remplissez un autre flacon propre de (24 mm Ø) avec <b>10 ml de l\'échantillon d\'eau (celui-ci est l\'échantillon)</b></string>
     <string name="add_water_till_10ml">Ajoutez l\'échantillon d\'eau jusqu\'au trait de 10 ml marqué sur le flacon</string>
@@ -65,16 +82,16 @@
     <string name="close_swirl_vigorously">Fermez soigneusement le flacon avec la fermeture et secouez vigoureusement pendant une minute</string>
     <string name="wipe_place_align_vial">Essuyez l\'extérieur du flacon, maintenez le capuchon du flacon et mettez le flacon dans la chambre de l\'appareil. Aligner le tube selon la flèche marquée sur l\'appareil et appuyez sur (*test*)</string>
     <string name="wipe_place_align_vial_wait_1">Essuyez l\'extérieur du flacon, retirez le flacon qui est dans la chambre et placez le flacon d\'echantillon dans la chambre. Alignez le selon les flèches et appuyez sur (*test*). Attendez un <b>temps de réaction de %reactionTime1</b>.</string>
-    <string name="wipe_place_align_vial_wait_2">Essuyez l\'extérieur du flacon, retirez le flacon qui est dans la chambre et placez le flacon d\'echantillon dans la chambre . Alignez le selon les flèches et appuyez sur (*test*). Attendez un <b>temps de réaction de %reactionTime</b>.</string>
+    <string name="wipe_place_align_vial_wait_2">Essuyez l\'extérieur du flacon, retirez le flacon qui est dans la chambre et placez le flacon d\'echantillon dans la chambre . Alignez le selon les flèches et appuyez sur (*test*). Attendez un <b>temps de réaction de %reactionTime2</b>.</string>
     <string name="wipe_place_align_prepared_vial_zero">Essuyez l\'extérieur du flacon, maintenez le capuchon du flacon et mettez le flacon dans la chambre de l\'appareil. Suivez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
-    <string name="wipe_place_align_vial_blank_zero">Essuyez l\'extérieur du flacon (cuvette de calibrage), maintenez le capuchon du flacon et mettez le flacon (cuvette de calibrage).) dans la chambre de l\'appareil. Alignez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="wipe_place_align_vial_blank_zero">Essuyez l\'extérieur du flacon (cuvette de calibrage), maintenez le capuchon du flacon et mettez le flacon (cuvette de calibrage) dans la chambre de l\'appareil. Alignez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
     <string name="wipe_place_align_vial_blank_zero_wait">Essuyez l\'extérieur du flacon (cuvette de calibrage), maintenez le capuchon du flacon et mettez le flacon (cuvette de calibrage) dans la chambre de l\'appareil. Suivez les flèches et appuyez sur (*zero*) pour effectuer le <b>test zéro</b>. Patientez pour une période de <b>réaction de %reactionTime1</b>.</string>
     <string name="wipe_place_align_vial_sample_test">Essuyez l\'extérieur du flacon (l\'échantillon), maintenez le capuchon du flacon et mettez le flacon (l\'échantillon) dans la chambre de l\'appareil. Suivez les flèches et appuyez sur (*test*)</string>
     <string name="press_enter_wait_1">Appuyez sur (*enter*) et patientez pour une période de <b>%reactionTime1</b></string>
     <string name="press_enter_wait_2">Appuyez sur (*enter*) et patientez pour une période de <b>réaction de %reactionTime2</b></string>
     <string name="remix">Remixez la solution</string>
     <string name="insert_16mm_adapter">Insérez l\'adaptateur pour 16 mm Ø flacons ronds.</string>
-    <string name="reaction_tube_1ml_sample">Ouvrez un flacon de réaction à couvercle blanc et ajoutez <b>1 ml de l\'échantillon d\'eau</b>. Fermez soigneusement le capuchon.</string>
+    <string name="reaction_tube_1ml_sample">Ouvrez un the NitraX reagent A et ajoutez 1 ml de l\'échantillon d\'eau. Fermez soigneusement le capuchon.</string>
     <string name="reaction_tube_2ml_blank">Ouvrez un flacon de réaction à couvercle blanc et ajoutez <b>2 ml d\'eau déminéralisée</b> (ceci est la cuvette de calibrage).</string>
     <string name="reaction_tube_2ml_sample">Ouvrez un autre flacon de réaction à couvercle blanc et ajoutez <b>2 ml de l\'échantillon d\'eau</b> (ceci est l\'échantillon).</string>
     <string name="reaction_tube_1_tenth_ml_blank">Ouvrez un flacon de réaction à couvercle blanc et ajoutez <b>0.1 ml d\'eau déminéralisée</b> (ceci est la cuvette de calibrage).</string>
@@ -94,7 +111,8 @@
     <string name="blend_tss">Mélanger env. 500 ml de l\'échantillon d\'eau (par exemple dans un mélangeur) à grande vitesse pendant 2 minutes.</string>
     <string name="stir_blended_water">Remuez l\'échantillon d\'eau incorporeré. Rincez immédiatement le flacon de l\'échantillon d\'eau et remplissez le avec <b>10 ml d\'échantillon d\'eau.</b></string>
     <string name="stir_water_sample">Remuez l\'échantillon d\'eau. Rincez immédiatement le flacon de l\'échantillon d\'eau et remplissez le avec <b>10 ml d\'échantillon d\'eau.</b></string>
-    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero">Remplissez le flacon de (24 mm Ø) avec <b>2 ml de votre échantillon  d\'eau </b> et <b>8 ml d\'eau déminéralisée</b>, essuyez l\'extérieur du flacon, fermez le flacon et mettez le flacon dans la chambre. Aligner le tube dans la chambre de l\'appareil en tenant compte de la flèche marquée et appuyez sur [*zero*] pour effectuer le <b>test zéro</b></string>
-    <string name="add_spoon_cyanide_1">Ajoutez <b>deux cuillèrée du réactif No. 4 (white) of Cyanide-11</b> au même échantillon d\'eau</string>
-    <string name="add_spoon_cyanide_2">Ajoutez <b>deux cuillèrée du réactif No. 4 (white) of Cyanide-12</b> au même échantillon d\'eau</string>
+    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero">Remplir le flacon (Ø 24 mm) avec <b>2 ml de votre échantillon</b> et <b>8 ml d\'eau déminéralisée</b>, essuyez l’extérieur du flacon, tenez le flacon avec le couvercle et placez le flacon dans la chambre. Alignez les flèches et appuyez sur (*zero*) pour effectuer <b>le test du zéro</b></string>
+    <string name="add_spoon_cyanide_1">Ajouter <b>deux cuillères n° 4 (blanches) de Cyanide-11</b> dans l\'échantillon d\'eau préparé.</string>
+    <string name="add_spoon_cyanide_2">Ajouter <b>deux cuillères No. 4 (blanches) de Cyanide-12</b> dans l\'échantillon d\'eau préparé</string>
+    <string name="add_reagent_1_tablet_dissolve">Ajouter <b>une pastille %reagent1</b> directement de l\'emballage protecteur dans l\'échantillon d\'eau, écraser la pastille à l\'aide d\'un agitateur propre et dissoudre complètement la pastille.</string>
 </resources>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version='1.0' encoding='UTF-8'?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -16,9 +16,7 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <resources xmlns:tools="http://schemas.android.com/tools">
-
     <!--Common-->
     <string name="ok">OK</string>
     <string name="retry">Réessayer</string>
@@ -29,32 +27,97 @@
     <string name="other">Autre</string>
     <string name="save">Enregistrer</string>
     <string name="settings">Paramètres</string>
-    <string name="about">A propos</string>
-    <string name="version" tools:ignore="UnusedResources">Version</string>
+    <string name="about">À propos de</string>
+    <string name="version">Version</string>
     <string name="required">Obligatoire</string>
     <string name="survey">Enquête</string>
-    <string name="success">Succès</string>
-    <string name="done">Effectué</string>
-
+    <string name="success" tools:ignore="UnusedResources">Succès</string>
+    <string name="done" tools:ignore="UnusedResources">Effectué</string>
+    <string name="close">Fermer</string>
+    <string name="previous">Précédent</string>
+    <string name="next">Suivant</string>
+    <string name="navigate_up">Naviguer vers le haut</string>
+    <string name="logo">Logo</string>
     <string name="result">Résultat</string>
     <string name="language">Langue</string>
     <string name="notSupported">Non pris en charge</string>
-
-    <string name="phoneDoesNotSupport">Cet appareil ne peut assurer cette fonctionnalité</string>
-    <string name="cannotStartTest">Impossible de commencer le test</string>
-    <string name="errorLoadingConfiguration">Impossible de charger les informations de configuration</string>
-    <string name="pleaseContactSupport">Veuillez contacter le service technique</string>
+    <string name="stage_one"><b>Étape 1 :</b></string>
+    <string name="stage_two"><b>Étape 2 :</b></string>
+    <string name="us_cm">μS/cm</string>
+    <string name="ms_cm">ms/cm</string>
+    <string name="select_unit">Sélectionner l\'unité</string>
+    <string name="submitResult">Soumettre le résultat</string>
+    <string name="warning">Attention</string>
+    <string name="notFound">Introuvable</string>
+    <string name="instructions">Instructions</string>
+    <plurals name="minutes">
+        <item quantity="one">%1$d minutes</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+    <!--External-->
+    <string name="sensor">Le capteur</string>
+    <string name="sensors">Les capteurs</string>
+    <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connexion à l\'appareil en cours</string>
     <string name="acceptResult">Accepter le résultat</string>
-
+    <!--Sensor-->
+    <string name="deviceConnectSensor">Veuillez connecter le capteur</string>
+    <string name="celsius">°Celsius</string>
+    <string name="dipSensorInSample">Plongez le capteur dans l\'échantillon</string>
+    <string name="selectTest">Sélectionnez Test</string>
+    <string name="awaitingResult">Résultat en attente</string>
+    <string name="deviceConnected">Appareil connecté</string>
+    <string name="sensorDetails">Les détails du capteur</string>
+    <string name="enterAnIdForSensor">Entrez un identifiant pour ce capteur</string>
+    <string name="ecSensorId">Identifiant de la sonde CE</string>
+    <!--Alerts-->
+    <string name="cannotStartTest">Impossible de commencer le test</string>
+    <string name="errorTestNotAvailable">Le test demandé n\'est pas disponible</string>
+    <string name="pleaseContactSupport">Veuillez contacter le service technique</string>
+    <string name="versionExpired">Version expirée</string>
+    <string name="thisVersionHasExpired">Cette version de l\'application a expiré.</string>
+    <string name="uninstallAndInstallFromStore">Veuillez désinstaller puis installer la dernière version à partir de Play Store.</string>
+    <!--Permission-->
+    <string name="storagePermission">L\'autorisation de stockage est requise</string>
+    <string name="cameraAndStoragePermissions">Caméra &amp; amp; les autorisations de stockage sont requises</string>
+    <!--Sensor-->
+    <string name="incorrectDevice">Dispositif incorrect</string>
+    <string name="expectedDeviceNotFound">Le capteur attendu n\'a pas été trouvé.</string>
+    <string name="connectCorrectSensor">
+    <Data><![CDATA[Connectez le <b>%s</b> capteur.]]></Data>
+  </string>
+    <!--Messages-->
+    <string name="phoneDoesNotSupport">Cette fonctionnalité n\'est pas pris en charge par cet appareil</string>
+    <string name="errorLoadingConfiguration">Impossible de charger les informations de configuration</string>
+    <!--Bluetooth-->
+    <string name="nearby_devices">Les appareils à proximité</string>
+    <string name="connect_device">Connectez-vous à votre appareil</string>
+    <string name="to_turn_bluetooth_on">Pour activer le bluetooth:</string>
+    <string name="connect">Connectez</string>
+    <string name="error_bluetooth_not_supported">Bluetooth non pris en charge.</string>
+    <string name="location_permission">L\'autorisation de localisation est nécessaire pour la connexion par Bluetooth</string>
+    <string name="unknown_device">Inconnu</string>
+    <string name="scanning">Numérisation …</string>
+    <string name="searching_for_device">Recherche de périphériques Bluetooth</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
-
-    <!--Strip Test-->
-    <string name="instructions">Instructions</string>
-    <string name="prepare_test">Preparez test</string>
-    <string name="prepare_camera_instruction">NB: Ne commencez pas encore un test.\nTenez le camera sur la carte pour verifier les conditions lumière.</string>
-    <string name="next">Suivant</string>
-
+    <string name="legalInformation">L\'information légale</string>
+    <string name="terms_of_service">Conditions d\'utilisation</string>
+    <!--Software notices-->
+    <string name="software_incorporates_material">Ce logiciel incorpore du matériel provenant des projets énumérés ci-dessous</string>
+    <string name="apache_license_2">Licence Apache 2.0</string>
+    <string name="mit_license">Licence MIT</string>
+    <string name="cca_share_license">CC BY-NC-SA 4.0 - International</string>
+    <string name="cca_license">CC BY 4.0 International</string>
+    <string name="software_notices">Avis logiciels</string>
+    <string name="eclipse_public_license">Eclipse Public License 1.0</string>
+    <!--Intro-->
+    <string name="connect_with_app">Connectez-vous avec Akvo Flow</string>
+    <string name="a_water_quality_testing_solution">Une solution d\'analyse de la qualité de l\'eau qui supporte plus de 20 paramètres, comme le pH, E.coli ou le chlore libre.</string>
+    <string name="test_water_quality_using">Tester la qualité de l\'eau à l\'aide de la colorimétrie, de la microbiologie, des capteurs et des bandelettes d\'analyse connectés.</string>
+    <string name="app_is_integrated">Akvo Caddisfly est intégré à Akvo Flow, un outil de collecte de données et de suivi.</string>
+    <string name="to_conduct_a_water_quality_test">Pour effectuer un test de qualité de l\'eau, allez dans Flow et sélectionnez la question Caddisfly.</string>
+    <string name="go_to_external_app">Aller à Akvo Flow</string>
+    <string name="errorAkvoFlowRequired">Veuillez installer l\'application Akvo Flow</string>
 </resources>
