@@ -23,36 +23,49 @@
 
     <string name="read_instructions">Lea las instrucciones</string>
     <string name="take_photo_compartments">Tome una foto de la bolsa de compartimiento</string>
-    <string name="confidenceInterval">Superior 95 &#37; Intervalo de confianza</string>
+    <string name="confidenceInterval">Superior 95&#37; Intervalo de confianza</string>
     <string name="setCompartmentColors">Establecer colores de los compartimentos.</string>
 
-    <string name="put_on_gloves">Ponerse tus guantes de de seguro</string>
+    <string name="health_risk_category">Categoría de riesgo para la salud (basado en la NMP y el intervalo de confianza)</string>
+    <string name="recreational_health_risk_category">Categoría de riesgo de salud recreativa de la EPA de los EE. UU. Basada en NMP y nivel de confianza superior del 95%</string>
+
+    <string name="put_on_gloves">Ponerse guantes </string>
     <string name="collect_100ml_water_sample">Recoger <b>100 ml </b> de muestra de agua con botella o bolsa de Thio.</string>
     <string name="avoid_touching_with_bare_hands">Evite tocar el interior de la botella, la tapa o la bolsa Thio con las manos descubiertas.</string>
-    <string name="open_growth_medium_sachet">Abra la bolsita de medio de crecimiento y agregue la yema de prueba directamente a la muestra de la bolsita</string>
-    <string name="dissolve_medium_in_sample">Disuelva el medio en la muestra para 10 – 12 minutos (máximo) haciendo girar periódicamente la botella o apretando el botón de prueba en la bolsa Thio para promover la liberación del medio de su portador de plástico</string>
+    <string name="open_growth_medium_sachet">Abra la bolsita de medio de crecimiento y agrega la pastilla de prueba directamente a la muestra de la bolsita</string>
+    <string name="dissolve_medium_in_sample">Disuelva el medio en la muestra para 10 – 12 minutos (máximo) haciendo girar periódicamente la bolsa o apretando el botón de prueba en la bolsa Thio para promover la liberación del medio de su portador de plástico</string>
     <string name="medium_dissolves">El medio se disuelve de su portador de plástico.</string>
     <string name="when_medium_dissolved">Cuando el medio está completamente disuelto, el portador de plástico se vuelve blanco o casi blanco.</string>
+    <string name="label_compartment_bag">Etiquete la bolsa y / o pegue la etiqueta del código de barras en la bolsa del compartimiento.</string>
     <string name="tear_perforated_seam">Rasgar la costura perforada en la parte superior de la bolsa.</string>
     <string name="rub_sides_of_compartment">Frote los lados en la parte superior de cada compartimiento para abrir la bolsa, use las lengüetas blancas en la parte superior de la bolsa para mantener la bolsa abierta mientras se vierte.</string>
     <string name="slowly_pour_sample_into_bag">Vierta lentamente la muestra en la bolsa mientras la inclina y aprieta suavemente para distribuir la muestra entre los cinco compartimentos.</string>
     <string name="fill_evenly_across_bag"><b>Llene uniformemente a través de la bolsa hasta la línea de llenado negra</b>.</string>
     <string name="leave_test_bud_carrier">Deje el portador del brote de prueba en una botella o bolsa Thio mientras lo vierte.</string>
     <string name="attach_seal_clip">Coloque el clip de sellado en la bolsa por encima de la línea de llenado y por debajo de las aberturas superiores del compartimiento.</string>
-    <string name="snap_rod_shaped">Coloque la parte con forma de varilla del clip del otro lado de la bolsa en forma de U para bloquearla en su lugar.</string>
+    <string name="snap_rod_shaped">Coloque la parte con forma de cilindro-clip del otro lado de la bolsa en forma de U para bloquearla en su lugar.</string>
     <string name="roll_fold_bag">Después de colocar el clip, la bolsa se puede mantener vertical u horizontal.</string>
     <string name="close_top_of_bag">Cierre la parte superior de la bolsa con el sello amarillo Whirl-Pak y luego baje la bolsa hacia el clip del sello <b>(paso 1)</b> y doble los extremos amarillos <b>(paso 2)</b>.</string>
     <string name="let_incubate">Deje que la muestra se incube, dependiendo de la temperatura ambiente:</string>
     <string name="take_photo_of_incubated">Tome una foto de la muestra incubada.</string>
     <string name="change_colors_to_match">Cambie los colores en la interfaz para que coincidan con los colores de la muestra en los compartimientos de la bolsa.</string>
     <string name="click_compartments_to_change">Haga clic en los compartimentos para cambiar de color.</string>
+    <string name="clean_cbt">Después de haber calificado los resultados de la prueba: agregue 1–2 ml de blanqueador líquido (NaOCl) o suficientes tabletas de cloro libre (hipoclorito de calcio o dicloroisocianurato de sodio) para proporcionar aproximadamente 100 miligramos de cloro libre. Después de 45 minutos, vierta el contenido en un fregadero, inodoro o agujero en el suelo y deseche de forma segura la bolsa vacía del compartimiento. Retener el clip de plástico para su reutilización.</string>
+
     <string name="low_risk_safe">Riesgo bajo / seguro</string>
     <string name="probably_safe">Riesgo intermedio / probablemente seguro</string>
     <string name="intermediate_possibly_safe">Riesgo intermedio / posiblemente seguro</string>
     <string name="possibly_unsafe">Alto riesgo / posiblemente inseguro</string>
     <string name="probably_unsafe">Alto riesgo / Probablemente inseguro</string>
     <string name="very_high_risk_unsafe">Muy alto riesgo / inseguro</string>
+    <string name="low_risk_probably_safe">Riesgo bajo / probablemente seguro</string>
+    <string name="low_risk_possibly_safe">Riesgo bajo / posiblemente seguro</string>
     <string name="high_risk_probably_unsafe">Alto riesgo / Probablemente inseguro</string>
+    <string name="very_unsafe">Muy inseguro</string>
+
+    <string name="collect_10ml_water_sample">Recoger <b>10 ml </b>de muestra de agua con Thio Bag (o botella).</string>
+    <string name="add_90ml_distilled_water">Añadir <b> 90ml </b> de agua destilada a la muestra de agua.</string>
+
     <string name="temperature">Temperatura</string>
     <string name="incubation_time">Tiempo de incubación</string>
     <string name="temperature_34_44">35 – 44.5°C</string>

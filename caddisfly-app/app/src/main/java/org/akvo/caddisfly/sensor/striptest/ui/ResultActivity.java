@@ -113,7 +113,7 @@ public class ResultActivity extends BaseActivity {
                 totalImageUrl = "";
             }
 
-            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo,
+            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
                     resultStringValues, brackets, totalImageUrl);
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());

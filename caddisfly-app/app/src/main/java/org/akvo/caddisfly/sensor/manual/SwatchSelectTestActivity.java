@@ -33,8 +33,12 @@ public class SwatchSelectTestActivity extends BaseActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        if (savedInstanceState == null) {
+        if (testInfo == null) {
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+        }
+
+        if (testInfo == null) {
+            return;
         }
 
         setTitle(testInfo.getName());
@@ -84,7 +88,7 @@ public class SwatchSelectTestActivity extends BaseActivity
 
         SparseArray<String> results = new SparseArray<>();
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, null);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo, results, null, null);
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());

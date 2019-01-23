@@ -46,7 +46,7 @@ public class ResultsTest {
         results.put(1, "32432");
         results.put(2, "29.5");
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, "");
+        JSONObject resultJson = TestConfigHelper.getJsonResult(null, testInfo, results, null, "");
 
         // Replace items that cannot be tested (e.g. currentTime)
         String json = resultJson.toString().replaceAll("(\"testDate\":\").*?\"", "$1today\"");

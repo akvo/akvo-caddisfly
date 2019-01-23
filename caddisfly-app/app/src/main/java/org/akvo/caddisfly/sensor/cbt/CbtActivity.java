@@ -60,8 +60,12 @@ public class CbtActivity extends BaseActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        if (savedInstanceState == null) {
+        if (testInfo == null) {
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+        }
+
+        if (testInfo == null) {
+            return;
         }
 
         setTitle(testInfo.getName());
@@ -172,7 +176,7 @@ public class CbtActivity extends BaseActivity
         results.put(2, mpnValue.getMpn());
         results.put(3, String.valueOf(mpnValue.getConfidence()));
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, imageFileName);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo, results, null, imageFileName);
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());

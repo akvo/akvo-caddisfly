@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.helper;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.SparseArray;
 
@@ -31,6 +32,7 @@ import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.util.AssetsManager;
+import org.akvo.caddisfly.util.StringUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,7 +129,7 @@ public final class TestConfigHelper {
      * @param resultImageUrl the url of the image
      * @return the result in json format
      */
-    public static JSONObject getJsonResult(TestInfo testInfo, SparseArray<String> results,
+    public static JSONObject getJsonResult(Context context, TestInfo testInfo, SparseArray<String> results,
                                            SparseArray<String> brackets, String resultImageUrl) {
 
         JSONObject resultJson = new JSONObject();
@@ -141,7 +143,14 @@ public final class TestConfigHelper {
             JSONArray resultsJsonArray = new JSONArray();
             for (Result subTest : testInfo.getResults()) {
                 JSONObject subTestJson = new JSONObject();
-                subTestJson.put(ConstantJsonKey.NAME, subTest.getName());
+
+                String subTestName = subTest.getName();
+                if (subTestName.contains("string:")) {
+                    subTestName = subTestName.replace("string:", "");
+                    subTestName = StringUtil.getStringResourceByName(context, subTestName).toString();
+                }
+                subTestJson.put(ConstantJsonKey.NAME, subTestName);
+
                 subTestJson.put(ConstantJsonKey.UNIT, subTest.getUnit());
                 subTestJson.put(ConstantJsonKey.ID, subTest.getId());
 

@@ -75,7 +75,7 @@ public final class TestHelper {
     private static final boolean TAKE_SCREENSHOTS = false;
     public static Map<String, String> currentHashMap;
     public static UiDevice mDevice;
-    public static String mCurrentLanguage = "fr";
+    public static String mCurrentLanguage = "en";
     @SuppressWarnings("FieldCanBeLocal")
     private static int mCounter;
 

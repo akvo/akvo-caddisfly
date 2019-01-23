@@ -6517,7 +6517,7 @@
       "results": [
         {
           "id": 1,
-          "name": "Health Risk Category (Based on MPN and Confidence Interval)"
+          "name": "string:health_risk_category"
         },
         {
           "id": 2,
@@ -6526,7 +6526,7 @@
         },
         {
           "id": 3,
-          "name": "Upper 95% Confidence Interval"
+          "name": "string:confidenceInterval"
         }
       ]
     },
@@ -6606,7 +6606,7 @@
       "results": [
         {
           "id": 1,
-          "name": "US EPA Recreational Health Risk Category Based on MPN and Upper 95% Confidence Level"
+          "name": "string:recreational_health_risk_category"
         },
         {
           "id": 2,
@@ -6615,7 +6615,7 @@
         },
         {
           "id": 3,
-          "name": "Upper 95% Confidence Interval"
+          "name": "string:confidenceInterval"
         }
       ]
     },

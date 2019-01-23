@@ -98,7 +98,7 @@ public class SwatchSelectTestResultFragment extends BaseFragment {
             results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
             results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
 
-            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(testInfo,
+            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(getActivity(), testInfo,
                     results, null, null);
 
             if (getActivity() != null) {

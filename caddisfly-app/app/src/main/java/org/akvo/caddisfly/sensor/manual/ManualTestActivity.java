@@ -49,8 +49,12 @@ public class ManualTestActivity extends BaseActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        if (savedInstanceState == null) {
+        if (testInfo == null) {
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+        }
+
+        if (testInfo == null) {
+            return;
         }
 
         setTitle(testInfo.getName());
@@ -139,7 +143,8 @@ public class ManualTestActivity extends BaseActivity
 
         results.put(1, result);
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, imageFileName);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo,
+                results, null, imageFileName);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         if (!imageFileName.isEmpty()) {
             resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);

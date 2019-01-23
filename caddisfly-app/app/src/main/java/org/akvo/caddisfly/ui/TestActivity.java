@@ -109,7 +109,7 @@ public class TestActivity extends BaseActivity {
         mainLayout = findViewById(R.id.mainLayout);
 
         // Add list fragment if this is first creation
-        if (savedInstanceState == null) {
+        if (testInfo == null) {
 
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
 
@@ -302,22 +302,24 @@ public class TestActivity extends BaseActivity {
             //return the test result to the external app
             Intent intent = new Intent(data);
 
-            Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, testInfo.getUuid());
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, testInfo.getName());
-            bundle.putString("Brand", testInfo.getBrand());
-            bundle.putString("Type", testInfo.getSubtype().toString().toLowerCase());
-            bundle.putString("Range", testInfo.getRanges());
+            if (!AppConfig.STOP_ANALYTICS) {
+                Bundle bundle = new Bundle();
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, testInfo.getUuid());
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, testInfo.getName());
+                bundle.putString("Brand", testInfo.getBrand());
+                bundle.putString("Type", testInfo.getSubtype().toString().toLowerCase());
+                bundle.putString("Range", testInfo.getRanges());
 
-            String instanceName = getIntent().getStringExtra(SensorConstants.FLOW_INSTANCE_NAME);
+                String instanceName = getIntent().getStringExtra(SensorConstants.FLOW_INSTANCE_NAME);
 
-            if (instanceName != null && !instanceName.isEmpty()) {
-                bundle.putString("Instance", instanceName);
-                bundle.putString("InstanceTest", instanceName + "," + testInfo.getName() + "," + testInfo.getUuid());
+                if (instanceName != null && !instanceName.isEmpty()) {
+                    bundle.putString("Instance", instanceName);
+                    bundle.putString("InstanceTest", instanceName + "," + testInfo.getName() + "," + testInfo.getUuid());
+                }
+
+                bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "test");
+                mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
             }
-
-            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "test");
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
             this.setResult(Activity.RESULT_OK, intent);
             finish();

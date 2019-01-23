@@ -136,7 +136,7 @@ public class BluetoothResultFragment extends Fragment {
             Intent resultIntent = new Intent();
             Activity activity = getActivity();
             if (activity != null) {
-                JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo,
+                JSONObject resultJson = TestConfigHelper.getJsonResult(getActivity(), testInfo,
                         results, null, "");
                 resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
