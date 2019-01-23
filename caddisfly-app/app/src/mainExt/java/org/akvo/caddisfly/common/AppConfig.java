@@ -32,6 +32,11 @@ public final class AppConfig {
     public static final boolean STOP_ANIMATIONS = false;
 
     /**
+     * Stop analytics only for testing
+     */
+    public static final boolean STOP_ANALYTICS = true;
+
+    /**
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */

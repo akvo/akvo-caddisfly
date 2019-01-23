@@ -316,7 +316,7 @@ public class SensorActivity extends BaseActivity {
     @SuppressLint("ShowToast")
     private void displayResult(String value) {
 
-        String tempValue = value;
+        String tempValue = value.trim();
 
         if (AppPreferences.getShowDebugInfo()) {
             Toast.makeText(this, tempValue, Toast.LENGTH_SHORT).show();
@@ -328,7 +328,6 @@ public class SensorActivity extends BaseActivity {
         }
 
         // clean up data
-        tempValue = tempValue.trim();
         if (tempValue.contains(LINE_FEED)) {
             String[] values = tempValue.split(LINE_FEED);
             if (values.length > 0) {
@@ -372,9 +371,13 @@ public class SensorActivity extends BaseActivity {
                 alertDialog.dismiss();
             }
 
-            String[] resultArray = tempValue.split(",");
-
             showDebugInfo(tempValue);
+
+            if (tempValue.contains(" ")) {
+                return;
+            }
+
+            String[] resultArray = tempValue.split(",");
 
             if (resultArray.length == testInfo.getResponseFormat().split(",").length) {
 
@@ -392,7 +395,7 @@ public class SensorActivity extends BaseActivity {
                         results.put(Integer.parseInt(responseFormat.substring(i, i + 1)), String.valueOf(result));
 
                     } catch (Exception e) {
-                        Timber.e(e);
+                        Timber.e("%s: %s | %s", e.getMessage(), value, tempValue);
                         return;
                     }
                 }
@@ -465,7 +468,8 @@ public class SensorActivity extends BaseActivity {
 
         Intent resultIntent = new Intent();
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(testInfo, results, null, EMPTY_STRING);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo, results,
+                null, EMPTY_STRING);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
 
         setResult(Activity.RESULT_OK, resultIntent);
