@@ -141,6 +141,8 @@ public class CbtTest {
 
         mDevice.waitForIdle();
 
+        onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()));
+
         ViewInteraction customShapeButton = onView(
                 allOf(withId(R.id.compartments),
                         isDisplayed()));
@@ -239,6 +241,8 @@ public class CbtTest {
                         isDisplayed()));
         button.check(matches(isDisplayed()));
 
+        onView(withText(R.string.result)).check(matches(isDisplayed()));
+
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.buttonAcceptResult), withText(R.string.acceptResult),
                         childAtPosition(
@@ -249,10 +253,10 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("Health Risk Category (Based on MPN and Confidence Interval): "
+        assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.health_risk_category) + ": "
                 + getString(mIntentsRule.getActivity(), R.string.very_high_risk_unsafe) + " ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >100 MPN/100ml")));
-        assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 9435.1 ")));
+        assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.confidenceInterval) + ": 9435.1 ")));
     }
 
     @Test
@@ -373,9 +377,9 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("US EPA Recreational Health Risk Category Based on MPN and Upper 95% Confidence Level: "
+        assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.recreational_health_risk_category) + ": "
                 + getString(mIntentsRule.getActivity(), R.string.very_unsafe) + " ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")));
-        assertNotNull(mDevice.findObject(By.text("Upper 95% Confidence Interval: 94351.0 ")));
+        assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.confidenceInterval) + ": 94351.0 ")));
     }
 }

@@ -91,7 +91,6 @@ public class ResultActivity extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strip_result);
-        setTitle(R.string.result);
 
         buttonSave = findViewById(R.id.button_save);
         buttonSave.setOnClickListener(v -> {
@@ -129,6 +128,8 @@ public class ResultActivity extends BaseActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+
+        setTitle(R.string.result);
     }
 
     @Override

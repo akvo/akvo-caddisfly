@@ -68,9 +68,13 @@ public class CbtActivity extends BaseActivity
             return;
         }
 
-        setTitle(testInfo.getName());
-
         startCbtTest();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setTitle(testInfo.getName());
     }
 
     private void startCbtTest() {

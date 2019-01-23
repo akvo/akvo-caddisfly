@@ -57,9 +57,13 @@ public class ManualTestActivity extends BaseActivity
             return;
         }
 
-        setTitle(testInfo.getName());
-
         startManualTest();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setTitle(testInfo.getName());
     }
 
     private void startManualTest() {

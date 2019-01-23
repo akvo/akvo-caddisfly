@@ -128,8 +128,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
         testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
 
-        setTitle("Connection");
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             mScanCallback = new ScanCallback() {
@@ -201,6 +199,12 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         textSubtitle.setText(R.string.searching_for_device);
 
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setTitle(R.string.connect);
     }
 
     private void showInstructionDialog() {

@@ -33,8 +33,8 @@
         android:layout_gravity="center_horizontal"
         android:background="#c20f0f"
         android:orientation="vertical"
-        android:paddingBottom="19dp"
-        android:paddingTop="19dp">
+        android:paddingTop="19dp"
+        android:paddingBottom="19dp">
 
         <TextView
             android:id="@+id/textResult"
@@ -42,10 +42,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textColor="#faf1f1"
-            android:textSize="34dp"
+            android:textSize="32dp"
             android:textStyle="bold"
             tools:ignore="SpUsage"
-            tools:text="High Risk" />
+            tools:text="Extremely High Risky" />
 
         <TextView
             android:id="@+id/textResult1"
@@ -65,8 +65,8 @@
         android:layout_height="wrap_content"
         android:background="#d23f3f"
         android:orientation="vertical"
-        android:paddingBottom="9dp"
-        android:paddingTop="19dp">
+        android:paddingTop="19dp"
+        android:paddingBottom="9dp">
 
         <TextView
             android:id="@+id/textResult2"
@@ -96,8 +96,8 @@
         android:layout_height="wrap_content"
         android:background="#c20f0f"
         android:orientation="vertical"
-        android:paddingBottom="9dp"
-        android:paddingTop="19dp">
+        android:paddingTop="19dp"
+        android:paddingBottom="9dp">
 
         <TextView
             android:id="@+id/textResult3"

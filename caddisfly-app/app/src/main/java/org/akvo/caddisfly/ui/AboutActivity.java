@@ -60,6 +60,11 @@ public class AboutActivity extends BaseActivity {
 
         b.textVersion.setText(CaddisflyApp.getAppVersion(AppPreferences.isDiagnosticMode()));
 
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         setTitle(R.string.about);
     }
 

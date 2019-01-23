@@ -41,9 +41,13 @@ public class SwatchSelectTestActivity extends BaseActivity
             return;
         }
 
-        setTitle(testInfo.getName());
-
         startTest();
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setTitle(testInfo.getName());
     }
 
     private void startTest() {

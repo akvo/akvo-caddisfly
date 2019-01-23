@@ -56,37 +56,37 @@
         app:layout_constraintGuide_percent=".81" />
 
     <TextView
+        android:id="@+id/textInfo2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textInfo"
+        android:paddingStart="@dimen/activity_horizontal_margin"
+        android:paddingTop="8dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingBottom="16dp"
+        android:text="@string/click_compartments_to_change"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage" />
+
+    <TextView
         android:id="@+id/textInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:paddingBottom="8dp"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin"
         android:paddingTop="8dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingBottom="16dp"
         android:text="@string/change_colors_to_match"
-        android:textSize="17dp"
+        android:textSize="16dp"
         app:layout_constraintBottom_toTopOf="@+id/compartments"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInfo2"
-        tools:ignore="SpUsage" />
-
-    <TextView
-        android:id="@+id/textInfo2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textInfo"
-        android:paddingBottom="8dp"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:paddingTop="8dp"
-        android:text="@string/click_compartments_to_change"
-        android:textSize="17dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpUsage" />
 
     <Button
