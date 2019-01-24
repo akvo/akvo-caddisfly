@@ -67,15 +67,15 @@ import static org.akvo.caddisfly.util.TestUtil.sleep;
 
 public final class TestHelper {
 
+    public static final String mCurrentLanguage = "fr";
+    private static final boolean TAKE_SCREENSHOTS = false;
     private static final Map<String, String> STRING_HASH_MAP_EN = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_ES = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_FR = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_IN = new HashMap<>();
     private static final Map<String, String> CALIBRATION_HASH_MAP = new HashMap<>();
-    private static final boolean TAKE_SCREENSHOTS = false;
     public static Map<String, String> currentHashMap;
     public static UiDevice mDevice;
-    public static String mCurrentLanguage = "en";
     @SuppressWarnings("FieldCanBeLocal")
     private static int mCounter;
 
@@ -113,7 +113,6 @@ public final class TestHelper {
 
     @SuppressWarnings("deprecation")
     public static void loadData(Activity activity, String languageCode) {
-        mCurrentLanguage = languageCode;
 
         STRING_HASH_MAP_EN.clear();
         STRING_HASH_MAP_ES.clear();

@@ -253,7 +253,7 @@ public class TestActivity extends BaseActivity {
     private void startBluetoothTest() {
         Intent intent;
         // skip scanning for device in testing mode
-        if (AppPreferences.isTestMode()) {
+        if (AppPreferences.isTestMode() || AppConfig.SKIP_BLUETOOTH_SCAN) {
             intent = new Intent(this, DeviceControlActivity.class);
         } else {
             intent = new Intent(this, DeviceScanActivity.class);

@@ -34,7 +34,12 @@ public final class AppConfig {
     /**
      * Stop analytics only for testing
      */
-    public static final boolean STOP_ANALYTICS = true;
+    public static final boolean STOP_ANALYTICS = false;
+
+    /**
+     * Stop analytics only for testing
+     */
+    public static final boolean SKIP_BLUETOOTH_SCAN = false;
 
     /**
      * Date on which the app version will expire.
