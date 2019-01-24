@@ -26,6 +26,9 @@
     <string name="confidenceInterval">Intervalle de confiance supérieur à 95&#37;</string>
     <string name="setCompartmentColors">Définir les couleurs des compartiments</string>
 
+    <string name="health_risk_category">Catégorie de risque pour la santé (Basé sur le Nombre le Plus Probable et l\'Intervalle de Confiance)</string>
+    <string name="recreational_health_risk_category">Catégorie de risque pour la santé récréative de l\'EPA des États-Unis Basé sur le Nombre le Plus Probable et sur un Niveau de Confiance Supérieur de 95%.</string>
+
     <string name="put_on_gloves">Portez des gants en plastique</string>
     <string name="collect_100ml_water_sample">Collectez <b>100 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
     <string name="avoid_touching_with_bare_hands">Évitez de toucher l\'intérieur de la bouteille, du couvercle ou du sac Thio avec les mains nues.</string>

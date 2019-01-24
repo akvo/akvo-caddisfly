@@ -151,7 +151,7 @@ public class StriptestTest {
 
         onView(withText(R.string.prepare_test)).perform(click());
 
-        sleep(8000);
+        sleep(10000);
 
         onView(withText(R.string.start)).perform(click());
 
