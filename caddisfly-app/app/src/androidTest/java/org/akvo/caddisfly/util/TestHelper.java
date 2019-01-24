@@ -67,7 +67,7 @@ import static org.akvo.caddisfly.util.TestUtil.sleep;
 
 public final class TestHelper {
 
-    public static final String mCurrentLanguage = "fr";
+    public static final String mCurrentLanguage = "en";
     private static final boolean TAKE_SCREENSHOTS = false;
     private static final Map<String, String> STRING_HASH_MAP_EN = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_ES = new HashMap<>();
