@@ -4642,10 +4642,12 @@
       "imageScale": "centerCrop",
       "reagents": [
         {
-          "name": "COPPER No. 1"
+          "name": "COPPER No. 1",
+          "code": "513550BT"
         },
         {
-          "name": "COPPER No. 2"
+          "name": "COPPER No. 2",
+          "code": "513560BT"
         }
       ],
       "sampleQuantity": "10",
@@ -4666,8 +4668,14 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet_dissolve",
+            "add_reagent_1_tablet",
             "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
           ]
         },
         {
@@ -5498,10 +5506,12 @@
       "reagents": [
         {
           "name": "NICKEL No. 1",
+          "code": "515630BT",
           "reactionTime": 2
         },
         {
-          "name": "NICKEL No. 2"
+          "name": "NICKEL No. 2",
+          "code": "515640BT"
         }
       ],
       "sampleQuantity": "10",
@@ -6660,6 +6670,11 @@
           "section": [
             "wipe_place_align_vial",
             "image:place_vial_test"
+          ]
+        },
+        {
+          "section": [
+            "high_residual_chlorine_zinc"
           ]
         }
       ],
