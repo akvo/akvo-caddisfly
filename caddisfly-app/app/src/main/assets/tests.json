@@ -4634,6 +4634,90 @@
       ]
     },
     {
+      "name": "Copper",
+      "subtype": "bluetooth",
+      "md610_id": "150",
+      "uuid": "dd4c2d20-0a23-4e2c-9a6a-1dfdf7533b50",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "COPPER No. 1"
+        },
+        {
+          "name": "COPPER No. 2"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.05,5",
+      "selectInstruction": "select_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_dissolve",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial",
+            "image:place_vial_test"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Free Copper",
+          "unit": "mg/l"
+        },
+        {
+          "id": 2,
+          "name": "Combined Copper"
+        },
+        {
+          "id": 3,
+          "name": "Total Copper"
+        }
+      ]
+    },
+    {
       "name": "Cyanide",
       "subtype": "bluetooth",
       "md610_id": "157",
@@ -5400,6 +5484,71 @@
         {
           "id": 1,
           "name": "Manganese",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Nickel",
+      "subtype": "bluetooth",
+      "md610_id": "257",
+      "uuid": "01b9ddba-c93c-416f-9420-a444a7fbd36f",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "NICKEL No. 1",
+          "reactionTime": 2
+        },
+        {
+          "name": "NICKEL No. 2"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.1,10",
+      "selectInstruction": "select_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_dissolve",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Nickel",
           "unit": "mg/l"
         }
       ]
@@ -6440,6 +6589,85 @@
           "id": 1,
           "name": "Turbidity",
           "unit": "FAU"
+        }
+      ]
+    },
+    {
+      "name": "Zinc",
+      "subtype": "bluetooth",
+      "md610_id": "400",
+      "uuid": "b662c6f2-9718-4276-9e67-1d3ae0c1651d",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "COPPER / ZINC LR",
+          "code": "512620BT",
+          "reactionTime": 5
+        },
+        {
+          "name": "EDTA",
+          "code": "512390BT"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.02,0.9",
+      "selectInstruction": "select_test_instruction",
+      "instructions": [
+        {
+          "section": [
+            "fill_new_vial_24_with_10ml_sample",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_blank_zero_wait",
+            "image:place_vial_blank"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Zinc",
+          "unit": "mg/l"
         }
       ]
     },

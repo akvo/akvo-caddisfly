@@ -49,6 +49,7 @@
     <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero">Fill vial (24 mm Ø) with <b>1 ml of your sample</b> and <b>9 ml of deionised water</b>, wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press (*zero*) to perform <b>zero test</b></string>
     <string name="fill_vial_24_with_10ml_deionized_water">Fill one clean vial (24 mm Ø) with <b>10 ml of deionised water (this is the blank)</b>.</string>
     <string name="fill_vial_24_with_10ml_sample">Fill another clean vial (24 mm Ø) with <b>10 ml of the water sample (this is the sample)</b></string>
+    <string name="fill_new_vial_24_with_10ml_sample">Fill a clean vial (24 mm Ø) with <b>10 ml of the water sample (this is the sample)</b></string>
     <string name="add_water_till_10ml">Add water sample to the 10 ml mark in the vial</string>
     <string name="add_sample_exact">Add <b>exactly %sampleQuantity ml of the water sample</b> to the prepared vial. Caution: Vial is filled up to the top!</string>
     <string name="remove_vial">Remove the vial from the sample chamber.</string>
