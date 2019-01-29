@@ -87,14 +87,14 @@ public class PageIndicatorView extends View {
         if (pageCount > 1) {
             for (int i = 0; i < pageCount; i++) {
                 if (activePage == i) {
-                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
-                            BULLET_RADIUS, fillPaint);
+                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, getHeight() / 2f,
+                            BULLET_RADIUS * 1.6f, fillPaint);
                 } else {
                     if (showDots) {
-                        canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
-                                BULLET_RADIUS / 2, fillPaint);
+                        canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, getHeight() / 2f,
+                                BULLET_RADIUS / 2f, fillPaint);
                     } else {
-                        canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, canvas.getHeight() / 2f,
+                        canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, getHeight() / 2f,
                                 BULLET_RADIUS, strokePaint);
                     }
                 }
