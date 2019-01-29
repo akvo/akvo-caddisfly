@@ -6632,6 +6632,11 @@
         },
         {
           "section": [
+            "dechlorinate_residual_chlorine_zinc"
+          ]
+        },
+        {
+          "section": [
             "add_reagent_1_tablet",
             "image:add_tablet"
           ]
@@ -6670,11 +6675,6 @@
           "section": [
             "wipe_place_align_vial",
             "image:place_vial_test"
-          ]
-        },
-        {
-          "section": [
-            "high_residual_chlorine_zinc"
           ]
         }
       ],
