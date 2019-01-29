@@ -4713,15 +4713,20 @@
         {
           "id": 1,
           "name": "Free Copper",
+          "md610_id": "free Cu",
           "unit": "mg/l"
         },
         {
           "id": 2,
-          "name": "Combined Copper"
+          "name": "Combined Copper",
+          "md610_id": "comb. Cu",
+          "unit": "mg/l"
         },
         {
           "id": 3,
-          "name": "Total Copper"
+          "name": "Total Copper",
+          "md610_id": "total Cu",
+          "unit": "mg/l"
         }
       ]
     },

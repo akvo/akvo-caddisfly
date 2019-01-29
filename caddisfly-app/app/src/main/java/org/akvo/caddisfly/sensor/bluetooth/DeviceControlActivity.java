@@ -280,6 +280,7 @@ public class DeviceControlActivity extends BaseActivity
                         showSelectTestView();
                     }
                 } catch (Exception e) {
+                    Toast.makeText(this, getString(R.string.invalid_data_received), Toast.LENGTH_LONG).show();
                     Timber.e("Bluetooth data error: %s", fullData);
                 }
 

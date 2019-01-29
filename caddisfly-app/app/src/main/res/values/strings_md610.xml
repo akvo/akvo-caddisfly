@@ -31,6 +31,7 @@
     <string name="perform_test"><![CDATA[Perform <b>%1$s</b> test on MD 610 and press (*f3*) when ready.]]></string>
     <string name="select_correct_test"><![CDATA[Select the correct test and try again.]]></string>
     <string name="data_does_not_match">Received data does not match the expected test type.</string>
+    <string name="invalid_data_received">Invalid data received</string>
     <string name="incorrect_test_selected">Incorrect test selected</string>
     <string name="select_test"><![CDATA[Select <b>%1$s</b> test on MD610]]></string>
     <string name="test_selected">Test Selected</string>
