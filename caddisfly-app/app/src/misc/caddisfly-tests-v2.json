@@ -97,6 +97,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "535500"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -113,6 +118,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "535600"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -129,6 +139,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "535650"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -169,6 +184,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "56L025165"
+        },
+        {
+          "code": "56L025365"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -240,6 +263,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "471056"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -266,6 +294,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "471010, 471020"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -337,6 +370,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530100"
+        },
+        {
+          "code": "530120"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -363,6 +404,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530100"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -379,6 +425,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530100"
+        },
+        {
+          "code": "530120"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -405,6 +459,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530100"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -421,6 +480,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "537300"
+        },
+        {
+          "code": "537310"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -447,6 +514,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "537310"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -463,6 +535,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "537300"
+        },
+        {
+          "code": "537310"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -561,6 +641,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "2418875"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -577,6 +662,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "467481"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -701,6 +791,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530560"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -717,6 +812,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530550"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -733,6 +833,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "56L006165"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -749,6 +854,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "56L006365"
+        },
+        {
+          "code": "56L016065"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -813,6 +926,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "535580"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -829,6 +947,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "502810, 465230"
+        },
+        {
+          "code": "512310BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -866,6 +992,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530980"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -930,6 +1061,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "531550"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -946,6 +1082,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "56L022865"
+        },
+        {
+          "code": "56L022965"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -1002,6 +1146,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "471040"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -1079,6 +1228,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "532160"
+        }
+      ],
       "results": [
         {
           "id": 1,
