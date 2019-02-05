@@ -176,7 +176,8 @@ public class CbtActivity extends BaseActivity
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(cbtResult, testInfo.getSampleQuantity());
 
-        results.put(1, StringUtil.getStringResourceByName(this, mpnValue.getRiskCategory()).toString());
+        results.put(1, StringUtil.getStringResourceByName(this,
+                mpnValue.getRiskCategory(), "en").toString());
         results.put(2, mpnValue.getMpn());
         results.put(3, String.valueOf(mpnValue.getConfidence()));
 

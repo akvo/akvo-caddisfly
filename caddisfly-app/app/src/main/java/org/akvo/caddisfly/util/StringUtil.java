@@ -22,6 +22,8 @@ package org.akvo.caddisfly.util;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -42,6 +44,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.widget.CenteredImageSpan;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,14 +55,33 @@ public final class StringUtil {
     }
 
     public static Spanned getStringResourceByName(Context context, String theKey) {
+        return getStringResourceByName(context, theKey,
+                context.getResources().getConfiguration().locale.getLanguage());
+    }
+
+    public static Spanned getStringResourceByName(Context context, String theKey, String language) {
         String key = theKey.trim();
         String packageName = context.getPackageName();
         int resId = context.getResources().getIdentifier(key, "string", packageName);
         if (resId == 0) {
             return Spannable.Factory.getInstance().newSpannable(fromHtml(key));
         } else {
-            return Spannable.Factory.getInstance().newSpannable(context.getText(resId));
+            if (!language.isEmpty()) {
+                return Spannable.Factory.getInstance().newSpannable(
+                        getLocalizedResources(context, new Locale(language)).getString(resId));
+            } else {
+                return Spannable.Factory.getInstance().newSpannable(context.getText(resId));
+            }
         }
+    }
+
+    @NonNull
+    private static Resources getLocalizedResources(Context context, Locale desiredLocale) {
+        Configuration conf = context.getResources().getConfiguration();
+        conf = new Configuration(conf);
+        conf.setLocale(desiredLocale);
+        Context localizedContext = context.createConfigurationContext(conf);
+        return localizedContext.getResources();
     }
 
     @SuppressWarnings("deprecation")
