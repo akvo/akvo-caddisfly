@@ -25,6 +25,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
@@ -82,6 +83,17 @@ public class CaddisflyApp extends Application {
         return version;
     }
 
+    // https://stackoverflow.com/a/52164101
+    public static String decrypt(String str) {
+        str = str.replace("-", "");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < str.length(); i += 3) {
+            String hex = str.substring(i + 1, i + 3);
+            result.append((char) (Integer.parseInt(hex, 16) ^ (Integer.parseInt(String.valueOf(str.charAt(i))))));
+        }
+        return result.toString();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -106,7 +118,7 @@ public class CaddisflyApp extends Application {
      *
      * @param languageCode If null uses language from app preferences else uses this value
      */
-    public void setAppLanguage(String languageCode, boolean isExternal, Handler handler) {
+    public void setAppLanguage(Context context, String languageCode, boolean isExternal, Handler handler) {
 
         try {
             Locale locale;
@@ -162,6 +174,12 @@ public class CaddisflyApp extends Application {
                 config.setLayoutDirection(locale);
                 res.updateConfiguration(config, dm);
 
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Locale.setDefault(locale);
+                    config.setLocale(locale);
+                    context.createConfigurationContext(config);
+                }
+
                 //if this session was launched from an external app then do not restart this app
                 if (!isExternal && handler != null) {
                     Message msg = handler.obtainMessage();
@@ -171,16 +189,5 @@ public class CaddisflyApp extends Application {
         } catch (Exception ignored) {
             // do nothing
         }
-    }
-
-    // https://stackoverflow.com/a/52164101
-    public static String decrypt(String str){
-        str = str.replace("-", "");
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < str.length(); i+=3) {
-            String hex =  str.substring(i+1, i+3);
-            result.append((char) (Integer.parseInt(hex, 16) ^ (Integer.parseInt(String.valueOf(str.charAt(i))))));
-        }
-        return result.toString();
     }
 }

@@ -143,7 +143,7 @@ public class TestActivity extends BaseActivity {
 
     private void getTestSelectedByExternalApp(FragmentManager fragmentManager, Intent intent) {
 
-        CaddisflyApp.getApp().setAppLanguage(
+        CaddisflyApp.getApp().setAppLanguage(this,
                 intent.getStringExtra(SensorConstants.LANGUAGE), true, handler);
 
         String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);

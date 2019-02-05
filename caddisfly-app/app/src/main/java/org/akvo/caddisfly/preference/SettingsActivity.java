@@ -165,7 +165,7 @@ public class SettingsActivity extends BaseActivity
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         if (getApplicationContext().getString(R.string.languageKey).equals(s)) {
-            CaddisflyApp.getApp().setAppLanguage(null, false, null);
+            CaddisflyApp.getApp().setAppLanguage(this, null, false, null);
             Intent resultIntent = new Intent(getIntent());
             resultIntent.getBooleanExtra("refresh", true);
             setResult(RESULT_OK, resultIntent);

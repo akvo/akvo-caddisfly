@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CaddisflyApp.getApp().setAppLanguage(null, false, null);
+        CaddisflyApp.getApp().setAppLanguage(this, null, false, null);
 
         b = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
@@ -141,7 +141,7 @@ public class MainActivity extends BaseActivity {
             animateStatusBar();
         }
 
-        CaddisflyApp.getApp().setAppLanguage(null, false, refreshHandler);
+        CaddisflyApp.getApp().setAppLanguage(this, null, false, refreshHandler);
 
         if (PreferencesUtil.getBoolean(this, R.string.themeChangedKey, false)) {
             PreferencesUtil.setBoolean(this, R.string.themeChangedKey, false);
