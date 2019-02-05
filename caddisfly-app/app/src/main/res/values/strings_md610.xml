@@ -118,5 +118,5 @@
     <string name="add_spoon_cyanide_2">Add <b>two level spoons No. 4 (white) of Cyanide-12</b> into the prepared water sample</string>
     <string name="add_reagent_1_tablet_dissolve">Add <b>one %reagent1 tablet</b> straight from the foil to the water sample and crush the tablet using a clean stirring rod and dissolve the tablet completely.</string>
     <string name="dechlorinate_residual_chlorine_zinc">"Optional:
-In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate, add one DECHLOR tablet to the water sample. Crush and mix to dissolve the tablet. Then add the COPPER / ZINC LR tablet and continue with the test procedure as in the instructions."</string>
+In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate, add one DECHLOR tablet to the water sample. Crush and mix to dissolve the tablet. Then continue with the next step of the instructions."</string>
 </resources>

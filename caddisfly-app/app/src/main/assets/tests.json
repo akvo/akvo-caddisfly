@@ -2731,7 +2731,7 @@
       ]
     },
     {
-      "name": "Alkalinity-m HR",
+      "name": "Alkalinity-m",
       "subtype": "bluetooth",
       "md610_id": "31",
       "uuid": "403af73f-377f-42ea-bba3-f9c88cfe97d2",
@@ -3026,7 +3026,7 @@
       ]
     },
     {
-      "name": "Ammonia LR",
+      "name": "Ammonia",
       "subtype": "bluetooth",
       "md610_id": "65",
       "uuid": "3221bdba-8898-4ae2-958f-5f6a1f949c8f",
@@ -3114,7 +3114,7 @@
       ]
     },
     {
-      "name": "Ammonia HR",
+      "name": "Ammonia",
       "subtype": "bluetooth",
       "md610_id": "66",
       "uuid": "17ca9214-23d4-49bf-99cc-c0463db03a90",
@@ -3657,7 +3657,7 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine HR",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
@@ -3755,7 +3755,7 @@
       ]
     },
     {
-      "name": "Free Chlorine HR",
+      "name": "Free Chlorine",
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
@@ -3968,7 +3968,7 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine HR",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
@@ -4064,7 +4064,7 @@
       ]
     },
     {
-      "name": "Free Chlorine HR",
+      "name": "Free Chlorine",
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
@@ -4412,7 +4412,7 @@
       ]
     },
     {
-      "name": "COD LR",
+      "name": "COD",
       "subtype": "bluetooth",
       "md610_id": "130",
       "uuid": "f15575d4-141e-4696-9c99-59cc2d3153b9",
@@ -4486,7 +4486,7 @@
       ]
     },
     {
-      "name": "COD MR",
+      "name": "COD",
       "subtype": "bluetooth",
       "md610_id": "131",
       "uuid": "c99c85fa-ab1a-4065-b959-9991fb84dd90",
@@ -4560,7 +4560,7 @@
       ]
     },
     {
-      "name": "COD HR",
+      "name": "COD",
       "subtype": "bluetooth",
       "md610_id": "132",
       "uuid": "cf6a1ce4-0e5d-42a9-827d-606b771e0ffe",
@@ -4652,7 +4652,7 @@
       ],
       "sampleQuantity": "10",
       "ranges": "0.05,5",
-      "selectInstruction": "select_test_instruction",
+      "selectInstruction": "select_diff_test_instruction",
       "instructions": [
         {
           "section": [
@@ -5066,7 +5066,7 @@
       ]
     },
     {
-      "name": "Total Hardness HR",
+      "name": "Total Hardness",
       "subtype": "bluetooth",
       "md610_id": "201",
       "uuid": "5d82d3a3-cfb3-40fb-a739-49e308b0f9b4",
@@ -5309,7 +5309,7 @@
       ]
     },
     {
-      "name": "Iron LR",
+      "name": "Iron",
       "subtype": "bluetooth",
       "md610_id": "225",
       "uuid": "1f704c37-9dbe-4ca7-a3da-00adc1e5fa0b",
@@ -5365,7 +5365,7 @@
       ]
     },
     {
-      "name": "Iron HR",
+      "name": "Iron",
       "subtype": "bluetooth",
       "md610_id": "227",
       "uuid": "bdcf8941-f7df-4c04-9242-fc8a5b3af672",
@@ -5788,7 +5788,7 @@
       ]
     },
     {
-      "name": "Nitrite LR",
+      "name": "Nitrite",
       "subtype": "bluetooth",
       "md610_id": "272",
       "uuid": "1ad51f5d-bfea-4a49-8797-efd899d7f484",
@@ -5844,7 +5844,7 @@
       ]
     },
     {
-      "name": "Phosphate (ortho) LR",
+      "name": "Phosphate (ortho)",
       "subtype": "bluetooth",
       "md610_id": "320",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
@@ -5911,7 +5911,7 @@
       ]
     },
     {
-      "name": "Phosphate (ortho) HR",
+      "name": "Phosphate (ortho)",
       "subtype": "bluetooth",
       "md610_id": "321",
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
@@ -6034,7 +6034,7 @@
       ]
     },
     {
-      "name": "Phosphate HR",
+      "name": "Phosphate",
       "subtype": "bluetooth",
       "md610_id": "335",
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
