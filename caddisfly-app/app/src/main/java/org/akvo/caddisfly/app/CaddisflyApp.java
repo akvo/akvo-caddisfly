@@ -166,6 +166,14 @@ public class CaddisflyApp extends Application {
 
             locale = new Locale(code, Locale.getDefault().getCountry());
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Resources activityRes = context.getResources();
+                Configuration activityConf = activityRes.getConfiguration();
+                activityConf.setLocale(locale);
+                activityRes.updateConfiguration(activityConf, activityRes.getDisplayMetrics());
+                PreferencesUtil.setString(this, R.string.languageKey, locale.getLanguage());
+            }
+
             //if the app language is not already set to languageCode then set it now
             if (!config.locale.getLanguage().substring(0, 2).equalsIgnoreCase(code)
                     || !config.locale.getCountry().equalsIgnoreCase(Locale.getDefault().getCountry())) {
@@ -173,12 +181,6 @@ public class CaddisflyApp extends Application {
                 config.locale = locale;
                 config.setLayoutDirection(locale);
                 res.updateConfiguration(config, dm);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Locale.setDefault(locale);
-                    config.setLocale(locale);
-                    context.createConfigurationContext(config);
-                }
 
                 //if this session was launched from an external app then do not restart this app
                 if (!isExternal && handler != null) {
