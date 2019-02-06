@@ -135,7 +135,7 @@ public class InstructionsTest {
 
                 mActivityRule.launchActivity(intent);
 
-                int pages = navigateToTest(id);
+                int pages = navigateToBluetoothTest(id);
 
                 jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
             }
@@ -147,7 +147,7 @@ public class InstructionsTest {
 
     }
 
-    private int navigateToTest(String id) {
+    private int navigateToBluetoothTest(String id) {
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -171,6 +171,78 @@ public class InstructionsTest {
                 Espresso.pressBack();
                 TestUtil.sleep(300);
                 Espresso.pressBack();
+                TestUtil.sleep(300);
+                Espresso.pressBack();
+                TestUtil.sleep(300);
+                break;
+            }
+        }
+        return pages;
+    }
+
+    @Test
+    @RequiresDevice
+    public void testInstructionsManual() {
+
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+
+        String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
+
+        File folder = new File(path);
+        if (!folder.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            folder.mkdirs();
+        }
+
+        List<TestInfo> testList = testConfigRepository.getTests(TestType.MANUAL);
+        for (int i = 0; i < TestConstants.MANUAL_TESTS_COUNT; i++) {
+
+            assertEquals(testList.get(i).getSubtype(), TestType.MANUAL);
+
+            String uuid = testList.get(i).getUuid();
+
+            String id = uuid.substring(uuid.lastIndexOf("-") + 1);
+
+            if (id.equalsIgnoreCase("883bf6e9ff63")) {
+
+                Intent intent = new Intent();
+                intent.setType("text/plain");
+                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+                Bundle data = new Bundle();
+                data.putString(SensorConstants.RESOURCE_ID, uuid);
+                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+                intent.putExtras(data);
+
+                mActivityRule.launchActivity(intent);
+
+                int pages = navigateToTest(id);
+
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+            }
+
+            mActivityRule.finishActivity();
+        }
+
+        Log.d("Caddisfly", jsArrayString.toString());
+
+    }
+
+    private int navigateToTest(String id) {
+
+        onView(withText(R.string.instructions)).perform(click());
+
+        int pages = 0;
+        for (int i = 0; i < 17; i++) {
+            pages++;
+
+            try {
+                TestUtil.sleep(1000);
+
+                takeScreenshot(id, i);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
                 TestUtil.sleep(300);
                 Espresso.pressBack();
                 TestUtil.sleep(300);

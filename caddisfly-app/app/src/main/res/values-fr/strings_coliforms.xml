@@ -58,8 +58,8 @@
     <string name="possibly_unsafe">Risque élevé / Possiblement dangereux</string>
     <string name="probably_unsafe">Risque élevé / Probablement dangereux</string>
     <string name="very_high_risk_unsafe">Risque très élevé / dangereux</string>
-    <string name="low_risk_probably_safe">Risque intermédiaire / Probablement sûr</string>
-    <string name="low_risk_possibly_safe">Risque intermédiaire / Possiblement sûr</string>
+    <string name="low_risk_probably_safe">Faible risque / Probablement sûr</string>
+    <string name="low_risk_possibly_safe">Faible risque / Possiblement sûr</string>
     <string name="high_risk_probably_unsafe">Risque très élevé / dangereux</string>
     <string name="very_unsafe">Très dangereux</string>
 
