@@ -386,6 +386,30 @@
       ]
     },
     {
+      "name": "Water - Colorimetry - Lovibond MD610 - 150 Copper, Tablet (0.05 - 5 mg/l Cu)",
+      "uuid": "dd4c2d20-0a23-4e2c-9a6a-1dfdf7533b50",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Free Copper",
+          "unit": "mg/l",
+          "range": "0.05-5"
+        },
+        {
+          "id": 2,
+          "name": "Combined Copper",
+          "unit": "mg/l"
+        },
+        {
+          "id": 3,
+          "name": "Total Copper",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Colorimetry - Lovibond MD610 - 157 Cyanide, Liquid and Powder (0.01 - 0.5 mg/l CN)",
       "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
       "brand": "Lovibond",
@@ -538,6 +562,20 @@
           "id": 1,
           "name": "Manganese",
           "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Colorimetry - Lovibond MD610 - 257 Nickel, Tablet (0.1 - 10 mg/l Ni)",
+      "uuid": "01b9ddba-c93c-416f-9420-a444a7fbd36f",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Nickel",
+          "unit": "mg/l",
+          "range": "0.1-10"
         }
       ]
     },
@@ -763,6 +801,20 @@
       ]
     },
     {
+      "name": "Water - Colorimetry - Lovibond MD610 - 400 Zinc, Tablet (0.02 - 0.9 mg/l Zn)",
+      "uuid": "b662c6f2-9718-4276-9e67-1d3ae0c1651d",
+      "brand": "Lovibond",
+      "hasImage": false,
+      "results": [
+        {
+          "id": 1,
+          "name": "Zinc",
+          "unit": "mg/l",
+          "range": "0.02-0.9"
+        }
+      ]
+    },
+    {
       "name": "Water - Microbiology - Aquagenx CBT - E.coli - drinking water (0-100 MPN)",
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
       "brand": "Aquagenx",
@@ -894,7 +946,7 @@
       ]
     },
     {
-      "name": "TRIAL: Water - Test Strips - SenSafe - Mercury (0 - 0.08 mg/l Hg)",
+      "name": "Water - Test Strips - SenSafe - Mercury (0 - 0.08 mg/l Hg)",
       "uuid": "af98ac35-dc55-4d86-bbdc-aa4a4e3100c9",
       "brand": "SenSafe 480048",
       "hasImage": true,
