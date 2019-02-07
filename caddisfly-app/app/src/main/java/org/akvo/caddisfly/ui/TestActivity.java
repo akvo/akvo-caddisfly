@@ -42,6 +42,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -145,6 +146,11 @@ public class TestActivity extends BaseActivity {
 
         CaddisflyApp.getApp().setAppLanguage(this,
                 intent.getStringExtra(SensorConstants.LANGUAGE), true, handler);
+
+        if (AppPreferences.getShowDebugInfo()){
+            Toast.makeText(this, "Language: "+ intent.getStringExtra(SensorConstants.LANGUAGE),
+                    Toast.LENGTH_LONG).show();
+        }
 
         String questionTitle = intent.getStringExtra(SensorConstants.QUESTION_TITLE);
 
@@ -296,7 +302,7 @@ public class TestActivity extends BaseActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @NonNull Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_TEST && resultCode == Activity.RESULT_OK) {
             //return the test result to the external app

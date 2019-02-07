@@ -32,12 +32,22 @@ public final class AppConfig {
     public static final boolean STOP_ANIMATIONS = false;
 
     /**
+     * Stop analytics only for testing
+     */
+    public static final boolean STOP_ANALYTICS = false;
+
+    /**
+     * Stop bluetooth device scan only for testing
+     */
+    public static final boolean SKIP_BLUETOOTH_SCAN = false;
+
+    /**
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
-    public static final boolean APP_EXPIRY = true;
+    public static final boolean APP_EXPIRY = false;
     public static final int APP_EXPIRY_DAY = 15;
-    public static final int APP_EXPIRY_MONTH = 1;
+    public static final int APP_EXPIRY_MONTH = 3;
     public static final int APP_EXPIRY_YEAR = 2019;
 
     /**

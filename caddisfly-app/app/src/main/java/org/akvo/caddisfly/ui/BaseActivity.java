@@ -165,7 +165,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Configuration config = newBase.getResources().getConfiguration();
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(newBase);
-            String language = prefs.getString(getString(R.string.languageKey), "en");
+            String language = prefs.getString(newBase.getString(R.string.languageKey), "en");
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
             config.setLocale(locale);
