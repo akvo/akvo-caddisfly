@@ -2680,6 +2680,7 @@
       "uuid": "85e9bea2-8538-4759-a46a-46459783c2d3",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "ALKA-M-PHOTOMETER",
@@ -2690,10 +2691,14 @@
       "sampleQuantity": "10",
       "ranges": "5,200",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -2705,7 +2710,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -2717,7 +2723,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -2737,6 +2745,7 @@
       "uuid": "403af73f-377f-42ea-bba3-f9c88cfe97d2",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "ALKA-M-HR PHOTOMETER",
@@ -2747,10 +2756,14 @@
       "sampleQuantity": "10",
       "ranges": "5,500",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -2762,7 +2775,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -2784,7 +2798,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -2804,6 +2820,7 @@
       "uuid": "76defb64-592f-405c-b491-77ffa76fbad8",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "ALUMINIUM No. 1",
@@ -2818,10 +2835,14 @@
       "sampleQuantity": "10",
       "ranges": "0.01,0.3",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -2833,13 +2854,15 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -2851,7 +2874,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -2871,6 +2896,7 @@
       "uuid": "f0d60451-a220-4113-821d-3a658167cc9f",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "AMMONIA No. 1",
@@ -2885,10 +2911,14 @@
       "sampleQuantity": "10",
       "ranges": "0.02,1",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -2900,13 +2930,15 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -2918,7 +2950,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -2938,9 +2972,11 @@
       "uuid": "538ab4d3-706b-4c5e-93a9-adb5c13b1be9",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F10 (Vario Ammonia Salicylate F5)",
+          "code": "535500",
           "reactionTime": 3
         },
         {
@@ -2951,10 +2987,12 @@
       "sampleQuantity": "10",
       "ranges": "0.01,0.8",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_deionized_water",
+            "1.fill_vial_24_with_10ml_deionized_water_a",
+            "2.fill_vial_24_with_10ml_deionized_water_b",
             "image:fill_vial_24_10_blank"
           ]
         },
@@ -3000,7 +3038,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test"
           ]
         },
@@ -3012,7 +3052,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test",
+            "1.wipe_place_align_vial_sample_test_a",
+            "2.wipe_place_align_vial_sample_test_b",
+            "3.wipe_place_align_vial_sample_test_c",
             "image:place_vial_test"
           ]
         }
@@ -3032,9 +3074,11 @@
       "uuid": "3221bdba-8898-4ae2-958f-5f6a1f949c8f",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tube",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F5",
+          "code": "535600",
           "reactionTime": 20
         },
         {
@@ -3088,7 +3132,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -3100,7 +3146,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test",
+            "1.wipe_place_align_vial_sample_test_a",
+            "2.wipe_place_align_vial_sample_test_b",
+            "3.wipe_place_align_vial_sample_test_c",
             "image:place_vial_test_16"
           ]
         }
@@ -3120,9 +3168,11 @@
       "uuid": "17ca9214-23d4-49bf-99cc-c0463db03a90",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tube",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F5",
+          "code": "535650",
           "reactionTime": 20
         },
         {
@@ -3176,7 +3226,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -3188,7 +3240,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test",
+            "1.wipe_place_align_vial_sample_test_a",
+            "2.wipe_place_align_vial_sample_test_b",
+            "3.wipe_place_align_vial_sample_test_c",
             "image:place_vial_test_16"
           ]
         }
@@ -3208,6 +3262,7 @@
       "uuid": "4f8fcb4b-35f6-40df-aa1c-c3f4a96352d4",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "CHLORIDE T1",
@@ -3222,10 +3277,14 @@
       "sampleQuantity": "10",
       "ranges": "0.5,25",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3237,13 +3296,15 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -3255,7 +3316,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -3275,22 +3338,29 @@
       "uuid": "e2849dba-6486-4ceb-b5fd-58472d61fe5e",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "20 drops KS251 (Chloride Reagent A)",
+          "code": "56L025165",
           "reactionTime": 5
         },
         {
-          "name": "20 drops KS253 (Chloride Reagent B)"
+          "name": "20 drops KS253 (Chloride Reagent B)",
+          "code": "56L025365"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.5,20",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3326,7 +3396,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -3346,6 +3418,7 @@
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1",
@@ -3360,10 +3433,14 @@
       "sampleQuantity": "10",
       "ranges": "0.01,6",
       "selectInstruction": "select_diff_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3375,7 +3452,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -3393,7 +3471,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         },
@@ -3405,13 +3485,16 @@
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -3444,6 +3527,7 @@
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1",
@@ -3453,10 +3537,14 @@
       "sampleQuantity": "10",
       "ranges": "0.01,6",
       "selectInstruction": "select_free_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3468,7 +3556,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -3486,7 +3575,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -3506,9 +3597,11 @@
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
+          "code": "471056",
           "reactionTime": 2
         },
         {
@@ -3518,10 +3611,14 @@
       "sampleQuantity": "10",
       "ranges": "0.02,4",
       "selectInstruction": "select_diff_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3551,7 +3648,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         },
@@ -3569,7 +3668,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -3602,18 +3703,24 @@
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid",
       "reagents": [
         {
-          "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution"
+          "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
+          "code": "471010, 471020"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,4",
       "selectInstruction": "select_free_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3643,7 +3750,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -3663,6 +3772,7 @@
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1 HR",
@@ -3677,10 +3787,14 @@
       "sampleQuantity": "10",
       "ranges": "0.1,10",
       "selectInstruction": "select_diff_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3692,7 +3806,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -3710,7 +3825,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         },
@@ -3722,13 +3839,16 @@
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -3761,6 +3881,7 @@
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1 HR",
@@ -3770,10 +3891,14 @@
       "sampleQuantity": "10",
       "ranges": "0.1,10",
       "selectInstruction": "select_free_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3785,7 +3910,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -3803,7 +3929,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -3823,22 +3951,29 @@
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
+          "code": "530100",
           "reactionTime": 3
         },
         {
-          "name": "VARIO Chlorine TOTAL-DPD/F10"
+          "name": "VARIO Chlorine TOTAL-DPD/F10",
+          "code": "530120"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,2",
       "selectInstruction": "select_diff_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3862,13 +3997,16 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         },
         {
           "section": [
-            "remove_vial_empty_fill",
+            "1.remove_vial_empty_fill_a",
+            "2.remove_vial_empty_fill_b",
             "image:take_out_vial_fill"
           ]
         },
@@ -3886,7 +4024,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -3919,18 +4059,24 @@
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
-          "name": "VARIO Chlorine FREE-DPD/F10"
+          "name": "VARIO Chlorine FREE-DPD/F10",
+          "code": "530100"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,2",
       "selectInstruction": "select_free_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -3954,7 +4100,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -3974,13 +4122,16 @@
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
+          "code": "530100",
           "reactionTime": 3
         },
         {
-          "name": "VARIO Chlorine TOTAL-DPD/F10"
+          "name": "VARIO Chlorine TOTAL-DPD/F10",
+          "code": "530120"
         }
       ],
       "sampleQuantity": "5",
@@ -3989,7 +4140,10 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_10_with_5ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:fill_vial_5"
           ]
         },
@@ -4013,13 +4167,16 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_5"
           ]
         },
         {
           "section": [
-            "remove_vial_empty_fill",
+            "1.remove_vial_empty_fill_a",
+            "2.remove_vial_empty_fill_b",
             "image:take_out_vial_fill"
           ]
         },
@@ -4037,7 +4194,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_5"
           ]
         }
@@ -4070,9 +4229,11 @@
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
-          "name": "VARIO Chlorine FREE-DPD/F10"
+          "name": "VARIO Chlorine FREE-DPD/F10",
+          "code": "530100"
         }
       ],
       "sampleQuantity": "5",
@@ -4081,7 +4242,10 @@
       "instructions": [
         {
           "section": [
-            "fill_vial_10_with_5ml_sample_zero",
+            "1.fill_vial_10_with_5ml_sample_zero_a",
+            "2.fill_vial_10_with_5ml_sample_zero_b",
+            "3.fill_vial_10_with_5ml_sample_zero_c",
+            "4.fill_vial_10_with_5ml_sample_zero_d",
             "image:fill_vial_5"
           ]
         },
@@ -4105,7 +4269,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_5"
           ]
         }
@@ -4125,23 +4291,28 @@
       "uuid": "b6b46404-3392-4718-ac35-d2379c0f7d6d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "PERSULF.RGT FOR CR",
+          "code": "537300",
           "reactionTime": 5
         },
         {
           "name": "CHROMIUM HEXAVALENT",
+          "code": "537310",
           "reactionTime": 5
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,2",
       "selectInstruction": "select_diff_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_16_with_10ml_sample",
+            "1.fill_vial_16_with_10ml_sample_a",
+            "2.fill_vial_16_with_10ml_sample_b",
             "image:fill_vial_16_10"
           ]
         },
@@ -4165,7 +4336,8 @@
         },
         {
           "section": [
-            "remove_cool",
+            "1.remove_cool_a",
+            "2.remove_cool_b",
             "image:remove_thermoreactor"
           ]
         },
@@ -4177,7 +4349,9 @@
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -4201,7 +4375,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test_16"
           ]
         },
@@ -4225,7 +4401,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_2",
+            "1.wipe_place_align_vial_wait_2_a",
+            "2.wipe_place_align_vial_wait_2_b",
+            "3.wipe_place_align_vial_wait_2_c",
             "image:place_vial_test_16"
           ]
         }
@@ -4255,15 +4433,18 @@
       "uuid": "b6b12955-46ae-4be7-8c57-e2ccb417bd7b",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "CHROMIUM HEXAVALENT",
+          "code": "537310",
           "reactionTime": 5
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,2",
       "selectInstruction": "select_Cr_VI_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
@@ -4273,13 +4454,16 @@
         },
         {
           "section": [
-            "fill_vial_16_with_10ml_sample",
+            "1.fill_vial_16_with_10ml_sample_a",
+            "2.fill_vial_16_with_10ml_sample_b",
             "image:fill_vial_16_10"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -4303,7 +4487,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test_16"
           ]
         }
@@ -4323,22 +4509,27 @@
       "uuid": "cdbbd63a-2740-4e42-9b4b-5a3d490d9df3",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "PERSULF.RGT FOR CR",
+          "code": "537300",
           "reactionTime": 5
         },
         {
-          "name": "CHROMIUM HEXAVALENT"
+          "name": "CHROMIUM HEXAVALENT",
+          "code": "537310"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,2",
       "selectInstruction": "select_Cr_III_VI_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_16_with_10ml_sample",
+            "1.fill_vial_16_with_10ml_sample_a",
+            "2.fill_vial_16_with_10ml_sample_b",
             "image:fill_vial_16_10"
           ]
         },
@@ -4362,7 +4553,8 @@
         },
         {
           "section": [
-            "remove_cool",
+            "1.remove_cool_a",
+            "2.remove_cool_b",
             "image:remove_thermoreactor"
           ]
         },
@@ -4374,7 +4566,9 @@
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -4398,7 +4592,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test_16"
           ]
         }
@@ -4454,13 +4650,17 @@
         },
         {
           "section": [
-            "remove_cool_60",
+            "1.remove_cool_60_a",
+            "2.remove_cool_60_b",
+            "3.remove_cool_60_c",
             "image:remove_thermoreactor"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -4472,7 +4672,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test",
+            "1.wipe_place_align_vial_sample_test_a",
+            "2.wipe_place_align_vial_sample_test_b",
+            "3.wipe_place_align_vial_sample_test_c",
             "image:place_vial_test_16"
           ]
         }
@@ -4528,13 +4730,17 @@
         },
         {
           "section": [
-            "remove_cool_60",
+            "1.remove_cool_60_a",
+            "2.remove_cool_60_b",
+            "3.remove_cool_60_c",
             "image:remove_thermoreactor"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -4546,7 +4752,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test",
+            "1.wipe_place_align_vial_sample_test_a",
+            "2.wipe_place_align_vial_sample_test_b",
+            "3.wipe_place_align_vial_sample_test_c",
             "image:place_vial_test_16"
           ]
         }
@@ -4602,13 +4810,17 @@
         },
         {
           "section": [
-            "remove_cool_60",
+            "1.remove_cool_60_a",
+            "2.remove_cool_60_b",
+            "3.remove_cool_60_c",
             "image:remove_thermoreactor"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -4620,7 +4832,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test",
+            "1.wipe_place_align_vial_sample_test_a",
+            "2.wipe_place_align_vial_sample_test_b",
+            "3.wipe_place_align_vial_sample_test_c",
             "image:place_vial_test_16"
           ]
         }
@@ -4640,6 +4854,7 @@
       "uuid": "dd4c2d20-0a23-4e2c-9a6a-1dfdf7533b50",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "COPPER No. 1",
@@ -4653,10 +4868,14 @@
       "sampleQuantity": "10",
       "ranges": "0.05,5",
       "selectInstruction": "select_diff_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -4668,7 +4887,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -4680,7 +4900,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         },
@@ -4692,7 +4914,8 @@
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -4704,7 +4927,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -4737,19 +4962,25 @@
       "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid and Powder",
       "reagents": [
         {
           "name": "3 drops of Cyanide-13",
+          "code": "2418875",
           "reactionTime": 10
         }
       ],
       "sampleQuantity": "2",
       "ranges": "0.01,0.5",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_2ml_sample_8ml_deionized_water_zero",
+            "1.fill_vial_24_with_2ml_sample_8ml_deionized_water_zero_a",
+            "2.fill_vial_24_with_2ml_sample_8ml_deionized_water_zero_b",
+            "3.fill_vial_24_with_2ml_sample_8ml_deionized_water_zero_c",
+            "4.fill_vial_24_with_2ml_sample_8ml_deionized_water_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -4797,7 +5028,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -4817,18 +5050,24 @@
       "uuid": "d839537b-8106-44e8-953a-6060e4dbe59d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid",
       "reagents": [
         {
-          "name": "2 ml SPADNS"
+          "name": "2 ml SPADNS",
+          "code": "467481"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.05,2",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -4852,7 +5091,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -4872,6 +5113,7 @@
       "uuid": "3e7c94de-1963-4b59-b196-de40aa126a24",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "CALCHECK",
@@ -4882,16 +5124,19 @@
       "sampleQuantity": "2",
       "ranges": "50,900",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_deionized_water",
+            "1.fill_vial_24_with_10ml_deionized_water_a",
+            "2.fill_vial_24_with_10ml_deionized_water_b",
             "image:fill_vial_24_10_blank"
           ]
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -4903,7 +5148,8 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero_wait",
+            "1.wipe_place_align_vial_blank_zero_wait_a",
+            "2.wipe_place_align_vial_blank_zero_wait_a",
             "image:place_vial_blank"
           ]
         },
@@ -4927,7 +5173,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -4947,6 +5195,7 @@
       "uuid": "072cab32-3e4c-41f3-8378-e14626afa5b0",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "CALCIO H No.1",
@@ -4962,10 +5211,14 @@
       "sampleQuantity": "10",
       "ranges": "0,500",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -4977,13 +5230,15 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet_dissolve",
+            "1.add_reagent_1_tablet_dissolve_a",
+            "2.add_reagent_1_tablet_dissolve_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -4995,7 +5250,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5015,6 +5272,7 @@
       "uuid": "d4d57975-5e87-4ba9-b9d1-09ec2eb8f500",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "HARDCHECK P",
@@ -5025,10 +5283,14 @@
       "sampleQuantity": "1",
       "ranges": "2,50",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5040,7 +5302,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5052,7 +5315,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5072,6 +5337,7 @@
       "uuid": "5d82d3a3-cfb3-40fb-a739-49e308b0f9b4",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "HARDCHECK P",
@@ -5082,10 +5348,14 @@
       "sampleQuantity": "10",
       "ranges": "20,500",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_1ml_sample_9ml_deionized_water_zero",
+            "1.fill_vial_24_with_1ml_sample_9ml_deionized_water_zero_a",
+            "2.fill_vial_24_with_1ml_sample_9ml_deionized_water_zero_b",
+            "3.fill_vial_24_with_1ml_sample_9ml_deionized_water_zero_c",
+            "4.fill_vial_24_with_1ml_sample_9ml_deionized_water_zero_d",
             "image:close_swirl_tablet"
           ]
         },
@@ -5097,7 +5367,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5109,7 +5380,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5129,6 +5402,7 @@
       "uuid": "ac65e12d-632a-439d-b841-383b1b9b7026",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "IRON LR",
@@ -5139,10 +5413,14 @@
       "sampleQuantity": "10",
       "ranges": "0.02,1",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5154,7 +5432,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5166,7 +5445,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5186,19 +5467,25 @@
       "uuid": "7a9457b0-96c2-487d-b3d3-c52c50fb2279",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Vario Ferro F10",
+          "code": "530560",
           "reactionTime": 3
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,3",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5222,7 +5509,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5242,19 +5531,23 @@
       "uuid": "928f2cf7-7c98-4707-af3b-2e12e0d2d46b",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Vario IRON TPTZ F10",
+          "code": "530550",
           "reactionTime": 3
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,1.8",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_deionized_water",
+            "1.fill_vial_24_with_10ml_deionized_water_a",
+            "2.fill_vial_24_with_10ml_deionized_water_b",
             "image:fill_vial_24_10_blank"
           ]
         },
@@ -5283,7 +5576,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_blank"
           ]
         },
@@ -5295,7 +5590,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_sample_test",
+            "1.wipe_place_align_vial_sample_test_a",
+            "2.wipe_place_align_vial_sample_test_b",
+            "3.wipe_place_align_vial_sample_test_c",
             "image:place_vial_test"
           ]
         }
@@ -5315,19 +5612,25 @@
       "uuid": "1f704c37-9dbe-4ca7-a3da-00adc1e5fa0b",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "10 drops KS61 (Ferrozine/Thioglycolate)",
+          "code": "56L006165",
           "reactionTime": 5
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.03,2",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5351,7 +5654,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5371,22 +5676,29 @@
       "uuid": "bdcf8941-f7df-4c04-9242-fc8a5b3af672",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "10 drops KS63 (Thioglycolate)",
+          "code": "56L006365",
           "reactionTime": 15
         },
         {
-          "name": "10 drops KS160 (Total Hardness Buffer)"
+          "name": "10 drops KS160 (Total Hardness Buffer)",
+          "code": "56L016065"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.1,10",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5422,7 +5734,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5442,6 +5756,7 @@
       "uuid": "21c1bc13-51c2-4770-8fae-7d0685b49370",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "Manganese LR No 1",
@@ -5453,12 +5768,17 @@
           "code": "SDT350-50"
         }
       ],
+      "sampleQuantity": "10",
       "ranges": "0.2,4",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5470,13 +5790,15 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5488,7 +5810,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5508,6 +5832,7 @@
       "uuid": "01b9ddba-c93c-416f-9420-a444a7fbd36f",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "NICKEL No. 1",
@@ -5522,10 +5847,14 @@
       "sampleQuantity": "10",
       "ranges": "0.1,10",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5543,7 +5872,8 @@
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5555,7 +5885,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5575,9 +5907,11 @@
       "uuid": "a213cf40-7cb8-4828-872e-25bf2b8b12aa",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tube",
       "reagents": [
         {
           "name": "Vario Nitrate Chromotropic",
+          "code": "535580",
           "reactionTime": 5
         }
       ],
@@ -5599,7 +5933,9 @@
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_test_16"
           ]
         },
@@ -5623,7 +5959,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test_16"
           ]
         }
@@ -5643,22 +5981,29 @@
       "uuid": "252298b1-5c2b-4b7d-9385-cc25d617725d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet and Powder",
       "reagents": [
         {
           "name": "NITRATE TEST",
+          "code": "502810, 465230",
           "reactionTime": 10
         },
         {
-          "name": "NITRITE LR"
+          "name": "NITRITE LR",
+          "code": "512310BT"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.08,1",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5700,12 +6045,15 @@
         },
         {
           "section": [
-            "specific_260"
+            "1.specific_260_a",
+            "2.specific_260_b",
+            "3.specific_260_c"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5717,7 +6065,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5737,6 +6087,7 @@
       "uuid": "22963cac-e81d-43db-a84b-e71c27a3dd60",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "NITRITE LR",
@@ -5747,10 +6098,14 @@
       "sampleQuantity": "10",
       "ranges": "0.01,0.5",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5762,7 +6117,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5774,7 +6130,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5794,19 +6152,25 @@
       "uuid": "1ad51f5d-bfea-4a49-8797-efd899d7f484",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Vario Nitri 3",
+          "code": "530980",
           "reactionTime": 20
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.01,0.3",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5830,7 +6194,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5850,6 +6216,7 @@
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "PHOSPHATE LR No. 1",
@@ -5864,10 +6231,14 @@
       "sampleQuantity": "10",
       "ranges": "0.05,4",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5879,13 +6250,15 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5897,7 +6270,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5917,6 +6292,7 @@
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "PHOSPHATE HR P1",
@@ -5931,10 +6307,14 @@
       "sampleQuantity": "10",
       "ranges": "1,80",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -5946,13 +6326,15 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -5964,7 +6346,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -5984,19 +6368,25 @@
       "uuid": "ef94c4fc-be81-4a25-b879-7c0ab18efe43",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Phosphate Rgt. F10",
+          "code": "531550",
           "reactionTime": 2
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.06,2.5",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -6020,7 +6410,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -6040,18 +6432,22 @@
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid and Powder",
       "reagents": [
         {
           "name": "25 drops KS228 (Ammonium Molybdate)",
+          "code": "56L022865",
           "reactionTime": 10
         },
         {
-          "name": "25 drops of KS229 (Ammonium Metavanadate)"
+          "name": "25 drops of KS229 (Ammonium Metavanadate)",
+          "code": "56L022965"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "5,80",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
@@ -6065,7 +6461,10 @@
         },
         {
           "section": [
-            "phosphate_fill_vial_test",
+            "1.phosphate_fill_vial_test_a",
+            "2.phosphate_fill_vial_test_b",
+            "3.phosphate_fill_vial_test_c",
+            "4.phosphate_fill_vial_test_d",
             "image:place_vial_test_syringe"
           ]
         },
@@ -6101,7 +6500,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -6121,6 +6522,7 @@
       "uuid": "58bd3f92-7092-4bfa-ac4a-1f3f24b85b6c",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "BROMOCRESOLPURPLE PHOTOMETER",
@@ -6130,10 +6532,14 @@
       "sampleQuantity": "10",
       "ranges": "5.2,6.8",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -6145,7 +6551,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -6157,7 +6564,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -6176,6 +6585,7 @@
       "uuid": "6b6e9183-215f-4dc2-94a9-68444b1ec0df",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "PHENOL RED PHOTOMETER",
@@ -6185,10 +6595,14 @@
       "sampleQuantity": "10",
       "ranges": "6.5,8.4",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -6200,7 +6614,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -6212,7 +6627,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -6231,18 +6648,24 @@
       "uuid": "976a33ff-a5cd-4a21-98ed-f07cd94f018e",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Liquid",
       "reagents": [
         {
-          "name": "6 drops of PHENOL RED solution"
+          "name": "6 drops of PHENOL RED solution",
+          "code": "471040"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "6.5,8.4",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -6266,7 +6689,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -6285,6 +6710,7 @@
       "uuid": "635fe6af-b66b-48b4-aa62-0b6a8db0a493",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "THYMOLBLUE PHOTOMETER",
@@ -6294,10 +6720,14 @@
       "sampleQuantity": "10",
       "ranges": "8,9.6",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -6309,7 +6739,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -6321,7 +6752,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -6340,6 +6773,7 @@
       "uuid": "6b485134-e6e5-4db1-88b3-d96ff081e629",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "Potassium T",
@@ -6349,10 +6783,14 @@
       "sampleQuantity": "10",
       "ranges": "0.7,12",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -6364,7 +6802,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -6376,7 +6815,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -6396,6 +6837,7 @@
       "uuid": "4275391e-1498-4623-a068-e3f40dea8c29",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "Sulfate T",
@@ -6406,10 +6848,14 @@
       "sampleQuantity": "10",
       "ranges": "5,100",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -6421,7 +6867,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -6433,7 +6880,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -6453,19 +6902,25 @@
       "uuid": "64248882-405c-4ec2-b433-5977bf505ffb",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Sulpha 4/F10",
+          "code": "532160",
           "reactionTime": 5
         }
       ],
       "sampleQuantity": "10",
       "ranges": "5,100",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_sample_zero",
+            "1.fill_vial_24_with_10ml_sample_zero_a",
+            "2.fill_vial_24_with_10ml_sample_zero_b",
+            "3.fill_vial_24_with_10ml_sample_zero_c",
+            "4.fill_vial_24_with_10ml_sample_zero_d",
             "image:correct_filling_aligning"
           ]
         },
@@ -6489,7 +6944,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_wait_1",
+            "1.wipe_place_align_vial_wait_1_a",
+            "2.wipe_place_align_vial_wait_1_b",
+            "3.wipe_place_align_vial_wait_1_c",
             "image:place_vial_test"
           ]
         }
@@ -6512,6 +6969,7 @@
       "sampleQuantity": "10",
       "ranges": "0,750",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
@@ -6520,13 +6978,16 @@
         },
         {
           "section": [
-            "fill_vial_24_with_10ml_deionized_water",
+            "1.fill_vial_24_with_10ml_deionized_water_a",
+            "2.fill_vial_24_with_10ml_deionized_water_b",
             "image:fill_vial_24_10_blank"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_blank"
           ]
         },
@@ -6538,13 +6999,17 @@
         },
         {
           "section": [
-            "stir_blended_water",
+            "1.stir_blended_water_a",
+            "2.stir_blended_water_b",
+            "3.stir_blended_water_c",
             "image:close_swirl_tablet"
           ]
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -6567,22 +7032,28 @@
       "sampleQuantity": "10",
       "ranges": "0,1000",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_deionised",
       "instructions": [
         {
           "section": [
-            "fill_vial_24_with_10ml_deionized_water",
+            "1.fill_vial_24_with_10ml_deionized_water_a",
+            "2.fill_vial_24_with_10ml_deionized_water_b",
             "image:fill_vial_24_10_blank"
           ]
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero",
+            "1.wipe_place_align_prepared_vial_zero_a",
+            "2.wipe_place_align_prepared_vial_zero_b",
+            "3.wipe_place_align_prepared_vial_zero_c",
             "image:place_vial_blank"
           ]
         },
         {
           "section": [
-            "stir_water_sample",
+            "1.stir_water_sample_a",
+            "2.stir_water_sample_a",
+            "3.stir_water_sample_a",
             "image:close_swirl_tablet"
           ]
         },
@@ -6594,7 +7065,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
@@ -6614,6 +7087,7 @@
       "uuid": "b662c6f2-9718-4276-9e67-1d3ae0c1651d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "COPPER / ZINC LR",
@@ -6628,10 +7102,12 @@
       "sampleQuantity": "10",
       "ranges": "0.02,0.9",
       "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirringrod_deionised",
       "instructions": [
         {
           "section": [
-            "fill_new_vial_24_with_10ml_sample",
+            "1.fill_new_vial_24_with_10ml_sample_a",
+            "2.fill_new_vial_24_with_10ml_sample_b",
             "image:correct_filling_aligning"
           ]
         },
@@ -6642,7 +7118,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet",
+            "1.add_reagent_1_tablet_a",
+            "2.add_reagent_1_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -6654,7 +7131,8 @@
         },
         {
           "section": [
-            "wipe_place_align_vial_blank_zero_wait",
+            "1.wipe_place_align_vial_blank_zero_wait_a",
+            "2.wipe_place_align_vial_blank_zero_wait_a",
             "image:place_vial_blank"
           ]
         },
@@ -6666,7 +7144,8 @@
         },
         {
           "section": [
-            "add_reagent_2_tablet",
+            "1.add_reagent_2_tablet_a",
+            "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },
@@ -6678,7 +7157,9 @@
         },
         {
           "section": [
-            "wipe_place_align_vial",
+            "1.wipe_place_align_vial_a",
+            "2.wipe_place_align_vial_b",
+            "3.wipe_place_align_vial_c",
             "image:place_vial_test"
           ]
         }
