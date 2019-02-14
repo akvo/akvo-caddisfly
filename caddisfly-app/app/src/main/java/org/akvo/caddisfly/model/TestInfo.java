@@ -48,7 +48,7 @@ public class TestInfo implements Parcelable {
     private final transient DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
     @SerializedName("reagentType")
     @Expose
-    private String reagentType;
+    private String reagentType = "";
     @SerializedName("reagents")
     @Expose
     private List<Reagent> reagents = null;

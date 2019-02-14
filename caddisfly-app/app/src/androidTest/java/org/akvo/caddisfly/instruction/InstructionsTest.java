@@ -123,22 +123,22 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-            if (id.equalsIgnoreCase("5a3d490d9df3")) {
+//            if (id.equalsIgnoreCase("5a3d490d9df3")) {
 
-                Intent intent = new Intent();
-                intent.setType("text/plain");
-                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
-                Bundle data = new Bundle();
-                data.putString(SensorConstants.RESOURCE_ID, uuid);
-                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
-                intent.putExtras(data);
+            Intent intent = new Intent();
+            intent.setType("text/plain");
+            intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+            Bundle data = new Bundle();
+            data.putString(SensorConstants.RESOURCE_ID, uuid);
+            data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+            intent.putExtras(data);
 
-                mActivityRule.launchActivity(intent);
+            mActivityRule.launchActivity(intent);
 
-                int pages = navigateToBluetoothTest(id);
+            int pages = navigateToBluetoothTest(id);
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-            }
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+//            }
 
             mActivityRule.finishActivity();
         }
@@ -153,8 +153,6 @@ public class InstructionsTest {
 
         onView(withText(R.string.test_selected)).perform(click());
 
-        onView(withText(R.string.instructions)).perform(click());
-
         int pages = 0;
         for (int i = 0; i < 17; i++) {
             pages++;
@@ -164,13 +162,12 @@ public class InstructionsTest {
 
                 takeScreenshot(id, i);
 
+                onView(withId(R.id.actionSkip)).check(matches(isDisplayed()));
+
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestUtil.sleep(300);
-                Espresso.pressBack();
-                TestUtil.sleep(300);
-                Espresso.pressBack();
+                TestHelper.navigateUp();
                 TestUtil.sleep(300);
                 Espresso.pressBack();
                 TestUtil.sleep(300);

@@ -95,7 +95,7 @@ public class ReagentLabel extends View {
                         i, getResources().getDisplayMetrics()));
 
                 float width = titleTextPaint.measureText("Lovibond® Water Testing");
-                if (width < getMeasuredWidth() - imageWidth - margin - margin) {
+                if (width < getMeasuredWidth() - imageWidth - (margin * 2)) {
                     break;
                 }
             }
@@ -109,19 +109,19 @@ public class ReagentLabel extends View {
             superscript2TextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                     baseHeight - 3, getResources().getDisplayMetrics()));
 
-            for (int i = baseHeight + 1; i >= 10; i--) {
+            for (int i = baseHeight - 1; i >= 10; i--) {
 
                 baseHeight = i;
                 blueTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
                         i, getResources().getDisplayMetrics()));
                 float width = blueTextPaint.measureText(reagentName);
-                if (width < getMeasuredWidth() - margin - margin) {
+                if (width < getMeasuredWidth() - (margin * 2)) {
                     break;
                 }
             }
 
             redTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,
-                    baseHeight + 1, getResources().getDisplayMetrics()));
+                    baseHeight - 1, getResources().getDisplayMetrics()));
 
             titleWidth = titleTextPaint.measureText("Lovibond");
             titleCharWidth = titleTextPaint.measureText("W");
@@ -133,9 +133,9 @@ public class ReagentLabel extends View {
 
             subtitleY = imageHeight + imageMargin - (imageMargin * 0.3f);
 
-            line1Top = margin + subtitleY + margin + (margin / 2);
+            line1Top = margin + subtitleY + margin + (margin / 2) - 3;
 
-            line2Top = margin + line1Top + margin;
+            line2Top = margin + line1Top + margin - 3;
 
         }
     }

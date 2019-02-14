@@ -158,7 +158,7 @@ public class BluetoothInstructions {
 
         onView(withText(R.string.test_selected)).perform(click());
 
-        onView(withText(R.string.instructions)).perform(click());
+        //onView(withText(R.string.instructions)).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {

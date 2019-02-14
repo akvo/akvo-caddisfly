@@ -32,7 +32,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -145,9 +144,11 @@ public class TestInfoViewModel extends AndroidViewModel {
 
                     int height = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-                    reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            (int) (height * 0.2)));
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, (int) (height * 0.2));
+                    layoutParams.bottomMargin = 16;
+
+                    reagentLabel.setLayoutParams(layoutParams);
 
                     reagentLabel.setReagentName(testInfo.getReagent(j - 1).name);
                     reagentLabel.setReagentCode(code);

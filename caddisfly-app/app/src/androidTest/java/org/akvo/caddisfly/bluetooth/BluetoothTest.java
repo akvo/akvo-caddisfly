@@ -54,13 +54,13 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -133,6 +133,8 @@ public class BluetoothTest {
 
                 onView(withText(R.string.test_selected)).perform(click());
 
+                onView(withText(R.string.skip)).perform(click());
+
                 TestUtil.sleep(7000);
 
                 onView(withText(R.string.result)).check(matches(isDisplayed()));
@@ -171,56 +173,28 @@ public class BluetoothTest {
 
         onView(withText(R.string.test_selected)).perform(click());
 
-        onView(withText(R.string.instructions)).perform(click());
-
-        onView(withText(R.string.fill_vial_24_with_10ml_sample_zero))
+        onView(withText(R.string.fill_vial_24_with_10ml_sample_zero_a))
                 .check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView.perform(click());
+        TestUtil.nextPage();
 
         onView(withText(R.string.remove_vial))
                 .check(matches(isDisplayed()));
 
-        onView(withId(R.id.image_pageRight)).perform(click());
+        TestUtil.nextPage();
 
-        onView(withText("Add exactly 2 ml SPADNS reagent solution to the water sample. (Caution: Vial is filled up to the top!)"))
-                .check(matches(isDisplayed()));
+        String phrase = getString(mActivityTestRule.getActivity(), R.string.add_reagent_1_liquid_exact_ml);
+        phrase = phrase.replace("%reagent1", "2 ml SPADNS (467481)");
+        onView(withText(phrase)).check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView2 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView2.perform(click());
+        TestUtil.nextPage();
 
         onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
                 .check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView3 = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView3.perform(click());
+        TestUtil.nextPage();
 
-        onView(withText("Wipe the outside of the vial, hold vial at the lid and place vial in the chamber. Align arrow marks and press (*test*)"))
+        onView(withText(R.string.wipe_place_align_vial_wait_2_a))
                 .check(matches(isDisplayed()));
 
         TestUtil.swipeRight();
@@ -228,7 +202,9 @@ public class BluetoothTest {
         onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
                 .check(matches(isDisplayed()));
 
-        TestUtil.goBack(3);
+        TestUtil.goBack(4);
+
+        TestHelper.navigateUp();
 
         TestHelper.clearPreferences(mActivityTestRule);
 
@@ -283,11 +259,7 @@ public class BluetoothTest {
 
         onView(withText(R.string.test_selected)).perform(click());
 
-        onView(withText("Awaiting result")).check(matches(isDisplayed()));
-
-        onView(withText("Instructions")).perform(click());
-
-        onView(withText(R.string.fill_vial_24_with_10ml_sample_zero))
+        onView(withText(R.string.fill_vial_24_with_10ml_sample_zero_a))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
@@ -297,23 +269,9 @@ public class BluetoothTest {
 
         onView(withId(R.id.image_pageRight)).perform(click());
 
-        onView(withText("Add exactly 2 ml SPADNS reagent solution to the water sample. (Caution: Vial is filled up to the top!)"))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.skip)).perform(click());
 
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription(R.string.navigate_up),
-                        childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
-
-        onView(withText("Awaiting result"))
-                .check(matches(isDisplayed()));
+        onView(withText("Awaiting result")).check(matches(isDisplayed()));
 
         try {
             Thread.sleep(10000);

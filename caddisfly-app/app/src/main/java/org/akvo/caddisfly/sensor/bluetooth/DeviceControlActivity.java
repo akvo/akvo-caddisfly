@@ -51,6 +51,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
@@ -382,6 +383,7 @@ public class DeviceControlActivity extends BaseActivity
         footerLayout.setVisibility(View.VISIBLE);
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
+//        setTitle(testInfo.getMd610Id() + ". " + testInfo.getName());
         setTitle(R.string.instructions);
         showSkipMenu = true;
         invalidateOptionsMenu();
@@ -407,7 +409,9 @@ public class DeviceControlActivity extends BaseActivity
     }
 
     private void showWaitingView() {
-        progressCircle.setVisibility(View.VISIBLE);
+        if (!AppConfig.STOP_ANIMATIONS) {
+            progressCircle.setVisibility(View.VISIBLE);
+        }
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
         footerLayout.setVisibility(View.GONE);
@@ -423,7 +427,7 @@ public class DeviceControlActivity extends BaseActivity
             }
 
             debugTestHandler = new Handler();
-            debugTestHandler.postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 10000);
+            debugTestHandler.postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 6000);
         }
     }
 
