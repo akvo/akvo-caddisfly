@@ -57,6 +57,7 @@ import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 
@@ -78,7 +79,6 @@ public class DeviceControlActivity extends BaseActivity
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
-    Handler handler;
     // to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -105,10 +105,10 @@ public class DeviceControlActivity extends BaseActivity
     private FrameLayout resultLayout;
     private FrameLayout pagerLayout;
     private RelativeLayout footerLayout;
-
     private TestInfo testInfo;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
+    private Handler debugTestHandler;
     private ProgressBar progressCircle;
     private boolean showSkipMenu = false;
     private BluetoothResultFragment mBluetoothResultFragment;
@@ -122,11 +122,9 @@ public class DeviceControlActivity extends BaseActivity
             final String action = intent.getAction();
             switch (Objects.requireNonNull(action)) {
                 case BluetoothLeService.ACTION_GATT_CONNECTED:
-                    //updateConnectionState(R.string.connected);
                     invalidateOptionsMenu();
                     break;
                 case BluetoothLeService.ACTION_GATT_DISCONNECTED:
-                    //updateConnectionState(R.string.disconnected);
                     Toast.makeText(DeviceControlActivity.this,
                             "Device disconnected. Check bluetooth settings.", Toast.LENGTH_SHORT).show();
                     finish();
@@ -188,8 +186,7 @@ public class DeviceControlActivity extends BaseActivity
 
         ImageView imagePageRight = findViewById(R.id.image_pageRight);
         imagePageRight.setOnClickListener(view ->
-                viewPager.setCurrentItem(Math.min(testInfo.getInstructions().size(),
-                        viewPager.getCurrentItem() + 1)));
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1));
 
         ImageView imagePageLeft = findViewById(R.id.image_pageLeft);
         imagePageLeft.setOnClickListener(view -> pageBack());
@@ -208,7 +205,7 @@ public class DeviceControlActivity extends BaseActivity
                     showSelectTestView();
                 } else if (position == 1) {
                     showInstructionsView();
-                } else if (position == testInfo.getInstructions().size()) {
+                } else if (position == testInfo.getInstructions().size() + 1) {
                     showWaitingView();
                 } else {
                     showInstructionsView();
@@ -253,8 +250,8 @@ public class DeviceControlActivity extends BaseActivity
         super.onPause();
         try {
             unregisterReceiver(mGattUpdateReceiver);
-            if (handler != null) {
-                handler.removeCallbacksAndMessages(null);
+            if (debugTestHandler != null) {
+                debugTestHandler.removeCallbacksAndMessages(null);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -291,11 +288,12 @@ public class DeviceControlActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
+        if (debugTestHandler != null) {
+            debugTestHandler.removeCallbacksAndMessages(null);
         }
         unbindServices();
         if (resultLayout.getVisibility() == View.VISIBLE) {
+            viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
             showWaitingView();
         } else if (viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
@@ -306,7 +304,7 @@ public class DeviceControlActivity extends BaseActivity
 
     private void displayData(String data) {
 
-        if (viewPager.getCurrentItem() != testInfo.getInstructions().size()) {
+        if (viewPager.getCurrentItem() != testInfo.getInstructions().size() + 1) {
             return;
         }
 
@@ -388,8 +386,8 @@ public class DeviceControlActivity extends BaseActivity
         showSkipMenu = true;
         invalidateOptionsMenu();
 
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
+        if (debugTestHandler != null) {
+            debugTestHandler.removeCallbacksAndMessages(null);
         }
     }
 
@@ -403,8 +401,8 @@ public class DeviceControlActivity extends BaseActivity
         setTitle(R.string.selectTest);
         invalidateOptionsMenu();
 
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
+        if (debugTestHandler != null) {
+            debugTestHandler.removeCallbacksAndMessages(null);
         }
     }
 
@@ -413,21 +411,20 @@ public class DeviceControlActivity extends BaseActivity
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
         footerLayout.setVisibility(View.GONE);
-        viewPager.setCurrentItem(testInfo.getInstructions().size());
         showSkipMenu = false;
         setTitle(R.string.awaitingResult);
         invalidateOptionsMenu();
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
-//        if (AppPreferences.isTestMode()) {
-        if (handler != null) {
-            handler.removeCallbacksAndMessages(null);
-        }
+        if (AppPreferences.isTestMode()) {
+            if (debugTestHandler != null) {
+                debugTestHandler.removeCallbacksAndMessages(null);
+            }
 
-        handler = new Handler();
-        handler.postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 10000);
-//        }
+            debugTestHandler = new Handler();
+            debugTestHandler.postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 10000);
+        }
     }
 
     private void showResultView() {
@@ -440,13 +437,14 @@ public class DeviceControlActivity extends BaseActivity
         if (page > 1) {
             showSkipMenu = true;
             invalidateOptionsMenu();
-        } else if (page == 1) {
+        } else if (page == 0) {
             showSkipMenu = false;
             invalidateOptionsMenu();
         }
     }
 
     public void onSkipClick(MenuItem item) {
+        viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
         showWaitingView();
     }
 
@@ -512,16 +510,16 @@ public class DeviceControlActivity extends BaseActivity
         public Fragment getItem(int position) {
             if (position == 0) {
                 return selectTestFragment;
-            } else if (position == testInfo.getInstructions().size()) {
+            } else if (position == testInfo.getInstructions().size() + 1) {
                 return waitingFragment;
             } else {
-                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position));
+                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position - 1));
             }
         }
 
         @Override
         public int getCount() {
-            return testInfo.getInstructions().size() + 1;
+            return testInfo.getInstructions().size() + 2;
         }
     }
 }
