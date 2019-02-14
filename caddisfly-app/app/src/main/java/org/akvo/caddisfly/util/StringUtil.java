@@ -68,7 +68,7 @@ public final class StringUtil {
         } else {
             if (!language.isEmpty()) {
                 return Spannable.Factory.getInstance().newSpannable(
-                        getLocalizedResources(context, new Locale(language)).getString(resId));
+                        getLocalizedResources(context, new Locale(language)).getText(resId));
             } else {
                 return Spannable.Factory.getInstance().newSpannable(context.getText(resId));
             }

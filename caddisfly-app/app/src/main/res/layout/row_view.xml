@@ -46,6 +46,6 @@
         android:paddingStart="2dp"
         android:paddingTop="3dp"
         android:textSize="16sp"
-        tools:text="This is a long paragraph with many sentences that can span multiple lines" />
+        tools:text="@string/wipe_place_align_vial_wait_1_c" />
 
 </TableRow>

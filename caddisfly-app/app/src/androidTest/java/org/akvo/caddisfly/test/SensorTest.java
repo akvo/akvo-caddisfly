@@ -216,7 +216,7 @@ public class SensorTest {
 
         onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click()).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonSubmitResult)).perform(click()).check(matches(isDisplayed()));
 
     }
 
@@ -250,7 +250,7 @@ public class SensorTest {
 
         onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click());
+        onView(withId(R.id.buttonSubmitResult)).perform(click());
 
         clickExternalSourceButton(1);
 
@@ -266,7 +266,7 @@ public class SensorTest {
 
         onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click());
+        onView(withId(R.id.buttonSubmitResult)).perform(click());
 
         clickExternalSourceButton(2);
 
@@ -282,7 +282,7 @@ public class SensorTest {
 
         onView(withId(R.id.textUnit2)).check(matches(not(isDisplayed())));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click());
+        onView(withId(R.id.buttonSubmitResult)).perform(click());
 
     }
 

@@ -54,8 +54,7 @@
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/button_arrow_left_selector"
-                android:visibility="invisible" />
+                android:src="@drawable/button_arrow_left_selector" />
 
             <org.akvo.caddisfly.widget.PageIndicatorView
                 android:id="@+id/pager_indicator"

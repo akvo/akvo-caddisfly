@@ -113,8 +113,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     private ListView deviceList;
     private RelativeLayout layoutDevices;
     private Runnable runnable;
-    private TextView textTitle;
-    private TextView textSubtitle;
     private ScanCallback mScanCallback;
     private DeviceConnectDialog deviceConnectDialog;
     private Snackbar snackbar;
@@ -192,19 +190,13 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
         layoutInfo = findViewById(R.id.layout_bluetooth_info);
 
-        textTitle = findViewById(R.id.textTitle);
-        textTitle.setText(R.string.scanning);
-
-        textSubtitle = findViewById(R.id.textSubtitle);
-        textSubtitle.setText(R.string.searching_for_device);
-
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        setTitle(R.string.connect);
+        setTitle(R.string.scanning);
     }
 
     private void showInstructionDialog() {
@@ -484,8 +476,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 layoutInfo.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
 
-                textTitle.setText(R.string.nearby_devices);
-                textSubtitle.setText(R.string.connect_device);
+                setTitle(R.string.nearby_devices);
             }
         }
 

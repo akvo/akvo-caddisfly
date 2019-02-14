@@ -265,7 +265,7 @@ public class SensorActivity extends BaseActivity {
 
         b.textSubtitle.setText(R.string.deviceConnectSensor);
 
-        b.buttonAcceptResult.setVisibility(View.INVISIBLE);
+        b.buttonSubmitResult.setVisibility(View.INVISIBLE);
 
         if (testInfo != null && testInfo.getUuid() != null) {
             ((TextView) findViewById(R.id.textTitle)).setText(
@@ -307,7 +307,7 @@ public class SensorActivity extends BaseActivity {
             b.progressWait.setVisibility(View.GONE);
             b.layoutResult.animate().alpha(0f).setDuration(ANIMATION_DURATION);
             b.imageUsbConnection.animate().alpha(1f).setDuration(ANIMATION_DURATION_LONG);
-            b.buttonAcceptResult.setVisibility(View.GONE);
+            b.buttonSubmitResult.setVisibility(View.GONE);
             b.textSubtitle.setText(R.string.deviceConnectSensor);
             b.textSubtitle2.setText("");
         }
@@ -417,14 +417,14 @@ public class SensorActivity extends BaseActivity {
             b.textResult.setVisibility(View.VISIBLE);
             b.textUnit.setVisibility(View.VISIBLE);
             b.progressWait.setVisibility(View.GONE);
-            b.buttonAcceptResult.setVisibility(View.VISIBLE);
+            b.buttonSubmitResult.setVisibility(View.VISIBLE);
         } else {
             b.textResult.setText(EMPTY_STRING);
             b.textUnit.setText(EMPTY_STRING);
             b.textResult.setVisibility(View.INVISIBLE);
             b.textUnit.setVisibility(View.INVISIBLE);
             b.progressWait.setVisibility(View.VISIBLE);
-            b.buttonAcceptResult.setVisibility(View.GONE);
+            b.buttonSubmitResult.setVisibility(View.GONE);
             b.textSubtitle2.setText(R.string.dipSensorInSample);
         }
 
@@ -440,7 +440,7 @@ public class SensorActivity extends BaseActivity {
 
         // if test is not via survey then do not show the accept button
         if (mIsInternal) {
-            b.buttonAcceptResult.setVisibility(View.GONE);
+            b.buttonSubmitResult.setVisibility(View.GONE);
         }
     }
 
@@ -463,7 +463,7 @@ public class SensorActivity extends BaseActivity {
     }
 
     @SuppressWarnings("unused")
-    public void onClickAcceptResult(View view) {
+    public void onClickSubmitResult(View view) {
         // Build the result json to be returned
 
         Intent resultIntent = new Intent();

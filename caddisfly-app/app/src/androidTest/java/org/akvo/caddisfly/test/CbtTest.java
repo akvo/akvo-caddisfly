@@ -232,7 +232,7 @@ public class CbtTest {
         textView6.check(matches(withText(risk2)));
 
         ViewInteraction button = onView(
-                allOf(withId(R.id.buttonAcceptResult),
+                allOf(withId(R.id.buttonSubmitResult),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.fragment_container),
@@ -244,7 +244,7 @@ public class CbtTest {
         onView(withText(R.string.result)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.buttonAcceptResult), withText(R.string.acceptResult),
+                allOf(withId(R.id.buttonSubmitResult), withText(R.string.submitResult),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.fragment_container),
@@ -368,7 +368,7 @@ public class CbtTest {
         onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.buttonAcceptResult), withText(R.string.acceptResult),
+                allOf(withId(R.id.buttonSubmitResult), withText(R.string.submitResult),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.fragment_container),

@@ -32,36 +32,6 @@
             layout="@layout/toolbar" />
 
         <LinearLayout
-            android:id="@+id/layoutTitleBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?colorPrimary"
-            android:orientation="vertical"
-            android:paddingBottom="20dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="20dp">
-
-            <TextView
-                android:id="@+id/textTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/nearby_devices"
-                android:textColor="#fff"
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/textSubtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/connect_device"
-                android:textColor="#d6f6fdf6"
-                android:textSize="16sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/layout_bluetooth_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

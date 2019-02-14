@@ -88,7 +88,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     }
 
     @SuppressWarnings("unused")
-    public void onClickAcceptResult(View view) {
+    public void onClickSubmitResult(View view) {
 
         SparseArray<String> results = new SparseArray<>();
 

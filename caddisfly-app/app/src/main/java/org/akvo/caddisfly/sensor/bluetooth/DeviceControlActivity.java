@@ -28,26 +28,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.databinding.DataBindingUtil;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.text.SpannableStringBuilder;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
+import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
+import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.preference.AppPreferences;
+import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.ui.InstructionFragment;
-import org.akvo.caddisfly.util.StringUtil;
+import org.akvo.caddisfly.widget.PageIndicatorView;
 
 import java.util.List;
 import java.util.Objects;
@@ -68,10 +79,6 @@ public class DeviceControlActivity extends BaseActivity
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
     Handler handler;
-    private boolean resultReceived = false;
-    private TestInfo testInfo;
-    private String mDeviceAddress;
-    private BluetoothLeService mBluetoothLeService;
     // to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -84,6 +91,7 @@ public class DeviceControlActivity extends BaseActivity
             }
             // Automatically connects to the device upon successful start-up initialization.
             mBluetoothLeService.connect(mDeviceAddress);
+            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         }
 
         @Override
@@ -91,15 +99,23 @@ public class DeviceControlActivity extends BaseActivity
             mBluetoothLeService = null;
         }
     };
+    private SelectTestFragment selectTestFragment;
+    private WaitingFragment waitingFragment;
+    private ViewPager viewPager;
+    private FrameLayout resultLayout;
+    private FrameLayout pagerLayout;
+    private RelativeLayout footerLayout;
+
+    private TestInfo testInfo;
+    private String mDeviceAddress;
+    private BluetoothLeService mBluetoothLeService;
+    private ProgressBar progressCircle;
+    private boolean showSkipMenu = false;
     private BluetoothResultFragment mBluetoothResultFragment;
     private String mData;
-
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
-    private LinearLayout layoutSelectTest;
-    private RelativeLayout layoutInstructions;
-    private RelativeLayout layoutWaiting;
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -126,6 +142,7 @@ public class DeviceControlActivity extends BaseActivity
             }
         }
     };
+    private PageIndicatorView pagerIndicator;
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -146,49 +163,89 @@ public class DeviceControlActivity extends BaseActivity
 
         testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
 
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-
+        waitingFragment = WaitingFragment.getInstance();
         mBluetoothResultFragment = BluetoothResultFragment.getInstance(testInfo);
-        InstructionFragment instructionFragment = InstructionFragment.getInstance(testInfo);
+        selectTestFragment = SelectTestFragment.getInstance(testInfo);
+        viewPager = findViewById(R.id.viewPager);
+        pagerIndicator = findViewById(R.id.pager_indicator);
+        resultLayout = findViewById(R.id.resultLayout);
+        pagerLayout = findViewById(R.id.pagerLayout);
+        footerLayout = findViewById(R.id.layout_footer);
+        progressCircle = findViewById(R.id.progressCircle);
 
-        layoutInstructions = findViewById(R.id.layoutInstructions);
-        layoutWaiting = findViewById(R.id.layoutWaiting);
+        progressCircle.getIndeterminateDrawable().setColorFilter(getResources()
+                .getColor(R.color.white), PorterDuff.Mode.SRC_IN);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.layoutInstructions, instructionFragment, "instructionFragment");
-        ft.replace(R.id.layoutWaiting, mBluetoothResultFragment);
+        ft.replace(R.id.resultLayout, mBluetoothResultFragment);
         ft.commit();
 
-        layoutSelectTest = findViewById(R.id.selectTestLayout);
-        findViewById(R.id.buttonTestSelected).setOnClickListener(v -> {
-            showWaitingView();
-            if (AppPreferences.isTestMode()) {
-                handler = new Handler();
-                handler.postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 5000);
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mSectionsPagerAdapter);
+
+        pagerIndicator.showDots(true);
+        pagerIndicator.setPageCount(mSectionsPagerAdapter.getCount() - 2);
+
+        ImageView imagePageRight = findViewById(R.id.image_pageRight);
+        imagePageRight.setOnClickListener(view ->
+                viewPager.setCurrentItem(Math.min(testInfo.getInstructions().size(),
+                        viewPager.getCurrentItem() + 1)));
+
+        ImageView imagePageLeft = findViewById(R.id.image_pageLeft);
+        imagePageLeft.setOnClickListener(view -> pageBack());
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pagerIndicator.setActiveIndex(position - 1);
+
+                if (position == 0) {
+                    showSelectTestView();
+                } else if (position == 1) {
+                    showInstructionsView();
+                } else if (position == testInfo.getInstructions().size()) {
+                    showWaitingView();
+                } else {
+                    showInstructionsView();
+                    onInstructionFinish(testInfo.getInstructions().size() - position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Nothing to do here
             }
         });
 
-        SpannableStringBuilder selectionInstruction = StringUtil.toInstruction(this, testInfo,
-                String.format(StringUtil.getStringByName(this, testInfo.getSelectInstruction()),
-                        StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getName()));
-
-        ((TextView) findViewById(R.id.textSelectInstruction)).setText(selectionInstruction);
-
         showSelectTestView();
+    }
+
+    private void pageBack() {
+        viewPager.setCurrentItem(Math.max(0, viewPager.getCurrentItem() - 1));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
             if (!result) {
                 finish();
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (showSkipMenu && testInfo.getSubtype() == TestType.BLUETOOTH) {
+            getMenuInflater().inflate(R.menu.menu_instructions, menu);
+        }
+        return true;
     }
 
     @Override
@@ -207,21 +264,25 @@ public class DeviceControlActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unbindServices();
+        mBluetoothLeService = null;
+    }
+
+    private void unbindServices() {
         try {
             unbindService(mServiceConnection);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mBluetoothLeService = null;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            if (layoutInstructions.getVisibility() == View.VISIBLE) {
-                showWaitingView();
-            } else {
+            if (viewPager.getCurrentItem() == 0) {
                 onBackPressed();
+            } else {
+                showSelectTestView();
             }
             return true;
         }
@@ -230,27 +291,26 @@ public class DeviceControlActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (layoutSelectTest.getVisibility() == View.VISIBLE) {
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
+        unbindServices();
+        if (resultLayout.getVisibility() == View.VISIBLE) {
+            showWaitingView();
+        } else if (viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
-        } else if (resultReceived && mBluetoothResultFragment.isVisible()) {
-            mBluetoothResultFragment.displayWaiting();
-            showWaitingView();
-            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-            resultReceived = false;
-        } else if (layoutInstructions.getVisibility() == View.VISIBLE) {
-            showWaitingView();
-        } else if (mBluetoothResultFragment.isVisible()) {
-            showSelectTestView();
         } else {
-            super.onBackPressed();
+            pageBack();
         }
     }
 
     private void displayData(String data) {
 
-        mData += data;
+        if (viewPager.getCurrentItem() != testInfo.getInstructions().size()) {
+            return;
+        }
 
-        showWaitingView();
+        mData += data;
 
         Matcher m = Pattern.compile("DT01;((?!DT01;).)*?;;;;").matcher(mData);
 
@@ -272,11 +332,9 @@ public class DeviceControlActivity extends BaseActivity
             new Handler().postDelayed(() -> {
                 try {
                     if (mBluetoothResultFragment.displayData(fullData)) {
-
-                        resultReceived = true;
                         setTitle(R.string.result);
+                        showResultView();
                     } else {
-                        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
                         showSelectTestView();
                     }
                 } catch (Exception e) {
@@ -317,31 +375,153 @@ public class DeviceControlActivity extends BaseActivity
             if (mBluetoothResultFragment.isVisible()) {
                 mBluetoothResultFragment.displayWaiting();
             }
-
             showSelectTestView();
-
-        } else {
-            showInstructionsView();
         }
     }
 
     private void showInstructionsView() {
-        layoutInstructions.setVisibility(View.VISIBLE);
-        layoutSelectTest.setVisibility(View.GONE);
-        layoutWaiting.setVisibility(View.GONE);
+        progressCircle.setVisibility(View.GONE);
+        footerLayout.setVisibility(View.VISIBLE);
+        pagerLayout.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.GONE);
+        setTitle(R.string.instructions);
+        showSkipMenu = true;
+        invalidateOptionsMenu();
+
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
     }
 
     private void showSelectTestView() {
-        layoutSelectTest.setVisibility(View.VISIBLE);
-        layoutWaiting.setVisibility(View.GONE);
-        layoutInstructions.setVisibility(View.GONE);
-        setTitle(testInfo.getMd610Id() + ". " + testInfo.getName());
+        progressCircle.setVisibility(View.GONE);
+        pagerLayout.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.GONE);
+        footerLayout.setVisibility(View.GONE);
+        viewPager.setCurrentItem(0);
+        showSkipMenu = false;
+        setTitle(R.string.selectTest);
+        invalidateOptionsMenu();
+
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
     }
 
     private void showWaitingView() {
-        layoutWaiting.setVisibility(View.VISIBLE);
-        layoutSelectTest.setVisibility(View.GONE);
-        layoutInstructions.setVisibility(View.GONE);
+        progressCircle.setVisibility(View.VISIBLE);
+        pagerLayout.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.GONE);
+        footerLayout.setVisibility(View.GONE);
+        viewPager.setCurrentItem(testInfo.getInstructions().size());
+        showSkipMenu = false;
+        setTitle(R.string.awaitingResult);
+        invalidateOptionsMenu();
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
+//        if (AppPreferences.isTestMode()) {
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
+
+        handler = new Handler();
+        handler.postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 10000);
+//        }
     }
 
+    private void showResultView() {
+        progressCircle.setVisibility(View.GONE);
+        resultLayout.setVisibility(View.VISIBLE);
+        pagerLayout.setVisibility(View.GONE);
+    }
+
+    public void onInstructionFinish(int page) {
+        if (page > 1) {
+            showSkipMenu = true;
+            invalidateOptionsMenu();
+        } else if (page == 1) {
+            showSkipMenu = false;
+            invalidateOptionsMenu();
+        }
+    }
+
+    public void onSkipClick(MenuItem item) {
+        showWaitingView();
+    }
+
+    public void onSelectTestClick(View view) {
+        viewPager.setCurrentItem(1);
+        showInstructionsView();
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+        FragmentInstructionBinding fragmentInstructionBinding;
+        Instruction instruction;
+
+        /**
+         * Returns a new instance of this fragment for the given section number.
+         *
+         * @param instruction The information to to display
+         * @return The instance
+         */
+        static PlaceholderFragment newInstance(Instruction instruction) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putParcelable(ARG_SECTION_NUMBER, instruction);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            fragmentInstructionBinding = DataBindingUtil.inflate(inflater,
+                    R.layout.fragment_instruction, container, false);
+
+            if (getArguments() != null) {
+                instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
+                fragmentInstructionBinding.setInstruction(instruction);
+            }
+
+            return fragmentInstructionBinding.getRoot();
+        }
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return selectTestFragment;
+            } else if (position == testInfo.getInstructions().size()) {
+                return waitingFragment;
+            } else {
+                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position));
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return testInfo.getInstructions().size() + 1;
+        }
+    }
 }

@@ -140,7 +140,7 @@ public class TestInfoViewModel extends AndroidViewModel {
             Matcher m2 = Pattern.compile("%reagent" + j).matcher(sentence);
             while (m2.find()) {
                 String code = testInfo.getReagent(j - 1).code;
-                if (!code.isEmpty()) {
+                if (testInfo.getReagentType().equals("Tablet") && !code.isEmpty()) {
                     ReagentLabel reagentLabel = new ReagentLabel(context, null);
 
                     int height = Resources.getSystem().getDisplayMetrics().heightPixels;
