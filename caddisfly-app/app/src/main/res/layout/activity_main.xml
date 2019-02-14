@@ -77,7 +77,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:onClick="onOkClicked"
             android:paddingStart="26dp"
             android:paddingTop="20dp"

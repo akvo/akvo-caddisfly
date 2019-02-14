@@ -4,62 +4,41 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <org.akvo.caddisfly.widget.HtmlTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:lineSpacingExtra="9dp"
-        android:text="@string/once_test_result_shown"
-        android:textSize="16sp" />
-
-    <org.akvo.caddisfly.widget.HtmlTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:lineSpacingExtra="9dp"
-        android:text="@string/over_range_is_valid"
-        android:textSize="16sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="#ddd"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:paddingTop="16dp"
         android:paddingBottom="16dp">
 
         <org.akvo.caddisfly.widget.HtmlTextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:gravity="center_horizontal"
             android:lineSpacingExtra="9dp"
-            android:text="@string/press_f3_button"
+            android:text="@string/once_test_result_shown"
             android:textSize="16sp" />
 
         <ImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:contentDescription="@null"
             android:src="@drawable/button_f3" />
 
         <org.akvo.caddisfly.widget.HtmlTextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:gravity="center_horizontal"
             android:lineSpacingExtra="9dp"
-            android:text="@string/on_md610_to_transfer"
+            android:text="@string/over_range_is_valid"
             android:textSize="16sp" />
 
     </LinearLayout>
