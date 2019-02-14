@@ -111,7 +111,7 @@
     <string name="wipe_place_align_vial_wait_1_c">Press (*test*) and wait for a <b>reaction time of %reactionTime1</b>.</string>
     <string name="wipe_place_align_vial_wait_2_a">Wipe the outside of the vial.</string>
     <string name="wipe_place_align_vial_wait_2_b">Hold vial at the lid and place vial in the chamber and align arrow marks.</string>
-    <string name="wipe_place_align_vial_wait_2_c">Press (*test*) and wait for a <b>reaction time of %reactionTime2 minutes</b>.</string>
+    <string name="wipe_place_align_vial_wait_2_c">Press (*test*) and wait for a <b>reaction time of %reactionTime2</b>.</string>
     <string name="wipe_place_align_prepared_vial_zero_a">Wipe the outside of the prepared vial.</string>
     <string name="wipe_place_align_prepared_vial_zero_b">Hold vial at the lid, place vial in the chamber and align arrow marks.</string>
     <string name="wipe_place_align_prepared_vial_zero_c">Press (*zero*) to perform <b>zero test</b></string>
@@ -119,8 +119,8 @@
     <string name="wipe_place_align_vial_sample_test_a">Wipe the outside of the vial (the sample).</string>
     <string name="wipe_place_align_vial_sample_test_b">Hold vial at the lid, place vial (the sample) in the chamber and align arrow marks.</string>
     <string name="wipe_place_align_vial_sample_test_c">Press (*test*) key.</string>
-    <string name="press_enter_wait_1">Press (*enter*) and wait for a <b>reaction period of %reactionTime1 minutes</b></string>
-    <string name="press_enter_wait_2">Press (*enter*) and wait for a <b>reaction period of %reactionTime2 minutes</b></string>
+    <string name="press_enter_wait_1">Press (*enter*) and wait for a <b>reaction period of %reactionTime1</b></string>
+    <string name="press_enter_wait_2">Press (*enter*) and wait for a <b>reaction period of %reactionTime2</b></string>
     <string name="remix">Remix the solution</string>
     <string name="insert_16mm_adapter">Insert the adapter for 16 mm Ø vials</string>
     <string name="reaction_tube_1ml_sample">Open the NitraX reagent A vial and add <b>1 ml of the water sample</b>. Close the cap tightly.</string>
@@ -156,10 +156,8 @@
     <string name="dechlorinate_residual_chlorine_zinc">Optional:
 In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate, add one DECHLOR tablet to the water sample. Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
     <string name="rinse_vial_sample">Rinse the vial with the water sample.</string>
-    <string name="clean_stirringrod_deionised">Rinse vial and stirring rod thoroughly with deionised water.</string>
+    <string name="clean_stirring_rod_deionised">Rinse vial and stirring rod thoroughly with deionised water.</string>
     <string name="clean_deionised">Rinse vial thoroughly with deionised water.</string>
-    <string name="once_test_result_shown">Once test result is shown on MD610 photometer, press (*f3*) to transfer data.</string>
-    <string name="over_range_is_valid">Overrange and underrange are also valid results.</string>
-    <string name="press_f3_button"><Data><![CDATA[Press <b>F3</b> button on <b>MD610</b>]]></Data></string>
-    <string name="on_md610_to_transfer"><Data><![CDATA[to transfer result]]></Data></string>
+    <string name="once_test_result_shown">Once test result is shown on the MD610 photometer, press (*f3*) to transfer data.</string>
+    <string name="over_range_is_valid"><![CDATA[<b>Note:</b> Overrange and underrange are also valid results.]]></string>
 </resources>

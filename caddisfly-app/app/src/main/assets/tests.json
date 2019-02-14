@@ -2691,7 +2691,7 @@
       "sampleQuantity": "10",
       "ranges": "5,200",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -2756,7 +2756,7 @@
       "sampleQuantity": "10",
       "ranges": "5,500",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -2835,7 +2835,7 @@
       "sampleQuantity": "10",
       "ranges": "0.01,0.3",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -2911,7 +2911,7 @@
       "sampleQuantity": "10",
       "ranges": "0.02,1",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -3277,7 +3277,7 @@
       "sampleQuantity": "10",
       "ranges": "0.5,25",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -3433,7 +3433,7 @@
       "sampleQuantity": "10",
       "ranges": "0.01,6",
       "selectInstruction": "select_diff_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -3537,7 +3537,7 @@
       "sampleQuantity": "10",
       "ranges": "0.01,6",
       "selectInstruction": "select_free_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -3787,7 +3787,7 @@
       "sampleQuantity": "10",
       "ranges": "0.1,10",
       "selectInstruction": "select_diff_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -3891,7 +3891,7 @@
       "sampleQuantity": "10",
       "ranges": "0.1,10",
       "selectInstruction": "select_free_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -4868,7 +4868,7 @@
       "sampleQuantity": "10",
       "ranges": "0.05,5",
       "selectInstruction": "select_diff_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -5124,7 +5124,7 @@
       "sampleQuantity": "2",
       "ranges": "50,900",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -5211,7 +5211,7 @@
       "sampleQuantity": "10",
       "ranges": "0,500",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -5283,7 +5283,7 @@
       "sampleQuantity": "1",
       "ranges": "2,50",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -5348,7 +5348,7 @@
       "sampleQuantity": "10",
       "ranges": "20,500",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -5413,7 +5413,7 @@
       "sampleQuantity": "10",
       "ranges": "0.02,1",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -5771,7 +5771,7 @@
       "sampleQuantity": "10",
       "ranges": "0.2,4",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -5847,7 +5847,7 @@
       "sampleQuantity": "10",
       "ranges": "0.1,10",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -6098,7 +6098,7 @@
       "sampleQuantity": "10",
       "ranges": "0.01,0.5",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -6231,7 +6231,7 @@
       "sampleQuantity": "10",
       "ranges": "0.05,4",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -6307,7 +6307,7 @@
       "sampleQuantity": "10",
       "ranges": "1,80",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -6532,7 +6532,7 @@
       "sampleQuantity": "10",
       "ranges": "5.2,6.8",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -6595,7 +6595,7 @@
       "sampleQuantity": "10",
       "ranges": "6.5,8.4",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -6720,7 +6720,7 @@
       "sampleQuantity": "10",
       "ranges": "8,9.6",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -6783,7 +6783,7 @@
       "sampleQuantity": "10",
       "ranges": "0.7,12",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -6848,7 +6848,7 @@
       "sampleQuantity": "10",
       "ranges": "5,100",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
@@ -7102,7 +7102,7 @@
       "sampleQuantity": "10",
       "ranges": "0.02,0.9",
       "selectInstruction": "select_test_instruction",
-      "endInstruction": "clean_stirringrod_deionised",
+      "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
         {
           "section": [
