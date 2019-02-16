@@ -323,7 +323,7 @@ public class BluetoothTest {
                         isDisplayed()));
         textView10.check(matches(withText("mg/l")));
 
-        onView(withId(R.id.button_accept_result)).perform(click());
+        onView(withId(R.id.button_submit_result)).perform(click());
 
     }
 }

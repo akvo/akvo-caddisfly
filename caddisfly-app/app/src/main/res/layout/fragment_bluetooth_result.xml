@@ -172,7 +172,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_accept_result"
+        android:id="@+id/button_submit_result"
         style="@style/ActionButton"
         android:layout_above="@id/textEndInstruction"
         android:layout_centerInParent="true"

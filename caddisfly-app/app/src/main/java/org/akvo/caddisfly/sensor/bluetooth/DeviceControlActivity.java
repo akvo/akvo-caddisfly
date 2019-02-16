@@ -75,31 +75,10 @@ import timber.log.Timber;
  * communicates with {@code BluetoothLeService}, which in turn interacts with the
  * Bluetooth LE API.
  */
-public class DeviceControlActivity extends BaseActivity
-        implements BluetoothResultFragment.OnCurrentModeListener {
+public class DeviceControlActivity extends BaseActivity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
-    // to manage Service lifecycle.
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
-                Timber.e("Unable to initialize Bluetooth");
-                finish();
-            }
-            // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(mDeviceAddress);
-            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
-        }
-    };
     private SelectTestFragment selectTestFragment;
     private WaitingFragment waitingFragment;
     private ViewPager viewPager;
@@ -109,11 +88,6 @@ public class DeviceControlActivity extends BaseActivity
     private TestInfo testInfo;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
-    private Handler debugTestHandler;
-    private ProgressBar progressCircle;
-    private boolean showSkipMenu = false;
-    private BluetoothResultFragment mBluetoothResultFragment;
-    private String mData;
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
@@ -123,7 +97,10 @@ public class DeviceControlActivity extends BaseActivity
             final String action = intent.getAction();
             switch (Objects.requireNonNull(action)) {
                 case BluetoothLeService.ACTION_GATT_CONNECTED:
-                    invalidateOptionsMenu();
+                    if (AppPreferences.getShowDebugInfo()) {
+                        Toast.makeText(DeviceControlActivity.this,
+                                "Device connected", Toast.LENGTH_SHORT).show();
+                    }
                     break;
                 case BluetoothLeService.ACTION_GATT_DISCONNECTED:
                     Toast.makeText(DeviceControlActivity.this,
@@ -139,6 +116,31 @@ public class DeviceControlActivity extends BaseActivity
                 default:
                     break;
             }
+        }
+    };
+    private Handler debugTestHandler;
+    private ProgressBar progressCircle;
+    private boolean showSkipMenu = false;
+    private BluetoothResultFragment mBluetoothResultFragment;
+    private String mData;
+    // to manage Service lifecycle.
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+                finish();
+            }
+            // Automatically connects to the device upon successful start-up initialization.
+            mBluetoothLeService.connect(mDeviceAddress);
+            (new Handler()).postDelayed(() -> registerReceiver(mGattUpdateReceiver,
+                    makeGattUpdateIntentFilter()), 1000);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
         }
     };
     private PageIndicatorView pagerIndicator;
@@ -334,7 +336,8 @@ public class DeviceControlActivity extends BaseActivity
                         setTitle(R.string.result);
                         showResultView();
                     } else {
-                        showSelectTestView();
+                        (new Handler()).postDelayed(() -> registerReceiver(mGattUpdateReceiver,
+                                makeGattUpdateIntentFilter()), 1000);
                     }
                 } catch (Exception e) {
                     Toast.makeText(this, getString(R.string.invalid_data_received), Toast.LENGTH_LONG).show();
@@ -365,16 +368,6 @@ public class DeviceControlActivity extends BaseActivity
                     mBluetoothLeService.setCharacteristicIndication(gattCharacteristic, true);
                 }
             }
-        }
-    }
-
-    @Override
-    public void onCurrentMode(int mode) {
-        if (mode == 1) {
-            if (mBluetoothResultFragment.isVisible()) {
-                mBluetoothResultFragment.displayWaiting();
-            }
-            showSelectTestView();
         }
     }
 
@@ -420,6 +413,8 @@ public class DeviceControlActivity extends BaseActivity
         invalidateOptionsMenu();
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+        (new Handler()).postDelayed(() -> registerReceiver(mGattUpdateReceiver,
+                makeGattUpdateIntentFilter()), 1000);
 
         if (AppPreferences.isTestMode()) {
             if (debugTestHandler != null) {

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -59,12 +58,11 @@ public class BluetoothResultFragment extends Fragment {
     private TextView textUnit3;
 
     private LinearLayout layoutResult;
-    private OnCurrentModeListener mListener;
     private AlertDialog errorDialog;
     private LinearLayout layoutResult1;
     private LinearLayout layoutResult2;
     private LinearLayout layoutResult3;
-    private Button mAcceptButton;
+    private Button buttonSubmitResult;
     private TestInfo testInfo;
 
     /**
@@ -105,9 +103,9 @@ public class BluetoothResultFragment extends Fragment {
 
         layoutResult = view.findViewById(R.id.layoutResult);
 
-        mAcceptButton = view.findViewById(R.id.button_accept_result);
+        buttonSubmitResult = view.findViewById(R.id.button_submit_result);
 
-        mAcceptButton.setOnClickListener(view12 -> {
+        buttonSubmitResult.setOnClickListener(view12 -> {
             // Build the result json to be returned
 
             Intent resultIntent = new Intent();
@@ -157,14 +155,6 @@ public class BluetoothResultFragment extends Fragment {
         alertDialog.setCancelable(false);
         errorDialog = alertDialog.create();
         errorDialog.show();
-    }
-
-    /**
-     * Display the waiting screen.
-     */
-    public void displayWaiting() {
-
-        layoutResult.setVisibility(View.GONE);
     }
 
     /**
@@ -245,16 +235,12 @@ public class BluetoothResultFragment extends Fragment {
         }
 
         if (dataOk && testId.equals(testInfo.getMd610Id())) {
-            mAcceptButton.setVisibility(View.VISIBLE);
+            layoutResult.setVisibility(View.VISIBLE);
+            buttonSubmitResult.setVisibility(View.VISIBLE);
             return true;
         } else {
-
             showError(getActivity());
             layoutResult.setVisibility(View.GONE);
-            if (mListener != null) {
-                mListener.onCurrentMode(1);
-            }
-
             return false;
         }
     }
@@ -364,27 +350,5 @@ public class BluetoothResultFragment extends Fragment {
             dialog.show();
         }
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnCurrentModeListener) {
-            mListener = (OnCurrentModeListener) context;
-        } else {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnCurrentModeListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnCurrentModeListener {
-        void onCurrentMode(int mode);
-    }
-
 }
 
