@@ -17,16 +17,10 @@
 package org.akvo.caddisfly.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
 import android.content.res.Resources;
-import android.databinding.BindingAdapter;
-import android.databinding.ObservableField;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -48,6 +42,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableField;
+import androidx.lifecycle.AndroidViewModel;
 
 public class TestInfoViewModel extends AndroidViewModel {
 

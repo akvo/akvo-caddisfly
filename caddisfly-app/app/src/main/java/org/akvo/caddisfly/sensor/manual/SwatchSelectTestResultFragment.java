@@ -23,8 +23,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +40,9 @@ import org.akvo.caddisfly.ui.BaseFragment;
 import org.json.JSONObject;
 
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static android.app.Activity.RESULT_OK;
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;

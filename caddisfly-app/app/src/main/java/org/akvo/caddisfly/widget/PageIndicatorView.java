@@ -22,12 +22,13 @@ package org.akvo.caddisfly.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
 import org.akvo.caddisfly.R;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 public class PageIndicatorView extends View {
 

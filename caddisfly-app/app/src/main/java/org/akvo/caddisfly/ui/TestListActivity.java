@@ -21,16 +21,15 @@ package org.akvo.caddisfly.ui;
 
 import android.Manifest;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
@@ -44,6 +43,9 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ConfigDownloader;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
 public class TestListActivity extends BaseActivity
         implements TestListFragment.OnListFragmentInteractionListener {
@@ -87,7 +89,7 @@ public class TestListActivity extends BaseActivity
 
             snackbar.setActionTextColor(typedValue.data);
             View snackView = snackbar.getView();
-            TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
+            TextView textView = snackView.findViewById(R.id.snackbar_text);
             textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
             textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
             textView.setTextColor(Color.WHITE);

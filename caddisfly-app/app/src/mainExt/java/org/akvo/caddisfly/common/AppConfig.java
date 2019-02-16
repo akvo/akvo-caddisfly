@@ -29,12 +29,12 @@ public final class AppConfig {
     /**
      * Stop animations only for running Espresso UI tests
      */
-    public static final boolean STOP_ANIMATIONS = false;
+    public static final boolean STOP_ANIMATIONS = true;
 
     /**
      * Stop analytics only for testing
      */
-    public static final boolean STOP_ANALYTICS = false;
+    public static final boolean STOP_ANALYTICS = true;
 
     /**
      * Stop analytics only for testing
@@ -68,7 +68,7 @@ public final class AppConfig {
     /**
      * The sound volume for the beeps and other sound effects.
      */
-    public static final float SOUND_EFFECTS_VOLUME = 0.99f;
+    public static final float SOUND_EFFECTS_VOLUME = 0.01f;
 
     /**
      * To launch Flow app.

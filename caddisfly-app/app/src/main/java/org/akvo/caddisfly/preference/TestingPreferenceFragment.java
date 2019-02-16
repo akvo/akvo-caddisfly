@@ -24,7 +24,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +37,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Calendar;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 /**

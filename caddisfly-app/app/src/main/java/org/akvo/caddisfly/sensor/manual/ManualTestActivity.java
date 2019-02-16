@@ -8,9 +8,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.FileProvider;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -29,6 +26,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
 

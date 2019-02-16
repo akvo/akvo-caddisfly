@@ -26,7 +26,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -37,6 +36,8 @@ import org.akvo.caddisfly.sensor.striptest.qrdetector.PerspectiveTransform;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by linda on 9/9/15

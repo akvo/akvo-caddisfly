@@ -21,7 +21,6 @@ package org.akvo.caddisfly.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.media.ExifInterface;
 import android.text.TextUtils;
 
 import org.akvo.caddisfly.helper.FileHelper;
@@ -36,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import androidx.exifinterface.media.ExifInterface;
 import timber.log.Timber;
 
 /**

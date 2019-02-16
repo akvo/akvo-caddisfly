@@ -20,11 +20,12 @@
 package org.akvo.caddisfly.util;
 
 import android.os.IBinder;
-import android.support.test.espresso.Root;
 import android.view.WindowManager;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
+
+import androidx.test.espresso.Root;
 
 class ToastMatcher extends TypeSafeMatcher<Root> {
 

@@ -22,8 +22,6 @@ package org.akvo.caddisfly.sensor.manual;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +36,9 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseFragment;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class MeasurementInputFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";

@@ -22,7 +22,6 @@ package org.akvo.caddisfly.sensor.striptest.camera;
 import android.content.Context;
 import android.graphics.Rect;
 import android.hardware.Camera;
-import android.support.annotation.Nullable;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -33,6 +32,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 /**

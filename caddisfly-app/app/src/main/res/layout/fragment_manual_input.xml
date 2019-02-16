@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editResult"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                 android:layout_marginTop="5dp"
                 android:text="@string/ms_cm" />
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editRadioValidation"
                 android:layout_width="15dp"
                 android:layout_height="0dp"

@@ -21,8 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -31,6 +29,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.Toolbar;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;

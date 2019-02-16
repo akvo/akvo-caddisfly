@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
@@ -35,6 +34,8 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowLooper;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;

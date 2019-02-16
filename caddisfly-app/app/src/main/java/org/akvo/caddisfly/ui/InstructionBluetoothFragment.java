@@ -20,15 +20,8 @@
 package org.akvo.caddisfly.ui;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +32,14 @@ import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.databinding.FragmentInstructionsBinding;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class InstructionBluetoothFragment extends Fragment {
 
