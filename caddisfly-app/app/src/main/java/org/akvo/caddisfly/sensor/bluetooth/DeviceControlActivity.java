@@ -88,6 +88,31 @@ public class DeviceControlActivity extends BaseActivity {
     private TestInfo testInfo;
     private String mDeviceAddress;
     private BluetoothLeService mBluetoothLeService;
+    // to manage Service lifecycle.
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder service) {
+            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
+            if (!mBluetoothLeService.initialize()) {
+                finish();
+            }
+            // Automatically connects to the device upon successful start-up initialization.
+            mBluetoothLeService.connect(mDeviceAddress);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mBluetoothLeService = null;
+        }
+    };
+    private Handler debugTestHandler;
+    private ProgressBar progressCircle;
+    private boolean showSkipMenu = false;
+    private BluetoothResultFragment mBluetoothResultFragment;
+    private String mData;
+    private PageIndicatorView pagerIndicator;
+    private boolean registered;
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
@@ -118,32 +143,6 @@ public class DeviceControlActivity extends BaseActivity {
             }
         }
     };
-    private Handler debugTestHandler;
-    private ProgressBar progressCircle;
-    private boolean showSkipMenu = false;
-    private BluetoothResultFragment mBluetoothResultFragment;
-    private String mData;
-    // to manage Service lifecycle.
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
-            if (!mBluetoothLeService.initialize()) {
-                finish();
-            }
-            // Automatically connects to the device upon successful start-up initialization.
-            mBluetoothLeService.connect(mDeviceAddress);
-            (new Handler()).postDelayed(() -> registerReceiver(mGattUpdateReceiver,
-                    makeGattUpdateIntentFilter()), 1000);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName componentName) {
-            mBluetoothLeService = null;
-        }
-    };
-    private PageIndicatorView pagerIndicator;
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
@@ -152,6 +151,13 @@ public class DeviceControlActivity extends BaseActivity {
         intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
         return intentFilter;
+    }
+
+    private void registerReceiver() {
+        if (!registered) {
+            registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+            registered = true;
+        }
     }
 
     @Override
@@ -163,6 +169,8 @@ public class DeviceControlActivity extends BaseActivity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
+
+        hookBluetooth();
 
         waitingFragment = WaitingFragment.getInstance();
         mBluetoothResultFragment = BluetoothResultFragment.getInstance(testInfo);
@@ -232,12 +240,17 @@ public class DeviceControlActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        registerReceiver();
         if (mBluetoothLeService != null) {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
             if (!result) {
                 finish();
             }
         }
+    }
+
+    private boolean waitingForResult() {
+        return viewPager.getCurrentItem() == testInfo.getInstructions().size() + 1;
     }
 
     @Override
@@ -251,11 +264,25 @@ public class DeviceControlActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        unHookBluetooth();
+    }
+
+    private void hookBluetooth() {
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    private void unHookBluetooth() {
+        unregisterReceiver();
+        if (debugTestHandler != null) {
+            debugTestHandler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    private void unregisterReceiver() {
         try {
             unregisterReceiver(mGattUpdateReceiver);
-            if (debugTestHandler != null) {
-                debugTestHandler.removeCallbacksAndMessages(null);
-            }
+            registered = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -294,7 +321,6 @@ public class DeviceControlActivity extends BaseActivity {
         if (debugTestHandler != null) {
             debugTestHandler.removeCallbacksAndMessages(null);
         }
-        unbindServices();
         if (resultLayout.getVisibility() == View.VISIBLE) {
             viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
             showWaitingView();
@@ -307,7 +333,7 @@ public class DeviceControlActivity extends BaseActivity {
 
     private void displayData(String data) {
 
-        if (viewPager.getCurrentItem() != testInfo.getInstructions().size() + 1) {
+        if (!waitingForResult()) {
             return;
         }
 
@@ -317,11 +343,7 @@ public class DeviceControlActivity extends BaseActivity {
 
         if (m.find()) {
 
-            try {
-                unregisterReceiver(mGattUpdateReceiver);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            unregisterReceiver();
 
             final String fullData = m.group();
             mData = "";
@@ -336,8 +358,7 @@ public class DeviceControlActivity extends BaseActivity {
                         setTitle(R.string.result);
                         showResultView();
                     } else {
-                        (new Handler()).postDelayed(() -> registerReceiver(mGattUpdateReceiver,
-                                makeGattUpdateIntentFilter()), 1000);
+                        registerReceiver();
                     }
                 } catch (Exception e) {
                     Toast.makeText(this, getString(R.string.invalid_data_received), Toast.LENGTH_LONG).show();
@@ -380,10 +401,6 @@ public class DeviceControlActivity extends BaseActivity {
         setTitle(R.string.instructions);
         showSkipMenu = true;
         invalidateOptionsMenu();
-
-        if (debugTestHandler != null) {
-            debugTestHandler.removeCallbacksAndMessages(null);
-        }
     }
 
     private void showSelectTestView() {
@@ -395,13 +412,11 @@ public class DeviceControlActivity extends BaseActivity {
         showSkipMenu = false;
         setTitle(R.string.selectTest);
         invalidateOptionsMenu();
-
-        if (debugTestHandler != null) {
-            debugTestHandler.removeCallbacksAndMessages(null);
-        }
     }
 
     private void showWaitingView() {
+        registerReceiver();
+
         if (!AppConfig.STOP_ANIMATIONS) {
             progressCircle.setVisibility(View.VISIBLE);
         }
@@ -411,11 +426,6 @@ public class DeviceControlActivity extends BaseActivity {
         showSkipMenu = false;
         setTitle(R.string.awaitingResult);
         invalidateOptionsMenu();
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-        (new Handler()).postDelayed(() -> registerReceiver(mGattUpdateReceiver,
-                makeGattUpdateIntentFilter()), 1000);
-
         if (AppPreferences.isTestMode()) {
             if (debugTestHandler != null) {
                 debugTestHandler.removeCallbacksAndMessages(null);

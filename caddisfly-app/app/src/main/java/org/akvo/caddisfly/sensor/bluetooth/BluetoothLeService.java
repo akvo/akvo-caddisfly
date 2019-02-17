@@ -244,8 +244,10 @@ public class BluetoothLeService extends Service {
         if (UUID_LOVIBOND_DATA.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
                     UUID.fromString(GattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
+            if (descriptor != null) {
+                descriptor.setValue(BluetoothGattDescriptor.ENABLE_INDICATION_VALUE);
+                mBluetoothGatt.writeDescriptor(descriptor);
+            }
         }
     }
 
