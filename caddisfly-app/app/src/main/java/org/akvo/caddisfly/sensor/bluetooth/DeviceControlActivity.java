@@ -397,8 +397,7 @@ public class DeviceControlActivity extends BaseActivity {
         footerLayout.setVisibility(View.VISIBLE);
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
-//        setTitle(testInfo.getMd610Id() + ". " + testInfo.getName());
-        setTitle(R.string.instructions);
+        setTitle(testInfo.getMd610Id() + ". " + testInfo.getName());
         showSkipMenu = true;
         invalidateOptionsMenu();
     }

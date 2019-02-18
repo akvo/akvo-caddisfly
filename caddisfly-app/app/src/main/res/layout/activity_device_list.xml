@@ -43,8 +43,8 @@
                 style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="30dp"
                 android:indeterminate="true" />
 
         </LinearLayout>
@@ -53,7 +53,7 @@
             android:id="@+id/layoutDevices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:visibility="gone">
 
@@ -61,23 +61,6 @@
                 android:id="@+id/device_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-            <!--<Button-->
-            <!--android:id="@+id/button_instructions"-->
-            <!--style="?android:attr/buttonBarButtonStyle"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/device_list"-->
-            <!--android:drawableEnd="@drawable/ic_play_arrow_black_24dp"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginTop="40dp"-->
-            <!--android:paddingEnd="@dimen/activity_horizontal_margin"-->
-            <!--android:paddingStart="@dimen/activity_horizontal_margin"-->
-            <!--android:text="Device not displayed?"-->
-            <!--android:textAllCaps="true"-->
-            <!--android:textColor="@android:color/holo_blue_dark"-->
-            <!--android:textSize="16sp"-->
-            <!--android:textStyle="bold" />-->
 
         </RelativeLayout>
 

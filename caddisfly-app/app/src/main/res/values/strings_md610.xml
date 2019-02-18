@@ -116,6 +116,7 @@
     <string name="wipe_place_align_prepared_vial_zero_b">Hold vial at the lid, place vial in the chamber and align arrow marks.</string>
     <string name="wipe_place_align_prepared_vial_zero_c">Press (*zero*) to perform <b>zero test</b></string>
     <string name="wipe_place_align_vial_blank_zero_wait_a">Wipe the outside of the vial (blank), hold vial at the lid, place vial (blank) in the chamber and align arrow marks.</string>
+    <string name="wipe_place_align_vial_blank_zero_wait_b">Press (*zero*) to perform <b>zero test</b> and wait for a <b>reaction period of %reactionTime1</b>.</string>
     <string name="wipe_place_align_vial_sample_test_a">Wipe the outside of the vial (the sample).</string>
     <string name="wipe_place_align_vial_sample_test_b">Hold vial at the lid, place vial (the sample) in the chamber and align arrow marks.</string>
     <string name="wipe_place_align_vial_sample_test_c">Press (*test*) key.</string>
@@ -151,6 +152,8 @@
     <string name="stir_blended_water_b">Immediately rinse the vial with the water sample.</string>
     <string name="stir_blended_water_c">Fill the vial with <b>10 ml water sample.</b></string>
     <string name="stir_water_sample_a">Stir the water sample.</string>
+    <string name="stir_water_sample_b">Immediately rinse the vial with the water sample.</string>
+    <string name="stir_water_sample_c">Fill the vial with <b>10 ml water sample.</b></string>
     <string name="add_reagent_1_tablet_dissolve_a">Add <b>one %reagent1 tablet</b> straight from the foil to the water sample.</string>
     <string name="add_reagent_1_tablet_dissolve_b">Crush the tablet using a clean stirring rod and dissolve the tablet completely.</string>
     <string name="dechlorinate_residual_chlorine_zinc">Optional:

@@ -161,7 +161,7 @@ public class BluetoothResultFragment extends Fragment {
     /**
      * Display the result data.
      */
-    public boolean displayData(String data) {
+    boolean displayData(String data) {
 
         if (errorDialog != null) {
             errorDialog.dismiss();
@@ -289,20 +289,35 @@ public class BluetoothResultFragment extends Fragment {
                         case 1:
                             layoutResult1.setVisibility(View.VISIBLE);
                             textName1.setText(subTest.getName());
-                            textUnit1.setText(subTest.getUnit());
-                            textResult1.setText(result);
+                            if (!result.isEmpty()) {
+                                textUnit1.setText(subTest.getUnit());
+                                textResult1.setText(result);
+                            } else {
+                                textUnit1.setText("");
+                                textResult1.setText("");
+                            }
                             break;
                         case 2:
                             layoutResult2.setVisibility(View.VISIBLE);
                             textName2.setText(subTest.getName());
-                            textUnit2.setText(subTest.getUnit());
-                            textResult2.setText(result);
+                            if (!result.isEmpty()) {
+                                textUnit2.setText(subTest.getUnit());
+                                textResult2.setText(result);
+                            } else {
+                                textUnit2.setText("");
+                                textResult2.setText("");
+                            }
                             break;
                         case 3:
                             layoutResult3.setVisibility(View.VISIBLE);
                             textName3.setText(subTest.getName());
-                            textUnit3.setText(subTest.getUnit());
-                            textResult3.setText(result);
+                            if (!result.isEmpty()) {
+                                textUnit3.setText(subTest.getUnit());
+                                textResult3.setText(result);
+                            } else {
+                                textUnit3.setText("");
+                                textResult3.setText("");
+                            }
                             break;
                         default:
                             break;

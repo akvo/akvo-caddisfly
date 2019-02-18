@@ -44,29 +44,35 @@
                 android:gravity="center_horizontal"
                 android:textColor="#555"
                 android:textSize="25sp"
-                android:textStyle="bold"
                 tools:text="Water - Fluoride" />
 
-            <TextView
-                android:id="@+id/textResult1"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/result_top_margin"
-                android:gravity="center_vertical"
-                android:textSize="35sp"
-                tools:text="15000" />
+                android:layout_marginBottom="10dp">
 
-            <TextView
-                android:id="@+id/textUnit1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="-10dp"
-                android:layout_marginBottom="10dp"
-                android:textColor="#444"
-                android:textSize="17sp"
-                tools:text="mg/l" />
+                <TextView
+                    android:id="@+id/textResult1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_top_margin"
+                    android:gravity="center_vertical"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="15000" />
+
+                <TextView
+                    android:id="@+id/textUnit1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="#444"
+                    android:textSize="17sp"
+                    tools:text="mg/l" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -90,29 +96,35 @@
                 android:gravity="center_horizontal"
                 android:textColor="#555"
                 android:textSize="25sp"
-                android:textStyle="bold"
                 tools:text="Water - Fluoride" />
 
-            <TextView
-                android:id="@+id/textResult2"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/result_top_margin"
-                android:gravity="center_vertical"
-                android:textSize="35sp"
-                tools:text="15000" />
+                android:layout_marginBottom="10dp">
 
-            <TextView
-                android:id="@+id/textUnit2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="-10dp"
-                android:layout_marginBottom="10dp"
-                android:textColor="#444"
-                android:textSize="17sp"
-                tools:text="mg/l" />
+                <TextView
+                    android:id="@+id/textResult2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_top_margin"
+                    android:gravity="center_vertical"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="15000" />
+
+                <TextView
+                    android:id="@+id/textUnit2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="#444"
+                    android:textSize="17sp"
+                    tools:text="mg/l" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -137,29 +149,35 @@
                 android:gravity="center_horizontal"
                 android:textColor="#555"
                 android:textSize="25sp"
-                android:textStyle="bold"
+                android:textStyle="normal"
                 tools:text="Water - Fluoride" />
 
-            <TextView
-                android:id="@+id/textResult3"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/result_top_margin"
-                android:gravity="center_vertical"
-                android:textSize="35sp"
-                tools:text="15000" />
+                android:layout_gravity="center">
 
-            <TextView
-                android:id="@+id/textUnit3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="-10dp"
-                android:layout_marginBottom="15dp"
-                android:textColor="#444"
-                android:textSize="17sp"
-                tools:text="mg/l" />
+                <TextView
+                    android:id="@+id/textResult3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_top_margin"
+                    android:gravity="center_vertical"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="15000" />
+
+                <TextView
+                    android:id="@+id/textUnit3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="#444"
+                    android:textSize="17sp"
+                    tools:text="mg/l" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -171,8 +189,8 @@
         android:layout_above="@id/textEndInstruction"
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="@dimen/result_top_margin"
+        android:layout_marginBottom="@dimen/result_top_margin"
         android:text="@string/submitResult"
         android:theme="?primaryButtonStyle" />
 
@@ -183,7 +201,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/result_top_margin"
         android:lineSpacingExtra="6dp"
         android:textAlignment="center"
         android:textSize="@dimen/result_note_text_size"

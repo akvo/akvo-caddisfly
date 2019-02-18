@@ -5149,7 +5149,7 @@
         {
           "section": [
             "1.wipe_place_align_vial_blank_zero_wait_a",
-            "2.wipe_place_align_vial_blank_zero_wait_a",
+            "2.wipe_place_align_vial_blank_zero_wait_b",
             "image:place_vial_blank"
           ]
         },
@@ -7052,8 +7052,8 @@
         {
           "section": [
             "1.stir_water_sample_a",
-            "2.stir_water_sample_a",
-            "3.stir_water_sample_a",
+            "2.stir_water_sample_b",
+            "3.stir_water_sample_c",
             "image:close_swirl_tablet"
           ]
         },
@@ -7132,7 +7132,7 @@
         {
           "section": [
             "1.wipe_place_align_vial_blank_zero_wait_a",
-            "2.wipe_place_align_vial_blank_zero_wait_a",
+            "2.wipe_place_align_vial_blank_zero_wait_b",
             "image:place_vial_blank"
           ]
         },
