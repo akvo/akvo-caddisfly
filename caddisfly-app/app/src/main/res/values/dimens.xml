@@ -49,4 +49,7 @@
     <!-- StripTest -->
     <dimen name="quality_check_view_height">36dp</dimen>
 
+    <dimen name="result_top_margin">5dp</dimen>
+    <dimen name="result_note_text_size">14sp</dimen>
+
 </resources>

@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/result_top_margin"
                 android:gravity="center_vertical"
                 android:textSize="35sp"
                 tools:text="15000" />
@@ -71,7 +71,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                android:background="#ddd" />
 
         </LinearLayout>
 
@@ -79,8 +79,7 @@
             android:id="@+id/layoutResult2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="invisible">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textName2"
@@ -99,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/result_top_margin"
                 android:gravity="center_vertical"
                 android:textSize="35sp"
                 tools:text="15000" />
@@ -118,7 +117,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                android:background="#ddd" />
 
         </LinearLayout>
 
@@ -146,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/result_top_margin"
                 android:gravity="center_vertical"
                 android:textSize="35sp"
                 tools:text="15000" />
@@ -162,7 +161,6 @@
                 android:textSize="17sp"
                 tools:text="mg/l" />
 
-
         </LinearLayout>
 
     </LinearLayout>
@@ -174,7 +172,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/submitResult"
         android:theme="?primaryButtonStyle" />
 
@@ -188,7 +186,7 @@
         android:layout_marginBottom="20dp"
         android:lineSpacingExtra="6dp"
         android:textAlignment="center"
-        android:textSize="16sp"
+        android:textSize="@dimen/result_note_text_size"
         android:visibility="visible"
         tools:text="@string/clean_deionised" />
 

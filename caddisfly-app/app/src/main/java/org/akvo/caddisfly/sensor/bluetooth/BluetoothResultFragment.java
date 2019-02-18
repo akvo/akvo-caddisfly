@@ -177,6 +177,10 @@ public class BluetoothResultFragment extends Fragment {
         String unit = "";
         boolean dataOk = false;
 
+        layoutResult1.setVisibility(View.INVISIBLE);
+        layoutResult2.setVisibility(View.INVISIBLE);
+        layoutResult3.setVisibility(View.INVISIBLE);
+
         String[] dataArray = data.split(";");
         for (int i = 0; i < dataArray.length; i++) {
             if (titles.length > i && !titles[i].isEmpty()) {
