@@ -71,7 +71,7 @@ import static org.hamcrest.Matchers.allOf;
 
 public final class TestHelper {
 
-    public static final String mCurrentLanguage = "en";
+    public static final String mCurrentLanguage = "fr";
     private static final boolean TAKE_SCREENSHOTS = false;
     private static final Map<String, String> STRING_HASH_MAP_EN = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_ES = new HashMap<>();

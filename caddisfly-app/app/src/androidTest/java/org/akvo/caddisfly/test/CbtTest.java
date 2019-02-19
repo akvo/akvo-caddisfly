@@ -43,7 +43,6 @@ import androidx.test.filters.LargeTest;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -53,6 +52,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
@@ -255,7 +255,7 @@ public class CbtTest {
         appCompatButton4.perform(click());
 
         assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.health_risk_category) + ": "
-                + getString(mIntentsRule.getActivity(), R.string.very_high_risk_unsafe) + " ")));
+                + "Very High Risk / Unsafe ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >100 MPN/100ml")));
         assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.confidenceInterval) + ": 9435.1 ")));
     }
@@ -379,7 +379,7 @@ public class CbtTest {
         appCompatButton4.perform(click());
 
         assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.recreational_health_risk_category) + ": "
-                + getString(mIntentsRule.getActivity(), R.string.very_unsafe) + " ")));
+                + "Very Unsafe ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")));
         assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.confidenceInterval) + ": 94351.0 ")));
     }

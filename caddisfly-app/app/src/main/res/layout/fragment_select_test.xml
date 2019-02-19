@@ -24,7 +24,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:enabled="true"
-        android:minWidth="230dp"
         android:onClick="onSelectTestClick"
         android:text="@string/test_selected"
         android:theme="?primaryButtonStyle" />

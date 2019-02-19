@@ -44,7 +44,6 @@ import androidx.test.filters.LargeTest;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -58,6 +57,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
@@ -128,23 +128,19 @@ public class ManualTest {
 
         onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
 
-        onView(withText("Connect the turbidity tubes and fill the tube with the water sample until you cannot see the black circle at the yellow bottom anymore."))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.fill_turbidity_tube)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText("Empty the tube with small intervals until you can see the black circle at the yellow bottom again and read out the turbidity on the side of the tube."))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.empty_turbidity_tube)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText("Fill in the obtained turbidity value in the app."))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.fill_in_value_turbidity_tube)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText("Empty the tube completely, clean if necessary, disconnect tubes and store them."))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.clean_turbidity_tube)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription(R.string.navigate_up),

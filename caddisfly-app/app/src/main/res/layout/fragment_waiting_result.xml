@@ -22,24 +22,25 @@
             android:text="@string/once_test_result_shown"
             android:textSize="16sp" />
 
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:contentDescription="@null"
-            android:src="@drawable/button_f3" />
-
         <org.akvo.caddisfly.widget.HtmlTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:lineSpacingExtra="9dp"
             android:text="@string/over_range_is_valid"
             android:textSize="16sp" />
+
+        <ProgressBar
+            android:id="@+id/progressCircle"
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="30dp"
+            android:indeterminate="true" />
 
     </LinearLayout>
 </LinearLayout>

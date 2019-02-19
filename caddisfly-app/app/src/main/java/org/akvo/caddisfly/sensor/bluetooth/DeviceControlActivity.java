@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -39,12 +38,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
@@ -107,7 +104,6 @@ public class DeviceControlActivity extends BaseActivity {
         }
     };
     private Handler debugTestHandler;
-    private ProgressBar progressCircle;
     private boolean showSkipMenu = false;
     private BluetoothResultFragment mBluetoothResultFragment;
     private String mData;
@@ -180,10 +176,6 @@ public class DeviceControlActivity extends BaseActivity {
         resultLayout = findViewById(R.id.resultLayout);
         pagerLayout = findViewById(R.id.pagerLayout);
         footerLayout = findViewById(R.id.layout_footer);
-        progressCircle = findViewById(R.id.progressCircle);
-
-        progressCircle.getIndeterminateDrawable().setColorFilter(getResources()
-                .getColor(R.color.white), PorterDuff.Mode.SRC_IN);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.resultLayout, mBluetoothResultFragment);
@@ -193,7 +185,7 @@ public class DeviceControlActivity extends BaseActivity {
         viewPager.setAdapter(mSectionsPagerAdapter);
 
         pagerIndicator.showDots(true);
-        pagerIndicator.setPageCount(mSectionsPagerAdapter.getCount() - 2);
+        pagerIndicator.setPageCount(mSectionsPagerAdapter.getCount() - 1);
 
         ImageView imagePageRight = findViewById(R.id.image_pageRight);
         imagePageRight.setOnClickListener(view ->
@@ -393,7 +385,6 @@ public class DeviceControlActivity extends BaseActivity {
     }
 
     private void showInstructionsView() {
-        progressCircle.setVisibility(View.GONE);
         footerLayout.setVisibility(View.VISIBLE);
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
@@ -403,7 +394,6 @@ public class DeviceControlActivity extends BaseActivity {
     }
 
     private void showSelectTestView() {
-        progressCircle.setVisibility(View.GONE);
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
         footerLayout.setVisibility(View.GONE);
@@ -416,9 +406,6 @@ public class DeviceControlActivity extends BaseActivity {
     private void showWaitingView() {
         registerReceiver();
 
-        if (!AppConfig.STOP_ANIMATIONS) {
-            progressCircle.setVisibility(View.VISIBLE);
-        }
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
         footerLayout.setVisibility(View.GONE);
@@ -436,7 +423,6 @@ public class DeviceControlActivity extends BaseActivity {
     }
 
     private void showResultView() {
-        progressCircle.setVisibility(View.GONE);
         resultLayout.setVisibility(View.VISIBLE);
         pagerLayout.setVisibility(View.GONE);
     }

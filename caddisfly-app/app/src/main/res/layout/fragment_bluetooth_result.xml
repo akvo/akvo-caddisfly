@@ -39,11 +39,10 @@
                 android:id="@+id/textName1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 tools:text="Water - Fluoride" />
 
             <LinearLayout
@@ -58,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/result_top_margin"
                     android:gravity="center_vertical"
+                    android:textColor="#444"
                     android:textSize="35sp"
                     android:textStyle="bold"
                     tools:text="15000" />
@@ -91,11 +91,10 @@
                 android:id="@+id/textName2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 tools:text="Water - Fluoride" />
 
             <LinearLayout
@@ -110,6 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/result_top_margin"
                     android:gravity="center_vertical"
+                    android:textColor="#444"
                     android:textSize="35sp"
                     android:textStyle="bold"
                     tools:text="15000" />
@@ -144,11 +144,11 @@
                 android:id="@+id/textName3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="normal"
                 tools:text="Water - Fluoride" />
 
@@ -163,6 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/result_top_margin"
                     android:gravity="center_vertical"
+                    android:textColor="#444"
                     android:textSize="35sp"
                     android:textStyle="bold"
                     tools:text="15000" />
@@ -190,7 +191,7 @@
         android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/result_top_margin"
-        android:layout_marginBottom="@dimen/result_top_margin"
+        android:layout_marginBottom="10dp"
         android:text="@string/submitResult"
         android:theme="?primaryButtonStyle" />
 
@@ -199,11 +200,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="20dp"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/result_top_margin"
+        android:layout_marginBottom="20dp"
         android:lineSpacingExtra="6dp"
-        android:textAlignment="center"
         android:textSize="@dimen/result_note_text_size"
         android:visibility="visible"
         tools:text="@string/clean_deionised" />

@@ -38,7 +38,6 @@ import androidx.test.filters.LargeTest;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 
-import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -46,6 +45,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
@@ -105,9 +105,9 @@ public class SwatchSelectTest {
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 
-        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
+        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.62f));
 
-        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.5f));
+        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.62f));
 
         sleep(1000);
 
@@ -176,9 +176,9 @@ public class SwatchSelectTest {
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 
-        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
+        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.62f));
 
-        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.5f));
+        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.62f));
 
         sleep(1000);
 
