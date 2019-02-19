@@ -39,6 +39,7 @@
     <string name="next">Next</string>
     <string name="navigate_up">Navigate up</string>
     <string name="logo">Logo</string>
+    <string name="skip">Skip</string>
 
     <string name="result">Result</string>
     <string name="language">Language</string>
@@ -67,7 +68,6 @@
 
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connecting to Device</string>
-    <string name="acceptResult">Accept Result</string>
 
     <!--Sensor-->
     <string name="deviceConnectSensor">Connect sensor</string>

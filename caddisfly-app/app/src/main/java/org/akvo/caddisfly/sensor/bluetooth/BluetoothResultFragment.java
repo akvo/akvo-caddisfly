@@ -1,19 +1,13 @@
 package org.akvo.caddisfly.sensor.bluetooth;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -21,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,15 +33,18 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import static android.content.Context.CLIPBOARD_SERVICE;
-import static org.akvo.caddisfly.common.AppConfig.STOP_ANIMATIONS;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BluetoothResultFragment extends Fragment {
 
-    private static final int ANIMATION_DURATION = 400;
     private final SparseArray<String> results = new SparseArray<>();
     private TextView textName1;
     private TextView textResult1;
@@ -62,14 +58,12 @@ public class BluetoothResultFragment extends Fragment {
     private TextView textResult3;
     private TextView textUnit3;
 
-    private LinearLayout layoutWaiting;
     private LinearLayout layoutResult;
-    private OnCurrentModeListener mListener;
     private AlertDialog errorDialog;
     private LinearLayout layoutResult1;
     private LinearLayout layoutResult2;
     private LinearLayout layoutResult3;
-    private Button mAcceptButton;
+    private Button buttonSubmitResult;
     private TestInfo testInfo;
 
     /**
@@ -93,17 +87,6 @@ public class BluetoothResultFragment extends Fragment {
             testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
         }
 
-        Button buttonInstructions = view.findViewById(R.id.button_instructions);
-        buttonInstructions.setOnClickListener(view1 -> {
-            if (mListener != null) {
-                mListener.onCurrentMode(0);
-            }
-        });
-
-        if (testInfo.getInstructions() == null || testInfo.getInstructions().size() < 1) {
-            buttonInstructions.setVisibility(View.GONE);
-        }
-
         layoutResult1 = view.findViewById(R.id.layoutResult1);
         textResult1 = view.findViewById(R.id.textResult1);
         textUnit1 = view.findViewById(R.id.textUnit1);
@@ -119,18 +102,11 @@ public class BluetoothResultFragment extends Fragment {
         textUnit3 = view.findViewById(R.id.textUnit3);
         textName3 = view.findViewById(R.id.textName3);
 
-        layoutWaiting = view.findViewById(R.id.layoutWaiting);
         layoutResult = view.findViewById(R.id.layoutResult);
 
-        ProgressBar progressBar = view.findViewById(R.id.progressBar);
+        buttonSubmitResult = view.findViewById(R.id.button_submit_result);
 
-        if (AppPreferences.isTestMode() || STOP_ANIMATIONS) {
-            progressBar.setVisibility(View.GONE);
-        }
-
-        mAcceptButton = view.findViewById(R.id.button_accept_result);
-
-        mAcceptButton.setOnClickListener(view12 -> {
+        buttonSubmitResult.setOnClickListener(view12 -> {
             // Build the result json to be returned
 
             Intent resultIntent = new Intent();
@@ -146,10 +122,6 @@ public class BluetoothResultFragment extends Fragment {
 
         });
 
-        TextView textPerformTest = view.findViewById(R.id.textPerformTest);
-        textPerformTest.setText(StringUtil.toInstruction((AppCompatActivity) getActivity(), testInfo,
-                String.format(getString(R.string.perform_test), testInfo.getName())));
-
         if (AppPreferences.isDiagnosticMode()) {
             LinearLayout layoutTitle = view.findViewById(R.id.layoutTitleBar);
             if (layoutTitle != null) {
@@ -157,6 +129,11 @@ public class BluetoothResultFragment extends Fragment {
                         Objects.requireNonNull(getActivity()), R.color.diagnostic));
             }
         }
+
+        SpannableStringBuilder endInstruction = StringUtil.toInstruction((AppCompatActivity) getActivity(), testInfo,
+                String.format(StringUtil.getStringByName(getActivity(), testInfo.getEndInstruction()),
+                        StringUtil.convertToTags(testInfo.getMd610Id()), testInfo.getName()));
+        ((TextView) view.findViewById(R.id.textEndInstruction)).setText(endInstruction);
 
         return view;
     }
@@ -182,20 +159,9 @@ public class BluetoothResultFragment extends Fragment {
     }
 
     /**
-     * Display the waiting screen.
-     */
-    public void displayWaiting() {
-
-        layoutResult.setVisibility(View.GONE);
-        layoutWaiting.setVisibility(View.VISIBLE);
-        layoutWaiting.setAlpha(1f);
-
-    }
-
-    /**
      * Display the result data.
      */
-    public boolean displayData(String data) {
+    boolean displayData(String data) {
 
         if (errorDialog != null) {
             errorDialog.dismiss();
@@ -210,6 +176,10 @@ public class BluetoothResultFragment extends Fragment {
         String[] ranges = new String[2];
         String unit = "";
         boolean dataOk = false;
+
+        layoutResult1.setVisibility(View.INVISIBLE);
+        layoutResult2.setVisibility(View.INVISIBLE);
+        layoutResult3.setVisibility(View.INVISIBLE);
 
         String[] dataArray = data.split(";");
         for (int i = 0; i < dataArray.length; i++) {
@@ -270,20 +240,12 @@ public class BluetoothResultFragment extends Fragment {
         }
 
         if (dataOk && testId.equals(testInfo.getMd610Id())) {
-            mAcceptButton.setVisibility(View.VISIBLE);
-            crossFade();
+            layoutResult.setVisibility(View.VISIBLE);
+            buttonSubmitResult.setVisibility(View.VISIBLE);
             return true;
         } else {
-
             showError(getActivity());
             layoutResult.setVisibility(View.GONE);
-            layoutWaiting.setVisibility(View.VISIBLE);
-            layoutWaiting.setAlpha(1);
-
-            if (mListener != null) {
-                mListener.onCurrentMode(1);
-            }
-
             return false;
         }
     }
@@ -327,20 +289,35 @@ public class BluetoothResultFragment extends Fragment {
                         case 1:
                             layoutResult1.setVisibility(View.VISIBLE);
                             textName1.setText(subTest.getName());
-                            textUnit1.setText(subTest.getUnit());
-                            textResult1.setText(result);
+                            if (!result.isEmpty()) {
+                                textUnit1.setText(subTest.getUnit());
+                                textResult1.setText(result);
+                            } else {
+                                textUnit1.setText("");
+                                textResult1.setText("");
+                            }
                             break;
                         case 2:
                             layoutResult2.setVisibility(View.VISIBLE);
                             textName2.setText(subTest.getName());
-                            textUnit2.setText(subTest.getUnit());
-                            textResult2.setText(result);
+                            if (!result.isEmpty()) {
+                                textUnit2.setText(subTest.getUnit());
+                                textResult2.setText(result);
+                            } else {
+                                textUnit2.setText("");
+                                textResult2.setText("");
+                            }
                             break;
                         case 3:
                             layoutResult3.setVisibility(View.VISIBLE);
                             textName3.setText(subTest.getName());
-                            textUnit3.setText(subTest.getUnit());
-                            textResult3.setText(result);
+                            if (!result.isEmpty()) {
+                                textUnit3.setText(subTest.getUnit());
+                                textResult3.setText(result);
+                            } else {
+                                textUnit3.setText("");
+                                textResult3.setText("");
+                            }
                             break;
                         default:
                             break;
@@ -393,55 +370,5 @@ public class BluetoothResultFragment extends Fragment {
             dialog.show();
         }
     }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnCurrentModeListener) {
-            mListener = (OnCurrentModeListener) context;
-        } else {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnCurrentModeListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    private void crossFade() {
-
-        // Set the content view to 0% opacity but visible, so that it is visible
-        // (but fully transparent) during the animation.
-        layoutResult.setAlpha(0f);
-        layoutResult.setVisibility(View.VISIBLE);
-
-        // Animate the content view to 100% opacity, and clear any animation
-        // listener set on the view.
-        layoutResult.animate()
-                .alpha(1f)
-                .setDuration(ANIMATION_DURATION)
-                .setListener(null);
-
-        // Animate the loading view to 0% opacity. After the animation ends,
-        // set its visibility to GONE as an optimization step (it won't
-        // participate in layout passes, etc.)
-        layoutWaiting.animate()
-                .alpha(0f)
-                .setDuration(ANIMATION_DURATION)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        layoutWaiting.setVisibility(View.GONE);
-                    }
-                });
-    }
-
-    public interface OnCurrentModeListener {
-        void onCurrentMode(int mode);
-    }
-
 }
 

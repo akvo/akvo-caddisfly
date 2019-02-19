@@ -8,7 +8,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +17,8 @@ import org.akvo.caddisfly.model.ColorItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.core.graphics.ColorUtils;
 
 public class SwatchSelectWidget extends View {
 

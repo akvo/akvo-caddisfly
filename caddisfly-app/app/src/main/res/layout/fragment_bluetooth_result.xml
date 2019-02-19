@@ -17,85 +17,17 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/layoutWaiting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <LinearLayout
-            android:id="@+id/layoutTitleBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?colorPrimary"
-            android:orientation="vertical"
-            android:paddingBottom="20dp"
-            android:paddingEnd="10dp"
-            android:paddingStart="20dp">
-
-            <TextView
-                android:id="@+id/textTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="sans-serif-light"
-                android:text="@string/awaitingResult"
-                android:textColor="#fff"
-                android:textSize="30sp" />
-
-        </LinearLayout>
-
-        <org.akvo.caddisfly.widget.HtmlTextView
-            android:id="@+id/textPerformTest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="20dp"
-            android:lineSpacingExtra="10dp"
-            android:textSize="18sp"
-            android:visibility="visible"
-            tools:text="@string/perform_test" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:layout_marginTop="40dp"
-            android:indeterminate="true"
-            android:visibility="visible" />
-
-        <Button
-            android:id="@+id/button_instructions"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:drawableEnd="@drawable/ic_play_arrow_black_24dp"
-            android:paddingEnd="@dimen/activity_horizontal_margin"
-            android:paddingStart="@dimen/activity_horizontal_margin"
-            android:text="@string/instructions"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/layoutResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/layoutResult1"
@@ -107,39 +39,45 @@
                 android:id="@+id/textName1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="25sp"
-                android:textStyle="bold"
+                android:textSize="20sp"
                 tools:text="Water - Fluoride" />
 
-            <TextView
-                android:id="@+id/textResult1"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:textSize="35sp"
-                tools:text="15000" />
+                android:layout_marginBottom="10dp">
 
-            <TextView
-                android:id="@+id/textUnit1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="-10dp"
-                android:textColor="#444"
-                android:textSize="17sp"
-                tools:text="mg/l" />
+                <TextView
+                    android:id="@+id/textResult1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_top_margin"
+                    android:gravity="center_vertical"
+                    android:textColor="#444"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="15000" />
+
+                <TextView
+                    android:id="@+id/textUnit1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="#444"
+                    android:textSize="17sp"
+                    tools:text="mg/l" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                android:background="#ddd" />
 
         </LinearLayout>
 
@@ -147,46 +85,51 @@
             android:id="@+id/layoutResult2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="invisible">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textName2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="25sp"
-                android:textStyle="bold"
+                android:textSize="20sp"
                 tools:text="Water - Fluoride" />
 
-            <TextView
-                android:id="@+id/textResult2"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:textSize="35sp"
-                tools:text="15000" />
+                android:layout_marginBottom="10dp">
 
-            <TextView
-                android:id="@+id/textUnit2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="-10dp"
-                android:textColor="#444"
-                android:textSize="17sp"
-                tools:text="mg/l" />
+                <TextView
+                    android:id="@+id/textResult2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_top_margin"
+                    android:gravity="center_vertical"
+                    android:textColor="#444"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="15000" />
+
+                <TextView
+                    android:id="@+id/textUnit2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="#444"
+                    android:textSize="17sp"
+                    tools:text="mg/l" />
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                android:background="#ddd" />
 
         </LinearLayout>
 
@@ -195,57 +138,74 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/textName3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center_horizontal"
                 android:textColor="#555"
-                android:textSize="25sp"
-                android:textStyle="bold"
+                android:textSize="20sp"
+                android:textStyle="normal"
                 tools:text="Water - Fluoride" />
 
-            <TextView
-                android:id="@+id/textResult3"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:gravity="center_vertical"
-                android:textSize="35sp"
-                tools:text="15000" />
+                android:layout_gravity="center">
 
-            <TextView
-                android:id="@+id/textUnit3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="-10dp"
-                android:textColor="#444"
-                android:textSize="17sp"
-                tools:text="mg/l" />
+                <TextView
+                    android:id="@+id/textResult3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_top_margin"
+                    android:gravity="center_vertical"
+                    android:textColor="#444"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="15000" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
+                <TextView
+                    android:id="@+id/textUnit3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="#444"
+                    android:textSize="17sp"
+                    tools:text="mg/l" />
+            </LinearLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/button_accept_result"
-            style="@style/ActionButton"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:text="@string/acceptResult"
-            android:theme="?primaryButtonStyle"
-            android:visibility="gone" />
-
     </LinearLayout>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/button_submit_result"
+        style="@style/ActionButton"
+        android:layout_above="@id/textEndInstruction"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/result_top_margin"
+        android:layout_marginBottom="10dp"
+        android:text="@string/submitResult"
+        android:theme="?primaryButtonStyle" />
+
+    <org.akvo.caddisfly.widget.HtmlTextView
+        android:id="@+id/textEndInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="20dp"
+        android:lineSpacingExtra="6dp"
+        android:textSize="@dimen/result_note_text_size"
+        android:visibility="visible"
+        tools:text="@string/clean_deionised" />
+
+</RelativeLayout>

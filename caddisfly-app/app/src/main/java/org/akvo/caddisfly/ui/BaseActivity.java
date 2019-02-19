@@ -26,9 +26,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -38,6 +35,10 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 /**
  * The base activity with common functions.

@@ -29,18 +29,6 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.annotation.StringRes;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiObject2;
-import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiScrollable;
-import android.support.test.uiautomator.UiSelector;
 import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.R;
@@ -53,17 +41,33 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.StringRes;
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.UiDevice;
+import androidx.test.uiautomator.UiObject;
+import androidx.test.uiautomator.UiObject2;
+import androidx.test.uiautomator.UiObjectNotFoundException;
+import androidx.test.uiautomator.UiScrollable;
+import androidx.test.uiautomator.UiSelector;
 import timber.log.Timber;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.util.TestUtil.findButtonInScrollable;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.Matchers.allOf;
 
 public final class TestHelper {
 
@@ -73,7 +77,6 @@ public final class TestHelper {
     private static final Map<String, String> STRING_HASH_MAP_ES = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_FR = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_IN = new HashMap<>();
-    private static final Map<String, String> CALIBRATION_HASH_MAP = new HashMap<>();
     public static Map<String, String> currentHashMap;
     public static UiDevice mDevice;
     @SuppressWarnings("FieldCanBeLocal")
@@ -95,10 +98,6 @@ public final class TestHelper {
         }
     }
 
-    private static void addCalibration(String key, String colors) {
-        CALIBRATION_HASH_MAP.put(key, colors);
-    }
-
     public static String getString(Activity activity, @StringRes int resourceId) {
         Resources currentResources = activity.getResources();
         AssetManager assets = currentResources.getAssets();
@@ -118,7 +117,6 @@ public final class TestHelper {
         STRING_HASH_MAP_ES.clear();
         STRING_HASH_MAP_FR.clear();
         STRING_HASH_MAP_IN.clear();
-        CALIBRATION_HASH_MAP.clear();
 
         Resources currentResources = activity.getResources();
         AssetManager assets = currentResources.getAssets();
@@ -142,52 +140,6 @@ public final class TestHelper {
 
         // Restore device-specific locale
         new Resources(assets, metrics, currentResources.getConfiguration());
-
-        addCalibration("TestValid", "0.0=255  38  186\n"
-                + "0.5=255  51  129\n"
-                + "1.0=255  59  89\n"
-                + "1.5=255  62  55\n"
-                + "2.0=255  81  34\n");
-
-        addCalibration("TestInvalid", "0.0=255  88  177\n"
-                + "0.5=255  110  15\n"
-                + "1.0=255  138  137\n"
-                + "1.5=253  174  74\n"
-                + "2.0=253  174  76\n"
-                + "2.5=236  172  81\n"
-                + "3.0=254  169  61\n");
-
-        addCalibration("OutOfSequence", "0.0=255  38  186\n"
-                + "0.5=255  51  129\n"
-                + "1.0=255  62  55\n"
-                + "1.5=255  59  89\n"
-                + "2.0=255  81  34\n");
-
-        addCalibration("HighLevelTest", "0.0=255  38  180\n"
-                + "0.5=255  51  129\n"
-                + "1.0=255  53  110\n"
-                + "1.5=255  55  100\n"
-                + "2.0=255  59  89\n");
-
-        addCalibration("TestInvalid2", "0.0=255  88  47\n"
-                + "0.5=255  60  37\n"
-                + "1.0=255  35  27\n"
-                + "1.5=253  17  17\n"
-                + "2.0=254  0  0\n");
-
-        addCalibration("LowLevelTest", "0.0=255  60  37\n"
-                + "0.5=255  35  27\n"
-                + "1.0=253  17  17\n"
-                + "1.5=254  0  0\n"
-                + "2.0=224  0  0\n");
-
-        addCalibration("TestValidChlorine", "0.0=255  38  186\n"
-                + "0.5=255  51  129\n"
-                + "1.0=255  59  89\n"
-                + "1.5=255  62  55\n"
-                + "2.0=255  81  34\n"
-                + "2.5=255  101  24\n"
-                + "3.0=255  121  14\n");
 
         switch (languageCode) {
             case "en":
@@ -263,6 +215,7 @@ public final class TestHelper {
         String buttonText = currentHashMap.get(TestConstant.GO_TO_TEST);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            assert buttonText != null;
             buttonText = buttonText.toUpperCase();
         }
 
@@ -302,11 +255,13 @@ public final class TestHelper {
             String buttonText = currentHashMap.get(text);
 
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                assert buttonText != null;
                 buttonText = buttonText.toUpperCase();
             }
 
             findButtonInScrollable(buttonText);
 
+            assert buttonText != null;
             mDevice.findObject(new UiSelector().text(buttonText)).click();
 
             // New Android OS seems to popup a button for external app
@@ -399,5 +354,13 @@ public final class TestHelper {
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(activityTestRule.getActivity());
         prefs.edit().clear().apply();
+    }
+
+    public static void navigateUp() {
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription(R.string.navigate_up),
+                        withParent(withId(R.id.toolbar)),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
     }
 }

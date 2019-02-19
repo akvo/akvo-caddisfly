@@ -168,11 +168,11 @@
                     android:visibility="gone" />
 
                 <Button
-                    android:id="@+id/buttonAcceptResult"
+                    android:id="@+id/buttonSubmitResult"
                     style="@style/Button"
                     android:layout_marginTop="33dp"
-                    android:onClick="onClickAcceptResult"
-                    android:text="@string/acceptResult"
+                    android:onClick="onClickSubmitResult"
+                    android:text="@string/submitResult"
                     android:theme="?primaryButtonStyle"
                     android:visibility="gone" />
 

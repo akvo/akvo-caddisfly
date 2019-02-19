@@ -123,12 +123,12 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/buttonAcceptResult"
+        android:id="@+id/buttonSubmitResult"
         style="@style/Button"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_gutter_bottom"
-        android:onClick="onClickAcceptResult"
-        android:text="@string/acceptResult"
+        android:onClick="onClickSubmitResult"
+        android:text="@string/submitResult"
         android:theme="?primaryButtonStyle" />
 
 </LinearLayout>

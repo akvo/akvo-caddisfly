@@ -1,7 +1,7 @@
 package org.akvo.caddisfly.sensor.striptest.models;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class TimeDelayDetail implements Comparable<TimeDelayDetail> {
     private final int testStage;

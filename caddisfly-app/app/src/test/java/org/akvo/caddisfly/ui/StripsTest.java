@@ -21,20 +21,25 @@ package org.akvo.caddisfly.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowLooper;
+
+import java.util.Objects;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -42,14 +47,15 @@ import static junit.framework.Assert.assertSame;
 import static org.akvo.caddisfly.TestConstants.STRIP_TESTS_COUNT;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(AndroidJUnit4.class)
 public class StripsTest {
+
+    @Rule
+    public ActivityTestRule<TestListActivity> rule = new ActivityTestRule<>(TestListActivity.class);
 
     @Test
     public void titleIsCorrect() {
-
-        Activity activity = Robolectric.setupActivity(TestListActivity.class);
-        TextView textView = activity.findViewById(R.id.textToolbarTitle);
+        TextView textView = rule.getActivity().findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "Select Test");
     }
 
@@ -71,6 +77,7 @@ public class StripsTest {
 
         TestInfoAdapter adapter = (TestInfoAdapter) recyclerView.getAdapter();
         recyclerView.getAdapter();
+        assert adapter != null;
         assertEquals("Water - Total Iron",
                 adapter.getItemAt(20).getName());
         assertEquals("Water - Total Iron",
@@ -91,7 +98,7 @@ public class StripsTest {
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            TestInfo testInfo = ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(0);
+            TestInfo testInfo = ((TestInfoAdapter) Objects.requireNonNull(recyclerView.getAdapter())).getItemAt(0);
             String title = testInfo.getName();
             assertEquals(title,
                     ((TextView) recyclerView.getChildAt(0).findViewById(R.id.text_title)).getText());
@@ -128,12 +135,9 @@ public class StripsTest {
 
     @Test
     public void clickHome() {
-
-        Activity activity = Robolectric.setupActivity(TestListActivity.class);
-
-        ShadowActivity shadowActivity = shadowOf(activity);
+        ShadowActivity shadowActivity = shadowOf(rule.getActivity());
         shadowActivity.clickMenuItem(android.R.id.home);
-        Intent intent = shadowOf(activity).getNextStartedActivity();
+        Intent intent = shadowOf(rule.getActivity()).getNextStartedActivity();
 
         assertNull(intent);
     }

@@ -19,12 +19,12 @@
 
 package org.akvo.caddisfly.sensor.striptest.models;
 
-import android.support.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by markwestra on 01/08/2015

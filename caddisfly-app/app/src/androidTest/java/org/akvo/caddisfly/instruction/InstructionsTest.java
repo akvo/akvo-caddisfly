@@ -22,11 +22,6 @@ package org.akvo.caddisfly.instruction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.test.espresso.Espresso;
-import android.support.test.filters.RequiresDevice;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiDevice;
 import android.util.Log;
 
 import org.akvo.caddisfly.R;
@@ -41,6 +36,7 @@ import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,13 +44,19 @@ import org.junit.runner.RunWith;
 import java.io.File;
 import java.util.List;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import androidx.test.espresso.Espresso;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.RequiresDevice;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
@@ -102,6 +104,7 @@ public class InstructionsTest {
 
     @Test
     @RequiresDevice
+    @Ignore
     public void testInstructionsAll() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
@@ -123,22 +126,22 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-            if (id.equalsIgnoreCase("5a3d490d9df3")) {
+//            if (id.equalsIgnoreCase("5a3d490d9df3")) {
 
-                Intent intent = new Intent();
-                intent.setType("text/plain");
-                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
-                Bundle data = new Bundle();
-                data.putString(SensorConstants.RESOURCE_ID, uuid);
-                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
-                intent.putExtras(data);
+            Intent intent = new Intent();
+            intent.setType("text/plain");
+            intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+            Bundle data = new Bundle();
+            data.putString(SensorConstants.RESOURCE_ID, uuid);
+            data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+            intent.putExtras(data);
 
-                mActivityRule.launchActivity(intent);
+            mActivityRule.launchActivity(intent);
 
-                int pages = navigateToBluetoothTest(id);
+            int pages = navigateToBluetoothTest(id);
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-            }
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+//            }
 
             mActivityRule.finishActivity();
         }
@@ -153,8 +156,6 @@ public class InstructionsTest {
 
         onView(withText(R.string.test_selected)).perform(click());
 
-        onView(withText(R.string.instructions)).perform(click());
-
         int pages = 0;
         for (int i = 0; i < 17; i++) {
             pages++;
@@ -164,13 +165,12 @@ public class InstructionsTest {
 
                 takeScreenshot(id, i);
 
+                onView(withId(R.id.actionSkip)).check(matches(isDisplayed()));
+
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestUtil.sleep(300);
-                Espresso.pressBack();
-                TestUtil.sleep(300);
-                Espresso.pressBack();
+                TestHelper.navigateUp();
                 TestUtil.sleep(300);
                 Espresso.pressBack();
                 TestUtil.sleep(300);

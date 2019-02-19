@@ -20,13 +20,6 @@
 package org.akvo.caddisfly.test;
 
 import android.os.SystemClock;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.ViewInteraction;
-import android.support.test.filters.LargeTest;
-import android.support.test.filters.RequiresDevice;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
@@ -38,15 +31,23 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.RequiresDevice;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.currentHashMap;
@@ -216,7 +217,7 @@ public class SensorTest {
 
         onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click()).check(matches(isDisplayed()));
+        onView(withId(R.id.buttonSubmitResult)).perform(click()).check(matches(isDisplayed()));
 
     }
 
@@ -250,7 +251,7 @@ public class SensorTest {
 
         onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click());
+        onView(withId(R.id.buttonSubmitResult)).perform(click());
 
         clickExternalSourceButton(1);
 
@@ -266,7 +267,7 @@ public class SensorTest {
 
         onView(allOf(withId(R.id.textUnit2), withText("°Celsius"))).check(matches(isDisplayed()));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click());
+        onView(withId(R.id.buttonSubmitResult)).perform(click());
 
         clickExternalSourceButton(2);
 
@@ -282,7 +283,7 @@ public class SensorTest {
 
         onView(withId(R.id.textUnit2)).check(matches(not(isDisplayed())));
 
-        onView(withId(R.id.buttonAcceptResult)).perform(click());
+        onView(withId(R.id.buttonSubmitResult)).perform(click());
 
     }
 

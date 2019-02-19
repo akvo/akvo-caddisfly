@@ -22,21 +22,21 @@ package org.akvo.caddisfly.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
 import org.akvo.caddisfly.R;
 
-public class PageIndicatorView extends View {
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
-    private static final float DISTANCE = 34;
-    private static final int BULLET_RADIUS = 8;
+public class PageIndicatorView extends View {
 
     @NonNull
     private final Paint fillPaint;
     private final Paint strokePaint;
+    private float distanceBetweenBullets = 34;
+    private int bulletRadius = 8;
     private int pageCount;
     private int activePage;
     private boolean showDots;
@@ -51,6 +51,12 @@ public class PageIndicatorView extends View {
 
     public PageIndicatorView(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        final float scale = getResources().getDisplayMetrics().density;
+        if (scale <= 1.5) {
+            distanceBetweenBullets = 26;
+            bulletRadius = 4;
+        }
 
         fillPaint = new Paint();
         fillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -78,24 +84,25 @@ public class PageIndicatorView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension((int) Math.ceil(DISTANCE * pageCount), heightMeasureSpec);
+        setMeasuredDimension((int) Math.ceil(distanceBetweenBullets * pageCount), heightMeasureSpec);
     }
 
     @Override
     public void onDraw(@NonNull Canvas canvas) {
 
+
         if (pageCount > 1) {
             for (int i = 0; i < pageCount; i++) {
                 if (activePage == i) {
-                    canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, getHeight() / 2f,
-                            BULLET_RADIUS * 1.6f, fillPaint);
+                    canvas.drawCircle(distanceBetweenBullets * i + bulletRadius * 2, getHeight() / 2f,
+                            bulletRadius * 1.6f, fillPaint);
                 } else {
                     if (showDots) {
-                        canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, getHeight() / 2f,
-                                BULLET_RADIUS / 2f, fillPaint);
+                        canvas.drawCircle(distanceBetweenBullets * i + bulletRadius * 2, getHeight() / 2f,
+                                bulletRadius / 2f, fillPaint);
                     } else {
-                        canvas.drawCircle(DISTANCE * i + BULLET_RADIUS * 2, getHeight() / 2f,
-                                BULLET_RADIUS, strokePaint);
+                        canvas.drawCircle(distanceBetweenBullets * i + bulletRadius * 2, getHeight() / 2f,
+                                bulletRadius, strokePaint);
                     }
                 }
             }

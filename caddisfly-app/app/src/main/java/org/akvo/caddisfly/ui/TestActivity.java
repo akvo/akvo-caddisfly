@@ -21,7 +21,6 @@ package org.akvo.caddisfly.ui;
 
 import android.Manifest;
 import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -29,12 +28,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,8 +37,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConfig;
@@ -73,6 +68,12 @@ import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 import java.lang.ref.WeakReference;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
 import timber.log.Timber;
 
 @SuppressWarnings("deprecation")
@@ -147,8 +148,8 @@ public class TestActivity extends BaseActivity {
         CaddisflyApp.getApp().setAppLanguage(this,
                 intent.getStringExtra(SensorConstants.LANGUAGE), true, handler);
 
-        if (AppPreferences.getShowDebugInfo()){
-            Toast.makeText(this, "Language: "+ intent.getStringExtra(SensorConstants.LANGUAGE),
+        if (AppPreferences.getShowDebugInfo()) {
+            Toast.makeText(this, "Language: " + intent.getStringExtra(SensorConstants.LANGUAGE),
                     Toast.LENGTH_LONG).show();
         }
 
@@ -308,7 +309,7 @@ public class TestActivity extends BaseActivity {
             //return the test result to the external app
             Intent intent = new Intent(data);
 
-            if (!AppConfig.STOP_ANALYTICS) {
+            if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, testInfo.getUuid());
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, testInfo.getName());
@@ -447,7 +448,7 @@ public class TestActivity extends BaseActivity {
 
             snackbar.setActionTextColor(typedValue.data);
             View snackView = snackbar.getView();
-            TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
+            TextView textView = snackView.findViewById(R.id.snackbar_text);
             textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
             textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
             textView.setTextColor(Color.WHITE);

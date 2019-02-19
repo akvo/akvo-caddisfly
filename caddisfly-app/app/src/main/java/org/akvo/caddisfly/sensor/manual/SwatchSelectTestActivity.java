@@ -3,8 +3,6 @@ package org.akvo.caddisfly.sensor.manual;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -18,6 +16,9 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.json.JSONObject;
+
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public class SwatchSelectTestActivity extends BaseActivity
         implements SwatchSelectFragment.OnSwatchSelectListener {
@@ -88,7 +89,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     }
 
     @SuppressWarnings("unused")
-    public void onClickAcceptResult(View view) {
+    public void onClickSubmitResult(View view) {
 
         SparseArray<String> results = new SparseArray<>();
 

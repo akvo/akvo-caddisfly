@@ -45,7 +45,6 @@
     <string name="sensors">Sensor-sensor</string>
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Menghubungkan ke Perangkat</string>
-    <string name="acceptResult">Menerima hasil</string>
     <!--Sensor-->
     <string name="deviceConnectSensor">Menghubungkan sensor</string>
     <string name="celsius">°Celsius</string>

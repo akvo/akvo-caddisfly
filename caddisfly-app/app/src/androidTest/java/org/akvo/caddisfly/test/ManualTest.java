@@ -27,12 +27,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.support.test.espresso.ViewInteraction;
-import android.support.test.espresso.intent.rule.IntentsTestRule;
-import android.support.test.filters.LargeTest;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
@@ -43,20 +37,27 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.intent.Intents.intending;
-import static android.support.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.UiDevice;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intending;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
@@ -127,23 +128,19 @@ public class ManualTest {
 
         onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
 
-        onView(withText("Connect the turbidity tubes and fill the tube with the water sample until you cannot see the black circle at the yellow bottom anymore."))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.fill_turbidity_tube)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText("Empty the tube with small intervals until you can see the black circle at the yellow bottom again and read out the turbidity on the side of the tube."))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.empty_turbidity_tube)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText("Fill in the obtained turbidity value in the app."))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.fill_in_value_turbidity_tube)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText("Empty the tube completely, clean if necessary, disconnect tubes and store them."))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.clean_turbidity_tube)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription(R.string.navigate_up),

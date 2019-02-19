@@ -20,14 +20,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/button_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/intro_top_margin"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_info" />
 
         <org.akvo.caddisfly.widget.PageIndicatorView
@@ -59,13 +60,13 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="30dp"
             android:onClick="onNextClicked"
             android:paddingLeft="16dp"
-            android:textSize="17sp"
             android:paddingRight="16dp"
             android:text="@string/next"
             android:textColor="@color/colorAccent"
+            android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -77,11 +78,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:onClick="onOkClicked"
-            android:paddingLeft="16dp"
+            android:paddingStart="26dp"
             android:paddingTop="20dp"
-            android:paddingRight="16dp"
+            android:paddingEnd="26dp"
             android:paddingBottom="20dp"
             android:text="@string/go_to_external_app"
             android:textSize="15dp"
@@ -91,6 +92,6 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="SpUsage" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

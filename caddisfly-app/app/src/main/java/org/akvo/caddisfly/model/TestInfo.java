@@ -46,6 +46,9 @@ public class TestInfo implements Parcelable {
     };
     private final transient DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
     private final transient DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
+    @SerializedName("reagentType")
+    @Expose
+    private String reagentType = "";
     @SerializedName("reagents")
     @Expose
     private List<Reagent> reagents = null;
@@ -112,6 +115,9 @@ public class TestInfo implements Parcelable {
     @SerializedName("selectInstruction")
     @Expose
     private String selectInstruction;
+    @SerializedName("endInstruction")
+    @Expose
+    private String endInstruction;
     @SerializedName("instructions")
     @Expose
     private List<Instruction> instructions = null;
@@ -147,6 +153,7 @@ public class TestInfo implements Parcelable {
         subtype = TestType.valueOf(in.readString());
         description = in.readString();
         tags = in.createStringArrayList();
+        reagentType = in.readString();
         reagents = new ArrayList<>();
         in.readTypedList(reagents, Reagent.CREATOR);
         uuid = in.readString();
@@ -186,6 +193,7 @@ public class TestInfo implements Parcelable {
         instructions = new ArrayList<>();
         in.readTypedList(instructions, Instruction.CREATOR);
         selectInstruction = in.readString();
+        endInstruction = in.readString();
         image = in.readString();
         imageScale = in.readString();
         if (in.readByte() == 0) {
@@ -341,6 +349,7 @@ public class TestInfo implements Parcelable {
         parcel.writeString(subtype.name());
         parcel.writeString(description);
         parcel.writeStringList(tags);
+        parcel.writeString(reagentType);
         parcel.writeTypedList(reagents);
         parcel.writeString(uuid);
         parcel.writeString(brand);
@@ -373,6 +382,7 @@ public class TestInfo implements Parcelable {
         parcel.writeTypedList(results);
         parcel.writeTypedList(instructions);
         parcel.writeString(selectInstruction);
+        parcel.writeString(endInstruction);
         parcel.writeString(image);
         parcel.writeString(imageScale);
         if (numPatch == null) {
@@ -407,6 +417,10 @@ public class TestInfo implements Parcelable {
         return selectInstruction;
     }
 
+    public String getEndInstruction() {
+        return endInstruction;
+    }
+
     public double getStripLength() {
         return length;
     }
@@ -421,6 +435,10 @@ public class TestInfo implements Parcelable {
 
     public Boolean getHasImage() {
         return hasImage;
+    }
+
+    public String getReagentType() {
+        return reagentType;
     }
 
 }

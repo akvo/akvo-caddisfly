@@ -28,7 +28,6 @@
     <string name="sensors">Sensores</string>
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Conectándose al dispositivo</string>
-    <string name="acceptResult">Aceptar resultado</string>
     <!--Sensor-->
     <string name="deviceConnectSensor">Conecte el sensor</string>
     <string name="celsius">°Celsius</string>

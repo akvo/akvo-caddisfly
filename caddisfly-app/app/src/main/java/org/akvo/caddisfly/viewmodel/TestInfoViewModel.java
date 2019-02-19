@@ -17,22 +17,15 @@
 package org.akvo.caddisfly.viewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
 import android.content.Context;
 import android.content.res.Resources;
-import android.databinding.BindingAdapter;
-import android.databinding.ObservableField;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatImageView;
 import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -49,6 +42,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableField;
+import androidx.lifecycle.AndroidViewModel;
 
 public class TestInfoViewModel extends AndroidViewModel {
 
@@ -140,14 +140,16 @@ public class TestInfoViewModel extends AndroidViewModel {
             Matcher m2 = Pattern.compile("%reagent" + j).matcher(sentence);
             while (m2.find()) {
                 String code = testInfo.getReagent(j - 1).code;
-                if (!code.isEmpty()) {
+                if (testInfo.getReagentType().equals("Tablet") && !code.isEmpty()) {
                     ReagentLabel reagentLabel = new ReagentLabel(context, null);
 
                     int height = Resources.getSystem().getDisplayMetrics().heightPixels;
 
-                    reagentLabel.setLayoutParams(new FrameLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            (int) (height * 0.2)));
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, (int) (height * 0.2));
+                    layoutParams.bottomMargin = 16;
+
+                    reagentLabel.setLayoutParams(layoutParams);
 
                     reagentLabel.setReagentName(testInfo.getReagent(j - 1).name);
                     reagentLabel.setReagentCode(code);

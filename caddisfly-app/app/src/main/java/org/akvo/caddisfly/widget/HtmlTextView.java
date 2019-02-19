@@ -20,11 +20,12 @@
 package org.akvo.caddisfly.widget;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 import org.akvo.caddisfly.util.StringUtil;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 
 
 public class HtmlTextView extends AppCompatTextView {

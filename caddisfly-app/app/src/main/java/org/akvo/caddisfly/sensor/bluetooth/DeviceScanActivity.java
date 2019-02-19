@@ -57,10 +57,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -75,6 +71,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
@@ -83,6 +81,10 @@ import org.akvo.caddisfly.util.ApiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -113,8 +115,6 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     private ListView deviceList;
     private RelativeLayout layoutDevices;
     private Runnable runnable;
-    private TextView textTitle;
-    private TextView textSubtitle;
     private ScanCallback mScanCallback;
     private DeviceConnectDialog deviceConnectDialog;
     private Snackbar snackbar;
@@ -192,19 +192,13 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
         layoutInfo = findViewById(R.id.layout_bluetooth_info);
 
-        textTitle = findViewById(R.id.textTitle);
-        textTitle.setText(R.string.scanning);
-
-        textSubtitle = findViewById(R.id.textSubtitle);
-        textSubtitle.setText(R.string.searching_for_device);
-
         coordinatorLayout = findViewById(R.id.coordinatorLayout);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        setTitle(R.string.connect);
+        setTitle(R.string.scanning);
     }
 
     private void showInstructionDialog() {
@@ -288,7 +282,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
                 snackbar.setActionTextColor(typedValue.data);
                 View snackView = snackbar.getView();
-                TextView textView = snackView.findViewById(android.support.design.R.id.snackbar_text);
+                TextView textView = snackView.findViewById(R.id.snackbar_text);
                 textView.setHeight(getResources().getDimensionPixelSize(R.dimen.snackBarHeight));
                 textView.setLineSpacing(0, SNACK_BAR_LINE_SPACING);
                 textView.setTextColor(Color.WHITE);
@@ -484,8 +478,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 layoutInfo.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
 
-                textTitle.setText(R.string.nearby_devices);
-                textSubtitle.setText(R.string.connect_device);
+                setTitle(R.string.nearby_devices);
             }
         }
 

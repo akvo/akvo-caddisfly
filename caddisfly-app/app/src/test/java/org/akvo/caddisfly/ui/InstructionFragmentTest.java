@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -31,6 +30,8 @@ import org.akvo.caddisfly.widget.RowView;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+
+import androidx.fragment.app.Fragment;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;

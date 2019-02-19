@@ -21,8 +21,8 @@ package org.akvo.caddisfly.util;
 
 
 import android.app.Activity;
-import android.arch.lifecycle.ViewModelProviders;
-import android.support.v4.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentActivity;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.common.AppConfig;

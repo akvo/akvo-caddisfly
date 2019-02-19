@@ -23,9 +23,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
@@ -45,6 +42,10 @@ import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.List;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import static android.graphics.Typeface.BOLD;
 

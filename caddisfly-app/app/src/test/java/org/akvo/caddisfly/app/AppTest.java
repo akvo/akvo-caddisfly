@@ -35,7 +35,7 @@ public final class AppTest {
     @Test
     public void shouldMatchPermissions() {
         AndroidManifest manifest = new AndroidManifest(
-                Fs.fileFromPath(MERGED_MANIFEST),
+                Fs.fromUrl(MERGED_MANIFEST),
                 null,
                 null
         );

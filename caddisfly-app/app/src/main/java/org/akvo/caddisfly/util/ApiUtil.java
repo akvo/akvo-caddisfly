@@ -24,8 +24,8 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 
+import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 /**

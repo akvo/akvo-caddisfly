@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -41,6 +40,8 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.ShadowToast;
+
+import androidx.viewpager.widget.ViewPager;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;

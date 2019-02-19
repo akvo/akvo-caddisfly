@@ -19,51 +19,50 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.TextView;
 
 import org.akvo.caddisfly.R;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
+
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(AndroidJUnit4.class)
 public class MainTest {
+
+    @Rule
+    public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
     public void titleIsCorrect() {
-        Activity activity = Robolectric.setupActivity(MainActivity.class);
-        assertEquals(activity.getTitle(), "Akvo Caddisfly");
+        assertEquals(rule.getActivity().getTitle(), "Akvo Caddisfly");
 
-        TextView textView = activity.findViewById(R.id.textToolbarTitle);
+        TextView textView = rule.getActivity().findViewById(R.id.textToolbarTitle);
         assertNull(textView);
     }
 
     @Test
     public void onCreateShouldInflateTheMenu() {
-        Activity activity = Robolectric.setupActivity(MainActivity.class);
-
-        Toolbar toolbar = activity.findViewById(R.id.toolbar);
+        Toolbar toolbar = rule.getActivity().findViewById(R.id.toolbar);
         assertNull(toolbar);
     }
 
     @Test
     public void introTest() {
-        Activity activity = Robolectric.setupActivity(MainActivity.class);
-
-        AppCompatImageButton button = activity.findViewById(R.id.button_info);
+        AppCompatImageButton button = rule.getActivity().findViewById(R.id.button_info);
 
         button.performClick();
-        Intent intent = shadowOf(activity).getNextStartedActivity();
+        Intent intent = shadowOf(rule.getActivity()).getNextStartedActivity();
 
         if (intent.getComponent() != null) {
             assertEquals(AboutActivity.class.getCanonicalName(),
@@ -73,12 +72,10 @@ public class MainTest {
 
     @Test
     public void introNext() {
-        Activity activity = Robolectric.setupActivity(MainActivity.class);
-
-        Button button = activity.findViewById(R.id.button_next);
+        Button button = rule.getActivity().findViewById(R.id.button_next);
         button.performClick();
 
-        Button buttonOk = activity.findViewById(R.id.button_ok);
+        Button buttonOk = rule.getActivity().findViewById(R.id.button_ok);
         buttonOk.performClick();
     }
 }

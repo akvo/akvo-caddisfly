@@ -29,7 +29,7 @@ import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 
 //http://stackoverflow.com/questions/4520216/how-to-add-test-coverage-to-a-private-constructor
-public final class ClassUtil {
+final class ClassUtil {
 
     private ClassUtil() {
     }
@@ -44,7 +44,8 @@ public final class ClassUtil {
      * @throws InstantiationException    if unable to instantiate
      * @throws IllegalAccessException    if unable to access
      */
-    public static void assertUtilityClassWellDefined(final Class<?> clazz)
+    @SuppressWarnings("SameParameterValue")
+    static void assertUtilityClassWellDefined(final Class<?> clazz)
             throws NoSuchMethodException, InvocationTargetException,
             InstantiationException, IllegalAccessException {
         assertTrue("class must be final",

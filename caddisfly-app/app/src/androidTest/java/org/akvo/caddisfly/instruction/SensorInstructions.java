@@ -20,12 +20,6 @@
 package org.akvo.caddisfly.instruction;
 
 
-import android.support.test.filters.RequiresDevice;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.filters.LargeTest;
-
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
@@ -41,12 +35,18 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.RequiresDevice;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
+
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
@@ -98,7 +98,7 @@ public class SensorInstructions {
             assertEquals(testInfo.getSubtype(), TestType.SENSOR);
 
             String id = testInfo.getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1, id.length());
+            id = id.substring(id.lastIndexOf("-") + 1);
 
             navigateToTest(i, id);
 

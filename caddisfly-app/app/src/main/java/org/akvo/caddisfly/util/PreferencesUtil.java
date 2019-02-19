@@ -23,7 +23,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.support.annotation.StringRes;
+
+import androidx.annotation.StringRes;
 
 /**
  * Various utility functions to get/set values from/to SharedPreferences.

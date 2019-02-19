@@ -59,7 +59,6 @@
     <string name="sensors">Les capteurs</string>
     <!--Sensor Details Screen-->
     <string name="deviceConnecting">Connexion à l\'appareil en cours</string>
-    <string name="acceptResult">Accepter le résultat</string>
     <!--Sensor-->
     <string name="deviceConnectSensor">Veuillez connecter le capteur</string>
     <string name="celsius">°Celsius</string>

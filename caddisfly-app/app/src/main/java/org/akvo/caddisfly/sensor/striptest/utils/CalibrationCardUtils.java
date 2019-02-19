@@ -1,7 +1,5 @@
 package org.akvo.caddisfly.sensor.striptest.utils;
 
-import android.support.annotation.NonNull;
-
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardException;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
@@ -18,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.sensor.striptest.qrdetector.MathUtils.distance;

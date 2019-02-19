@@ -25,10 +25,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -49,6 +45,11 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+
 public final class StringUtil {
 
     private StringUtil() {
@@ -68,7 +69,7 @@ public final class StringUtil {
         } else {
             if (!language.isEmpty()) {
                 return Spannable.Factory.getInstance().newSpannable(
-                        getLocalizedResources(context, new Locale(language)).getString(resId));
+                        getLocalizedResources(context, new Locale(language)).getText(resId));
             } else {
                 return Spannable.Factory.getInstance().newSpannable(context.getText(resId));
             }
