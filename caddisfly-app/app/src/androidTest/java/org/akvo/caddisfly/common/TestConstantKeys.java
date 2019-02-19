@@ -22,6 +22,4 @@ package org.akvo.caddisfly.common;
 public final class TestConstantKeys {
 
     public static final String LANGUAGE = "language";
-    public static final String NEXT = "next";
-
 }

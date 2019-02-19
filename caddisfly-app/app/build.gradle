@@ -29,8 +29,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 246
-        versionName "Instruction workflow - 2"
+        versionCode 248
+        versionName "1.0.7"
         resConfigs "en", "en_US", "fr", "in", "es"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -141,6 +141,7 @@ dependencies {
     // Testing
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.8.0'
+    testImplementation 'androidx.test:core:1.1.0'
 
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation 'androidx.test:rules:1.1.2-alpha01'
@@ -156,7 +157,10 @@ dependencies {
 
     // Robolectric
     testImplementation 'org.robolectric:robolectric:4.2'
-    testImplementation "org.robolectric:shadows-support-v4:3.4-rc2"
+    testImplementation "com.github.nimbl3:robolectric.shadows-supportv4:4.1-SNAPSHOT"
+    testImplementation 'androidx.test:rules:1.1.2-alpha01'
+    testImplementation "androidx.test.ext:junit:1.1.0"
+    testImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
 
     // UIAutomator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'

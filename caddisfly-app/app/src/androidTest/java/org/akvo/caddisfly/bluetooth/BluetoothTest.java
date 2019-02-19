@@ -290,40 +290,10 @@ public class BluetoothTest {
                         isDisplayed()));
         textView7.check(matches(withText("Fluoride")));
 
-        ViewInteraction textView8 = onView(
-                allOf(withId(R.id.textResult1), withText(">2"),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult1),
-                                        childAtPosition(
-                                                withId(R.id.layoutResult),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        textView8.check(matches(withText(">2")));
+        onView(withText(">2")).check(matches(isDisplayed()));
 
-        ViewInteraction textView9 = onView(
-                allOf(withId(R.id.textResult1), withText(">2"),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult1),
-                                        childAtPosition(
-                                                withId(R.id.layoutResult),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        textView9.check(matches(withText(">2")));
-
-        ViewInteraction textView10 = onView(
-                allOf(withId(R.id.textUnit1), withText("mg/l"),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult1),
-                                        childAtPosition(
-                                                withId(R.id.layoutResult),
-                                                0)),
-                                2),
-                        isDisplayed()));
-        textView10.check(matches(withText("mg/l")));
+        onView(withText("mg/l")).check(matches(isDisplayed()));
 
         onView(withId(R.id.button_submit_result)).perform(click());
-
     }
 }

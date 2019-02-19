@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConfig;
@@ -147,8 +148,8 @@ public class TestActivity extends BaseActivity {
         CaddisflyApp.getApp().setAppLanguage(this,
                 intent.getStringExtra(SensorConstants.LANGUAGE), true, handler);
 
-        if (AppPreferences.getShowDebugInfo()){
-            Toast.makeText(this, "Language: "+ intent.getStringExtra(SensorConstants.LANGUAGE),
+        if (AppPreferences.getShowDebugInfo()) {
+            Toast.makeText(this, "Language: " + intent.getStringExtra(SensorConstants.LANGUAGE),
                     Toast.LENGTH_LONG).show();
         }
 
@@ -308,7 +309,7 @@ public class TestActivity extends BaseActivity {
             //return the test result to the external app
             Intent intent = new Intent(data);
 
-            if (!AppConfig.STOP_ANALYTICS) {
+            if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, testInfo.getUuid());
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, testInfo.getName());

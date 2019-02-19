@@ -25,12 +25,12 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import androidx.annotation.StringRes;
+import androidx.test.core.app.ApplicationProvider;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -95,10 +95,10 @@ public class AppPreferencesTest {
             assertEquals(defaultValue, method.invoke(null));
 
             if (defaultValue instanceof Boolean) {
-                PreferencesUtil.setBoolean(RuntimeEnvironment.application, key, !(boolean) defaultValue);
+                PreferencesUtil.setBoolean(ApplicationProvider.getApplicationContext(), key, !(boolean) defaultValue);
                 assertEquals(!(boolean) defaultValue, method.invoke(null));
             } else if (defaultValue instanceof Integer) {
-                PreferencesUtil.setString(RuntimeEnvironment.application, key, newValue.toString());
+                PreferencesUtil.setString(ApplicationProvider.getApplicationContext(), key, newValue.toString());
                 assertEquals(newValue, method.invoke(null));
             }
 

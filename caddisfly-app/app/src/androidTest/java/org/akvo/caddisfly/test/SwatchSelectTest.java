@@ -105,9 +105,9 @@ public class SwatchSelectTest {
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 
-        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.62f));
+        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
 
-        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.62f));
+        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.5f));
 
         sleep(1000);
 
@@ -176,9 +176,9 @@ public class SwatchSelectTest {
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 
-        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.62f));
+        customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
 
-        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.62f));
+        customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.5f));
 
         sleep(1000);
 

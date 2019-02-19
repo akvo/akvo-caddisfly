@@ -19,8 +19,8 @@
 
 package org.akvo.caddisfly.util;
 
-import android.app.Activity;
 import android.os.Build;
+import android.view.InputDevice;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -32,14 +32,10 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import java.util.Collection;
-
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.action.GeneralClickAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Tap;
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
-import androidx.test.runner.lifecycle.Stage;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObject2;
@@ -52,7 +48,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.hamcrest.Matchers.allOf;
 
@@ -70,18 +65,6 @@ public final class TestUtil {
         } catch (InterruptedException e) {
             Timber.e(e);
         }
-    }
-
-    public static Activity getActivityInstance() {
-        final Activity[] activity = new Activity[1];
-        getInstrumentation().runOnMainSync(() -> {
-            Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance()
-                    .getActivitiesInStage(Stage.RESUMED);
-            if (resumedActivities.iterator().hasNext()) {
-                activity[0] = (Activity) resumedActivities.iterator().next();
-            }
-        });
-        return activity[0];
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -144,7 +127,7 @@ public final class TestUtil {
 
                     return new float[]{screenX, screenY};
                 },
-                Press.FINGER);
+                Press.FINGER, InputDevice.SOURCE_TOUCHSCREEN, 0);
     }
 
     private static void swipeLeft() {
@@ -166,22 +149,10 @@ public final class TestUtil {
         }
     }
 
-    public static void swipeUp() {
-        for (int i = 0; i < 3; i++) {
-            mDevice.waitForIdle();
-            mDevice.swipe(200, 750, 200, 600, 4);
-        }
-    }
-
     public static void goBack(int times) {
         for (int i = 0; i < times; i++) {
             mDevice.pressBack();
         }
-    }
-
-    public static void goBack() {
-        mDevice.waitForIdle();
-        goBack(1);
     }
 
     public static void nextPage(int times) {

@@ -27,15 +27,19 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowLooper;
 
+import java.util.Objects;
+
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -43,14 +47,15 @@ import static junit.framework.Assert.assertSame;
 import static org.akvo.caddisfly.TestConstants.MD610_TESTS_COUNT;
 import static org.robolectric.Shadows.shadowOf;
 
-@RunWith(RobolectricTestRunner.class)
+@RunWith(AndroidJUnit4.class)
 public class PhotometerTest {
+
+    @Rule
+    public ActivityTestRule<TestListActivity> rule = new ActivityTestRule<>(TestListActivity.class);
 
     @Test
     public void titleIsCorrect() {
-
-        Activity activity = Robolectric.setupActivity(TestListActivity.class);
-        TextView textView = activity.findViewById(R.id.textToolbarTitle);
+        TextView textView = rule.getActivity().findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "Select Test");
     }
 
@@ -68,11 +73,11 @@ public class PhotometerTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(MD610_TESTS_COUNT, recyclerView.getAdapter().getItemCount());
+        assertSame(MD610_TESTS_COUNT, Objects.requireNonNull(recyclerView.getAdapter()).getItemCount());
 
-        assertEquals("Fluoride",
+        assertEquals("Cyanide",
                 ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(26).getName());
-        assertEquals("170 Fluoride",
+        assertEquals("157 Cyanide",
                 ((TextView) recyclerView.getChildAt(26).findViewById(R.id.text_title)).getText());
     }
 
@@ -90,7 +95,7 @@ public class PhotometerTest {
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
         for (int i = 0; i < recyclerView.getChildCount(); i++) {
-            TestInfo testInfo = ((TestInfoAdapter) recyclerView.getAdapter()).getItemAt(i);
+            TestInfo testInfo = ((TestInfoAdapter) Objects.requireNonNull(recyclerView.getAdapter())).getItemAt(i);
 
             String title = testInfo.getName();
             assertEquals(title,
@@ -116,7 +121,7 @@ public class PhotometerTest {
 
         RecyclerView recyclerView = activity.findViewById(R.id.list_types);
 
-        assertSame(MD610_TESTS_COUNT, recyclerView.getAdapter().getItemCount());
+        assertSame(MD610_TESTS_COUNT, Objects.requireNonNull(recyclerView.getAdapter()).getItemCount());
 
         recyclerView.getChildAt(1).performClick();
 
@@ -131,14 +136,10 @@ public class PhotometerTest {
 
     @Test
     public void clickHome() {
-
-        Activity activity = Robolectric.setupActivity(TestListActivity.class);
-
+        Activity activity = rule.getActivity();
         ShadowActivity shadowActivity = shadowOf(activity);
         shadowActivity.clickMenuItem(android.R.id.home);
         Intent intent = shadowOf(activity).getNextStartedActivity();
-
         assertNull(intent);
     }
-
 }

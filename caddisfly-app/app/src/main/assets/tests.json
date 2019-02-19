@@ -5866,7 +5866,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet_dissolve",
+            "1.add_reagent_1_tablet_dissolve_a",
+            "2.add_reagent_1_tablet_dissolve_b",
             "image:add_tablet"
           ]
         },
