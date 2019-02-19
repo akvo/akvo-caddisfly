@@ -35,8 +35,9 @@ public class PageIndicatorView extends View {
     @NonNull
     private final Paint fillPaint;
     private final Paint strokePaint;
-    private float distanceBetweenBullets = 34;
+    private float distanceBetweenBullets = 36;
     private int bulletRadius = 8;
+    private float activeBulletRadius;
     private int pageCount;
     private int activePage;
     private boolean showDots;
@@ -58,6 +59,8 @@ public class PageIndicatorView extends View {
             bulletRadius = 4;
         }
 
+        activeBulletRadius = bulletRadius * 1.6f;
+
         fillPaint = new Paint();
         fillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         fillPaint.setStrokeWidth(2);
@@ -74,6 +77,13 @@ public class PageIndicatorView extends View {
     public void setPageCount(int value) {
         pageCount = value;
         invalidate();
+
+        if (pageCount < 3) {
+            distanceBetweenBullets += bulletRadius;
+            activeBulletRadius = bulletRadius * 1.2f;
+        } else if (pageCount > 12) {
+            distanceBetweenBullets -= 4;
+        }
     }
 
     public void setActiveIndex(int value) {
@@ -95,7 +105,7 @@ public class PageIndicatorView extends View {
             for (int i = 0; i < pageCount; i++) {
                 if (activePage == i) {
                     canvas.drawCircle(distanceBetweenBullets * i + bulletRadius * 2, getHeight() / 2f,
-                            bulletRadius * 1.6f, fillPaint);
+                            activeBulletRadius, fillPaint);
                 } else {
                     if (showDots) {
                         canvas.drawCircle(distanceBetweenBullets * i + bulletRadius * 2, getHeight() / 2f,
