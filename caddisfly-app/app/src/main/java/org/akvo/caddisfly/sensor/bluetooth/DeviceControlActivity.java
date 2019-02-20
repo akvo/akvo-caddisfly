@@ -41,7 +41,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
@@ -103,6 +107,7 @@ public class DeviceControlActivity extends BaseActivity {
             mBluetoothLeService = null;
         }
     };
+    private FirebaseAnalytics mFirebaseAnalytics;
     private Handler debugTestHandler;
     private boolean showSkipMenu = false;
     private BluetoothResultFragment mBluetoothResultFragment;
@@ -160,6 +165,8 @@ public class DeviceControlActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_external_result);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         final Intent intent = getIntent();
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
@@ -440,6 +447,14 @@ public class DeviceControlActivity extends BaseActivity {
     public void onSkipClick(MenuItem item) {
         viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
         showWaitingView();
+
+        if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+            Bundle bundle = new Bundle();
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Instructions skipped");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Skip");
+            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        }
     }
 
     public void onSelectTestClick(View view) {
