@@ -78,6 +78,7 @@
     <string name="awaitingResult">Awaiting result</string>
 
     <string name="deviceConnected">Device connected</string>
+    <string name="unableToConnect">Could not connect. Try connecting again.</string>
     <string name="sensorDetails">Sensor Details</string>
     <string name="enterAnIdForSensor">Enter an Id for this sensor</string>
     <string name="ecSensorId">EC Sensor Id</string>

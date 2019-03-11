@@ -56,6 +56,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Main"
         tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
+
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="@bool/FIREBASE_ANALYTICS_ENABLED" />
+
         <activity
             android:name=".ui.MainActivity"
             android:autoRemoveFromRecents="true"

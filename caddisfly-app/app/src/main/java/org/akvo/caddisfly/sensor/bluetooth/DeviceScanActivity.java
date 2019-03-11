@@ -218,17 +218,17 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         }
     }
 
-    private void connectToDevice(int position) {
+    private boolean connectToDevice(int position) {
 
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            return;
+            return false;
         }
 
         final BluetoothDevice device = mLeDeviceListAdapter.getDevice(position);
         if (device == null) {
-            return;
+            return false;
         }
         final Intent intent = new Intent(this, DeviceControlActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
@@ -252,6 +252,8 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             startActivityForResult(intent, REQUEST_CODE);
             dlg.dismiss();
         }, CONNECTING_DELAY);
+
+        return true;
     }
 
 
@@ -469,7 +471,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
             if (!mLeDevices.contains(device)
                     && device.getType() != BluetoothDevice.DEVICE_TYPE_CLASSIC
                     && device.getType() != BluetoothDevice.DEVICE_TYPE_UNKNOWN
-                    ) {
+            ) {
                 mLeDevices.add(device);
                 mLeDeviceListAdapter.notifyDataSetChanged();
 
@@ -483,7 +485,10 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         }
 
         private BluetoothDevice getDevice(int position) {
-            return mLeDevices.get(position);
+            if (position < mLeDevices.size()) {
+                return mLeDevices.get(position);
+            }
+            return null;
         }
 
         void clear() {
@@ -519,7 +524,12 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
 
                 Button buttonConnect = view.findViewById(R.id.button_connect);
 
-                buttonConnect.setOnClickListener(v -> connectToDevice(position));
+                buttonConnect.setOnClickListener(v -> {
+                    if (!connectToDevice(position)) {
+                        Toast.makeText(getBaseContext(), R.string.unableToConnect, Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                });
 
             } else {
                 viewHolder = (ViewHolder) view.getTag();

@@ -109,6 +109,7 @@ public class DeviceControlActivity extends BaseActivity {
     };
     private FirebaseAnalytics mFirebaseAnalytics;
     private Handler debugTestHandler;
+    private Handler debugResultHandler;
     private boolean showSkipMenu = false;
     private BluetoothResultFragment mBluetoothResultFragment;
     private String mData;
@@ -276,6 +277,9 @@ public class DeviceControlActivity extends BaseActivity {
         if (debugTestHandler != null) {
             debugTestHandler.removeCallbacksAndMessages(null);
         }
+        if (debugResultHandler != null) {
+            debugResultHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     private void unregisterReceiver() {
@@ -290,6 +294,7 @@ public class DeviceControlActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unHookBluetooth();
         unbindServices();
         mBluetoothLeService = null;
     }
@@ -319,6 +324,9 @@ public class DeviceControlActivity extends BaseActivity {
     public void onBackPressed() {
         if (debugTestHandler != null) {
             debugTestHandler.removeCallbacksAndMessages(null);
+        }
+        if (debugResultHandler != null) {
+            debugResultHandler.removeCallbacksAndMessages(null);
         }
         if (resultLayout.getVisibility() == View.VISIBLE) {
             viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
@@ -351,7 +359,13 @@ public class DeviceControlActivity extends BaseActivity {
             dlg.setMessage("Receiving data");
             dlg.setCancelable(false);
             dlg.show();
-            new Handler().postDelayed(() -> {
+
+            if (debugResultHandler != null) {
+                debugResultHandler.removeCallbacksAndMessages(null);
+            }
+
+            debugResultHandler = new Handler();
+            debugResultHandler.postDelayed(() -> {
                 try {
                     if (mBluetoothResultFragment.displayData(fullData)) {
                         setTitle(R.string.result);
@@ -450,10 +464,11 @@ public class DeviceControlActivity extends BaseActivity {
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
             Bundle bundle = new Bundle();
-            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Button");
-            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Instructions skipped");
-            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Skip");
-            mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+            bundle.putString("InstructionsSkipped", testInfo.getName() +
+                    " (" + testInfo.getBrand() + ")");
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Navigation");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "si_" + testInfo.getUuid());
+            mFirebaseAnalytics.logEvent("instruction_skipped", bundle);
         }
     }
 
