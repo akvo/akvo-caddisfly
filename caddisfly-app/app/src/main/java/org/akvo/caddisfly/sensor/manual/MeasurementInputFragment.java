@@ -21,7 +21,6 @@ package org.akvo.caddisfly.sensor.manual;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseFragment;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class MeasurementInputFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
@@ -152,6 +150,10 @@ public class MeasurementInputFragment extends BaseFragment {
         return view;
     }
 
+    void showSoftKeyboard() {
+        showSoftKeyboard(editResult);
+    }
+
     private void showSoftKeyboard(View view) {
         if (getActivity() != null && view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager)
@@ -162,6 +164,10 @@ public class MeasurementInputFragment extends BaseFragment {
         }
     }
 
+    void hideSoftKeyboard() {
+        hideSoftKeyboard(editResult);
+    }
+
     private void hideSoftKeyboard(View view) {
         if (getActivity() != null) {
             InputMethodManager imm = (InputMethodManager)
@@ -170,13 +176,6 @@ public class MeasurementInputFragment extends BaseFragment {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
             }
         }
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        (new Handler()).postDelayed(() -> showSoftKeyboard(editResult), 200);
     }
 
     @Override

@@ -51,7 +51,6 @@ import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.widget.PageIndicatorView;
@@ -255,7 +254,7 @@ public class DeviceControlActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (showSkipMenu && testInfo.getSubtype() == TestType.BLUETOOTH) {
+        if (showSkipMenu) {
             getMenuInflater().inflate(R.menu.menu_instructions, menu);
         }
         return true;

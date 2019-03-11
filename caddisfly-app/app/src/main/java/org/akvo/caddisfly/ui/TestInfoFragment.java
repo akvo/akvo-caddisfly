@@ -102,6 +102,8 @@ public class TestInfoFragment extends Fragment {
                     b.buttonPrepare.setText(R.string.prepare_test);
                 } else if (testInfo.getSubtype() == TestType.BLUETOOTH) {
                     b.buttonInstructions.setVisibility(View.GONE);
+                } else if (testInfo.getSubtype() == TestType.MANUAL) {
+                    b.buttonInstructions.setVisibility(View.GONE);
                 }
 
             }

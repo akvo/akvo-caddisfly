@@ -10,26 +10,45 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
+import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
+import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ImageUtil;
+import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
 
@@ -43,12 +62,31 @@ public class ManualTestActivity extends BaseActivity
     private String imageFileName = "";
     private String currentPhotoPath;
 
+    private MeasurementInputFragment waitingFragment;
+
+    private ViewPager viewPager;
+    private FrameLayout resultLayout;
+    private FrameLayout pagerLayout;
+    private RelativeLayout footerLayout;
+    private PageIndicatorView pagerIndicator;
+    private boolean showSkipMenu = true;
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_test);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         fragmentManager = getSupportFragmentManager();
+
+        waitingFragment = MeasurementInputFragment.newInstance(testInfo);
+
+        viewPager = findViewById(R.id.viewPager);
+        pagerIndicator = findViewById(R.id.pager_indicator);
+        resultLayout = findViewById(R.id.resultLayout);
+        pagerLayout = findViewById(R.id.pagerLayout);
+        footerLayout = findViewById(R.id.layout_footer);
 
         if (testInfo == null) {
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
@@ -58,13 +96,64 @@ public class ManualTestActivity extends BaseActivity
             return;
         }
 
-        startManualTest();
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mSectionsPagerAdapter);
+
+        pagerIndicator.showDots(true);
+        pagerIndicator.setPageCount(mSectionsPagerAdapter.getCount() - 1);
+
+        ImageView imagePageRight = findViewById(R.id.image_pageRight);
+        imagePageRight.setOnClickListener(view ->
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1));
+
+        ImageView imagePageLeft = findViewById(R.id.image_pageLeft);
+        imagePageLeft.setOnClickListener(view -> pageBack());
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pagerIndicator.setActiveIndex(position - 1);
+
+                if (position == testInfo.getInstructions().size()) {
+                    showWaitingView();
+                } else {
+                    showInstructionsView();
+                    onInstructionFinish(testInfo.getInstructions().size() - position);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    if (viewPager.getCurrentItem() == testInfo.getInstructions().size()) {
+                        waitingFragment.showSoftKeyboard();
+                    } else {
+                        waitingFragment.hideSoftKeyboard();
+                    }
+                }
+            }
+        });
+
+        // startManualTest();
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setTitle(testInfo.getName());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (showSkipMenu) {
+            getMenuInflater().inflate(R.menu.menu_instructions, menu);
+        }
+        return true;
     }
 
     private void startManualTest() {
@@ -180,9 +269,159 @@ public class ManualTestActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (viewPager.getCurrentItem() == 0) {
+                onBackPressed();
+            } else {
+                showSelectTestView();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (resultLayout.getVisibility() == View.VISIBLE) {
+            viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+            showWaitingView();
+        } else if (viewPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            pageBack();
+        }
+    }
+
+    private void pageBack() {
+        viewPager.setCurrentItem(Math.max(0, viewPager.getCurrentItem() - 1));
+    }
+
+    private void showInstructionsView() {
+        footerLayout.setVisibility(View.VISIBLE);
+        pagerLayout.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.GONE);
+        setTitle(testInfo.getName());
+        showSkipMenu = true;
+        invalidateOptionsMenu();
+    }
+
+    private void showSelectTestView() {
+        pagerLayout.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.GONE);
+        footerLayout.setVisibility(View.GONE);
+        viewPager.setCurrentItem(0);
+        showSkipMenu = false;
+        setTitle(R.string.selectTest);
+        invalidateOptionsMenu();
+    }
+
+    private void showWaitingView() {
+        pagerLayout.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.GONE);
+        footerLayout.setVisibility(View.GONE);
+        showSkipMenu = false;
+        setTitle(R.string.awaitingResult);
+        invalidateOptionsMenu();
+    }
+
+//    private void showResultView() {
+//        resultLayout.setVisibility(View.VISIBLE);
+//        pagerLayout.setVisibility(View.GONE);
+//    }
+
+    public void onInstructionFinish(int page) {
+        if (page > 1) {
+            showSkipMenu = true;
+            invalidateOptionsMenu();
+        } else {
+            showSkipMenu = false;
+            invalidateOptionsMenu();
+        }
+    }
+
+    public void onSkipClick(MenuItem item) {
+        viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+        showWaitingView();
+
+        if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+            Bundle bundle = new Bundle();
+            bundle.putString("InstructionsSkipped", testInfo.getName() +
+                    " (" + testInfo.getBrand() + ")");
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Navigation");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "si_" + testInfo.getUuid());
+            mFirebaseAnalytics.logEvent("instruction_skipped", bundle);
+        }
+    }
+
+    public void onSelectTestClick(View view) {
+        viewPager.setCurrentItem(1);
+        showInstructionsView();
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+        FragmentInstructionBinding fragmentInstructionBinding;
+        Instruction instruction;
+
+        /**
+         * Returns a new instance of this fragment for the given section number.
+         *
+         * @param instruction The information to to display
+         * @return The instance
+         */
+        static PlaceholderFragment newInstance(Instruction instruction) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putParcelable(ARG_SECTION_NUMBER, instruction);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+
+            fragmentInstructionBinding = DataBindingUtil.inflate(inflater,
+                    R.layout.fragment_instruction, container, false);
+
+            if (getArguments() != null) {
+                instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
+                fragmentInstructionBinding.setInstruction(instruction);
+            }
+
+            return fragmentInstructionBinding.getRoot();
+        }
+    }
+
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == testInfo.getInstructions().size()) {
+                return waitingFragment;
+            } else {
+                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position));
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return testInfo.getInstructions().size() + 1;
+        }
     }
 }
