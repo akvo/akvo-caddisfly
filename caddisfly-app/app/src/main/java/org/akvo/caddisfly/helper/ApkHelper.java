@@ -54,7 +54,8 @@ public final class ApkHelper {
      */
     public static boolean isAppVersionExpired(@NonNull final Activity activity) {
         if (AppConfig.APP_EXPIRY && isNonStoreVersion(activity)) {
-            final Uri marketUrl = Uri.parse("market://details?id=" + activity.getPackageName());
+            final Uri marketUrl = Uri.parse("https://play.google.com/store/apps/details?id=" +
+                    activity.getPackageName());
 
             final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
                     AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
@@ -77,7 +78,13 @@ public final class ApkHelper {
                 builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                     dialogInterface.dismiss();
                     if (!BuildConfig.showExperimentalTests) {
-                        activity.startActivity(new Intent(Intent.ACTION_VIEW, marketUrl));
+                        try {
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(marketUrl);
+                            intent.setPackage("com.android.vending");
+                            activity.startActivity(intent);
+                        } catch (Exception ignore) {
+                        }
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         activity.finishAndRemoveTask();
