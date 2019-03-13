@@ -80,8 +80,6 @@ public class ManualTestActivity extends BaseActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        waitingFragment = MeasurementInputFragment.newInstance(testInfo);
-
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
         resultLayout = findViewById(R.id.resultLayout);
@@ -95,6 +93,8 @@ public class ManualTestActivity extends BaseActivity
         if (testInfo == null) {
             return;
         }
+
+        waitingFragment = MeasurementInputFragment.newInstance(testInfo);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);

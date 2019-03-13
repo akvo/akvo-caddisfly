@@ -124,9 +124,9 @@ public class CheckitTest {
 
         clickExternalSourceButton(0);
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(2000);
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         onView(withText(R.string.checkit_comparator_uses))
                 .check(matches(isDisplayed()));
@@ -162,8 +162,6 @@ public class CheckitTest {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
-
         onView(withText(R.string.insert_colored_disk))
                 .check(matches(isDisplayed()));
 
@@ -176,19 +174,18 @@ public class CheckitTest {
 
         pressBack();
 
+        pressBack();
+
+        pressBack();
+
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        onView(withText(R.string.skip)).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
+
+        SystemClock.sleep(1000);
 
         onView(withText(R.string.submitResult)).perform(click());
 

@@ -126,7 +126,7 @@ public class ManualTest {
 
         SystemClock.sleep(3000);
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         onView(withText(R.string.fill_turbidity_tube)).check(matches(isDisplayed()));
 
@@ -148,8 +148,6 @@ public class ManualTest {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
-
         onView(withText(R.string.fill_turbidity_tube))
                 .check(matches(isDisplayed()));
 
@@ -165,16 +163,7 @@ public class ManualTest {
 
         pressBack();
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        onView(withText(R.string.skip)).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
@@ -201,7 +190,7 @@ public class ManualTest {
 
         SystemClock.sleep(3000);
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         onView(withText(R.string.sd_on))
                 .check(matches(isDisplayed()));
@@ -237,8 +226,6 @@ public class ManualTest {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
-
         onView(withText(R.string.sd_on))
                 .check(matches(isDisplayed()));
 
@@ -251,16 +238,7 @@ public class ManualTest {
 
         pressBack();
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        onView(withText(R.string.skip)).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
@@ -292,7 +270,7 @@ public class ManualTest {
 
         SystemClock.sleep(3000);
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.sd_on))
                 .check(matches(isDisplayed()));
@@ -328,8 +306,6 @@ public class ManualTest {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
-
         onView(withText(R.string.sd_on))
                 .check(matches(isDisplayed()));
 
@@ -342,10 +318,12 @@ public class ManualTest {
 
         pressBack();
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.skip)).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
+
+        SystemClock.sleep(1000);
 
         onView(withText(R.string.submitResult)).perform(click());
 
@@ -375,7 +353,11 @@ public class ManualTest {
 
         onView(withText(R.string.next)).perform(click());
 
+        onView(withText(R.string.skip)).perform(click());
+
         onView(withId(R.id.editResult)).perform(replaceText("200"));
+
+        SystemClock.sleep(3000);
 
         onView(withText(R.string.submitResult)).perform(click());
 
