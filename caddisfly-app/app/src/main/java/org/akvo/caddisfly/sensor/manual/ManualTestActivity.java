@@ -47,7 +47,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
@@ -58,7 +57,6 @@ public class ManualTestActivity extends BaseActivity
     private static final int MANUAL_TEST = 2;
 
     private TestInfo testInfo;
-    private FragmentManager fragmentManager;
     private String imageFileName = "";
     private String currentPhotoPath;
 
@@ -71,14 +69,19 @@ public class ManualTestActivity extends BaseActivity
     private PageIndicatorView pagerIndicator;
     private boolean showSkipMenu = true;
     private FirebaseAnalytics mFirebaseAnalytics;
+    private String result;
+    private ResultPhotoFragment resultPhotoFragment;
+
+    private int resultPageNumber;
+    private int photoPageNumber;
+    private int totalPageCount;
+    private int skipToPageNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_test);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        fragmentManager = getSupportFragmentManager();
 
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
@@ -95,12 +98,25 @@ public class ManualTestActivity extends BaseActivity
         }
 
         waitingFragment = MeasurementInputFragment.newInstance(testInfo);
+        resultPhotoFragment = ResultPhotoFragment.newInstance(testInfo);
+
+        if (testInfo.getHasImage()) {
+            totalPageCount = testInfo.getInstructions().size() + 2;
+            photoPageNumber = totalPageCount - 2;
+            resultPageNumber = totalPageCount - 1;
+            skipToPageNumber = photoPageNumber;
+        } else {
+            totalPageCount = testInfo.getInstructions().size() + 1;
+            resultPageNumber = totalPageCount - 1;
+            skipToPageNumber = resultPageNumber;
+            photoPageNumber = -1;
+        }
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
 
         pagerIndicator.showDots(true);
-        pagerIndicator.setPageCount(mSectionsPagerAdapter.getCount() - 1);
+        pagerIndicator.setPageCount(totalPageCount);
 
         ImageView imagePageRight = findViewById(R.id.image_pageRight);
         imagePageRight.setOnClickListener(view ->
@@ -117,9 +133,9 @@ public class ManualTestActivity extends BaseActivity
 
             @Override
             public void onPageSelected(int position) {
-                pagerIndicator.setActiveIndex(position - 1);
+                pagerIndicator.setActiveIndex(position);
 
-                if (position == testInfo.getInstructions().size()) {
+                if (position == resultPageNumber) {
                     showWaitingView();
                 } else {
                     showInstructionsView();
@@ -130,7 +146,7 @@ public class ManualTestActivity extends BaseActivity
             @Override
             public void onPageScrollStateChanged(int state) {
                 if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    if (viewPager.getCurrentItem() == testInfo.getInstructions().size()) {
+                    if (viewPager.getCurrentItem() == resultPageNumber) {
                         waitingFragment.showSoftKeyboard();
                     } else {
                         waitingFragment.hideSoftKeyboard();
@@ -156,47 +172,39 @@ public class ManualTestActivity extends BaseActivity
         return true;
     }
 
-    private void startManualTest() {
-        if (testInfo.getHasImage()) {
+    private void takePhoto() {
+        (new Handler()).postDelayed(() -> {
+            Toast toast = Toast.makeText(this,
+                    R.string.take_photo_meter_result, Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.BOTTOM, 0, 200);
+            toast.show();
+        }, 400);
 
-            (new Handler()).postDelayed(() -> {
-                Toast toast = Toast.makeText(this, R.string.take_photo_meter_result, Toast.LENGTH_LONG);
-                toast.setGravity(Gravity.BOTTOM, 0, 200);
-                toast.show();
-            }, 400);
-
-            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            // Ensure that there's a camera activity to handle the intent
-            if (pictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
-                File photoFile = null;
-                try {
-                    photoFile = createImageFile();
-                } catch (IOException ex) {
-                    // Error occurred while creating the File
-                }
-
-                // Continue only if the File was successfully created
-                if (photoFile != null) {
-
-                    Uri photoUri;
-                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                        photoUri = Uri.fromFile(photoFile);
-                    } else {
-                        photoUri = FileProvider.getUriForFile(this,
-                                FILE_PROVIDER_AUTHORITY_URI,
-                                photoFile);
-                    }
-                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                    startActivityForResult(pictureIntent, MANUAL_TEST);
-                }
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (pictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
             }
-        } else {
-            FragmentTransaction ft = fragmentManager.beginTransaction();
 
-            ft.add(R.id.fragment_container,
-                    MeasurementInputFragment.newInstance(testInfo), "tubeFragment")
-                    .commit();
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+
+                Uri photoUri;
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                    photoUri = Uri.fromFile(photoFile);
+                } else {
+                    photoUri = FileProvider.getUriForFile(this,
+                            FILE_PROVIDER_AUTHORITY_URI,
+                            photoFile);
+                }
+                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(pictureIntent, MANUAL_TEST);
+            }
         }
     }
 
@@ -204,20 +212,14 @@ public class ManualTestActivity extends BaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            if (requestCode == MANUAL_TEST) {
-                fragmentTransaction.replace(R.id.fragment_container,
-                        MeasurementInputFragment.newInstance(testInfo), "manualFragment")
-                        .addToBackStack(null)
-                        .commit();
-            }
+            viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+            submitResult();
         } else {
             onBackPressed();
         }
     }
 
-    @Override
-    public void onSubmitResult(String result) {
+    private void submitResult() {
         Intent resultIntent = new Intent();
 
         SparseArray<String> results = new SparseArray<>();
@@ -247,6 +249,18 @@ public class ManualTestActivity extends BaseActivity
         setResult(Activity.RESULT_OK, resultIntent);
 
         finish();
+    }
+
+    @Override
+    public void onSubmitResult(String result) {
+
+        this.result = result;
+
+        if (testInfo.getHasImage()) {
+            takePhoto();
+        } else {
+            submitResult();
+        }
     }
 
     private File createImageFile() throws IOException {
@@ -309,24 +323,20 @@ public class ManualTestActivity extends BaseActivity
         resultLayout.setVisibility(View.GONE);
         footerLayout.setVisibility(View.GONE);
         viewPager.setCurrentItem(0);
-        showSkipMenu = false;
-        setTitle(R.string.selectTest);
+        setTitle(testInfo.getName());
+        showSkipMenu = true;
         invalidateOptionsMenu();
     }
 
     private void showWaitingView() {
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
-        footerLayout.setVisibility(View.GONE);
+        if (viewPager.getCurrentItem() == resultPageNumber) {
+            footerLayout.setVisibility(View.GONE);
+        }
         showSkipMenu = false;
-        setTitle(R.string.awaitingResult);
         invalidateOptionsMenu();
     }
-
-//    private void showResultView() {
-//        resultLayout.setVisibility(View.VISIBLE);
-//        pagerLayout.setVisibility(View.GONE);
-//    }
 
     public void onInstructionFinish(int page) {
         if (page > 1) {
@@ -339,7 +349,7 @@ public class ManualTestActivity extends BaseActivity
     }
 
     public void onSkipClick(MenuItem item) {
-        viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+        viewPager.setCurrentItem(skipToPageNumber);
         showWaitingView();
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
@@ -412,7 +422,9 @@ public class ManualTestActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            if (position == testInfo.getInstructions().size()) {
+            if (position == photoPageNumber) {
+                return resultPhotoFragment;
+            } else if (position == resultPageNumber) {
                 return waitingFragment;
             } else {
                 return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position));
@@ -421,7 +433,7 @@ public class ManualTestActivity extends BaseActivity
 
         @Override
         public int getCount() {
-            return testInfo.getInstructions().size() + 1;
+            return totalPageCount;
         }
     }
 }
