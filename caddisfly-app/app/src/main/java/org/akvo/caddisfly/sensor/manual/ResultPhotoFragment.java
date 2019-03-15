@@ -83,6 +83,7 @@ public class ResultPhotoFragment extends BaseFragment {
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 imageResult.setImageBitmap(myBitmap);
+                imageResult.setBackground(null);
             }
         }
 
@@ -94,13 +95,6 @@ public class ResultPhotoFragment extends BaseFragment {
     }
 
     private void takePhoto() {
-//        (new Handler()).postDelayed(() -> {
-//            Toast toast = Toast.makeText(getActivity(),
-//                    R.string.take_photo_meter_result, Toast.LENGTH_LONG);
-//            toast.setGravity(Gravity.BOTTOM, 0, 200);
-//            toast.show();
-//        }, 400);
-
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (pictureIntent.resolveActivity(Objects.requireNonNull(
@@ -152,6 +146,7 @@ public class ResultPhotoFragment extends BaseFragment {
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 imageResult.setImageBitmap(myBitmap);
+                imageResult.setBackground(null);
             }
 
             mListener.onPhotoTaken(imageFileName);

@@ -124,7 +124,7 @@ public class ManualTest {
 
         clickExternalSourceButton(0);
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(1000);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -188,7 +188,7 @@ public class ManualTest {
 
         clickExternalSourceButton(1);
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(1000);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -240,6 +240,14 @@ public class ManualTest {
 
         onView(withText(R.string.skip)).perform(click());
 
+        SystemClock.sleep(1000);
+
+        onView(withText(R.string.takePhoto)).perform(click());
+
+        SystemClock.sleep(3000);
+
+        TestUtil.nextPage();
+
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
 
@@ -268,7 +276,7 @@ public class ManualTest {
 
         clickExternalSourceButton(2);
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(1000);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -320,6 +328,14 @@ public class ManualTest {
 
         onView(withText(R.string.skip)).perform(click());
 
+        SystemClock.sleep(1000);
+
+        onView(withText(R.string.takePhoto)).perform(click());
+
+        SystemClock.sleep(3000);
+
+        TestUtil.nextPage();
+
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
 
@@ -354,6 +370,14 @@ public class ManualTest {
         onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.skip)).perform(click());
+
+        SystemClock.sleep(1000);
+
+        onView(withText(R.string.takePhoto)).perform(click());
+
+        SystemClock.sleep(3000);
+
+        TestUtil.nextPage();
 
         onView(withId(R.id.editResult)).perform(replaceText("200"));
 

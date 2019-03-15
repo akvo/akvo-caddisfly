@@ -192,7 +192,7 @@ public class ManualTestActivity extends BaseActivity
     public void onSubmitResult(String result) {
         this.result = result;
 
-        if (imageFileName.isEmpty()) {
+        if (testInfo.getHasImage() && imageFileName.isEmpty()) {
             viewPager.setCurrentItem(photoPageNumber);
             Toast.makeText(this, R.string.take_photo_meter_result,
                     Toast.LENGTH_LONG).show();
@@ -291,7 +291,6 @@ public class ManualTestActivity extends BaseActivity
     @Override
     public void onPhotoTaken(String photoPath) {
         imageFileName = photoPath;
-//        viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
     }
 
     /**

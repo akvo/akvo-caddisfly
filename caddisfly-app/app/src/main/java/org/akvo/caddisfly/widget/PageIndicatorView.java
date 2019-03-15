@@ -57,9 +57,13 @@ public class PageIndicatorView extends View {
         if (scale <= 1.5) {
             distanceBetweenBullets = 26;
             bulletRadius = 4;
+            activeBulletRadius = bulletRadius * 1.6f;
+        } else if (scale >= 3) {
+            distanceBetweenBullets = 46;
+            bulletRadius = 12;
+            activeBulletRadius = bulletRadius * 1.4f;
         }
 
-        activeBulletRadius = bulletRadius * 1.6f;
 
         fillPaint = new Paint();
         fillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
