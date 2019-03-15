@@ -20,31 +20,50 @@
 package org.akvo.caddisfly.sensor.manual;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.ui.BaseFragment;
+import org.akvo.caddisfly.util.ImageUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+
+import static android.app.Activity.RESULT_OK;
+import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
 
 public class ResultPhotoFragment extends BaseFragment {
-    private static final String ARG_PARAM1 = "param1";
-    private OnSubmitResultListener mListener;
+
+    private static final int MANUAL_TEST = 2;
+    private OnPhotoTakenListener mListener;
+    private String imageFileName = "";
+    private String currentPhotoPath;
+    private ImageView imageResult;
 
     /**
      * Get the instance.
      */
-    public static ResultPhotoFragment newInstance(TestInfo testInfo) {
-        ResultPhotoFragment fragment = new ResultPhotoFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, testInfo);
-        fragment.setArguments(args);
-
-        return fragment;
+    public static ResultPhotoFragment newInstance() {
+        return new ResultPhotoFragment();
     }
 
     @Override
@@ -53,32 +72,118 @@ public class ResultPhotoFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_result_photo, container, false);
 
-        if (getArguments() != null) {
+        imageResult = view.findViewById(R.id.imageResult);
 
-            TestInfo testInfo = getArguments().getParcelable(ARG_PARAM1);
-            if (testInfo != null) {
+        if (!imageFileName.isEmpty()) {
 
-//                final Button buttonSubmitResult = view.findViewById(R.id.buttonSubmitResult);
-//
-//                buttonSubmitResult.setOnClickListener(view1 -> {
-//                    if (mListener != null) {
-//
-//                    }
-//                });
+            final File newPhotoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+            String resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
+
+            File imgFile = new File(resultImagePath);
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                imageResult.setImageBitmap(myBitmap);
             }
         }
 
+        final Button takePhotoButton = view.findViewById(R.id.takePhoto);
+
+        takePhotoButton.setOnClickListener(view1 -> takePhoto());
+
         return view;
+    }
+
+    private void takePhoto() {
+//        (new Handler()).postDelayed(() -> {
+//            Toast toast = Toast.makeText(getActivity(),
+//                    R.string.take_photo_meter_result, Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.BOTTOM, 0, 200);
+//            toast.show();
+//        }, 400);
+
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (pictureIntent.resolveActivity(Objects.requireNonNull(
+                getActivity()).getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+
+                Uri photoUri;
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                    photoUri = Uri.fromFile(photoFile);
+                } else {
+                    photoUri = FileProvider.getUriForFile(getActivity(),
+                            FILE_PROVIDER_AUTHORITY_URI,
+                            photoFile);
+                }
+                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(pictureIntent, MANUAL_TEST);
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+
+            final File newPhotoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+
+            String resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
+
+            if (currentPhotoPath != null) {
+                ImageUtil.resizeImage(currentPhotoPath, resultImagePath);
+
+                File imageFile = new File(currentPhotoPath);
+                if (imageFile.exists() && !new File(currentPhotoPath).delete()) {
+                    Toast.makeText(getActivity(), R.string.delete_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            File imgFile = new File(resultImagePath);
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                imageResult.setImageBitmap(myBitmap);
+            }
+
+            mListener.onPhotoTaken(imageFileName);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        imageFileName = UUID.randomUUID().toString();
+
+        File storageDir = Objects.requireNonNull(getActivity())
+                .getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        imageFileName += ".jpg";
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnSubmitResultListener) {
-            mListener = (OnSubmitResultListener) context;
+        if (context instanceof OnPhotoTakenListener) {
+            mListener = (OnPhotoTakenListener) context;
         } else {
-//            throw new IllegalArgumentException(context.toString()
-//                    + " must implement OnSubmitResultListener");
+            throw new IllegalArgumentException(context.toString()
+                    + " must implement OnPhotoTakenListener");
         }
     }
 
@@ -88,7 +193,7 @@ public class ResultPhotoFragment extends BaseFragment {
         mListener = null;
     }
 
-    public interface OnSubmitResultListener {
-        void onSubmitResult(String key);
+    public interface OnPhotoTakenListener {
+        void onPhotoTaken(String photoPath);
     }
 }
