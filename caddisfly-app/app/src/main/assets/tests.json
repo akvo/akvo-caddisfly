@@ -7607,10 +7607,236 @@
       ]
     },
     {
+      "name": "Water - Alkalinity Total M",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "20,240",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Alkalinity Total M)",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Aluminium",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,0.3",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Aluminium",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Ammonia",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,1",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Ammonia",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Chlorine",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,1",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Chlorine",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Chlorine",
       "subtype": "manual",
       "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
-      "brand": "Lovibond Checkit",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No.1 (R)",
@@ -7620,7 +7846,6 @@
       "sampleQuantity": "10",
       "ranges": "0,4",
       "hasImage": true,
-      "imageScale": "centerCrop",
       "instructions": [
         {
           "section": [
@@ -7669,10 +7894,68 @@
       ]
     },
     {
+      "name": "Water - Copper",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,1",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Copper",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Fluoride",
       "subtype": "manual",
       "uuid": "ac6410bf-b5a3-4040-8048-ddf381223a3b",
-      "brand": "Lovibond Checkit",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "SPADNS",
@@ -7682,7 +7965,6 @@
       "sampleQuantity": "10",
       "ranges": "0.2,2",
       "hasImage": true,
-      "imageScale": "centerCrop",
       "instructions": [
         {
           "section": [
@@ -7733,19 +8015,12 @@
     {
       "name": "Water - Iron",
       "subtype": "manual",
-      "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",
-      "brand": "Lovibond Checkit",
-      "reagents": [
-        {
-          "name": "IRON HR",
-          "code": "515380",
-          "reactionTime": 1
-        }
-      ],
-      "sampleQuantity": "10",
-      "ranges": "0,10",
-      "hasImage": true,
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,1",
+      "hasImage": true,
       "instructions": [
         {
           "section": [
@@ -7768,7 +8043,7 @@
         },
         {
           "section": [
-            "4. add_tablet_crush_swirl. wait_for_color_reaction",
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
@@ -7794,10 +8069,132 @@
       ]
     },
     {
+      "name": "Water - Iron",
+      "subtype": "manual",
+      "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "reagentType": "Tablet",
+      "reagents": [
+        {
+          "name": "IRON HR",
+          "code": "515380",
+          "reactionTime": 1
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "1,10",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_tablet_crush_stir. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Iron",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Manganese",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0.1,0.7",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Manganese",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Water - Nitrate",
       "subtype": "manual",
       "uuid": "e4934b9f-bdc7-41a3-aca6-883bf6e9ff63",
-      "brand": "Lovibond Checkit",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "reagentType": "Powder and Tablet",
       "reagents": [
         {
           "name": "NITRATE-Test",
@@ -7818,7 +8215,6 @@
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
-      "imageScale": "centerCrop",
       "instructions": [
         {
           "section": [
@@ -7830,13 +8226,13 @@
         {
           "section": [
             "2. fill_one_cell",
-            "image:ci_fill_both_cells"
+            "image:ci_fill_one_cell"
           ]
         },
         {
           "section": [
             "3. close_the_cell",
-            "image:ci_close_one_cell"
+            "image:ci_close_the_cell"
           ]
         },
         {
@@ -7854,7 +8250,7 @@
         {
           "section": [
             "6. close_with_lid_shake",
-            "image:ci_swirl_gently"
+            "image:close_with_lid_shake"
           ]
         },
         {
@@ -7884,13 +8280,13 @@
         {
           "section": [
             "11. add_tablet_crush_stir. wait_for_color_reaction_3",
-            "image:ci_add_one_tablet_to_other_cell"
+            "image:add_tablet_crush_stir"
           ]
         },
         {
           "section": [
             "12. place_cell_right_space",
-            "image:ci_place_second_cell"
+            "image:place_cell_right_space"
           ]
         },
         {
@@ -7909,10 +8305,124 @@
       ]
     },
     {
+      "name": "Water - Nitrite",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,0.5",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Nitrite",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - pH",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,14",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "pH",
+          "unit": "pH"
+        }
+      ]
+    },
+    {
       "name": "Water - Phosphate",
       "subtype": "manual",
       "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
-      "brand": "Lovibond Checkit",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Phospate 3",
@@ -7923,7 +8433,6 @@
       "sampleQuantity": "10",
       "ranges": "0,2.5",
       "hasImage": true,
-      "imageScale": "centerCrop",
       "instructions": [
         {
           "section": [
@@ -7948,6 +8457,143 @@
           "section": [
             "4. add_one_powder_to_other_cell. wait_for_color_reaction",
             "image:ci_add_one_powder_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Phosphate",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Phosphate",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "reagentType": "Tablet",
+      "reagents": [
+        {
+          "name": "Phosphate LR No. 1",
+          "code": "513040"
+        },
+        {
+          "name": "Phosphate LR No. 2",
+          "code": "513050",
+          "reactionTime": 10
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0,4",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_tablet1_crush.",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. add_tablet2_dissolve. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Phosphate",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
+      "name": "Water - Phosphate",
+      "subtype": "manual",
+      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "reagentType": "Tablet",
+      "reagents": [
+        {
+          "name": "Phosphate HR tablet",
+          "code": "511980"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0,80",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
