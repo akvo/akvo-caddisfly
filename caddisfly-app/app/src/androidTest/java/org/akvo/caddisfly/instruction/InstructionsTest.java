@@ -36,7 +36,6 @@ import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,6 +64,7 @@ import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 public class InstructionsTest {
 
     private final StringBuilder jsArrayString = new StringBuilder();
+    private final StringBuilder listString = new StringBuilder();
 
     @Rule
     // third parameter is set to false which means the activity is not started automatically
@@ -104,7 +104,6 @@ public class InstructionsTest {
 
     @Test
     @RequiresDevice
-    @Ignore
     public void testInstructionsAll() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
@@ -141,18 +140,35 @@ public class InstructionsTest {
             int pages = navigateToBluetoothTest(id);
 
             jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+
+            listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+                    .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
+
+            TestHelper.getCurrentActivity().finish();
+            mActivityRule.finishActivity();
 //            }
 
-            mActivityRule.finishActivity();
         }
 
         Log.d("Caddisfly", jsArrayString.toString());
-
+        Log.d("Caddisfly", listString.toString());
     }
 
     private int navigateToBluetoothTest(String id) {
 
+        TestUtil.sleep(1000);
+
+        mDevice.waitForIdle();
+
+        takeScreenshot(id, -1);
+
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+
+        TestUtil.sleep(1000);
+
+        mDevice.waitForIdle();
+
+        takeScreenshot(id, 0);
 
         onView(withText(R.string.test_selected)).perform(click());
 
@@ -163,9 +179,7 @@ public class InstructionsTest {
             try {
                 TestUtil.sleep(1000);
 
-                takeScreenshot(id, i);
-
-                onView(withId(R.id.actionSkip)).check(matches(isDisplayed()));
+                takeScreenshot(id, i + 1);
 
                 onView(withId(R.id.image_pageRight)).perform(click());
 
@@ -203,7 +217,7 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-            if (id.equalsIgnoreCase("883bf6e9ff63")) {
+//            if (id.equalsIgnoreCase("52cd7f2938b0")) {
 
                 Intent intent = new Intent();
                 intent.setType("text/plain");
@@ -218,18 +232,31 @@ public class InstructionsTest {
                 int pages = navigateToTest(id);
 
                 jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-            }
 
+            listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+                    .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
+
+            TestHelper.getCurrentActivity().finish();
             mActivityRule.finishActivity();
+//            }
         }
 
         Log.d("Caddisfly", jsArrayString.toString());
+        Log.d("Caddisfly", listString.toString());
 
     }
 
     private int navigateToTest(String id) {
 
-        onView(withText(R.string.instructions)).perform(click());
+        mDevice.waitForIdle();
+
+        TestUtil.sleep(1000);
+
+        mDevice.waitForIdle();
+
+        takeScreenshot(id, -1);
+
+        onView(withText(R.string.next)).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {

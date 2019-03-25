@@ -7609,7 +7609,7 @@
     {
       "name": "Water - Alkalinity Total M",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "cbcad2d6-0266-429a-a6dd-340d80c7833e",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -7665,7 +7665,7 @@
     {
       "name": "Water - Aluminium",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "d6ab94a9-e048-4c1a-a152-a885cd2180fa",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -7721,7 +7721,7 @@
     {
       "name": "Water - Ammonia",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "07dbd69d-64e7-46bc-898f-a9773fd1de64",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -7777,7 +7777,7 @@
     {
       "name": "Water - Chlorine",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "57130c69-c39a-42de-8b0a-cd66ecab2794",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -7896,7 +7896,7 @@
     {
       "name": "Water - Copper",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "472e5a45-42b4-4712-93bb-5c79e970402d",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -8015,7 +8015,7 @@
     {
       "name": "Water - Iron",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "d37cb613-9489-485b-bca6-ffe95e0c3fad",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -8135,7 +8135,7 @@
     {
       "name": "Water - Manganese",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "01f43523-7eb8-4c19-8790-6add5d36b6a3",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -8307,7 +8307,7 @@
     {
       "name": "Water - Nitrite",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "8fe520e7-aca7-4691-b7b5-9abfd8788c66",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -8363,7 +8363,7 @@
     {
       "name": "Water - pH",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "5e2910c9-01e4-43c9-bb81-65bd28a52df0",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
@@ -8426,7 +8426,7 @@
       "reagents": [
         {
           "name": "Phospate 3",
-          "code": "535200",
+          "code": "531550",
           "reactionTime": 2
         }
       ],
@@ -8483,7 +8483,7 @@
     {
       "name": "Water - Phosphate",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "bec2a100-6fa1-4f3a-82f1-52cd7f2938b0",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "reagentType": "Tablet",
@@ -8523,7 +8523,7 @@
         },
         {
           "section": [
-            "4. add_tablet1_crush.",
+            "4. add_tablet1_crush",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
@@ -8557,7 +8557,7 @@
     {
       "name": "Water - Phosphate",
       "subtype": "manual",
-      "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
+      "uuid": "5191f203-d60c-4f47-a38b-569c34f5fc54",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
       "reagentType": "Tablet",

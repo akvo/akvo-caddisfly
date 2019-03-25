@@ -36,6 +36,7 @@ import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.TestConstants;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,8 +46,8 @@ import androidx.annotation.StringRes;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
@@ -64,6 +65,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static androidx.test.runner.lifecycle.Stage.RESUMED;
 import static org.akvo.caddisfly.util.TestUtil.clickListViewItem;
 import static org.akvo.caddisfly.util.TestUtil.findButtonInScrollable;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
@@ -168,14 +171,10 @@ public final class TestHelper {
     public static void takeScreenshot(String name, int page) {
         if (TAKE_SCREENSHOTS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             File path;
-            if (page < 0) {
-                path = new File(Environment.getExternalStorageDirectory().getPath()
-                        + "/Akvo Caddisfly/screenshots/" + name + "-" + mCurrentLanguage + ".png");
-            } else {
-                path = new File(Environment.getExternalStorageDirectory().getPath()
-                        + "/Akvo Caddisfly/screenshots/" + name + "-" + page + "-" + mCurrentLanguage + ".png");
-            }
-            mDevice.takeScreenshot(path, 0.2f, 40);
+            path = new File(Environment.getExternalStorageDirectory().getPath()
+                    + "/Akvo Caddisfly/screenshots/" + name + "-" + mCurrentLanguage + "-" +
+                    String.format("%02d", page + 1) + ".png");
+            mDevice.takeScreenshot(path, 0.1f, 30);
         }
     }
 
@@ -282,7 +281,7 @@ public final class TestHelper {
 
     public static void gotoSurveyForm() {
 
-        Context context = InstrumentationRegistry.getInstrumentation().getContext();
+        Context context = getInstrumentation().getContext();
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(TestConstants.FLOW_SURVEY_PACKAGE_NAME);
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -362,5 +361,17 @@ public final class TestHelper {
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
+    }
+
+    public static Activity getCurrentActivity() {
+        final Activity[] currentActivity = {null};
+        getInstrumentation().runOnMainSync(() -> {
+            Collection resumedActivities = ActivityLifecycleMonitorRegistry.getInstance()
+                    .getActivitiesInStage(RESUMED);
+            if (resumedActivities.iterator().hasNext()) {
+                currentActivity[0] = (Activity) resumedActivities.iterator().next();
+            }
+        });
+        return currentActivity[0];
     }
 }

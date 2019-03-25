@@ -80,4 +80,6 @@
     <string name="pipet_reagent_close_cells">Pipet 2 ml %reagent1 Reagent Solution to each cell. Close the cells with lids and swirl gently.</string>
     <string name="place_deionized_right_space">Place the cell with the deionized water to the right-hand space of the comparator.</string>
 
+    <string name="add_tablet1_crush">Add one %reagent1 tablet to the other cell, and close it with a lid. Cursh the tablet.</string>
+    <string name="add_tablet2_dissolve">Afterwards add one %reagent2 tablet, crush the tablet and close it with a lid. Swirl the cell until the reagent is completely dissolved</string>
 </resources>
