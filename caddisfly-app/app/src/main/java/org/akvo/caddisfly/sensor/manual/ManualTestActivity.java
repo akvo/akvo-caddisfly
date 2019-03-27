@@ -63,6 +63,7 @@ public class ManualTestActivity extends BaseActivity
     private int photoPageNumber;
     private int totalPageCount;
     private int skipToPageNumber;
+    private int instructionCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,16 +88,26 @@ public class ManualTestActivity extends BaseActivity
         waitingFragment = MeasurementInputFragment.newInstance(testInfo);
         resultPhotoFragment = ResultPhotoFragment.newInstance();
 
+        if (testInfo.getHasEndInstruction()) {
+            instructionCount = testInfo.getInstructions().size() - 1;
+        } else {
+            instructionCount = testInfo.getInstructions().size();
+        }
+
         if (testInfo.getHasImage()) {
-            totalPageCount = testInfo.getInstructions().size() + 2;
+            totalPageCount = instructionCount + 2;
             photoPageNumber = totalPageCount - 2;
             resultPageNumber = totalPageCount - 1;
             skipToPageNumber = photoPageNumber;
         } else {
-            totalPageCount = testInfo.getInstructions().size() + 1;
+            totalPageCount = instructionCount + 1;
             resultPageNumber = totalPageCount - 1;
             skipToPageNumber = resultPageNumber;
             photoPageNumber = -1;
+        }
+
+        if (testInfo.getHasEndInstruction()) {
+            totalPageCount += 1;
         }
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -166,6 +177,17 @@ public class ManualTestActivity extends BaseActivity
     }
 
     private void submitResult() {
+
+        waitingFragment.hideSoftKeyboard();
+
+        if (testInfo.getHasEndInstruction()) {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+        } else {
+            sendResults();
+        }
+    }
+
+    private void sendResults() {
         Intent resultIntent = new Intent();
 
         SparseArray<String> results = new SparseArray<>();
@@ -231,7 +253,9 @@ public class ManualTestActivity extends BaseActivity
     }
 
     private void showInstructionsView() {
-        footerLayout.setVisibility(View.VISIBLE);
+        if (viewPager.getCurrentItem() < instructionCount) {
+            footerLayout.setVisibility(View.VISIBLE);
+        }
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
         setTitle(testInfo.getName());
@@ -293,6 +317,10 @@ public class ManualTestActivity extends BaseActivity
         imageFileName = photoPath;
     }
 
+    public void onSendResults(View view) {
+        sendResults();
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -352,6 +380,8 @@ public class ManualTestActivity extends BaseActivity
                 return resultPhotoFragment;
             } else if (position == resultPageNumber) {
                 return waitingFragment;
+            } else if (position == totalPageCount - 1) {
+                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(instructionCount));
             } else {
                 return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position));
             }

@@ -7357,6 +7357,7 @@
       "imageScale": "centerCrop",
       "ranges": "0,14",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -7371,21 +7372,8 @@
         },
         {
           "section": [
-            "sd_fill_photo_fill_in"
-          ]
-        },
-        {
-          "section": [
-            "sd_turn_off"
-          ]
-        },
-        {
-          "section": [
-            "sd_rinse"
-          ]
-        },
-        {
-          "section": [
+            "sd_turn_off",
+            "sd_rinse",
             "sd_maintenance"
           ]
         }
@@ -7405,6 +7393,7 @@
       "imageScale": "centerCrop",
       "ranges": "0,20000",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -7419,21 +7408,8 @@
         },
         {
           "section": [
-            "sd_fill_photo_fill_in"
-          ]
-        },
-        {
-          "section": [
-            "sd_turn_off"
-          ]
-        },
-        {
-          "section": [
-            "sd_70_rinse"
-          ]
-        },
-        {
-          "section": [
+            "sd_turn_off",
+            "sd_70_rinse",
             "sd_70_maintenance"
           ]
         }
@@ -7453,9 +7429,8 @@
       "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
       "brand": "DelAgua Turbidity Tube",
       "imageScale": "centerCrop",
-      "sampleQuantity": "undefined",
+      "hasEndInstruction": "true",
       "ranges": "5,2000",
-      "hasImage": false,
       "instructions": [
         {
           "section": [
@@ -7494,7 +7469,6 @@
       "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
       "brand": "Lovibond AF106",
       "imageScale": "centerCrop",
-      "hasImage": false,
       "instructions": [
         {
           "section": [
@@ -7553,7 +7527,6 @@
       "uuid": "63e0e106-6ff6-4f57-a169-a32a4a821d42",
       "brand": "Lovibond AF106",
       "imageScale": "centerCrop",
-      "hasImage": false,
       "instructions": [
         {
           "section": [

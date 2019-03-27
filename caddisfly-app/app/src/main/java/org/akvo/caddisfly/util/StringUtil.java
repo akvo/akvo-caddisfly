@@ -125,14 +125,16 @@ public final class StringUtil {
             builder.replace(m1.start(), m1.end(), testInfo.getSampleQuantity());
         }
 
-        // Set reaction time in the string
-        for (int i = 1; i < 5; i++) {
-            Matcher m2 = Pattern.compile("%reactionTime" + i).matcher(builder);
-            while (m2.find()) {
-                builder.replace(m2.start(), m2.end(),
-                        context.getResources().getQuantityString(R.plurals.minutes,
-                                testInfo.getReagent(i - 1).reactionTime,
-                                testInfo.getReagent(i - 1).reactionTime));
+        if (testInfo != null && testInfo.getReagent(0).reactionTime != null) {
+            // Set reaction time in the string
+            for (int i = 1; i < 5; i++) {
+                Matcher m2 = Pattern.compile("%reactionTime" + i).matcher(builder);
+                while (m2.find()) {
+                    builder.replace(m2.start(), m2.end(),
+                            context.getResources().getQuantityString(R.plurals.minutes,
+                                    testInfo.getReagent(i - 1).reactionTime,
+                                    testInfo.getReagent(i - 1).reactionTime));
+                }
             }
         }
 

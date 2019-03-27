@@ -118,6 +118,9 @@ public class TestInfo implements Parcelable {
     @SerializedName("endInstruction")
     @Expose
     private String endInstruction;
+    @SerializedName("hasEndInstruction")
+    @Expose
+    private Boolean hasEndInstruction;
     @SerializedName("instructions")
     @Expose
     private List<Instruction> instructions = null;
@@ -194,6 +197,8 @@ public class TestInfo implements Parcelable {
         in.readTypedList(instructions, Instruction.CREATOR);
         selectInstruction = in.readString();
         endInstruction = in.readString();
+        byte tmpHasEndInstruction = in.readByte();
+        hasEndInstruction = tmpHasEndInstruction != 0 && tmpHasEndInstruction == 1;
         image = in.readString();
         imageScale = in.readString();
         if (in.readByte() == 0) {
@@ -383,6 +388,7 @@ public class TestInfo implements Parcelable {
         parcel.writeTypedList(instructions);
         parcel.writeString(selectInstruction);
         parcel.writeString(endInstruction);
+        parcel.writeByte((byte) (hasEndInstruction == null ? 0 : hasEndInstruction ? 1 : 2));
         parcel.writeString(image);
         parcel.writeString(imageScale);
         if (numPatch == null) {
@@ -419,6 +425,10 @@ public class TestInfo implements Parcelable {
 
     public String getEndInstruction() {
         return endInstruction;
+    }
+
+    public Boolean getHasEndInstruction() {
+        return hasEndInstruction;
     }
 
     public double getStripLength() {
