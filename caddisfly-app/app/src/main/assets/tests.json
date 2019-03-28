@@ -7576,6 +7576,13 @@
       "uuid": "cbcad2d6-0266-429a-a6dd-340d80c7833e",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "",
+      "reagents": [
+        {
+          "name": "ALKACHECK",
+          "code": "513200"
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "20,240",
       "hasImage": true,
@@ -7601,7 +7608,7 @@
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_tablet_crush_swirl",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
@@ -7622,7 +7629,8 @@
         {
           "id": 1,
           "name": "Alkalinity Total M)",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "20-240"
         }
       ]
     },
@@ -7632,6 +7640,18 @@
       "uuid": "d6ab94a9-e048-4c1a-a152-a885cd2180fa",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "",
+      "reagents": [
+        {
+          "name": "ALUMINIUM No. 1",
+          "code": "51 54 60"
+        },
+        {
+          "name": "ALUMINIUM No. 2",
+          "code": "51 57 70",
+          "reactionTime": 5
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "0,0.3",
       "hasImage": true,
@@ -7657,19 +7677,25 @@
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_tablet1_crush",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "5. add_tablet2_dissolve. wait_for_color_reaction_2",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         }
@@ -7678,7 +7704,8 @@
         {
           "id": 1,
           "name": "Aluminium",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-0.3"
         }
       ]
     },
@@ -7688,6 +7715,18 @@
       "uuid": "07dbd69d-64e7-46bc-898f-a9773fd1de64",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "",
+      "reagents": [
+        {
+          "name": "AMMONIA No. 1",
+          "code": "51 25 80"
+        },
+        {
+          "name": "AMMONIA No. 2",
+          "code": "51 25 90",
+          "reactionTime": 10
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
@@ -7713,19 +7752,25 @@
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_tablet1_crush",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "5. add_tablet2_dissolve. wait_for_color_reaction_2",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "6. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         }
@@ -7734,7 +7779,8 @@
         {
           "id": 1,
           "name": "Ammonia",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-1"
         }
       ]
     },
@@ -7744,6 +7790,18 @@
       "uuid": "57130c69-c39a-42de-8b0a-cd66ecab2794",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "",
+      "reagents": [
+        {
+          "name": "DPD No. 1 (R)",
+          "code": "511310"
+        },
+        {
+          "name": "DPD No. 3 (R)",
+          "code": "511290",
+          "reactionTime": 2
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
@@ -7784,13 +7842,38 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "7. add_tablet2_swirl. wait_for_color_reaction_2",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "8. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "6. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "7. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
         }
       ],
       "results": [
         {
           "id": 1,
           "name": "Chlorine",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-1"
         }
       ]
     },
@@ -7804,7 +7887,10 @@
       "reagents": [
         {
           "name": "DPD No.1 (R)",
-          "code": "511310BT"
+          "code": "511310"
+        },
+        {
+          "name": "DPD No.3 (R)"
         }
       ],
       "sampleQuantity": "10",
@@ -7853,7 +7939,8 @@
         {
           "id": 1,
           "name": "Chlorine",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-4"
         }
       ]
     },
@@ -7909,7 +7996,8 @@
         {
           "id": 1,
           "name": "Copper",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-1"
         }
       ]
     },
@@ -7972,7 +8060,8 @@
         {
           "id": 1,
           "name": "Fluoride",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.2-2"
         }
       ]
     },
@@ -8028,7 +8117,8 @@
         {
           "id": 1,
           "name": "Iron",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-1"
         }
       ]
     },
@@ -8092,7 +8182,8 @@
         {
           "id": 1,
           "name": "Iron",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "1-10"
         }
       ]
     },
@@ -8148,7 +8239,8 @@
         {
           "id": 1,
           "name": "Manganese",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-0.7"
         }
       ]
     },
@@ -8264,7 +8356,8 @@
         {
           "id": 1,
           "name": "Nitrate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-1"
         }
       ]
     },
@@ -8320,7 +8413,8 @@
         {
           "id": 1,
           "name": "Nitrite",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-0.5"
         }
       ]
     },
@@ -8376,7 +8470,8 @@
         {
           "id": 1,
           "name": "pH",
-          "unit": "pH"
+          "unit": "pH",
+          "range": "0-14"
         }
       ]
     },
@@ -8440,7 +8535,8 @@
         {
           "id": 1,
           "name": "Phosphate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-2.5"
         }
       ]
     },
@@ -8493,7 +8589,7 @@
         },
         {
           "section": [
-            "5. add_tablet2_dissolve. wait_for_color_reaction",
+            "5. add_tablet2_dissolve. wait_for_color_reaction_2",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
@@ -8514,7 +8610,8 @@
         {
           "id": 1,
           "name": "Phosphate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-4"
         }
       ]
     },
@@ -8577,7 +8674,8 @@
         {
           "id": 1,
           "name": "Phosphate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-80"
         }
       ]
     }
