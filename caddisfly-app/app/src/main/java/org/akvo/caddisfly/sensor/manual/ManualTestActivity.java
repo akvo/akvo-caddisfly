@@ -331,8 +331,10 @@ public class ManualTestActivity extends BaseActivity
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_SHOW_OK = "show_ok";
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
+        private boolean showOk;
 
         /**
          * Returns a new instance of this fragment for the given section number.
@@ -340,10 +342,11 @@ public class ManualTestActivity extends BaseActivity
          * @param instruction The information to to display
          * @return The instance
          */
-        static PlaceholderFragment newInstance(Instruction instruction) {
+        static PlaceholderFragment newInstance(Instruction instruction, boolean showOkButton) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putParcelable(ARG_SECTION_NUMBER, instruction);
+            args.putBoolean(ARG_SHOW_OK, showOkButton);
             fragment.setArguments(args);
             return fragment;
         }
@@ -357,10 +360,16 @@ public class ManualTestActivity extends BaseActivity
 
             if (getArguments() != null) {
                 instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
+                showOk = getArguments().getBoolean(ARG_SHOW_OK);
                 fragmentInstructionBinding.setInstruction(instruction);
             }
 
-            return fragmentInstructionBinding.getRoot();
+            View view = fragmentInstructionBinding.getRoot();
+
+            if (showOk) {
+                view.findViewById(R.id.buttonDone).setVisibility(View.VISIBLE);
+            }
+            return view;
         }
     }
 
@@ -381,9 +390,11 @@ public class ManualTestActivity extends BaseActivity
             } else if (position == resultPageNumber) {
                 return waitingFragment;
             } else if (position == totalPageCount - 1) {
-                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(instructionCount));
+                return PlaceholderFragment.newInstance(
+                        testInfo.getInstructions().get(instructionCount), true);
             } else {
-                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position));
+                return PlaceholderFragment.newInstance(
+                        testInfo.getInstructions().get(position), false);
             }
         }
 

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) Stichting Akvo (Akvo Foundation)
   ~
   ~ This file is part of Akvo Caddisfly.
@@ -39,8 +38,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_above="@id/buttonDone"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@id/buttonDone">
 
             <LinearLayout
                 style="?android:attr/textAppearanceLarge"
@@ -49,7 +48,7 @@
                 android:orientation="vertical"
                 android:padding="16dp"
                 android:textIsSelectable="true"
-                app:content="@{instruction}"></LinearLayout>
+                app:content="@{instruction}" />
         </ScrollView>
 
         <Button
@@ -65,6 +64,7 @@
             android:enabled="true"
             android:onClick="onSendResults"
             android:text="@string/ok"
-            android:theme="?primaryButtonStyle" />
+            android:theme="?primaryButtonStyle"
+            android:visibility="gone" />
     </RelativeLayout>
 </layout>
