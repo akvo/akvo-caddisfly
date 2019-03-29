@@ -7350,7 +7350,7 @@
       ]
     },
     {
-      "name": "Lovibond SD 50 pH meter",
+      "name": "Water - pH",
       "subtype": "manual",
       "uuid": "dbd058b6-29ed-4c7f-8b11-fcdae725a518",
       "brand": "Lovibond SD 50",
@@ -7383,7 +7383,7 @@
       ]
     },
     {
-      "name": "Lovibond SD 70 Conductivity meter",
+      "name": "Water - Electrical Conductivity",
       "subtype": "manual",
       "uuid": "578c5768-273d-455f-ba12-57a6ced96c17",
       "brand": "Lovibond SD 70",
@@ -7418,11 +7418,12 @@
       ]
     },
     {
-      "name": "DelAgua Turbidity Tube",
+      "name": "Water - Turbidity",
       "subtype": "manual",
       "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
-      "brand": "DelAgua Turbidity Tube",
+      "brand": "DelAgua Tube",
       "imageScale": "centerCrop",
+      "ranges": "0,2000",
       "hasEndInstruction": "true",
       "instructions": [
         {
@@ -7453,12 +7454,13 @@
       ]
     },
     {
-      "name": "Water - Chlorine pH LR TESTER",
+      "name": "Water - Chlorine, pH",
       "subtype": "manual_color_select",
       "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
-      "brand": "Lovibond AF106",
+      "brand": "Lovibond Tester",
       "imageScale": "centerCrop",
-      "ranges": "0.1,3.0,6.8,8.2",
+      "ranges": "6.8,8.2,0.1,3.0",
+      "hasEndInstruction": "false",
       "instructions": [
         {
           "section": [
@@ -7500,24 +7502,25 @@
       "results": [
         {
           "id": 1,
-          "name": "Chlorine",
-          "unit": "mg/l",
-          "range": "0.1-3.0"
+          "name": "pH",
+          "range": "6.8-8.2"
         },
         {
           "id": 2,
-          "name": "pH",
-          "range": "6.8-8.2"
+          "name": "Chlorine",
+          "unit": "mg/l",
+          "range": "0.1-3.0"
         }
       ]
     },
     {
-      "name": "Water - Chlorine pH HR TESTER",
+      "name": "Water - Chlorine, pH",
       "subtype": "manual_color_select",
       "uuid": "63e0e106-6ff6-4f57-a169-a32a4a821d42",
-      "brand": "Lovibond AF106",
+      "brand": "Lovibond Tester",
       "imageScale": "centerCrop",
-      "ranges": "0.5,6.0,6.8,8.2",
+      "ranges": "6.8,8.2,0.5,6.0",
+      "hasEndInstruction": "false",
       "instructions": [
         {
           "section": [
@@ -7559,14 +7562,14 @@
       "results": [
         {
           "id": 1,
-          "name": "Chlorine",
-          "unit": "mg/l",
-          "range": "0.5-6.0"
+          "name": "pH",
+          "range": "6.8-8.2"
         },
         {
           "id": 2,
-          "name": "pH",
-          "range": "6.8-8.2"
+          "name": "Chlorine",
+          "unit": "mg/l",
+          "range": "0.5-6.0"
         }
       ]
     },
@@ -7640,7 +7643,7 @@
       "uuid": "d6ab94a9-e048-4c1a-a152-a885cd2180fa",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "ALUMINIUM No. 1",
@@ -7715,7 +7718,7 @@
       "uuid": "07dbd69d-64e7-46bc-898f-a9773fd1de64",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "AMMONIA No. 1",
@@ -7790,7 +7793,7 @@
       "uuid": "57130c69-c39a-42de-8b0a-cd66ecab2794",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "",
+      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1 (R)",
@@ -7950,6 +7953,22 @@
       "uuid": "472e5a45-42b4-4712-93bb-5c79e970402d",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
+      "reagents": [
+        {
+          "name": "COPPER/ZINC LR",
+          "code": "512620",
+          "reactionTime": 5
+        },
+        {
+          "name": "DECHLOR",
+          "code": "512350"
+        },
+        {
+          "name": "EDTA",
+          "code": "512390"
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
@@ -7975,6 +7994,11 @@
         },
         {
           "section": [
+            "dechlorinate_residual_chlorine"
+          ]
+        },
+        {
+          "section": [
             "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
             "image:ci_add_one_tablet_to_other_cell"
           ]
@@ -7983,6 +8007,11 @@
           "section": [
             "5. place_second_cell",
             "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "edta_complex_zinc"
           ]
         },
         {
@@ -8071,6 +8100,14 @@
       "uuid": "d37cb613-9489-485b-bca6-ffe95e0c3fad",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
+      "reagents": [
+        {
+          "name": "IRON LR",
+          "code": "515370",
+          "reactionTime": 5
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
@@ -8096,7 +8133,7 @@
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_tablet_crush_swirl. wait_for_color_reaction",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
@@ -8193,6 +8230,22 @@
       "uuid": "01f43523-7eb8-4c19-8790-6add5d36b6a3",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "Powder",
+      "reagents": [
+        {
+          "name": "VARIO Ascorbic Acid Powder Pack",
+          "code": "535090"
+        },
+        {
+          "name": "VARIO Alkaline-Cyanide Reagent Solution",
+          "code": "535090"
+        },
+        {
+          "name": "VARIO PAN Indicator Solution",
+          "code": "535090",
+          "reactionTime": 2
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "0.1,0.7",
       "hasImage": true,
@@ -8206,31 +8259,42 @@
         },
         {
           "section": [
-            "2. fill_both_cells",
+            "2. fill_one_cell_other_deionized",
             "image:ci_fill_both_cells"
           ]
         },
         {
           "section": [
-            "3. close_one_cell",
-            "image:ci_close_one_cell"
-          ]
-        },
-        {
-          "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "3. add_reagent1_swirl_gently",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "4. add_reagent2_swirl_gently",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. add_reagent3_swirl_gently. wait_for_color_reaction",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "remove_lids_place_sample_cell"
+          ]
+        },
+        {
+          "section": [
+            "place_reference_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating_angle",
             "image:ci_match_colors_by_rotating"
           ]
         }
@@ -8367,6 +8431,14 @@
       "uuid": "8fe520e7-aca7-4691-b7b5-9abfd8788c66",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
+      "reagents": [
+        {
+          "name": "NITRITE LR",
+          "code": "512310",
+          "reactionTime": 10
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "0,0.5",
       "hasImage": true,
@@ -8392,7 +8464,7 @@
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_tablet_crush_swirl. wait_for_color_reaction",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
@@ -8424,6 +8496,13 @@
       "uuid": "5e2910c9-01e4-43c9-bb81-65bd28a52df0",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
+      "reagentType": "Tablet",
+      "reagents": [
+        {
+          "name": "UNIVERSAL pH",
+          "code": "515440"
+        }
+      ],
       "sampleQuantity": "10",
       "ranges": "0,14",
       "hasImage": true,
@@ -8470,7 +8549,6 @@
         {
           "id": 1,
           "name": "pH",
-          "unit": "pH",
           "range": "0-14"
         }
       ]

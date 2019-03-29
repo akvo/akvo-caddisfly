@@ -217,21 +217,24 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (id.equalsIgnoreCase("52cd7f2938b0")) {
+//            if (//id.equalsIgnoreCase("340d80c7833e") ||
+//                    testList.get(i).getBrand().contains("Tester")
+//                            || testList.get(i).getBrand().contains("SD")
+//                            || testList.get(i).getBrand().contains("Tube")) {
 
-                Intent intent = new Intent();
-                intent.setType("text/plain");
-                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
-                Bundle data = new Bundle();
-                data.putString(SensorConstants.RESOURCE_ID, uuid);
-                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
-                intent.putExtras(data);
+            Intent intent = new Intent();
+            intent.setType("text/plain");
+            intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+            Bundle data = new Bundle();
+            data.putString(SensorConstants.RESOURCE_ID, uuid);
+            data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+            intent.putExtras(data);
 
-                mActivityRule.launchActivity(intent);
+            mActivityRule.launchActivity(intent);
 
-                int pages = navigateToTest(id);
+            int pages = navigateToTest(id, testList.get(i).getHasEndInstruction());
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
             listString.append("<li><span onclick=\"loadTestType(\'").append(id)
                     .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
@@ -246,7 +249,7 @@ public class InstructionsTest {
 
     }
 
-    private int navigateToTest(String id) {
+    private int navigateToTest(String id, boolean hasEndPage) {
 
         mDevice.waitForIdle();
 
@@ -270,6 +273,19 @@ public class InstructionsTest {
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
+                if (hasEndPage) {
+
+                    pages++;
+
+                    TestUtil.sleep(1000);
+
+                    TestUtil.swipeLeft();
+
+                    TestUtil.sleep(1000);
+
+                    takeScreenshot(id, i + 1);
+
+                }
                 TestUtil.sleep(300);
                 Espresso.pressBack();
                 TestUtil.sleep(300);

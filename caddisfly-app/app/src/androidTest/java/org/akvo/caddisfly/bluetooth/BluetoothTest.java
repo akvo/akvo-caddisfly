@@ -135,7 +135,7 @@ public class BluetoothTest {
 
                 onView(withText(R.string.skip)).perform(click());
 
-                TestUtil.sleep(7000);
+                TestUtil.sleep(8000);
 
                 onView(withText(R.string.result)).check(matches(isDisplayed()));
 

@@ -130,7 +130,7 @@ public final class TestUtil {
                 Press.FINGER, InputDevice.SOURCE_TOUCHSCREEN, 0);
     }
 
-    private static void swipeLeft() {
+    public static void swipeLeft() {
         mDevice.waitForIdle();
         mDevice.swipe(500, 400, 50, 400, 4);
         mDevice.waitForIdle();

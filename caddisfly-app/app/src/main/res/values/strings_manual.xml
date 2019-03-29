@@ -59,6 +59,21 @@
     <string name="add_tablet_crush_swirl">Add one %reagent1 tablet in the other cell. Crush the tablet and close it with a lid. Swirl the cell until reagent is completely dissolved.</string>
     <string name="place_second_cell">Place the second cell in the right-hand space of the comparator.</string>
     <string name="match_colors_by_rotating">By rotating the disc, match the two colours against daylight, looking AWAY from the sun.</string>
+    <string name="read_result_and_record">Read the result and record the number.</string>
+    <string name="dechlorinate_residual_chlorine">Optional:
+In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate, add one DECHLOR tablet to the water sample. Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
+    <string name="add_tablet1_crush">Add one %reagent1 tablet to the other cell and crush the tablet.</string>
+    <string name="add_tablet2_dissolve">Afterwards add one %reagent2 tablet, crush the tablet and close it with a lid. Swirl the cell until the reagent is completely dissolved.</string>
+    <string name="take_right_cell">take the cell from the right-hand compartment of the comparator and remover the lid.</string>
+    <string name="add_tablet2_swirl">Add one %reagent2 tablet in the cell, close it with a lid. Swirl the cell until reagent is completely dissolved.</string>
+    <string name="edta_complex_zinc">Optional:
+In the case of high levels of zinc, add one EDTA tablet to the already coloured water sample. Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
+    <string name="add_reagent1_swirl_gently">Add one %reagent1 in each cell. Close cells with a lid and swirl gently.</string>
+    <string name="add_reagent2_swirl_gently">Add 15 drops of %reagent2 to each cell. Close cells with a lid and swirl gently.</string>
+    <string name="add_reagent3_swirl_gently">Add 21 drops of %reagent3 to each cell. Close cells with a lid and swirl gently.</string>
+    <string name="remove_lids_place_sample_cell">Remove the lids. Place the cell with the sample in the right-hand compartment of the comparator.</string>
+    <string name="place_reference_cell">Place the reference cell in the left-hand compartment of the comparator.</string>
+    <string name="match_colors_by_rotating_angle">Hold the comparator at an angle so that enough north daylight goes through the cell. The mirror unit makes use of the view through the entire length of the cell.</string>
 
     <!--Nitrate Checkit-->
     <string name="fill_one_cell">Fill one cell to the 10 ml mark.</string>
@@ -74,12 +89,4 @@
     <string name="wait_for_color_reaction_3">Wait <b>%reactionTime3</b> for complete colour reaction.</string>
     <string name="place_cell_right_space">Place this cell in the right-hand space of the comparator.</string>
 
-    <!--Fluoride Checkit-->
-    <string name="place_sample_left_space">Place the cell with the water sample to the left-hand space of the comparator.</string>
-    <string name="fill_one_cell_other_deionized">Fill one cell to the 10 ml mark. Fill the other cell with deionized water to the 10ml mark.</string>
-    <string name="pipet_reagent_close_cells">Pipet 2 ml %reagent1 Reagent Solution to each cell. Close the cells with lids and swirl gently.</string>
-    <string name="place_deionized_right_space">Place the cell with the deionized water to the right-hand space of the comparator.</string>
-
-    <string name="add_tablet1_crush">Add one %reagent1 tablet to the other cell, and close it with a lid. Cursh the tablet.</string>
-    <string name="add_tablet2_dissolve">Afterwards add one %reagent2 tablet, crush the tablet and close it with a lid. Swirl the cell until the reagent is completely dissolved</string>
 </resources>
