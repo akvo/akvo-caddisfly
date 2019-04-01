@@ -127,6 +127,11 @@ public class ManualTestActivity extends BaseActivity
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 // Nothing to do here
+                if (position == totalPageCount - 1) {
+                    if (!waitingFragment.isValid()) {
+                        viewPager.setCurrentItem(resultPageNumber);
+                    }
+                }
             }
 
             @Override

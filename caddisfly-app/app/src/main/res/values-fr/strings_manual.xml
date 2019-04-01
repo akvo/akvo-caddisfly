@@ -54,6 +54,9 @@
     <string name="add_one_tablet_to_other_cell">Ajouter un comprimé de %réactif1  à l\'autre cuve et fermer avec le couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
     <string name="add_one_powder_to_other_cell">Ajouter un sachet de poudre de réactif1 dans l\'autre cuve et fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
     <string name="wait_for_color_reaction">Attendre <b>Temps de %réaction1</b> pour une réaction complète de la couleur.</string>
+
+    <string name="add_tablet_crush_stir">Ajouter une pastille du %réactif3 à ce tube, l\'écraser et la mélanger avec un agitateur propre. Fermez-le avec le couvercle.</string>
+    <string name="wait_for_color_reaction_3">Attendre le <b>Temps de %reaction3</b> pour une réaction complète de la couleur.</string>
     <string name="add_tablet_crush_swirl">Ajouter un comprimé de %réactif1 dans l\'autre cellule. Écrasez le comprimé et fermez-le avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
     <string name="place_second_cell">Placer la deuxième cellule dans l\'espace de droite du comparateur.</string>
     <string name="match_colors_by_rotating">En faisant tourner le disque, faites correspondre les deux couleurs à la lumière du jour, en regardant LOIN du soleil.</string>
@@ -68,8 +71,6 @@
     <string name="invert_test_tube">Retourner le tube à essai deux ou trois fois pour terminer la floculation.</string>
     <string name="allow_time_complete_sediment">Attendre <b>2 minutes</b> pour le dépôt complet de la poudre de test de NITRATE.</string>
     <string name="fill_clear_solution">Remplissez une cellule jusqu\'au repère 10 ml avec la solution limpide du tube de Test.</string>
-    <string name="add_tablet_crush_stir">Ajouter une pastille du %réactif3 à ce tube, l\'écraser et la mélanger avec un agitateur propre. Fermez-le avec le couvercle.</string>
-    <string name="wait_for_color_reaction_3">Attendre le <b>Temps de %reaction3</b> pour une réaction complète de la couleur.</string>
     <string name="place_cell_right_space">Placer cette cellule dans l\'espace de droite du comparateur.</string>
 
     <!--Fluoride Checkit-->

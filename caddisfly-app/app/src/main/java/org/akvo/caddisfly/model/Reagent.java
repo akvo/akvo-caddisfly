@@ -48,11 +48,15 @@ public class Reagent implements Parcelable {
     @SerializedName("reactionTime")
     @Expose
     public Integer reactionTime;
+    @SerializedName("type")
+    @Expose
+    public ReagentType type;
 
     private Reagent(Parcel in) {
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.code = ((String) in.readValue((String.class.getClassLoader())));
-        this.reactionTime = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        name = ((String) in.readValue((String.class.getClassLoader())));
+        code = ((String) in.readValue((String.class.getClassLoader())));
+        reactionTime = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        type = ReagentType.valueOf(in.readString());
     }
 
     public Reagent() {
@@ -62,6 +66,7 @@ public class Reagent implements Parcelable {
         dest.writeValue(name);
         dest.writeValue(code);
         dest.writeValue(reactionTime);
+        dest.writeString(type.name());
     }
 
     public int describeContents() {

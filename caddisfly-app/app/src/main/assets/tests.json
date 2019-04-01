@@ -7361,15 +7361,22 @@
       "instructions": [
         {
           "section": [
-            "sd_on",
-            "sd_50_dip_sample",
+            "1. sd_on",
+            "2. sd_50_dip_sample_1",
             "image:sd_50_dip_sample"
           ]
         },
         {
           "section": [
-            "sd_turn_off",
-            "sd_rinse",
+            "3. sd_50_dip_sample_2",
+            "4. sd_50_dip_sample_3"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. sd_turn_off",
+            "2. sd_rinse",
             "sd_maintenance"
           ]
         }
@@ -7394,15 +7401,17 @@
       "instructions": [
         {
           "section": [
-            "sd_on",
-            "sd_70_dip_sample",
+            "1. sd_on",
+            "2. sd_70_dip_sample_1",
+            "3. sd_70_dip_sample_2",
             "image:sd_70_dip_sample"
           ]
         },
         {
           "section": [
-            "sd_turn_off",
-            "sd_70_rinse",
+            "<b>round_off_test</b>",
+            "1. sd_turn_off",
+            "2. sd_70_rinse",
             "sd_70_maintenance"
           ]
         }
@@ -7440,6 +7449,7 @@
         },
         {
           "section": [
+            "<b>round_off_test</b>",
             "clean_turbidity_tube"
           ]
         }
@@ -7579,16 +7589,17 @@
       "uuid": "cbcad2d6-0266-429a-a6dd-340d80c7833e",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "",
       "reagents": [
         {
           "name": "ALKACHECK",
-          "code": "513200"
+          "code": "513200",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "20,240",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -7626,6 +7637,13 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -7643,21 +7661,23 @@
       "uuid": "d6ab94a9-e048-4c1a-a152-a885cd2180fa",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "ALUMINIUM No. 1",
-          "code": "51 54 60"
+          "code": "51 54 60",
+          "type": "tablet"
         },
         {
           "name": "ALUMINIUM No. 2",
           "code": "51 57 70",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,0.3",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -7700,6 +7720,13 @@
           "section": [
             "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
           ]
         }
       ],
@@ -7718,21 +7745,23 @@
       "uuid": "07dbd69d-64e7-46bc-898f-a9773fd1de64",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "AMMONIA No. 1",
-          "code": "51 25 80"
+          "code": "51 25 80",
+          "type": "tablet"
         },
         {
           "name": "AMMONIA No. 2",
           "code": "51 25 90",
-          "reactionTime": 10
+          "reactionTime": 10,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -7776,6 +7805,13 @@
             "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -7793,21 +7829,23 @@
       "uuid": "57130c69-c39a-42de-8b0a-cd66ecab2794",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1 (R)",
-          "code": "511310"
+          "code": "511310",
+          "type": "tablet"
         },
         {
           "name": "DPD No. 3 (R)",
           "code": "511290",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -7830,7 +7868,7 @@
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_one_tablet_to_other_cell",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
@@ -7869,6 +7907,13 @@
             "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -7886,19 +7931,23 @@
       "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No.1 (R)",
-          "code": "511310"
+          "code": "511310",
+          "type": "tablet"
         },
         {
-          "name": "DPD No.3 (R)"
+          "name": "DPD No.3 (R)",
+          "code": "511290",
+          "reactionTime": 2,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,4",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -7936,6 +7985,37 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "7. add_tablet2_swirl. wait_for_color_reaction_2",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "8. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "6. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "7. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -7953,25 +8033,28 @@
       "uuid": "472e5a45-42b4-4712-93bb-5c79e970402d",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "COPPER/ZINC LR",
           "code": "512620",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         },
         {
           "name": "DECHLOR",
-          "code": "512350"
+          "code": "512350",
+          "type": "tablet"
         },
         {
           "name": "EDTA",
-          "code": "512390"
+          "code": "512390",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8019,6 +8102,13 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -8036,16 +8126,17 @@
       "uuid": "ac6410bf-b5a3-4040-8048-ddf381223a3b",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "SPADNS",
-          "code": "467481"
+          "code": "467481",
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.2,2",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8083,6 +8174,13 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -8100,17 +8198,18 @@
       "uuid": "d37cb613-9489-485b-bca6-ffe95e0c3fad",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "IRON LR",
           "code": "515370",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8148,6 +8247,13 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -8165,17 +8271,18 @@
       "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "IRON HR",
           "code": "515380",
-          "reactionTime": 1
+          "reactionTime": 1,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "1,10",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8213,6 +8320,13 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -8230,25 +8344,28 @@
       "uuid": "01f43523-7eb8-4c19-8790-6add5d36b6a3",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Ascorbic Acid Powder Pack",
-          "code": "535090"
+          "code": "535090",
+          "type": "powder"
         },
         {
           "name": "VARIO Alkaline-Cyanide Reagent Solution",
-          "code": "535090"
+          "code": "535090",
+          "type": "powder"
         },
         {
           "name": "VARIO PAN Indicator Solution",
           "code": "535090",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0.1,0.7",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8277,17 +8394,13 @@
         },
         {
           "section": [
-            "5. add_reagent3_swirl_gently. wait_for_color_reaction",
+            "5. add_reagent3_swirl_gently. wait_for_color_reaction_3",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "remove_lids_place_sample_cell"
-          ]
-        },
-        {
-          "section": [
+            "6.remove_lids_place_sample_cell",
             "place_reference_cell",
             "image:ci_place_second_cell"
           ]
@@ -8296,6 +8409,13 @@
           "section": [
             "7. match_colors_by_rotating_angle",
             "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
           ]
         }
       ],
@@ -8314,27 +8434,30 @@
       "uuid": "e4934b9f-bdc7-41a3-aca6-883bf6e9ff63",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Powder and Tablet",
       "reagents": [
         {
           "name": "NITRATE-Test",
           "code": "465230",
-          "reactionTime": 1
+          "reactionTime": 1,
+          "type": "powder"
         },
         {
           "name": "NITRATE-Test",
           "code": "502810",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         },
         {
           "name": "NITRITE LR",
           "code": "512310",
-          "reactionTime": 10
+          "reactionTime": 10,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,1",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8414,6 +8537,13 @@
             "13. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -8431,17 +8561,18 @@
       "uuid": "8fe520e7-aca7-4691-b7b5-9abfd8788c66",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "NITRITE LR",
           "code": "512310",
-          "reactionTime": 10
+          "reactionTime": 10,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,0.5",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8479,6 +8610,13 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -8496,16 +8634,17 @@
       "uuid": "5e2910c9-01e4-43c9-bb81-65bd28a52df0",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "UNIVERSAL pH",
-          "code": "515440"
+          "code": "515440",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,14",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8528,7 +8667,7 @@
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_one_tablet_to_other_cell",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
@@ -8542,6 +8681,13 @@
           "section": [
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
           ]
         }
       ],
@@ -8559,17 +8705,18 @@
       "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
-          "name": "Phospate 3",
+          "name": "Phosphate 3",
           "code": "531550",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,2.5",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8607,6 +8754,13 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -8624,11 +8778,11 @@
       "uuid": "bec2a100-6fa1-4f3a-82f1-52cd7f2938b0",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "Phosphate LR No. 1",
-          "code": "513040"
+          "code": "513040",
+          "type": "tablet"
         },
         {
           "name": "Phosphate LR No. 2",
@@ -8639,6 +8793,7 @@
       "sampleQuantity": "10",
       "ranges": "0,4",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8682,6 +8837,13 @@
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
         }
       ],
       "results": [
@@ -8699,16 +8861,17 @@
       "uuid": "5191f203-d60c-4f47-a38b-569c34f5fc54",
       "brand": "Lovibond CHECKIT Comparator",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "Phosphate HR tablet",
-          "code": "511980"
+          "code": "511980",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
       "ranges": "0,80",
       "hasImage": true,
+      "hasEndInstruction": "true",
       "instructions": [
         {
           "section": [
@@ -8745,6 +8908,13 @@
           "section": [
             "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
           ]
         }
       ],

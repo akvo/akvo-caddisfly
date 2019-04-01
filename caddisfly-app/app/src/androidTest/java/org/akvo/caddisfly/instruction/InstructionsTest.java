@@ -217,31 +217,31 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (//id.equalsIgnoreCase("340d80c7833e") ||
-//                    testList.get(i).getBrand().contains("Tester")
+//            if (id.equalsIgnoreCase("883bf6e9ff63"))
+//                    || testList.get(i).getBrand().contains("Tester")
 //                            || testList.get(i).getBrand().contains("SD")
-//                            || testList.get(i).getBrand().contains("Tube")) {
+//                            || testList.get(i).getBrand().contains("Tube"))
+            {
+                Intent intent = new Intent();
+                intent.setType("text/plain");
+                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+                Bundle data = new Bundle();
+                data.putString(SensorConstants.RESOURCE_ID, uuid);
+                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+                intent.putExtras(data);
 
-            Intent intent = new Intent();
-            intent.setType("text/plain");
-            intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
-            Bundle data = new Bundle();
-            data.putString(SensorConstants.RESOURCE_ID, uuid);
-            data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
-            intent.putExtras(data);
+                mActivityRule.launchActivity(intent);
 
-            mActivityRule.launchActivity(intent);
+                int pages = navigateToTest(id, testList.get(i).getHasEndInstruction());
 
-            int pages = navigateToTest(id, testList.get(i).getHasEndInstruction());
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
-            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
 
-            listString.append("<li><span onclick=\"loadTestType(\'").append(id)
-                    .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
-
-            TestHelper.getCurrentActivity().finish();
-            mActivityRule.finishActivity();
-//            }
+                TestHelper.getCurrentActivity().finish();
+                mActivityRule.finishActivity();
+            }
         }
 
         Log.d("Caddisfly", jsArrayString.toString());
@@ -283,11 +283,15 @@ public class InstructionsTest {
 
                     TestUtil.sleep(1000);
 
+                    TestUtil.swipeLeft();
+
+                    TestUtil.sleep(1000);
+
                     takeScreenshot(id, i + 1);
 
+                    TestUtil.sleep(1000);
+
                 }
-                TestUtil.sleep(300);
-                Espresso.pressBack();
                 TestUtil.sleep(300);
                 break;
             }

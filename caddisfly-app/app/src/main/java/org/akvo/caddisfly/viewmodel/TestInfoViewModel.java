@@ -33,6 +33,8 @@ import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.Reagent;
+import org.akvo.caddisfly.model.ReagentType;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.bluetooth.ReagentLabel;
 import org.akvo.caddisfly.util.StringUtil;
@@ -139,8 +141,10 @@ public class TestInfoViewModel extends AndroidViewModel {
         for (int j = 1; j < 5; j++) {
             Matcher m2 = Pattern.compile("%reagent" + j).matcher(sentence);
             while (m2.find()) {
-                String code = testInfo.getReagent(j - 1).code;
-                if (testInfo.getReagentType().equals("Tablet") && !code.isEmpty()) {
+                Reagent reagent = testInfo.getReagent(j - 1);
+
+                if ((reagent.type == ReagentType.TABLET || testInfo.getReagentType().equals("Tablet"))
+                        && !reagent.code.isEmpty()) {
                     ReagentLabel reagentLabel = new ReagentLabel(context, null);
 
                     int height = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -151,8 +155,8 @@ public class TestInfoViewModel extends AndroidViewModel {
 
                     reagentLabel.setLayoutParams(layoutParams);
 
-                    reagentLabel.setReagentName(testInfo.getReagent(j - 1).name);
-                    reagentLabel.setReagentCode(code);
+                    reagentLabel.setReagentName(reagent.name);
+                    reagentLabel.setReagentCode(reagent.code);
 
                     linearLayout.addView(reagentLabel);
                 }

@@ -42,6 +42,10 @@ public class MeasurementInputFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private EditText editResult;
     private OnSubmitResultListener mListener;
+    private EditText radioValidation;
+    private RadioGroup unitRadioGroup;
+    private Float minValue;
+    private Float maxValue;
 
     /**
      * Get the instance.
@@ -62,10 +66,9 @@ public class MeasurementInputFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_manual_input, container, false);
 
         editResult = view.findViewById(R.id.editResult);
-
-        EditText radioValidation = view.findViewById(R.id.editRadioValidation);
-
+        radioValidation = view.findViewById(R.id.editRadioValidation);
         TextView textRange = view.findViewById(R.id.textRange);
+        unitRadioGroup = view.findViewById(R.id.unitChoice);
 
         if (getArguments() != null) {
 
@@ -82,13 +85,10 @@ public class MeasurementInputFragment extends BaseFragment {
 
                 String range = testInfo.getRanges();
                 String[] ranges = range.split(",");
-
-                Float minValue = Float.parseFloat(ranges[0].trim());
-                Float maxValue = Float.parseFloat(ranges[1].trim());
+                minValue = Float.parseFloat(ranges[0].trim());
+                maxValue = Float.parseFloat(ranges[1].trim());
 
                 String unitChoice = testResult.getUnitChoice();
-
-                RadioGroup unitRadioGroup = view.findViewById(R.id.unitChoice);
 
                 if (unitChoice == null || unitChoice.isEmpty()) {
                     unitRadioGroup.setVisibility(View.GONE);
@@ -104,43 +104,9 @@ public class MeasurementInputFragment extends BaseFragment {
 
                 buttonSubmitResult.setOnClickListener(view1 -> {
                     if (mListener != null) {
-
-                        boolean okToSubmit = true;
-
-                        String result = editResult.getText().toString();
-
-                        if (result.isEmpty()) {
-                            editResult.setError("Enter result");
-                        } else {
-
-                            Float resultFloat = Float.parseFloat(result);
-
-                            if (unitRadioGroup.getVisibility() == View.VISIBLE) {
-                                int radioButtonId = unitRadioGroup.getCheckedRadioButtonId();
-
-                                if (radioButtonId == -1) {
-                                    radioValidation.setActivated(true);
-                                    radioValidation.requestFocus();
-                                    radioValidation.setError("Select unit");
-                                    okToSubmit = false;
-                                } else {
-                                    RadioButton selectedRadioButton = unitRadioGroup.findViewById(radioButtonId);
-                                    int index = unitRadioGroup.indexOfChild(selectedRadioButton);
-
-                                    if (index == 1) {
-                                        resultFloat = resultFloat * 1000;
-                                    }
-                                }
-                            }
-
-                            if (okToSubmit) {
-                                if (resultFloat < minValue || resultFloat > maxValue) {
-                                    editResult.setError("Invalid result");
-                                } else {
-                                    hideSoftKeyboard(editResult);
-                                    mListener.onSubmitResult(String.valueOf(resultFloat));
-                                }
-                            }
+                        Float resultFloat = isValidResult();
+                        if (resultFloat != -1f) {
+                            mListener.onSubmitResult(String.valueOf(resultFloat));
                         }
                     }
                 });
@@ -148,6 +114,47 @@ public class MeasurementInputFragment extends BaseFragment {
         }
 
         return view;
+    }
+
+    private Float isValidResult() {
+        boolean okToSubmit = true;
+        Float resultFloat = -1f;
+
+        String result = editResult.getText().toString();
+        if (result.isEmpty()) {
+            editResult.setError("Enter result");
+        } else {
+
+            resultFloat = Float.parseFloat(result);
+
+            if (unitRadioGroup.getVisibility() == View.VISIBLE) {
+                int radioButtonId = unitRadioGroup.getCheckedRadioButtonId();
+
+                if (radioButtonId == -1) {
+                    radioValidation.setActivated(true);
+                    radioValidation.requestFocus();
+                    radioValidation.setError("Select unit");
+                    okToSubmit = false;
+                } else {
+                    RadioButton selectedRadioButton = unitRadioGroup.findViewById(radioButtonId);
+                    int index = unitRadioGroup.indexOfChild(selectedRadioButton);
+
+                    if (index == 1) {
+                        resultFloat = resultFloat * 1000;
+                    }
+                }
+            }
+
+            if (okToSubmit) {
+                if (resultFloat < minValue || resultFloat > maxValue) {
+                    editResult.setError("Invalid result");
+                } else {
+                    hideSoftKeyboard(editResult);
+                }
+            }
+        }
+
+        return resultFloat;
     }
 
     void showSoftKeyboard() {
@@ -193,6 +200,10 @@ public class MeasurementInputFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    boolean isValid() {
+        return isValidResult() != -1f;
     }
 
     public interface OnSubmitResultListener {

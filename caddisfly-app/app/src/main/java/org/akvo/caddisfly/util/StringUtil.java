@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spannable;
@@ -31,6 +32,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
+import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,9 +101,25 @@ public final class StringUtil {
     public static SpannableStringBuilder toInstruction(AppCompatActivity context, TestInfo testInfo, String text) {
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
+        boolean isBold = false;
+        if (text.contains("<b>")) {
+            isBold = true;
+            text = text.replace("<b>", "").replace("</b>", "");
+        }
 
         Spanned spanned = StringUtil.getStringResourceByName(context, text);
+
         builder.append(spanned);
+
+        if (isBold) {
+            StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+            builder.setSpan(
+                    boldSpan,
+                    0,
+                    builder.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
 
         Matcher m = Pattern.compile("\\(\\*(\\w+)\\*\\)").matcher(builder);
 
@@ -125,15 +143,17 @@ public final class StringUtil {
             builder.replace(m1.start(), m1.end(), testInfo.getSampleQuantity());
         }
 
-        if (testInfo != null && testInfo.getReagent(0).reactionTime != null) {
+        if (testInfo != null) {
             // Set reaction time in the string
             for (int i = 1; i < 5; i++) {
                 Matcher m2 = Pattern.compile("%reactionTime" + i).matcher(builder);
                 while (m2.find()) {
-                    builder.replace(m2.start(), m2.end(),
-                            context.getResources().getQuantityString(R.plurals.minutes,
-                                    testInfo.getReagent(i - 1).reactionTime,
-                                    testInfo.getReagent(i - 1).reactionTime));
+                    if (testInfo.getReagent(i - 1).reactionTime != null) {
+                        builder.replace(m2.start(), m2.end(),
+                                context.getResources().getQuantityString(R.plurals.minutes,
+                                        testInfo.getReagent(i - 1).reactionTime,
+                                        testInfo.getReagent(i - 1).reactionTime));
+                    }
                 }
             }
         }
