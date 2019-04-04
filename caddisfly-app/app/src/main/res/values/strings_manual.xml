@@ -26,22 +26,15 @@
 
     <string name="sd_on">Press briefly (*sd_on_off*) to turn device on.</string>
     <string name="sd_50_dip_sample">Remove protective cap, rinse the electrode with distilled water and immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Stir the sensor gently while it is in the sample. Press briefly (*sd_on_off*) to freeze / unfreeze the measurement.</string>
-    <string name="sd_50_dip_sample_1">Remove protective cap, rinse the electrode with distilled water.</string>
-    <string name="sd_50_dip_sample_2">Immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Stir the sensor gently while it is in the sample.</string>
-    <string name="sd_50_dip_sample_3">Press briefly (*sd_on_off*) to freeze / unfreeze the measurement.</string>
     <string name="sd_fill_photo_fill_in">Take a photo of the screen with the measurement and fill in the measurement value.</string>
     <string name="sd_turn_off">Press and hold (*sd_on_off*) (3 sec.) to turn the instrument off.</string>
     <string name="sd_rinse">Rinse the sensor with distilled water (never touch the electrode with anything) and place the protective cap back. Make sure the protective cap is filled with KCL solution.</string>
-    <string name="sd_maintenance"><b>Note</b>: Regularly check the calibration of the device and recalibrate if necessary. For calibration instructions: see the product manual in the box.</string>
     <string name="fill_turbidity_tube">Connect the turbidity tubes and fill the tube with the water sample until you cannot see the black circle at the yellow bottom anymore.</string>
     <string name="empty_turbidity_tube">Empty the tube with small intervals until you can see the black circle at the yellow bottom again and read out the turbidity on the side of the tube.</string>
     <string name="fill_in_value_turbidity_tube">Fill in the obtained turbidity value in the app.</string>
     <string name="clean_turbidity_tube">Empty the tube completely, clean if necessary, disconnect tubes and store them.</string>
     <string name="sd_70_dip_sample">Remove protective cap, rinse the sensor with the sample water and immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Press briefly (*sd_on_off*) to freeze / unfreeze the measurement.</string>
-    <string name="sd_70_dip_sample_1">Remove protective cap, rinse the sensor with the water sample.</string>
-    <string name="sd_70_dip_sample_2">Immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Press briefly (*sd_on_off*) to freeze / unfreeze the measurement.</string>
     <string name="sd_70_rinse">Rinse the sensor with distilled water (never touch the electrode with anything) and place the protective cap back.</string>
-    <string name="sd_70_maintenance"><b>Note</b>: Regularly check the calibration of the device and recalibrate if necessary. For calibration instructions: see the product manual in the box.</string>
 
     <!--pH Cl Manual Swatch Select Tester-->
     <string name="pt_open_lid">Open the lid of the tester.</string>
@@ -56,40 +49,15 @@
 
     <string name="checkit_comparator_uses">The Checkit Comparator uses two cells and a coloured disc.</string>
     <string name="insert_colored_disk">Insert the coloured disc in the comparator.</string>
-    <string name="fill_both_cells">Fill both cells to the 10 ml mark</string>
-    <string name="close_one_cell">Close one cell with a lid and place it in the left-hand space of the comparator. It acts as a blank.</string>
     <string name="add_one_tablet_to_other_cell">Add one %reagent1 tablet to the other cell, and close it with a lid. Swirl the cell until the reagent is completely dissolved</string>
     <string name="add_one_powder_to_other_cell">Add one %reagent1 powder pack to the other cell, and close it with a lid. Swirl the cell until the reagent is completely dissolved</string>
-    <string name="wait_for_color_reaction">Wait <b>%reactionTime1</b> for complete colour reaction.</string>
-    <string name="wait_for_color_reaction_2">Wait <b>%reactionTime2</b> for complete colour reaction.</string>
-    <string name="wait_for_color_reaction_3">Wait <b>%reactionTime3</b> for complete colour reaction.</string>
-    <string name="add_tablet_crush_swirl">Add one %reagent1 tablet in the other cell. Crush the tablet and close it with a lid. Swirl the cell until reagent is completely dissolved.</string>
-    <string name="add_tablet_crush_stir">Add one %reagent3 Tablet to this cell, crush it and mix it with a clean stirring rod. Close it with the lid.</string>
-    <string name="place_second_cell">Place the second cell in the right-hand space of the comparator.</string>
     <string name="match_colors_by_rotating">By rotating the disc, match the two colours against daylight, looking AWAY from the sun.</string>
     <string name="read_result_and_record">Read the result and record the number.</string>
     <string name="dechlorinate_residual_chlorine">Optional:
 In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate, add one DECHLOR tablet to the water sample. Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
     <string name="rinse_vial_sample">Rinse the vial with the water sample.</string>
-    <string name="add_tablet1_crush">Add one %reagent1 tablet to the other cell and crush the tablet.</string>
-    <string name="add_tablet2_dissolve">Afterwards add one %reagent2 tablet, crush the tablet and close it with a lid. Swirl the cell until the reagent is completely dissolved.</string>
-    <string name="take_right_cell">take the cell from the right-hand compartment of the comparator and remover the lid.</string>
-    <string name="add_tablet2_swirl">Add one %reagent2 tablet in the cell, close it with a lid. Swirl the cell until reagent is completely dissolved.</string>
-    <string name="edta_complex_zinc">Optional:
-In the case of high levels of zinc, add one EDTA tablet to the already coloured water sample. Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
-    <string name="add_reagent1_swirl_gently">Add one %reagent1 in each cell. Close cells with a lid and swirl gently.</string>
-    <string name="add_reagent2_swirl_gently">Add 15 drops of %reagent2 to each cell. Close cells with a lid and swirl gently.</string>
-    <string name="add_reagent3_swirl_gently">Add 21 drops of %reagent3 to each cell. Close cells with a lid and swirl gently.</string>
-    <string name="remove_lids_place_sample_cell">Remove the lids. Place the cell with the sample in the right-hand compartment of the comparator.</string>
-    <string name="place_reference_cell">Place the reference cell in the left-hand compartment of the comparator.</string>
-    <string name="match_colors_by_rotating_angle">Hold the comparator at an angle so that enough north daylight goes through the cell. The mirror unit makes use of the view through the entire length of the cell.</string>
-    <string name="rinse_cells">It is essential to rinse the cells thoroughly after each test.</string>
-    <string name="store_dark">Store CHECKIT® Disc in the dark.</string>
-    <string name="round_off_test">Round off test</string>
 
     <!--Nitrate Checkit-->
-    <string name="fill_one_cell">Fill one cell to the 10 ml mark.</string>
-    <string name="close_the_cell">Close the cell with a lid and place it in the left-hand space of the comparator. It acts as a blank.</string>
     <string name="fill_nitrate_tube">Fill the Nitrate Test Tube to the 20 ml mark.</string>
     <string name="add_one_level_spoon">Add one level spoon full %reagent1 Powder and a %reagent2 Tablet to the Test Tube. <b>Don\'t crush the tablet!</b></string>
     <string name="close_with_lid_shake">Close it with a lid and shake for <b>1 minute</b>.</string>
@@ -97,12 +65,52 @@ In the case of high levels of zinc, add one EDTA tablet to the already coloured 
     <string name="invert_test_tube">Invert the Test Tube two or three times to complete the flocculation.</string>
     <string name="allow_time_complete_sediment">Allow <b>2 minutes</b> time for complete sediment of NITRATE-Test Powder.</string>
     <string name="fill_clear_solution">Fill one cell to the 10 ml mark with the clear solution of the Test Tube.</string>
-    <string name="place_cell_right_space">Place this cell in the right-hand space of the comparator.</string>
 
     <!--Fluoride Checkit-->
-    <string name="place_sample_left_space">Place the cell with the water sample to the left-hand space of the comparator.</string>
     <string name="fill_one_cell_other_deionized">Fill one cell to the 10 ml mark. Fill the other cell with deionized water to the 10ml mark.</string>
     <string name="pipet_reagent_close_cells">Pipet 2 ml %reagent1 Reagent Solution to each cell. Close the cells with lids and swirl gently.</string>
-    <string name="place_deionized_right_space">Place the cell with the deionized water to the right-hand space of the comparator.</string>
+
+
+    <string name="add_tablet1_crush">Add one %reagent1 tablet to the other cell and crush the tablet.</string>
+    <string name="add_tablet2_dissolve">Afterwards add one %reagent2 tablet, crush the tablet and close it with a lid. Swirl the cell until the reagent is completely dissolved.</string>
+    <string name="take_right_cell">take the cell from the right-hand compartment of the comparator and remover the lid.</string>
+    <string name="add_tablet2_swirl">Add one %reagent2 tablet in the cell, close it with a lid. Swirl the cell until reagent is completely dissolved.</string>
+    <string name="edta_complex_zinc_1">In the case of high levels of zinc:</string>
+    <string name="edta_complex_zinc_2">Add one EDTA tablet to the already coloured water sample.</string>
+    <string name="edta_complex_zinc_3">Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
+    <string name="add_reagent1_swirl_gently">Add one %reagent1 in each cell. Close cells with a lid and swirl gently.</string>
+    <string name="add_reagent2_swirl_gently">Add 15 drops of %reagent2 to each cell. Close cells with a lid and swirl gently.</string>
+    <string name="add_reagent3_swirl_gently">Add 21 drops of %reagent3 to each cell. Close cells with a lid and swirl gently.</string>
+    <string name="remove_lids_place_sample_cell">Remove the lids. Place the cell with the sample facing the mark (point) in the right-hand compartment of the comparator.</string>
+    <string name="place_reference_cell">Place the reference cell facing the mark (point) in the left-hand compartment of the comparator.</string>
+    <string name="match_colors_by_rotating_angle">Hold the comparator at an angle so that enough north daylight goes through the cell. The mirror unit makes use of the view through the entire length of the cell.</string>
+    <string name="rinse_cells">It is essential to rinse the cells thoroughly after each test.</string>
+    <string name="store_dark">Store CHECKIT® Disc in the dark.</string>
+    <string name="round_off_test">Round off test</string>
+    <string name="ph_coloration"><b>Note</b>: pH values below 4 produce always a red colouration. pH values above 10 produce always a purple colouration.</string>
+    <string name="fill_one_cell">Fill one cell to the 10 ml mark  with the water sample.</string>
+    <string name="fill_both_cells">Fill both cells to the 10 ml mark with the water sample.</string>
+    <string name="fill_other_cell_deionized">Fill the other cell with deionized water to the 10ml mark.</string>
+    <string name="close_the_cell">Close the cell with a lid and place it facing the mark (point) in the left-hand space of the comparator. It acts as a blank.</string>
+    <string name="close_one_cell">Close one cell with a lid and place it facing the mark (point) in the left-hand space of the comparator. It acts as a blank.</string>
+    <string name="place_sample_left_space">Place the cell with the water sample facing the mark (point) in the left-hand space of the comparator.</string>
+    <string name="place_deionized_right_space">Place the cell with the deionized water facing the mark (point) in the right-hand space of the comparator.</string>
+    <string name="place_cell_right_space">Place this cell facing the mark (point) in the right-hand space of the comparator.</string>
+    <string name="place_second_cell">Place the second cell facing the mark (point) in the right-hand space of the comparator.</string>
+    <string name="dechlorinate_residual_chlorine_1">In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate:</string>
+    <string name="dechlorinate_residual_chlorine_2">Add one DECHLOR tablet to the water sample.</string>
+    <string name="dechlorinate_residual_chlorine_3">Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
+    <string name="sd_50_dip_sample_1">Remove protective cap, rinse the electrode with distilled water.</string>
+    <string name="sd_50_dip_sample_2">Immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Stir the sensor gently while it is in the sample.</string>
+    <string name="sd_50_dip_sample_3">Press briefly (*sd_on_off*) to freeze / unfreeze the measurement.</string>
+    <string name="sd_maintenance"><b>Note</b>: Regularly check the calibration of the device and recalibrate if necessary. For calibration instructions: see the product manual in the box.</string>
+    <string name="sd_70_dip_sample_1">Remove protective cap, rinse the sensor with the water sample.</string>
+    <string name="sd_70_dip_sample_2">Immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Press briefly (*sd_on_off*) to freeze / unfreeze the measurement.</string>
+    <string name="sd_70_maintenance"><b>Note</b>: Regularly check the calibration of the device and recalibrate if necessary. For calibration instructions: see the product manual in the box.</string>
+    <string name="wait_for_color_reaction">Wait <b>%reactionTime1</b> for complete colour reaction.</string>
+    <string name="wait_for_color_reaction_2">Wait <b>%reactionTime2</b> for complete colour reaction.</string>
+    <string name="wait_for_color_reaction_3">Wait <b>%reactionTime3</b> for complete colour reaction.</string>
+    <string name="add_tablet_crush_swirl">Add one %reagent1 tablet in the other cell. Crush the tablet and close it with a lid. Swirl the cell until reagent is completely dissolved.</string>
+    <string name="add_tablet_crush_stir">Add one %reagent3 Tablet to this cell, crush it and mix it with a clean stirring rod. Close it with the lid.</string>
 
 </resources>

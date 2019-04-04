@@ -7706,19 +7706,20 @@
         },
         {
           "section": [
-            "5. add_tablet2_dissolve. wait_for_color_reaction_2",
+            "5. add_tablet2_dissolve",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "6. place_second_cell",
+            "6. wait_for_color_reaction_2",
+            "7. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "7. match_colors_by_rotating",
+            "8. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -7790,19 +7791,20 @@
         },
         {
           "section": [
-            "5. add_tablet2_dissolve. wait_for_color_reaction_2",
+            "5. add_tablet2_dissolve",
+            "6. wait_for_color_reaction_2",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "6. place_second_cell",
+            "7. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "7. match_colors_by_rotating",
+            "8. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -7843,7 +7845,7 @@
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0,1",
+      "ranges": "0,1,0,1",
       "hasImage": true,
       "hasEndInstruction": "true",
       "instructions": [
@@ -7886,25 +7888,31 @@
         },
         {
           "section": [
-            "7. add_tablet2_swirl. wait_for_color_reaction_2",
+            "<result>"
+          ]
+        },
+        {
+          "section": [
+            "7. add_tablet2_swirl",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "8. match_colors_by_rotating",
+            "8. wait_for_color_reaction_2",
+            "9. place_second_cell",
             "image:ci_match_colors_by_rotating"
           ]
         },
         {
           "section": [
-            "6. place_second_cell",
+            "10. match_colors_by_rotating",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "7. match_colors_by_rotating",
+            "11. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -7919,7 +7927,13 @@
       "results": [
         {
           "id": 1,
-          "name": "Chlorine",
+          "name": "Free chlorine",
+          "unit": "mg/l",
+          "range": "0-1"
+        },
+        {
+          "id": 2,
+          "name": "Total chlorine",
           "unit": "mg/l",
           "range": "0-1"
         }
@@ -7988,25 +8002,26 @@
         },
         {
           "section": [
-            "7. add_tablet2_swirl. wait_for_color_reaction_2",
+            "7. add_tablet2_swirl",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "8. match_colors_by_rotating",
+            "8. wait_for_color_reaction_2",
+            "9. place_second_cell",
             "image:ci_match_colors_by_rotating"
           ]
         },
         {
           "section": [
-            "6. place_second_cell",
+            "10. match_colors_by_rotating",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "7. match_colors_by_rotating",
+            "11. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8077,29 +8092,36 @@
         },
         {
           "section": [
-            "dechlorinate_residual_chlorine"
+            "<b>optional</b>",
+            "dechlorinate_residual_chlorine_1",
+            "1. dechlorinate_residual_chlorine_2",
+            "2. dechlorinate_residual_chlorine_3"
           ]
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_one_tablet_to_other_cell",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "5. wait_for_color_reaction",
+            "6. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "edta_complex_zinc"
+            "<b>optional</b>",
+            "edta_complex_zinc_1",
+            "1. edta_complex_zinc_2",
+            "2. edta_complex_zinc_3"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8147,31 +8169,32 @@
         },
         {
           "section": [
-            "2. fill_one_cell_other_deionized",
+            "2. fill_one_cell",
+            "3. fill_other_cell_deionized",
             "image:ci_fill_both_cells"
           ]
         },
         {
           "section": [
-            "3. pipet_reagent_close_cells",
+            "4. pipet_reagent_close_cells",
             "image:ci_swirl_gently"
           ]
         },
         {
           "section": [
-            "4. place_sample_left_space",
+            "5. place_sample_left_space",
             "image:ci_close_one_cell"
           ]
         },
         {
           "section": [
-            "5. place_deionized_right_space",
+            "6. place_deionized_right_space",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8232,19 +8255,20 @@
         },
         {
           "section": [
-            "4. add_tablet_crush_swirl. wait_for_color_reaction",
+            "4. add_tablet_crush_swirl",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "5. wait_for_color_reaction",
+            "6. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8305,13 +8329,14 @@
         },
         {
           "section": [
-            "4. add_tablet_crush_stir. wait_for_color_reaction",
+            "4. add_tablet_crush_swirl",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "5. wait_for_color_reaction",
+            "6. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
@@ -8376,38 +8401,38 @@
         },
         {
           "section": [
-            "2. fill_one_cell_other_deionized",
+            "2. fill_one_cell",
+            "3. fill_other_cell_deionized",
             "image:ci_fill_both_cells"
           ]
         },
         {
           "section": [
-            "3. add_reagent1_swirl_gently",
-            "image:ci_add_one_tablet_to_other_cell"
+            "4. add_reagent1_swirl_gently",
+            "image:ci_add_one_powder_to_other_cell"
           ]
         },
         {
           "section": [
-            "4. add_reagent2_swirl_gently",
-            "image:ci_add_one_tablet_to_other_cell"
+            "5. add_reagent2_swirl_gently"
           ]
         },
         {
           "section": [
-            "5. add_reagent3_swirl_gently. wait_for_color_reaction_3",
-            "image:ci_add_one_tablet_to_other_cell"
+            "6. add_reagent3_swirl_gently",
+            "7. wait_for_color_reaction_3"
           ]
         },
         {
           "section": [
-            "6.remove_lids_place_sample_cell",
-            "place_reference_cell",
+            "8. remove_lids_place_sample_cell",
+            "9. place_reference_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "7. match_colors_by_rotating_angle",
+            "10. match_colors_by_rotating_angle",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8522,19 +8547,20 @@
         },
         {
           "section": [
-            "11. add_tablet_crush_stir. wait_for_color_reaction_3",
+            "11. add_tablet_crush_stir",
             "image:add_tablet_crush_stir"
           ]
         },
         {
           "section": [
-            "12. place_cell_right_space",
+            "12. wait_for_color_reaction_3",
+            "13. place_cell_right_space",
             "image:place_cell_right_space"
           ]
         },
         {
           "section": [
-            "13. match_colors_by_rotating",
+            "14. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8595,19 +8621,20 @@
         },
         {
           "section": [
-            "4. add_tablet_crush_swirl. wait_for_color_reaction",
+            "4. add_tablet_crush_swirl",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "5. wait_for_color_reaction",
+            "6. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8680,6 +8707,7 @@
         {
           "section": [
             "6. match_colors_by_rotating",
+            "ph_coloration",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8739,19 +8767,20 @@
         },
         {
           "section": [
-            "4. add_one_powder_to_other_cell. wait_for_color_reaction",
+            "4. add_one_powder_to_other_cell",
             "image:ci_add_one_powder_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "5. wait_for_color_reaction",
+            "6. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8822,19 +8851,20 @@
         },
         {
           "section": [
-            "5. add_tablet2_dissolve. wait_for_color_reaction_2",
+            "5. add_tablet2_dissolve",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "6. wait_for_color_reaction_2",
+            "7. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "8. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8894,19 +8924,19 @@
         },
         {
           "section": [
-            "4. add_one_tablet_to_other_cell. wait_for_color_reaction",
+            "4. add_one_tablet_to_other_cell",
             "image:ci_add_one_tablet_to_other_cell"
           ]
         },
         {
           "section": [
-            "5. place_second_cell",
+            "6. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },

@@ -36,6 +36,9 @@ public enum ReagentType {
     TABLET,
 
     @SerializedName("tube")
-    TUBE
+    TUBE,
+
+    @SerializedName("none")
+    NONE
 }
 

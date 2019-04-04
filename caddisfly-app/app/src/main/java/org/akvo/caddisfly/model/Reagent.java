@@ -66,7 +66,11 @@ public class Reagent implements Parcelable {
         dest.writeValue(name);
         dest.writeValue(code);
         dest.writeValue(reactionTime);
-        dest.writeString(type.name());
+        if (type == null) {
+            dest.writeString(ReagentType.NONE.name());
+        } else {
+            dest.writeString(type.name());
+        }
     }
 
     public int describeContents() {
