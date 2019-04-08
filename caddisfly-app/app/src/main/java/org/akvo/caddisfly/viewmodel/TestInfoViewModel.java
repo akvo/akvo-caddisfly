@@ -150,7 +150,7 @@ public class TestInfoViewModel extends AndroidViewModel {
                     int height = Resources.getSystem().getDisplayMetrics().heightPixels;
 
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, (int) (height * 0.2));
+                            LinearLayout.LayoutParams.MATCH_PARENT, (int) (height * 0.16));
                     layoutParams.bottomMargin = 16;
 
                     reagentLabel.setLayoutParams(layoutParams);

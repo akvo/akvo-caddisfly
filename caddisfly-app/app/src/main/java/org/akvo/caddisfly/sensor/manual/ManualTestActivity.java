@@ -126,10 +126,13 @@ public class ManualTestActivity extends BaseActivity
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                // Nothing to do here
-                if (position == totalPageCount - 1) {
+                if (position >= totalPageCount - 1) {
                     if (!waitingFragment.isValid()) {
                         viewPager.setCurrentItem(resultPageNumber);
+                    }
+                } else if (position >= photoPageNumber) {
+                    if (!resultPhotoFragment.isValid()) {
+                        viewPager.setCurrentItem(photoPageNumber);
                     }
                 }
             }
@@ -186,7 +189,9 @@ public class ManualTestActivity extends BaseActivity
         waitingFragment.hideSoftKeyboard();
 
         if (testInfo.getHasEndInstruction()) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+            if (waitingFragment.isValid()) {
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+            }
         } else {
             sendResults();
         }
@@ -258,7 +263,7 @@ public class ManualTestActivity extends BaseActivity
     }
 
     private void showInstructionsView() {
-        if (viewPager.getCurrentItem() < instructionCount) {
+        if (viewPager.getCurrentItem() < resultPageNumber) {
             footerLayout.setVisibility(View.VISIBLE);
         }
         pagerLayout.setVisibility(View.VISIBLE);
@@ -325,6 +330,10 @@ public class ManualTestActivity extends BaseActivity
     public void onSendResults(View view) {
         sendResults();
     }
+
+//    public void onNextClick(View view) {
+//        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+//    }
 
     /**
      * A placeholder fragment containing a simple view.

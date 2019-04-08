@@ -118,11 +118,12 @@ public class MeasurementInputFragment extends BaseFragment {
 
     private Float isValidResult() {
         boolean okToSubmit = true;
-        Float resultFloat = -1f;
+        Float resultFloat;
 
         String result = editResult.getText().toString();
         if (result.isEmpty()) {
             editResult.setError("Enter result");
+            resultFloat = -1f;
         } else {
 
             resultFloat = Float.parseFloat(result);
@@ -134,6 +135,7 @@ public class MeasurementInputFragment extends BaseFragment {
                     radioValidation.setActivated(true);
                     radioValidation.requestFocus();
                     radioValidation.setError("Select unit");
+                    resultFloat = -1f;
                     okToSubmit = false;
                 } else {
                     RadioButton selectedRadioButton = unitRadioGroup.findViewById(radioButtonId);
@@ -148,6 +150,7 @@ public class MeasurementInputFragment extends BaseFragment {
             if (okToSubmit) {
                 if (resultFloat < minValue || resultFloat > maxValue) {
                     editResult.setError("Invalid result");
+                    resultFloat = -1f;
                 } else {
                     hideSoftKeyboard(editResult);
                 }

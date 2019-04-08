@@ -59,6 +59,8 @@ public class ResultPhotoFragment extends BaseFragment {
     private String currentPhotoPath;
     private ImageView imageResult;
 
+    private Button takePhotoButton;
+
     /**
      * Get the instance.
      */
@@ -74,6 +76,8 @@ public class ResultPhotoFragment extends BaseFragment {
 
         imageResult = view.findViewById(R.id.imageResult);
 
+        takePhotoButton = view.findViewById(R.id.takePhoto);
+
         if (!imageFileName.isEmpty()) {
 
             final File newPhotoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
@@ -84,10 +88,9 @@ public class ResultPhotoFragment extends BaseFragment {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 imageResult.setImageBitmap(myBitmap);
                 imageResult.setBackground(null);
+                takePhotoButton.setText(R.string.retakePhoto);
             }
         }
-
-        final Button takePhotoButton = view.findViewById(R.id.takePhoto);
 
         takePhotoButton.setOnClickListener(view1 -> takePhoto());
 
@@ -147,6 +150,7 @@ public class ResultPhotoFragment extends BaseFragment {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 imageResult.setImageBitmap(myBitmap);
                 imageResult.setBackground(null);
+                takePhotoButton.setText(R.string.retakePhoto);
             }
 
             mListener.onPhotoTaken(imageFileName);
@@ -186,6 +190,10 @@ public class ResultPhotoFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    boolean isValid() {
+        return currentPhotoPath != null && !currentPhotoPath.isEmpty();
     }
 
     public interface OnPhotoTakenListener {

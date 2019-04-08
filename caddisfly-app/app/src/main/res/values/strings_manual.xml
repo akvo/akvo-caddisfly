@@ -20,6 +20,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="takePhoto">Take Photo</string>
+    <string name="retakePhoto">Retake Photo</string>
     <string name="take_photo_of_result">Take a photo of the result</string>
     <string name="take_photo_meter_result">Take a photo of the measured result on the device</string>
     <string name="enter_measured_value">Enter the measured value</string>
