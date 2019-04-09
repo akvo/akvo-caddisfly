@@ -46,6 +46,7 @@ public class MeasurementInputFragment extends BaseFragment {
     private RadioGroup unitRadioGroup;
     private Float minValue;
     private Float maxValue;
+    Float resultFloat;
 
     /**
      * Get the instance.
@@ -104,7 +105,7 @@ public class MeasurementInputFragment extends BaseFragment {
 
                 buttonSubmitResult.setOnClickListener(view1 -> {
                     if (mListener != null) {
-                        Float resultFloat = isValidResult();
+                        resultFloat = isValidResult();
                         if (resultFloat != -1f) {
                             mListener.onSubmitResult(String.valueOf(resultFloat));
                         }
@@ -207,6 +208,10 @@ public class MeasurementInputFragment extends BaseFragment {
 
     boolean isValid() {
         return isValidResult() != -1f;
+    }
+
+    public String getResult() {
+        return String.valueOf(resultFloat);
     }
 
     public interface OnSubmitResultListener {

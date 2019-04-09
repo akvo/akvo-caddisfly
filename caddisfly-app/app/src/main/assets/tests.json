@@ -7833,12 +7833,12 @@
       "imageScale": "centerCrop",
       "reagents": [
         {
-          "name": "DPD No. 1 (R)",
+          "name": "DPD No.1 (R)",
           "code": "511310",
           "type": "tablet"
         },
         {
-          "name": "DPD No. 3 (R)",
+          "name": "DPD No.3 (R)",
           "code": "511290",
           "reactionTime": 2,
           "type": "tablet"
@@ -7888,7 +7888,12 @@
         },
         {
           "section": [
-            "<result>"
+            "<photo1>"
+          ]
+        },
+        {
+          "section": [
+            "<result1>"
           ]
         },
         {
@@ -7959,7 +7964,7 @@
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0,4",
+      "ranges": "0,4,0,4",
       "hasImage": true,
       "hasEndInstruction": "true",
       "instructions": [
@@ -8002,6 +8007,16 @@
         },
         {
           "section": [
+            "<photo1>"
+          ]
+        },
+        {
+          "section": [
+            "<result1>"
+          ]
+        },
+        {
+          "section": [
             "7. add_tablet2_swirl",
             "image:ci_add_one_tablet_to_other_cell"
           ]
@@ -8036,7 +8051,13 @@
       "results": [
         {
           "id": 1,
-          "name": "Chlorine",
+          "name": "Free chlorine",
+          "unit": "mg/l",
+          "range": "0-4"
+        },
+        {
+          "id": 2,
+          "name": "Total chlorine",
           "unit": "mg/l",
           "range": "0-4"
         }

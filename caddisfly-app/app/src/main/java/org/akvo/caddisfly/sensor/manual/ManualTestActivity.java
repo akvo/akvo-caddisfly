@@ -44,11 +44,9 @@ public class ManualTestActivity extends BaseActivity
         implements MeasurementInputFragment.OnSubmitResultListener,
         ResultPhotoFragment.OnPhotoTakenListener {
 
+    SparseArray<String> results = new SparseArray<>();
     private TestInfo testInfo;
     private String imageFileName = "";
-
-    private MeasurementInputFragment waitingFragment;
-
     private ViewPager viewPager;
     private FrameLayout resultLayout;
     private FrameLayout pagerLayout;
@@ -56,11 +54,14 @@ public class ManualTestActivity extends BaseActivity
     private PageIndicatorView pagerIndicator;
     private boolean showSkipMenu = true;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private String result;
     private ResultPhotoFragment resultPhotoFragment;
-
-    private int resultPageNumber;
+    private ResultPhotoFragment result1PhotoFragment;
+    private MeasurementInputFragment result1Fragment;
+    private MeasurementInputFragment resultFragment;
+    private int photo1PageNumber = -1;
+    private int result1PageNumber = -1;
     private int photoPageNumber;
+    private int resultPageNumber;
     private int totalPageCount;
     private int skipToPageNumber;
     private int instructionCount;
@@ -85,7 +86,7 @@ public class ManualTestActivity extends BaseActivity
             return;
         }
 
-        waitingFragment = MeasurementInputFragment.newInstance(testInfo);
+        resultFragment = MeasurementInputFragment.newInstance(testInfo);
         resultPhotoFragment = ResultPhotoFragment.newInstance();
 
         if (testInfo.getHasEndInstruction()) {
@@ -110,6 +111,15 @@ public class ManualTestActivity extends BaseActivity
             totalPageCount += 1;
         }
 
+        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
+            if (testInfo.getInstructions().get(i).section.get(0).contains("<photo1>")) {
+                photo1PageNumber = i;
+                result1PageNumber = i + 1;
+                result1Fragment = MeasurementInputFragment.newInstance(testInfo);
+                result1PhotoFragment = ResultPhotoFragment.newInstance();
+            }
+        }
+
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -126,8 +136,14 @@ public class ManualTestActivity extends BaseActivity
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position >= totalPageCount - 1) {
-                    if (!waitingFragment.isValid()) {
+                if (photo1PageNumber != -1 && position >= photo1PageNumber
+                        && !result1PhotoFragment.isValid()) {
+                    viewPager.setCurrentItem(photo1PageNumber);
+                } else if (result1PageNumber != -1 && position >= result1PageNumber
+                        && !result1Fragment.isValid()) {
+                    viewPager.setCurrentItem(result1PageNumber);
+                } else if (position >= totalPageCount - 1) {
+                    if (!resultFragment.isValid()) {
                         viewPager.setCurrentItem(resultPageNumber);
                     }
                 } else if (position >= photoPageNumber) {
@@ -159,9 +175,9 @@ public class ManualTestActivity extends BaseActivity
             public void onPageScrollStateChanged(int state) {
                 if (state == ViewPager.SCROLL_STATE_IDLE) {
                     if (viewPager.getCurrentItem() == resultPageNumber) {
-                        waitingFragment.showSoftKeyboard();
+                        resultFragment.showSoftKeyboard();
                     } else {
-                        waitingFragment.hideSoftKeyboard();
+                        resultFragment.hideSoftKeyboard();
                     }
                 }
             }
@@ -186,10 +202,10 @@ public class ManualTestActivity extends BaseActivity
 
     private void submitResult() {
 
-        waitingFragment.hideSoftKeyboard();
+        resultFragment.hideSoftKeyboard();
 
         if (testInfo.getHasEndInstruction()) {
-            if (waitingFragment.isValid()) {
+            if (resultFragment.isValid()) {
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             }
         } else {
@@ -200,13 +216,16 @@ public class ManualTestActivity extends BaseActivity
     private void sendResults() {
         Intent resultIntent = new Intent();
 
-        SparseArray<String> results = new SparseArray<>();
-
         final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
 
         String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
 
-        results.put(1, result);
+        if (result1PageNumber != -1) {
+            results.put(1, result1Fragment.getResult());
+            results.put(2, resultFragment.getResult());
+        } else {
+            results.put(1, resultFragment.getResult());
+        }
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo,
                 results, null, imageFileName);
@@ -222,14 +241,14 @@ public class ManualTestActivity extends BaseActivity
 
     @Override
     public void onSubmitResult(String result) {
-        this.result = result;
-
         if (testInfo.getHasImage() && imageFileName.isEmpty()) {
             viewPager.setCurrentItem(photoPageNumber);
             Toast.makeText(this, R.string.take_photo_meter_result,
                     Toast.LENGTH_LONG).show();
         } else {
-            submitResult();
+            if (viewPager.getCurrentItem() == resultPageNumber) {
+                submitResult();
+            }
         }
     }
 
@@ -399,10 +418,14 @@ public class ManualTestActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            if (position == photoPageNumber) {
+            if (position == photo1PageNumber) {
+                return result1PhotoFragment;
+            } else if (position == result1PageNumber) {
+                return result1Fragment;
+            } else if (position == photoPageNumber) {
                 return resultPhotoFragment;
             } else if (position == resultPageNumber) {
-                return waitingFragment;
+                return resultFragment;
             } else if (position == totalPageCount - 1) {
                 return PlaceholderFragment.newInstance(
                         testInfo.getInstructions().get(instructionCount), true);
