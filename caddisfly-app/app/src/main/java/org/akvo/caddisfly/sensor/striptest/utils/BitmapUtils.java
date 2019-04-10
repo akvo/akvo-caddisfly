@@ -85,6 +85,16 @@ public class BitmapUtils {
     }
 
     // Concatenate two bitmaps
+    public static Bitmap concatTwoBitmapsVertical(Bitmap bmp1, Bitmap bmp2) {
+        int width = bmp1.getWidth() + bmp2.getWidth() + SPACING;
+        Bitmap resultImage = Bitmap.createBitmap(width, bmp1.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(resultImage);
+        canvas.drawBitmap(bmp1, 0f, 0f, null);
+        canvas.drawBitmap(bmp2, bmp1.getWidth(), 0f, null);
+        return resultImage;
+    }
+
+    // Concatenate two bitmaps
     public static Bitmap concatTwoBitmaps(Bitmap bmp1, Bitmap bmp2) {
         int height = bmp1.getHeight() + bmp2.getHeight() + SPACING;
         Bitmap resultImage = Bitmap.createBitmap(IMG_WIDTH, height, Bitmap.Config.ARGB_8888);

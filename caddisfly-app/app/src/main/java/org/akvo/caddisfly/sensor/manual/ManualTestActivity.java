@@ -2,6 +2,8 @@ package org.akvo.caddisfly.sensor.manual;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -12,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -27,10 +28,12 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -40,13 +43,14 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
+
 public class ManualTestActivity extends BaseActivity
         implements MeasurementInputFragment.OnSubmitResultListener,
         ResultPhotoFragment.OnPhotoTakenListener {
 
     SparseArray<String> results = new SparseArray<>();
     private TestInfo testInfo;
-    private String imageFileName = "";
     private ViewPager viewPager;
     private FrameLayout resultLayout;
     private FrameLayout pagerLayout;
@@ -176,14 +180,15 @@ public class ManualTestActivity extends BaseActivity
                 if (state == ViewPager.SCROLL_STATE_IDLE) {
                     if (viewPager.getCurrentItem() == resultPageNumber) {
                         resultFragment.showSoftKeyboard();
+                    } else if (viewPager.getCurrentItem() == result1PageNumber) {
+                        result1Fragment.showSoftKeyboard();
                     } else {
                         resultFragment.hideSoftKeyboard();
+                        result1Fragment.hideSoftKeyboard();
                     }
                 }
             }
         });
-
-        // startManualTest();
     }
 
     @Override
@@ -217,8 +222,23 @@ public class ManualTestActivity extends BaseActivity
         Intent resultIntent = new Intent();
 
         final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+        String result1ImagePath = photoPath.getAbsolutePath() + File.separator +
+                result1PhotoFragment.getImageFileName();
+        String resultImagePath = photoPath.getAbsolutePath() + File.separator +
+                resultPhotoFragment.getImageFileName();
 
-        String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+        Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
+        Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
+        Bitmap resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
+
+        //noinspection ResultOfMethodCallIgnored
+        new File(result1ImagePath).delete();
+        //noinspection ResultOfMethodCallIgnored
+        new File(resultImagePath).delete();
+
+        String imageFileName = UUID.randomUUID().toString() + ".jpg";
+        String finalImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+        ImageUtil.saveImage(resultBitmap, finalImagePath);
 
         if (result1PageNumber != -1) {
             results.put(1, result1Fragment.getResult());
@@ -231,7 +251,7 @@ public class ManualTestActivity extends BaseActivity
                 results, null, imageFileName);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         if (!imageFileName.isEmpty()) {
-            resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
+            resultIntent.putExtra(SensorConstants.IMAGE, finalImagePath);
         }
 
         setResult(Activity.RESULT_OK, resultIntent);
@@ -241,14 +261,8 @@ public class ManualTestActivity extends BaseActivity
 
     @Override
     public void onSubmitResult(String result) {
-        if (testInfo.getHasImage() && imageFileName.isEmpty()) {
-            viewPager.setCurrentItem(photoPageNumber);
-            Toast.makeText(this, R.string.take_photo_meter_result,
-                    Toast.LENGTH_LONG).show();
-        } else {
-            if (viewPager.getCurrentItem() == resultPageNumber) {
-                submitResult();
-            }
+        if (viewPager.getCurrentItem() == resultPageNumber) {
+            submitResult();
         }
     }
 
@@ -327,6 +341,7 @@ public class ManualTestActivity extends BaseActivity
         showWaitingView();
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+            @SuppressWarnings("UnusedAssignment")
             Bundle bundle = new Bundle();
             bundle.putString("InstructionsSkipped", testInfo.getName() +
                     " (" + testInfo.getBrand() + ")");
@@ -343,7 +358,7 @@ public class ManualTestActivity extends BaseActivity
 
     @Override
     public void onPhotoTaken(String photoPath) {
-        imageFileName = photoPath;
+        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
 
     public void onSendResults(View view) {

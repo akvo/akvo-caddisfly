@@ -168,7 +168,7 @@ public class CbtActivity extends BaseActivity
 
         String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
 
-        ImageUtil.resizeImage(currentPhotoPath, resultImagePath);
+        ImageUtil.resizeImage(currentPhotoPath, resultImagePath, 1280);
 
         File imageFile = new File(currentPhotoPath);
         if (imageFile.exists() && !new File(currentPhotoPath).delete()) {

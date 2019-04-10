@@ -50,6 +50,7 @@ import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -66,6 +67,7 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 
 import androidx.annotation.NonNull;
@@ -140,6 +142,16 @@ public class TestActivity extends BaseActivity {
         if (testInfo != null && testInfo.getSubtype() == TestType.SENSOR
                 && !this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
             ErrorMessages.alertFeatureNotSupported(this, true);
+        }
+
+        cleanResultImagesFolder();
+    }
+
+    private void cleanResultImagesFolder() {
+        final File imagesFolder = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+        for (File tempFile : imagesFolder.listFiles()) {
+            //noinspection ResultOfMethodCallIgnored
+            tempFile.delete();
         }
     }
 
@@ -310,6 +322,7 @@ public class TestActivity extends BaseActivity {
             Intent intent = new Intent(data);
 
             if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+                @SuppressWarnings("UnusedAssignment")
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, testInfo.getUuid());
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, testInfo.getName());
@@ -317,6 +330,7 @@ public class TestActivity extends BaseActivity {
                 bundle.putString("Type", testInfo.getSubtype().toString().toLowerCase());
                 bundle.putString("Range", testInfo.getRanges());
 
+                @SuppressWarnings("UnusedAssignment")
                 String instanceName = getIntent().getStringExtra(SensorConstants.FLOW_INSTANCE_NAME);
 
                 if (instanceName != null && !instanceName.isEmpty()) {

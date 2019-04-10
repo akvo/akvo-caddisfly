@@ -46,25 +46,16 @@ public final class ImageUtil {
     private ImageUtil() {
     }
 
-    private static boolean saveImage(Bitmap bitmap, String filename) {
-        OutputStream out = null;
-        try {
-            out = new BufferedOutputStream(new FileOutputStream(filename));
+    public static boolean saveImage(Bitmap bitmap, String filename) {
+        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(filename))) {
             if (bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)) {
                 return true;
             }
         } catch (FileNotFoundException e) {
             Timber.e(e);
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (Exception ignored) {
-                    // do nothing
-                }
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
         return false;
     }
 
@@ -106,7 +97,8 @@ public final class ImageUtil {
             final String orientation1 = exif1.getAttribute(ExifInterface.TAG_ORIENTATION);
             final String orientation2 = exif2.getAttribute(ExifInterface.TAG_ORIENTATION);
 
-            if (!TextUtils.isEmpty(orientation1) && !orientation1.equals(orientation2)) {
+            if (orientation1 != null && !TextUtils.isEmpty(orientation1)
+                    && !orientation1.equals(orientation2)) {
                 Timber.d("Orientation property in EXIF does not match. Overriding it with original value...");
                 exif2.setAttribute(ExifInterface.TAG_ORIENTATION, orientation1);
                 exif2.saveAttributes();
@@ -119,10 +111,10 @@ public final class ImageUtil {
     /**
      * resizeImage handles resizing a too-large image file from the camera.
      */
-    public static void resizeImage(String origFilename, String outFilename) {
+    public static void resizeImage(String origFilename, String outFilename, int width) {
         int reqWidth;
         int reqHeight;
-        reqWidth = 1280;
+        reqWidth = width;
         reqHeight = 960;
 
         BitmapFactory.Options options = new BitmapFactory.Options();

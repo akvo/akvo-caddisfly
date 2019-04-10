@@ -57,6 +57,7 @@ public class ResultPhotoFragment extends BaseFragment {
     private OnPhotoTakenListener mListener;
     private String imageFileName = "";
     private String currentPhotoPath;
+    private String resultImagePath;
     private ImageView imageResult;
 
     private Button takePhotoButton;
@@ -81,7 +82,7 @@ public class ResultPhotoFragment extends BaseFragment {
         if (!imageFileName.isEmpty()) {
 
             final File newPhotoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
-            String resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
+            resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
 
             File imgFile = new File(resultImagePath);
             if (imgFile.exists()) {
@@ -134,10 +135,10 @@ public class ResultPhotoFragment extends BaseFragment {
 
             final File newPhotoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
 
-            String resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
+            resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
 
             if (currentPhotoPath != null) {
-                ImageUtil.resizeImage(currentPhotoPath, resultImagePath);
+                ImageUtil.resizeImage(currentPhotoPath, resultImagePath, 640);
 
                 File imageFile = new File(currentPhotoPath);
                 if (imageFile.exists() && !new File(currentPhotoPath).delete()) {
@@ -193,7 +194,11 @@ public class ResultPhotoFragment extends BaseFragment {
     }
 
     boolean isValid() {
-        return currentPhotoPath != null && !currentPhotoPath.isEmpty();
+        return resultImagePath != null && !resultImagePath.isEmpty() && new File(resultImagePath).exists();
+    }
+
+    public String getImageFileName() {
+        return imageFileName;
     }
 
     public interface OnPhotoTakenListener {
