@@ -156,8 +156,6 @@
     <string name="stir_water_sample_c">Fill the vial with <b>10 ml water sample.</b></string>
     <string name="add_reagent_1_tablet_dissolve_a">Add <b>one %reagent1 tablet</b> straight from the foil to the water sample.</string>
     <string name="add_reagent_1_tablet_dissolve_b">Crush the tablet using a clean stirring rod and dissolve the tablet completely.</string>
-    <string name="dechlorinate_residual_chlorine_zinc">Optional:
-In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate, add one DECHLOR tablet to the water sample. Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
     <string name="clean_stirring_rod_deionised">Rinse vial and stirring rod thoroughly with deionised water.</string>
     <string name="clean_deionised">Rinse vial thoroughly with deionised water.</string>
     <string name="once_test_result_shown">Once test result is shown on the MD610 photometer, press (*f3*) to transfer data.</string>
