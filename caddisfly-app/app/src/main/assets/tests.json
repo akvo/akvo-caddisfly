@@ -2680,12 +2680,12 @@
       "uuid": "85e9bea2-8538-4759-a46a-46459783c2d3",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "ALKA-M-PHOTOMETER",
           "code": "513210BT",
-          "reactionTime": 0
+          "reactionTime": 0,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -2734,7 +2734,8 @@
         {
           "id": 1,
           "name": "Alkalinity-m",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "5-200"
         }
       ]
     },
@@ -2745,12 +2746,12 @@
       "uuid": "403af73f-377f-42ea-bba3-f9c88cfe97d2",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "ALKA-M-HR PHOTOMETER",
           "code": "513240BT",
-          "reactionTime": 1
+          "reactionTime": 1,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -2809,7 +2810,8 @@
         {
           "id": 1,
           "name": "Alkalinity-m",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "5-500"
         }
       ]
     },
@@ -2820,16 +2822,17 @@
       "uuid": "76defb64-592f-405c-b491-77ffa76fbad8",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "ALUMINIUM No. 1",
           "code": "515460BT",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         },
         {
           "name": "ALUMINIUM No. 2",
-          "code": "515470BT"
+          "code": "515470BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -2885,7 +2888,8 @@
         {
           "id": 1,
           "name": "Aluminium",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-0.3"
         }
       ]
     },
@@ -2896,16 +2900,17 @@
       "uuid": "f0d60451-a220-4113-821d-3a658167cc9f",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "AMMONIA No. 1",
           "code": "512580BT",
-          "reactionTime": 10
+          "reactionTime": 10,
+          "type": "tablet"
         },
         {
           "name": "AMMONIA No. 2",
-          "code": "512590BT"
+          "code": "512590BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -2961,7 +2966,8 @@
         {
           "id": 1,
           "name": "Ammonia",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-1"
         }
       ]
     },
@@ -2972,16 +2978,17 @@
       "uuid": "538ab4d3-706b-4c5e-93a9-adb5c13b1be9",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F10 (Vario Ammonia Salicylate F5)",
           "code": "535500",
-          "reactionTime": 3
+          "reactionTime": 3,
+          "type": "powder"
         },
         {
           "name": "Vario Ammonia Cyanurate F10 (Vario Ammonia Salicylate F5)",
-          "reactionTime": 15
+          "reactionTime": 15,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -3063,7 +3070,8 @@
         {
           "id": 1,
           "name": "Ammonia",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-0.8"
         }
       ]
     },
@@ -3074,15 +3082,16 @@
       "uuid": "3221bdba-8898-4ae2-958f-5f6a1f949c8f",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tube",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F5",
           "code": "535600",
-          "reactionTime": 20
+          "reactionTime": 20,
+          "type": "tube"
         },
         {
-          "name": "Vario Ammonia Cyanurate F5"
+          "name": "Vario Ammonia Cyanurate F5",
+          "type": "tube"
         }
       ],
       "sampleQuantity": "2",
@@ -3157,7 +3166,8 @@
         {
           "id": 1,
           "name": "Ammonia",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2.5"
         }
       ]
     },
@@ -3168,15 +3178,16 @@
       "uuid": "17ca9214-23d4-49bf-99cc-c0463db03a90",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tube",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F5",
           "code": "535650",
-          "reactionTime": 20
+          "reactionTime": 20,
+          "type": "tube"
         },
         {
-          "name": "Vario Ammonia Cyanurate F5"
+          "name": "Vario Ammonia Cyanurate F5",
+          "type": "tube"
         }
       ],
       "sampleQuantity": "0.1",
@@ -3251,7 +3262,8 @@
         {
           "id": 1,
           "name": "Ammonia",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "1-50"
         }
       ]
     },
@@ -3262,16 +3274,17 @@
       "uuid": "4f8fcb4b-35f6-40df-aa1c-c3f4a96352d4",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "CHLORIDE T1",
           "code": "515910BT",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         },
         {
           "name": "CHLORIDE T2",
-          "code": "515920BT"
+          "code": "515920BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -3327,7 +3340,8 @@
         {
           "id": 1,
           "name": "Chloride",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.5-25"
         }
       ]
     },
@@ -3338,16 +3352,17 @@
       "uuid": "e2849dba-6486-4ceb-b5fd-58472d61fe5e",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "20 drops KS251 (Chloride Reagent A)",
           "code": "56L025165",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "liquid"
         },
         {
           "name": "20 drops KS253 (Chloride Reagent B)",
-          "code": "56L025365"
+          "code": "56L025365",
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
@@ -3407,31 +3422,33 @@
         {
           "id": 1,
           "name": "Chloride",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.5-20"
         }
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "100",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1",
           "code": "511050BT",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         },
         {
           "name": "DPD No. 3",
-          "code": "511080BT"
+          "code": "511080BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0.01,6",
+      "ranges": "0.01,6,0.01,6,0.01,6",
       "selectInstruction": "select_diff_test_instruction",
       "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
@@ -3504,34 +3521,37 @@
           "id": 1,
           "name": "Free Chlorine",
           "md610_id": "free Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-6"
         },
         {
           "id": 2,
           "name": "Combined Chlorine",
           "md610_id": "comb. Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-6"
         },
         {
           "id": 3,
           "name": "Total Chlorine",
           "md610_id": "total Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-6"
         }
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "100",
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1",
-          "code": "511050BT"
+          "code": "511050BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -3586,30 +3606,32 @@
         {
           "id": 1,
           "name": "Free Chlorine",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-6"
         }
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "101",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
           "code": "471056",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "liquid"
         },
         {
-          "name": "3 drops of DPD 3 solution"
+          "name": "3 drops of DPD 3 solution",
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0.02,4",
+      "ranges": "0.02,4,0.02,4,0.02,4",
       "selectInstruction": "select_diff_test_instruction",
       "endInstruction": "clean_deionised",
       "instructions": [
@@ -3680,34 +3702,37 @@
           "id": 1,
           "name": "Free Chlorine",
           "md610_id": "free Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-4"
         },
         {
           "id": 2,
           "name": "Combined Chlorine",
           "md610_id": "comb. Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-4"
         },
         {
           "id": 3,
           "name": "Total Chlorine",
           "md610_id": "total Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-4"
         }
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "101",
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
-          "code": "471010, 471020"
+          "code": "471010, 471020",
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
@@ -3761,31 +3786,33 @@
         {
           "id": 1,
           "name": "Free Chlorine",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-4"
         }
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1 HR",
           "code": "511500BT",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         },
         {
           "name": "DPD No. 3 HR",
-          "code": "511590BT"
+          "code": "511590BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0.1,10",
+      "ranges": "0.1,10,0.1,10,0.1,10",
       "selectInstruction": "select_diff_test_instruction",
       "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
@@ -3858,34 +3885,37 @@
           "id": 1,
           "name": "Free Chlorine",
           "md610_id": "free Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-10"
         },
         {
           "id": 2,
           "name": "Combined Chlorine",
           "md610_id": "comb. Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-10"
         },
         {
           "id": 3,
           "name": "Total Chlorine",
           "md610_id": "total Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-10"
         }
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "DPD No. 1 HR",
-          "code": "511500BT"
+          "code": "511500BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -3940,31 +3970,33 @@
         {
           "id": 1,
           "name": "Free Chlorine",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-10"
         }
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "110",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
           "code": "530100",
-          "reactionTime": 3
+          "reactionTime": 3,
+          "type": "powder"
         },
         {
           "name": "VARIO Chlorine TOTAL-DPD/F10",
-          "code": "530120"
+          "code": "530120",
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0.02,2",
+      "ranges": "0.02,2,0.02,2,0.02,2",
       "selectInstruction": "select_diff_test_instruction",
       "endInstruction": "clean_deionised",
       "instructions": [
@@ -4036,34 +4068,37 @@
           "id": 1,
           "name": "Free Chlorine",
           "md610_id": "free Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         },
         {
           "id": 2,
           "name": "Combined Chlorine",
           "md610_id": "comb. Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         },
         {
           "id": 3,
           "name": "Total Chlorine",
           "md610_id": "total Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         }
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "110",
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
-          "code": "530100"
+          "code": "530100",
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -4111,31 +4146,33 @@
         {
           "id": 1,
           "name": "Free Chlorine",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         }
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
           "code": "530100",
-          "reactionTime": 3
+          "reactionTime": 3,
+          "type": "powder"
         },
         {
           "name": "VARIO Chlorine TOTAL-DPD/F10",
-          "code": "530120"
+          "code": "530120",
+          "type": "powder"
         }
       ],
       "sampleQuantity": "5",
-      "ranges": "0.1,8",
+      "ranges": "0.1,8,0.1,8,0.1,8",
       "selectInstruction": "select_diff_test_instruction",
       "instructions": [
         {
@@ -4206,34 +4243,37 @@
           "id": 1,
           "name": "Free Chlorine",
           "md610_id": "free Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-8"
         },
         {
           "id": 2,
           "name": "Combined Chlorine",
           "md610_id": "comb. Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-8"
         },
         {
           "id": 3,
           "name": "Total Chlorine",
           "md610_id": "total Cl2",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-8"
         }
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
-          "code": "530100"
+          "code": "530100",
+          "type": "powder"
         }
       ],
       "sampleQuantity": "5",
@@ -4280,32 +4320,34 @@
         {
           "id": 1,
           "name": "Free Chlorine",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-8"
         }
       ]
     },
     {
-      "name": "Chromium (VI, III, Total)",
+      "name": "Chromium",
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "b6b46404-3392-4718-ac35-d2379c0f7d6d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "PERSULF.RGT FOR CR",
           "code": "537300",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "powder"
         },
         {
           "name": "CHROMIUM HEXAVALENT",
           "code": "537310",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0.02,2",
+      "ranges": "0.02,2,0.02,2,0.02,2",
       "selectInstruction": "select_diff_test_instruction",
       "endInstruction": "clean_deionised",
       "instructions": [
@@ -4412,33 +4454,36 @@
         {
           "id": 1,
           "name": "Chromium (VI)",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         },
         {
           "id": 2,
           "name": "Chromium (III)",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         },
         {
           "id": 3,
           "name": "Total Chromium",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         }
       ]
     },
     {
-      "name": "Chromium (VI)",
+      "name": "Chromium",
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "b6b12955-46ae-4be7-8c57-e2ccb417bd7b",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "CHROMIUM HEXAVALENT",
           "code": "537310",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -4498,27 +4543,29 @@
         {
           "id": 1,
           "name": "Chromium (VI)",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         }
       ]
     },
     {
-      "name": "Total Chromium (III+VI)",
+      "name": "Chromium",
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "cdbbd63a-2740-4e42-9b4b-5a3d490d9df3",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "PERSULF.RGT FOR CR",
           "code": "537300",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "powder"
         },
         {
           "name": "CHROMIUM HEXAVALENT",
-          "code": "537310"
+          "code": "537310",
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -4603,7 +4650,8 @@
         {
           "id": 1,
           "name": "Total Chromium",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-2"
         }
       ]
     },
@@ -4683,7 +4731,8 @@
         {
           "id": 1,
           "name": "COD",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-150"
         }
       ]
     },
@@ -4763,7 +4812,8 @@
         {
           "id": 1,
           "name": "COD",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-1500"
         }
       ]
     },
@@ -4843,7 +4893,8 @@
         {
           "id": 1,
           "name": "COD",
-          "unit": "g/l"
+          "unit": "g/l",
+          "range": "0-15"
         }
       ]
     },
@@ -4854,19 +4905,20 @@
       "uuid": "dd4c2d20-0a23-4e2c-9a6a-1dfdf7533b50",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "COPPER No. 1",
-          "code": "513550BT"
+          "code": "513550BT",
+          "type": "tablet"
         },
         {
           "name": "COPPER No. 2",
-          "code": "513560BT"
+          "code": "513560BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0.05,5",
+      "ranges": "0.05,5,0.05,5,0.05,5",
       "selectInstruction": "select_diff_test_instruction",
       "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
@@ -4939,19 +4991,22 @@
           "id": 1,
           "name": "Free Copper",
           "md610_id": "free Cu",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.05-5"
         },
         {
           "id": 2,
           "name": "Combined Copper",
           "md610_id": "comb. Cu",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.05-5"
         },
         {
           "id": 3,
           "name": "Total Copper",
           "md610_id": "total Cu",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.05-5"
         }
       ]
     },
@@ -4962,12 +5017,22 @@
       "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid and Powder",
       "reagents": [
         {
-          "name": "3 drops of Cyanide-13",
+          "name": "Cyanide-11",
           "code": "2418875",
-          "reactionTime": 10
+          "reactionTime": 10,
+          "type": "powder"
+        },
+        {
+          "name": "Cyanide-12",
+          "code": "2418875",
+          "type": "powder"
+        },
+        {
+          "name": "Cyanide-13",
+          "code": "2418875",
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "2",
@@ -5039,7 +5104,8 @@
         {
           "id": 1,
           "name": "Cyanide",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-0.5"
         }
       ]
     },
@@ -5050,11 +5116,11 @@
       "uuid": "d839537b-8106-44e8-953a-6060e4dbe59d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "2 ml SPADNS",
-          "code": "467481"
+          "code": "467481",
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
@@ -5102,7 +5168,8 @@
         {
           "id": 1,
           "name": "Fluoride",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.05-2"
         }
       ]
     },
@@ -5113,12 +5180,12 @@
       "uuid": "3e7c94de-1963-4b59-b196-de40aa126a24",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "CALCHECK",
           "code": "515650",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "2",
@@ -5184,7 +5251,8 @@
         {
           "id": 1,
           "name": "Calcium Hardness",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "50-900"
         }
       ]
     },
@@ -5195,17 +5263,18 @@
       "uuid": "072cab32-3e4c-41f3-8378-e14626afa5b0",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "CALCIO H No.1",
           "code": "517761BT",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         },
         {
           "name": "CALCIO H No. 2",
           "code": "517761BT",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -5261,7 +5330,8 @@
         {
           "id": 1,
           "name": "Calcium Hardness",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-500"
         }
       ]
     },
@@ -5272,12 +5342,12 @@
       "uuid": "d4d57975-5e87-4ba9-b9d1-09ec2eb8f500",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "HARDCHECK P",
           "code": "515660BT",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "1",
@@ -5326,7 +5396,8 @@
         {
           "id": 1,
           "name": "Total Hardness",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "2-50"
         }
       ]
     },
@@ -5337,12 +5408,12 @@
       "uuid": "5d82d3a3-cfb3-40fb-a739-49e308b0f9b4",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "HARDCHECK P",
           "code": "515660BT",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -5391,7 +5462,8 @@
         {
           "id": 1,
           "name": "Total Hardness",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "20-500"
         }
       ]
     },
@@ -5402,12 +5474,12 @@
       "uuid": "ac65e12d-632a-439d-b841-383b1b9b7026",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "IRON LR",
           "code": "515370BT",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -5456,7 +5528,8 @@
         {
           "id": 1,
           "name": "Iron",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-1"
         }
       ]
     },
@@ -5467,12 +5540,12 @@
       "uuid": "7a9457b0-96c2-487d-b3d3-c52c50fb2279",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Vario Ferro F10",
           "code": "530560",
-          "reactionTime": 3
+          "reactionTime": 3,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -5520,23 +5593,24 @@
         {
           "id": 1,
           "name": "Iron",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-3"
         }
       ]
     },
     {
-      "name": "Total Iron",
+      "name": "Iron",
       "subtype": "bluetooth",
       "md610_id": "223",
       "uuid": "928f2cf7-7c98-4707-af3b-2e12e0d2d46b",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Vario IRON TPTZ F10",
           "code": "530550",
-          "reactionTime": 3
+          "reactionTime": 3,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -5601,7 +5675,8 @@
         {
           "id": 1,
           "name": "Iron",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-1.8"
         }
       ]
     },
@@ -5612,12 +5687,12 @@
       "uuid": "1f704c37-9dbe-4ca7-a3da-00adc1e5fa0b",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "10 drops KS61 (Ferrozine/Thioglycolate)",
           "code": "56L006165",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
@@ -5665,7 +5740,8 @@
         {
           "id": 1,
           "name": "Iron",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.03-2"
         }
       ]
     },
@@ -5676,16 +5752,17 @@
       "uuid": "bdcf8941-f7df-4c04-9242-fc8a5b3af672",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "10 drops KS63 (Thioglycolate)",
           "code": "56L006365",
-          "reactionTime": 15
+          "reactionTime": 15,
+          "type": "liquid"
         },
         {
           "name": "10 drops KS160 (Total Hardness Buffer)",
-          "code": "56L016065"
+          "code": "56L016065",
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
@@ -5745,7 +5822,8 @@
         {
           "id": 1,
           "name": "Iron",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-10"
         }
       ]
     },
@@ -5756,16 +5834,17 @@
       "uuid": "21c1bc13-51c2-4770-8fae-7d0685b49370",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "Manganese LR No 1",
           "code": "SDT349-50",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         },
         {
           "name": "Manganese LR No 2",
-          "code": "SDT350-50"
+          "code": "SDT350-50",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -5821,7 +5900,8 @@
         {
           "id": 1,
           "name": "Manganese",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.2-4"
         }
       ]
     },
@@ -5832,16 +5912,17 @@
       "uuid": "01b9ddba-c93c-416f-9420-a444a7fbd36f",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "NICKEL No. 1",
           "code": "515630BT",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         },
         {
           "name": "NICKEL No. 2",
-          "code": "515640BT"
+          "code": "515640BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -5866,8 +5947,7 @@
         },
         {
           "section": [
-            "1.add_reagent_1_tablet_dissolve_a",
-            "2.add_reagent_1_tablet_dissolve_b",
+            "add_reagent_1_tablet_dissolve",
             "image:add_tablet"
           ]
         },
@@ -5897,7 +5977,8 @@
         {
           "id": 1,
           "name": "Nickel",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.1-10"
         }
       ]
     },
@@ -5908,12 +5989,12 @@
       "uuid": "a213cf40-7cb8-4828-872e-25bf2b8b12aa",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tube",
       "reagents": [
         {
           "name": "Vario Nitrate Chromotropic",
           "code": "535580",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tube"
         }
       ],
       "sampleQuantity": "1",
@@ -5971,7 +6052,8 @@
         {
           "id": 1,
           "name": "Nitrate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "1-30"
         }
       ]
     },
@@ -5982,16 +6064,22 @@
       "uuid": "252298b1-5c2b-4b7d-9385-cc25d617725d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet and Powder",
       "reagents": [
         {
           "name": "NITRATE TEST",
-          "code": "502810, 465230",
-          "reactionTime": 10
+          "code": "465230",
+          "type": "tablet"
+        },
+        {
+          "name": "NITRATE TEST",
+          "code": "502810",
+          "type": "tablet"
         },
         {
           "name": "NITRITE LR",
-          "code": "512310BT"
+          "code": "512310BT",
+          "reactionTime": 10,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6077,7 +6165,8 @@
         {
           "id": 1,
           "name": "Nitrate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.08-1"
         }
       ]
     },
@@ -6088,12 +6177,12 @@
       "uuid": "22963cac-e81d-43db-a84b-e71c27a3dd60",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "NITRITE LR",
           "code": "512310BT",
-          "reactionTime": 10
+          "reactionTime": 10,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6142,7 +6231,8 @@
         {
           "id": 1,
           "name": "Nitrite",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-0.5"
         }
       ]
     },
@@ -6153,12 +6243,12 @@
       "uuid": "1ad51f5d-bfea-4a49-8797-efd899d7f484",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "Vario Nitri 3",
           "code": "530980",
-          "reactionTime": 20
+          "reactionTime": 20,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -6206,27 +6296,29 @@
         {
           "id": 1,
           "name": "Nitrite",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.01-0.3"
         }
       ]
     },
     {
-      "name": "Phosphate (ortho)",
+      "name": "Phosphate",
       "subtype": "bluetooth",
       "md610_id": "320",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "PHOSPHATE LR No. 1",
           "code": "513040BT",
-          "reactionTime": 10
+          "reactionTime": 10,
+          "type": "tablet"
         },
         {
           "name": "PHOSPHATE LR No. 2",
-          "code": "513050BT"
+          "code": "513050BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6282,27 +6374,29 @@
         {
           "id": 1,
           "name": "Phosphate (ortho)",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.05-4"
         }
       ]
     },
     {
-      "name": "Phosphate (ortho)",
+      "name": "Phosphate",
       "subtype": "bluetooth",
       "md610_id": "321",
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "PHOSPHATE HR P1",
           "code": "515810BT",
-          "reactionTime": 10
+          "reactionTime": 10,
+          "type": "tablet"
         },
         {
           "name": "PHOSPHATE HR P2",
-          "code": "515820BT"
+          "code": "515820BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6358,23 +6452,24 @@
         {
           "id": 1,
           "name": "Phosphate (ortho)",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "1-80"
         }
       ]
     },
     {
-      "name": "Phosphate (ortho)",
+      "name": "Phosphate",
       "subtype": "bluetooth",
       "md610_id": "323",
       "uuid": "ef94c4fc-be81-4a25-b879-7c0ab18efe43",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Phosphate Rgt. F10",
           "code": "531550",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -6422,7 +6517,8 @@
         {
           "id": 1,
           "name": "Phosphate (ortho)",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.06-2.5"
         }
       ]
     },
@@ -6433,16 +6529,17 @@
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid and Powder",
       "reagents": [
         {
           "name": "25 drops KS228 (Ammonium Molybdate)",
           "code": "56L022865",
-          "reactionTime": 10
+          "type": "liquid"
         },
         {
           "name": "25 drops of KS229 (Ammonium Metavanadate)",
-          "code": "56L022965"
+          "code": "56L022965",
+          "reactionTime": 10,
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
@@ -6512,7 +6609,8 @@
         {
           "id": 1,
           "name": "Phosphate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "5-80"
         }
       ]
     },
@@ -6523,11 +6621,11 @@
       "uuid": "58bd3f92-7092-4bfa-ac4a-1f3f24b85b6c",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "BROMOCRESOLPURPLE PHOTOMETER",
-          "code": "515700BT"
+          "code": "515700BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6575,7 +6673,8 @@
       "results": [
         {
           "id": 1,
-          "name": "pH"
+          "name": "pH",
+          "range": "5.2-6.8"
         }
       ]
     },
@@ -6586,11 +6685,11 @@
       "uuid": "6b6e9183-215f-4dc2-94a9-68444b1ec0df",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "PHENOL RED PHOTOMETER",
-          "code": "511770BT"
+          "code": "511770BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6638,7 +6737,8 @@
       "results": [
         {
           "id": 1,
-          "name": "pH"
+          "name": "pH",
+          "range": "6.5-8.4"
         }
       ]
     },
@@ -6649,11 +6749,11 @@
       "uuid": "976a33ff-a5cd-4a21-98ed-f07cd94f018e",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Liquid",
       "reagents": [
         {
           "name": "6 drops of PHENOL RED solution",
-          "code": "471040"
+          "code": "471040",
+          "type": "liquid"
         }
       ],
       "sampleQuantity": "10",
@@ -6700,7 +6800,8 @@
       "results": [
         {
           "id": 1,
-          "name": "pH"
+          "name": "pH",
+          "range": "6.5-8.4"
         }
       ]
     },
@@ -6711,11 +6812,11 @@
       "uuid": "635fe6af-b66b-48b4-aa62-0b6a8db0a493",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "THYMOLBLUE PHOTOMETER",
-          "code": "515710"
+          "code": "515710",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6763,7 +6864,8 @@
       "results": [
         {
           "id": 1,
-          "name": "pH"
+          "name": "pH",
+          "range": "8-9.6"
         }
       ]
     },
@@ -6774,11 +6876,11 @@
       "uuid": "6b485134-e6e5-4db1-88b3-d96ff081e629",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "Potassium T",
-          "code": "515670"
+          "code": "515670",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6827,7 +6929,8 @@
         {
           "id": 1,
           "name": "Potassium",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.7-12"
         }
       ]
     },
@@ -6838,12 +6941,12 @@
       "uuid": "4275391e-1498-4623-a068-e3f40dea8c29",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "Sulfate T",
           "code": "515450BT",
-          "reactionTime": 2
+          "reactionTime": 2,
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -6892,7 +6995,8 @@
         {
           "id": 1,
           "name": "Sulfate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "5-100"
         }
       ]
     },
@@ -6903,12 +7007,12 @@
       "uuid": "64248882-405c-4ec2-b433-5977bf505ffb",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Powder",
       "reagents": [
         {
           "name": "VARIO Sulpha 4/F10",
           "code": "532160",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "powder"
         }
       ],
       "sampleQuantity": "10",
@@ -6956,7 +7060,8 @@
         {
           "id": 1,
           "name": "Sulfate",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "5-100"
         }
       ]
     },
@@ -7019,7 +7124,8 @@
         {
           "id": 1,
           "name": "Suspended Solids",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0-750"
         }
       ]
     },
@@ -7077,7 +7183,8 @@
         {
           "id": 1,
           "name": "Turbidity",
-          "unit": "FAU"
+          "unit": "FAU",
+          "range": "0-1000"
         }
       ]
     },
@@ -7088,16 +7195,17 @@
       "uuid": "b662c6f2-9718-4276-9e67-1d3ae0c1651d",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
-      "reagentType": "Tablet",
       "reagents": [
         {
           "name": "COPPER / ZINC LR",
           "code": "512620BT",
-          "reactionTime": 5
+          "reactionTime": 5,
+          "type": "tablet"
         },
         {
           "name": "EDTA",
-          "code": "512390BT"
+          "code": "512390BT",
+          "type": "tablet"
         }
       ],
       "sampleQuantity": "10",
@@ -7114,7 +7222,10 @@
         },
         {
           "section": [
-            "dechlorinate_residual_chlorine_zinc"
+            "<b>Optional:</b>",
+            "dechlorinate_residual_chlorine_1",
+            "1. dechlorinate_residual_chlorine_2",
+            "2. dechlorinate_residual_chlorine_3"
           ]
         },
         {
@@ -7169,7 +7280,8 @@
         {
           "id": 1,
           "name": "Zinc",
-          "unit": "mg/l"
+          "unit": "mg/l",
+          "range": "0.02-0.9"
         }
       ]
     },

@@ -102,7 +102,7 @@ public final class StringUtil {
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
         boolean isBold = false;
-        if (text.contains("<b>")) {
+        if (text.startsWith("<b>") && text.endsWith("</b>")) {
             isBold = true;
             text = text.replace("<b>", "").replace("</b>", "");
         }

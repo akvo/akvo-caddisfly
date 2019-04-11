@@ -104,7 +104,7 @@ public class InstructionsTest {
 
     @Test
     @RequiresDevice
-    public void testInstructionsAll() {
+    public void testInstructionsMd610() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
 
@@ -125,28 +125,29 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (id.equalsIgnoreCase("5a3d490d9df3")) {
+//            if (id.equalsIgnoreCase("73f866e8d1ac"))
+//
+            {
+                Intent intent = new Intent();
+                intent.setType("text/plain");
+                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+                Bundle data = new Bundle();
+                data.putString(SensorConstants.RESOURCE_ID, uuid);
+                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+                intent.putExtras(data);
 
-            Intent intent = new Intent();
-            intent.setType("text/plain");
-            intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
-            Bundle data = new Bundle();
-            data.putString(SensorConstants.RESOURCE_ID, uuid);
-            data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
-            intent.putExtras(data);
+                mActivityRule.launchActivity(intent);
 
-            mActivityRule.launchActivity(intent);
+                int pages = navigateToBluetoothTest(id);
 
-            int pages = navigateToBluetoothTest(id);
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
-            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
 
-            listString.append("<li><span onclick=\"loadTestType(\'").append(id)
-                    .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
-
-            TestHelper.getCurrentActivity().finish();
-            mActivityRule.finishActivity();
-//            }
+                TestHelper.getCurrentActivity().finish();
+                mActivityRule.finishActivity();
+            }
 
         }
 

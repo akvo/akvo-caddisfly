@@ -57,13 +57,12 @@ public class PageIndicatorView extends View {
         if (scale <= 1.5) {
             distanceBetweenBullets = 26;
             bulletRadius = 4;
-            activeBulletRadius = bulletRadius * 1.6f;
         } else if (scale >= 3) {
             distanceBetweenBullets = 46;
             bulletRadius = 12;
-            activeBulletRadius = bulletRadius * 1.4f;
         }
 
+        setActiveBulletSize(false, scale);
 
         fillPaint = new Paint();
         fillPaint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -125,5 +124,23 @@ public class PageIndicatorView extends View {
 
     public void showDots(boolean value) {
         showDots = value;
+
+        final float scale = getResources().getDisplayMetrics().density;
+        setActiveBulletSize(value, scale);
+    }
+
+    private void setActiveBulletSize(boolean dots, float scale) {
+
+        if (scale <= 1.5) {
+            activeBulletRadius = bulletRadius * 1.6f;
+        } else if (scale >= 3) {
+            activeBulletRadius = bulletRadius * 1.4f;
+        } else {
+            if (dots) {
+                activeBulletRadius = bulletRadius * 1.4f;
+            } else {
+                activeBulletRadius = bulletRadius * 1.8f;
+            }
+        }
     }
 }

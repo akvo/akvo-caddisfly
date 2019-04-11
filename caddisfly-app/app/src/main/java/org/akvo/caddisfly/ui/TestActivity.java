@@ -149,9 +149,12 @@ public class TestActivity extends BaseActivity {
 
     private void cleanResultImagesFolder() {
         final File imagesFolder = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
-        for (File tempFile : imagesFolder.listFiles()) {
-            //noinspection ResultOfMethodCallIgnored
-            tempFile.delete();
+        File[] files = imagesFolder.listFiles();
+        if (files != null) {
+            for (File tempFile : imagesFolder.listFiles()) {
+                //noinspection ResultOfMethodCallIgnored
+                tempFile.delete();
+            }
         }
     }
 

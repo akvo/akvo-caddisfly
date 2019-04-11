@@ -181,10 +181,14 @@ public class ManualTestActivity extends BaseActivity
                     if (viewPager.getCurrentItem() == resultPageNumber) {
                         resultFragment.showSoftKeyboard();
                     } else if (viewPager.getCurrentItem() == result1PageNumber) {
-                        result1Fragment.showSoftKeyboard();
+                        if (result1Fragment != null) {
+                            result1Fragment.showSoftKeyboard();
+                        }
                     } else {
                         resultFragment.hideSoftKeyboard();
-                        result1Fragment.hideSoftKeyboard();
+                        if (result1Fragment != null) {
+                            result1Fragment.hideSoftKeyboard();
+                        }
                     }
                 }
             }
@@ -222,23 +226,26 @@ public class ManualTestActivity extends BaseActivity
         Intent resultIntent = new Intent();
 
         final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
-        String result1ImagePath = photoPath.getAbsolutePath() + File.separator +
-                result1PhotoFragment.getImageFileName();
+
         String resultImagePath = photoPath.getAbsolutePath() + File.separator +
                 resultPhotoFragment.getImageFileName();
 
-        Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
-        Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
-        Bitmap resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
+        String imageFileName = resultPhotoFragment.getImageFileName();
 
-        //noinspection ResultOfMethodCallIgnored
-        new File(result1ImagePath).delete();
-        //noinspection ResultOfMethodCallIgnored
-        new File(resultImagePath).delete();
-
-        String imageFileName = UUID.randomUUID().toString() + ".jpg";
-        String finalImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
-        ImageUtil.saveImage(resultBitmap, finalImagePath);
+        if (result1PhotoFragment != null) {
+            String result1ImagePath = photoPath.getAbsolutePath() + File.separator +
+                    result1PhotoFragment.getImageFileName();
+            Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
+            Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
+            Bitmap resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
+            //noinspection ResultOfMethodCallIgnored
+            new File(result1ImagePath).delete();
+            //noinspection ResultOfMethodCallIgnored
+            new File(resultImagePath).delete();
+            imageFileName = UUID.randomUUID().toString() + ".jpg";
+            resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+            ImageUtil.saveImage(resultBitmap, resultImagePath);
+        }
 
         if (result1PageNumber != -1) {
             results.put(1, result1Fragment.getResult());
@@ -251,7 +258,7 @@ public class ManualTestActivity extends BaseActivity
                 results, null, imageFileName);
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         if (!imageFileName.isEmpty()) {
-            resultIntent.putExtra(SensorConstants.IMAGE, finalImagePath);
+            resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
         }
 
         setResult(Activity.RESULT_OK, resultIntent);
