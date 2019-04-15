@@ -31,6 +31,7 @@
     <string name="perform_test"><![CDATA[Effectuez le test <b>%1$s</b> sur le MD 610 et appuyez sur (*f3*) lorsque vous êtes prêt.]]></string>
     <string name="select_correct_test"><![CDATA[Sélectionner le bon test et réessayer.]]></string>
     <string name="data_does_not_match">Les données reçues ne correspondent pas au type de test prévu.</string>
+    <string name="invalid_data_received">Données invalidés reçues</string>
     <string name="incorrect_test_selected">Mauvais test sélectionné</string>
     <string name="select_test"><![CDATA[Sélectionner <b>%1$s</b> test sur MD610]]></string>
     <string name="test_selected">Test sélectionné</string>
@@ -38,7 +39,7 @@
     <string name="test_instructions">Instructions pour le test</string>
 
     <string name="select_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test, puis appuyez sur (*enter*)]]></string>
-    <string name="select_diff_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner le test <b>%2$s</b> et appuyez sur (*enter*). Sélectionnez <b>\'diff\'</b> puis appuyez sur (*enter*)]]></string>
+    <string name="select_diff_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner le test <b>%2$s</b> et appuyez sur (*enter*). Sélectionnez <b>‘diff’</b> puis appuyez sur (*enter*)]]></string>
     <string name="select_free_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test (*enter*). sélectionnez <b>\'gratuit\'</b> puis appuyez sur (*enter*)]]></string>
     <string name="select_Cr_VI_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test (*enter*). Sélectionnez <b>\'Cr(VI)\'</b> puis appuyez sur (*enter*)]]></string>
     <string name="select_Cr_III_VI_test_instruction"><![CDATA[Appuyez sur (*shift*) + <b>%1$s</b> pour sélectionner <b>%2$s</b> le test. Sélectionnez <b>\'Cr(III+VI)\'</b> puis appuyez sur (*enter*)]]></string>
@@ -58,9 +59,9 @@
     <string name="add_two_reagent_2_powder_1vial">Ajoutez les contenus de <b>deux (!) paquets de poudre du %reagent2</b> directement de la feuille dans l\'échantillon d\'eau.</string>
     <string name="add_reagent_1_liquid">Remplissez le flacon de gouttes de la même taille en maintenant la bouteille verticalement tout en serrant lentement: <b>%reagent1</b></string>
     <string name="add_reagent_2_liquid">Remplissez le flacon avec des gouttes de la même taille en maintenant la bouteille verticalement tout en serrant lentement: <b>%reagent2</b></string>
+    <string name="add_reagent_3_liquid">Remplissez le flacon avec des gouttes de la même taille en maintenant la bouteille verticalement tout en serrant lentement: <b>%reagent3</b></string>
     <string name="add_reagent_1_liquid_exact_ml">Ajoutez <b>exactement %reagent1 à l\'échantillon d\'eau</b> au flacon préparé. (Avertissement: Le flacon doit être rempli jusqu\'au sommet!)</string>
     <string name="fill_nitrate_test_tube">Remplissez le tube du test de Nitrate avec <b>20 ml de l\'échantillon d\'eau</b>.</string>
-    <string name="add_spoon_nitrate_test_powder">Ajoutez <b>une cuillèrée de la poudre du test de Nitrate</b>.</string>
     <string name="close_swirl_mix">Fermez fermement le flacon avec la fermeture et secouez très bien le mélange du contenu</string>
     <string name="close_swirl_gently">Fermez fermement le flacon avec la fermeture et secouez délicatement plusieurs fois.</string>
     <string name="close_swirl_mix_purple">Fermez fermement le flacon avec la fermeture et secouez très bien le mélange du contenu. Attendez jusqu\'à ce que <font color="#2C2A74">devienne violet</font> avant de continuer</string>
@@ -95,7 +96,7 @@
     <string name="fill_vial_10_with_5ml_sample_zero_b">Remplissez le flacon de (10 mm Ø) avec <b>5 ml de votre échantillon d\'eau</b>.</string>
     <string name="fill_vial_10_with_5ml_sample_zero_c">Essuyez l\'extérieur du flacon, maintenez le capuchon du flacon, mettez le dans la chambre de l\'appareil et alignez les flèches.</string>
     <string name="fill_vial_10_with_5ml_sample_zero_d">Appuyez sur (*zero*) pour effectuer le <b>test zéro</b>.</string>
-    <string name="fill_vial_16_with_10ml_sample_a">Rincez le flacon (16 mm Ø) de l\'échantillon d\'eau.</string>
+    <string name="fill_vial_16_with_10ml_sample_a">Rincez le flacon (16 mm Ø) avec l\'échantillon d\'eau.</string>
     <string name="fill_vial_16_with_10ml_sample_b">Remplissez un flacon propre de (16 mm Ø) avec <b>10 ml d\'échantillon d\'eau</b>.</string>
     <string name="fill_vial_24_with_10ml_sample_zero_a">Rincez le flacon (24 mm Ø) de l\'échantillon d\'eau.</string>
     <string name="fill_vial_24_with_10ml_sample_zero_b">Remplissez le flacon de (24 mm Ø) avec <b>10 ml de votre échantillon d\'eau</b>.</string>
@@ -117,7 +118,10 @@
     <string name="remove_vial_empty_fill_b">Rincez le flacon et le couvercle plusieurs fois, puis remplissez le tube avec <b>%sampleQuantity ml</b> de l\'échantillon d\'eau</string>
     <string name="add_reagent_1_tablet_a">Ajoutez <b>une pastille %reagent1</b> directement de la plaquette à l\'échantillon d\'eau.</string>
     <string name="add_reagent_1_tablet_b">Écrassez le comprimé en utilisant une tige de mélange propre.</string>
+    <string name="add_reagent_2_tablet_no_crush">Ajoutez <b>une pastille %reagent2</b> directement de la plaquette à l\'échantillon d\'eau.</string>
+    <string name="add_reagent_3_tablet_no_crush">Ajoutez <b>une pastille %reagent3</b> directement de la plaquette à l\'échantillon d\'eau.</string>
     <string name="add_reagent_2_tablet_a">Ajoutez <b>une pastille %reagent2</b> directement de la plaquette à l\'échantillon d\'eau.</string>
+    <string name="add_reagent_3_tablet_a">Ajoutez <b>une pastille %reagent3</b> directement de la plaquette à l\'échantillon d\'eau.</string>
     <string name="add_reagent_2_tablet_b">Écrassez le comprimé en utilisant une tige de mélange propre.</string>
     <string name="wipe_place_align_vial_a">Essuyez l\'extérieur du flacon.</string>
     <string name="wipe_place_align_vial_b">Maintenez le capuchon du flacon, mettez le flacon dans la chambre de l\'appareil et aligner le tube selon la flèche marquée sur l\'appareil.</string>
@@ -128,6 +132,7 @@
     <string name="wipe_place_align_vial_wait_2_a">Essuyez l\'extérieur du flacon.</string>
     <string name="wipe_place_align_vial_wait_2_b">Retirez le flacon qui est dans la chambre, placez le flacon d\'echantillon dans la chambre et alignez le selon les flèches.</string>
     <string name="wipe_place_align_vial_wait_2_c">Appuyez sur (*test*) et attendez un <b>temps de réaction de %reactionTime2</b>.</string>
+    <string name="wipe_place_align_vial_wait_3_c">Appuyez sur (*test*) et attendez un <b>temps de réaction de %reactionTime3</b>.</string>
     <string name="wipe_place_align_prepared_vial_zero_a">Essuyez l\'extérieur du flacon.</string>
     <string name="wipe_place_align_prepared_vial_zero_b">Maintenez le capuchon du flacon, mettez le flacon dans la chambre de l\'appareil and suivez les flèches.</string>
     <string name="wipe_place_align_prepared_vial_zero_c">Appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
@@ -149,9 +154,15 @@
     <string name="phosphate_fill_vial_test_c">Essuyez l\'extérieur du flacon, maintenez le couvercle du flacon, mettez le flacon dans la chambre de l\'appareil et suivez les flèches.</string>
     <string name="phosphate_fill_vial_test_d">Appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
     <string name="stir_blended_water_a">Remuez l\'échantillon d\'eau incorporeré.</string>
-    <string name="stir_blended_water_b">Rincez immédiatement le flacon de l\'échantillon d\'eau.</string>
+    <string name="stir_blended_water_b">Rincez immédiatement le flacon avec l\'échantillon d\'eau.</string>
     <string name="stir_blended_water_c">Remplissez le flacon avec <b>10 ml d\'échantillon d\'eau.</b></string>
     <string name="stir_water_sample_a">Remuez l\'échantillon d\'eau.</string>
     <string name="stir_water_sample_b">Rincez immédiatement le flacon de l\'échantillon d\'eau.</string>
     <string name="stir_water_sample_c">Remplissez le flacon avec <b>10 ml d\'échantillon d\'eau.</b></string>
+    <string name="add_reagent_1_tablet_dissolve_a">Ajoutez <b>une pastille %reagent1</b> directement de la plaquette à l\'échantillon d\'eau.</string>
+    <string name="add_reagent_1_tablet_dissolve_b">Écraser la pastille à l\'aide d\'un agitateur propre et dissoudre complètement la pastille.</string>
+    <string name="clean_stirring_rod_deionised">Rincer soigneusement le flacon et la tige d\'agitation avec de l\'eau déminéralisée.</string>
+    <string name="clean_deionised">Rincer soigneusement le flacon avec de l\'eau déminéralisée.</string>
+    <string name="once_test_result_shown">Une fois le résultat du test affiché sur le photomètre MD610, appuyez sur (*f3*) pour transférer les données.</string>
+    <string name="over_range_is_valid"><![CDATA[<b>Note :</b> Les résultats supérieurs et inférieurs à l\'intervalle de mesure sont également valables.]]> </string>
 </resources>

@@ -64,7 +64,7 @@
             android:layout_marginBottom="20dp"
             android:enabled="true"
             android:onClick="onSendResults"
-            android:text="@string/ok"
+            android:text="@string/submitResult"
             android:theme="?primaryButtonStyle"
             android:visibility="gone" />
     </RelativeLayout>

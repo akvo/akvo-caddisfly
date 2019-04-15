@@ -38,15 +38,17 @@ import org.akvo.caddisfly.ui.BaseFragment;
 
 import androidx.annotation.NonNull;
 
+import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
+
 public class MeasurementInputFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
+    private Float resultFloat;
     private EditText editResult;
     private OnSubmitResultListener mListener;
     private EditText radioValidation;
     private RadioGroup unitRadioGroup;
     private Float minValue;
     private Float maxValue;
-    Float resultFloat;
 
     /**
      * Get the instance.
@@ -207,7 +209,7 @@ public class MeasurementInputFragment extends BaseFragment {
     }
 
     boolean isValid() {
-        return isValidResult() != -1f;
+        return SKIP_RESULT_VALIDATION || isValidResult() != -1f;
     }
 
     public String getResult() {

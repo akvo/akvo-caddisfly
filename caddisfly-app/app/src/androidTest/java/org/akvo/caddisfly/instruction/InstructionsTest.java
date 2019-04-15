@@ -218,7 +218,7 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (id.equalsIgnoreCase("883bf6e9ff63"))
+//            if (("cd66ecab2794, 79586d9319c8, 0de4bd9a8243, 569c34f5fc54" ).contains(id))
 //                    || testList.get(i).getBrand().contains("Tester")
 //                            || testList.get(i).getBrand().contains("SD")
 //                            || testList.get(i).getBrand().contains("Tube"))

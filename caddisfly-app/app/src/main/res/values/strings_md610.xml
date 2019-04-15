@@ -19,6 +19,9 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <string name="optional">Optional</string>
+    <string name="skip">Skip</string>
+
     <string name="md610_photometer">MD 610 Photometer</string>
     <string name="check_bluetooth_turned_on">Check that MD610 and its bluetooth are both turned on</string>
     <string name="to_turn_md610_on">To turn MD 610 on:</string>
@@ -77,7 +80,10 @@
     <string name="add_reagent_1_tablet_a">Add <b>one %reagent1 tablet</b> straight from the foil to the water sample.</string>
     <string name="add_reagent_1_tablet_b">Crush the tablet using a clean stirring rod.</string>
     <string name="add_reagent_1_tablet_no_crush">Add <b>one %reagent1 tablet</b> straight from the foil to the water sample.</string>
+    <string name="add_reagent_2_tablet_no_crush">Add <b>one %reagent2 tablet</b> straight from the foil to the water sample.</string>
+    <string name="add_reagent_3_tablet_no_crush">Add <b>one %reagent3 tablet</b> straight from the foil to the water sample.</string>
     <string name="add_reagent_2_tablet_a">Add <b>one %reagent2 tablet</b> straight from the foil to the water sample.</string>
+    <string name="add_reagent_3_tablet_a">Add <b>one %reagent3 tablet</b> straight from the foil to the water sample.</string>
     <string name="add_reagent_2_tablet_b">Crush the tablet using a clean stirring rod</string>
     <string name="add_reagent_1_powder_1vial">Add the contents of <b>one %reagent1 powder pack</b> straight from the foil to the vial.</string>
     <string name="add_reagent_2_powder_1vial">Add the contents of <b>one %reagent2 powder pack</b> straight from the foil to the vial.</string>
@@ -87,9 +93,10 @@
     <string name="add_two_reagent_2_powder_1vial">Add the contents of <b>two (!) %reagent2 powder packs</b> straight from the foil into the water sample.</string>
     <string name="add_reagent_1_liquid">Fill the vial with drops of the same size by holding the bottle vertically and squeeze slowly: <b>%reagent1</b></string>
     <string name="add_reagent_2_liquid">Fill the vial with drops of the same size by holding the bottle vertically and squeeze slowly: <b>%reagent2</b></string>
+    <string name="add_reagent_3_liquid">Fill the vial with drops of the same size by holding the bottle vertically and squeeze slowly: <b>%reagent3</b></string>
     <string name="add_reagent_1_liquid_exact_ml">Add <b>exactly %reagent1 reagent solution</b> to the water sample. (Caution: Vial is filled up to the top!)</string>
     <string name="fill_nitrate_test_tube">Fill the Nitrate test tube with <b>20 ml of the water sample</b>.</string>
-    <string name="add_spoon_nitrate_test_powder">Add <b>one level spoon of Nitrate Test powder</b>.</string>
+    <string name="add_spoon_nitrate_test_powder">Add <b>one level spoon of %reagent1 powder</b>.</string>
     <string name="add_spoon_cyanide_1">Add <b>two level spoons No. 4 (white) of Cyanide-11</b> into the prepared water sample</string>
     <string name="add_spoon_cyanide_2">Add <b>two level spoons No. 4 (white) of Cyanide-12</b> into the prepared water sample</string>
     <string name="close_swirl_mix">Close the vial tightly with the cap and swirl several times to mix the contents</string>
@@ -112,6 +119,7 @@
     <string name="wipe_place_align_vial_wait_2_a">Wipe the outside of the vial.</string>
     <string name="wipe_place_align_vial_wait_2_b">Hold vial at the lid and place vial in the chamber and align arrow marks.</string>
     <string name="wipe_place_align_vial_wait_2_c">Press (*test*) and wait for a <b>reaction time of %reactionTime2</b>.</string>
+    <string name="wipe_place_align_vial_wait_3_c">Press (*test*) and wait for a <b>reaction time of %reactionTime3</b>.</string>
     <string name="wipe_place_align_prepared_vial_zero_a">Wipe the outside of the prepared vial.</string>
     <string name="wipe_place_align_prepared_vial_zero_b">Hold vial at the lid, place vial in the chamber and align arrow marks.</string>
     <string name="wipe_place_align_prepared_vial_zero_c">Press (*zero*) to perform <b>zero test</b></string>
@@ -160,4 +168,7 @@
     <string name="clean_deionised">Rinse vial thoroughly with deionised water.</string>
     <string name="once_test_result_shown">Once test result is shown on the MD610 photometer, press (*f3*) to transfer data.</string>
     <string name="over_range_is_valid"><![CDATA[<b>Note:</b> Overrange and underrange are also valid results.]]></string>
+    <string name="dechlorinate_residual_chlorine_1">In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate:</string>
+    <string name="dechlorinate_residual_chlorine_2">Add one DECHLOR tablet to the water sample.</string>
+    <string name="dechlorinate_residual_chlorine_3">Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
 </resources>

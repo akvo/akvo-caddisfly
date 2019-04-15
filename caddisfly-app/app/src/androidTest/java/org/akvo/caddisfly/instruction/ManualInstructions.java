@@ -244,7 +244,7 @@ public class ManualInstructions {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.sd_50_dip_sample)).check(matches(isDisplayed()));
+        onView(withText(R.string.sd_50_dip_sample_1)).check(matches(isDisplayed()));
 
     }
 }

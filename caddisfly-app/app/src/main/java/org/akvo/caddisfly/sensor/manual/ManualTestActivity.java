@@ -211,10 +211,12 @@ public class ManualTestActivity extends BaseActivity
 
     private void submitResult() {
 
-        resultFragment.hideSoftKeyboard();
-
-        if (testInfo.getHasEndInstruction()) {
-            if (resultFragment.isValid()) {
+        if (result1PageNumber == viewPager.getCurrentItem() && result1Fragment.isValid()) {
+            result1Fragment.hideSoftKeyboard();
+            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+        } else if (testInfo.getHasEndInstruction()) {
+            if (resultPageNumber == viewPager.getCurrentItem() && resultFragment.isValid()) {
+                resultFragment.hideSoftKeyboard();
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             }
         } else {
@@ -223,6 +225,21 @@ public class ManualTestActivity extends BaseActivity
     }
 
     private void sendResults() {
+
+        if (photo1PageNumber != -1 && !result1PhotoFragment.isValid()) {
+            viewPager.setCurrentItem(photo1PageNumber);
+            return;
+        } else if (result1PageNumber != -1 && !result1Fragment.isValid()) {
+            viewPager.setCurrentItem(result1PageNumber);
+            return;
+        } else if (!resultPhotoFragment.isValid()) {
+            viewPager.setCurrentItem(photoPageNumber);
+            return;
+        } else if (!resultFragment.isValid()) {
+            viewPager.setCurrentItem(resultPageNumber);
+            return;
+        }
+
         Intent resultIntent = new Intent();
 
         final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
@@ -268,9 +285,7 @@ public class ManualTestActivity extends BaseActivity
 
     @Override
     public void onSubmitResult(String result) {
-        if (viewPager.getCurrentItem() == resultPageNumber) {
-            submitResult();
-        }
+        submitResult();
     }
 
     @Override

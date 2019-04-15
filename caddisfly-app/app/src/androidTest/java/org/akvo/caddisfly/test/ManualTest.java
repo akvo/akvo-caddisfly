@@ -197,7 +197,7 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.sd_50_dip_sample))
+        onView(withText(R.string.sd_50_dip_sample_1))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
@@ -231,7 +231,7 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.sd_50_dip_sample))
+        onView(withText(R.string.sd_50_dip_sample_1))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
@@ -305,7 +305,7 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.sd_70_maintenance))
+        onView(withText(R.string.sd_maintenance))
                 .check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(

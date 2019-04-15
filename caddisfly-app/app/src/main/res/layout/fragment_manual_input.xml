@@ -103,6 +103,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:enabled="true"
-        android:text="@string/submitResult"
+        android:text="@string/next"
         android:theme="?primaryButtonStyle" />
 </LinearLayout>

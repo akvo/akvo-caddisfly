@@ -19,22 +19,18 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <string name="take_photo_meter_result">Prendre une photo du résultat de la mesure sur l\'appareil</string>
     <string name="enter_measured_value">Entrer la valeur mesurée</string>
 
     <string name="sd_on">Appuyez brièvement (*sd_on_off*) pour allumer l\'appareil.</string>
-    <string name="sd_50_dip_sample">Retirer le capuchon protecteur, rincer l\'électrode avec de l\'eau distillée et immerger l\'instrument dans l\'échantillon de manière à ce que l\'instrument soit immergé au niveau de la bague d\'étanchéité. Remuez doucement le capteur pendant qu\'il est dans l\'échantillon. Appuyez brièvement (*sd_on_off*) pour figer / débloquer la mesure.</string>
     <string name="sd_fill_photo_fill_in">Prenez une photo de l\'écran avec la mesure et indiquez la valeur mesurée.</string>
     <string name="sd_turn_off">Appuyez et maintenez enfoncé (*sd_on_off*) (3 sec.) pour éteindre l\'instrument.</string>
     <string name="sd_rinse">Rincer le capteur à l\'eau distillée (ne jamais toucher l\'électrode avec quoi que ce soit) et remettre le capuchon protecteur en place. S\'assurer que le capuchon de protection est rempli de solution KCL.</string>
-    <string name="sd_maintenance">Toujours conserver l\'électrode dans le capuchon de protection avec la solution KCL. Vérifier régulièrement l\'étalonnage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage : voir le manuel du produit dans la boîte.</string>
     <string name="fill_turbidity_tube">Connectez les tubes de turbidité et remplissez le tube avec l\'échantillon d\'eau jusqu\'à ce que vous ne puissiez plus voir le cercle noir au fond jaune.</string>
     <string name="empty_turbidity_tube">Videz le tube à de petits intervalles jusqu\'à ce que vous puissiez voir à nouveau le cercle noir au fond jaune et lire la turbidité sur le côté du tube.</string>
     <string name="fill_in_value_turbidity_tube">Remplir la valeur de turbidité obtenue dans l\'app.</string>
     <string name="clean_turbidity_tube">Videz complètement le tube, nettoyez-le si nécessaire, débranchez les tubes et rangez-les.</string>
     <string name="sd_70_dip_sample">Retirer le capuchon de protection, rincer le capteur avec l\'échantillon d\'eau et immerger l\'instrument dans l\'échantillon afin que l\'instrument soit immergé jusqu\'au niveau de la bague d\'étanchéité. Appuyez brièvement (*sd_on_off*) pour figer / débloquer la mesure.</string>
     <string name="sd_70_rinse">Rincer le capteur à l\'eau distillée (ne jamais toucher l\'électrode avec quoi que ce soit) et remettre le capuchon protecteur en place.</string>
-    <string name="sd_70_maintenance">Vérifier régulièrement l\'étalonnage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage : voir le manuel du produit dans la boîte.</string>
 
     <!--pH Cl Manual Swatch Select Tester-->
     <string name="pt_open_lid">Ouvrez le couvercle du testeur.</string>
@@ -42,41 +38,41 @@
     <string name="pt_add_reagent_1">Ajouter le réactif Phenol Red en comprimé directement de l\'emballage protecteur dans le compartiment gauche (pH Phenol Red). Éviter de toucher les comprimés de réactifs.</string>
     <string name="pt_add_reagent_2">Ajoutez le comprimé DPD No.1 directement de l\'emballage protecteur dans le compartiment droit (Cl DPD). Éviter de toucher les comprimés de réactifs.</string>
     <string name="pt_close_shake">Fermer la boîte avec le couvercle et agiter jusqu\'à ce que les réactifs soient dissous. Veillez à placer correctement le couvercle avec la flèche tournée vers vous.</string>
-    <string name="pt_read_result">Déterminez quelle couleur du pH ou de l\'intervalle de chlore libre correspond le mieux à votre échantillon et tapez sur les deux intervalles de couleurs dans le test de l\'application Caddisfly. Nettoyez ensuite les compartiments avec de l\'eau distillée.</string>
     <string name="select_color_intervals">Sélectionner les intervalles de couleurs</string>
     <string name="select_colors_before_continue">Sélectionner les intervalles de couleurs avant de continuer</string>
     <string name="pt_select_intervals">Sélectionnez les intervalles qui correspondent aux couleurs de l\'échantillon d\'eau dans la boîte.</string>
 
     <string name="checkit_comparator_uses">Le comparateur Checkit utilise deux cellules et un disque de couleur.</string>
     <string name="insert_colored_disk">Insérez le disque de couleur dans le comparateur.</string>
-    <string name="fill_both_cells">Remplir les deux cellules jusqu\'à la marque de 10 ml.</string>
-    <string name="close_one_cell">Fermer une cuve avec un couvercle et la placer dans l\'espace gauche du comparateur. Il agit comme un blanc.</string>
-    <string name="add_one_tablet_to_other_cell">Ajouter un comprimé de %réactif1  à l\'autre cuve et fermer avec le couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
-    <string name="add_one_powder_to_other_cell">Ajouter un sachet de poudre de réactif1 dans l\'autre cuve et fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
-    <string name="wait_for_color_reaction">Attendre <b>Temps de %réaction1</b> pour une réaction complète de la couleur.</string>
-
-    <string name="add_tablet_crush_stir">Ajouter une pastille du %réactif3 à ce tube, l\'écraser et la mélanger avec un agitateur propre. Fermez-le avec le couvercle.</string>
-    <string name="wait_for_color_reaction_3">Attendre le <b>Temps de %reaction3</b> pour une réaction complète de la couleur.</string>
-    <string name="add_tablet_crush_swirl">Ajouter un comprimé de %réactif1 dans l\'autre cellule. Écrasez le comprimé et fermez-le avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
-    <string name="place_second_cell">Placer la deuxième cellule dans l\'espace de droite du comparateur.</string>
+    <string name="add_one_tablet_to_other_cell">Ajouter un comprimé de %reagent1  à l\'autre cuve et fermer avec le couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
+    <string name="add_one_powder_to_other_cell">Ajouter un sachet de poudre de %reagent1 dans l\'autre cuve et fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
     <string name="match_colors_by_rotating">En faisant tourner le disque, faites correspondre les deux couleurs à la lumière du jour, en regardant LOIN du soleil.</string>
+    <string name="rinse_vial_sample">Rincez le flacon de l\'échantillon d\'eau.</string>
 
     <!--Nitrate Checkit-->
-    <string name="fill_one_cell">Remplir une cuve jusqu\'à la marque de 10 ml.</string>
-    <string name="close_the_cell">Fermer le tube avec un couvercle et le placer dans l\'espace gauche du comparateur. Il agit comme un blanc.</string>
     <string name="fill_nitrate_tube">Remplir le tube du Test de Nitrate jusqu\'à la marque de 20 ml.</string>
-    <string name="add_one_level_spoon">Ajouter une cuillère pleine à niveau du %réactif 1 en Poudre et un comprimé du %réactif 2 dans le tube à essai. N\'écrasez pas la tablette !</string>
+    <string name="add_one_level_spoon">Ajouter une cuillère pleine à niveau du %reagent1 en Poudre et un comprimé du %reagent2 dans le tube à essai. <b>N\'écrasez pas la tablette !</b></string>
     <string name="close_with_lid_shake">Refermer avec un couvercle et agiter pendant <b>1 minute</b>.</string>
     <string name="allow_minute_flocculation">Laisser <b>1 minute</b> pour la floculation de la poudre de Test de NITRATE.</string>
     <string name="invert_test_tube">Retourner le tube à essai deux ou trois fois pour terminer la floculation.</string>
     <string name="allow_time_complete_sediment">Attendre <b>2 minutes</b> pour le dépôt complet de la poudre de test de NITRATE.</string>
     <string name="fill_clear_solution">Remplissez une cellule jusqu\'au repère 10 ml avec la solution limpide du tube de Test.</string>
-    <string name="place_cell_right_space">Placer cette cellule dans l\'espace de droite du comparateur.</string>
 
     <!--Fluoride Checkit-->
-    <string name="place_sample_left_space">Placer le tube avec l\'échantillon d\'eau dans l\'espace gauche du comparateur.</string>
     <string name="fill_one_cell_other_deionized">Remplir une cuve jusqu\'à la marque de 10 ml. Remplir l\'autre cellule avec de l\'eau déminéralisée jusqu\'à la marque de 10 ml.</string>
-    <string name="pipet_reagent_close_cells">Pipetter 2 ml de %réactif1 Solution de réactif dans chaque cellule. Fermer les cellules avec les couvercles et agiter doucement.</string>
-    <string name="place_deionized_right_space">Placer le tube avec l\'eau déminéralisée dans l\'espace prévu à droite du comparateur.</string>
+    <string name="pipet_reagent_close_cells">Pipetter 2 ml de %reagent1 Solution de réactif dans chaque cellule. Fermer les cellules avec les couvercles et agiter doucement.</string>
+
+
+    <string name="sd_50_dip_sample_1">Retirer cache de protection et rincez l\'électrode avec de l\'eau distillée.</string>
+    <string name="sd_50_dip_sample_2">Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Agiter le capteur doucement pendant qu\'il est dans l\'échantillon.</string>
+    <string name="sd_50_dip_sample_3">Appuyer brièvement sur (*sd_on_off*) pour geler/valider la valeur mesurée.</string>
+    <string name="sd_maintenance">Remarque: Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
+    <string name="sd_70_dip_sample_1">Retirer cache de protection et rincez l\'électrode l\'échantillon d\'eau.</string>
+    <string name="sd_70_dip_sample_2">Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Appuyer brièvement sur (*sd_on_off*) pour geler/valider la valeur mesurée.</string>
+    <string name="wait_for_color_reaction">Attendre <b>Temps de %reactionTime1</b> pour une réaction complète de la couleur.</string>
+    <string name="wait_for_color_reaction_2">Attendre Temps de %reactionTime2 pour une réaction complète de la couleur.</string>
+    <string name="wait_for_color_reaction_3">Attendre le <b>Temps de %reactionTime3</b> pour une réaction complète de la couleur.</string>
+    <string name="add_tablet_crush_swirl">Ajouter un comprimé de %reagent1 dans l\'autre cellule. Écrasez le comprimé et fermez-le avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
+    <string name="add_tablet_crush_stir">Ajouter une pastille du %reagent3 à ce tube, l\'écraser et la mélanger avec un agitateur propre. Fermez-le avec le couvercle.</string>
 
 </resources>

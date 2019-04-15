@@ -3428,7 +3428,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "100",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
@@ -3541,7 +3541,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Free Chlorine",
       "subtype": "bluetooth",
       "md610_id": "100",
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
@@ -3612,7 +3612,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "101",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
@@ -3722,7 +3722,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Free Chlorine",
       "subtype": "bluetooth",
       "md610_id": "101",
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
@@ -3792,7 +3792,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
@@ -3905,7 +3905,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Free Chlorine",
       "subtype": "bluetooth",
       "md610_id": "103",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
@@ -3976,7 +3976,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "110",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
@@ -4088,7 +4088,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Free Chlorine",
       "subtype": "bluetooth",
       "md610_id": "110",
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
@@ -4152,7 +4152,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Total, Free & Combined Chlorine",
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
@@ -4263,7 +4263,7 @@
       ]
     },
     {
-      "name": "Chlorine",
+      "name": "Free Chlorine",
       "subtype": "bluetooth",
       "md610_id": "111",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
@@ -4326,7 +4326,7 @@
       ]
     },
     {
-      "name": "Chromium",
+      "name": "Chromium (VI, III, Total)",
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "b6b46404-3392-4718-ac35-d2379c0f7d6d",
@@ -4472,7 +4472,7 @@
       ]
     },
     {
-      "name": "Chromium",
+      "name": "Chromium (VI)",
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "b6b12955-46ae-4be7-8c57-e2ccb417bd7b",
@@ -4549,7 +4549,7 @@
       ]
     },
     {
-      "name": "Chromium",
+      "name": "Total Chromium (III+VI)",
       "subtype": "bluetooth",
       "md610_id": "125",
       "uuid": "cdbbd63a-2740-4e42-9b4b-5a3d490d9df3",
@@ -5030,7 +5030,7 @@
           "type": "powder"
         },
         {
-          "name": "Cyanide-13",
+          "name": "3 drops of Cyanide-13",
           "code": "2418875",
           "type": "liquid"
         }
@@ -5081,7 +5081,7 @@
         },
         {
           "section": [
-            "add_reagent_1_liquid",
+            "add_reagent_3_liquid",
             "image:add_liquid"
           ]
         },
@@ -5599,7 +5599,7 @@
       ]
     },
     {
-      "name": "Iron",
+      "name": "Total Iron",
       "subtype": "bluetooth",
       "md610_id": "223",
       "uuid": "928f2cf7-7c98-4707-af3b-2e12e0d2d46b",
@@ -5947,7 +5947,8 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet_dissolve",
+            "1.add_reagent_1_tablet_dissolve_a",
+            "2.add_reagent_1_tablet_dissolve_b",
             "image:add_tablet"
           ]
         },
@@ -6068,7 +6069,7 @@
         {
           "name": "NITRATE TEST",
           "code": "465230",
-          "type": "tablet"
+          "type": "powder"
         },
         {
           "name": "NITRATE TEST",
@@ -6122,7 +6123,7 @@
         },
         {
           "section": [
-            "add_reagent_1_tablet_no_crush",
+            "add_reagent_2_tablet_no_crush",
             "image:add_tablet_nitrate_tube"
           ]
         },
@@ -6141,7 +6142,7 @@
         },
         {
           "section": [
-            "1.add_reagent_2_tablet_a",
+            "1.add_reagent_3_tablet_a",
             "2.add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
@@ -6156,7 +6157,7 @@
           "section": [
             "1.wipe_place_align_vial_wait_1_a",
             "2.wipe_place_align_vial_wait_1_b",
-            "3.wipe_place_align_vial_wait_1_c",
+            "3.wipe_place_align_vial_wait_3_c",
             "image:place_vial_test"
           ]
         }
@@ -6302,7 +6303,7 @@
       ]
     },
     {
-      "name": "Phosphate",
+      "name": "Phosphate (ortho)",
       "subtype": "bluetooth",
       "md610_id": "320",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
@@ -6380,7 +6381,7 @@
       ]
     },
     {
-      "name": "Phosphate",
+      "name": "Phosphate (ortho)",
       "subtype": "bluetooth",
       "md610_id": "321",
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
@@ -6458,7 +6459,7 @@
       ]
     },
     {
-      "name": "Phosphate",
+      "name": "Phosphate (ortho)",
       "subtype": "bluetooth",
       "md610_id": "323",
       "uuid": "ef94c4fc-be81-4a25-b879-7c0ab18efe43",
@@ -6600,7 +6601,7 @@
           "section": [
             "1.wipe_place_align_vial_wait_1_a",
             "2.wipe_place_align_vial_wait_1_b",
-            "3.wipe_place_align_vial_wait_1_c",
+            "3.wipe_place_align_vial_wait_2_c",
             "image:place_vial_test"
           ]
         }
@@ -7222,7 +7223,7 @@
         },
         {
           "section": [
-            "<b>Optional:</b>",
+            "<b>optional</b>",
             "dechlorinate_residual_chlorine_1",
             "1. dechlorinate_residual_chlorine_2",
             "2. dechlorinate_residual_chlorine_3"
@@ -7945,12 +7946,12 @@
       "imageScale": "centerCrop",
       "reagents": [
         {
-          "name": "DPD No.1 (R)",
+          "name": "DPD No. 1 (R)",
           "code": "511310",
           "type": "tablet"
         },
         {
-          "name": "DPD No.3 (R)",
+          "name": "DPD No. 3 (R)",
           "code": "511290",
           "reactionTime": 2,
           "type": "tablet"
@@ -8018,18 +8019,12 @@
           "section": [
             "8. wait_for_color_reaction_2",
             "9. place_second_cell",
-            "image:ci_match_colors_by_rotating"
-          ]
-        },
-        {
-          "section": [
-            "10. match_colors_by_rotating",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "11. match_colors_by_rotating",
+            "10. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8064,12 +8059,12 @@
       "imageScale": "centerCrop",
       "reagents": [
         {
-          "name": "DPD No.1 (R)",
+          "name": "DPD No. 1 (R)",
           "code": "511310",
           "type": "tablet"
         },
         {
-          "name": "DPD No.3 (R)",
+          "name": "DPD No. 3 (R)",
           "code": "511290",
           "reactionTime": 2,
           "type": "tablet"
@@ -8137,18 +8132,12 @@
           "section": [
             "8. wait_for_color_reaction_2",
             "9. place_second_cell",
-            "image:ci_match_colors_by_rotating"
-          ]
-        },
-        {
-          "section": [
-            "10. match_colors_by_rotating",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "11. match_colors_by_rotating",
+            "10. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -8475,7 +8464,7 @@
         },
         {
           "section": [
-            "6. match_colors_by_rotating",
+            "7. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -9063,13 +9052,13 @@
         },
         {
           "section": [
-            "6. place_second_cell",
+            "5. place_second_cell",
             "image:ci_place_second_cell"
           ]
         },
         {
           "section": [
-            "7. match_colors_by_rotating",
+            "6. match_colors_by_rotating",
             "image:ci_match_colors_by_rotating"
           ]
         },
