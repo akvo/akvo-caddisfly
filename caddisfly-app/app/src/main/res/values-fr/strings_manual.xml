@@ -29,7 +29,6 @@
     <string name="empty_turbidity_tube">Videz le tube à de petits intervalles jusqu\'à ce que vous puissiez voir à nouveau le cercle noir au fond jaune et lire la turbidité sur le côté du tube.</string>
     <string name="fill_in_value_turbidity_tube">Remplir la valeur de turbidité obtenue dans l\'app.</string>
     <string name="clean_turbidity_tube">Videz complètement le tube, nettoyez-le si nécessaire, débranchez les tubes et rangez-les.</string>
-    <string name="sd_70_dip_sample">Retirer le capuchon de protection, rincer le capteur avec l\'échantillon d\'eau et immerger l\'instrument dans l\'échantillon afin que l\'instrument soit immergé jusqu\'au niveau de la bague d\'étanchéité. Appuyez brièvement (*sd_on_off*) pour figer / débloquer la mesure.</string>
     <string name="sd_70_rinse">Rincer le capteur à l\'eau distillée (ne jamais toucher l\'électrode avec quoi que ce soit) et remettre le capuchon protecteur en place.</string>
 
     <!--pH Cl Manual Swatch Select Tester-->

@@ -254,14 +254,16 @@ public class ManualTestActivity extends BaseActivity
                     result1PhotoFragment.getImageFileName();
             Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
             Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
-            Bitmap resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
-            //noinspection ResultOfMethodCallIgnored
-            new File(result1ImagePath).delete();
-            //noinspection ResultOfMethodCallIgnored
-            new File(resultImagePath).delete();
-            imageFileName = UUID.randomUUID().toString() + ".jpg";
-            resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
-            ImageUtil.saveImage(resultBitmap, resultImagePath);
+            if (bitmap1 != null && bitmap2 != null) {
+                Bitmap resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
+                //noinspection ResultOfMethodCallIgnored
+                new File(result1ImagePath).delete();
+                //noinspection ResultOfMethodCallIgnored
+                new File(resultImagePath).delete();
+                imageFileName = UUID.randomUUID().toString() + ".jpg";
+                resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+                ImageUtil.saveImage(resultBitmap, resultImagePath);
+            }
         }
 
         if (result1PageNumber != -1) {

@@ -121,7 +121,11 @@ public class MeasurementInputFragment extends BaseFragment {
 
     private Float isValidResult() {
         boolean okToSubmit = true;
-        Float resultFloat;
+        Float resultFloat = -1f;
+
+        if (editResult == null) {
+            return resultFloat;
+        }
 
         String result = editResult.getText().toString();
         if (result.isEmpty()) {

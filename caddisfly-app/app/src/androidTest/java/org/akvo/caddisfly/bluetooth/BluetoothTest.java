@@ -135,7 +135,7 @@ public class BluetoothTest {
 
                 onView(withText(R.string.skip)).perform(click());
 
-                TestUtil.sleep(8000);
+                TestUtil.sleep(10000);
 
                 onView(withText(R.string.result)).check(matches(isDisplayed()));
 
@@ -143,9 +143,9 @@ public class BluetoothTest {
 
                 onView(withText("mg/l")).check(matches(isDisplayed()));
 
-                onView(withText(R.string.submitResult)).check(matches(isDisplayed()));
+                onView(withId(R.id.button_submit_result)).check(matches(isDisplayed()));
 
-                onView(withText(R.string.submitResult)).perform(click());
+                onView(withId(R.id.button_submit_result)).perform(click());
 
                 break;
             }

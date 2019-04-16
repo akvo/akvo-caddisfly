@@ -162,17 +162,15 @@ public class SwatchSelectTest {
 
         clickExternalSourceButton(0);
 
-        SystemClock.sleep(2000);
-
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         mDevice.waitForIdle();
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(500);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-        SystemClock.sleep(2000);
+        SystemClock.sleep(500);
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 

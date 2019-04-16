@@ -238,8 +238,6 @@ public class ManualInstructions {
 
         onView(withText(R.string.sd_on)).check(matches(isDisplayed()));
 
-        TestUtil.nextPage();
-
         onView(withText(R.string.sd_50_dip_sample_1)).check(matches(isDisplayed()));
 
     }

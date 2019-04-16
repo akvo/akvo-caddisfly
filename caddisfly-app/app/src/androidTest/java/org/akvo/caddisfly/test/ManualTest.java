@@ -136,9 +136,15 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.fill_in_value_turbidity_tube)).check(matches(isDisplayed()));
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("12345"), closeSoftKeyboard());
 
-        TestUtil.nextPage();
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("1234"), closeSoftKeyboard());
+
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.clean_turbidity_tube)).check(matches(isDisplayed()));
 
@@ -158,20 +164,19 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.fill_in_value_turbidity_tube))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.enter_measured_value)).check(matches(isDisplayed()));
+
+        pressBack();
+
+        SystemClock.sleep(500);
 
         pressBack();
 
         onView(withText(R.string.skip)).perform(click());
 
-        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("12345"), closeSoftKeyboard());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-        onView(withText(R.string.submitResult)).perform(click());
-
-        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("1234"), closeSoftKeyboard());
+        SystemClock.sleep(500);
 
         onView(withText(R.string.submitResult)).perform(click());
 
@@ -195,27 +200,42 @@ public class ManualTest {
         onView(withText(R.string.sd_on))
                 .check(matches(isDisplayed()));
 
-        TestUtil.nextPage();
-
         onView(withText(R.string.sd_50_dip_sample_1))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.sd_fill_photo_fill_in))
+        onView(withText(R.string.sd_50_dip_sample_2))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
+
+        SystemClock.sleep(500);
+
+        onView(withText(R.string.takePhoto)).check(matches(isDisplayed())).perform(click());
+
+        SystemClock.sleep(500);
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("12345"), closeSoftKeyboard());
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("1234"), closeSoftKeyboard());
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("12"), closeSoftKeyboard());
+
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.sd_turn_off))
                 .check(matches(isDisplayed()));
 
-        TestUtil.nextPage();
-
         onView(withText(R.string.sd_rinse))
                 .check(matches(isDisplayed()));
-
-        TestUtil.nextPage();
 
         onView(withText(R.string.sd_maintenance))
                 .check(matches(isDisplayed()));
@@ -231,7 +251,7 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.sd_50_dip_sample_1))
+        onView(withText(R.string.sd_50_dip_sample_2))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
@@ -240,26 +260,13 @@ public class ManualTest {
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(500);
 
-        TestUtil.nextPage();
-
-        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("12345"), closeSoftKeyboard());
-
-        onView(withText(R.string.submitResult)).perform(click());
-
-        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("1234"), closeSoftKeyboard());
-
-        onView(withText(R.string.submitResult)).perform(click());
-
-        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("12"), closeSoftKeyboard());
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.submitResult)).perform(click());
 
@@ -283,27 +290,50 @@ public class ManualTest {
         onView(withText(R.string.sd_on))
                 .check(matches(isDisplayed()));
 
-        TestUtil.nextPage();
+        onView(withText(R.string.sd_70_dip_sample_1))
+                .check(matches(isDisplayed()));
 
-        onView(withText(R.string.sd_70_dip_sample))
+        onView(withText(R.string.sd_70_dip_sample_2))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.sd_fill_photo_fill_in))
-                .check(matches(isDisplayed()));
+        SystemClock.sleep(500);
 
-        TestUtil.nextPage();
+        onView(withText(R.string.takePhoto)).check(matches(isDisplayed())).perform(click());
+
+        SystemClock.sleep(500);
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("12345"), closeSoftKeyboard());
+
+        SystemClock.sleep(1000);
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("1234"), closeSoftKeyboard());
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("21"), closeSoftKeyboard());
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withText("ms/cm")).perform(click());
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withId(R.id.editResult)).perform(replaceText("20"));
+
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.sd_turn_off))
                 .check(matches(isDisplayed()));
 
-        TestUtil.nextPage();
-
         onView(withText(R.string.sd_70_rinse))
                 .check(matches(isDisplayed()));
-
-        TestUtil.nextPage();
 
         onView(withText(R.string.sd_maintenance))
                 .check(matches(isDisplayed()));
@@ -317,9 +347,7 @@ public class ManualTest {
         onView(withText(R.string.sd_on))
                 .check(matches(isDisplayed()));
 
-        TestUtil.nextPage();
-
-        onView(withText(R.string.sd_70_dip_sample))
+        onView(withText(R.string.sd_70_dip_sample_1))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
@@ -328,36 +356,13 @@ public class ManualTest {
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(500);
 
-        TestUtil.nextPage();
-
-        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("12345"), closeSoftKeyboard());
-
-        SystemClock.sleep(1000);
-
-        onView(withText(R.string.submitResult)).perform(click());
-
-        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("1234"), closeSoftKeyboard());
-
-        onView(withText(R.string.submitResult)).perform(click());
-
-        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("21"), closeSoftKeyboard());
-
-        onView(withText(R.string.submitResult)).perform(click());
-
-        onView(withText("ms/cm")).perform(click());
-
-        onView(withText(R.string.submitResult)).perform(click());
-
-        onView(withId(R.id.editResult)).perform(replaceText("20"));
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.submitResult)).perform(click());
 
@@ -365,7 +370,7 @@ public class ManualTest {
 
         clickExternalSourceButton(2);
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(500);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -375,29 +380,29 @@ public class ManualTest {
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(3000);
-
-        TestUtil.nextPage();
+        SystemClock.sleep(500);
 
         onView(withId(R.id.editResult)).perform(replaceText("200"));
 
-        SystemClock.sleep(3000);
+        SystemClock.sleep(500);
 
-        onView(withText(R.string.submitResult)).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText("μS/cm")).perform(click());
 
         onView(withId(R.id.editResult)).perform(replaceText("20001"));
 
-        onView(withText(R.string.submitResult)).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
         onView(withId(R.id.editResult)).perform(replaceText("20000"));
 
         onView(withText("ms/cm")).perform(click());
 
-        onView(withText(R.string.submitResult)).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText("μS/cm")).perform(click());
+
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.submitResult)).perform(click());
 

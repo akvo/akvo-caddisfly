@@ -50,7 +50,8 @@ import androidx.core.content.FileProvider;
 
 import static android.app.Activity.RESULT_OK;
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
-import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
+import static org.akvo.caddisfly.common.AppConfig.SKIP_PHOTO_VALIDATION;
+
 
 public class ResultPhotoFragment extends BaseFragment {
 
@@ -195,7 +196,7 @@ public class ResultPhotoFragment extends BaseFragment {
     }
 
     boolean isValid() {
-        return SKIP_RESULT_VALIDATION || (resultImagePath != null && !resultImagePath.isEmpty() && new File(resultImagePath).exists());
+        return SKIP_PHOTO_VALIDATION || (resultImagePath != null && !resultImagePath.isEmpty() && new File(resultImagePath).exists());
     }
 
     public String getImageFileName() {

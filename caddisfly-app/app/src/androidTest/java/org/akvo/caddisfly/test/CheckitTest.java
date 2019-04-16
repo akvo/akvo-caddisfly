@@ -182,32 +182,62 @@ public class CheckitTest {
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
+
+        pressBack();
+
+        SystemClock.sleep(500);
+
+        pressBack();
+
+        SystemClock.sleep(500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(3000);
-
-        TestUtil.nextPage();
+        SystemClock.sleep(1000);
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
 
         SystemClock.sleep(1000);
 
-        onView(withText(R.string.submitResult)).perform(click());
-
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("4.1"), closeSoftKeyboard());
 
-        onView(withText(R.string.submitResult)).perform(click());
+        SystemClock.sleep(1000);
+
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("3.98"), closeSoftKeyboard());
 
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+
+        onView(withText(R.string.skip)).perform(click());
+
+        SystemClock.sleep(1000);
+
+        onView(withText(R.string.takePhoto)).perform(click());
+
+        SystemClock.sleep(1000);
+
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("4.1"), closeSoftKeyboard());
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("3.98"), closeSoftKeyboard());
+
+        onView(withText(R.string.next)).perform(click());
+
+        SystemClock.sleep(1000);
+
         onView(withText(R.string.submitResult)).perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("Chlorine: 3.98 mg/l")));
-
+        assertNotNull(mDevice.findObject(By.text("Free chlorine: 3.98 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Total chlorine: 3.98 mg/l")));
     }
 }

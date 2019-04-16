@@ -54,7 +54,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     private void startTest() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container,
-                SwatchSelectFragment.newInstance(testResults, testInfo.getName().contains("HR")), "swatchSelect")
+                SwatchSelectFragment.newInstance(testResults, testInfo.getRanges()), "swatchSelect")
                 .commit();
     }
 

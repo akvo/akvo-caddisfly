@@ -33,7 +33,6 @@
     <string name="empty_turbidity_tube">Empty the tube with small intervals until you can see the black circle at the yellow bottom again and read out the turbidity on the side of the tube.</string>
     <string name="fill_in_value_turbidity_tube">Fill in the obtained turbidity value in the app.</string>
     <string name="clean_turbidity_tube">Empty the tube completely, clean if necessary, disconnect tubes and store them.</string>
-    <string name="sd_70_dip_sample">Remove protective cap, rinse the sensor with the sample water and immerse the instrument into the sample so that the instrument is submersed to the sealing ring level. Press briefly (*sd_on_off*) to freeze / unfreeze the measurement.</string>
     <string name="sd_70_rinse">Rinse the sensor with distilled water (never touch the electrode with anything) and place the protective cap back.</string>
 
     <!--pH Cl Manual Swatch Select Tester-->

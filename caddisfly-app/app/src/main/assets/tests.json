@@ -7525,7 +7525,7 @@
             "<b>round_off_test</b>",
             "1. sd_turn_off",
             "2. sd_70_rinse",
-            "sd_70_maintenance"
+            "sd_maintenance"
           ]
         }
       ],

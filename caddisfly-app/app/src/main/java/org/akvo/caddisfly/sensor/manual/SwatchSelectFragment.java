@@ -44,13 +44,13 @@ public class SwatchSelectFragment extends BaseFragment {
     private static final float BUTTON_START_ALPHA = 0.1f;
     private OnSwatchSelectListener mListener;
     private float[] mKey;
-    private boolean mRange;
+    private String range;
 
-    public static SwatchSelectFragment newInstance(float[] key, boolean isHighRange) {
+    public static SwatchSelectFragment newInstance(float[] key, String range) {
         SwatchSelectFragment fragment = new SwatchSelectFragment();
         Bundle args = new Bundle();
         args.putFloatArray(ARG_KEY, key);
-        args.putBoolean(ARG_RANGE, isHighRange);
+        args.putString(ARG_RANGE, range);
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,7 +60,7 @@ public class SwatchSelectFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mKey = getArguments().getFloatArray(ARG_KEY);
-            mRange = getArguments().getBoolean(ARG_RANGE);
+            range = getArguments().getString(ARG_RANGE);
         }
     }
 
@@ -81,7 +81,7 @@ public class SwatchSelectFragment extends BaseFragment {
 
         final SwatchSelectWidget swatchSelect = view.findViewById(R.id.compartments);
 
-        if (mRange){
+        if (range.contains("6.0")) {
             swatchSelect.setRange(2);
         }
 

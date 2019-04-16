@@ -27,7 +27,7 @@ public final class TestConstants {
     public static final String FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow";
 
     public static final int SENSOR_TESTS_COUNT = 3;
-    public static final int STRIP_TESTS_COUNT = 21;
+    public static final int STRIP_TESTS_COUNT = 22;
     public static final int MD610_TESTS_COUNT = 57;
     public static final int MANUAL_TESTS_COUNT = 19;
     public static final int MANUAL_SELECT_TESTS_COUNT = 2;
