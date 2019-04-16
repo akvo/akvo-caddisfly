@@ -76,7 +76,7 @@
     <string name="as_ins_5">Wait 20 minutes. Swirl twice during the reaction period.</string>
     <string name="as_ins_6">Remove the test strip and immediately from the cap and place the test strip facing <b>left</b> on the Colour Reference Card and press <b>Start</b>.</string>
     <string name="as_ins_7">Fill the square measuring vial to the top with sample (9.6 mL). Pour the sample into the reaction bottle.</string>
-    <string name="as_safety">DANGER: Hydrogen and arsine gases are generated during the test. Work in a well-ventilated area away from open flames and other sources of ignition. Review Material Safety Data Sheets for safe handling, storage and disposal information.</string>
+    <string name="as_safety"><b>DANGER</b>: Hydrogen and arsine gases are generated during the test. Work in a well-ventilated area away from open flames and other sources of ignition. Review Material Safety Data Sheets for safe handling, storage and disposal information.</string>
     <string name="dip_sample_60_back_forward_250_sample">Dip the strip into <b>250+ ml </b> sample and move back and forth for <b>60 seconds</b> in sample.</string>
     <string name="shake_excess_water_once">Shake <b>once </b> the excess water from test strip.</string>
 

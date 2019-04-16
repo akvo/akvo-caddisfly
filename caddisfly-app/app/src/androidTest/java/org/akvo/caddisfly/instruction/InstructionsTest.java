@@ -192,7 +192,7 @@ public class InstructionsTest {
                 break;
             }
         }
-        return pages;
+        return pages + 1;
     }
 
     @Test
@@ -297,6 +297,6 @@ public class InstructionsTest {
                 break;
             }
         }
-        return pages;
+        return pages + 1;
     }
 }

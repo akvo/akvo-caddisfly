@@ -147,6 +147,7 @@ public class ManualInstructions {
         Log.d("Caddisfly", jsArrayString.toString());
     }
 
+    @SuppressWarnings("SameParameterValue")
     private int navigateToTest(String tabName, int index, String id) {
 
         gotoSurveyForm();
@@ -185,9 +186,10 @@ public class ManualInstructions {
                 break;
             }
         }
-        return pages;
+        return pages + 1;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private int navigateToTest2(String tabName, int index, String id) {
 
         gotoSurveyForm();
@@ -215,16 +217,10 @@ public class ManualInstructions {
 
             } catch (Exception e) {
                 sleep(600);
-                Random random = new Random(Calendar.getInstance().getTimeInMillis());
-//                if (random.nextBoolean()) {
-//                    Espresso.pressBack();
-//                } else {
-//                    mDevice.pressBack();
-//                }
                 break;
             }
         }
-        return pages;
+        return pages + 1;
     }
 
     @Test

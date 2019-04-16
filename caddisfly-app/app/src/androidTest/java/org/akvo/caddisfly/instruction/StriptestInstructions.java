@@ -20,24 +20,29 @@
 package org.akvo.caddisfly.instruction;
 
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.repository.TestConfigRepository;
-import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.ui.TestActivity;
+import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -50,7 +55,6 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
@@ -59,13 +63,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
-import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
-import static org.akvo.caddisfly.util.TestHelper.loadData;
-import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
@@ -78,26 +78,27 @@ import static org.hamcrest.Matchers.is;
 @RunWith(AndroidJUnit4.class)
 public class StriptestInstructions {
 
+    private final StringBuilder jsArrayString = new StringBuilder();
+    private final StringBuilder listString = new StringBuilder();
+
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    // third parameter is set to false which means the activity is not started automatically
+    public ActivityTestRule<TestActivity> mActivityTestRule =
+            new ActivityTestRule<>(TestActivity.class, false, false);
 
     @BeforeClass
     public static void initialize() {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
-
-            for (int i = 0; i < 5; i++) {
-                mDevice.pressBack();
-            }
         }
     }
 
     @Before
     public void setUp() {
 
-        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
+//        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
-        clearPreferences(mActivityTestRule);
+//        clearPreferences(mActivityTestRule);
     }
 
     @Test
@@ -322,13 +323,8 @@ public class StriptestInstructions {
     }
 
     @Test
-    @Ignore
     @RequiresDevice
-    public void testInstructionsAll() {
-
-        goToMainScreen();
-
-        onView(withText(getString(mActivityTestRule.getActivity(), R.string.stripTest))).perform(click());
+    public void testInstructionsAllStripTests() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
         List<TestInfo> testList = testConfigRepository.getTests(TestType.STRIP_TEST);
@@ -337,28 +333,40 @@ public class StriptestInstructions {
 
             assertEquals(testList.get(i).getSubtype(), TestType.STRIP_TEST);
 
-            String id = testList.get(i).getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1);
+            String uuid = testList.get(i).getUuid();
+            String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (id.equalsIgnoreCase("aa4a4e3100c9")) {
-            navigateToTest(i, id);
+//            if (("ac33b44f9992, 32d9b8f4aecf").contains(id))
+//
+            {
+                Intent intent = new Intent();
+                intent.setType("text/plain");
+                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+                Bundle data = new Bundle();
+                data.putString(SensorConstants.RESOURCE_ID, uuid);
+                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+                intent.putExtras(data);
 
-//            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-//            }
+                mActivityTestRule.launchActivity(intent);
+
+                int pages = navigateToTest(id);
+
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+
+                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
+
+                TestHelper.getCurrentActivity().finish();
+                mActivityTestRule.finishActivity();
+            }
         }
 
-//        Log.e("Caddisfly", jsArrayString.toString());
+        Log.d("Caddisfly", jsArrayString.toString());
+        Log.d("Caddisfly", listString.toString());
 
     }
 
-    private int navigateToTest(int index, String id) {
-
-        ViewInteraction recyclerView = onView(
-                allOf(withId(R.id.list_types),
-                        childAtPosition(
-                                withClassName(is("android.widget.LinearLayout")),
-                                0)));
-        recyclerView.perform(actionOnItemAtPosition(index, click()));
+    private int navigateToTest(String id) {
 
         mDevice.waitForIdle();
 
@@ -368,25 +376,42 @@ public class StriptestInstructions {
 
         mDevice.waitForIdle();
 
-        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {
-            pages++;
-
             try {
-                takeScreenshot(id, i);
+                takeScreenshot(id, pages);
+
+                pages++;
+
+                if (("ac33b44f9992, 32d9b8f4aecf").contains(id)) {
+                    try {
+
+                        if (pages == 4) {
+                            //noinspection ConstantConditions
+                            if (TestHelper.mCurrentLanguage.equals("en")) {
+                                mDevice.click(100, 600);
+                            } else {
+                                mDevice.click(450, 600);
+                            }
+                            sleep(600);
+                            takeScreenshot(id, pages);
+                            pages++;
+                            sleep(600);
+                            mDevice.pressBack();
+                        }
+                    } catch (Exception ignore) {
+                    }
+                }
 
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
                 TestUtil.sleep(600);
-                Espresso.pressBack();
-                Espresso.pressBack();
-                TestUtil.sleep(600);
                 break;
             }
         }
-        return pages;
+        return pages + 1;
     }
 }

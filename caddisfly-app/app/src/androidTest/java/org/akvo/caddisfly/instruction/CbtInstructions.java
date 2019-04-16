@@ -82,6 +82,8 @@ import static org.hamcrest.Matchers.is;
 public class CbtInstructions {
 
     private final StringBuilder jsArrayString = new StringBuilder();
+    private final StringBuilder listString = new StringBuilder();
+
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
@@ -350,7 +352,10 @@ public class CbtInstructions {
 
             jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
+
         Log.d("Caddisfly", jsArrayString.toString());
+        Log.d("Caddisfly", listString.toString());
+
     }
 
     private int navigateToTest(int index, String id) {
@@ -373,10 +378,20 @@ public class CbtInstructions {
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {
-            pages++;
-
             try {
-                takeScreenshot(id, i);
+                takeScreenshot(id, pages);
+
+                pages++;
+
+                try {
+                    onView(withId(R.id.button_instructions)).perform(click());
+                    sleep(600);
+                    takeScreenshot(id, pages);
+                    pages++;
+                    sleep(600);
+                    mDevice.pressBack();
+                } catch (Exception ignore) {
+                }
 
                 onView(withId(R.id.image_pageRight)).perform(click());
 
