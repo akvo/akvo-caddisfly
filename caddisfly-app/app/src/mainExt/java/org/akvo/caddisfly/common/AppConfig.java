@@ -42,6 +42,16 @@ public final class AppConfig {
     public static final boolean SKIP_BLUETOOTH_SCAN = false;
 
     /**
+     * Stop result validation only for testing
+     */
+    public static final boolean SKIP_RESULT_VALIDATION = false;
+
+    /**
+     * Stop result validation only for testing
+     */
+    public static final boolean SKIP_PHOTO_VALIDATION = false;
+
+    /**
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
@@ -68,7 +78,7 @@ public final class AppConfig {
     /**
      * The sound volume for the beeps and other sound effects.
      */
-    public static final float SOUND_EFFECTS_VOLUME = 0.99f;
+    public static final float SOUND_EFFECTS_VOLUME = 0.02f;
 
     /**
      * To launch Flow app.

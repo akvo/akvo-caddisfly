@@ -65,7 +65,7 @@
     <string name="sd_50_dip_sample_1">Retirer cache de protection et rincez l\'électrode avec de l\'eau distillée.</string>
     <string name="sd_50_dip_sample_2">Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Agiter le capteur doucement pendant qu\'il est dans l\'échantillon.</string>
     <string name="sd_50_dip_sample_3">Appuyer brièvement sur (*sd_on_off*) pour geler/valider la valeur mesurée.</string>
-    <string name="sd_maintenance">Remarque: Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
+    <string name="sd_maintenance"><b>Remarque</b>: Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
     <string name="sd_70_dip_sample_1">Retirer cache de protection et rincez l\'électrode l\'échantillon d\'eau.</string>
     <string name="sd_70_dip_sample_2">Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Appuyer brièvement sur (*sd_on_off*) pour geler/valider la valeur mesurée.</string>
     <string name="wait_for_color_reaction">Attendre <b>Temps de %reactionTime1</b> pour une réaction complète de la couleur.</string>
