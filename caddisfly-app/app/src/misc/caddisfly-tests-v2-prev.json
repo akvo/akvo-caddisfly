@@ -7,6 +7,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "513210BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -17,12 +22,17 @@
       ]
     },
     {
-      "name": "Alkalinity-m HR",
+      "name": "Alkalinity-m",
       "uuid": "403af73f-377f-42ea-bba3-f9c88cfe97d2",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "513240BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -39,6 +49,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515460BT"
+        },
+        {
+          "code": "515470BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -55,6 +73,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "512580BT"
+        },
+        {
+          "code": "512590BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -71,6 +97,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "535500"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -81,12 +112,17 @@
       ]
     },
     {
-      "name": "Ammonia LR",
+      "name": "Ammonia",
       "uuid": "3221bdba-8898-4ae2-958f-5f6a1f949c8f",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "535600"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -97,12 +133,17 @@
       ]
     },
     {
-      "name": "Ammonia HR",
+      "name": "Ammonia",
       "uuid": "17ca9214-23d4-49bf-99cc-c0463db03a90",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "535650"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -119,6 +160,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515910BT"
+        },
+        {
+          "code": "515920BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -135,6 +184,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "56L025165"
+        },
+        {
+          "code": "56L025365"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -151,6 +208,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "511050BT"
+        },
+        {
+          "code": "511080BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -177,6 +242,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "511050BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -193,6 +263,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "471056"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -219,6 +294,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "471010, 471020"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -229,12 +309,20 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine HR",
+      "name": "Total, Free & Combined Chlorine",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "511500BT"
+        },
+        {
+          "code": "511590BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -255,12 +343,17 @@
       ]
     },
     {
-      "name": "Free Chlorine HR",
+      "name": "Free Chlorine",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "511500BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -277,6 +370,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530100"
+        },
+        {
+          "code": "530120"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -303,6 +404,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530100"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -313,12 +419,20 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine HR",
+      "name": "Total, Free & Combined Chlorine",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530100"
+        },
+        {
+          "code": "530120"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -339,12 +453,17 @@
       ]
     },
     {
-      "name": "Free Chlorine HR",
+      "name": "Free Chlorine",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530100"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -361,6 +480,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "537300"
+        },
+        {
+          "code": "537310"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -387,6 +514,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "537310"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -403,6 +535,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "537300"
+        },
+        {
+          "code": "537310"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -413,7 +553,7 @@
       ]
     },
     {
-      "name": "COD LR",
+      "name": "COD",
       "uuid": "f15575d4-141e-4696-9c99-59cc2d3153b9",
       "sample": "Water",
       "device": "Photometer",
@@ -429,7 +569,7 @@
       ]
     },
     {
-      "name": "COD MR",
+      "name": "COD",
       "uuid": "c99c85fa-ab1a-4065-b959-9991fb84dd90",
       "sample": "Water",
       "device": "Photometer",
@@ -445,7 +585,7 @@
       ]
     },
     {
-      "name": "COD HR",
+      "name": "COD",
       "uuid": "cf6a1ce4-0e5d-42a9-827d-606b771e0ffe",
       "sample": "Water",
       "device": "Photometer",
@@ -461,12 +601,51 @@
       ]
     },
     {
+      "name": "Copper",
+      "uuid": "dd4c2d20-0a23-4e2c-9a6a-1dfdf7533b50",
+      "sample": "Water",
+      "device": "Photometer",
+      "brand": "Lovibond",
+      "model": "MD610",
+      "reagents": [
+        {
+          "code": "513550BT"
+        },
+        {
+          "code": "513560BT"
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Free Copper",
+          "unit": "mg/l",
+          "range": "0.05-5"
+        },
+        {
+          "id": 2,
+          "name": "Combined Copper",
+          "unit": "mg/l"
+        },
+        {
+          "id": 3,
+          "name": "Total Copper",
+          "unit": "mg/l"
+        }
+      ]
+    },
+    {
       "name": "Cyanide",
       "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "2418875"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -483,6 +662,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "467481"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -499,6 +683,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515650"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -515,6 +704,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "517761BT"
+        },
+        {
+          "code": "517761BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -531,6 +728,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515660BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -541,12 +743,17 @@
       ]
     },
     {
-      "name": "Total Hardness HR",
+      "name": "Total Hardness",
       "uuid": "5d82d3a3-cfb3-40fb-a739-49e308b0f9b4",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515660BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -563,6 +770,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515370BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -579,6 +791,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530560"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -595,6 +812,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530550"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -605,12 +827,17 @@
       ]
     },
     {
-      "name": "Iron LR",
+      "name": "Iron",
       "uuid": "1f704c37-9dbe-4ca7-a3da-00adc1e5fa0b",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "56L006165"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -621,12 +848,20 @@
       ]
     },
     {
-      "name": "Iron HR",
+      "name": "Iron",
       "uuid": "bdcf8941-f7df-4c04-9242-fc8a5b3af672",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "56L006365"
+        },
+        {
+          "code": "56L016065"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -643,6 +878,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "SDT349-50"
+        },
+        {
+          "code": "SDT350-50"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -653,12 +896,41 @@
       ]
     },
     {
+      "name": "Nickel",
+      "uuid": "01b9ddba-c93c-416f-9420-a444a7fbd36f",
+      "sample": "Water",
+      "device": "Photometer",
+      "brand": "Lovibond",
+      "model": "MD610",
+      "reagents": [
+        {
+          "code": "515630BT"
+        },
+        {
+          "code": "515640BT"
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Nickel",
+          "unit": "mg/l",
+          "range": "0.1-10"
+        }
+      ]
+    },
+    {
       "name": "Nitrate",
       "uuid": "a213cf40-7cb8-4828-872e-25bf2b8b12aa",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "535580"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -675,6 +947,14 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "502810, 465230"
+        },
+        {
+          "code": "512310BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -691,6 +971,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "512310BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -701,12 +986,17 @@
       ]
     },
     {
-      "name": "Nitrite LR",
+      "name": "Nitrite",
       "uuid": "1ad51f5d-bfea-4a49-8797-efd899d7f484",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "530980"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -717,12 +1007,20 @@
       ]
     },
     {
-      "name": "Phosphate (ortho) LR",
+      "name": "Phosphate (ortho)",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "513040BT"
+        },
+        {
+          "code": "513050BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -733,12 +1031,20 @@
       ]
     },
     {
-      "name": "Phosphate (ortho) HR",
+      "name": "Phosphate (ortho)",
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515810BT"
+        },
+        {
+          "code": "515820BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -755,6 +1061,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "531550"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -765,12 +1076,20 @@
       ]
     },
     {
-      "name": "Phosphate HR",
+      "name": "Phosphate",
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
       "sample": "Water",
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "56L022865"
+        },
+        {
+          "code": "56L022965"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -787,6 +1106,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515700BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -802,6 +1126,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "511770BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -817,6 +1146,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "471040"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -832,6 +1166,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515710"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -847,6 +1186,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515670"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -863,6 +1207,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "515450BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -879,6 +1228,11 @@
       "device": "Photometer",
       "brand": "Lovibond",
       "model": "MD610",
+      "reagents": [
+        {
+          "code": "532160"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -917,6 +1271,30 @@
           "name": "Turbidity",
           "unit": "FAU",
           "range": "0-1000"
+        }
+      ]
+    },
+    {
+      "name": "Zinc",
+      "uuid": "b662c6f2-9718-4276-9e67-1d3ae0c1651d",
+      "sample": "Water",
+      "device": "Photometer",
+      "brand": "Lovibond",
+      "model": "MD610",
+      "reagents": [
+        {
+          "code": "512620BT"
+        },
+        {
+          "code": "512390BT"
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Zinc",
+          "unit": "mg/l",
+          "range": "0.02-0.9"
         }
       ]
     },
@@ -978,6 +1356,11 @@
       "brand": "Lovibond",
       "model": "CHECKIT Comparator",
       "hasImage": true,
+      "reagents": [
+        {
+          "code": "511310BT"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -996,6 +1379,11 @@
       "brand": "Lovibond",
       "model": "CHECKIT Comparator",
       "hasImage": true,
+      "reagents": [
+        {
+          "code": "467481"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -1014,6 +1402,11 @@
       "brand": "Lovibond",
       "model": "CHECKIT Comparator",
       "hasImage": true,
+      "reagents": [
+        {
+          "code": "515380"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -1032,6 +1425,14 @@
       "brand": "Lovibond",
       "model": "CHECKIT Comparator",
       "hasImage": true,
+      "reagents": [
+        {
+          "code": "465230"
+        },
+        {
+          "code": "502810"
+        }
+      ],
       "results": [
         {
           "id": 1,
@@ -1050,6 +1451,11 @@
       "brand": "Lovibond",
       "model": "CHECKIT Comparator",
       "hasImage": true,
+      "reagents": [
+        {
+          "code": "535200"
+        }
+      ],
       "results": [
         {
           "id": 1,
