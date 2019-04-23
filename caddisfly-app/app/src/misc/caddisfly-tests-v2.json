@@ -202,7 +202,7 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
       "sample": "Water",
       "device": "Photometer",
@@ -238,7 +238,7 @@
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
       "sample": "Water",
       "device": "Photometer",
@@ -259,7 +259,7 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
       "sample": "Water",
       "device": "Photometer",
@@ -292,7 +292,7 @@
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
       "sample": "Water",
       "device": "Photometer",
@@ -313,7 +313,7 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
       "sample": "Water",
       "device": "Photometer",
@@ -349,7 +349,7 @@
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
       "sample": "Water",
       "device": "Photometer",
@@ -370,7 +370,7 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
       "sample": "Water",
       "device": "Photometer",
@@ -406,7 +406,7 @@
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
       "sample": "Water",
       "device": "Photometer",
@@ -427,7 +427,7 @@
       ]
     },
     {
-      "name": "Total, Free & Combined Chlorine",
+      "name": "Chlorine",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
       "sample": "Water",
       "device": "Photometer",
@@ -463,7 +463,7 @@
       ]
     },
     {
-      "name": "Free Chlorine",
+      "name": "Chlorine",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
       "sample": "Water",
       "device": "Photometer",
@@ -484,7 +484,7 @@
       ]
     },
     {
-      "name": "Chromium (VI, III, Total)",
+      "name": "Chromium",
       "uuid": "b6b46404-3392-4718-ac35-d2379c0f7d6d",
       "sample": "Water",
       "device": "Photometer",
@@ -520,7 +520,7 @@
       ]
     },
     {
-      "name": "Chromium (VI)",
+      "name": "Chromium",
       "uuid": "b6b12955-46ae-4be7-8c57-e2ccb417bd7b",
       "sample": "Water",
       "device": "Photometer",
@@ -541,7 +541,7 @@
       ]
     },
     {
-      "name": "Total Chromium (III+VI)",
+      "name": "Chromium",
       "uuid": "cdbbd63a-2740-4e42-9b4b-5a3d490d9df3",
       "sample": "Water",
       "device": "Photometer",
@@ -817,7 +817,7 @@
       ]
     },
     {
-      "name": "Total Iron",
+      "name": "Iron",
       "uuid": "928f2cf7-7c98-4707-af3b-2e12e0d2d46b",
       "sample": "Water",
       "device": "Photometer",
@@ -1021,7 +1021,7 @@
       ]
     },
     {
-      "name": "Phosphate (ortho)",
+      "name": "Phosphate",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
       "sample": "Water",
       "device": "Photometer",
@@ -1045,7 +1045,7 @@
       ]
     },
     {
-      "name": "Phosphate (ortho)",
+      "name": "Phosphate",
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
       "sample": "Water",
       "device": "Photometer",
@@ -1069,7 +1069,7 @@
       ]
     },
     {
-      "name": "Phosphate (ortho)",
+      "name": "Phosphate",
       "uuid": "ef94c4fc-be81-4a25-b879-7c0ab18efe43",
       "sample": "Water",
       "device": "Photometer",
@@ -1363,7 +1363,7 @@
       ]
     },
     {
-      "name": "Alkalinity Total M",
+      "name": "Alkalinity-m",
       "uuid": "cbcad2d6-0266-429a-a6dd-340d80c7833e",
       "sample": "Water",
       "device": "Tester",
@@ -1905,7 +1905,7 @@
       ]
     },
     {
-      "name": "Nitrate - N & Nitrite - N",
+      "name": "Nitrate, Nitrite",
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "sample": "Water",
       "device": "Test Strip",
@@ -1930,7 +1930,7 @@
       ]
     },
     {
-      "name": "Nitrate 100",
+      "name": "Nitrate, Nitrite",
       "uuid": "77957656-3b72-4f0f-9507-d555f04db952",
       "sample": "Water",
       "device": "Test Strip",
@@ -2041,7 +2041,7 @@
       ]
     },
     {
-      "name": "Total & Free Chlorine",
+      "name": "Chlorine",
       "uuid": "bf1c19c0-9788-4e26-999e-1b5c6ca28111",
       "sample": "Water",
       "device": "Test Strip",
@@ -2066,7 +2066,7 @@
       ]
     },
     {
-      "name": "Total Iron",
+      "name": "Iron",
       "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
       "sample": "Water",
       "device": "Test Strip",
@@ -2084,7 +2084,7 @@
       ]
     },
     {
-      "name": "Total Iron",
+      "name": "Iron",
       "uuid": "5c90472e-9c06-4c7c-9f62-4c5cbcf6b1c1",
       "sample": "Water",
       "device": "Test Strip",

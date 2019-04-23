@@ -22,6 +22,14 @@ package org.akvo.caddisfly.instruction;
 
 import android.util.Log;
 
+import androidx.lifecycle.ViewModelProviders;
+import androidx.test.espresso.Espresso;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.RequiresDevice;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
@@ -38,14 +46,6 @@ import org.junit.runner.RunWith;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
-
-import androidx.lifecycle.ViewModelProviders;
-import androidx.test.espresso.Espresso;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
-import androidx.test.filters.RequiresDevice;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.uiautomator.UiDevice;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -89,34 +89,6 @@ public class ManualInstructions {
     public void setUp() {
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
         clearPreferences(mActivityTestRule);
-    }
-
-    @Test
-    @RequiresDevice
-    public void testInstructionsAll() {
-
-        final TestListViewModel viewModel =
-                ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
-
-        List<TestInfo> testList = viewModel.getTests(TestType.MANUAL);
-
-        for (int i = 0; i < TestConstants.MANUAL_TESTS_COUNT; i++) {
-            TestInfo testInfo = testList.get(i);
-
-            String id = testInfo.getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1);
-
-            int pages = navigateToTest2("Manual", i, id);
-
-            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
-
-            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
-
-            mDevice.pressBack();
-
-            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-        }
-        Log.d("Caddisfly", jsArrayString.toString());
     }
 
     @Test
@@ -183,40 +155,6 @@ public class ManualInstructions {
                 } else {
                     mDevice.pressBack();
                 }
-                break;
-            }
-        }
-        return pages + 1;
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    private int navigateToTest2(String tabName, int index, String id) {
-
-        gotoSurveyForm();
-
-        TestUtil.nextSurveyPage(tabName);
-
-        clickExternalSourceButton(index);
-
-        mDevice.waitForIdle();
-
-        sleep(1000);
-
-        takeScreenshot(id, -1);
-
-        mDevice.waitForIdle();
-
-        int pages = 0;
-        for (int i = 0; i < 17; i++) {
-            pages++;
-
-            try {
-                takeScreenshot(id, i);
-
-                onView(withId(R.id.image_pageRight)).perform(click());
-
-            } catch (Exception e) {
-                sleep(600);
                 break;
             }
         }

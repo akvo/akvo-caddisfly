@@ -24,6 +24,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.filters.RequiresDevice;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.SensorConstants;
@@ -43,13 +50,6 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
-import androidx.test.filters.RequiresDevice;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.uiautomator.UiDevice;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -64,12 +64,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
-import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -212,117 +210,6 @@ public class StriptestInstructions {
 
     }
 
-    @Test
-    public void ironStripTestInstructions() {
-
-        goToMainScreen();
-
-        gotoSurveyForm();
-
-        nextSurveyPage("Strip Tests");
-
-        clickExternalSourceButton(0);
-
-        sleep(1000);
-
-        mDevice.waitForIdle();
-
-        TestUtil.sleep(1000);
-
-        onView(withText("Water - Total Iron"))
-                .check(matches(isDisplayed()));
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
-
-        onView(withText(R.string.fill_half_with_sample))
-                .check(matches(isDisplayed()));
-
-        onView(withText("Water - Total Iron"))
-                .check(matches(isDisplayed()));
-
-        TestUtil.nextPage();
-
-        onView(withText(R.string.open_one_foil_and_add_powder))
-                .check(matches(isDisplayed()));
-
-        onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()));
-
-        onView(withId(R.id.viewPager))
-                .perform(swipeLeft());
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription(R.string.navigate_up),
-                        withParent(withId(R.id.toolbar)),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
-
-//        ViewInteraction imageView2 = onView(
-//                allOf(withId(R.id.imageBrand),
-//                        childAtPosition(
-//                                childAtPosition(
-//                                        withId(R.id.coordinatorLayout),
-//                                        0),
-//                                1),
-//                        isDisplayed()));
-//        imageView2.check(matches(isDisplayed()));
-
-        ViewInteraction button1 = onView(
-                allOf(withId(R.id.button_prepare),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                0),
-                        isDisplayed()));
-        button1.check(matches(isDisplayed()));
-
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
-
-        pressBack();
-
-//        ViewInteraction imageView3 = onView(
-//                allOf(withId(R.id.imageBrand),
-//                        childAtPosition(
-//                                childAtPosition(
-//                                        withId(R.id.coordinatorLayout),
-//                                        0),
-//                                1),
-//                        isDisplayed()));
-//        imageView3.check(matches(isDisplayed()));
-
-        ViewInteraction button2 = onView(
-                allOf(withId(R.id.button_prepare),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                0),
-                        isDisplayed()));
-        button2.check(matches(isDisplayed()));
-
-        onView(allOf(withContentDescription(R.string.navigate_up),
-                withParent(withId(R.id.toolbar)),
-                isDisplayed())).perform(click());
-
-    }
-
-    @Test
     @RequiresDevice
     public void testInstructionsAllStripTests() {
 
