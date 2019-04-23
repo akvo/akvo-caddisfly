@@ -8,7 +8,6 @@
       "deviceId": "SoilEC",
       "brand": "Caddisfly",
       "image": "Caddisfly-Soil-EC",
-      "imageScale": "centerCrop",
       "ranges": "50,12800",
       "responseFormat": "$2,$1",
       "instructions": [
@@ -34,7 +33,6 @@
       "deviceId": "Soil Moisture",
       "brand": "Caddisfly",
       "image": "Caddisfly-Soil-Moisture",
-      "imageScale": "centerCrop",
       "ranges": "0,100",
       "responseFormat": "$1",
       "instructions": [
@@ -55,7 +53,6 @@
       "deviceId": "WaterEC",
       "brand": "Caddisfly",
       "image": "Caddisfly-Water-EC",
-      "imageScale": "centerCrop",
       "ranges": "0,12500",
       "responseFormat": "$2,$1",
       "instructions": [
@@ -896,7 +893,6 @@
       "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
       "brand": "EZ Arsenic High Range, HACH 2822800",
       "image": "HACH-2822800-4000",
-      "imageScale": "centerCrop",
       "groupingType": "INDIVIDUAL",
       "hasImage": true,
       "length": 82.3,
@@ -985,7 +981,6 @@
       "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
       "brand": "EZ Arsenic High Range, HACH 2822800",
       "image": "HACH-2822800-500",
-      "imageScale": "centerCrop",
       "groupingType": "INDIVIDUAL",
       "hasImage": true,
       "length": 82.3,
@@ -2679,7 +2674,6 @@
       "md610_id": "30",
       "uuid": "85e9bea2-8538-4759-a46a-46459783c2d3",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "ALKA-M-PHOTOMETER",
@@ -2745,7 +2739,6 @@
       "md610_id": "31",
       "uuid": "403af73f-377f-42ea-bba3-f9c88cfe97d2",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "ALKA-M-HR PHOTOMETER",
@@ -2821,7 +2814,6 @@
       "md610_id": "40",
       "uuid": "76defb64-592f-405c-b491-77ffa76fbad8",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "ALUMINIUM No. 1",
@@ -2899,7 +2891,6 @@
       "md610_id": "60",
       "uuid": "f0d60451-a220-4113-821d-3a658167cc9f",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "AMMONIA No. 1",
@@ -2977,7 +2968,6 @@
       "md610_id": "62",
       "uuid": "538ab4d3-706b-4c5e-93a9-adb5c13b1be9",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F10 (Vario Ammonia Salicylate F5)",
@@ -3081,7 +3071,6 @@
       "md610_id": "65",
       "uuid": "3221bdba-8898-4ae2-958f-5f6a1f949c8f",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F5",
@@ -3177,7 +3166,6 @@
       "md610_id": "66",
       "uuid": "17ca9214-23d4-49bf-99cc-c0463db03a90",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Vario Ammonia Salicylate F5",
@@ -3273,7 +3261,6 @@
       "md610_id": "90",
       "uuid": "4f8fcb4b-35f6-40df-aa1c-c3f4a96352d4",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "CHLORIDE T1",
@@ -3351,7 +3338,6 @@
       "md610_id": "92",
       "uuid": "e2849dba-6486-4ceb-b5fd-58472d61fe5e",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "20 drops KS251 (Chloride Reagent A)",
@@ -3433,7 +3419,6 @@
       "md610_id": "100",
       "uuid": "69f3e1f9-0d74-4ab5-aa32-6431b8d3b088",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "DPD No. 1",
@@ -3546,7 +3531,6 @@
       "md610_id": "100",
       "uuid": "6450764c-4a97-4d45-adeb-ffd15786c8c3",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "DPD No. 1",
@@ -3617,7 +3601,6 @@
       "md610_id": "101",
       "uuid": "6ae5a50f-06cd-4869-89b3-313b26ca8b54",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
@@ -3727,7 +3710,6 @@
       "md610_id": "101",
       "uuid": "e4996792-33e7-46d3-a348-6f37f6f56af1",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "• 6 drops of DPD 1 buffer solution • 2 drops of DPD 1 reagent solution",
@@ -3797,7 +3779,6 @@
       "md610_id": "103",
       "uuid": "280b6b7b-1781-4923-b0da-60c2a8f2f711",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "DPD No. 1 HR",
@@ -3910,7 +3891,6 @@
       "md610_id": "103",
       "uuid": "7c6efb6a-bc98-4c00-a9f9-1fee29ebb460",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "DPD No. 1 HR",
@@ -3981,7 +3961,6 @@
       "md610_id": "110",
       "uuid": "925a8f1e-3d0c-4cd7-b9c2-0bfe7f37779d",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
@@ -4093,7 +4072,6 @@
       "md610_id": "110",
       "uuid": "c1159ae9-dd68-4e25-ba86-5167d31c2f9e",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
@@ -4157,7 +4135,6 @@
       "md610_id": "111",
       "uuid": "3934797e-8d83-4d2c-96e8-ad0e52a77be2",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
@@ -4268,7 +4245,6 @@
       "md610_id": "111",
       "uuid": "cf4822db-15cc-4aaa-91f5-cfb2ea45aabc",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "VARIO Chlorine FREE-DPD/F10",
@@ -4331,7 +4307,6 @@
       "md610_id": "125",
       "uuid": "b6b46404-3392-4718-ac35-d2379c0f7d6d",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "PERSULF.RGT FOR CR",
@@ -4477,7 +4452,6 @@
       "md610_id": "125",
       "uuid": "b6b12955-46ae-4be7-8c57-e2ccb417bd7b",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "CHROMIUM HEXAVALENT",
@@ -4554,7 +4528,6 @@
       "md610_id": "125",
       "uuid": "cdbbd63a-2740-4e42-9b4b-5a3d490d9df3",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "PERSULF.RGT FOR CR",
@@ -4661,7 +4634,6 @@
       "md610_id": "130",
       "uuid": "f15575d4-141e-4696-9c99-59cc2d3153b9",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "sampleQuantity": "2",
       "ranges": "0,150",
       "selectInstruction": "select_test_instruction",
@@ -4742,7 +4714,6 @@
       "md610_id": "131",
       "uuid": "c99c85fa-ab1a-4065-b959-9991fb84dd90",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "sampleQuantity": "2",
       "ranges": "0,1500",
       "selectInstruction": "select_test_instruction",
@@ -4823,7 +4794,6 @@
       "md610_id": "132",
       "uuid": "cf6a1ce4-0e5d-42a9-827d-606b771e0ffe",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "sampleQuantity": "0.2",
       "ranges": "0,15",
       "selectInstruction": "select_test_instruction",
@@ -4904,7 +4874,6 @@
       "md610_id": "150",
       "uuid": "dd4c2d20-0a23-4e2c-9a6a-1dfdf7533b50",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "COPPER No. 1",
@@ -5016,7 +4985,6 @@
       "md610_id": "157",
       "uuid": "6ecb41e7-b962-4a50-8408-b5c608bf86e4",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Cyanide-11",
@@ -5115,7 +5083,6 @@
       "md610_id": "170",
       "uuid": "d839537b-8106-44e8-953a-6060e4dbe59d",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "2 ml SPADNS",
@@ -5179,7 +5146,6 @@
       "md610_id": "190",
       "uuid": "3e7c94de-1963-4b59-b196-de40aa126a24",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "CALCHECK",
@@ -5262,7 +5228,6 @@
       "md610_id": "191",
       "uuid": "072cab32-3e4c-41f3-8378-e14626afa5b0",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "CALCIO H No.1",
@@ -5341,7 +5306,6 @@
       "md610_id": "200",
       "uuid": "d4d57975-5e87-4ba9-b9d1-09ec2eb8f500",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "HARDCHECK P",
@@ -5407,7 +5371,6 @@
       "md610_id": "201",
       "uuid": "5d82d3a3-cfb3-40fb-a739-49e308b0f9b4",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "HARDCHECK P",
@@ -5473,7 +5436,6 @@
       "md610_id": "220",
       "uuid": "ac65e12d-632a-439d-b841-383b1b9b7026",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "IRON LR",
@@ -5539,7 +5501,6 @@
       "md610_id": "222",
       "uuid": "7a9457b0-96c2-487d-b3d3-c52c50fb2279",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Vario Ferro F10",
@@ -5604,7 +5565,6 @@
       "md610_id": "223",
       "uuid": "928f2cf7-7c98-4707-af3b-2e12e0d2d46b",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Vario IRON TPTZ F10",
@@ -5686,7 +5646,6 @@
       "md610_id": "225",
       "uuid": "1f704c37-9dbe-4ca7-a3da-00adc1e5fa0b",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "10 drops KS61 (Ferrozine/Thioglycolate)",
@@ -5751,7 +5710,6 @@
       "md610_id": "227",
       "uuid": "bdcf8941-f7df-4c04-9242-fc8a5b3af672",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "10 drops KS63 (Thioglycolate)",
@@ -5833,7 +5791,6 @@
       "md610_id": "240",
       "uuid": "21c1bc13-51c2-4770-8fae-7d0685b49370",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Manganese LR No 1",
@@ -5911,7 +5868,6 @@
       "md610_id": "257",
       "uuid": "01b9ddba-c93c-416f-9420-a444a7fbd36f",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "NICKEL No. 1",
@@ -5989,7 +5945,6 @@
       "md610_id": "265",
       "uuid": "a213cf40-7cb8-4828-872e-25bf2b8b12aa",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Vario Nitrate Chromotropic",
@@ -6064,7 +6019,6 @@
       "md610_id": "260",
       "uuid": "252298b1-5c2b-4b7d-9385-cc25d617725d",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "NITRATE TEST",
@@ -6177,7 +6131,6 @@
       "md610_id": "270",
       "uuid": "22963cac-e81d-43db-a84b-e71c27a3dd60",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "NITRITE LR",
@@ -6243,7 +6196,6 @@
       "md610_id": "272",
       "uuid": "1ad51f5d-bfea-4a49-8797-efd899d7f484",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Vario Nitri 3",
@@ -6308,7 +6260,6 @@
       "md610_id": "320",
       "uuid": "8e096f48-19bf-4446-8fc7-a824d0b00f7c",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "PHOSPHATE LR No. 1",
@@ -6386,7 +6337,6 @@
       "md610_id": "321",
       "uuid": "853d210d-647d-4482-b57e-f24ff0422bd3",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "PHOSPHATE HR P1",
@@ -6464,7 +6414,6 @@
       "md610_id": "323",
       "uuid": "ef94c4fc-be81-4a25-b879-7c0ab18efe43",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "VARIO Phosphate Rgt. F10",
@@ -6529,7 +6478,6 @@
       "md610_id": "335",
       "uuid": "eb1f2bd6-a505-43b2-ba67-73f866e8d1ac",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "25 drops KS228 (Ammonium Molybdate)",
@@ -6621,7 +6569,6 @@
       "md610_id": "329",
       "uuid": "58bd3f92-7092-4bfa-ac4a-1f3f24b85b6c",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "BROMOCRESOLPURPLE PHOTOMETER",
@@ -6685,7 +6632,6 @@
       "md610_id": "330",
       "uuid": "6b6e9183-215f-4dc2-94a9-68444b1ec0df",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "PHENOL RED PHOTOMETER",
@@ -6749,7 +6695,6 @@
       "md610_id": "331",
       "uuid": "976a33ff-a5cd-4a21-98ed-f07cd94f018e",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "6 drops of PHENOL RED solution",
@@ -6812,7 +6757,6 @@
       "md610_id": "332",
       "uuid": "635fe6af-b66b-48b4-aa62-0b6a8db0a493",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "THYMOLBLUE PHOTOMETER",
@@ -6876,7 +6820,6 @@
       "md610_id": "340",
       "uuid": "6b485134-e6e5-4db1-88b3-d96ff081e629",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Potassium T",
@@ -6941,7 +6884,6 @@
       "md610_id": "355",
       "uuid": "4275391e-1498-4623-a068-e3f40dea8c29",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Sulfate T",
@@ -7007,7 +6949,6 @@
       "md610_id": "360",
       "uuid": "64248882-405c-4ec2-b433-5977bf505ffb",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "VARIO Sulpha 4/F10",
@@ -7072,7 +7013,6 @@
       "md610_id": "384",
       "uuid": "51c6bbf7-f027-478d-8a60-37404537d819",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "sampleQuantity": "10",
       "ranges": "0,750",
       "selectInstruction": "select_test_instruction",
@@ -7136,7 +7076,6 @@
       "md610_id": "386",
       "uuid": "90d6c006-2646-4c79-aa17-bb0ec47e2007",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "sampleQuantity": "10",
       "ranges": "0,1000",
       "selectInstruction": "select_test_instruction",
@@ -7195,7 +7134,6 @@
       "md610_id": "400",
       "uuid": "b662c6f2-9718-4276-9e67-1d3ae0c1651d",
       "brand": "Lovibond MD610",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "COPPER / ZINC LR",
@@ -7292,7 +7230,6 @@
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
       "brand": "Aquagenx",
       "sampleQuantity": "100",
-      "imageScale": "centerCrop",
       "brandUrl": "www.aquagenx.com",
       "hasImage": true,
       "instructions": [
@@ -7379,7 +7316,6 @@
       "uuid": "5baa9d29-b271-4521-b05f-4bfd645c26cf",
       "brand": "Aquagenx",
       "sampleQuantity": "10",
-      "imageScale": "centerCrop",
       "brandUrl": "www.aquagenx.com",
       "hasImage": true,
       "instructions": [
@@ -7467,7 +7403,6 @@
       "subtype": "manual",
       "uuid": "dbd058b6-29ed-4c7f-8b11-fcdae725a518",
       "brand": "Lovibond SD 50",
-      "imageScale": "centerCrop",
       "ranges": "0,14",
       "hasImage": true,
       "hasEndInstruction": "true",
@@ -7507,7 +7442,6 @@
       "subtype": "manual",
       "uuid": "578c5768-273d-455f-ba12-57a6ced96c17",
       "brand": "Lovibond SD 70",
-      "imageScale": "centerCrop",
       "ranges": "0,20000",
       "hasImage": true,
       "hasEndInstruction": "true",
@@ -7544,7 +7478,6 @@
       "subtype": "manual",
       "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
       "brand": "DelAgua Tube",
-      "imageScale": "centerCrop",
       "ranges": "0,2000",
       "hasEndInstruction": "true",
       "instructions": [
@@ -7581,7 +7514,6 @@
       "subtype": "manual_color_select",
       "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
       "brand": "Lovibond Tester",
-      "imageScale": "centerCrop",
       "ranges": "6.8,8.2,0.1,3.0",
       "hasEndInstruction": "false",
       "instructions": [
@@ -7641,7 +7573,6 @@
       "subtype": "manual_color_select",
       "uuid": "63e0e106-6ff6-4f57-a169-a32a4a821d42",
       "brand": "Lovibond Tester",
-      "imageScale": "centerCrop",
       "ranges": "6.8,8.2,0.5,6.0",
       "hasEndInstruction": "false",
       "instructions": [
@@ -7701,7 +7632,6 @@
       "subtype": "manual",
       "uuid": "cbcad2d6-0266-429a-a6dd-340d80c7833e",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "ALKACHECK",
@@ -7773,7 +7703,6 @@
       "subtype": "manual",
       "uuid": "d6ab94a9-e048-4c1a-a152-a885cd2180fa",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "ALUMINIUM No. 1",
@@ -7858,7 +7787,6 @@
       "subtype": "manual",
       "uuid": "07dbd69d-64e7-46bc-898f-a9773fd1de64",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "AMMONIA No. 1",
@@ -7943,7 +7871,6 @@
       "subtype": "manual",
       "uuid": "57130c69-c39a-42de-8b0a-cd66ecab2794",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "DPD No. 1 (R)",
@@ -8056,7 +7983,6 @@
       "subtype": "manual",
       "uuid": "485a7b84-ba54-4cc8-a222-79586d9319c8",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "DPD No. 1 (R)",
@@ -8169,7 +8095,6 @@
       "subtype": "manual",
       "uuid": "472e5a45-42b4-4712-93bb-5c79e970402d",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "COPPER/ZINC LR",
@@ -8269,7 +8194,6 @@
       "subtype": "manual",
       "uuid": "ac6410bf-b5a3-4040-8048-ddf381223a3b",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "SPADNS",
@@ -8342,7 +8266,6 @@
       "subtype": "manual",
       "uuid": "d37cb613-9489-485b-bca6-ffe95e0c3fad",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "IRON LR",
@@ -8416,7 +8339,6 @@
       "subtype": "manual",
       "uuid": "66f5badc-fa4b-474e-9e0a-0de4bd9a8243",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "IRON HR",
@@ -8490,7 +8412,6 @@
       "subtype": "manual",
       "uuid": "01f43523-7eb8-4c19-8790-6add5d36b6a3",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "VARIO Ascorbic Acid Powder Pack",
@@ -8580,7 +8501,6 @@
       "subtype": "manual",
       "uuid": "e4934b9f-bdc7-41a3-aca6-883bf6e9ff63",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "NITRATE-Test",
@@ -8708,7 +8628,6 @@
       "subtype": "manual",
       "uuid": "8fe520e7-aca7-4691-b7b5-9abfd8788c66",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "NITRITE LR",
@@ -8782,7 +8701,6 @@
       "subtype": "manual",
       "uuid": "5e2910c9-01e4-43c9-bb81-65bd28a52df0",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "UNIVERSAL pH",
@@ -8854,7 +8772,6 @@
       "subtype": "manual",
       "uuid": "7108f891-1c79-4b0f-8e0a-adc7ce5a4348",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Phosphate 3",
@@ -8928,7 +8845,6 @@
       "subtype": "manual",
       "uuid": "bec2a100-6fa1-4f3a-82f1-52cd7f2938b0",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Phosphate LR No. 1",
@@ -9012,7 +8928,6 @@
       "subtype": "manual",
       "uuid": "5191f203-d60c-4f47-a38b-569c34f5fc54",
       "brand": "Lovibond CHECKIT Comparator",
-      "imageScale": "centerCrop",
       "reagents": [
         {
           "name": "Phosphate HR tablet",

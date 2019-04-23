@@ -56,8 +56,8 @@ public final class AppConfig {
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
     public static final boolean APP_EXPIRY = false;
-    public static final int APP_EXPIRY_DAY = 25;
-    public static final int APP_EXPIRY_MONTH = 5;
+    public static final int APP_EXPIRY_DAY = 29;
+    public static final int APP_EXPIRY_MONTH = 4;
     public static final int APP_EXPIRY_YEAR = 2019;
 
     /**
@@ -78,7 +78,7 @@ public final class AppConfig {
     /**
      * The sound volume for the beeps and other sound effects.
      */
-    public static final float SOUND_EFFECTS_VOLUME = 0.02f;
+    public static final float SOUND_EFFECTS_VOLUME = 0.99f;
 
     /**
      * To launch Flow app.
