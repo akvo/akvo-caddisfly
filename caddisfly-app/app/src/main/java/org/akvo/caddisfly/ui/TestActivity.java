@@ -37,6 +37,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -70,15 +77,8 @@ import org.akvo.caddisfly.viewmodel.TestListViewModel;
 import java.io.File;
 import java.lang.ref.WeakReference;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProviders;
 import timber.log.Timber;
 
-@SuppressWarnings("deprecation")
 public class TestActivity extends BaseActivity {
 
     private static final int REQUEST_TEST = 1;
@@ -325,7 +325,6 @@ public class TestActivity extends BaseActivity {
             Intent intent = new Intent(data);
 
             if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
-                @SuppressWarnings("UnusedAssignment")
                 Bundle bundle = new Bundle();
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, testInfo.getUuid());
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, testInfo.getName());
@@ -333,7 +332,6 @@ public class TestActivity extends BaseActivity {
                 bundle.putString("Type", testInfo.getSubtype().toString().toLowerCase());
                 bundle.putString("Range", testInfo.getRanges());
 
-                @SuppressWarnings("UnusedAssignment")
                 String instanceName = getIntent().getStringExtra(SensorConstants.FLOW_INSTANCE_NAME);
 
                 if (instanceName != null && !instanceName.isEmpty()) {
@@ -446,13 +444,10 @@ public class TestActivity extends BaseActivity {
         } else {
 
             String message;
-            switch (testInfo.getSubtype()) {
-                case BLUETOOTH:
-                    message = getString(R.string.location_permission);
-                    break;
-                default:
-                    message = getString(R.string.cameraAndStoragePermissions);
-                    break;
+            if (testInfo.getSubtype() == TestType.BLUETOOTH) {
+                message = getString(R.string.location_permission);
+            } else {
+                message = getString(R.string.cameraAndStoragePermissions);
             }
 
             Snackbar snackbar = Snackbar

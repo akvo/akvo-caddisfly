@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
@@ -75,6 +76,12 @@ public class BitmapUtils {
         return resultImage;
     }
 
+    public static Bitmap RotateBitmap(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
+
     // creates image for a grouped-style strip
     // creates individual parts of the result image, and concatenates them
     public static Bitmap createResultImageGroup(List<PatchResult> patchResultList) {
@@ -91,6 +98,16 @@ public class BitmapUtils {
         Canvas canvas = new Canvas(resultImage);
         canvas.drawBitmap(bmp1, 0f, 0f, null);
         canvas.drawBitmap(bmp2, bmp1.getWidth(), 0f, null);
+        return resultImage;
+    }
+
+    // Concatenate two bitmaps
+    public static Bitmap concatTwoBitmapsHorizontal(Bitmap bmp1, Bitmap bmp2) {
+        int height = bmp1.getHeight() + bmp2.getHeight() + SPACING;
+        Bitmap resultImage = Bitmap.createBitmap(bmp1.getWidth(), height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(resultImage);
+        canvas.drawBitmap(bmp1, 0f, 0f, null);
+        canvas.drawBitmap(bmp2, 0f, bmp1.getHeight(), null);
         return resultImage;
     }
 

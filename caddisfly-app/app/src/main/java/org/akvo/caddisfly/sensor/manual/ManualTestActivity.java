@@ -15,6 +15,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.akvo.caddisfly.BuildConfig;
@@ -27,6 +35,7 @@ import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.widget.PageIndicatorView;
@@ -35,14 +44,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.UUID;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
 
 public class ManualTestActivity extends BaseActivity
@@ -254,8 +256,19 @@ public class ManualTestActivity extends BaseActivity
                     result1PhotoFragment.getImageFileName();
             Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
             Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
+            Bitmap resultBitmap;
             if (bitmap1 != null && bitmap2 != null) {
-                Bitmap resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
+
+                if (Math.abs(bitmap1.getWidth() - bitmap2.getWidth()) > 50) {
+                    bitmap2 = BitmapUtils.RotateBitmap(bitmap2, 90);
+                }
+
+                if (bitmap1.getWidth() > bitmap1.getHeight()) {
+                    resultBitmap = concatTwoBitmapsHorizontal(bitmap1, bitmap2);
+                } else {
+                    resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
+                }
+
                 //noinspection ResultOfMethodCallIgnored
                 new File(result1ImagePath).delete();
                 //noinspection ResultOfMethodCallIgnored
@@ -365,7 +378,6 @@ public class ManualTestActivity extends BaseActivity
         showWaitingView();
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
-            @SuppressWarnings("UnusedAssignment")
             Bundle bundle = new Bundle();
             bundle.putString("InstructionsSkipped", testInfo.getName() +
                     " (" + testInfo.getBrand() + ")");
