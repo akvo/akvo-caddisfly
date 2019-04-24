@@ -211,7 +211,7 @@ public class InstructionsTestSurvey {
 
         TestUtil.sleep(1000);
 
-        onView(withText("Water - Total Iron"))
+        onView(withText("Water - Iron"))
                 .check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton2 = onView(
@@ -227,7 +227,7 @@ public class InstructionsTestSurvey {
         onView(withText(R.string.fill_half_with_sample))
                 .check(matches(isDisplayed()));
 
-        onView(withText("Water - Total Iron"))
+        onView(withText("Water - Iron"))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();

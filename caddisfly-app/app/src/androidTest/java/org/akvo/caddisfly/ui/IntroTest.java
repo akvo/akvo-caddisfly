@@ -1,6 +1,12 @@
 package org.akvo.caddisfly.ui;
 
 
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.UiDevice;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.TestHelper;
 import org.junit.Before;
@@ -8,13 +14,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.uiautomator.By;
-import androidx.test.uiautomator.UiDevice;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -30,6 +29,7 @@ import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode;
 import static org.akvo.caddisfly.util.TestHelper.getString;
+import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -40,7 +40,6 @@ import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class IntroTest {
 
@@ -140,12 +139,14 @@ public class IntroTest {
         onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
                 R.string.go_to_external_app))).perform(click());
 
-        sleep(2000);
+        sleep(500);
 
         mDevice.waitForIdle();
 
+        gotoSurveyForm();
+
         assertNotNull(mDevice.findObject(By.text(
-                getString(mActivityTestRule.getActivity(), R.string.unnamedDataPoint))));
+                getString(mActivityTestRule.getActivity(), R.string.goToTest))));
     }
 
     @Test
@@ -158,12 +159,14 @@ public class IntroTest {
         onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
                 R.string.go_to_external_app))).perform(click());
 
-        sleep(2000);
+        sleep(500);
 
         mDevice.waitForIdle();
 
+        gotoSurveyForm();
+
         assertNotNull(mDevice.findObject(By.text(
-                getString(mActivityTestRule.getActivity(), R.string.unnamedDataPoint))));
+                getString(mActivityTestRule.getActivity(), R.string.goToTest))));
 
     }
 
