@@ -31,12 +31,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseFragment;
-
-import androidx.annotation.NonNull;
 
 import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
 
@@ -190,7 +190,8 @@ public class MeasurementInputFragment extends BaseFragment {
             InputMethodManager imm = (InputMethodManager)
                     getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
-                imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                view.setActivated(true);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }
     }

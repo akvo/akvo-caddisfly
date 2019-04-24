@@ -180,9 +180,11 @@ public class ManualTestActivity extends BaseActivity
             @Override
             public void onPageScrollStateChanged(int state) {
                 if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    if (viewPager.getCurrentItem() == resultPageNumber) {
+                    if (viewPager.getCurrentItem() == resultPageNumber &&
+                            !resultFragment.isValid()) {
                         resultFragment.showSoftKeyboard();
-                    } else if (viewPager.getCurrentItem() == result1PageNumber) {
+                    } else if (viewPager.getCurrentItem() == result1PageNumber &&
+                            !result1Fragment.isValid()) {
                         if (result1Fragment != null) {
                             result1Fragment.showSoftKeyboard();
                         }
