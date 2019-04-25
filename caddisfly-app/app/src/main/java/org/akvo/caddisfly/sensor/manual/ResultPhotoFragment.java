@@ -33,7 +33,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.FileHelper;
@@ -45,9 +49,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
-
 import static android.app.Activity.RESULT_OK;
 import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
 import static org.akvo.caddisfly.common.AppConfig.SKIP_PHOTO_VALIDATION;
@@ -55,6 +56,7 @@ import static org.akvo.caddisfly.common.AppConfig.SKIP_PHOTO_VALIDATION;
 
 public class ResultPhotoFragment extends BaseFragment {
 
+    private static final String ARG_RESULT_NAME = "resultName";
     private static final int MANUAL_TEST = 2;
     private OnPhotoTakenListener mListener;
     private String imageFileName = "";
@@ -66,9 +68,16 @@ public class ResultPhotoFragment extends BaseFragment {
 
     /**
      * Get the instance.
+     *
+     * @param testName: Name of the test
      */
-    public static ResultPhotoFragment newInstance() {
-        return new ResultPhotoFragment();
+    public static ResultPhotoFragment newInstance(String testName) {
+        ResultPhotoFragment fragment = new ResultPhotoFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_RESULT_NAME, testName);
+        fragment.setArguments(args);
+        return fragment;
+
     }
 
     @Override
@@ -78,8 +87,12 @@ public class ResultPhotoFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_result_photo, container, false);
 
         imageResult = view.findViewById(R.id.imageResult);
-
         takePhotoButton = view.findViewById(R.id.takePhoto);
+        TextView textName = view.findViewById(R.id.textName);
+
+        if (getArguments() != null) {
+            textName.setText(getArguments().getString(ARG_RESULT_NAME));
+        }
 
         if (!imageFileName.isEmpty()) {
 
@@ -195,11 +208,13 @@ public class ResultPhotoFragment extends BaseFragment {
         mListener = null;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isValid() {
-        return SKIP_PHOTO_VALIDATION || (resultImagePath != null && !resultImagePath.isEmpty() && new File(resultImagePath).exists());
+        return SKIP_PHOTO_VALIDATION || (resultImagePath != null &&
+                !resultImagePath.isEmpty() && new File(resultImagePath).exists());
     }
 
-    public String getImageFileName() {
+    String getImageFileName() {
         return imageFileName;
     }
 

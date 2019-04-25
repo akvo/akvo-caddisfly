@@ -92,8 +92,22 @@ public class ManualTestActivity extends BaseActivity
             return;
         }
 
-        resultFragment = MeasurementInputFragment.newInstance(testInfo);
-        resultPhotoFragment = ResultPhotoFragment.newInstance();
+        int resultId = 1;
+
+        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
+            if (testInfo.getInstructions().get(i).section.get(0).contains("<photo1>")) {
+                photo1PageNumber = i;
+                result1PageNumber = i + 1;
+                result1Fragment = MeasurementInputFragment.newInstance(testInfo, resultId);
+                result1PhotoFragment = ResultPhotoFragment.newInstance(
+                        testInfo.getResults().get(resultId - 1).getName());
+                resultId++;
+            }
+        }
+
+        resultFragment = MeasurementInputFragment.newInstance(testInfo, resultId);
+        resultPhotoFragment = ResultPhotoFragment.newInstance(
+                testInfo.getResults().get(resultId - 1).getName());
 
         if (testInfo.getHasEndInstruction()) {
             instructionCount = testInfo.getInstructions().size() - 1;
@@ -117,15 +131,6 @@ public class ManualTestActivity extends BaseActivity
             totalPageCount += 1;
         }
 
-        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
-            if (testInfo.getInstructions().get(i).section.get(0).contains("<photo1>")) {
-                photo1PageNumber = i;
-                result1PageNumber = i + 1;
-                result1Fragment = MeasurementInputFragment.newInstance(testInfo);
-                result1PhotoFragment = ResultPhotoFragment.newInstance();
-            }
-        }
-
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -145,12 +150,13 @@ public class ManualTestActivity extends BaseActivity
                 if (photo1PageNumber != -1 && position >= photo1PageNumber
                         && !result1PhotoFragment.isValid()) {
                     viewPager.setCurrentItem(photo1PageNumber);
-                } else if (result1PageNumber != -1 && position >= result1PageNumber
-                        && !result1Fragment.isValid()) {
-                    viewPager.setCurrentItem(result1PageNumber);
                 } else if (position >= totalPageCount - 1) {
-                    if (!resultFragment.isValid()) {
+                    if (!resultFragment.isValid(true)) {
                         viewPager.setCurrentItem(resultPageNumber);
+                    }
+                } else if (result1PageNumber != -1 && position > result1PageNumber) {
+                    if (!result1Fragment.isValid(true)) {
+                        viewPager.setCurrentItem(result1PageNumber);
                     }
                 } else if (position >= photoPageNumber) {
                     if (!resultPhotoFragment.isValid()) {
@@ -181,10 +187,10 @@ public class ManualTestActivity extends BaseActivity
             public void onPageScrollStateChanged(int state) {
                 if (state == ViewPager.SCROLL_STATE_IDLE) {
                     if (viewPager.getCurrentItem() == resultPageNumber &&
-                            !resultFragment.isValid()) {
+                            !resultFragment.isValid(false)) {
                         resultFragment.showSoftKeyboard();
                     } else if (viewPager.getCurrentItem() == result1PageNumber &&
-                            !result1Fragment.isValid()) {
+                            !result1Fragment.isValid(false)) {
                         if (result1Fragment != null) {
                             result1Fragment.showSoftKeyboard();
                         }
@@ -215,11 +221,11 @@ public class ManualTestActivity extends BaseActivity
 
     private void submitResult() {
 
-        if (result1PageNumber == viewPager.getCurrentItem() && result1Fragment.isValid()) {
+        if (result1PageNumber == viewPager.getCurrentItem() && result1Fragment.isValid(true)) {
             result1Fragment.hideSoftKeyboard();
             viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
         } else if (testInfo.getHasEndInstruction()) {
-            if (resultPageNumber == viewPager.getCurrentItem() && resultFragment.isValid()) {
+            if (resultPageNumber == viewPager.getCurrentItem() && resultFragment.isValid(true)) {
                 resultFragment.hideSoftKeyboard();
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             }
@@ -233,13 +239,13 @@ public class ManualTestActivity extends BaseActivity
         if (photo1PageNumber != -1 && !result1PhotoFragment.isValid()) {
             viewPager.setCurrentItem(photo1PageNumber);
             return;
-        } else if (result1PageNumber != -1 && !result1Fragment.isValid()) {
+        } else if (result1PageNumber != -1 && !result1Fragment.isValid(true)) {
             viewPager.setCurrentItem(result1PageNumber);
             return;
         } else if (!resultPhotoFragment.isValid()) {
             viewPager.setCurrentItem(photoPageNumber);
             return;
-        } else if (!resultFragment.isValid()) {
+        } else if (!resultFragment.isValid(true)) {
             viewPager.setCurrentItem(resultPageNumber);
             return;
         }

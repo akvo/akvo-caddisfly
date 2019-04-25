@@ -25,14 +25,26 @@
     android:paddingBottom="20dp">
 
     <TextView
-        android:id="@+id/textInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
         android:text="@string/enter_measured_value"
+        android:textColor="@color/black_main"
+        android:textSize="@dimen/default_text_size" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:gravity="center_horizontal"
+        android:text="@string/fluoride"
         android:textSize="@dimen/default_text_size"
         android:textStyle="bold" />
 
@@ -40,9 +52,9 @@
         android:id="@+id/textRange"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="20dp"
         android:gravity="center_horizontal"
         android:textColor="#3d3d3d"
         android:textSize="14sp"
@@ -69,8 +81,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="20dp">
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="15dp">
 
             <RadioButton
                 android:layout_width="wrap_content"

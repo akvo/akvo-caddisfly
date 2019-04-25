@@ -41,7 +41,8 @@ import org.akvo.caddisfly.ui.BaseFragment;
 import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
 
 public class MeasurementInputFragment extends BaseFragment {
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_TEST_INFO = "testInfo";
+    private static final String ARG_RESULT_ID = "resultId";
     private Float resultFloat;
     private EditText editResult;
     private OnSubmitResultListener mListener;
@@ -53,10 +54,11 @@ public class MeasurementInputFragment extends BaseFragment {
     /**
      * Get the instance.
      */
-    public static MeasurementInputFragment newInstance(TestInfo testInfo) {
+    public static MeasurementInputFragment newInstance(TestInfo testInfo, int resultId) {
         MeasurementInputFragment fragment = new MeasurementInputFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_PARAM1, testInfo);
+        args.putParcelable(ARG_TEST_INFO, testInfo);
+        args.putInt(ARG_RESULT_ID, resultId);
         fragment.setArguments(args);
 
         return fragment;
@@ -70,16 +72,19 @@ public class MeasurementInputFragment extends BaseFragment {
 
         editResult = view.findViewById(R.id.editResult);
         radioValidation = view.findViewById(R.id.editRadioValidation);
+        TextView textName = view.findViewById(R.id.textName);
         TextView textRange = view.findViewById(R.id.textRange);
         unitRadioGroup = view.findViewById(R.id.unitChoice);
 
         if (getArguments() != null) {
 
-            TestInfo testInfo = getArguments().getParcelable(ARG_PARAM1);
+            TestInfo testInfo = getArguments().getParcelable(ARG_TEST_INFO);
+            int resultId = getArguments().getInt(ARG_RESULT_ID);
             Result testResult;
             if (testInfo != null) {
-                testResult = testInfo.getResults().get(0);
+                testResult = testInfo.getResults().get(resultId - 1);
 
+                textName.setText(testResult.getName());
                 if (testResult.getUnit().isEmpty()) {
                     textRange.setText(String.format("(%s)", testInfo.getMinMaxRange()));
                 } else {
@@ -107,7 +112,7 @@ public class MeasurementInputFragment extends BaseFragment {
 
                 buttonSubmitResult.setOnClickListener(view1 -> {
                     if (mListener != null) {
-                        resultFloat = isValidResult();
+                        resultFloat = isValidResult(true);
                         if (resultFloat != -1f) {
                             mListener.onSubmitResult(String.valueOf(resultFloat));
                         }
@@ -119,7 +124,7 @@ public class MeasurementInputFragment extends BaseFragment {
         return view;
     }
 
-    private Float isValidResult() {
+    private Float isValidResult(boolean showEmptyError) {
         boolean okToSubmit = true;
         Float resultFloat = -1f;
 
@@ -129,7 +134,9 @@ public class MeasurementInputFragment extends BaseFragment {
 
         String result = editResult.getText().toString();
         if (result.isEmpty()) {
-            editResult.setError("Enter result");
+            if (showEmptyError) {
+                editResult.setError("Enter result");
+            }
             resultFloat = -1f;
         } else {
 
@@ -183,6 +190,9 @@ public class MeasurementInputFragment extends BaseFragment {
 
     void hideSoftKeyboard() {
         hideSoftKeyboard(editResult);
+        if (editResult != null) {
+            editResult.setError(null);
+        }
     }
 
     private void hideSoftKeyboard(View view) {
@@ -213,8 +223,8 @@ public class MeasurementInputFragment extends BaseFragment {
         mListener = null;
     }
 
-    boolean isValid() {
-        return SKIP_RESULT_VALIDATION || isValidResult() != -1f;
+    boolean isValid(boolean showEmptyError) {
+        return SKIP_RESULT_VALIDATION || isValidResult(showEmptyError) != -1f;
     }
 
     public String getResult() {

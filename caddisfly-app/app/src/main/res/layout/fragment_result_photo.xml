@@ -30,9 +30,22 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
         android:text="@string/take_photo_of_result"
+        android:textColor="@color/black_main"
+        android:textSize="@dimen/default_text_size"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/fluoride"
         android:textSize="@dimen/default_text_size"
         android:textStyle="bold" />
 
