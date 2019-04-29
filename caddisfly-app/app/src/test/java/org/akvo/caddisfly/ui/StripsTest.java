@@ -23,6 +23,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.TestInfo;
@@ -36,10 +40,6 @@ import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowLooper;
 
 import java.util.Objects;
-
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -78,9 +78,9 @@ public class StripsTest {
         TestInfoAdapter adapter = (TestInfoAdapter) recyclerView.getAdapter();
         recyclerView.getAdapter();
         assert adapter != null;
-        assertEquals("Water - Total Iron",
+        assertEquals("Water - Phosphate",
                 adapter.getItemAt(20).getName());
-        assertEquals("Water - Total Iron",
+        assertEquals("Water - Phosphate",
                 ((TextView) recyclerView.getChildAt(20).findViewById(R.id.text_title)).getText());
     }
 
