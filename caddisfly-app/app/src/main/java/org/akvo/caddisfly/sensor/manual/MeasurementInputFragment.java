@@ -228,6 +228,7 @@ public class MeasurementInputFragment extends BaseFragment {
     }
 
     public String getResult() {
+        resultFloat = isValidResult(true);
         return String.valueOf(resultFloat);
     }
 

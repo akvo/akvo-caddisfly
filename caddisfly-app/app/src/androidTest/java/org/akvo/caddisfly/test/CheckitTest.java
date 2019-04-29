@@ -28,6 +28,13 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.UiDevice;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
@@ -36,13 +43,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
-import androidx.test.uiautomator.By;
-import androidx.test.uiautomator.UiDevice;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -122,9 +122,9 @@ public class CheckitTest {
 
         TestUtil.nextSurveyPage("CheckIt");
 
-        clickExternalSourceButton(0);
+        TestUtil.sleep(1000);
 
-        SystemClock.sleep(2000);
+        clickExternalSourceButton(0);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -194,17 +194,25 @@ public class CheckitTest {
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
+
+        TestUtil.nextPage();
+
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+
+        TestUtil.swipeLeft();
+
+        TestUtil.nextPage();
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("4.1"), closeSoftKeyboard());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -215,13 +223,17 @@ public class CheckitTest {
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).perform(click());
+
+        TestUtil.swipeLeft();
+
+        onView(withText(R.string.next)).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("4.1"), closeSoftKeyboard());
@@ -229,15 +241,15 @@ public class CheckitTest {
         onView(withText(R.string.next)).perform(click());
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                .perform(replaceText("3.98"), closeSoftKeyboard());
+                .perform(replaceText("2.53"), closeSoftKeyboard());
 
         onView(withText(R.string.next)).perform(click());
 
-        SystemClock.sleep(1000);
+        SystemClock.sleep(500);
 
         onView(withText(R.string.submitResult)).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("Free chlorine: 3.98 mg/l")));
-        assertNotNull(mDevice.findObject(By.text("Total chlorine: 3.98 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Total chlorine: 2.53 mg/l")));
     }
 }

@@ -147,20 +147,21 @@ public class ManualTestActivity extends BaseActivity
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (photo1PageNumber != -1 && position >= photo1PageNumber
-                        && !result1PhotoFragment.isValid()) {
-                    viewPager.setCurrentItem(photo1PageNumber);
-                } else if (position >= totalPageCount - 1) {
+                if (position > resultPageNumber) {
                     if (!resultFragment.isValid(true)) {
                         viewPager.setCurrentItem(resultPageNumber);
+                    }
+                } else if (position > photoPageNumber) {
+                    if (!resultPhotoFragment.isValid()) {
+                        viewPager.setCurrentItem(photoPageNumber);
                     }
                 } else if (result1PageNumber != -1 && position > result1PageNumber) {
                     if (!result1Fragment.isValid(true)) {
                         viewPager.setCurrentItem(result1PageNumber);
                     }
-                } else if (position >= photoPageNumber) {
-                    if (!resultPhotoFragment.isValid()) {
-                        viewPager.setCurrentItem(photoPageNumber);
+                } else if (photo1PageNumber != -1 && position > photo1PageNumber) {
+                    if (!result1PhotoFragment.isValid()) {
+                        viewPager.setCurrentItem(photo1PageNumber);
                     }
                 }
             }

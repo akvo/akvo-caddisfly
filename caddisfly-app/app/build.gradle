@@ -29,8 +29,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 255
-        versionName "Checkit Instructions Test - 2"
+        versionCode 257
+        versionName "1.0.8"
         resConfigs "en", "en_US", "fr", "in", "es"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -66,26 +66,26 @@ android {
         }
     }
 
-    signingConfigs {
-        caddisflyRelease {
-            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
-            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
-            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
-            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
-        }
-    }
-
-    buildTypes {
-        release {
-            signingConfig signingConfigs.caddisflyRelease
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            zipAlignEnabled true
-            buildConfigField "String", "sentryDsn", "\"${sentryDsn}\""
-            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
-        }
-    }
+//    signingConfigs {
+//        caddisflyRelease {
+//            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
+//            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
+//            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
+//            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
+//        }
+//    }
+//
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.caddisflyRelease
+//            minifyEnabled true
+//            shrinkResources true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            zipAlignEnabled true
+//            buildConfigField "String", "sentryDsn", "\"${sentryDsn}\""
+//            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
+//        }
+//    }
 
     lintOptions {
         checkReleaseBuilds true
@@ -147,12 +147,12 @@ dependencies {
     testImplementation 'androidx.test:core:1.1.0'
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'androidx.test:rules:1.2.0-alpha03'
+    androidTestImplementation 'androidx.test:rules:1.2.0-alpha04'
     androidTestImplementation "androidx.test.ext:junit:1.1.0"
 
     // Espresso
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0-alpha04'
     androidTestImplementation('androidx.test.espresso:espresso-contrib:3.1.0-alpha4') {
         exclude group: 'com.android.support'
         exclude group: 'javax.inject'
@@ -161,9 +161,9 @@ dependencies {
     // Robolectric
     testImplementation 'org.robolectric:robolectric:4.2'
     testImplementation "com.github.nimbl3:robolectric.shadows-supportv4:4.1-SNAPSHOT"
-    testImplementation 'androidx.test:rules:1.2.0-alpha03'
+    testImplementation 'androidx.test:rules:1.2.0-alpha04'
     testImplementation "androidx.test.ext:junit:1.1.0"
-    testImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
+    testImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
 
     // UIAutomator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
