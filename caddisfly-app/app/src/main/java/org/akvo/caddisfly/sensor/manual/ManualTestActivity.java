@@ -151,7 +151,7 @@ public class ManualTestActivity extends BaseActivity
                     if (!resultFragment.isValid(true)) {
                         viewPager.setCurrentItem(resultPageNumber);
                     }
-                } else if (position > photoPageNumber) {
+                } else if (photoPageNumber != -1 && position > photoPageNumber) {
                     if (!resultPhotoFragment.isValid()) {
                         viewPager.setCurrentItem(photoPageNumber);
                     }
@@ -243,7 +243,7 @@ public class ManualTestActivity extends BaseActivity
         } else if (result1PageNumber != -1 && !result1Fragment.isValid(true)) {
             viewPager.setCurrentItem(result1PageNumber);
             return;
-        } else if (!resultPhotoFragment.isValid()) {
+        } else if (photoPageNumber != -1 && !resultPhotoFragment.isValid()) {
             viewPager.setCurrentItem(photoPageNumber);
             return;
         } else if (!resultFragment.isValid(true)) {
