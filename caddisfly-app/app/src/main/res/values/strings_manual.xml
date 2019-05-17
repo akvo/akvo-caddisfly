@@ -104,5 +104,8 @@
     <string name="wait_for_color_reaction_3">Wait <b>%reactionTime3</b> for complete colour reaction.</string>
     <string name="add_tablet_crush_swirl">Add one %reagent1 tablet in the other cell. Crush the tablet and close it with a lid. Swirl the cell until reagent is completely dissolved.</string>
     <string name="add_tablet_crush_stir">Add one %reagent3 Tablet to this cell, crush it and mix it with a clean stirring rod. Close it with the lid.</string>
+    <string name="edta_complex_copper_1">In the case of high levels of copper:</string>
+    <string name="edta_complex_copper_2">First measure the result (A). Then add one EDTA tablet to the already coloured water sample.</string>
+    <string name="edta_complex_copper_3">Crush and mix to dissolve the tablet. Read the second result (B). The concentration Zinc is the first result (A) minus the second result (B).</string>
 
 </resources>

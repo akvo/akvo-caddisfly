@@ -1770,6 +1770,35 @@
       ]
     },
     {
+      "name": "Zinc",
+      "uuid": "90cd957c-b40a-4c88-8881-4fb1cc6c12c6",
+      "sample": "Water",
+      "device": "Tester",
+      "brand": "Lovibond",
+      "model": "CHECKIT Comparator",
+      "hasImage": true,
+      "reagents": [
+        {
+          "code": "512620"
+        },
+        {
+          "code": "512350"
+        },
+        {
+          "code": "512390"
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Zinc",
+          "chemical": "Zn",
+          "unit": "mg/l",
+          "range": "0-1"
+        }
+      ]
+    },
+    {
       "name": "Ammonium",
       "uuid": "99abf0cd-4697-4880-bde0-933d32d3972c",
       "sample": "Water",
@@ -2318,7 +2347,7 @@
           "id": 1,
           "name": "Turbidity",
           "unit": "NTU",
-          "range": "0-2000"
+          "range": "5-2000"
         }
       ]
     },

@@ -7579,7 +7579,7 @@
       "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
       "brand": "DelAgua Tube",
       "imageScale": "centerCrop",
-      "ranges": "0,2000",
+      "ranges": "5,2000",
       "hasEndInstruction": "true",
       "instructions": [
         {
@@ -7606,7 +7606,7 @@
           "id": 1,
           "name": "Turbidity",
           "unit": "NTU",
-          "range": "0-2000"
+          "range": "5-2000"
         }
       ]
     },
@@ -9108,6 +9108,106 @@
           "name": "Phosphate",
           "unit": "mg/l",
           "range": "0-80"
+        }
+      ]
+    },
+    {
+      "name": "Water - Zinc",
+      "subtype": "manual",
+      "uuid": "90cd957c-b40a-4c88-8881-4fb1cc6c12c6",
+      "brand": "Lovibond CHECKIT Comparator",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "COPPER/ZINC LR",
+          "code": "512620",
+          "reactionTime": 5,
+          "type": "tablet"
+        },
+        {
+          "name": "DECHLOR",
+          "code": "512350",
+          "type": "tablet"
+        },
+        {
+          "name": "EDTA",
+          "code": "512390",
+          "type": "tablet"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0,1",
+      "hasImage": true,
+      "hasEndInstruction": "true",
+      "instructions": [
+        {
+          "section": [
+            "checkit_comparator_uses",
+            "1. insert_colored_disk",
+            "image:ci_insert_colored_disk"
+          ]
+        },
+        {
+          "section": [
+            "2. fill_both_cells",
+            "image:ci_fill_both_cells"
+          ]
+        },
+        {
+          "section": [
+            "3. close_one_cell",
+            "image:ci_close_one_cell"
+          ]
+        },
+        {
+          "section": [
+            "<b>optional</b>",
+            "dechlorinate_residual_chlorine_1",
+            "1. dechlorinate_residual_chlorine_2",
+            "2. dechlorinate_residual_chlorine_3"
+          ]
+        },
+        {
+          "section": [
+            "4. add_one_tablet_to_other_cell",
+            "image:ci_add_one_tablet_to_other_cell"
+          ]
+        },
+        {
+          "section": [
+            "5. wait_for_color_reaction",
+            "6. place_second_cell",
+            "image:ci_place_second_cell"
+          ]
+        },
+        {
+          "section": [
+            "<b>optional</b>",
+            "edta_complex_copper_1",
+            "1. edta_complex_copper_2",
+            "2. edta_complex_copper_3"
+          ]
+        },
+        {
+          "section": [
+            "7. match_colors_by_rotating",
+            "image:ci_match_colors_by_rotating"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. rinse_cells",
+            "2. store_dark"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Zinc",
+          "unit": "mg/l",
+          "range": "0-1"
         }
       ]
     }
