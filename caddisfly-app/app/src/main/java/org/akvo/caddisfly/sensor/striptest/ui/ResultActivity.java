@@ -32,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
@@ -57,7 +59,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmaps;
@@ -147,6 +148,7 @@ public class ResultActivity extends BaseActivity {
     private List<PatchResult> computeResults(TestInfo testInfo) {
         totalImageUrl = UUID.randomUUID().toString() + ".png";
 
+        // TODO: check null mDecodeData here
         // get the images for the patches
         Map<Integer, float[][][]> patchImageMap = mDecodeData.getStripImageMap();
 

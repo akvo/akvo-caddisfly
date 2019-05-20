@@ -21,12 +21,12 @@ public class DecodeData {
 
 //    private static final String TAG = "Caddisfly-DecodeData";
 
+    private final Map<Integer, Integer> versionNumberMap;
+    private final Map<Integer, float[][][]> stripImageMap;
     private Image decodeImage;
     private byte[] decodeImageByteArray;
     private int decodeWidth;
     private int decodeHeight;
-//    private int previewWidth;
-//    private int previewHeight;
     private FinderPatternInfo patternInfo;
     private List<FinderPattern> finderPatternsFound;
     private int tilt;
@@ -34,14 +34,9 @@ public class DecodeData {
     private PerspectiveTransform cardToImageTransform;
     private List<float[]> shadowPoints;
     private float[][] whitePointArray;
-//    private float percentageShadow;
     private float[] deltaEStats;
-    private final Map<Integer, Integer> versionNumberMap;
-//    private Map<String, int[]> measuredPatchRGB;
-//    private Map<String, int[]> calibrationPatchRGB;
     private float[] illumData;
     private RealMatrix calMatrix;
-    private final Map<Integer, float[][][]> stripImageMap;
     private int stripPixelWidth;
     private TestInfo testInfo;
 

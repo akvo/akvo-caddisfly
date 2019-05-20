@@ -3,6 +3,8 @@ package org.akvo.caddisfly.sensor.striptest.decode;
 import android.os.Handler;
 import android.os.HandlerThread;
 
+import androidx.annotation.Nullable;
+
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
@@ -26,8 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import androidx.annotation.Nullable;
 
 /**
  * Created by mark westra on 17/05/2017
@@ -532,6 +532,7 @@ public class DecodeProcessor {
             decodeData.addStripImage(result, mCurrentDelay);
             decodeData.setStripPixelWidth(result[0].length);
         } else {
+            //todo: check null argument
             decodeData.addStripImage(null, mCurrentDelay);
             decodeData.setStripPixelWidth(0);
         }

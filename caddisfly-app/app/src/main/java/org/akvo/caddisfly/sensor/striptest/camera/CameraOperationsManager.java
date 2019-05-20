@@ -46,28 +46,6 @@ public class CameraOperationsManager {
     private Camera mCamera;
 
     private boolean changingExposure = false;
-    private StriptestHandler mStriptestHandler;
-
-    //debug code
-    private byte[] bytes;
-
-    private final Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
-        public void onPreviewFrame(byte[] imageData, Camera camera) {
-
-            if (bytes != null && bytes.length > 0 && AppPreferences.isTestMode()) {
-                // Use test image if we are in test mode
-                StriptestHandler.getDecodeData().setDecodeImageByteArray(bytes);
-
-//                ImageUtil.saveImageBytes(camera, bytes, FileHelper.FileType.TEST_IMAGE,
-//                        String.valueOf(Calendar.getInstance().getTimeInMillis()));
-            } else {
-                // store image for later use
-                StriptestHandler.getDecodeData().setDecodeImageByteArray(imageData);
-            }
-            MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
-        }
-    };
-
     private final Runnable runAutoFocus = new Runnable() {
         public void run() {
             if (mCamera != null) {
@@ -86,6 +64,26 @@ public class CameraOperationsManager {
                     mCameraHandler.postDelayed(runAutoFocus, AUTO_FOCUS_DELAY);
                 }
             }
+        }
+    };
+    private StriptestHandler mStriptestHandler;
+    //debug code
+    private byte[] bytes;
+    private final Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
+        public void onPreviewFrame(byte[] imageData, Camera camera) {
+
+            if (bytes != null && bytes.length > 0 && AppPreferences.isTestMode()) {
+                // Use test image if we are in test mode
+                StriptestHandler.getDecodeData().setDecodeImageByteArray(bytes);
+
+//                ImageUtil.saveImageBytes(camera, bytes, FileHelper.FileType.TEST_IMAGE,
+//                        String.valueOf(Calendar.getInstance().getTimeInMillis()));
+            } else {
+                // store image for later use
+                StriptestHandler.getDecodeData().setDecodeImageByteArray(imageData);
+            }
+            MessageUtils.sendMessage(mStriptestHandler,
+                    StriptestHandler.DECODE_IMAGE_CAPTURED_MESSAGE, 0);
         }
     };
 
