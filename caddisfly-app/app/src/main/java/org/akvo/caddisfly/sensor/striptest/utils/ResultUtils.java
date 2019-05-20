@@ -1,5 +1,8 @@
 package org.akvo.caddisfly.sensor.striptest.utils;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
@@ -9,14 +12,14 @@ import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 /**
  * Created by markwestra on 03/08/2017
  */
 public class ResultUtils {
-    public static final int INTERPOLATION_NUMBER = 10;
+    static final int INTERPOLATION_NUMBER = 10;
+
+    private static DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
 
     public static float[] calculateResultSingle(@Nullable float[] colorValues, @NonNull List<ColorItem> colors) {
         double[][] interpolTable = createInterpolTable(colors);
@@ -171,11 +174,8 @@ public class ResultUtils {
     public static String createValueUnitString(float value, String unit, String defaultString) {
         String valueString = defaultString;
         if (value > -1) {
-            if (value < 1.0) {
-                valueString = String.format(Locale.US, "%.2f %s", value, unit);
-            } else {
-                valueString = String.format(Locale.US, "%.1f %s", value, unit);
-            }
+            valueString = String.format(Locale.US, "%s %s",
+                    decimalFormat.format(value), unit);
         }
         return valueString.trim();
     }
@@ -184,20 +184,13 @@ public class ResultUtils {
     // here, we use points as decimal separator always, as this is also used
     // to format numbers that are returned by json.
     public static String createValueString(float value) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        DecimalFormat decimalFormat = new DecimalFormat("#.###", symbols);
         return decimalFormat.format(value);
     }
 
-
     /*
-       * Restricts number of significant digits depending on size of number
-        */
+     * Restricts number of significant digits depending on size of number
+     */
     public static double roundSignificant(double value) {
-        if (value < 1.0) {
-            return Math.round(value * 100) / 100.0;
-        } else {
-            return Math.round(value * 10) / 10.0;
-        }
+        return Double.parseDouble(decimalFormat.format(value));
     }
 }
