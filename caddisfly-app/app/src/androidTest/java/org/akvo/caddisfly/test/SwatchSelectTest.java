@@ -118,7 +118,7 @@ public class SwatchSelectTest {
 
         onView(withText("Chlorine")).check(matches(isDisplayed()));
 
-        onView(withText("1.0 mg/l")).check(matches(isDisplayed()));
+        onView(withText("1 mg/l")).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -136,7 +136,7 @@ public class SwatchSelectTest {
 
         onView(withText("Chlorine")).check(matches(isDisplayed()));
 
-        onView(withText("2.0 mg/l")).check(matches(isDisplayed()));
+        onView(withText("2 mg/l")).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -187,7 +187,7 @@ public class SwatchSelectTest {
 
         onView(withText("Chlorine")).check(matches(isDisplayed()));
 
-        onView(withText("2.0 mg/l")).check(matches(isDisplayed()));
+        onView(withText("2 mg/l")).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -205,7 +205,7 @@ public class SwatchSelectTest {
 
         onView(withText("Chlorine")).check(matches(isDisplayed()));
 
-        onView(withText("5.0 mg/l")).check(matches(isDisplayed()));
+        onView(withText("5 mg/l")).check(matches(isDisplayed()));
 
         pressBack();
 

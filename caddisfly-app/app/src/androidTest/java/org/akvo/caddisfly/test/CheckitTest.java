@@ -196,13 +196,9 @@ public class CheckitTest {
 
         SystemClock.sleep(500);
 
-        TestUtil.nextPage();
-
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         TestUtil.swipeLeft();
-
-        TestUtil.nextPage();
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());

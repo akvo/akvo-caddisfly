@@ -58,7 +58,7 @@
         android:layout_above="@+id/layout_footer"
         android:layout_below="@id/toolbar">
 
-        <androidx.viewpager.widget.ViewPager
+        <org.akvo.caddisfly.widget.CustomViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

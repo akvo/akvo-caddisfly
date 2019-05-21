@@ -31,17 +31,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.app.CaddisflyApp;
-import org.akvo.caddisfly.common.TestConstants;
-
-import java.io.File;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import androidx.annotation.StringRes;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.NoMatchingViewException;
@@ -55,6 +44,18 @@ import androidx.test.uiautomator.UiObject2;
 import androidx.test.uiautomator.UiObjectNotFoundException;
 import androidx.test.uiautomator.UiScrollable;
 import androidx.test.uiautomator.UiSelector;
+
+import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.TestConstants;
+
+import java.io.File;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import timber.log.Timber;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -113,7 +114,6 @@ public final class TestHelper {
 
     }
 
-    @SuppressWarnings("deprecation")
     public static void loadData(Activity activity, String languageCode) {
 
         STRING_HASH_MAP_EN.clear();

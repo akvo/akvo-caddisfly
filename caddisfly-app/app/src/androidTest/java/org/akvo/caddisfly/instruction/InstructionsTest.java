@@ -22,6 +22,7 @@ package org.akvo.caddisfly.instruction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.test.espresso.Espresso;
@@ -51,6 +52,8 @@ import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -199,7 +202,7 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (("cd66ecab2794, 79586d9319c8, 0de4bd9a8243, 569c34f5fc54" ).contains(id))
+//            if (("4fb1cc6c12c6").contains(id))
 //                    || testList.get(i).getBrand().contains("Tester")
 //                            || testList.get(i).getBrand().contains("SD")
 //                            || testList.get(i).getBrand().contains("Tube"))
@@ -255,23 +258,22 @@ public class InstructionsTest {
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
+                pages++;
+
+                onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                        .perform(replaceText("1"), closeSoftKeyboard());
+
+                SystemClock.sleep(500);
+
+                takeScreenshot(id, i + 1);
+
+                onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+
                 if (hasEndPage) {
 
                     pages++;
 
-                    TestUtil.sleep(1000);
-
-                    TestUtil.swipeLeft();
-
-                    TestUtil.sleep(1000);
-
-                    TestUtil.swipeLeft();
-
-                    TestUtil.sleep(1000);
-
                     takeScreenshot(id, i + 1);
-
-                    TestUtil.sleep(1000);
 
                 }
                 TestUtil.sleep(300);

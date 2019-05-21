@@ -38,7 +38,9 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ImageUtil;
+import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
+import org.akvo.caddisfly.widget.SwipeDirection;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -52,8 +54,10 @@ public class ManualTestActivity extends BaseActivity
         ResultPhotoFragment.OnPhotoTakenListener {
 
     SparseArray<String> results = new SparseArray<>();
+    ImageView imagePageRight;
+    ImageView imagePageLeft;
     private TestInfo testInfo;
-    private ViewPager viewPager;
+    private CustomViewPager viewPager;
     private FrameLayout resultLayout;
     private FrameLayout pagerLayout;
     private RelativeLayout footerLayout;
@@ -137,16 +141,22 @@ public class ManualTestActivity extends BaseActivity
         pagerIndicator.showDots(true);
         pagerIndicator.setPageCount(totalPageCount);
 
-        ImageView imagePageRight = findViewById(R.id.image_pageRight);
+        imagePageRight = findViewById(R.id.image_pageRight);
         imagePageRight.setOnClickListener(view ->
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1));
 
-        ImageView imagePageLeft = findViewById(R.id.image_pageLeft);
+        imagePageLeft = findViewById(R.id.image_pageLeft);
         imagePageLeft.setOnClickListener(view -> pageBack());
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                pagerIndicator.setActiveIndex(position);
+
                 if (position > resultPageNumber) {
                     if (!resultFragment.isValid(true)) {
                         viewPager.setCurrentItem(resultPageNumber);
@@ -164,11 +174,6 @@ public class ManualTestActivity extends BaseActivity
                         viewPager.setCurrentItem(photo1PageNumber);
                     }
                 }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                pagerIndicator.setActiveIndex(position);
 
                 if (position < 1) {
                     imagePageLeft.setVisibility(View.INVISIBLE);
@@ -182,6 +187,8 @@ public class ManualTestActivity extends BaseActivity
                     showInstructionsView();
                     onInstructionFinish(testInfo.getInstructions().size() - position);
                 }
+
+                showHideFooter();
             }
 
             @Override
@@ -190,20 +197,73 @@ public class ManualTestActivity extends BaseActivity
                     if (viewPager.getCurrentItem() == resultPageNumber &&
                             !resultFragment.isValid(false)) {
                         resultFragment.showSoftKeyboard();
+                        footerLayout.setVisibility(View.GONE);
                     } else if (viewPager.getCurrentItem() == result1PageNumber &&
                             !result1Fragment.isValid(false)) {
                         if (result1Fragment != null) {
                             result1Fragment.showSoftKeyboard();
+                            footerLayout.setVisibility(View.GONE);
                         }
                     } else {
                         resultFragment.hideSoftKeyboard();
                         if (result1Fragment != null) {
                             result1Fragment.hideSoftKeyboard();
+                            footerLayout.setVisibility(View.VISIBLE);
                         }
                     }
                 }
             }
         });
+    }
+
+    private void showHideFooter() {
+        imagePageLeft.setVisibility(View.VISIBLE);
+        imagePageRight.setVisibility(View.VISIBLE);
+        pagerIndicator.setVisibility(View.VISIBLE);
+        footerLayout.setVisibility(View.VISIBLE);
+
+        if (viewPager.getCurrentItem() == photo1PageNumber) {
+            if (result1PhotoFragment.isValid()) {
+                viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                imagePageRight.setVisibility(View.VISIBLE);
+            } else {
+                viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                imagePageRight.setVisibility(View.INVISIBLE);
+            }
+        } else if (viewPager.getCurrentItem() == result1PageNumber) {
+            if (result1Fragment.isValid(true)) {
+                viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                imagePageRight.setVisibility(View.VISIBLE);
+            } else {
+                viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                imagePageRight.setVisibility(View.INVISIBLE);
+            }
+        } else if (viewPager.getCurrentItem() == photoPageNumber) {
+            if (resultPhotoFragment.isValid()) {
+                viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                imagePageRight.setVisibility(View.VISIBLE);
+            } else {
+                viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                imagePageRight.setVisibility(View.INVISIBLE);
+            }
+        } else if (viewPager.getCurrentItem() == resultPageNumber) {
+            if (resultFragment.isValid(true)) {
+                viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                imagePageRight.setVisibility(View.VISIBLE);
+            } else {
+                viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                imagePageRight.setVisibility(View.INVISIBLE);
+            }
+        } else if (viewPager.getCurrentItem() == totalPageCount - 1) {
+            pagerIndicator.setVisibility(View.GONE);
+            footerLayout.setVisibility(View.GONE);
+            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+            imagePageRight.setVisibility(View.INVISIBLE);
+            imagePageLeft.setVisibility(View.VISIBLE);
+        } else {
+            footerLayout.setVisibility(View.VISIBLE);
+            viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+        }
     }
 
     @Override
@@ -342,9 +402,6 @@ public class ManualTestActivity extends BaseActivity
     }
 
     private void showInstructionsView() {
-        if (viewPager.getCurrentItem() < resultPageNumber) {
-            footerLayout.setVisibility(View.VISIBLE);
-        }
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
         setTitle(testInfo.getName());
@@ -355,7 +412,6 @@ public class ManualTestActivity extends BaseActivity
     private void showSelectTestView() {
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
-        footerLayout.setVisibility(View.GONE);
         viewPager.setCurrentItem(0);
         setTitle(testInfo.getName());
         showSkipMenu = true;
@@ -365,9 +421,6 @@ public class ManualTestActivity extends BaseActivity
     private void showWaitingView() {
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
-        if (viewPager.getCurrentItem() == resultPageNumber) {
-            footerLayout.setVisibility(View.GONE);
-        }
         showSkipMenu = false;
         invalidateOptionsMenu();
     }
