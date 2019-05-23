@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -51,7 +55,7 @@ import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBit
 
 public class ManualTestActivity extends BaseActivity
         implements MeasurementInputFragment.OnSubmitResultListener,
-        ResultPhotoFragment.OnPhotoTakenListener {
+        ResultPhotoFragment.OnPhotoTakenListener, OnKeyboardVisibilityListener {
 
     SparseArray<String> results = new SparseArray<>();
     ImageView imagePageRight;
@@ -197,23 +201,22 @@ public class ManualTestActivity extends BaseActivity
                     if (viewPager.getCurrentItem() == resultPageNumber &&
                             !resultFragment.isValid(false)) {
                         resultFragment.showSoftKeyboard();
-                        footerLayout.setVisibility(View.GONE);
                     } else if (viewPager.getCurrentItem() == result1PageNumber &&
                             !result1Fragment.isValid(false)) {
                         if (result1Fragment != null) {
                             result1Fragment.showSoftKeyboard();
-                            footerLayout.setVisibility(View.GONE);
                         }
                     } else {
                         resultFragment.hideSoftKeyboard();
                         if (result1Fragment != null) {
                             result1Fragment.hideSoftKeyboard();
-                            footerLayout.setVisibility(View.VISIBLE);
                         }
                     }
                 }
             }
         });
+
+        setKeyboardVisibilityListener(this);
     }
 
     private void showHideFooter() {
@@ -255,8 +258,6 @@ public class ManualTestActivity extends BaseActivity
                 imagePageRight.setVisibility(View.INVISIBLE);
             }
         } else if (viewPager.getCurrentItem() == totalPageCount - 1) {
-            pagerIndicator.setVisibility(View.GONE);
-            footerLayout.setVisibility(View.GONE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.left);
             imagePageRight.setVisibility(View.INVISIBLE);
             imagePageLeft.setVisibility(View.VISIBLE);
@@ -264,6 +265,41 @@ public class ManualTestActivity extends BaseActivity
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
         }
+    }
+
+    @Override
+    public void onVisibilityChanged(boolean visible) {
+        if (visible) {
+            footerLayout.setVisibility(View.GONE);
+        } else {
+            footerLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //https://stackoverflow.com/questions/4312319/how-to-capture-the-virtual-keyboard-show-hide-event-in-android
+    private void setKeyboardVisibilityListener(final OnKeyboardVisibilityListener onKeyboardVisibilityListener) {
+        final View parentView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+        parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            private final int defaultKeyboardHeightDP = 100;
+            private final int EstimatedKeyboardDP = defaultKeyboardHeightDP + (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? 48 : 0);
+            private final Rect rect = new Rect();
+            private boolean alreadyOpen;
+
+            @Override
+            public void onGlobalLayout() {
+                int estimatedKeyboardHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, EstimatedKeyboardDP, parentView.getResources().getDisplayMetrics());
+                parentView.getWindowVisibleDisplayFrame(rect);
+                int heightDiff = parentView.getRootView().getHeight() - (rect.bottom - rect.top);
+                boolean isShown = heightDiff >= estimatedKeyboardHeight;
+
+                if (isShown == alreadyOpen) {
+                    return;
+                }
+                alreadyOpen = isShown;
+                onKeyboardVisibilityListener.onVisibilityChanged(isShown);
+            }
+        });
     }
 
     @Override
