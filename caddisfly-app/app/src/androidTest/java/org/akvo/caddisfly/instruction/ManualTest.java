@@ -390,7 +390,8 @@ public class ManualTest {
 
         onView(withText("μS/cm")).perform(click());
 
-        onView(withId(R.id.editResult)).perform(replaceText("20001"));
+        onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                .perform(replaceText("20001"), closeSoftKeyboard());
 
         onView(withText(R.string.next)).perform(click());
 

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -79,12 +80,14 @@ public class ManualTestActivity extends BaseActivity
     private int totalPageCount;
     private int skipToPageNumber;
     private int instructionCount;
+    private float scale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_test);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        scale = getResources().getDisplayMetrics().density;
 
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
@@ -224,7 +227,6 @@ public class ManualTestActivity extends BaseActivity
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
         footerLayout.setVisibility(View.VISIBLE);
-
         if (viewPager.getCurrentItem() == photo1PageNumber) {
             if (result1PhotoFragment.isValid()) {
                 viewPager.setAllowedSwipeDirection(SwipeDirection.all);
@@ -261,6 +263,10 @@ public class ManualTestActivity extends BaseActivity
             viewPager.setAllowedSwipeDirection(SwipeDirection.left);
             imagePageRight.setVisibility(View.INVISIBLE);
             imagePageLeft.setVisibility(View.VISIBLE);
+            if (scale <= 1.5) {
+                // don't show footer page indicator for smaller screens
+                (new Handler()).postDelayed(() -> footerLayout.setVisibility(View.GONE), 400);
+            }
         } else {
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
@@ -268,7 +274,7 @@ public class ManualTestActivity extends BaseActivity
     }
 
     @Override
-    public void onVisibilityChanged(boolean visible) {
+    public void onKeyboardVisibilityChanged(boolean visible) {
         if (visible) {
             footerLayout.setVisibility(View.GONE);
         } else {
@@ -297,7 +303,7 @@ public class ManualTestActivity extends BaseActivity
                     return;
                 }
                 alreadyOpen = isShown;
-                onKeyboardVisibilityListener.onVisibilityChanged(isShown);
+                onKeyboardVisibilityListener.onKeyboardVisibilityChanged(isShown);
             }
         });
     }
