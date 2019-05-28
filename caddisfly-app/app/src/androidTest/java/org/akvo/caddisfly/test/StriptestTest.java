@@ -267,7 +267,7 @@ public class StriptestTest {
 
         onView(withText(R.string.result)).check(matches(isDisplayed()));
         onView(withText("Mercury")).check(matches(isDisplayed()));
-        onView(withText("0.005 mg/l")).check(matches(isDisplayed()));
+        onView(withText("5 ug/l")).check(matches(isDisplayed()));
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()));
 
@@ -275,6 +275,6 @@ public class StriptestTest {
 
         onView(withText(R.string.save)).perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("Mercury: 0.005 mg/l")));
+        assertNotNull(mDevice.findObject(By.text("Mercury: 5.0 ug/l")));
     }
 }

@@ -171,4 +171,5 @@
     <string name="dechlorinate_residual_chlorine_1">In the case of high levels of residual chlorine, perform the analysis with a dechlorinated water sample. To dechlorinate:</string>
     <string name="dechlorinate_residual_chlorine_2">Add one DECHLOR tablet to the water sample.</string>
     <string name="dechlorinate_residual_chlorine_3">Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
+    <string name="ci_dechlorinate_residual_chlorine_2">Add one DECHLOR tablet to the water sample in the other cell.</string>
 </resources>

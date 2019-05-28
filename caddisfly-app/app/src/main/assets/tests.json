@@ -1547,8 +1547,8 @@
         {
           "id": 1,
           "name": "Mercury",
-          "unit": "mg/l",
-          "range": "0-0.08",
+          "unit": "ug/l",
+          "range": "0-80",
           "timeDelay": 30,
           "patchPos": 6,
           "patchWidth": 4.50,
@@ -1558,27 +1558,27 @@
               "lab": [80.23,-12.47,49.35]
             },
             {
-              "value": 0.002,
+              "value": 2,
               "lab": [78.43,-11.96,50.15]
             },
             {
-              "value": 0.005,
+              "value": 5,
               "lab": [77.99,-10.05,46.11]
             },
             {
-              "value": 0.01,
+              "value": 10,
               "lab": [72.68,-2.14,43.17]
             },
             {
-              "value": 0.02,
+              "value": 20,
               "lab": [64.38,5.06,26.00]
             },
             {
-              "value": 0.04,
+              "value": 40,
               "lab": [57.08,8.36,17.15]
             },
             {
-              "value": 0.08,
+              "value": 80,
               "lab": [54.00,2.91,10.02]
             }
           ]
@@ -8248,7 +8248,7 @@
           "section": [
             "<b>optional</b>",
             "dechlorinate_residual_chlorine_1",
-            "1. dechlorinate_residual_chlorine_2",
+            "1. ci_dechlorinate_residual_chlorine_2",
             "2. dechlorinate_residual_chlorine_3"
           ]
         },
@@ -9163,7 +9163,7 @@
           "section": [
             "<b>optional</b>",
             "dechlorinate_residual_chlorine_1",
-            "1. dechlorinate_residual_chlorine_2",
+            "1. ci_dechlorinate_residual_chlorine_2",
             "2. dechlorinate_residual_chlorine_3"
           ]
         },
