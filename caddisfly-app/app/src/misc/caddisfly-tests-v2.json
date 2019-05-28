@@ -1928,8 +1928,8 @@
           "id": 1,
           "name": "Mercury",
           "chemical": "Hg",
-          "unit": "mg/l",
-          "range": "0-0.08"
+          "unit": "ug/l",
+          "range": "0-80"
         }
       ]
     },
