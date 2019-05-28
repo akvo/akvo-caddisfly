@@ -257,7 +257,7 @@ public class ResultActivity extends BaseActivity {
     private void createView(TestInfo testInfo, List<PatchResult> patchResultList) {
         // create view in case the strip was not found
         if (patchResultList == null) {
-            String patchDescription = "Strip not detected";
+            String patchDescription = getString(R.string.strip_not_detected);
             Bitmap resultImage = createErrorImage();
             inflateView(patchDescription, "", resultImage);
         }

@@ -99,5 +99,6 @@
     <string name="place_tube_in_provided_rack">Place the tube in the provided rack.</string>
     <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
     <string name="shake_excess_water">Shake excess water from test strip.</string>
+    <string name="strip_not_detected">Strip not detected</string>
 
 </resources>

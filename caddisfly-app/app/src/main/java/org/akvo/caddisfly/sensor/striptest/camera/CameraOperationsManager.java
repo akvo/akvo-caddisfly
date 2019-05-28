@@ -67,7 +67,7 @@ public class CameraOperationsManager {
         }
     };
     private StriptestHandler mStriptestHandler;
-    //debug code
+    // debug code
     private byte[] bytes;
     private final Camera.PreviewCallback previewCallback = new Camera.PreviewCallback() {
         public void onPreviewFrame(byte[] imageData, Camera camera) {

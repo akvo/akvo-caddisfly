@@ -210,6 +210,7 @@ public final class ImageUtil {
         }
     }
 
+    // debug code
     /**
      * Save an image.
      *
@@ -238,5 +239,6 @@ public final class ImageUtil {
                 }
             }
         }
-    }*/
+    }
+    */
 }

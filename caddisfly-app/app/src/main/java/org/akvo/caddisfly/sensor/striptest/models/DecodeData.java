@@ -258,7 +258,7 @@ public class DecodeData {
         illumData = null;
     }
 
-    //todo remove debug code
+    // debug code
 //    public void saveImage() {
 //        ImageUtil.saveImage(decodeImageByteArray, FileHelper.FileType.TEST_IMAGE,
 //                String.valueOf(Calendar.getInstance().getTimeInMillis()));
