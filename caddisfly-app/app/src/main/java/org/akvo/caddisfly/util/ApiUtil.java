@@ -21,11 +21,20 @@ package org.akvo.caddisfly.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import androidx.annotation.Nullable;
+
+import org.akvo.caddisfly.sensor.manual.OnKeyboardVisibilityListener;
+
 import timber.log.Timber;
 
 /**
@@ -60,5 +69,33 @@ public final class ApiUtil {
         i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         i.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
         context.startActivity(i);
+    }
+
+    //https://stackoverflow.com/questions/4312319/how-to-capture-the-virtual-keyboard-show-hide-event-in-android
+    public static void setKeyboardVisibilityListener(
+            final OnKeyboardVisibilityListener onKeyboardVisibilityListener) {
+        Activity activity = (Activity) onKeyboardVisibilityListener;
+        final View parentView = ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+        parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            private final int defaultKeyboardHeightDP = 100;
+            private final int EstimatedKeyboardDP = defaultKeyboardHeightDP + (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? 48 : 0);
+            private final Rect rect = new Rect();
+            private boolean alreadyOpen;
+
+            @Override
+            public void onGlobalLayout() {
+                int estimatedKeyboardHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, EstimatedKeyboardDP, parentView.getResources().getDisplayMetrics());
+                parentView.getWindowVisibleDisplayFrame(rect);
+                int heightDiff = parentView.getRootView().getHeight() - (rect.bottom - rect.top);
+                boolean isShown = heightDiff >= estimatedKeyboardHeight;
+
+                if (isShown == alreadyOpen) {
+                    return;
+                }
+                alreadyOpen = isShown;
+                onKeyboardVisibilityListener.onKeyboardVisibilityChanged(isShown);
+            }
+        });
     }
 }

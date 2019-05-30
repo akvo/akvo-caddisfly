@@ -29,8 +29,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 260
-        versionName "1.0.9"
+        versionCode 261
+        versionName "1.0.10"
         resConfigs "en", "en_US", "fr", "in", "es"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -144,16 +144,16 @@ dependencies {
     // Testing
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.8.0'
-    testImplementation 'androidx.test:core:1.1.0'
+    testImplementation 'androidx.test:core:1.2.0'
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'androidx.test:rules:1.2.0-beta01'
-    androidTestImplementation "androidx.test.ext:junit:1.1.0"
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation "androidx.test.ext:junit:1.1.1"
 
     // Espresso
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0-beta01'
-    androidTestImplementation('androidx.test.espresso:espresso-contrib:3.2.0-beta01') {
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+    androidTestImplementation('androidx.test.espresso:espresso-contrib:3.2.0') {
         exclude group: 'com.android.support'
         exclude group: 'javax.inject'
     }
@@ -161,9 +161,9 @@ dependencies {
     // Robolectric
     testImplementation 'org.robolectric:robolectric:4.2'
     testImplementation "com.github.nimbl3:robolectric.shadows-supportv4:4.1-SNAPSHOT"
-    testImplementation 'androidx.test:rules:1.2.0-beta01'
-    testImplementation "androidx.test.ext:junit:1.1.0"
-    testImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
+    testImplementation 'androidx.test:rules:1.2.0'
+    testImplementation "androidx.test.ext:junit:1.1.1"
+    testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // UIAutomator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'

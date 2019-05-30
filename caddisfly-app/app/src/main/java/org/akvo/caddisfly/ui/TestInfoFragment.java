@@ -40,6 +40,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.FragmentTestDetailBinding;
@@ -47,12 +53,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.viewmodel.TestInfoViewModel;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 public class TestInfoFragment extends Fragment {
 
@@ -100,6 +100,8 @@ public class TestInfoFragment extends Fragment {
 
                 if (testInfo.getSubtype() == TestType.STRIP_TEST) {
                     b.buttonPrepare.setText(R.string.prepare_test);
+                } else if (testInfo.getSubtype() == TestType.MANUAL_COLOR_SELECT) {
+                    b.buttonInstructions.setVisibility(View.GONE);
                 } else if (testInfo.getSubtype() == TestType.BLUETOOTH) {
                     b.buttonInstructions.setVisibility(View.GONE);
                 } else if (testInfo.getSubtype() == TestType.MANUAL) {

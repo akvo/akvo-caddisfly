@@ -31,6 +31,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.TestConfigHelper;
@@ -40,9 +43,6 @@ import org.akvo.caddisfly.ui.BaseFragment;
 import org.json.JSONObject;
 
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import static android.app.Activity.RESULT_OK;
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
@@ -84,12 +84,6 @@ public class SwatchSelectTestResultFragment extends BaseFragment {
         layout = view.findViewById(R.id.layout_results);
         layout.removeAllViews();
 
-        for (Result result : testInfo.getResults()) {
-            String valueString = createValueUnitString(result.getResultValue(), result.getUnit(),
-                    getString(R.string.no_result));
-            inflateView(result.getName(), valueString);
-        }
-
         Button buttonSave = view.findViewById(R.id.button_save);
         buttonSave.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -110,6 +104,14 @@ public class SwatchSelectTestResultFragment extends BaseFragment {
         });
 
         return view;
+    }
+
+    public void setResult() {
+        for (Result result : testInfo.getResults()) {
+            String valueString = createValueUnitString(result.getResultValue(), result.getUnit(),
+                    getString(R.string.no_result));
+            inflateView(result.getName(), valueString);
+        }
     }
 
     @Override
@@ -137,4 +139,7 @@ public class SwatchSelectTestResultFragment extends BaseFragment {
         }
     }
 
+    boolean isValid(boolean b) {
+        return false;
+    }
 }
