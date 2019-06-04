@@ -23,9 +23,7 @@
     <string name="detecting_color_card">Looking for color card</string>
 
     <!--pH Cl Manual Swatch Select Tester-->
-    <string name="pt_read_result">Find out which color of the pH or free chlorine interval best matches with your sample and tap both color intervals in the test in the Caddisfly app. Next, clean the compartments with distilled water.</string>
     <string name="select_color_intervals">Select color intervals</string>
     <string name="select_colors_before_continue">Select the color intervals before continuing</string>
-    <string name="pt_select_intervals">Select the intervals that match the water sample colors in the box.</string>
 
 </resources>
