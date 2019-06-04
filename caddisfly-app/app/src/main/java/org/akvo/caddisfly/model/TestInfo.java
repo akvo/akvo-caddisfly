@@ -139,7 +139,6 @@ public class TestInfo implements Parcelable {
     @SerializedName("imageScale")
     @Expose
     private String imageScale;
-    private Integer decimalPlaces = 0;
 
     public TestInfo() {
     }
@@ -208,11 +207,6 @@ public class TestInfo implements Parcelable {
         }
         deviceId = in.readString();
         responseFormat = in.readString();
-        if (in.readByte() == 0) {
-            decimalPlaces = 0;
-        } else {
-            decimalPlaces = in.readInt();
-        }
     }
 
     public boolean getIsGroup() {
@@ -399,12 +393,6 @@ public class TestInfo implements Parcelable {
         }
         parcel.writeString(deviceId);
         parcel.writeString(responseFormat);
-        if (decimalPlaces == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeInt(decimalPlaces);
-        }
     }
 
     public Reagent getReagent(int i) {

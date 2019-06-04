@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
@@ -42,7 +47,7 @@ public class SwatchSelectTestActivity extends BaseActivity
 
     ImageView imagePageRight;
     ImageView imagePageLeft;
-    SwatchSelectTestResultFragment resultFragment;
+    SwatchSelectFragment resultFragment;
     private FragmentManager fragmentManager;
     private float[] testResults;
     private TestInfo testInfo;
@@ -51,6 +56,8 @@ public class SwatchSelectTestActivity extends BaseActivity
     private FrameLayout pagerLayout;
     private RelativeLayout footerLayout;
     private PageIndicatorView pagerIndicator;
+    private boolean showSkipMenu = true;
+    private FirebaseAnalytics mFirebaseAnalytics;
     private int resultPageNumber;
     private int totalPageCount;
     private int skipToPageNumber;
@@ -61,6 +68,9 @@ public class SwatchSelectTestActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swatch_select);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        scale = getResources().getDisplayMetrics().density;
 
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
@@ -78,7 +88,7 @@ public class SwatchSelectTestActivity extends BaseActivity
             return;
         }
 
-        resultFragment = SwatchSelectTestResultFragment.newInstance(testInfo);
+        resultFragment = SwatchSelectFragment.newInstance(testResults, testInfo.getRanges());
         if (testInfo.getHasEndInstruction()) {
             instructionCount = testInfo.getInstructions().size() - 1;
         } else {
@@ -163,6 +173,8 @@ public class SwatchSelectTestActivity extends BaseActivity
         } else {
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+            showSkipMenu = true;
+            invalidateOptionsMenu();
         }
     }
 
@@ -174,6 +186,14 @@ public class SwatchSelectTestActivity extends BaseActivity
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setTitle(testInfo.getName());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (showSkipMenu) {
+            getMenuInflater().inflate(R.menu.menu_instructions, menu);
+        }
+        return true;
     }
 
     private void startTest() {
@@ -235,6 +255,27 @@ public class SwatchSelectTestActivity extends BaseActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onSkipClick(MenuItem item) {
+        viewPager.setCurrentItem(skipToPageNumber);
+        showWaitingView();
+
+        if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+            Bundle bundle = new Bundle();
+            bundle.putString("InstructionsSkipped", testInfo.getName() +
+                    " (" + testInfo.getBrand() + ")");
+            bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Navigation");
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "si_" + testInfo.getUuid());
+            mFirebaseAnalytics.logEvent("instruction_skipped", bundle);
+        }
+    }
+
+    private void showWaitingView() {
+        pagerLayout.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.GONE);
+        showSkipMenu = false;
+        invalidateOptionsMenu();
     }
 
     /**

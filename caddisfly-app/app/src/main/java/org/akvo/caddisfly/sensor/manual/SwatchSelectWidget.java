@@ -12,13 +12,13 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.core.graphics.ColorUtils;
+
 import org.akvo.caddisfly.model.ColorItem;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import androidx.core.graphics.ColorUtils;
 
 public class SwatchSelectWidget extends View {
 
@@ -210,6 +210,12 @@ public class SwatchSelectWidget extends View {
         int action = event.getActionMasked();
 
         if (action == MotionEvent.ACTION_DOWN) {
+
+            invalidate();
+
+            return true;
+        } else if (action == MotionEvent.ACTION_UP) {
+
             float x = event.getX();
             float y = event.getY();
 
@@ -226,11 +232,6 @@ public class SwatchSelectWidget extends View {
                     break;
                 }
             }
-
-            invalidate();
-
-            return true;
-        } else if (action == MotionEvent.ACTION_UP) {
 
             invalidate();
 

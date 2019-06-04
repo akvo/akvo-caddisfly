@@ -21,27 +21,23 @@ package org.akvo.caddisfly.sensor.manual;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
 
 public class SwatchSelectFragment extends BaseFragment {
     private static final String ARG_KEY = "param1";
     private static final String ARG_RANGE = "range";
-    private static final int BUTTON_ENABLE_DELAY = 1500;
-    private static final int ANIMATION_DURATION_MILLIS = 500;
-    private static final float BUTTON_START_ALPHA = 0.1f;
     private OnSwatchSelectListener mListener;
     private float[] mKey;
     private String range;
@@ -70,15 +66,6 @@ public class SwatchSelectFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_swatch_select, container, false);
 
-        final Button buttonNext = view.findViewById(R.id.buttonNext);
-        (new Handler()).postDelayed(() -> {
-            buttonNext.setEnabled(true);
-            AlphaAnimation animation = new AlphaAnimation(BUTTON_START_ALPHA, 1f);
-            buttonNext.setAlpha(1f);
-            animation.setDuration(ANIMATION_DURATION_MILLIS);
-            buttonNext.startAnimation(animation);
-        }, BUTTON_ENABLE_DELAY);
-
         final SwatchSelectWidget swatchSelect = view.findViewById(R.id.compartments);
 
         if (range.contains("6.0")) {
@@ -94,9 +81,6 @@ public class SwatchSelectFragment extends BaseFragment {
                 mListener.onSwatchSelect(mKey);
             }
         });
-
-        buttonNext.setEnabled(false);
-        buttonNext.setAlpha(BUTTON_START_ALPHA);
 
         return view;
     }
@@ -122,6 +106,14 @@ public class SwatchSelectFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    boolean isValid(boolean showEmptyError) {
+        return SKIP_RESULT_VALIDATION || isValidResult(showEmptyError) != -1f;
+    }
+
+    private float isValidResult(boolean showEmptyError) {
+        return 0;
     }
 
     public interface OnSwatchSelectListener {
