@@ -7652,6 +7652,18 @@
         },
         {
           "section": [
+            "7.pt_read_result",
+            "image:pt_observe"
+          ]
+        },
+        {
+          "section": [
+            "8.pt_select_result_next",
+            "image:pt_6_interface_lr"
+          ]
+        },
+        {
+          "section": [
             "<b>round_off_test</b>",
             "pt_clean_compartments"
           ]

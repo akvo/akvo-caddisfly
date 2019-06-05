@@ -23,7 +23,7 @@ package org.akvo.caddisfly.instruction;
 import android.util.Log;
 
 import androidx.lifecycle.ViewModelProviders;
-import androidx.test.espresso.Espresso;
+import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.RequiresDevice;
@@ -43,11 +43,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -57,13 +56,14 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -101,16 +101,27 @@ public class ManualInstructions {
         List<TestInfo> testList = viewModel.getTests(TestType.MANUAL_COLOR_SELECT);
 
         for (int i = 0; i < TestConstants.MANUAL_SELECT_TESTS_COUNT; i++) {
+            if (i == 1) continue;
             TestInfo testInfo = testList.get(i);
 
             String id = testInfo.getUuid();
             id = id.substring(id.lastIndexOf("-") + 1);
 
-            int pages = navigateToTest("Manual 2", i, id);
+            int pages = navigateToTest("Manual 2", i, id, testInfo.getName());
 
-            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
+            ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 
-            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
+            customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.7f));
+
+            customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.3f));
+
+            takeScreenshot(id, pages);
+
+            nextPage();
+
+            takeScreenshot(id, ++pages);
+
+            onView(withText(R.string.submitResult)).perform(click());
 
             mDevice.pressBack();
 
@@ -120,7 +131,7 @@ public class ManualInstructions {
     }
 
     @SuppressWarnings("SameParameterValue")
-    private int navigateToTest(String tabName, int index, String id) {
+    private int navigateToTest(String tabName, int index, String id, String testName) {
 
         gotoSurveyForm();
 
@@ -130,35 +141,42 @@ public class ManualInstructions {
 
         mDevice.waitForIdle();
 
-        sleep(1000);
+        sleep(200);
 
         takeScreenshot(id, -1);
 
         mDevice.waitForIdle();
 
-        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+        onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
+
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {
-            pages++;
 
             try {
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+                pressBack();
+
+                onView(withText(testName)).check(matches(isDisplayed()));
+
                 takeScreenshot(id, i);
 
                 onView(withId(R.id.image_pageRight)).perform(click());
 
+                pages++;
+
             } catch (Exception e) {
-                sleep(600);
-                Random random = new Random(Calendar.getInstance().getTimeInMillis());
-                if (random.nextBoolean()) {
-                    Espresso.pressBack();
-                } else {
-                    mDevice.pressBack();
-                }
+                sleep(200);
+
+                pressBack();
+
                 break;
             }
         }
-        return pages + 1;
+        return pages - 1;
     }
 
     @Test

@@ -207,7 +207,7 @@ public final class TestUtil {
                     for (int j = 0; j < 20; j++) {
                         mDevice.waitForIdle();
                         swipeLeft();
-                        sleep(300);
+                        sleep(200);
                         tab = mDevice.findObject(By.text(tabName));
                         if (tab != null && tab.isSelected()) {
                             break;

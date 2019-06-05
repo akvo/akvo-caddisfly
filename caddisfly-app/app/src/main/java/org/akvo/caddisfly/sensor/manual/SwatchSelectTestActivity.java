@@ -190,6 +190,18 @@ public class SwatchSelectTestActivity extends BaseActivity
         invalidateOptionsMenu();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (resultLayout.getVisibility() == View.VISIBLE) {
+            viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+            showWaitingView();
+        } else if (viewPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            pageBack();
+        }
+    }
+
     private void pageBack() {
         viewPager.setCurrentItem(Math.max(0, viewPager.getCurrentItem() - 1));
     }
@@ -208,17 +220,23 @@ public class SwatchSelectTestActivity extends BaseActivity
         return true;
     }
 
-//    private void startTest() {
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.fragment_container,
-//                SwatchSelectFragment.newInstance(testResults, testInfo.getRanges()), "swatchSelect")
-//                .commit();
-//    }
-
     public void onSwatchSelect(float[] key) {
         testResults = key;
         testInfo.getResults().get(0).setResultValue(key[0]);
         testInfo.getResults().get(1).setResultValue(key[1]);
+
+        SparseArray<String> results = new SparseArray<>();
+
+        results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
+        results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
+
+        JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
+                results, null, null);
+
+        Intent intent = new Intent();
+        intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
+        setResult(RESULT_OK, intent);
+
         submitFragment.setResult(testInfo);
     }
 
@@ -283,6 +301,14 @@ public class SwatchSelectTestActivity extends BaseActivity
         resultLayout.setVisibility(View.GONE);
         showSkipMenu = false;
         invalidateOptionsMenu();
+    }
+
+    public void onSendResults(View view) {
+        sendResults();
+    }
+
+    private void sendResults() {
+        finish();
     }
 
     /**

@@ -53,6 +53,7 @@ import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
@@ -91,26 +92,60 @@ public class SwatchSelectTest {
 
         clickExternalSourceButton(1);
 
-        SystemClock.sleep(2000);
+        SystemClock.sleep(200);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         mDevice.waitForIdle();
 
-        SystemClock.sleep(3000);
+        onView(withText(R.string.pt_open_lid))
+                .check(matches(isDisplayed()));
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        nextPage();
 
-        SystemClock.sleep(2000);
+        onView(withText(R.string.pt_fill_compartments_1))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_add_reagent_1))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_add_reagent_2))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_close_shake))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_read_result))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_select_result_next))
+                .check(matches(isDisplayed()));
+
+        sleep(200);
+
+        nextPage();
+
+        onView(withText(R.string.pt_select_result))
+                .check(matches(isDisplayed()));
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 
         customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.55f));
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.55f));
 
-        sleep(1000);
+        sleep(200);
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        nextPage();
 
         onView(withText("pH")).check(matches(isDisplayed()));
 
@@ -126,9 +161,9 @@ public class SwatchSelectTest {
 
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.3f));
 
-        sleep(1000);
+        sleep(200);
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        nextPage();
 
         onView(withText("pH")).check(matches(isDisplayed()));
 
@@ -140,11 +175,13 @@ public class SwatchSelectTest {
 
         pressBack();
 
-        sleep(3000);
+        sleep(200);
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        nextPage();
 
-        onView(withText(R.string.save)).perform(click());
+        sleep(200);
+
+        onView(withText(R.string.submitResult)).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("pH: 7.2 ")));
 
@@ -161,15 +198,51 @@ public class SwatchSelectTest {
 
         clickExternalSourceButton(0);
 
+        SystemClock.sleep(200);
+
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         mDevice.waitForIdle();
 
-        SystemClock.sleep(500);
+        onView(withText(R.string.pt_open_lid))
+                .check(matches(isDisplayed()));
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        nextPage();
 
-        SystemClock.sleep(500);
+        onView(withText(R.string.pt_fill_compartments_1))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_add_reagent_1))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_add_reagent_2))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_close_shake))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_read_result))
+                .check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.pt_select_result_next))
+                .check(matches(isDisplayed()));
+
+        SystemClock.sleep(200);
+
+        nextPage();
+
+        onView(withText(R.string.pt_select_result))
+                .check(matches(isDisplayed()));
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 
@@ -177,9 +250,9 @@ public class SwatchSelectTest {
 
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.55f));
 
-        sleep(1000);
+        sleep(200);
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        nextPage();
 
         onView(withText("pH")).check(matches(isDisplayed()));
 
@@ -195,9 +268,9 @@ public class SwatchSelectTest {
 
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.3f));
 
-        sleep(1000);
+        sleep(200);
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        nextPage();
 
         onView(withText("pH")).check(matches(isDisplayed()));
 
@@ -209,11 +282,13 @@ public class SwatchSelectTest {
 
         pressBack();
 
-        sleep(3000);
+        sleep(200);
 
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+        nextPage();
 
-        onView(withText(R.string.save)).perform(click());
+        sleep(200);
+
+        onView(withText(R.string.submitResult)).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("pH: 7.2 ")));
 

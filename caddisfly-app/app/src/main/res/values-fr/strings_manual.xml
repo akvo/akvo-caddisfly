@@ -33,13 +33,11 @@
 
     <!--pH Cl Manual Swatch Select Tester-->
     <string name="pt_open_lid">Ouvrez le couvercle du testeur.</string>
-    <string name="pt_fill_compartments">Rincer les compartiments avec l\'échantillon d\'eau. Remplissez ensuite les trois compartiments jusqu\'au bord avec l\'échantillon d\'eau. Évitez de toucher l\'échantillon d\'eau ou l\'intérieur du testeur.</string>
     <string name="pt_add_reagent_1">Ajouter le réactif Phenol Red en comprimé directement de l\'emballage protecteur dans le compartiment gauche (pH Phenol Red). Éviter de toucher les comprimés de réactifs.</string>
     <string name="pt_add_reagent_2">Ajoutez le comprimé DPD No.1 directement de l\'emballage protecteur dans le compartiment droit (Cl DPD). Éviter de toucher les comprimés de réactifs.</string>
     <string name="pt_close_shake">Fermer la boîte avec le couvercle et agiter jusqu\'à ce que les réactifs soient dissous. Veillez à placer correctement le couvercle avec la flèche tournée vers vous.</string>
     <string name="select_color_intervals">Sélectionner les intervalles de couleurs</string>
     <string name="select_colors_before_continue">Sélectionner les intervalles de couleurs avant de continuer</string>
-    <string name="pt_select_intervals">Sélectionnez les intervalles qui correspondent aux couleurs de l\'échantillon d\'eau dans la boîte.</string>
 
     <string name="checkit_comparator_uses">Le comparateur Checkit utilise deux cellules et un disque de couleur.</string>
     <string name="insert_colored_disk">Insérez le disque de couleur dans le comparateur.</string>
