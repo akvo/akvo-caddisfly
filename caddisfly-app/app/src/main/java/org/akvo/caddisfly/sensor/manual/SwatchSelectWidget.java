@@ -323,7 +323,7 @@ public class SwatchSelectWidget extends View {
 
         String unit = "mg/l";
         subTitlePaint.getTextBounds(unit, 0, unit.length(), nameBounds);
-        canvas.drawText(unit, getMeasuredWidth() - horizontalMargin - nameBounds.width(), top + titleHeight, subTitlePaint);
+        canvas.drawText(unit, getMeasuredWidth() - horizontalMargin - nameBounds.width() - 5, top + titleHeight, subTitlePaint);
 
         for (int i = 0; i < 7; i++) {
             String valueString = String.format(Locale.US, "%.1f", clColors.get(i).getValue());

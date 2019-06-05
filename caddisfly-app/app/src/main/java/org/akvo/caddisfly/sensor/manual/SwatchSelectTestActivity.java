@@ -1,6 +1,7 @@
 package org.akvo.caddisfly.sensor.manual;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,7 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -35,6 +37,7 @@ import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.widget.CustomViewPager;
@@ -42,13 +45,18 @@ import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
+
 public class SwatchSelectTestActivity extends BaseActivity
         implements SwatchSelectFragment.OnSwatchSelectListener {
 
     ImageView imagePageRight;
     ImageView imagePageLeft;
     SwatchSelectFragment resultFragment;
-    private FragmentManager fragmentManager;
+    PlaceholderFragment submitFragment;
+
     private float[] testResults;
     private TestInfo testInfo;
     private CustomViewPager viewPager;
@@ -61,7 +69,6 @@ public class SwatchSelectTestActivity extends BaseActivity
     private int resultPageNumber;
     private int totalPageCount;
     private int skipToPageNumber;
-    private int instructionCount;
     private float scale;
 
     @Override
@@ -78,8 +85,6 @@ public class SwatchSelectTestActivity extends BaseActivity
         pagerLayout = findViewById(R.id.pagerLayout);
         footerLayout = findViewById(R.id.layout_footer);
 
-        fragmentManager = getSupportFragmentManager();
-
         if (testInfo == null) {
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
         }
@@ -89,6 +94,7 @@ public class SwatchSelectTestActivity extends BaseActivity
         }
 
         resultFragment = SwatchSelectFragment.newInstance(testResults, testInfo.getRanges());
+        int instructionCount;
         if (testInfo.getHasEndInstruction()) {
             instructionCount = testInfo.getInstructions().size() - 1;
         } else {
@@ -102,6 +108,9 @@ public class SwatchSelectTestActivity extends BaseActivity
         if (testInfo.getHasEndInstruction()) {
             totalPageCount += 1;
         }
+
+        submitFragment = PlaceholderFragment.newInstance(
+                testInfo.getInstructions().get(instructionCount), true);
 
         SectionsPagerAdapter mSectionsPagerAdapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
@@ -150,6 +159,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     }
 
     private void showHideFooter() {
+        showSkipMenu = false;
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
@@ -173,9 +183,11 @@ public class SwatchSelectTestActivity extends BaseActivity
         } else {
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
-            showSkipMenu = true;
-            invalidateOptionsMenu();
+            if (viewPager.getCurrentItem() < resultPageNumber - 1) {
+                showSkipMenu = true;
+            }
         }
+        invalidateOptionsMenu();
     }
 
     private void pageBack() {
@@ -196,20 +208,20 @@ public class SwatchSelectTestActivity extends BaseActivity
         return true;
     }
 
-    private void startTest() {
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,
-                SwatchSelectFragment.newInstance(testResults, testInfo.getRanges()), "swatchSelect")
-                .commit();
-    }
+//    private void startTest() {
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.fragment_container,
+//                SwatchSelectFragment.newInstance(testResults, testInfo.getRanges()), "swatchSelect")
+//                .commit();
+//    }
 
     public void onSwatchSelect(float[] key) {
         testResults = key;
         testInfo.getResults().get(0).setResultValue(key[0]);
         testInfo.getResults().get(1).setResultValue(key[1]);
+        submitFragment.setResult(testInfo);
     }
 
-    @SuppressWarnings("unused")
     public void onClickMatchedButton(View view) {
         if (testResults == null || testResults[0] == 0 || testResults[1] == 0) {
 
@@ -224,12 +236,6 @@ public class SwatchSelectTestActivity extends BaseActivity
             }
 
             toast.show();
-        } else {
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,
-                    SwatchSelectTestResultFragment.newInstance(testInfo), "resultFragment")
-                    .addToBackStack(null)
-                    .commit();
         }
     }
 
@@ -238,7 +244,8 @@ public class SwatchSelectTestActivity extends BaseActivity
 
         SparseArray<String> results = new SparseArray<>();
 
-        JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo, results, null, null);
+        JSONObject resultJson = TestConfigHelper.getJsonResult(this,
+                testInfo, results, null, null);
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
@@ -292,6 +299,8 @@ public class SwatchSelectTestActivity extends BaseActivity
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
         private boolean showOk;
+        private LinearLayout layout;
+        private ViewGroup viewRoot;
 
         /**
          * Returns a new instance of this fragment for the given section number.
@@ -315,6 +324,8 @@ public class SwatchSelectTestActivity extends BaseActivity
             fragmentInstructionBinding = DataBindingUtil.inflate(inflater,
                     R.layout.fragment_instruction, container, false);
 
+            viewRoot = container;
+
             if (getArguments() != null) {
                 instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
                 showOk = getArguments().getBoolean(ARG_SHOW_OK);
@@ -326,7 +337,42 @@ public class SwatchSelectTestActivity extends BaseActivity
             if (showOk) {
                 view.findViewById(R.id.buttonDone).setVisibility(View.VISIBLE);
             }
+
+            layout = view.findViewById(R.id.layout_results);
+
             return view;
+        }
+
+        public void setResult(TestInfo testInfo) {
+            if (testInfo != null) {
+
+                LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(getActivity())
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                layout.removeAllViews();
+
+                SparseArray<String> results = new SparseArray<>();
+
+                results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
+                results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
+
+                for (Result result : testInfo.getResults()) {
+                    String valueString = createValueUnitString(result.getResultValue(), result.getUnit(),
+                            getString(R.string.no_result));
+
+                    LinearLayout itemResult;
+                    itemResult = (LinearLayout) inflater.inflate(R.layout.item_result,
+                            viewRoot, false);
+                    TextView textTitle = itemResult.findViewById(R.id.text_title);
+                    textTitle.setText(result.getName());
+
+                    TextView textResult = itemResult.findViewById(R.id.text_result);
+                    textResult.setText(valueString);
+                    layout.addView(itemResult);
+                }
+
+                layout.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -345,8 +391,7 @@ public class SwatchSelectTestActivity extends BaseActivity
             if (position == resultPageNumber) {
                 return resultFragment;
             } else if (position == totalPageCount - 1) {
-                return PlaceholderFragment.newInstance(
-                        testInfo.getInstructions().get(instructionCount), true);
+                return submitFragment;
             } else {
                 return PlaceholderFragment.newInstance(
                         testInfo.getInstructions().get(position), false);

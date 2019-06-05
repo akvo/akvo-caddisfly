@@ -26,12 +26,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
-
-import java.util.Objects;
 
 import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
 
@@ -83,12 +80,6 @@ public class SwatchSelectFragment extends BaseFragment {
         });
 
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Objects.requireNonNull(getActivity()).setTitle(R.string.select_color_intervals);
     }
 
     @Override
