@@ -240,8 +240,6 @@ public class SwatchSelectWidget extends View {
             return true;
         }
 
-//        getKey();
-
         return false;
     }
 
@@ -283,8 +281,8 @@ public class SwatchSelectWidget extends View {
         canvas.drawPath(borderPath, backgroundPaint);
 
         lidPath.moveTo(-50, 50);
-        lidPath.quadTo(getMeasuredWidth() / 4, -50, getMeasuredWidth() / 2, 50);
-        lidPath.quadTo((getMeasuredWidth() / 4) * 3, -50, getMeasuredWidth() + 50, 50);
+        lidPath.quadTo(getMeasuredWidth() / 4, -50, getMeasuredWidth() / 2, 60);
+        lidPath.quadTo((getMeasuredWidth() / 4) * 3, -50, getMeasuredWidth() + 50, 60);
         canvas.drawPath(lidPath, backgroundPaint);
 
         int triangleSize = (int) (getMeasuredWidth() * 0.03);
@@ -417,7 +415,7 @@ public class SwatchSelectWidget extends View {
         clButtons.add(rightRect);
     }
 
-    public float[] getKey() {
+    public float[] getResult() {
         float[] result = new float[2];
 
         if (activeLeft > -1) {
@@ -429,7 +427,7 @@ public class SwatchSelectWidget extends View {
         return result;
     }
 
-    public void setKey(float[] key) {
+    public void setResults(float[] key) {
         if (key != null) {
             for (int i = 0; i < phColors.size(); i++) {
                 if (phColors.get(i).getValue().floatValue() == key[0]) {

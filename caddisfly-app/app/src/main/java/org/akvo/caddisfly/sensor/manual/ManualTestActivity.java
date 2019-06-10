@@ -267,6 +267,9 @@ public class ManualTestActivity extends BaseActivity
         } else {
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+            if (viewPager.getCurrentItem() == 0) {
+                imagePageLeft.setVisibility(View.INVISIBLE);
+            }
         }
     }
 

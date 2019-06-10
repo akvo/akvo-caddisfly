@@ -30,19 +30,18 @@ import androidx.annotation.NonNull;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
 
-import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
-
 public class SwatchSelectFragment extends BaseFragment {
-    private static final String ARG_KEY = "param1";
+    private static final String ARG_RESULTS = "results";
     private static final String ARG_RANGE = "range";
+    private static final String RESULT_ARRAY = "result_array";
     private OnSwatchSelectListener mListener;
-    private float[] mKey;
+    private float[] mResults;
     private String range;
 
-    public static SwatchSelectFragment newInstance(float[] key, String range) {
+    public static SwatchSelectFragment newInstance(float[] results, String range) {
         SwatchSelectFragment fragment = new SwatchSelectFragment();
         Bundle args = new Bundle();
-        args.putFloatArray(ARG_KEY, key);
+        args.putFloatArray(ARG_RESULTS, results);
         args.putString(ARG_RANGE, range);
         fragment.setArguments(args);
         return fragment;
@@ -52,9 +51,15 @@ public class SwatchSelectFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mKey = getArguments().getFloatArray(ARG_KEY);
+            mResults = getArguments().getFloatArray(ARG_RESULTS);
             range = getArguments().getString(ARG_RANGE);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putFloatArray(RESULT_ARRAY, mResults);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -69,13 +74,17 @@ public class SwatchSelectFragment extends BaseFragment {
             swatchSelect.setRange(2);
         }
 
-        swatchSelect.setKey(mKey);
+        if (savedInstanceState != null) {
+            mResults = savedInstanceState.getFloatArray(RESULT_ARRAY);
+        }
+
+        swatchSelect.setResults(mResults);
 
         swatchSelect.setOnClickListener(v -> {
-            mKey = swatchSelect.getKey();
+            mResults = swatchSelect.getResult();
 
             if (mListener != null) {
-                mListener.onSwatchSelect(mKey);
+                mListener.onSwatchSelect(mResults);
             }
         });
 
@@ -99,12 +108,8 @@ public class SwatchSelectFragment extends BaseFragment {
         mListener = null;
     }
 
-    boolean isValid(boolean showEmptyError) {
-        return SKIP_RESULT_VALIDATION || isValidResult(showEmptyError) != -1f;
-    }
-
-    private float isValidResult(boolean showEmptyError) {
-        return 0;
+    boolean isValid() {
+        return mResults != null && mResults[0] != 0 && mResults[1] != 0;
     }
 
     public interface OnSwatchSelectListener {

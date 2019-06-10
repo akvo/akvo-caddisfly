@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.SparseArray;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -124,6 +122,7 @@ public class SwatchSelectTestActivity extends BaseActivity
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1));
 
         imagePageLeft = findViewById(R.id.image_pageLeft);
+        imagePageLeft.setVisibility(View.INVISIBLE);
         imagePageLeft.setOnClickListener(view -> pageBack());
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -136,7 +135,7 @@ public class SwatchSelectTestActivity extends BaseActivity
                 pagerIndicator.setActiveIndex(position);
 
                 if (position > resultPageNumber) {
-                    if (!resultFragment.isValid(true)) {
+                    if (!resultFragment.isValid()) {
                         viewPager.setCurrentItem(resultPageNumber);
                     }
                 }
@@ -167,7 +166,7 @@ public class SwatchSelectTestActivity extends BaseActivity
         setTitle(testInfo.getName());
         if (viewPager.getCurrentItem() == resultPageNumber) {
             setTitle(R.string.select_color_intervals);
-            if (resultFragment.isValid(true)) {
+            if (resultFragment.isValid()) {
                 viewPager.setAllowedSwipeDirection(SwipeDirection.all);
                 imagePageRight.setVisibility(View.VISIBLE);
             } else {
@@ -178,6 +177,7 @@ public class SwatchSelectTestActivity extends BaseActivity
             viewPager.setAllowedSwipeDirection(SwipeDirection.left);
             imagePageRight.setVisibility(View.INVISIBLE);
             imagePageLeft.setVisibility(View.VISIBLE);
+            submitFragment.setResult(testInfo);
             if (scale <= 1.5) {
                 // don't show footer page indicator for smaller screens
                 (new Handler()).postDelayed(() -> footerLayout.setVisibility(View.GONE), 400);
@@ -187,6 +187,9 @@ public class SwatchSelectTestActivity extends BaseActivity
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
             if (viewPager.getCurrentItem() < resultPageNumber - 1) {
                 showSkipMenu = true;
+            }
+            if (viewPager.getCurrentItem() == 0) {
+                imagePageLeft.setVisibility(View.INVISIBLE);
             }
         }
         invalidateOptionsMenu();
@@ -223,39 +226,26 @@ public class SwatchSelectTestActivity extends BaseActivity
     }
 
     public void onSwatchSelect(float[] key) {
-        testResults = key;
-        testInfo.getResults().get(0).setResultValue(key[0]);
-        testInfo.getResults().get(1).setResultValue(key[1]);
+        showHideFooter();
 
-        SparseArray<String> results = new SparseArray<>();
+        if (resultFragment.isValid()) {
+            testResults = key;
+            testInfo.getResults().get(0).setResultValue(key[0]);
+            testInfo.getResults().get(1).setResultValue(key[1]);
 
-        results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
-        results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
+            SparseArray<String> results = new SparseArray<>();
 
-        JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
-                results, null, null);
+            results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
+            results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
 
-        Intent intent = new Intent();
-        intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
-        setResult(RESULT_OK, intent);
+            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
+                    results, null, null);
 
-        submitFragment.setResult(testInfo);
-    }
+            Intent intent = new Intent();
+            intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
+            setResult(RESULT_OK, intent);
 
-    public void onClickMatchedButton(View view) {
-        if (testResults == null || testResults[0] == 0 || testResults[1] == 0) {
-
-            Toast toast = Toast.makeText(this, R.string.select_colors_before_continue,
-                    Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.BOTTOM, 0, 300);
-
-            View view1 = toast.getView();
-            if (view1 != null) {
-                view1.setPadding(20, 20, 20, 20);
-                view1.setBackgroundResource(R.color.error_background);
-            }
-
-            toast.show();
+            submitFragment.setResult(testInfo);
         }
     }
 
@@ -278,7 +268,12 @@ public class SwatchSelectTestActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            if (viewPager.getCurrentItem() == 0) {
+                onBackPressed();
+            } else {
+                viewPager.setCurrentItem(0);
+                showHideFooter();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
