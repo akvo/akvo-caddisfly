@@ -164,7 +164,9 @@ public class SwatchSelectTestActivity extends BaseActivity
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
         footerLayout.setVisibility(View.VISIBLE);
+        setTitle(testInfo.getName());
         if (viewPager.getCurrentItem() == resultPageNumber) {
+            setTitle(R.string.select_color_intervals);
             if (resultFragment.isValid(true)) {
                 viewPager.setAllowedSwipeDirection(SwipeDirection.all);
                 imagePageRight.setVisibility(View.VISIBLE);

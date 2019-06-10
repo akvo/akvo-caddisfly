@@ -39,9 +39,9 @@
     <string name="pt_open_lid">Open the lid of the tester.</string>
     <string name="pt_fill_compartments_1">Rinse the compartments with the water sample.</string>
     <string name="pt_fill_compartments_2">Fill the three compartments until the edge with the water sample. Avoid touching the water sample or the inside of the tester.</string>
-    <string name="pt_read_result">Find out which color of the pH or free chlorine interval best matches with your sample.</string>
-    <string name="pt_select_result">Select the color intervals that best match your sample.</string>
-    <string name="pt_select_result_next">In the next screen, tap both color intervals that best match your sample as shown below</string>
+    <string name="pt_read_result">Compare the sample colour with the intervals for pH and free chlorine to find the best match.</string>
+    <string name="pt_select_result">Select the colour intervals that best match your sample.</string>
+    <string name="pt_select_result_next">In the next screen, tap both colour intervals that best match your sample as shown in the example below.</string>
     <string name="pt_clean_compartments">Clean the compartments with distilled water.</string>
     <string name="pt_add_reagent_1">Add the Phenol Red tablet reagent directly from the foil into the left compartment (pH Phenol Red). Avoid touching the reagent tablets.</string>
     <string name="pt_add_reagent_2">Add the DPD No.1 tablet directly from the foil into the right (Cl DPD) compartment. Avoid touching the reagent tablets.</string>

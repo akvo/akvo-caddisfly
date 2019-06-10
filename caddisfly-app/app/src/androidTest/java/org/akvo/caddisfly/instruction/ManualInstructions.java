@@ -101,13 +101,14 @@ public class ManualInstructions {
         List<TestInfo> testList = viewModel.getTests(TestType.MANUAL_COLOR_SELECT);
 
         for (int i = 0; i < TestConstants.MANUAL_SELECT_TESTS_COUNT; i++) {
-            if (i == 1) continue;
             TestInfo testInfo = testList.get(i);
 
             String id = testInfo.getUuid();
             id = id.substring(id.lastIndexOf("-") + 1);
 
             int pages = navigateToTest("Manual 2", i, id, testInfo.getName());
+
+            sleep(500);
 
             ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
 
@@ -127,7 +128,7 @@ public class ManualInstructions {
 
             jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
-        Log.d("Caddisfly", jsArrayString.toString());
+        Log.d("CaddisflyTests", jsArrayString.toString());
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -156,15 +157,19 @@ public class ManualInstructions {
 
             try {
 
-                onView(withId(R.id.image_pageRight)).perform(click());
+                nextPage();
+
+                sleep(200);
 
                 pressBack();
 
-                onView(withText(testName)).check(matches(isDisplayed()));
+                sleep(200);
 
                 takeScreenshot(id, i);
 
-                onView(withId(R.id.image_pageRight)).perform(click());
+                nextPage();
+
+                sleep(200);
 
                 pages++;
 
