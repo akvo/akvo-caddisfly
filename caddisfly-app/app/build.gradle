@@ -159,7 +159,7 @@ dependencies {
     }
 
     // Robolectric
-    testImplementation 'org.robolectric:robolectric:4.2'
+    testImplementation 'org.robolectric:robolectric:4.3'
     testImplementation "com.github.nimbl3:robolectric.shadows-supportv4:4.1-SNAPSHOT"
     testImplementation 'androidx.test:rules:1.2.0'
     testImplementation "androidx.test.ext:junit:1.1.1"

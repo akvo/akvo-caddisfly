@@ -34,6 +34,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.model.Instruction;
@@ -42,10 +46,6 @@ import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.List;
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import static android.graphics.Typeface.BOLD;
 
@@ -135,7 +135,6 @@ public class InstructionFragment extends Fragment {
             animation.setDuration(ANIMATION_DURATION_MILLIS);
             buttonStart.startAnimation(animation);
         }, BUTTON_ENABLE_DELAY);
-
 
         return rootView;
     }
