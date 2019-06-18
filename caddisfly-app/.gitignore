@@ -57,3 +57,4 @@ notes.md
 
 # Sentry config
 sentry.properties
+sentry-debug*

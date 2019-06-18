@@ -120,4 +120,14 @@ public final class FileHelper {
         CUSTOM_CONFIG, EXP_CONFIG, CARD, TEST_IMAGE, RESULT_IMAGE
     }
 
+    public static void cleanResultImagesFolder() {
+        final File imagesFolder = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+        File[] files = imagesFolder.listFiles();
+        if (files != null) {
+            for (File tempFile : imagesFolder.listFiles()) {
+                //noinspection ResultOfMethodCallIgnored
+                tempFile.delete();
+            }
+        }
+    }
 }

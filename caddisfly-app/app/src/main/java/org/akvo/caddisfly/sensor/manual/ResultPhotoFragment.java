@@ -27,6 +27,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +41,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.ImageUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -86,6 +89,12 @@ public class ResultPhotoFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_result_photo, container, false);
 
+        if (savedInstanceState != null) {
+            currentPhotoPath = savedInstanceState.getString(ConstantKey.CURRENT_PHOTO_PATH);
+            imageFileName = savedInstanceState.getString(ConstantKey.CURRENT_IMAGE_FILE_NAME);
+            resultImagePath = savedInstanceState.getString(ConstantKey.RESULT_IMAGE_PATH);
+        }
+
         imageResult = view.findViewById(R.id.imageResult);
         takePhotoButton = view.findViewById(R.id.takePhoto);
         TextView textName = view.findViewById(R.id.textName);
@@ -112,6 +121,15 @@ public class ResultPhotoFragment extends BaseFragment {
 
         return view;
     }
+
+    @Override
+    public void onSaveInstanceState(@NotNull Bundle outState) {
+        outState.putString(ConstantKey.CURRENT_PHOTO_PATH, currentPhotoPath);
+        outState.putString(ConstantKey.CURRENT_IMAGE_FILE_NAME, imageFileName);
+        outState.putString(ConstantKey.RESULT_IMAGE_PATH, resultImagePath);
+        super.onSaveInstanceState(outState);
+    }
+
 
     private void takePhoto() {
         Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -169,11 +187,12 @@ public class ResultPhotoFragment extends BaseFragment {
                 takePhotoButton.setText(R.string.retakePhoto);
             }
 
-            mListener.onPhotoTaken(imageFileName);
+            (new Handler()).postDelayed(() -> mListener.onPhotoTaken(imageFileName), 600);
         }
     }
 
     private File createImageFile() throws IOException {
+
         // Create an image file name
         imageFileName = UUID.randomUUID().toString();
 
@@ -208,7 +227,6 @@ public class ResultPhotoFragment extends BaseFragment {
         mListener = null;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isValid() {
         return SKIP_PHOTO_VALIDATION || (resultImagePath != null &&
                 !resultImagePath.isEmpty() && new File(resultImagePath).exists());

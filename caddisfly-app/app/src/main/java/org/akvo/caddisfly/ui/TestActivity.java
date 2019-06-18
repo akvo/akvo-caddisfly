@@ -57,7 +57,6 @@ import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.CameraHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
-import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -74,10 +73,11 @@ import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
-import java.io.File;
 import java.lang.ref.WeakReference;
 
 import timber.log.Timber;
+
+import static org.akvo.caddisfly.helper.FileHelper.cleanResultImagesFolder;
 
 public class TestActivity extends BaseActivity {
 
@@ -106,56 +106,59 @@ public class TestActivity extends BaseActivity {
 
         setContentView(R.layout.activity_test);
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        mainLayout = findViewById(R.id.mainLayout);
-
-        // Add list fragment if this is first creation
-        if (testInfo == null) {
-
-            testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
-
-            if (testInfo != null) {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, TestInfoFragment.getInstance(testInfo),
-                                TestActivity.class.getSimpleName()).commit();
-            }
-        }
-
-        setTitle(R.string.appName);
+        Intent intent = getIntent();
 
         // Stop if the app version has expired
         if (ApkHelper.isAppVersionExpired(this)) {
             return;
         }
 
-        Intent intent = getIntent();
-        String type = intent.getType();
-        if (("text/plain".equals(type))
-                && AppConfig.EXTERNAL_APP_ACTION.equals(intent.getAction())) {
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-            getTestSelectedByExternalApp(fragmentManager, intent);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        mainLayout = findViewById(R.id.mainLayout);
+
+        if (savedInstanceState != null) {
+            testInfo = savedInstanceState.getParcelable(ConstantKey.TEST_INFO);
+        }
+
+        if (testInfo == null) {
+            testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
+        }
+
+        setTitle(R.string.appName);
+
+        if (testInfo == null) {
+            String type = intent.getType();
+            if (("text/plain".equals(type))
+                    && AppConfig.EXTERNAL_APP_ACTION.equals(intent.getAction())) {
+
+                getTestSelectedByExternalApp(fragmentManager, intent);
+            }
+        }
+
+        if (testInfo == null) {
+            return;
+        }
+
+        // Add list fragment if this is first creation
+        if (savedInstanceState == null) {
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, TestInfoFragment.getInstance(testInfo),
+                            TestActivity.class.getSimpleName()).commit();
         }
 
         if (testInfo != null && testInfo.getSubtype() == TestType.SENSOR
                 && !this.getPackageManager().hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
             ErrorMessages.alertFeatureNotSupported(this, true);
         }
-
-        cleanResultImagesFolder();
     }
 
-    private void cleanResultImagesFolder() {
-        final File imagesFolder = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
-        File[] files = imagesFolder.listFiles();
-        if (files != null) {
-            for (File tempFile : imagesFolder.listFiles()) {
-                //noinspection ResultOfMethodCallIgnored
-                tempFile.delete();
-            }
-        }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        super.onSaveInstanceState(outState);
     }
 
     private void getTestSelectedByExternalApp(FragmentManager fragmentManager, Intent intent) {
@@ -285,6 +288,9 @@ public class TestActivity extends BaseActivity {
     }
 
     private void startCbtTest() {
+
+        cleanResultImagesFolder();
+
         Intent intent;
         intent = new Intent(this, CbtActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
@@ -292,6 +298,9 @@ public class TestActivity extends BaseActivity {
     }
 
     private void startManualTest() {
+
+        cleanResultImagesFolder();
+
         Intent intent;
         intent = new Intent(this, ManualTestActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
