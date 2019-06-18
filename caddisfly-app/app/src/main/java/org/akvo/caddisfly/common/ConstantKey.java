@@ -13,5 +13,12 @@ public class ConstantKey {
     public static final String TEST_STAGE = NAMESPACE_PREFIX + "testStage";
 
     public static final String TYPE = NAMESPACE_PREFIX + "type";
+    public static final String CURRENT_PHOTO_PATH = "photo_path";
+    public static final String CURRENT_IMAGE_FILE_NAME = "image_file_name";
+    public static final String RESULT_IMAGE_PATH = "result_image_path";
+    public static final String RESULT_PHOTO_FRAGMENT = "result_photo";
+    public static final String RESULT_FRAGMENT = "result_fragment";
+    public static final String RESULT_1_PHOTO_FRAGMENT = "result_1_photo";
+    public static final String RESULT_1_FRAGMENT = "result_1_fragment";
 }
 
