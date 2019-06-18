@@ -21,23 +21,21 @@ package org.akvo.caddisfly.test;
 
 import android.os.SystemClock;
 
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.RequiresDevice;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
-import androidx.test.filters.RequiresDevice;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.uiautomator.UiDevice;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -61,8 +59,6 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
 @RunWith(AndroidJUnit4.class)
-@LargeTest
-@Ignore
 public class SensorTest {
 
     @Rule
@@ -307,8 +303,7 @@ public class SensorTest {
 
         mDevice.waitForWindowUpdate("", 2000);
 
-        onView(withContentDescription(mActivityRule.getActivity()
-                .getString(R.string.deviceConnectSensor))).check(matches(isDisplayed()));
+        onView(withContentDescription(R.string.deviceConnectSensor)).check(matches(isDisplayed()));
 
         Espresso.pressBack();
 

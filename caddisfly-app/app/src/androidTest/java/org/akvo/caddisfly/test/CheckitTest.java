@@ -65,6 +65,7 @@ import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -244,6 +245,10 @@ public class CheckitTest {
         SystemClock.sleep(500);
 
         onView(withText(R.string.submitResult)).perform(click());
+
+        mIntentsRule.finishActivity();
+
+        sleep(2000);
 
         assertNotNull(mDevice.findObject(By.text("Free chlorine: 3.98 mg/l")));
         assertNotNull(mDevice.findObject(By.text("Total chlorine: 2.53 mg/l")));

@@ -19,6 +19,12 @@
 
 package org.akvo.caddisfly.misc;
 
+import androidx.test.espresso.Espresso;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.junit.Before;
@@ -26,12 +32,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import androidx.test.espresso.Espresso;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.uiautomator.UiDevice;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -41,6 +41,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
+import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
@@ -73,6 +74,8 @@ public class MiscTest {
     @Test
     public void testSoftwareNotices() {
 
+        goToMainScreen();
+
         onView(withId(R.id.button_info)).perform(click());
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
@@ -80,6 +83,8 @@ public class MiscTest {
         onView(withText(R.string.legalInformation)).check(matches(isDisplayed())).perform(click());
 
         Espresso.pressBack();
+
+        mActivityRule.finishActivity();
 
     }
 }

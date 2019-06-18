@@ -22,7 +22,6 @@ package org.akvo.caddisfly.bluetooth;
 
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
 import androidx.test.filters.RequiresDevice;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
@@ -30,6 +29,7 @@ import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
@@ -37,7 +37,6 @@ import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -66,11 +65,11 @@ import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class BluetoothTest {
 
@@ -94,11 +93,6 @@ public class BluetoothTest {
     public void setup() {
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
-        TestHelper.clearPreferences(mActivityTestRule);
-    }
-
-    @After
-    public void tearDown() {
         TestHelper.clearPreferences(mActivityTestRule);
     }
 
@@ -150,6 +144,9 @@ public class BluetoothTest {
                 break;
             }
         }
+        mActivityTestRule.finishActivity();
+
+        sleep(2000);
 
         assertNotNull(mDevice.findObject(By.text("3. Calcium Hardness")));
 
@@ -162,6 +159,8 @@ public class BluetoothTest {
     public void bluetoothTest() {
 
         activateTestMode();
+
+        mDevice.waitForWindowUpdate("", 2000);
 
         gotoSurveyForm();
 
@@ -183,7 +182,7 @@ public class BluetoothTest {
 
         TestUtil.nextPage();
 
-        String phrase = getString(mActivityTestRule.getActivity(), R.string.add_reagent_1_liquid_exact_ml);
+        String phrase = getString(R.string.add_reagent_1_liquid_exact_ml);
         phrase = phrase.replace("%reagent1", "2 ml SPADNS (467481)");
         onView(withText(phrase)).check(matches(isDisplayed()));
 
@@ -206,49 +205,49 @@ public class BluetoothTest {
 
         TestHelper.navigateUp();
 
-        TestHelper.clearPreferences(mActivityTestRule);
-
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.button_prepare), withText(R.string.next),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        if (TestUtil.isEmulator()) {
-            onView(withText("Bluetooth not supported."))
-                    .inRoot(withDecorView(not(is(mActivityTestRule.getActivity().getWindow()
-                            .getDecorView())))).check(matches(isDisplayed()));
-            return;
-        }
+        if (!AppConfig.SKIP_BLUETOOTH_SCAN) {
+            if (TestUtil.isEmulator()) {
+                onView(withText("Bluetooth not supported."))
+                        .inRoot(withDecorView(not(is(mActivityTestRule.getActivity().getWindow()
+                                .getDecorView())))).check(matches(isDisplayed()));
+                return;
+            }
 
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            try {
+                Thread.sleep(7000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(android.R.id.button1), withText(R.string.retry),
-                        childAtPosition(
-                                allOf(withClassName(is("com.android.internal.widget.ButtonBarLayout")),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                3)),
-                                3),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
+            ViewInteraction appCompatButton3 = onView(
+                    allOf(withId(android.R.id.button1), withText(R.string.retry),
+                            childAtPosition(
+                                    allOf(withClassName(is("com.android.internal.widget.ButtonBarLayout")),
+                                            childAtPosition(
+                                                    withClassName(is("android.widget.LinearLayout")),
+                                                    3)),
+                                    3),
+                            isDisplayed()));
+            appCompatButton3.perform(click());
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
+            onView(allOf(withId(R.id.button_connect), withText("Connect"))).perform(click());
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         onView(withText("Select Test"))
@@ -270,8 +269,6 @@ public class BluetoothTest {
         onView(withId(R.id.image_pageRight)).perform(click());
 
         onView(withText(R.string.skip)).perform(click());
-
-//        onView(withText("Awaiting result")).check(matches(isDisplayed()));
 
         try {
             Thread.sleep(10000);
@@ -295,5 +292,7 @@ public class BluetoothTest {
         onView(withText("mg/l")).check(matches(isDisplayed()));
 
         onView(withId(R.id.button_submit_result)).perform(click());
+
+        mActivityTestRule.finishActivity();
     }
 }

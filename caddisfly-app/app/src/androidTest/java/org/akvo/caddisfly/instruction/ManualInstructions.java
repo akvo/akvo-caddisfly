@@ -56,6 +56,7 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -95,6 +96,8 @@ public class ManualInstructions {
     @RequiresDevice
     public void testInstructionsSwatchSelect() {
 
+        goToMainScreen();
+
         final TestListViewModel viewModel =
                 ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
 
@@ -128,6 +131,13 @@ public class ManualInstructions {
 
             jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
+
+        mActivityTestRule.finishActivity();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
+
         Log.d("CaddisflyTests", jsArrayString.toString());
     }
 
@@ -175,9 +185,6 @@ public class ManualInstructions {
 
             } catch (Exception e) {
                 sleep(200);
-
-                pressBack();
-
                 break;
             }
         }
@@ -186,6 +193,8 @@ public class ManualInstructions {
 
     @Test
     public void instructionTest() {
+
+        goToMainScreen();
 
         gotoSurveyForm();
 
@@ -201,5 +210,6 @@ public class ManualInstructions {
 
         onView(withText(R.string.sd_50_dip_sample_1)).check(matches(isDisplayed()));
 
+        mActivityTestRule.finishActivity();
     }
 }

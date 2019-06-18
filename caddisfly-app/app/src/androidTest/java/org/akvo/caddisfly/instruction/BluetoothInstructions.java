@@ -129,6 +129,8 @@ public class BluetoothInstructions {
 
         }
 
+        mActivityRule.finishActivity();
+
         Log.d("Caddisfly", jsArrayString.toString());
 
     }

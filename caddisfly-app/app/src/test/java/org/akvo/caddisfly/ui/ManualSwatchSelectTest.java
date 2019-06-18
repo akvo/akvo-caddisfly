@@ -141,7 +141,7 @@ public class ManualSwatchSelectTest {
         assertEquals(textView.getText(), activity.getString(R.string.select_color_intervals));
 
         TextView textView2 = activity.findViewById(R.id.textInfo2);
-        assertEquals(textView2.getText(), activity.getString(R.string.pt_select_intervals));
+        assertEquals(textView2.getText(), activity.getString(R.string.select_color_intervals));
 
         SystemClock.sleep(3000);
 

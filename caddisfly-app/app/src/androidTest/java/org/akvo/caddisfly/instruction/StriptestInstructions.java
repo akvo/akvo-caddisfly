@@ -63,8 +63,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
+import static org.akvo.caddisfly.util.TestHelper.loadData;
+import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
@@ -93,10 +96,10 @@ public class StriptestInstructions {
 
     @Before
     public void setUp() {
-
-//        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
-
-//        clearPreferences(mActivityTestRule);
+        mActivityTestRule.launchActivity(new Intent());
+        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
+        clearPreferences(mActivityTestRule);
+        mActivityTestRule.finishActivity();
     }
 
     @Test
@@ -231,7 +234,7 @@ public class StriptestInstructions {
                 intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
                 Bundle data = new Bundle();
                 data.putString(SensorConstants.RESOURCE_ID, uuid);
-                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+                data.putString(SensorConstants.LANGUAGE, mCurrentLanguage);
                 intent.putExtras(data);
 
                 mActivityTestRule.launchActivity(intent);
@@ -277,7 +280,7 @@ public class StriptestInstructions {
 
                         if (pages == 4) {
                             //noinspection ConstantConditions
-                            if (TestHelper.mCurrentLanguage.equals("en")) {
+                            if (mCurrentLanguage.equals("en")) {
                                 mDevice.click(100, 600);
                             } else {
                                 mDevice.click(450, 600);

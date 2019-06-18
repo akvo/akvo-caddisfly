@@ -41,6 +41,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.akvo.caddisfly.BuildConfig;
@@ -60,13 +68,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager.widget.ViewPager;
 import timber.log.Timber;
 
 /**
@@ -432,13 +433,19 @@ public class DeviceControlActivity extends BaseActivity {
         showSkipMenu = false;
         setTitle(R.string.awaitingResult);
         invalidateOptionsMenu();
-        if (AppPreferences.isTestMode()) {
+        if (AppPreferences.isTestMode() || AppConfig.SKIP_BLUETOOTH_SCAN) {
             if (debugTestHandler != null) {
                 debugTestHandler.removeCallbacksAndMessages(null);
             }
 
             debugTestHandler = new Handler();
-            debugTestHandler.postDelayed(() -> displayData(Constants.BLUETOOTH_TEST_DATA), 6000);
+            debugTestHandler.postDelayed(() -> {
+                if (testInfo.getUuid().equals(Constants.FLUORIDE_ID)) {
+                    displayData(Constants.BLUETOOTH_TEST_DATA_F);
+                } else {
+                    displayData(Constants.BLUETOOTH_TEST_DATA);
+                }
+            }, 6000);
         }
     }
 

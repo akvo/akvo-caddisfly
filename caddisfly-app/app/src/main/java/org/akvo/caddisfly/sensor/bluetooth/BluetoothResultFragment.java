@@ -18,6 +18,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
@@ -32,11 +37,6 @@ import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -218,7 +218,6 @@ public class BluetoothResultFragment extends Fragment {
 
                         boolean isText = false;
                         try {
-                            //noinspection ResultOfMethodCallIgnored
                             Double.parseDouble(result);
                         } catch (Exception e) {
                             isText = true;
@@ -256,7 +255,6 @@ public class BluetoothResultFragment extends Fragment {
 
         if (data.equalsIgnoreCase("underrange")) {
             try {
-                //noinspection ResultOfMethodCallIgnored
                 Double.parseDouble(ranges[0]);
             } catch (Exception e) {
                 ranges[0] = df.format(testInfo.getMinRangeValue());
@@ -269,7 +267,6 @@ public class BluetoothResultFragment extends Fragment {
 
         } else if (data.equalsIgnoreCase("overrange")) {
             try {
-                //noinspection ResultOfMethodCallIgnored
                 Double.parseDouble(ranges[1]);
             } catch (Exception e) {
                 ranges[1] = df.format(testInfo.getMaxRangeValue());

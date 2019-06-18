@@ -22,7 +22,11 @@ package org.akvo.caddisfly.instruction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.RequiresDevice;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
@@ -32,7 +36,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.TestActivity;
-import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,13 +45,9 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
-import androidx.test.filters.RequiresDevice;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.uiautomator.UiDevice;
-
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.Espresso.pressBackUnconditionally;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -57,20 +56,19 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
+import static org.akvo.caddisfly.util.TestHelper.loadData;
+import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class SensorInstructions {
 
-    private final StringBuilder jsArrayString = new StringBuilder();
-    private final StringBuilder listString = new StringBuilder();
-
     @Rule
-    // third parameter is set to false which means the activity is not started automatically
     public ActivityTestRule<TestActivity> mActivityTestRule =
             new ActivityTestRule<>(TestActivity.class, false, false);
 
@@ -78,21 +76,27 @@ public class SensorInstructions {
     public static void initialize() {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
+
+            for (int i = 0; i < 5; i++) {
+                mDevice.pressBack();
+            }
         }
     }
 
     @Before
     public void setUp() {
-
-//        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
-//
-//        clearPreferences(mActivityTestRule);
-
+        mActivityTestRule.launchActivity(new Intent());
+        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
+        clearPreferences(mActivityTestRule);
+        mActivityTestRule.finishActivity();
     }
 
     @Test
     @RequiresDevice
     public void testInstructionsAllSensors() {
+
+        mActivityTestRule.launchActivity(new Intent());
+        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
         List<TestInfo> testList = testConfigRepository.getTests(TestType.SENSOR);
@@ -112,12 +116,8 @@ public class SensorInstructions {
             onView(withText(testInfo.getName())).check(matches(isDisplayed()));
 
             mDevice.pressBack();
-
-//            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
-
-//        Log.e("Caddisfly", jsArrayString.toString());
-
+        mActivityTestRule.finishActivity();
     }
 
     private void navigateToTest(int index, String id) {
@@ -130,7 +130,7 @@ public class SensorInstructions {
 
         mDevice.waitForIdle();
 
-        TestUtil.sleep(1000);
+        sleep(1000);
 
         takeScreenshot(id, -1);
 
@@ -145,54 +145,72 @@ public class SensorInstructions {
         TestConfigRepository testConfigRepository = new TestConfigRepository();
         List<TestInfo> testList = testConfigRepository.getTests(TestType.MANUAL_COLOR_SELECT);
 
-        for (int i = 0; i < TestConstants.MANUAL_SELECT_TESTS_COUNT; i++) {
+        assertEquals(testList.get(0).getSubtype(), TestType.MANUAL_COLOR_SELECT);
 
-            assertEquals(testList.get(i).getSubtype(), TestType.MANUAL_COLOR_SELECT);
+        String uuid = testList.get(0).getUuid();
+        String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-            String uuid = testList.get(i).getUuid();
-            String id = uuid.substring(uuid.lastIndexOf("-") + 1);
+        Intent intent = new Intent();
+        intent.setType("text/plain");
+        intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+        Bundle data = new Bundle();
+        data.putString(SensorConstants.RESOURCE_ID, uuid);
+        data.putString(SensorConstants.LANGUAGE, mCurrentLanguage);
+        intent.putExtras(data);
 
-//            if (("ac33b44f9992").contains(id))
-//
-            {
-                Intent intent = new Intent();
-                intent.setType("text/plain");
-                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
-                Bundle data = new Bundle();
-                data.putString(SensorConstants.RESOURCE_ID, uuid);
-                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
-                intent.putExtras(data);
+        mActivityTestRule.launchActivity(intent);
 
-                mActivityTestRule.launchActivity(intent);
+        navigateToTest(id);
 
-                int pages = navigateToTest(id);
-
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-
-                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
-                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
-
-                TestHelper.getCurrentActivity().finish();
-                mActivityTestRule.finishActivity();
-            }
+        for (int j = 0; j < 4; j++) {
+            pressBackUnconditionally();
         }
 
-        Log.d("Caddisfly", jsArrayString.toString());
-        Log.d("Caddisfly", listString.toString());
-
+        mActivityTestRule.finishActivity();
     }
 
-    private int navigateToTest(String id) {
+    @Test
+    @RequiresDevice
+    public void testInstructionsAllManualColorSelect2() {
+
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+        List<TestInfo> testList = testConfigRepository.getTests(TestType.MANUAL_COLOR_SELECT);
+
+        assertEquals(testList.get(1).getSubtype(), TestType.MANUAL_COLOR_SELECT);
+
+        String uuid = testList.get(1).getUuid();
+        String id = uuid.substring(uuid.lastIndexOf("-") + 1);
+
+        Intent intent = new Intent();
+        intent.setType("text/plain");
+        intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+        Bundle data = new Bundle();
+        data.putString(SensorConstants.RESOURCE_ID, uuid);
+        data.putString(SensorConstants.LANGUAGE, mCurrentLanguage);
+        intent.putExtras(data);
+
+        mActivityTestRule.launchActivity(intent);
+
+        navigateToTest(id);
+
+        for (int j = 0; j < 4; j++) {
+            pressBackUnconditionally();
+        }
+
+        mActivityTestRule.finishActivity();
+    }
+
+    private void navigateToTest(String id) {
 
         mDevice.waitForIdle();
 
-        TestUtil.sleep(1000);
+        sleep(1000);
 
         takeScreenshot(id, -1);
 
         mDevice.waitForIdle();
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {
@@ -204,10 +222,10 @@ public class SensorInstructions {
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestUtil.sleep(600);
+                sleep(600);
+                pressBack();
                 break;
             }
         }
-        return pages + 1;
     }
 }

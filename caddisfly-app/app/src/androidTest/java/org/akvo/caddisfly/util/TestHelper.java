@@ -102,6 +102,10 @@ public final class TestHelper {
         }
     }
 
+    public static String getString(@StringRes int resourceId) {
+        return getString(getCurrentActivity(), resourceId);
+    }
+
     public static String getString(Activity activity, @StringRes int resourceId) {
         Resources currentResources = activity.getResources();
         AssetManager assets = currentResources.getAssets();
@@ -111,7 +115,6 @@ public final class TestHelper {
         Resources res = new Resources(assets, metrics, config);
 
         return res.getString(resourceId);
-
     }
 
     public static void loadData(Activity activity, String languageCode) {
@@ -207,6 +210,8 @@ public final class TestHelper {
         onView(withId(R.id.actionSettings)).perform(click());
 
         clickListViewItem("Test Mode");
+
+        goToMainScreen();
     }
 
     public static void clickExternalSourceButton(int index) {

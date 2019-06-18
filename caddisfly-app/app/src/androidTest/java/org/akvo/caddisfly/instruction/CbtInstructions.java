@@ -27,7 +27,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.FlakyTest;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.RequiresDevice;
 import androidx.test.rule.ActivityTestRule;
@@ -38,7 +37,6 @@ import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.ui.MainActivity;
-import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 import org.hamcrest.core.IsInstanceOf;
@@ -131,7 +129,6 @@ public class CbtInstructions {
     }
 
     @Test
-    @FlakyTest
     public void cbtInstructions() {
 
         gotoSurveyForm();
@@ -192,7 +189,7 @@ public class CbtInstructions {
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.button_instructions),
-                        withText(TestHelper.getString(mActivityTestRule.getActivity(), R.string.instructions)),
+                        withText(R.string.instructions),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.LinearLayout")),
@@ -243,8 +240,8 @@ public class CbtInstructions {
 
         TestUtil.nextPage();
 
-        CheckTextInTable(TestHelper.getString(mActivityTestRule.getActivity(), R.string.medium_dissolves)
-                + " " + TestHelper.getString(mActivityTestRule.getActivity(), R.string.when_medium_dissolved));
+        CheckTextInTable(getString(R.string.medium_dissolves)
+                + " " + getString(R.string.when_medium_dissolved));
 
         onView(withContentDescription("3")).check(matches(hasDrawable()));
 
@@ -261,8 +258,7 @@ public class CbtInstructions {
         onView(withContentDescription("7")).check(matches(hasDrawable()));
 
         ViewInteraction appCompatTextView14 = onView(
-                allOf(withId(R.id.button_instructions), withText(
-                        getString(mActivityTestRule.getActivity(), R.string.read_instructions)),
+                allOf(withId(R.id.button_instructions), withText(R.string.read_instructions),
                         childAtPosition(
                                 childAtPosition(
                                         withClassName(is("android.widget.TableLayout")),
@@ -270,11 +266,9 @@ public class CbtInstructions {
                                 2)));
         appCompatTextView14.perform(scrollTo(), click());
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.below25Degrees))).check(matches(isDisplayed()));
+        onView(withText(R.string.below25Degrees)).check(matches(isDisplayed()));
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.incubate_in_portable))).check(matches(isDisplayed()));
+        onView(withText(R.string.incubate_in_portable)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(android.R.id.button1), withText("OK"),
@@ -310,8 +304,7 @@ public class CbtInstructions {
         TestUtil.nextPage();
 
         ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription(
-                        TestHelper.getString(mActivityTestRule.getActivity(), R.string.navigate_up)),
+                allOf(withContentDescription(R.string.navigate_up),
                         withParent(withId(R.id.toolbar)),
                         isDisplayed()));
         appCompatImageButton.perform(click());
@@ -325,6 +318,8 @@ public class CbtInstructions {
                                 0),
                         isDisplayed()));
         button1.check(matches(isDisplayed()));
+
+        mActivityTestRule.finishActivity();
     }
 
     @Test
@@ -353,6 +348,8 @@ public class CbtInstructions {
             jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
         }
 
+        mActivityTestRule.finishActivity();
+
         Log.d("Caddisfly", jsArrayString.toString());
         Log.d("Caddisfly", listString.toString());
 
@@ -374,7 +371,7 @@ public class CbtInstructions {
 
         mDevice.waitForIdle();
 
-        onView(withText(getString(mActivityTestRule.getActivity(), R.string.instructions))).perform(click());
+        onView(withText(R.string.instructions)).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {

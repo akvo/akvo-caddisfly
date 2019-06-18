@@ -8,7 +8,6 @@ import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.util.TestHelper;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -29,6 +28,7 @@ import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode;
 import static org.akvo.caddisfly.util.TestHelper.getString;
+import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
@@ -71,6 +71,8 @@ public class IntroTest {
     @Test
     public void introTest() {
 
+        String goToTest = getString(R.string.goToTest);
+
         onView(withId(R.id.button_info)).perform(click());
 
         navigateUp();
@@ -81,47 +83,36 @@ public class IntroTest {
 
         onView(withId(R.id.button_info)).perform(click());
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.legalInformation))).perform(click());
+        onView(withText(R.string.legalInformation)).perform(click());
 
         pressBack();
 
         navigateUp();
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.appName)))
+        onView(withText(R.string.appName)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.a_water_quality_testing_solution))
                 .check(matches(isDisplayed()));
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.a_water_quality_testing_solution)))
+        onView(withText(R.string.test_water_quality_using))
                 .check(matches(isDisplayed()));
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.test_water_quality_using)))
-                .check(matches(isDisplayed()));
-
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.next)))
-                .perform(click());
+        onView(withText(R.string.next)).perform(click());
 
         onView(withId(R.id.button_info)).perform(click());
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.legalInformation))).perform(click());
+        onView(withText(R.string.legalInformation)).perform(click());
 
         onView(withId(R.id.homeButton)).perform(click());
 
         navigateUp();
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.connect_with_app))).check(matches(isDisplayed()));
+        onView(withText(R.string.connect_with_app)).check(matches(isDisplayed()));
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.app_is_integrated)))
+        onView(withText(R.string.app_is_integrated))
                 .check(matches(isDisplayed()));
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.to_conduct_a_water_quality_test)))
+        onView(withText(R.string.to_conduct_a_water_quality_test))
                 .check(matches(isDisplayed()));
 
         onView(withId(R.id.button_info)).perform(click());
@@ -136,8 +127,7 @@ public class IntroTest {
 
         pressBack();
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.go_to_external_app))).perform(click());
+        onView(withText(R.string.go_to_external_app)).perform(click());
 
         sleep(500);
 
@@ -145,29 +135,35 @@ public class IntroTest {
 
         gotoSurveyForm();
 
-        assertNotNull(mDevice.findObject(By.text(
-                getString(mActivityTestRule.getActivity(), R.string.goToTest))));
+        mActivityTestRule.finishActivity();
+
+        sleep(2000);
+
+        assertNotNull(mDevice.findObject(By.text(goToTest)));
     }
 
     @Test
     public void launchExternalApp() {
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.next)))
-                .perform(click());
+        goToMainScreen();
 
-        onView(withText(TestHelper.getString(mActivityTestRule.getActivity(),
-                R.string.go_to_external_app))).perform(click());
+        final String goToTest = getString(R.string.goToTest);
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withText(R.string.go_to_external_app)).perform(click());
 
         sleep(500);
+
+        mActivityTestRule.finishActivity();
 
         mDevice.waitForIdle();
 
         gotoSurveyForm();
 
-        assertNotNull(mDevice.findObject(By.text(
-                getString(mActivityTestRule.getActivity(), R.string.goToTest))));
+        sleep(2000);
 
+        assertNotNull(mDevice.findObject(By.text(goToTest)));
     }
 
     private void navigateUp() {

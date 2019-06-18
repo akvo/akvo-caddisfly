@@ -26,6 +26,13 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 
+import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.filters.LargeTest;
+import androidx.test.uiautomator.By;
+import androidx.test.uiautomator.UiDevice;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
@@ -35,13 +42,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
-import androidx.test.uiautomator.By;
-import androidx.test.uiautomator.UiDevice;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
@@ -162,7 +162,7 @@ public class CbtTest {
         onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
                 isDisplayed())).perform(click());
 
-        String[] riskText = getString(mIntentsRule.getActivity(), R.string.very_high_risk_unsafe).split("/");
+        String[] riskText = getString(R.string.very_high_risk_unsafe).split("/");
         String risk1 = riskText[0].trim();
         String risk2 = riskText[1].trim();
 
@@ -244,6 +244,9 @@ public class CbtTest {
 
         onView(withText(R.string.result)).check(matches(isDisplayed()));
 
+        final String result1 = getString(R.string.health_risk_category);
+        final String interval = getString(R.string.confidenceInterval);
+
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.buttonSubmitResult), withText(R.string.submitResult),
                         childAtPosition(
@@ -254,10 +257,13 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.health_risk_category) + ": "
-                + "Very High Risk / Unsafe ")));
+        mIntentsRule.finishActivity();
+
+        sleep(2000);
+
+        assertNotNull(mDevice.findObject(By.text(result1 + ": " + "Very High Risk / Unsafe ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >100 MPN/100ml")));
-        assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.confidenceInterval) + ": 9435.1 ")));
+        assertNotNull(mDevice.findObject(By.text(interval + ": 9435.1 ")));
     }
 
     @Test
@@ -317,7 +323,7 @@ public class CbtTest {
         onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
                 isDisplayed())).perform(click());
 
-        String[] riskText = getString(mIntentsRule.getActivity(), R.string.very_high_risk_unsafe).split("/");
+        String[] riskText = getString(R.string.very_high_risk_unsafe).split("/");
         String risk1 = riskText[0].trim();
         String risk2 = riskText[1].trim();
 
@@ -339,7 +345,7 @@ public class CbtTest {
         onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
                 isDisplayed())).perform(click());
 
-        riskText = getString(mIntentsRule.getActivity(), R.string.low_risk_possibly_safe).split("/");
+        riskText = getString(R.string.low_risk_possibly_safe).split("/");
         risk1 = riskText[0].trim();
         risk2 = riskText[1].trim();
         onView(withText(risk1)).check(matches(isDisplayed()));
@@ -368,6 +374,9 @@ public class CbtTest {
         onView(withText("94351.0")).check(matches(isDisplayed()));
         onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
+        final String result1 = getString(R.string.recreational_health_risk_category);
+        final String interval = getString(R.string.confidenceInterval);
+
         ViewInteraction appCompatButton4 = onView(
                 allOf(withId(R.id.buttonSubmitResult), withText(R.string.submitResult),
                         childAtPosition(
@@ -378,9 +387,13 @@ public class CbtTest {
                         isDisplayed()));
         appCompatButton4.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.recreational_health_risk_category) + ": "
-                + "Very Unsafe ")));
+
+        mIntentsRule.finishActivity();
+
+        sleep(2000);
+
+        assertNotNull(mDevice.findObject(By.text(result1 + ": " + "Very Unsafe ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")));
-        assertNotNull(mDevice.findObject(By.text(getString(mIntentsRule.getActivity(), R.string.confidenceInterval) + ": 94351.0 ")));
+        assertNotNull(mDevice.findObject(By.text(interval + ": 94351.0 ")));
     }
 }

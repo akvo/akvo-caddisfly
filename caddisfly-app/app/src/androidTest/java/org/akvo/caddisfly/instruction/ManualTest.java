@@ -61,10 +61,12 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -117,6 +119,8 @@ public class ManualTest {
 
     @Test
     public void runManualTurbidityTest() {
+
+        goToMainScreen();
 
         gotoSurveyForm();
 
@@ -180,12 +184,22 @@ public class ManualTest {
 
         onView(withText(R.string.submitResult)).perform(click());
 
+        mIntentsRule.finishActivity();
+
+        sleep(1000);
+
         assertNotNull(mDevice.findObject(By.text("Turbidity: 1234.0 NTU")));
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
 
     }
 
     @Test
     public void runManualPhTest() {
+
+        goToMainScreen();
 
         gotoSurveyForm();
 
@@ -270,12 +284,22 @@ public class ManualTest {
 
         onView(withText(R.string.submitResult)).perform(click());
 
+        mIntentsRule.finishActivity();
+
+        sleep(2000);
+
         assertNotNull(mDevice.findObject(By.text("pH: 12.0 ")));
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
 
     }
 
     @Test
     public void runManualEcTest() {
+
+        goToMainScreen();
 
         gotoSurveyForm();
 
@@ -356,35 +380,41 @@ public class ManualTest {
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.next)).perform(click());
 
+        sleep(500);
+
         onView(withText(R.string.submitResult)).perform(click());
+
+        mIntentsRule.finishActivity();
+
+        sleep(1000);
 
         assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
 
         clickExternalSourceButton(2);
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(1000);
+        sleep(1000);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withId(R.id.editResult)).perform(replaceText("200"));
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -407,7 +437,14 @@ public class ManualTest {
 
         onView(withText(R.string.submitResult)).perform(click());
 
+        mIntentsRule.finishActivity();
+
+        sleep(2000);
+
         assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
 
+        mDevice.pressBack();
+
+        mDevice.pressBack();
     }
 }

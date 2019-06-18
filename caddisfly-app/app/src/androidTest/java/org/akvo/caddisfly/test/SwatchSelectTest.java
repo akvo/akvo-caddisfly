@@ -20,12 +20,9 @@
 package org.akvo.caddisfly.test;
 
 
-import android.os.SystemClock;
-
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.LargeTest;
+import androidx.test.rule.ActivityTestRule;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 
@@ -57,12 +54,11 @@ import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
-@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class SwatchSelectTest {
 
     @Rule
-    public IntentsTestRule<MainActivity> mIntentsRule = new IntentsTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> mIntentsRule = new ActivityTestRule<>(MainActivity.class);
 
     @BeforeClass
     public static void initialize() {
@@ -92,7 +88,7 @@ public class SwatchSelectTest {
 
         clickExternalSourceButton(1);
 
-        SystemClock.sleep(200);
+        sleep(200);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -135,7 +131,7 @@ public class SwatchSelectTest {
 
         nextPage();
 
-        onView(withText(R.string.pt_select_result))
+        onView(withText(R.string.select_color_intervals))
                 .check(matches(isDisplayed()));
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
@@ -183,10 +179,17 @@ public class SwatchSelectTest {
 
         onView(withText(R.string.submitResult)).perform(click());
 
+        mIntentsRule.finishActivity();
+
+        sleep(2000);
+
         assertNotNull(mDevice.findObject(By.text("pH: 7.2 ")));
 
         assertNotNull(mDevice.findObject(By.text("Chlorine: 2.0 mg/l")));
 
+        mDevice.pressBack();
+
+        mDevice.pressBack();
     }
 
     @Test
@@ -198,7 +201,7 @@ public class SwatchSelectTest {
 
         clickExternalSourceButton(0);
 
-        SystemClock.sleep(200);
+        sleep(200);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -237,11 +240,11 @@ public class SwatchSelectTest {
         onView(withText(R.string.pt_select_result_next))
                 .check(matches(isDisplayed()));
 
-        SystemClock.sleep(200);
+        sleep(200);
 
         nextPage();
 
-        onView(withText(R.string.pt_select_result))
+        onView(withText(R.string.select_color_intervals))
                 .check(matches(isDisplayed()));
 
         ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments), isDisplayed()));
@@ -290,9 +293,16 @@ public class SwatchSelectTest {
 
         onView(withText(R.string.submitResult)).perform(click());
 
+        mIntentsRule.finishActivity();
+
+        sleep(2000);
+
         assertNotNull(mDevice.findObject(By.text("pH: 7.2 ")));
 
         assertNotNull(mDevice.findObject(By.text("Chlorine: 5.0 mg/l")));
 
+        mDevice.pressBack();
+
+        mDevice.pressBack();
     }
 }

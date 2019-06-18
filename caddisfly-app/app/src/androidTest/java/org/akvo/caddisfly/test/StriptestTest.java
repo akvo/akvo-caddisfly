@@ -12,7 +12,6 @@ import androidx.test.uiautomator.UiSelector;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -27,7 +26,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
-import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
@@ -75,11 +73,6 @@ public class StriptestTest {
         test5in1();
         testMerckPH();
         testMercury();
-    }
-
-    @After
-    public void tearDown() {
-        clearPreferences(mActivityRule);
     }
 
     private void test5in1() {
@@ -134,6 +127,10 @@ public class StriptestTest {
 
         onView(withText(R.string.save)).perform(click());
 
+        mActivityRule.finishActivity();
+
+        sleep(2000);
+
         assertNotNull(mDevice.findObject(By.text("Total Chlorine: 0.0 mg/l")));
         assertNotNull(mDevice.findObject(By.text("Free Chlorine: 0.15 mg/l")));
         assertNotNull(mDevice.findObject(By.text("Total Hardness:  mg/l")));
@@ -171,6 +168,10 @@ public class StriptestTest {
         onView(withText(R.string.save)).check(matches(isDisplayed()));
 
         onView(withText(R.string.save)).perform(click());
+
+        mActivityRule.finishActivity();
+
+        sleep(2000);
 
         assertNotNull(mDevice.findObject(By.text("Nitrogen: 205.15 mg/l")));
         assertNotNull(mDevice.findObject(By.text("Nitrate Nitrogen: 41.0 mg/l")));
@@ -274,6 +275,10 @@ public class StriptestTest {
         onView(withText(R.string.save)).check(matches(isDisplayed()));
 
         onView(withText(R.string.save)).perform(click());
+
+        mActivityRule.finishActivity();
+
+        sleep(2000);
 
         assertNotNull(mDevice.findObject(By.text("Mercury: 5.0 ug/l")));
     }
