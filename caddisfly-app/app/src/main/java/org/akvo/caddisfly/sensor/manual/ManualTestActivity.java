@@ -158,6 +158,7 @@ public class ManualTestActivity extends BaseActivity
                 viewPager.setCurrentItem(viewPager.getCurrentItem() + 1));
 
         imagePageLeft = findViewById(R.id.image_pageLeft);
+        imagePageLeft.setVisibility(View.INVISIBLE);
         imagePageLeft.setOnClickListener(view -> pageBack());
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

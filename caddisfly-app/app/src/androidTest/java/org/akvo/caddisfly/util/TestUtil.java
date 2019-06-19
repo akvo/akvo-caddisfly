@@ -187,6 +187,12 @@ public final class TestUtil {
         mDevice.waitForIdle();
     }
 
+    public static void prevPage() {
+        onView(allOf(withId(R.id.image_pageLeft),
+                isDisplayed())).perform(click());
+        mDevice.waitForIdle();
+    }
+
     public static void nextSurveyPage() {
         swipeLeft();
     }

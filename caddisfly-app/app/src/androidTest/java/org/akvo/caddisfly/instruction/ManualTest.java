@@ -49,6 +49,7 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
@@ -67,6 +68,7 @@ import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -134,9 +136,15 @@ public class ManualTest {
 
         onView(withText(R.string.fill_turbidity_tube)).check(matches(isDisplayed()));
 
+        onView(withId(R.id.image_pageLeft)).check(matches(not(isDisplayed())));
+
+        onView(withText(R.string.skip)).check(matches(isDisplayed()));
+
         TestUtil.nextPage();
 
         onView(withText(R.string.empty_turbidity_tube)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
@@ -161,12 +169,16 @@ public class ManualTest {
         onView(withText(R.string.fill_turbidity_tube))
                 .check(matches(isDisplayed()));
 
+        onView(withText(R.string.skip)).check(matches(isDisplayed()));
+
         TestUtil.nextPage();
 
         onView(withText(R.string.empty_turbidity_tube))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
+
+        onView(withText(R.string.skip)).check(doesNotExist());
 
         onView(withText(R.string.enter_measured_value)).check(matches(isDisplayed()));
 
@@ -181,6 +193,10 @@ public class ManualTest {
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
         SystemClock.sleep(500);
+
+        onView(withText(R.string.skip)).check(doesNotExist());
+
+        onView(withId(R.id.image_pageRight)).check(matches(not(isDisplayed())));
 
         onView(withText(R.string.submitResult)).perform(click());
 
