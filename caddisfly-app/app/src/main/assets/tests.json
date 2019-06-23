@@ -1319,7 +1319,8 @@
         {
           "section": [
             "place_strip_clr",
-            "image:place_clr"
+            "image:place_clr",
+            "<start>"
           ]
         },
         {

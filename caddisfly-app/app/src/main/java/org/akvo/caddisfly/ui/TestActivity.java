@@ -66,7 +66,7 @@ import org.akvo.caddisfly.sensor.bluetooth.DeviceScanActivity;
 import org.akvo.caddisfly.sensor.cbt.CbtActivity;
 import org.akvo.caddisfly.sensor.manual.ManualTestActivity;
 import org.akvo.caddisfly.sensor.manual.SwatchSelectTestActivity;
-import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
+import org.akvo.caddisfly.sensor.striptest.ui.StripTestActivity;
 import org.akvo.caddisfly.sensor.usb.SensorActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ApiUtil;
@@ -321,7 +321,7 @@ public class TestActivity extends BaseActivity {
 
     private void startStripTest() {
         Intent intent;
-        intent = new Intent(this, StripMeasureActivity.class);
+        intent = new Intent(this, StripTestActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
     }

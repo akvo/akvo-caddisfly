@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.sensor.striptest.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,15 +28,16 @@ import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
@@ -48,7 +50,7 @@ import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
 import org.akvo.caddisfly.sensor.striptest.utils.ColorUtils;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.akvo.caddisfly.sensor.striptest.utils.ResultUtils;
-import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.MathUtil;
 import org.json.JSONObject;
@@ -73,8 +75,9 @@ import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.roundSignifi
 /**
  * Activity that displays the results.
  */
-public class ResultActivity extends BaseActivity {
+public class ResultFragment extends BaseFragment {
     private static final int IMG_WIDTH = 500;
+    private static final String ARG_TEST_INFO = "test_info";
     private static DecodeData mDecodeData;
     private final SparseArray<String> resultStringValues = new SparseArray<>();
     private final SparseArray<String> brackets = new SparseArray<>();
@@ -84,16 +87,37 @@ public class ResultActivity extends BaseActivity {
     private LinearLayout layout;
     private TestInfo testInfo;
 
-    public static void setDecodeData(DecodeData decodeData) {
-        mDecodeData = decodeData;
+    public static ResultFragment newInstance(TestInfo testInfo) {
+        ResultFragment fragment = new ResultFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_TEST_INFO, testInfo);
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_strip_result);
+    void setDecodeData(DecodeData decodeData) {
+        mDecodeData = decodeData;
 
-        buttonSave = findViewById(R.id.button_save);
+        layout.removeAllViews();
+
+        if (getArguments() != null) {
+            testInfo = getArguments().getParcelable(ARG_TEST_INFO);
+            List<PatchResult> patchResultList = computeResults(testInfo);
+            showResults(patchResultList, testInfo);
+        }
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_strip_result, container, false);
+        layout = rootView.findViewById(R.id.layout_results);
+
+        buttonSave = rootView.findViewById(R.id.buttonDone);
         buttonSave.setOnClickListener(v -> {
             Intent intent = new Intent();
             String path;
@@ -113,37 +137,19 @@ public class ResultActivity extends BaseActivity {
                 totalImageUrl = "";
             }
 
-            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
+            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(getActivity(), testInfo,
                     resultStringValues, brackets, totalImageUrl);
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
-            setResult(RESULT_OK, intent);
-            finish();
+
+            getActivity().setResult(Activity.RESULT_OK, intent);
+
+            getActivity().finish();
         });
+
+        return rootView;
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-
-        setTitle(R.string.result);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        layout = findViewById(R.id.layout_results);
-        layout.removeAllViews();
-
-        testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
-
-        List<PatchResult> patchResultList = computeResults(testInfo);
-        showResults(patchResultList, testInfo);
-    }
 
     private List<PatchResult> computeResults(TestInfo testInfo) {
         totalImageUrl = UUID.randomUUID().toString() + ".png";
@@ -304,7 +310,7 @@ public class ResultActivity extends BaseActivity {
 
     @SuppressLint("InflateParams")
     private void inflateView(String patchDescription, String valueString, Bitmap resultImage) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout itemResult;
         if (inflater != null) {
             itemResult = (LinearLayout) inflater.inflate(R.layout.item_result, null, false);

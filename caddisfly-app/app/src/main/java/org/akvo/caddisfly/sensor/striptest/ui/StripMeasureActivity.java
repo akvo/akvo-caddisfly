@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.sensor.striptest.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
@@ -48,13 +51,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 /**
  * Created by markwestra on 19/07/2017
  */
-@SuppressWarnings("deprecation")
 public class StripMeasureActivity extends BaseActivity implements StripMeasureListener {
 
     public static final boolean DEBUG = false;
@@ -216,13 +217,9 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
     @Override
     public void moveToResults() {
-        // move to results activity
         Intent resultIntent = new Intent(getIntent());
-        resultIntent.setClass(this, ResultActivity.class);
-        resultIntent.putExtra(ConstantKey.TEST_INFO, testInfo);
-        resultIntent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        startActivity(resultIntent);
-        ResultActivity.setDecodeData(StriptestHandler.getDecodeData());
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 
     @Override

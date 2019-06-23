@@ -94,20 +94,13 @@ public class TestInfoFragment extends Fragment {
 
                 b.setTestInfo(testInfo);
 
+                if (testInfo.getSubtype() == TestType.CBT) {
+                    b.buttonInstructions.setVisibility(View.VISIBLE);
+                }
+
                 if (testInfo.getInstructions() == null || testInfo.getInstructions().size() == 0) {
                     b.buttonInstructions.setVisibility(View.GONE);
                 }
-
-                if (testInfo.getSubtype() == TestType.STRIP_TEST) {
-                    b.buttonPrepare.setText(R.string.prepare_test);
-                } else if (testInfo.getSubtype() == TestType.MANUAL_COLOR_SELECT) {
-                    b.buttonInstructions.setVisibility(View.GONE);
-                } else if (testInfo.getSubtype() == TestType.BLUETOOTH) {
-                    b.buttonInstructions.setVisibility(View.GONE);
-                } else if (testInfo.getSubtype() == TestType.MANUAL) {
-                    b.buttonInstructions.setVisibility(View.GONE);
-                }
-
             }
         }
 

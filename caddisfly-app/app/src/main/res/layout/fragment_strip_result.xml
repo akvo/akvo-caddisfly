@@ -22,16 +22,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
-    tools:context=".sensor.striptest.ui.ResultActivity">
-
-    <include layout="@layout/toolbar" />
+    tools:context=".sensor.striptest.ui.ResultFragment">
 
     <ScrollView
         android:id="@+id/resultScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/layoutFooter"
-        android:layout_below="@id/toolbar">
+        android:layout_alignParentTop="true">
 
         <LinearLayout
             android:id="@+id/layout_results"
@@ -43,26 +41,23 @@
 
     <LinearLayout
         android:id="@+id/layoutFooter"
-        style=" ?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="?primaryBackgroundStyle"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_save"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="match_parent"
+            android:id="@+id/buttonDone"
+            style="@style/Button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:letterSpacing="0.01"
-            android:padding="20dp"
-            android:text="@string/save"
-            android:textColor="#fff"
-            android:textSize="17sp"
-            android:visibility="visible"
-            tools:targetApi="lollipop" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:onClick="onSendResults"
+            android:text="@string/submitResult"
+            android:theme="?primaryButtonStyle"
+            android:visibility="visible" />
 
     </LinearLayout>
 </RelativeLayout>

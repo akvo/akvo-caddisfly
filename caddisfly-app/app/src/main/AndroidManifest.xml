@@ -123,10 +123,10 @@
 
         <!-- StripTest -->
         <activity
-            android:name=".sensor.striptest.ui.StripMeasureActivity"
+            android:name=".sensor.striptest.ui.StripTestActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".sensor.striptest.ui.ResultActivity"
+            android:name=".sensor.striptest.ui.StripMeasureActivity"
             android:screenOrientation="nosensor" />
         <!-- /StripTest -->
 
