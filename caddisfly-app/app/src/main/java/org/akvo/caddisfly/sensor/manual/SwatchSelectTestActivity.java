@@ -1,6 +1,5 @@
 package org.akvo.caddisfly.sensor.manual;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -153,8 +152,6 @@ public class SwatchSelectTestActivity extends BaseActivity
             public void onPageScrollStateChanged(int state) {
             }
         });
-
-//        startTest();
     }
 
     private void showHideFooter() {
@@ -225,46 +222,6 @@ public class SwatchSelectTestActivity extends BaseActivity
         return true;
     }
 
-    public void onSwatchSelect(float[] key) {
-        showHideFooter();
-
-        if (resultFragment.isValid()) {
-            testResults = key;
-            testInfo.getResults().get(0).setResultValue(key[0]);
-            testInfo.getResults().get(1).setResultValue(key[1]);
-
-            SparseArray<String> results = new SparseArray<>();
-
-            results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
-            results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
-
-            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
-                    results, null, null);
-
-            Intent intent = new Intent();
-            intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
-            setResult(RESULT_OK, intent);
-
-            submitFragment.setResult(testInfo);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public void onClickSubmitResult(View view) {
-
-        SparseArray<String> results = new SparseArray<>();
-
-        JSONObject resultJson = TestConfigHelper.getJsonResult(this,
-                testInfo, results, null, null);
-
-        Intent resultIntent = new Intent();
-        resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-
-        setResult(Activity.RESULT_OK, resultIntent);
-
-        finish();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -300,11 +257,34 @@ public class SwatchSelectTestActivity extends BaseActivity
         invalidateOptionsMenu();
     }
 
+    public void onSwatchSelect(float[] key) {
+        showHideFooter();
+        if (resultFragment.isValid()) {
+            testResults = key;
+            testInfo.getResults().get(0).setResultValue(key[0]);
+            testInfo.getResults().get(1).setResultValue(key[1]);
+            submitFragment.setResult(testInfo);
+        }
+    }
+
     public void onSendResults(View view) {
         sendResults();
     }
 
     private void sendResults() {
+        if (resultFragment.isValid()) {
+            SparseArray<String> results = new SparseArray<>();
+
+            results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
+            results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
+
+            JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
+                    results, null, null);
+
+            Intent intent = new Intent();
+            intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
+            setResult(RESULT_OK, intent);
+        }
         finish();
     }
 
