@@ -38,6 +38,7 @@ import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
@@ -58,6 +59,7 @@ public class ManualTestActivity extends BaseActivity
     SparseArray<String> results = new SparseArray<>();
     ImageView imagePageRight;
     ImageView imagePageLeft;
+    SectionsPagerAdapter mSectionsPagerAdapter;
     private TestInfo testInfo;
     private CustomViewPager viewPager;
     private FrameLayout resultLayout;
@@ -104,27 +106,6 @@ public class ManualTestActivity extends BaseActivity
             return;
         }
 
-        int resultId = 1;
-
-        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
-            if (testInfo.getInstructions().get(i).section.get(0).contains("<photo1>")) {
-                photo1PageNumber = i;
-                result1PageNumber = i + 1;
-                if (result1Fragment == null) {
-                    result1Fragment = MeasurementInputFragment.newInstance(testInfo, resultId);
-                    result1PhotoFragment = ResultPhotoFragment.newInstance(
-                            testInfo.getResults().get(resultId - 1).getName());
-                }
-                resultId++;
-            }
-        }
-
-        if (resultFragment == null) {
-            resultFragment = MeasurementInputFragment.newInstance(testInfo, resultId);
-            resultPhotoFragment = ResultPhotoFragment.newInstance(
-                    testInfo.getResults().get(resultId - 1).getName());
-        }
-
         if (testInfo.getHasEndInstruction()) {
             instructionCount = testInfo.getInstructions().size() - 1;
         } else {
@@ -147,7 +128,18 @@ public class ManualTestActivity extends BaseActivity
             totalPageCount += 1;
         }
 
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
+            if (testInfo.getInstructions().get(i).section.get(0).contains("<photo1>")) {
+                photo1PageNumber = i;
+                result1PageNumber = i + 1;
+            }
+        }
+
+        if (savedInstanceState == null) {
+            createFragments();
+        }
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
 
         pagerIndicator.showDots(true);
@@ -179,7 +171,7 @@ public class ManualTestActivity extends BaseActivity
                         viewPager.setCurrentItem(photoPageNumber);
                     }
                 } else if (result1PageNumber != -1 && position > result1PageNumber) {
-                    if (!result1Fragment.isValid(true)) {
+                    if (result1Fragment != null && !result1Fragment.isValid(true)) {
                         viewPager.setCurrentItem(result1PageNumber);
                     }
                 } else if (photo1PageNumber != -1 && position > photo1PageNumber) {
@@ -198,7 +190,6 @@ public class ManualTestActivity extends BaseActivity
                     showWaitingView();
                 } else {
                     showInstructionsView();
-                    onInstructionFinish(testInfo.getInstructions().size() - position);
                 }
 
                 showHideFooter();
@@ -216,7 +207,9 @@ public class ManualTestActivity extends BaseActivity
                             result1Fragment.showSoftKeyboard();
                         }
                     } else {
-                        resultFragment.hideSoftKeyboard();
+                        if (resultFragment != null) {
+                            resultFragment.hideSoftKeyboard();
+                        }
                         if (result1Fragment != null) {
                             result1Fragment.hideSoftKeyboard();
                         }
@@ -228,38 +221,67 @@ public class ManualTestActivity extends BaseActivity
         setKeyboardVisibilityListener(this);
     }
 
+    private void createFragments() {
+        int resultId = 1;
+
+        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
+            if (testInfo.getInstructions().get(i).section.get(0).contains("<photo1>")) {
+                photo1PageNumber = i;
+                result1PageNumber = i + 1;
+                if (result1Fragment == null) {
+                    result1Fragment = MeasurementInputFragment.newInstance(testInfo, resultId);
+                    result1Fragment.setFragmentId(result1PageNumber);
+                }
+                if (result1PhotoFragment == null) {
+                    result1PhotoFragment = ResultPhotoFragment.newInstance(
+                            testInfo.getResults().get(resultId - 1).getName());
+                    result1PhotoFragment.setFragmentId(photo1PageNumber);
+                }
+                resultId++;
+            }
+        }
+
+        if (resultFragment == null) {
+            resultFragment = MeasurementInputFragment.newInstance(testInfo, resultId);
+            resultFragment.setFragmentId(resultPageNumber);
+        }
+        if (resultPhotoFragment == null) {
+            resultPhotoFragment = ResultPhotoFragment.newInstance(
+                    testInfo.getResults().get(resultId - 1).getName());
+            resultPhotoFragment.setFragmentId(photoPageNumber);
+        }
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(ConstantKey.TEST_INFO, testInfo);
-        if (resultPhotoFragment != null && resultPhotoFragment.isAdded()) {
-            getSupportFragmentManager().putFragment(outState, ConstantKey.RESULT_PHOTO_FRAGMENT, resultPhotoFragment);
-        }
-        if (resultFragment != null && resultFragment.isAdded()) {
-            getSupportFragmentManager().putFragment(outState, ConstantKey.RESULT_FRAGMENT, resultFragment);
-        }
-        if (result1PhotoFragment != null && result1PhotoFragment.isAdded()) {
-            getSupportFragmentManager().putFragment(outState, ConstantKey.RESULT_1_PHOTO_FRAGMENT, result1PhotoFragment);
-        }
-        if (result1Fragment != null && result1Fragment.isAdded()) {
-            getSupportFragmentManager().putFragment(outState, ConstantKey.RESULT_1_FRAGMENT, result1Fragment);
-        }
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle inState) {
-        resultPhotoFragment = (ResultPhotoFragment) getSupportFragmentManager().getFragment(inState,
-                ConstantKey.RESULT_PHOTO_FRAGMENT);
-        resultFragment = (MeasurementInputFragment) getSupportFragmentManager().getFragment(inState,
-                ConstantKey.RESULT_FRAGMENT);
-        result1PhotoFragment = (ResultPhotoFragment) getSupportFragmentManager().getFragment(inState,
-                ConstantKey.RESULT_1_PHOTO_FRAGMENT);
-        result1Fragment = (MeasurementInputFragment) getSupportFragmentManager().getFragment(inState,
-                ConstantKey.RESULT_1_FRAGMENT);
+        for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
+            Fragment fragment = getSupportFragmentManager().getFragments().get(i);
+            if (fragment instanceof BaseFragment) {
+                if (((BaseFragment) fragment).getFragmentId() == photoPageNumber) {
+                    resultPhotoFragment = (ResultPhotoFragment) fragment;
+                } else if (((BaseFragment) fragment).getFragmentId() == photo1PageNumber) {
+                    result1PhotoFragment = (ResultPhotoFragment) fragment;
+                } else if (((BaseFragment) fragment).getFragmentId() == resultPageNumber) {
+                    resultFragment = (MeasurementInputFragment) fragment;
+                } else if (((BaseFragment) fragment).getFragmentId() == result1PageNumber) {
+                    result1Fragment = (MeasurementInputFragment) fragment;
+                }
+            }
+        }
+
+        createFragments();
+
         super.onRestoreInstanceState(inState);
     }
 
     private void showHideFooter() {
+        showSkipMenu = false;
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
@@ -307,10 +329,14 @@ public class ManualTestActivity extends BaseActivity
         } else {
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+            if (viewPager.getCurrentItem() < resultPageNumber - 1) {
+                showSkipMenu = true;
+            }
             if (viewPager.getCurrentItem() == 0) {
                 imagePageLeft.setVisibility(View.INVISIBLE);
             }
         }
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -435,7 +461,8 @@ public class ManualTestActivity extends BaseActivity
             if (viewPager.getCurrentItem() == 0) {
                 onBackPressed();
             } else {
-                showSelectTestView();
+                viewPager.setCurrentItem(0);
+                showHideFooter();
             }
             return true;
         }
@@ -466,15 +493,6 @@ public class ManualTestActivity extends BaseActivity
         invalidateOptionsMenu();
     }
 
-    private void showSelectTestView() {
-        pagerLayout.setVisibility(View.VISIBLE);
-        resultLayout.setVisibility(View.GONE);
-        viewPager.setCurrentItem(0);
-        setTitle(testInfo.getName());
-        showSkipMenu = true;
-        invalidateOptionsMenu();
-    }
-
     private void showWaitingView() {
         pagerLayout.setVisibility(View.VISIBLE);
         resultLayout.setVisibility(View.GONE);
@@ -482,18 +500,14 @@ public class ManualTestActivity extends BaseActivity
         invalidateOptionsMenu();
     }
 
-    public void onInstructionFinish(int page) {
-        if (page > 1) {
-            showSkipMenu = true;
-            invalidateOptionsMenu();
-        } else {
-            showSkipMenu = false;
-            invalidateOptionsMenu();
-        }
-    }
-
     public void onSkipClick(MenuItem item) {
-        viewPager.setCurrentItem(skipToPageNumber);
+        if (viewPager.getCurrentItem() < photo1PageNumber) {
+            viewPager.setCurrentItem(photo1PageNumber);
+        } else if (viewPager.getCurrentItem() < result1PageNumber) {
+            viewPager.setCurrentItem(result1PageNumber);
+        } else {
+            viewPager.setCurrentItem(skipToPageNumber);
+        }
         showWaitingView();
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
@@ -506,11 +520,6 @@ public class ManualTestActivity extends BaseActivity
         }
     }
 
-    public void onSelectTestClick(View view) {
-        viewPager.setCurrentItem(1);
-        showInstructionsView();
-    }
-
     @Override
     public void onPhotoTaken(String photoPath) {
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
@@ -519,10 +528,6 @@ public class ManualTestActivity extends BaseActivity
     public void onSendResults(View view) {
         sendResults();
     }
-
-//    public void onNextClick(View view) {
-//        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-//    }
 
     /**
      * A placeholder fragment containing a simple view.

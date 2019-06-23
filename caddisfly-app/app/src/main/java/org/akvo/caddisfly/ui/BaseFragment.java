@@ -19,17 +19,37 @@
 
 package org.akvo.caddisfly.ui;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import org.akvo.caddisfly.R;
-
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.jetbrains.annotations.NotNull;
+
 public class BaseFragment extends Fragment {
+
+    private int id;
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            id = savedInstanceState.getInt(ConstantKey.FRAGMENT_ID);
+        }
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NotNull Bundle outState) {
+        outState.putInt(ConstantKey.FRAGMENT_ID, id);
+        super.onSaveInstanceState(outState);
+    }
 
     protected void setTitle(View view, String title) {
         if (getActivity() != null) {
@@ -55,5 +75,13 @@ public class BaseFragment extends Fragment {
                 }
             }
         }
+    }
+
+    public int getFragmentId() {
+        return id;
+    }
+
+    public void setFragmentId(int value) {
+        id = value;
     }
 }
