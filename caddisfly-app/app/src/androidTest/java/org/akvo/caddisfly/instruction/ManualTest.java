@@ -23,9 +23,7 @@ package org.akvo.caddisfly.instruction;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 
 import androidx.test.espresso.ViewInteraction;
@@ -108,8 +106,8 @@ public class ManualTest {
     private Instrumentation.ActivityResult createImageCaptureStub() {
         // Put the drawable in a bundle.
         Bundle bundle = new Bundle();
-        bundle.putParcelable("data", BitmapFactory.decodeResource(
-                mIntentsRule.getActivity().getResources(), R.drawable.closer));
+//        bundle.putParcelable("data", BitmapFactory.decodeResource(
+//                mIntentsRule.getActivity().getResources(), R.drawable.closer));
 
         // Create the Intent that will include the bundle.
         Intent resultData = new Intent();
@@ -130,7 +128,7 @@ public class ManualTest {
 
         clickExternalSourceButton(0);
 
-        SystemClock.sleep(1000);
+        sleep(1000);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -160,11 +158,9 @@ public class ManualTest {
 
         onView(withText(R.string.clean_turbidity_tube)).check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription(R.string.navigate_up),
-                        withParent(withId(R.id.toolbar)),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
+        onView(allOf(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click());
 
         onView(withText(R.string.fill_turbidity_tube))
                 .check(matches(isDisplayed()));
@@ -184,7 +180,7 @@ public class ManualTest {
 
         pressBack();
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         pressBack();
 
@@ -192,7 +188,7 @@ public class ManualTest {
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.skip)).check(doesNotExist());
 
@@ -223,7 +219,7 @@ public class ManualTest {
 
         clickExternalSourceButton(1);
 
-        SystemClock.sleep(1000);
+        sleep(1000);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -240,11 +236,11 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.takePhoto)).check(matches(isDisplayed())).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
@@ -290,11 +286,11 @@ public class ManualTest {
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -323,7 +319,7 @@ public class ManualTest {
 
         clickExternalSourceButton(2);
 
-        SystemClock.sleep(1000);
+        sleep(1000);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -338,16 +334,16 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.takePhoto)).check(matches(isDisplayed())).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
 
-        SystemClock.sleep(1000);
+        sleep(1000);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -422,6 +418,36 @@ public class ManualTest {
 
         onView(withText(R.string.skip)).perform(click());
 
+        onView(allOf(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click());
+
+        onView(allOf(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click());
+
+        onView(allOf(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click());
+
+        assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
+    }
+
+    @Test
+    public void runManualEcTest2() {
+
+        gotoSurveyForm();
+
+        TestUtil.nextSurveyPage("Manual");
+
+        clickExternalSourceButton(2);
+
+        sleep(500);
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withText(R.string.skip)).perform(click());
+
         sleep(1000);
 
         onView(withText(R.string.takePhoto)).perform(click());
@@ -441,7 +467,7 @@ public class ManualTest {
 
         onView(withText(R.string.next)).perform(click());
 
-        onView(withId(R.id.editResult)).perform(replaceText("20000"));
+        onView(withId(R.id.editResult)).perform(replaceText("1999"));
 
         onView(withText("ms/cm")).perform(click());
 
@@ -457,7 +483,7 @@ public class ManualTest {
 
         sleep(2000);
 
-        assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
+        assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 1999.0 μS/cm")));
 
         mDevice.pressBack();
 

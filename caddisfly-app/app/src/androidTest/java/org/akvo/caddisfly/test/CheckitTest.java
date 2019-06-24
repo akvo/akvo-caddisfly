@@ -25,7 +25,6 @@ import android.app.Instrumentation;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 
 import androidx.test.espresso.ViewInteraction;
@@ -61,6 +60,7 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -123,7 +123,7 @@ public class CheckitTest {
 
         TestUtil.nextSurveyPage("CheckIt");
 
-        TestUtil.sleep(1000);
+        sleep(1000);
 
         clickExternalSourceButton(0);
 
@@ -144,8 +144,9 @@ public class CheckitTest {
 
         TestUtil.nextPage();
 
-//        onView(withText(R.string.add_one_tablet_to_other_cell))
-//                .check(matches(isDisplayed()));
+        String phrase = getString(R.string.add_one_tablet_to_other_cell);
+        phrase = phrase.replace("%reagent1", "DPD No. 1 (R) (511310)");
+        onView(withText(phrase)).check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 
@@ -183,19 +184,11 @@ public class CheckitTest {
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(500);
-
-        pressBack();
-
-        SystemClock.sleep(500);
-
-        pressBack();
-
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -204,12 +197,12 @@ public class CheckitTest {
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("4.1"), closeSoftKeyboard());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -220,11 +213,11 @@ public class CheckitTest {
 
         onView(withText(R.string.skip)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -242,7 +235,7 @@ public class CheckitTest {
 
         onView(withText(R.string.next)).perform(click());
 
-        SystemClock.sleep(500);
+        sleep(500);
 
         onView(withText(R.string.submitResult)).perform(click());
 
