@@ -47,6 +47,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
@@ -83,6 +84,51 @@ public class SwatchSelectTest {
         loadData(mIntentsRule.getActivity(), mCurrentLanguage);
 
         clearPreferences(mIntentsRule);
+    }
+
+    @Test
+    public void runSwatchSelectCancelLR() {
+
+        gotoSurveyForm();
+
+        TestUtil.nextSurveyPage("Manual 2");
+
+        clickExternalSourceButton(1);
+
+        sleep(200);
+
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+
+        mDevice.waitForIdle();
+
+        onView(withId(R.id.image_pageLeft)).check(matches(not(isDisplayed())));
+
+        onView(withText(R.string.pt_open_lid))
+                .check(matches(isDisplayed()));
+
+        onView(withText(R.string.skip)).check(matches(isDisplayed())).perform(click());
+
+        sleep(500);
+
+        onView(withText(R.string.skip)).check(doesNotExist());
+
+        onView(withText(R.string.select_color_intervals))
+                .check(matches(isDisplayed()));
+
+        onView(allOf(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click());
+
+        onView(allOf(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click());
+
+        onView(allOf(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click());
+
+        assertNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
+
     }
 
     @Test
