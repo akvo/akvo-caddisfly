@@ -27,7 +27,6 @@ import android.util.Log;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.filters.RequiresDevice;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.uiautomator.UiDevice;
 
@@ -41,7 +40,6 @@ import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.TestActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -56,7 +54,6 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
@@ -73,7 +70,6 @@ import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -83,7 +79,6 @@ public class StriptestInstructions {
     private final StringBuilder listString = new StringBuilder();
 
     @Rule
-    // third parameter is set to false which means the activity is not started automatically
     public ActivityTestRule<TestActivity> mActivityTestRule =
             new ActivityTestRule<>(TestActivity.class, false, false);
 
@@ -113,15 +108,7 @@ public class StriptestInstructions {
 
         mDevice.waitForIdle();
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
+        onView(withText(R.string.next)).perform(click());
 
         onView(withText(R.string.collect_5ml_mehlich_sample))
                 .check(matches(isDisplayed()));
@@ -169,51 +156,12 @@ public class StriptestInstructions {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
-        ViewInteraction button1 = onView(
-                allOf(withId(R.id.button_prepare),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                0),
-                        isDisplayed()));
-        button1.check(matches(isDisplayed()));
-
-        ViewInteraction appCompatButton3 = onView(
-                allOf(withId(R.id.button_instructions), withText(R.string.instructions),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatButton3.perform(click());
-
         pressBack();
 
-//        ViewInteraction imageView3 = onView(
-//                allOf(withId(R.id.imageBrand),
-//                        childAtPosition(
-//                                childAtPosition(
-//                                        withId(R.id.coordinatorLayout),
-//                                        0),
-//                                1),
-//                        isDisplayed()));
-//        imageView3.check(matches(isDisplayed()));
-
-        ViewInteraction button2 = onView(
-                allOf(withId(R.id.button_prepare),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                0),
-                        isDisplayed()));
-        button2.check(matches(isDisplayed()));
-
+//        onView(withText(R.string.next)).perform(click());
     }
 
-    @RequiresDevice
+    @Test
     public void testInstructionsAllStripTests() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
@@ -226,7 +174,7 @@ public class StriptestInstructions {
             String uuid = testList.get(i).getUuid();
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (("ac33b44f9992, 32d9b8f4aecf").contains(id))
+            if (("aa4a4e3100c9").contains(id))
 //
             {
                 Intent intent = new Intent();
@@ -240,6 +188,32 @@ public class StriptestInstructions {
                 mActivityTestRule.launchActivity(intent);
 
                 int pages = navigateToTest(id);
+
+                onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                3),
+                        isDisplayed())).perform(click());
+
+                sleep(2000);
+
+                takeScreenshot(id, ++pages);
+
+                sleep(10000);
+
+                takeScreenshot(id, ++pages);
+
+                onView(withText(R.string.start)).perform(click());
+
+                sleep(6000);
+
+                takeScreenshot(id, ++pages);
+
+                sleep(26000);
+
+                takeScreenshot(id, ++pages);
 
                 jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
@@ -266,7 +240,7 @@ public class StriptestInstructions {
 
         mDevice.waitForIdle();
 
-        onView(withText(R.string.instructions)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {

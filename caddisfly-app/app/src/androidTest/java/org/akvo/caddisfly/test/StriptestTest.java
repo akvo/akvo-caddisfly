@@ -21,18 +21,24 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
+import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.nextSurveyPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 public class StriptestTest {
 
@@ -55,7 +61,7 @@ public class StriptestTest {
 
         loadData(mActivityRule.getActivity(), mCurrentLanguage);
 
-        //clearPreferences(mActivityRule);
+        clearPreferences(mActivityRule);
 
     }
 
@@ -67,10 +73,9 @@ public class StriptestTest {
 
         sleep(10000);
 
-        testSoilNitrogen();
-
-        testNitrate100();
         test5in1();
+        testSoilNitrogen();
+        testNitrate100();
         testMerckPH();
         testMercury();
     }
@@ -87,9 +92,26 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.prepare_test)).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
-        sleep(8000);
+        for (int i = 0; i < 17; i++) {
+            try {
+                nextPage();
+            } catch (Exception e) {
+                sleep(200);
+                break;
+            }
+        }
+
+        onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                childAtPosition(
+                        childAtPosition(
+                                withId(R.id.viewPager),
+                                1),
+                        3),
+                isDisplayed())).perform(click());
+
+        sleep(10000);
 
         onView(withText(R.string.start)).perform(click());
 
@@ -123,9 +145,14 @@ public class StriptestTest {
         onView(withText("pH")).check(matches(isDisplayed()));
         onView(withText("6.2")).check(matches(isDisplayed()));
 
-        onView(withText(R.string.save)).check(matches(isDisplayed()));
-
-        onView(withText(R.string.save)).perform(click());
+        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+                childAtPosition(
+                        allOf(withId(R.id.layoutFooter),
+                                childAtPosition(
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1)),
+                        0),
+                isDisplayed())).perform(click());
 
         mActivityRule.finishActivity();
 
@@ -150,7 +177,24 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.prepare_test)).perform(click());
+        onView(withText(R.string.next)).perform(click());
+
+        for (int i = 0; i < 17; i++) {
+            try {
+                nextPage();
+            } catch (Exception e) {
+                sleep(200);
+                break;
+            }
+        }
+
+        onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                childAtPosition(
+                        childAtPosition(
+                                withId(R.id.viewPager),
+                                1),
+                        3),
+                isDisplayed())).perform(click());
 
         sleep(10000);
 
@@ -165,9 +209,15 @@ public class StriptestTest {
         onView(withText("41 mg/l")).check(matches(isDisplayed()));
         onView(withText("Nitrite Nitrogen")).check(matches(isDisplayed()));
         onView(withText("0.03 mg/l")).check(matches(isDisplayed()));
-        onView(withText(R.string.save)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.save)).perform(click());
+        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+                childAtPosition(
+                        allOf(withId(R.id.layoutFooter),
+                                childAtPosition(
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1)),
+                        0),
+                isDisplayed())).perform(click());
 
         mActivityRule.finishActivity();
 
@@ -190,9 +240,26 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.prepare_test)).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
-        sleep(8000);
+        for (int i = 0; i < 17; i++) {
+            try {
+                nextPage();
+            } catch (Exception e) {
+                sleep(200);
+                break;
+            }
+        }
+
+        onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                childAtPosition(
+                        childAtPosition(
+                                withId(R.id.viewPager),
+                                1),
+                        3),
+                isDisplayed())).perform(click());
+
+        sleep(10000);
 
         onView(withText(R.string.start)).perform(click());
 
@@ -204,9 +271,14 @@ public class StriptestTest {
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.save)).check(matches(isDisplayed()));
-
-        onView(withText(R.string.save)).perform(click());
+        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+                childAtPosition(
+                        allOf(withId(R.id.layoutFooter),
+                                childAtPosition(
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1)),
+                        0),
+                isDisplayed())).perform(click());
 
         assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")));
     }
@@ -221,9 +293,26 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.prepare_test)).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
-        sleep(8000);
+        for (int i = 0; i < 17; i++) {
+            try {
+                nextPage();
+            } catch (Exception e) {
+                sleep(200);
+                break;
+            }
+        }
+
+        onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                childAtPosition(
+                        childAtPosition(
+                                withId(R.id.viewPager),
+                                1),
+                        3),
+                isDisplayed())).perform(click());
+
+        sleep(10000);
 
         onView(withText(R.string.start)).perform(click());
 
@@ -234,9 +323,15 @@ public class StriptestTest {
         onView(withText("14.5 mg/l")).check(matches(isDisplayed()));
         onView(withText("Nitrite")).check(matches(isDisplayed()));
         onView(withText("1.85 mg/l")).check(matches(isDisplayed()));
-        onView(withText(R.string.save)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.save)).perform(click());
+        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+                childAtPosition(
+                        allOf(withId(R.id.layoutFooter),
+                                childAtPosition(
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1)),
+                        0),
+                isDisplayed())).perform(click());
     }
 
     private void testMercury() {
@@ -258,9 +353,26 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.prepare_test)).perform(click());
+        onView(withText(R.string.next)).perform(click());
 
-        sleep(8000);
+        for (int i = 0; i < 17; i++) {
+            try {
+                nextPage();
+            } catch (Exception e) {
+                sleep(200);
+                break;
+            }
+        }
+
+        onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                childAtPosition(
+                        childAtPosition(
+                                withId(R.id.viewPager),
+                                1),
+                        3),
+                isDisplayed())).perform(click());
+
+        sleep(10000);
 
         onView(withText(R.string.start)).perform(click());
 
@@ -272,13 +384,20 @@ public class StriptestTest {
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.save)).check(matches(isDisplayed()));
-
-        onView(withText(R.string.save)).perform(click());
+        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+                childAtPosition(
+                        allOf(withId(R.id.layoutFooter),
+                                childAtPosition(
+                                        withClassName(is("android.widget.RelativeLayout")),
+                                        1)),
+                        0),
+                isDisplayed())).perform(click());
 
         mActivityRule.finishActivity();
 
         sleep(2000);
+
+        mDevice.swipe(200, 750, 200, 600, 4);
 
         assertNotNull(mDevice.findObject(By.text("Mercury: 5.0 ug/l")));
     }

@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.util;
 
 import android.os.Build;
+import android.os.SystemClock;
 import android.view.InputDevice;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +44,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import timber.log.Timber;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -61,11 +60,7 @@ public final class TestUtil {
     }
 
     public static void sleep(int time) {
-        try {
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            Timber.e(e);
-        }
+        SystemClock.sleep(time);
     }
 
     @SuppressWarnings("SameParameterValue")

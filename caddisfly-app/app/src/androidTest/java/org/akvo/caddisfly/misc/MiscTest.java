@@ -86,5 +86,10 @@ public class MiscTest {
 
         mActivityRule.finishActivity();
 
+        mDevice.waitForIdle();
+
+        mDevice.pressBack();
+
+        mDevice.pressBack();
     }
 }
