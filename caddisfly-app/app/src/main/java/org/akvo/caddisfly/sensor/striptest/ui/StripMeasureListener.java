@@ -19,15 +19,9 @@
 
 package org.akvo.caddisfly.sensor.striptest.ui;
 
-/**
- * Created by linda on 6/26/15
- */
-@SuppressWarnings("deprecation")
 interface StripMeasureListener {
 
     void moveToInstructions(int testStage);
-
-    void moveToStripMeasurement();
 
     void moveToResults();
 
@@ -36,5 +30,4 @@ interface StripMeasureListener {
     void updateTimer(int value);
 
     void showTimer();
-
 }

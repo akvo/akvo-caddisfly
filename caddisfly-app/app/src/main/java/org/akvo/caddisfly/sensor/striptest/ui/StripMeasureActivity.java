@@ -39,7 +39,6 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraPreview;
 import org.akvo.caddisfly.sensor.striptest.models.TimeDelayDetail;
-import org.akvo.caddisfly.sensor.striptest.utils.MessageUtils;
 import org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.widget.TimerView;
@@ -53,12 +52,10 @@ import java.util.Set;
 
 import timber.log.Timber;
 
-/**
- * Created by markwestra on 19/07/2017
- */
 public class StripMeasureActivity extends BaseActivity implements StripMeasureListener {
 
     public static final boolean DEBUG = false;
+    TestInfo testInfo;
     // a handler to handle the state machine of the preview, capture, decode, fullCapture cycle
     private StriptestHandler mStriptestHandler;
     private FinderPatternIndicatorView mFinderPatternIndicatorView;
@@ -70,9 +67,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
     private FrameLayout previewLayout;
     private SoundPoolPlayer sound;
     private WeakReference<StripMeasureActivity> mActivity;
-    private TestInfo testInfo;
     private StripMeasureFragment stripMeasureFragment;
-    private InstructionFragment instructionsFragment;
     private List<Result> patches;
     // CameraOperationsManager wraps the camera API
     private CameraOperationsManager mCameraOpsManager;
@@ -100,16 +95,16 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         super.onResume();
 
         testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+        boolean startMeasure = getIntent().getBooleanExtra(ConstantKey.START_MEASURE, false);
 
         if (testInfo != null && testInfo.getUuid() != null) {
             setTitle(testInfo.getName());
             patches = testInfo.getResults();
+            if (mCameraOpsManager == null) {
+                mCameraOpsManager = new CameraOperationsManager(testInfo.getName());
+            }
         } else {
             finish();
-        }
-
-        if (mCameraOpsManager == null) {
-            mCameraOpsManager = new CameraOperationsManager(testInfo.getName());
         }
 
         // create striptestHandler
@@ -123,7 +118,11 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
         mCameraOpsManager.setStriptestHandler(mStriptestHandler);
 
-        mStriptestHandler.setStatus(StriptestHandler.State.PREPARE);
+        if (startMeasure) {
+            mStriptestHandler.setStatus(StriptestHandler.State.MEASURE);
+        } else {
+            mStriptestHandler.setStatus(StriptestHandler.State.PREPARE);
+        }
 
         // we use a set to remove duplicates
         Set<int[]> timeDelaySet = new HashSet<>();
@@ -189,30 +188,9 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
     @Override
     public void moveToInstructions(int testStage) {
-        instructionsFragment = InstructionFragment.newInstance(testInfo, testStage);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.layout_instructionLayout, instructionsFragment)
-                .commit();
-    }
-
-    @Override
-    public void moveToStripMeasurement() {
-        getSupportFragmentManager().beginTransaction()
-                .remove(instructionsFragment)
-                .commit();
-
-        if (stripMeasureFragment == null) {
-            stripMeasureFragment = StripMeasureFragment.newInstance(mStriptestHandler);
-        }
-
-        getSupportFragmentManager().beginTransaction().replace(
-                R.id.layout_cameraPlaceholder, stripMeasureFragment).commit();
-        mStriptestHandler.setStatus(StriptestHandler.State.MEASURE);
-        stripMeasureFragment.clearProgress();
-        stripMeasureFragment.setMeasureText();
-
-        // hand over to state machine
-        MessageUtils.sendMessage(mStriptestHandler, StriptestHandler.START_PREVIEW_MESSAGE, 0);
+        Intent resultIntent = new Intent(getIntent());
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 
     @Override
@@ -286,8 +264,6 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
      */
     public void setPreviewProperties(int w, int h, int previewImageWidth, int previewImageHeight) {
         if (mCamera != null && mCameraPreview != null) {
-//            StriptestHandler.getDecodeData().setPreviewWidth(w);
-//            StriptestHandler.getDecodeData().setPreviewHeight(h);
             StriptestHandler.getDecodeData().setDecodeWidth(previewImageWidth);
             StriptestHandler.getDecodeData().setDecodeHeight(previewImageHeight);
 

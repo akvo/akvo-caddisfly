@@ -119,6 +119,7 @@ public final class StriptestHandler extends Handler {
 
     public void setFragment(StripMeasureFragment fragment) {
         mFragment = fragment;
+        mFragment.setState(mState);
     }
 
     void setTestData(List<TimeDelayDetail> timeDelays) {

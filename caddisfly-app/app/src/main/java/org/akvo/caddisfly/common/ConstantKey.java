@@ -17,5 +17,6 @@ public class ConstantKey {
     public static final String CURRENT_IMAGE_FILE_NAME = "image_file_name";
     public static final String RESULT_IMAGE_PATH = "result_image_path";
     public static final String FRAGMENT_ID = "fragment_id";
+    public static final String START_MEASURE = "start_measure";
 }
 

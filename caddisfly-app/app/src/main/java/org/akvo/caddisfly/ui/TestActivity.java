@@ -291,8 +291,7 @@ public class TestActivity extends BaseActivity {
 
         cleanResultImagesFolder();
 
-        Intent intent;
-        intent = new Intent(this, CbtActivity.class);
+        Intent intent = new Intent(this, CbtActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
     }
@@ -301,8 +300,7 @@ public class TestActivity extends BaseActivity {
 
         cleanResultImagesFolder();
 
-        Intent intent;
-        intent = new Intent(this, ManualTestActivity.class);
+        Intent intent = new Intent(this, ManualTestActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
     }
@@ -320,8 +318,7 @@ public class TestActivity extends BaseActivity {
     }
 
     private void startStripTest() {
-        Intent intent;
-        intent = new Intent(this, StripTestActivity.class);
+        Intent intent = new Intent(this, StripTestActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
     }

@@ -1,9 +1,8 @@
 package org.akvo.caddisfly.sensor.striptest.ui;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,9 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -28,31 +30,32 @@ import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
+import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.manual.MeasurementInputFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
+import org.json.JSONObject;
 
-import java.lang.ref.WeakReference;
+import java.util.Objects;
 
-public class StripTestActivity extends BaseActivity
-        implements MeasurementInputFragment.OnSubmitResultListener {
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
-    private static final int REQUEST_TEST = 1;
+public class StripTestActivity extends BaseActivity {
 
-    SparseArray<String> results = new SparseArray<>();
+    private static final int REQUEST_QUALITY_TEST = 1;
+    private static final int REQUEST_TEST = 2;
+
     ImageView imagePageRight;
     ImageView imagePageLeft;
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    ResultFragment resultFragment;
 
-    private WeakReference<StripMeasureActivity> mActivity;
     private TestInfo testInfo;
-
     private CustomViewPager viewPager;
     private FrameLayout resultLayout;
     private FrameLayout pagerLayout;
@@ -60,29 +63,21 @@ public class StripTestActivity extends BaseActivity
     private PageIndicatorView pagerIndicator;
     private boolean showSkipMenu = true;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private ResultFragment resultFragment;
     private int resultPageNumber;
     private int totalPageCount;
     private int skipToPageNumber;
-    private float scale;
-    private int startTest1PageNumber = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_test);
+        setContentView(R.layout.activity_swatch_select);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        scale = getResources().getDisplayMetrics().density;
 
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
         resultLayout = findViewById(R.id.resultLayout);
         pagerLayout = findViewById(R.id.pagerLayout);
         footerLayout = findViewById(R.id.layout_footer);
-
-        if (savedInstanceState != null) {
-            testInfo = savedInstanceState.getParcelable(ConstantKey.TEST_INFO);
-        }
 
         if (testInfo == null) {
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
@@ -92,43 +87,21 @@ public class StripTestActivity extends BaseActivity
             return;
         }
 
+        resultFragment = ResultFragment.newInstance(testInfo);
         int instructionCount;
-        if (testInfo.getHasEndInstruction()) {
-            instructionCount = testInfo.getInstructions().size();
-        } else {
-            instructionCount = testInfo.getInstructions().size() + 1;
-        }
 
-        totalPageCount = instructionCount;
+        instructionCount = testInfo.getInstructions().size();
+
+        totalPageCount = instructionCount + 1;
         resultPageNumber = totalPageCount - 1;
         skipToPageNumber = resultPageNumber - 1;
 
-        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
-            for (String text :
-                    testInfo.getInstructions().get(i).section) {
-                if (text.contains("<start>")) {
-                    startTest1PageNumber = i;
-                    totalPageCount = startTest1PageNumber + 2;
-                    resultPageNumber = totalPageCount - 1;
-                    skipToPageNumber = resultPageNumber - 1;
-                    break;
-                }
-            }
-        }
-
-        if (testInfo.getHasEndInstruction()) {
-            totalPageCount += 1;
-        }
-
-        if (savedInstanceState == null) {
-            createFragments();
-        }
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter =
+                new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
 
         pagerIndicator.showDots(true);
-        pagerIndicator.setPageCount(totalPageCount);
+        pagerIndicator.setPageCount(totalPageCount - 1);
 
         imagePageRight = findViewById(R.id.image_pageRight);
         imagePageRight.setOnClickListener(view ->
@@ -153,10 +126,6 @@ public class StripTestActivity extends BaseActivity
                     imagePageLeft.setVisibility(View.VISIBLE);
                 }
 
-                if (position == resultPageNumber) {
-                    showWaitingView();
-                }
-
                 showHideFooter();
             }
 
@@ -164,41 +133,30 @@ public class StripTestActivity extends BaseActivity
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        Intent intent = new Intent(getBaseContext(), StripMeasureActivity.class);
+        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+        startActivityForResult(intent, REQUEST_QUALITY_TEST);
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
-    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    private void createFragments() {
-        if (resultFragment == null) {
-            resultFragment = ResultFragment.newInstance(testInfo);
-            resultFragment.setFragmentId(resultPageNumber);
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(ConstantKey.TEST_INFO, testInfo);
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle inState) {
-        for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
-            Fragment fragment = getSupportFragmentManager().getFragments().get(i);
-            if (fragment instanceof BaseFragment) {
-                if (((BaseFragment) fragment).getFragmentId() == resultPageNumber) {
-                    resultFragment = (ResultFragment) fragment;
-                }
+        if (requestCode == REQUEST_TEST) {
+            if (resultCode == RESULT_OK) {
+                resultFragment.setDecodeData(StriptestHandler.getDecodeData());
+                nextPage();
+            }
+        } else if (requestCode == REQUEST_QUALITY_TEST) {
+            if (resultCode != RESULT_OK) {
+                finish();
             }
         }
+    }
 
-        createFragments();
-
-        super.onRestoreInstanceState(inState);
+    private void nextPage() {
+        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
 
     private void showHideFooter() {
@@ -207,91 +165,27 @@ public class StripTestActivity extends BaseActivity
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
         footerLayout.setVisibility(View.VISIBLE);
-        if (viewPager.getCurrentItem() == resultPageNumber - 1) {
-            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-            imagePageRight.setVisibility(View.INVISIBLE);
-        } else if (viewPager.getCurrentItem() == resultPageNumber) {
-            footerLayout.setVisibility(View.GONE);
+        setTitle(testInfo.getName());
+        if (viewPager.getCurrentItem() == resultPageNumber) {
             viewPager.setAllowedSwipeDirection(SwipeDirection.none);
-        } else if (viewPager.getCurrentItem() == totalPageCount - 1) {
-            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-            imagePageRight.setVisibility(View.INVISIBLE);
-            imagePageLeft.setVisibility(View.VISIBLE);
-            if (scale <= 1.5) {
-                // don't show footer page indicator for smaller screens
-                (new Handler()).postDelayed(() -> footerLayout.setVisibility(View.GONE), 400);
+            footerLayout.setVisibility(View.GONE);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
+        } else if (viewPager.getCurrentItem() == resultPageNumber - 1) {
+            imagePageRight.setVisibility(View.INVISIBLE);
+            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
         } else {
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
-            if (viewPager.getCurrentItem() < resultPageNumber - 1) {
-                showSkipMenu = true;
-            }
             if (viewPager.getCurrentItem() == 0) {
                 imagePageLeft.setVisibility(View.INVISIBLE);
             }
         }
+        if (viewPager.getCurrentItem() < resultPageNumber - 1) {
+            showSkipMenu = true;
+        }
         invalidateOptionsMenu();
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        if (testInfo != null && testInfo.getUuid() != null) {
-            setTitle(testInfo.getName());
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (showSkipMenu) {
-            getMenuInflater().inflate(R.menu.menu_instructions, menu);
-        }
-        return true;
-    }
-
-    private void submitResult() {
-        sendResults();
-    }
-
-    private void sendResults() {
-
-        Intent resultIntent = new Intent();
-
-//        final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
-//
-//        results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
-//        results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
-//
-//        JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo,
-//                results, null, imageFileName);
-//        resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-//        if (!imageFileName.isEmpty()) {
-//            resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
-//        }
-
-        setResult(Activity.RESULT_OK, resultIntent);
-
-        finish();
-    }
-
-    @Override
-    public void onSubmitResult(String result) {
-        submitResult();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            if (viewPager.getCurrentItem() == 0) {
-                onBackPressed();
-            } else {
-                viewPager.setCurrentItem(0);
-                showHideFooter();
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -310,11 +204,32 @@ public class StripTestActivity extends BaseActivity
         viewPager.setCurrentItem(Math.max(0, viewPager.getCurrentItem() - 1));
     }
 
-    private void showWaitingView() {
-        pagerLayout.setVisibility(View.VISIBLE);
-        resultLayout.setVisibility(View.GONE);
-        showSkipMenu = false;
-        invalidateOptionsMenu();
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        setTitle(testInfo.getName());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (showSkipMenu) {
+            getMenuInflater().inflate(R.menu.menu_instructions, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (viewPager.getCurrentItem() == 0) {
+                onBackPressed();
+            } else {
+                viewPager.setCurrentItem(0);
+                showHideFooter();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void onSkipClick(MenuItem item) {
@@ -331,35 +246,37 @@ public class StripTestActivity extends BaseActivity
         }
     }
 
+    private void showWaitingView() {
+        pagerLayout.setVisibility(View.VISIBLE);
+        resultLayout.setVisibility(View.GONE);
+        showSkipMenu = false;
+        invalidateOptionsMenu();
+    }
+
     public void onSendResults(View view) {
         sendResults();
     }
 
-    @Override
-    public void onPause() {
-        if (mActivity != null) {
-            mActivity.clear();
-            mActivity = null;
-        }
+    private void sendResults() {
+        SparseArray<String> results = new SparseArray<>();
 
-        super.onPause();
+        results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
+        results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
+
+        JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
+                results, null, null);
+
+        Intent intent = new Intent();
+        intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     public void onStartTest(View view) {
-        Intent intent;
-        intent = new Intent(this, StripMeasureActivity.class);
+        Intent intent = new Intent(getBaseContext(), StripMeasureActivity.class);
+        intent.putExtra(ConstantKey.START_MEASURE, true);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         startActivityForResult(intent, REQUEST_TEST);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_TEST && resultCode == Activity.RESULT_OK) {
-            resultFragment.setDecodeData(StriptestHandler.getDecodeData());
-            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-            setTitle(R.string.result);
-        }
     }
 
     /**
@@ -373,11 +290,11 @@ public class StripTestActivity extends BaseActivity
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         private static final String ARG_SHOW_OK = "show_ok";
-        private static final String ARG_SHOW_START = "show_start";
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
         private boolean showOk;
-        private boolean showStart;
+        private LinearLayout layout;
+        private ViewGroup viewRoot;
 
         /**
          * Returns a new instance of this fragment for the given section number.
@@ -385,13 +302,11 @@ public class StripTestActivity extends BaseActivity
          * @param instruction The information to to display
          * @return The instance
          */
-        static PlaceholderFragment newInstance(Instruction instruction,
-                                               boolean showOkButton, boolean showStartButton) {
+        static PlaceholderFragment newInstance(Instruction instruction, boolean showOkButton) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putParcelable(ARG_SECTION_NUMBER, instruction);
             args.putBoolean(ARG_SHOW_OK, showOkButton);
-            args.putBoolean(ARG_SHOW_START, showStartButton);
             fragment.setArguments(args);
             return fragment;
         }
@@ -403,22 +318,55 @@ public class StripTestActivity extends BaseActivity
             fragmentInstructionBinding = DataBindingUtil.inflate(inflater,
                     R.layout.fragment_instruction, container, false);
 
+            viewRoot = container;
+
             if (getArguments() != null) {
                 instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
                 showOk = getArguments().getBoolean(ARG_SHOW_OK);
-                showStart = getArguments().getBoolean(ARG_SHOW_START);
                 fragmentInstructionBinding.setInstruction(instruction);
             }
 
             View view = fragmentInstructionBinding.getRoot();
 
             if (showOk) {
-                view.findViewById(R.id.buttonDone).setVisibility(View.VISIBLE);
-            }
-            if (showStart) {
                 view.findViewById(R.id.buttonStart).setVisibility(View.VISIBLE);
             }
+
+            layout = view.findViewById(R.id.layout_results);
+
             return view;
+        }
+
+        public void setResult(TestInfo testInfo) {
+            if (testInfo != null) {
+
+                LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(getActivity())
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                layout.removeAllViews();
+
+                SparseArray<String> results = new SparseArray<>();
+
+                results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
+                results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
+
+                for (Result result : testInfo.getResults()) {
+                    String valueString = createValueUnitString(result.getResultValue(), result.getUnit(),
+                            getString(R.string.no_result));
+
+                    LinearLayout itemResult;
+                    itemResult = (LinearLayout) inflater.inflate(R.layout.item_result,
+                            viewRoot, false);
+                    TextView textTitle = itemResult.findViewById(R.id.text_title);
+                    textTitle.setText(result.getName());
+
+                    TextView textResult = itemResult.findViewById(R.id.text_result);
+                    textResult.setText(valueString);
+                    layout.addView(itemResult);
+                }
+
+                layout.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -434,14 +382,14 @@ public class StripTestActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            if (position == resultPageNumber) {
+            if (position == totalPageCount - 2) {
+                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position),
+                        true);
+            } else if (position == totalPageCount - 1) {
                 return resultFragment;
-            } else if (position == resultPageNumber - 1 || position == startTest1PageNumber) {
-                return PlaceholderFragment.newInstance(
-                        testInfo.getInstructions().get(position), false, true);
             } else {
                 return PlaceholderFragment.newInstance(
-                        testInfo.getInstructions().get(position), false, false);
+                        testInfo.getInstructions().get(position), false);
             }
         }
 
