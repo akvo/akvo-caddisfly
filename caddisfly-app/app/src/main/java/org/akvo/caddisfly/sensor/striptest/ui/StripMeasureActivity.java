@@ -38,6 +38,7 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraPreview;
+import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
 import org.akvo.caddisfly.sensor.striptest.models.TimeDelayDetail;
 import org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -71,6 +72,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
     private List<Result> patches;
     // CameraOperationsManager wraps the camera API
     private CameraOperationsManager mCameraOpsManager;
+    private static final DecodeData mDecodeData = new DecodeData();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,7 +114,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         // So we don't want to do actual work on it - just coordinate.
         // The camera and the decoder get their own thread.
         if (mStriptestHandler == null) {
-            mStriptestHandler = new StriptestHandler(this,
+            mStriptestHandler = new StriptestHandler(this, mDecodeData,
                     mCameraOpsManager, mFinderPatternIndicatorView, testInfo);
         }
 

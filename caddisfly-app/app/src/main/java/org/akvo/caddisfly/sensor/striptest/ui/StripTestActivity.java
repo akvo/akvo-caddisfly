@@ -36,6 +36,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
@@ -66,6 +67,7 @@ public class StripTestActivity extends BaseActivity {
     private int resultPageNumber;
     private int totalPageCount;
     private int skipToPageNumber;
+    private DecodeData mDecodeData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,9 +145,13 @@ public class StripTestActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        mDecodeData = StriptestHandler.getDecodeData();
+
         if (requestCode == REQUEST_TEST) {
             if (resultCode == RESULT_OK) {
-                resultFragment.setDecodeData(StriptestHandler.getDecodeData());
+                if (viewPager.getCurrentItem() == resultPageNumber - 1) {
+                    resultFragment.setDecodeData(mDecodeData);
+                }
                 nextPage();
             }
         } else if (requestCode == REQUEST_QUALITY_TEST) {
@@ -382,7 +388,11 @@ public class StripTestActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == totalPageCount - 2) {
+            if (position < testInfo.getInstructions().size() &&
+                    testInfo.getInstructions().get(position).testStage > 0) {
+                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position),
+                        true);
+            } else if (position == totalPageCount - 2) {
                 return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position),
                         true);
             } else if (position == totalPageCount - 1) {

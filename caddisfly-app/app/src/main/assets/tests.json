@@ -1317,6 +1317,7 @@
           ]
         },
         {
+          "testStage": 1,
           "section": [
             "place_strip_clr",
             "image:place_clr",
@@ -1324,7 +1325,6 @@
           ]
         },
         {
-          "testStage": 2,
           "section": [
             "stage_two",
             "dip_strip_move_back_forth_30_seconds",

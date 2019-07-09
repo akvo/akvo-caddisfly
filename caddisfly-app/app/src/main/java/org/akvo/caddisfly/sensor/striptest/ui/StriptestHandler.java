@@ -54,7 +54,7 @@ public final class StriptestHandler extends Handler {
     public static final int IMAGE_SAVED_MESSAGE = 11;
     // Message types
     static final int START_PREVIEW_MESSAGE = 1;
-    private static final DecodeData mDecodeData = new DecodeData();
+    private static DecodeData mDecodeData;
     private static final int DECODE_IMAGE_CAPTURE_FAILED_MESSAGE = 3;
     private static final CalibrationCardData mCalCardData = new CalibrationCardData();
     private static State mState;
@@ -87,12 +87,13 @@ public final class StriptestHandler extends Handler {
     private int currentTestStage = 1;
     private int totalTestStages = 1;
 
-    StriptestHandler(Context context, CameraOperationsManager cameraOpsManager,
+    StriptestHandler(Context context, DecodeData decodeData, CameraOperationsManager cameraOpsManager,
                      FinderPatternIndicatorView finderPatternIndicatorView, TestInfo testInfo) {
         if (StripMeasureActivity.DEBUG) {
             Timber.d("in constructor striptestHandler");
         }
 
+        mDecodeData = decodeData;
         mListener = (StripMeasureListener) context;
         this.mCameraOpsManager = cameraOpsManager;
         this.mFinderPatternIndicatorView = finderPatternIndicatorView;
