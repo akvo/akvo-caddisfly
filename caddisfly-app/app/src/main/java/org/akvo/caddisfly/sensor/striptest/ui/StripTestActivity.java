@@ -170,7 +170,6 @@ public class StripTestActivity extends BaseActivity {
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
         footerLayout.setVisibility(View.VISIBLE);
-        setTitle(testInfo.getName());
 
         if (viewPager.getCurrentItem() < resultPageNumber - 1) {
             showSkipMenu = true;
@@ -182,7 +181,8 @@ public class StripTestActivity extends BaseActivity {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
-        } else if (testInfo.getInstructions().get(viewPager.getCurrentItem() - 1).testStage > 0) {
+        } else if (viewPager.getCurrentItem() > 0 &&
+                testInfo.getInstructions().get(viewPager.getCurrentItem() - 1).testStage > 0) {
             viewPager.setAllowedSwipeDirection(SwipeDirection.right);
             imagePageLeft.setVisibility(View.INVISIBLE);
         } else if (testInfo.getInstructions().get(viewPager.getCurrentItem()).testStage > 0) {
@@ -204,13 +204,12 @@ public class StripTestActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (resultLayout.getVisibility() == View.VISIBLE) {
-            viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
-            showWaitingView();
-        } else if (viewPager.getCurrentItem() == 0) {
-            super.onBackPressed();
-        } else {
-            pageBack();
+        if (viewPager.getCurrentItem() != resultPageNumber) {
+            if (viewPager.getCurrentItem() == 0) {
+                super.onBackPressed();
+            } else {
+                pageBack();
+            }
         }
     }
 

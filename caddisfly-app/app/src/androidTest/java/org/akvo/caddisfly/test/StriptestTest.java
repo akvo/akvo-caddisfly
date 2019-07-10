@@ -75,8 +75,8 @@ public class StriptestTest {
 
         test5in1();
         testSoilNitrogen();
-        testNitrate100();
         testMerckPH();
+        testNitrate100();
         testMercury();
     }
 
@@ -92,7 +92,9 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withText(R.string.prepare_test)).perform(click());
+
+        sleep(5000);
 
         for (int i = 0; i < 17; i++) {
             try {
@@ -111,13 +113,17 @@ public class StriptestTest {
                         3),
                 isDisplayed())).perform(click());
 
-        sleep(10000);
-
-        onView(withText(R.string.start)).perform(click());
-
         sleep(36000);
 
-        onView(withText(R.string.start)).perform(click());
+        nextPage();
+
+        onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                childAtPosition(
+                        childAtPosition(
+                                withId(R.id.viewPager),
+                                1),
+                        3),
+                isDisplayed())).perform(click());
 
         sleep(35000);
 
@@ -177,7 +183,9 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withText(R.string.prepare_test)).perform(click());
+
+        sleep(5000);
 
         for (int i = 0; i < 17; i++) {
             try {
@@ -195,10 +203,6 @@ public class StriptestTest {
                                 1),
                         3),
                 isDisplayed())).perform(click());
-
-        sleep(10000);
-
-        onView(withText(R.string.start)).perform(click());
 
         sleep(65000);
 
@@ -240,7 +244,9 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withText(R.string.prepare_test)).perform(click());
+
+        sleep(5000);
 
         for (int i = 0; i < 17; i++) {
             try {
@@ -258,10 +264,6 @@ public class StriptestTest {
                                 1),
                         3),
                 isDisplayed())).perform(click());
-
-        sleep(10000);
-
-        onView(withText(R.string.start)).perform(click());
 
         sleep(5000);
 
@@ -293,7 +295,9 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withText(R.string.prepare_test)).perform(click());
+
+        sleep(5000);
 
         for (int i = 0; i < 17; i++) {
             try {
@@ -311,10 +315,6 @@ public class StriptestTest {
                                 1),
                         3),
                 isDisplayed())).perform(click());
-
-        sleep(10000);
-
-        onView(withText(R.string.start)).perform(click());
 
         sleep(60000);
 
@@ -353,7 +353,9 @@ public class StriptestTest {
 
         sleep(1000);
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withText(R.string.prepare_test)).perform(click());
+
+        sleep(5000);
 
         for (int i = 0; i < 17; i++) {
             try {
@@ -371,10 +373,6 @@ public class StriptestTest {
                                 1),
                         3),
                 isDisplayed())).perform(click());
-
-        sleep(10000);
-
-        onView(withText(R.string.start)).perform(click());
 
         sleep(35000);
 

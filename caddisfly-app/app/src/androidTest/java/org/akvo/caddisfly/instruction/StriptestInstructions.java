@@ -28,6 +28,7 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
@@ -54,12 +55,14 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
@@ -68,8 +71,10 @@ import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -102,53 +107,41 @@ public class StriptestInstructions {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Soil Striptest");
+        TestUtil.nextSurveyPage("Strip Tests");
 
-        clickExternalSourceButton(1);
+        clickExternalSourceButton(2);
 
         mDevice.waitForIdle();
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withText(R.string.prepare_test)).perform(click());
 
-        onView(withText(R.string.collect_5ml_mehlich_sample))
-                .check(matches(isDisplayed()));
+        sleep(6000);
 
-        onView(withText("Soil - Phosphorous"))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.skip)).check(matches(isDisplayed()));
 
-        TestUtil.nextPage();
+        onView(withText(R.string.collect_water_sample)).check(matches(isDisplayed()));
 
-        onView(withText(R.string.add_5_drops_reagent_1))
-                .check(matches(isDisplayed()));
+        onView(withText("Water - pH")).check(matches(isDisplayed()));
 
-//        onView(withText(R.string.swirl_and_mix))
-//                .check(matches(isDisplayed()));
+        nextPage();
+
+        onView(withText(R.string.skip)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.dip_strip_in_water_2_seconds)).check(matches(isDisplayed()));
 
         onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.viewPager))
-                .perform(swipeLeft());
+        onView(withId(R.id.viewPager)).perform(swipeLeft());
 
-        onView(withText(R.string.put_6_drops_of_reagent_in_another_container))
-                .check(matches(isDisplayed()));
+        mDevice.waitForIdle();
 
-        onView(withText(R.string.place_tube_in_provided_rack))
-                .check(matches(isDisplayed()));
+        onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()));
 
-        TestUtil.nextPage();
+        onView(withText(R.string.shake_excess_water_off)).check(matches(isDisplayed()));
 
-//        onView(withText(R.string.dip_container_15s))
-//                .check(matches(isDisplayed()));
+        nextPage();
 
-//        onView(withText(R.string.shake_excess_water))
-//                .check(matches(isDisplayed()));
-
-        TestUtil.nextPage();
-
-        TestUtil.nextPage();
-
-        onView(withText(R.string.place_strip_clr))
-                .check(matches(isDisplayed()));
+        onView(withText(R.string.place_strip_clr)).check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton = onView(
                 allOf(withContentDescription(R.string.navigate_up),
@@ -156,9 +149,43 @@ public class StriptestInstructions {
                         isDisplayed()));
         appCompatImageButton.perform(click());
 
+        onView(withText(R.string.collect_water_sample))
+                .check(matches(isDisplayed()));
+
+        onView(withText(R.string.skip)).perform(click());
+
+        sleep(1500);
+
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.buttonStart), withText(R.string.start),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                3),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
+
+        sleep(7000);
+
+        onView(withText("4.8")).check(matches(isDisplayed()));
+
         pressBack();
 
-//        onView(withText(R.string.next)).perform(click());
+        onView(withText("pH")).check(matches(isDisplayed()));
+
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.buttonDone), withText(R.string.submitResult),
+                        childAtPosition(
+                                allOf(withId(R.id.layoutFooter),
+                                        childAtPosition(
+                                                withClassName(is("android.widget.RelativeLayout")),
+                                                1)),
+                                0),
+                        isDisplayed()));
+        appCompatButton5.perform(click());
+
+        assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")));
     }
 
     @Test
@@ -201,17 +228,7 @@ public class StriptestInstructions {
 
                 takeScreenshot(id, ++pages);
 
-                sleep(10000);
-
-                takeScreenshot(id, ++pages);
-
-                onView(withText(R.string.start)).perform(click());
-
-                sleep(6000);
-
-                takeScreenshot(id, ++pages);
-
-                sleep(26000);
+                sleep(30000);
 
                 takeScreenshot(id, ++pages);
 
@@ -240,7 +257,9 @@ public class StriptestInstructions {
 
         mDevice.waitForIdle();
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withText(R.string.prepare_test)).perform(click());
+
+        sleep(5000);
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {
