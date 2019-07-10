@@ -36,7 +36,6 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
@@ -67,7 +66,7 @@ public class StripTestActivity extends BaseActivity {
     private int resultPageNumber;
     private int totalPageCount;
     private int skipToPageNumber;
-    private DecodeData mDecodeData;
+    private int currentStage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +137,7 @@ public class StripTestActivity extends BaseActivity {
 
         Intent intent = new Intent(getBaseContext(), StripMeasureActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+        intent.putExtra(ConstantKey.TEST_STAGE, currentStage);
         startActivityForResult(intent, REQUEST_QUALITY_TEST);
     }
 
@@ -145,13 +145,12 @@ public class StripTestActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        mDecodeData = StriptestHandler.getDecodeData();
-
         if (requestCode == REQUEST_TEST) {
             if (resultCode == RESULT_OK) {
-                if (viewPager.getCurrentItem() == resultPageNumber - 1) {
-                    resultFragment.setDecodeData(mDecodeData);
+                if (viewPager.getCurrentItem() != resultPageNumber - 1) {
+                    currentStage++;
                 }
+                resultFragment.setDecodeData(StriptestHandler.getDecodeData());
                 nextPage();
             }
         } else if (requestCode == REQUEST_QUALITY_TEST) {
@@ -172,12 +171,24 @@ public class StripTestActivity extends BaseActivity {
         pagerIndicator.setVisibility(View.VISIBLE);
         footerLayout.setVisibility(View.VISIBLE);
         setTitle(testInfo.getName());
+
+        if (viewPager.getCurrentItem() < resultPageNumber - 1) {
+            showSkipMenu = true;
+        }
+
         if (viewPager.getCurrentItem() == resultPageNumber) {
             viewPager.setAllowedSwipeDirection(SwipeDirection.none);
             footerLayout.setVisibility(View.GONE);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
+        } else if (testInfo.getInstructions().get(viewPager.getCurrentItem() - 1).testStage > 0) {
+            viewPager.setAllowedSwipeDirection(SwipeDirection.right);
+            imagePageLeft.setVisibility(View.INVISIBLE);
+        } else if (testInfo.getInstructions().get(viewPager.getCurrentItem()).testStage > 0) {
+            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+            imagePageRight.setVisibility(View.INVISIBLE);
+            showSkipMenu = false;
         } else if (viewPager.getCurrentItem() == resultPageNumber - 1) {
             imagePageRight.setVisibility(View.INVISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.left);
@@ -187,9 +198,6 @@ public class StripTestActivity extends BaseActivity {
             if (viewPager.getCurrentItem() == 0) {
                 imagePageLeft.setVisibility(View.INVISIBLE);
             }
-        }
-        if (viewPager.getCurrentItem() < resultPageNumber - 1) {
-            showSkipMenu = true;
         }
         invalidateOptionsMenu();
     }
@@ -282,6 +290,7 @@ public class StripTestActivity extends BaseActivity {
         Intent intent = new Intent(getBaseContext(), StripMeasureActivity.class);
         intent.putExtra(ConstantKey.START_MEASURE, true);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+        intent.putExtra(ConstantKey.TEST_STAGE, currentStage);
         startActivityForResult(intent, REQUEST_TEST);
     }
 

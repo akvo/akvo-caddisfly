@@ -54,8 +54,9 @@ public final class AppPreferences {
     }
 
     public static boolean isTestMode() {
-        return isDiagnosticMode()
-                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
+        return true;
+//        return isDiagnosticMode()
+//                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
     }
 
     public static boolean ignoreTimeDelays() {

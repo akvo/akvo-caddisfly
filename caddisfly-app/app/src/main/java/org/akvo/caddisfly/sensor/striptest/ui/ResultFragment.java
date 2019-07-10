@@ -99,12 +99,18 @@ public class ResultFragment extends BaseFragment {
     void setDecodeData(DecodeData decodeData) {
         mDecodeData = decodeData;
 
-        layout.removeAllViews();
+        if (layout != null) {
+            layout.removeAllViews();
+        }
 
         if (getArguments() != null) {
             testInfo = getArguments().getParcelable(ARG_TEST_INFO);
-            List<PatchResult> patchResultList = computeResults(testInfo);
-            showResults(patchResultList, testInfo);
+            if (testInfo != null) {
+                List<PatchResult> patchResultList = computeResults(testInfo);
+                if (layout != null) {
+                    showResults(patchResultList, testInfo);
+                }
+            }
         }
     }
 
@@ -175,14 +181,16 @@ public class ResultFragment extends BaseFragment {
             if (!patchImageMap.containsKey(delay)) {
                 Timber.d("patch not found!");
                 patchResult.setMeasured(false);
-                return null;
+                continue;
+//                return null;
             }
 
             float[][][] img = patchImageMap.get(delay);
             // check if the image is not null
             if (img == null) {
                 patchResult.setMeasured(false);
-                return null;
+                continue;
+//                return null;
             }
 
             patchResult.setImage(img);

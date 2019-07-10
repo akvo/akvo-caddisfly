@@ -84,14 +84,17 @@ public final class StriptestHandler extends Handler {
     private String defaultMessage;
     private int mQualityScore = 0;
     private long startTimeMillis;
-    private int currentTestStage = 1;
+    private int currentTestStage;
     private int totalTestStages = 1;
 
     StriptestHandler(Context context, DecodeData decodeData, CameraOperationsManager cameraOpsManager,
-                     FinderPatternIndicatorView finderPatternIndicatorView, TestInfo testInfo) {
+                     FinderPatternIndicatorView finderPatternIndicatorView,
+                     TestInfo testInfo, int currentStage) {
         if (StripMeasureActivity.DEBUG) {
             Timber.d("in constructor striptestHandler");
         }
+
+        currentTestStage = currentStage;
 
         mDecodeData = decodeData;
         mListener = (StripMeasureListener) context;
@@ -103,6 +106,7 @@ public final class StriptestHandler extends Handler {
             mDecodeProcessor = new DecodeProcessor(this);
         }
         mDecodeData.setTestInfo(testInfo);
+
         this.context = context;
     }
 

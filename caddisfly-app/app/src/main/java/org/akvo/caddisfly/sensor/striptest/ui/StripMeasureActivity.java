@@ -56,6 +56,7 @@ import timber.log.Timber;
 public class StripMeasureActivity extends BaseActivity implements StripMeasureListener {
 
     public static final boolean DEBUG = false;
+    private static final DecodeData mDecodeData = new DecodeData();
     TestInfo testInfo;
     // a handler to handle the state machine of the preview, capture, decode, fullCapture cycle
     private StriptestHandler mStriptestHandler;
@@ -72,7 +73,6 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
     private List<Result> patches;
     // CameraOperationsManager wraps the camera API
     private CameraOperationsManager mCameraOpsManager;
-    private static final DecodeData mDecodeData = new DecodeData();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +97,8 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         super.onResume();
 
         testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+        int currentStage = getIntent().getIntExtra(ConstantKey.TEST_STAGE, 1);
+
         boolean startMeasure = getIntent().getBooleanExtra(ConstantKey.START_MEASURE, false);
 
         if (testInfo != null && testInfo.getUuid() != null) {
@@ -115,7 +117,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         // The camera and the decoder get their own thread.
         if (mStriptestHandler == null) {
             mStriptestHandler = new StriptestHandler(this, mDecodeData,
-                    mCameraOpsManager, mFinderPatternIndicatorView, testInfo);
+                    mCameraOpsManager, mFinderPatternIndicatorView, testInfo, currentStage);
         }
 
         mCameraOpsManager.setStriptestHandler(mStriptestHandler);

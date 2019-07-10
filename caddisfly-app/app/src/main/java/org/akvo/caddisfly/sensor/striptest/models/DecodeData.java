@@ -13,13 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by markwestra on 19/05/2017.
- */
-
 public class DecodeData {
-
-//    private static final String TAG = "Caddisfly-DecodeData";
 
     private final Map<Integer, Integer> versionNumberMap;
     private final Map<Integer, float[][][]> stripImageMap;
@@ -160,14 +154,6 @@ public class DecodeData {
         this.whitePointArray = whitePointArray;
     }
 
-//    public float getPercentageShadow() {
-//        return percentageShadow;
-//    }
-
-//    public void setPercentageShadow(float percentageShadow) {
-//        this.percentageShadow = percentageShadow;
-//    }
-
     public float[] getDeltaEStats() {
         return deltaEStats;
     }
@@ -176,14 +162,6 @@ public class DecodeData {
         this.deltaEStats = deltaE2000Stats;
     }
 
-//    public void setMeasuredPatchRGB(Map<String, int[]> measuredPatchRGB) {
-//        this.measuredPatchRGB = measuredPatchRGB;
-//    }
-
-//    public void setCalibrationPatchRGB(Map<String, int[]> calibrationPatchRGB) {
-//        this.calibrationPatchRGB = calibrationPatchRGB;
-//    }
-
     public byte[] getDecodeImageByteArray() {
         return decodeImageByteArray;
     }
@@ -191,14 +169,6 @@ public class DecodeData {
     public void setDecodeImageByteArray(byte[] decodeImageByteArray) {
         this.decodeImageByteArray = decodeImageByteArray;
     }
-
-//    public void setPreviewWidth(int previewWidth) {
-//        this.previewWidth = previewWidth;
-//    }
-
-//    public void setPreviewHeight(int previewHeight) {
-//        this.previewHeight = previewHeight;
-//    }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean getDistanceOk() {
@@ -250,8 +220,6 @@ public class DecodeData {
         this.patternInfo = null;
         this.decodeImageByteArray = null;
         this.shadowPoints = null;
-//        this.measuredPatchRGB = null;
-//        this.calibrationPatchRGB = null;
         this.tilt = DecodeProcessor.NO_TILT;
         this.distanceOk = true;
         calMatrix = null;
