@@ -32,6 +32,7 @@ import org.akvo.caddisfly.util.TestUtil;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +48,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
@@ -85,8 +87,11 @@ public class InstructionsTestSurvey {
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
         clearPreferences(mActivityTestRule);
+
+        activateTestMode();
     }
 
+    @Ignore
     @Test
     public void instructionsTest() {
 
@@ -98,7 +103,9 @@ public class InstructionsTestSurvey {
 
         mDevice.waitForIdle();
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withText(R.string.prepare_test)).perform(click());
+
+        sleep(5000);
 
         onView(withText(R.string.collect_5ml_mehlich_sample))
                 .check(matches(isDisplayed()));
@@ -164,6 +171,7 @@ public class InstructionsTestSurvey {
 
     }
 
+    @Ignore
     @Test
     public void ironStripTestInstructions() {
 

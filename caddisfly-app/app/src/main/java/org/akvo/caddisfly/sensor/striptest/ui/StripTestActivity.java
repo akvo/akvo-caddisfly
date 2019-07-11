@@ -97,6 +97,13 @@ public class StripTestActivity extends BaseActivity {
         resultPageNumber = totalPageCount - 1;
         skipToPageNumber = resultPageNumber - 1;
 
+        for (int i = 0; i < instructionCount; i++) {
+            if (testInfo.getInstructions().get(i).testStage > 0) {
+                skipToPageNumber = i;
+                break;
+            }
+        }
+
         SectionsPagerAdapter mSectionsPagerAdapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
@@ -149,6 +156,7 @@ public class StripTestActivity extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 if (viewPager.getCurrentItem() != resultPageNumber - 1) {
                     currentStage++;
+                    skipToPageNumber = resultPageNumber - 1;
                 }
                 resultFragment.setDecodeData(StriptestHandler.getDecodeData());
                 nextPage();
@@ -171,11 +179,16 @@ public class StripTestActivity extends BaseActivity {
         pagerIndicator.setVisibility(View.VISIBLE);
         footerLayout.setVisibility(View.VISIBLE);
 
-        if (viewPager.getCurrentItem() < resultPageNumber - 1) {
+        if (viewPager.getCurrentItem() < resultPageNumber - 2) {
             showSkipMenu = true;
         }
 
+        if (viewPager.getCurrentItem() == skipToPageNumber - 1) {
+            showSkipMenu = false;
+        }
+
         if (viewPager.getCurrentItem() == resultPageNumber) {
+            setTitle(R.string.result);
             viewPager.setAllowedSwipeDirection(SwipeDirection.none);
             footerLayout.setVisibility(View.GONE);
             if (getSupportActionBar() != null) {
@@ -199,6 +212,7 @@ public class StripTestActivity extends BaseActivity {
                 imagePageLeft.setVisibility(View.INVISIBLE);
             }
         }
+
         invalidateOptionsMenu();
     }
 

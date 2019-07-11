@@ -38,6 +38,7 @@ import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.repository.TestConfigRepository;
+import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TestActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
@@ -63,6 +64,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.akvo.caddisfly.util.TestHelper.activateTestMode;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
@@ -87,6 +89,10 @@ public class StriptestInstructions {
     public ActivityTestRule<TestActivity> mActivityTestRule =
             new ActivityTestRule<>(TestActivity.class, false, false);
 
+    @Rule
+    public ActivityTestRule<MainActivity> mMainActivityTestRule =
+            new ActivityTestRule<>(MainActivity.class, false, false);
+
     @BeforeClass
     public static void initialize() {
         if (mDevice == null) {
@@ -96,10 +102,13 @@ public class StriptestInstructions {
 
     @Before
     public void setUp() {
-        mActivityTestRule.launchActivity(new Intent());
-        loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
-        clearPreferences(mActivityTestRule);
-        mActivityTestRule.finishActivity();
+        mMainActivityTestRule.launchActivity(new Intent());
+        loadData(mMainActivityTestRule.getActivity(), mCurrentLanguage);
+        clearPreferences(mMainActivityTestRule);
+
+        activateTestMode();
+
+        mMainActivityTestRule.finishActivity();
     }
 
     @Test

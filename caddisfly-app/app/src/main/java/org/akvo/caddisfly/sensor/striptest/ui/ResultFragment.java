@@ -156,14 +156,6 @@ public class ResultFragment extends BaseFragment {
         return rootView;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.result);
-        }
-    }
-
     private List<PatchResult> computeResults(TestInfo testInfo) {
         totalImageUrl = UUID.randomUUID().toString() + ".png";
 
