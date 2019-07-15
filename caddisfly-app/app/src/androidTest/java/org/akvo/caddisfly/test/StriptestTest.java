@@ -1,5 +1,6 @@
 package org.akvo.caddisfly.test;
 
+import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.filters.RequiresDevice;
 import androidx.test.rule.ActivityTestRule;
@@ -19,6 +20,7 @@ import org.junit.Test;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
@@ -94,7 +96,15 @@ public class StriptestTest {
 
         onView(withText(R.string.prepare_test)).perform(click());
 
-        sleep(5000);
+        sleep(6000);
+
+        onView(withText(R.string.skip)).check(matches(isDisplayed()));
+
+        onView(withText(R.string.skip)).perform(click());
+
+        sleep(1000);
+
+        onView(withText(R.string.skip)).check(doesNotExist());
 
         for (int i = 0; i < 17; i++) {
             try {
@@ -104,6 +114,8 @@ public class StriptestTest {
                 break;
             }
         }
+
+        onView(withText(R.string.skip)).check(doesNotExist());
 
         onView(allOf(withId(R.id.buttonStart), withText("Start"),
                 childAtPosition(
@@ -115,15 +127,21 @@ public class StriptestTest {
 
         sleep(36000);
 
+        onView(withText(R.string.skip)).check(doesNotExist());
+
         nextPage();
 
-        onView(allOf(withId(R.id.buttonStart), withText("Start"),
-                childAtPosition(
+        onView(withText(R.string.skip)).check(doesNotExist());
+
+        ViewInteraction appCompatButton5 = onView(
+                allOf(withId(R.id.buttonStart), withText("Start"),
                         childAtPosition(
-                                withId(R.id.viewPager),
-                                1),
-                        3),
-                isDisplayed())).perform(click());
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        2),
+                                3),
+                        isDisplayed()));
+        appCompatButton5.perform(click());
 
         sleep(35000);
 

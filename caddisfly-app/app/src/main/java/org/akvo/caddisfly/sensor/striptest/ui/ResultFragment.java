@@ -78,6 +78,7 @@ import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.roundSignifi
 public class ResultFragment extends BaseFragment {
     private static final int IMG_WIDTH = 500;
     private static final String ARG_TEST_INFO = "test_info";
+    private static final String ARG_RESULT_ID = "resultId";
     private static DecodeData mDecodeData;
     private final SparseArray<String> resultStringValues = new SparseArray<>();
     private final SparseArray<String> brackets = new SparseArray<>();
@@ -87,10 +88,12 @@ public class ResultFragment extends BaseFragment {
     private LinearLayout layout;
     private TestInfo testInfo;
 
-    public static ResultFragment newInstance(TestInfo testInfo) {
+
+    public static ResultFragment newInstance(TestInfo testInfo, int resultId) {
         ResultFragment fragment = new ResultFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_TEST_INFO, testInfo);
+        args.putInt(ARG_RESULT_ID, resultId);
         fragment.setArguments(args);
 
         return fragment;

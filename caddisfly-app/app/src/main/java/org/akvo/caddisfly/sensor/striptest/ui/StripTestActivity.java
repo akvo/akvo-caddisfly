@@ -37,6 +37,7 @@ import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
@@ -80,6 +81,10 @@ public class StripTestActivity extends BaseActivity {
         pagerLayout = findViewById(R.id.pagerLayout);
         footerLayout = findViewById(R.id.layout_footer);
 
+        if (savedInstanceState != null) {
+            testInfo = savedInstanceState.getParcelable(ConstantKey.TEST_INFO);
+        }
+
         if (testInfo == null) {
             testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
         }
@@ -88,7 +93,6 @@ public class StripTestActivity extends BaseActivity {
             return;
         }
 
-        resultFragment = ResultFragment.newInstance(testInfo);
         int instructionCount;
 
         instructionCount = testInfo.getInstructions().size();
@@ -96,6 +100,10 @@ public class StripTestActivity extends BaseActivity {
         totalPageCount = instructionCount + 1;
         resultPageNumber = totalPageCount - 1;
         skipToPageNumber = resultPageNumber - 1;
+
+        if (savedInstanceState == null) {
+            createFragments();
+        }
 
         for (int i = 0; i < instructionCount; i++) {
             if (testInfo.getInstructions().get(i).testStage > 0) {
@@ -142,10 +150,43 @@ public class StripTestActivity extends BaseActivity {
             }
         });
 
-        Intent intent = new Intent(getBaseContext(), StripMeasureActivity.class);
-        intent.putExtra(ConstantKey.TEST_INFO, testInfo);
-        intent.putExtra(ConstantKey.TEST_STAGE, currentStage);
-        startActivityForResult(intent, REQUEST_QUALITY_TEST);
+        if (savedInstanceState == null) {
+            Intent intent = new Intent(getBaseContext(), StripMeasureActivity.class);
+            intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+            intent.putExtra(ConstantKey.TEST_STAGE, currentStage);
+            startActivityForResult(intent, REQUEST_QUALITY_TEST);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle inState) {
+        for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
+            Fragment fragment = getSupportFragmentManager().getFragments().get(i);
+            if (fragment instanceof BaseFragment) {
+                if (((BaseFragment) fragment).getFragmentId() == resultPageNumber) {
+                    resultFragment = (ResultFragment) fragment;
+                }
+            }
+        }
+
+        createFragments();
+
+        super.onRestoreInstanceState(inState);
+    }
+
+    private void createFragments() {
+        int resultId = 1;
+
+        if (resultFragment == null) {
+            resultFragment = ResultFragment.newInstance(testInfo, resultId);
+            resultFragment.setFragmentId(resultPageNumber);
+        }
     }
 
     @Override
