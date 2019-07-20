@@ -64,7 +64,6 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -200,7 +199,7 @@ public class CbtInstructions {
 
         CheckTextInTable(R.string.put_on_gloves);
 
-        CheckTextInTable(R.string.open_growth_medium_sachet);
+//        CheckTextInTable(R.string.open_growth_medium_sachet);
 
         onView(withContentDescription("1")).check(matches(hasDrawable()));
 
@@ -234,14 +233,14 @@ public class CbtInstructions {
                         isDisplayed()));
         appCompatImageView.perform(click());
 
-        CheckTextInTable(R.string.dissolve_medium_in_sample);
+//        CheckTextInTable(R.string.dissolve_medium_in_sample);
 
         onView(withContentDescription("2")).check(matches(hasDrawable()));
 
         TestUtil.nextPage();
 
-        CheckTextInTable(getString(R.string.medium_dissolves)
-                + " " + getString(R.string.when_medium_dissolved));
+//        CheckTextInTable(getString(R.string.medium_dissolves)
+//                + " " + getString(R.string.when_medium_dissolved));
 
         onView(withContentDescription("3")).check(matches(hasDrawable()));
 
@@ -291,13 +290,13 @@ public class CbtInstructions {
 
         CheckTextInTable(R.string.put_on_gloves);
 
-        CheckTextInTable(R.string.open_growth_medium_sachet);
+//        CheckTextInTable(R.string.open_growth_medium_sachet);
 
         onView(withContentDescription("1")).check(matches(hasDrawable()));
 
         TestUtil.nextPage();
 
-        CheckTextInTable(R.string.dissolve_medium_in_sample);
+//        CheckTextInTable(R.string.dissolve_medium_in_sample);
 
         onView(withContentDescription("2")).check(matches(hasDrawable()));
 

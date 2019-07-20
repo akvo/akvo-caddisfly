@@ -31,10 +31,6 @@
 
     <string name="put_on_gloves">Portez des gants en plastique</string>
     <string name="collect_100ml_water_sample">Collectez <b>100 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
-    <string name="avoid_touching_with_bare_hands">Évitez de toucher l\'intérieur de la bouteille, du couvercle ou du sac Thio avec les mains nues.</string>
-    <string name="open_growth_medium_sachet">Ouvrez le petit sachet de forme carré et ajoutez le bourgeon du sachet directement dans l\'échantillon d\'eau</string>
-    <string name="dissolve_medium_in_sample">Dissoudre le bourgeon dans l\'échantillon pendant 10 à 12 minutes maximum en remuant périodiquement la bouteille ou en pressant le bourrelet d\'essai dans le sac Thio pour favoriser la libération du milieu de son support en plastique</string>
-    <string name="medium_dissolves">Le bourgeon se dissout à partir de son support en plastique.</string>
     <string name="when_medium_dissolved">Lorsque le bourgeon est complètement dissous, le support plastique devient blanc ou presque blanc.</string>
     <string name="label_compartment_bag">Étiqueter le sac et/ou apposer l\'étiquette à code à barres sur le sac à compartiment.</string>
     <string name="tear_perforated_seam">Retirer la couture perforée qui se trouve au dessus du sac.</string>

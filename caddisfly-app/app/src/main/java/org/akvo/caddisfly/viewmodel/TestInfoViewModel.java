@@ -29,6 +29,13 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.ObservableField;
+import androidx.lifecycle.AndroidViewModel;
+
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.Constants;
@@ -44,13 +51,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.ObservableField;
-import androidx.lifecycle.AndroidViewModel;
 
 public class TestInfoViewModel extends AndroidViewModel {
 
@@ -102,10 +102,19 @@ public class TestInfoViewModel extends AndroidViewModel {
 
                 RowView rowView = new RowView(context);
 
+                Matcher m = Pattern.compile("^(\\d+?[a-zA-Z]\\.\\s*)(.*)").matcher(text);
                 Matcher m1 = Pattern.compile("^(\\d+?\\.\\s*)(.*)").matcher(text);
-                if (m1.find()) {
+                Matcher m2 = Pattern.compile("^(\\.\\s*)(.*)").matcher(text);
+
+                if (m.find()) {
+                    rowView.setNumber(m.group(1).trim());
+                    text = m.group(2).trim();
+                } else if (m1.find()) {
                     rowView.setNumber(m1.group(1).trim());
                     text = m1.group(2).trim();
+                } else if (m2.find()) {
+                    rowView.setNumber("   ");
+                    text = m2.group(2).trim();
                 }
 
                 String[] sentences = (text + ". ").split("\\.\\s+");

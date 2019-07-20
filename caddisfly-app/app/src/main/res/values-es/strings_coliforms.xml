@@ -31,10 +31,6 @@
 
     <string name="put_on_gloves">Ponerse guantes </string>
     <string name="collect_100ml_water_sample">Recoger <b>100 ml </b> de muestra de agua con botella o bolsa de Thio.</string>
-    <string name="avoid_touching_with_bare_hands">Evite tocar el interior de la botella, la tapa o la bolsa Thio con las manos descubiertas.</string>
-    <string name="open_growth_medium_sachet">Abra la bolsita de medio de crecimiento y agrega la pastilla de prueba directamente a la muestra de la bolsita</string>
-    <string name="dissolve_medium_in_sample">Disuelva el medio en la muestra para 10 – 12 minutos (máximo) haciendo girar periódicamente la bolsa o apretando el botón de prueba en la bolsa Thio para promover la liberación del medio de su portador de plástico</string>
-    <string name="medium_dissolves">El medio se disuelve de su portador de plástico.</string>
     <string name="when_medium_dissolved">Cuando el medio está completamente disuelto, el portador de plástico se vuelve blanco o casi blanco.</string>
     <string name="label_compartment_bag">Etiquete la bolsa y / o pegue la etiqueta del código de barras en la bolsa del compartimiento.</string>
     <string name="tear_perforated_seam">Rasgar la costura perforada en la parte superior de la bolsa.</string>

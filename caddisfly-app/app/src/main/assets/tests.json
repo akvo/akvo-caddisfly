@@ -7324,28 +7324,30 @@
       "subtype": "cbt",
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
       "brand": "Aquagenx",
-      "sampleQuantity": "100",
       "imageScale": "centerCrop",
+      "sampleQuantity": "100",
+      "ranges": "0,100",
       "brandUrl": "www.aquagenx.com",
       "hasImage": true,
       "instructions": [
         {
           "section": [
             "1.put_on_gloves",
-            "2.collect_100ml_water_sample. avoid_touching_with_bare_hands",
-            "3.open_growth_medium_sachet",
+            "2.collect_100ml_water_sample. avoid_touching",
+            "3.open_growth_medium",
             "image:1"
           ]
         },
         {
           "section": [
-            "4.dissolve_medium_in_sample",
+            "4a.dissolve_medium_in_sample_a",
+            "4b.dissolve_medium_in_sample_b",
             "image:2"
           ]
         },
         {
           "section": [
-            "5.medium_dissolves. when_medium_dissolved",
+            "5.when_medium_dissolved",
             "image:3"
           ]
         },
@@ -7412,30 +7414,36 @@
       "subtype": "cbt",
       "uuid": "5baa9d29-b271-4521-b05f-4bfd645c26cf",
       "brand": "Aquagenx",
-      "sampleQuantity": "10",
       "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,1000",
       "brandUrl": "www.aquagenx.com",
       "hasImage": true,
       "instructions": [
         {
           "section": [
             "1.put_on_gloves",
-            "2.collect_10ml_water_sample. avoid_touching_with_bare_hands",
+            "2.collect_10ml_water_sample. avoid_touching",
             "3.add_90ml_distilled_water",
             "image:cbt_dilution"
           ]
         },
         {
           "section": [
-            "4.open_growth_medium_sachet",
-            "image:1",
-            "5.dissolve_medium_in_sample",
+            "4.open_growth_medium",
+            "image:1"
+          ]
+        },
+        {
+          "section": [
+            "5a.dissolve_medium_in_sample_a",
+            "5b.dissolve_medium_in_sample_b",
             "image:2"
           ]
         },
         {
           "section": [
-            "6.medium_dissolves. when_medium_dissolved",
+            "6.when_medium_dissolved",
             "image:3"
           ]
         },

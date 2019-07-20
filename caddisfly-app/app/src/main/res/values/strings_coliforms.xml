@@ -29,19 +29,20 @@
     <string name="health_risk_category">Health Risk Category (Based on MPN and Confidence Interval)</string>
     <string name="recreational_health_risk_category">US EPA Recreational Health Risk Category Based on MPN and Upper 95% Confidence Level</string>
 
+    <string name="collect_10ml_water_sample">Collect <b>10 ml</b> water sample with Thio Bag (or bottle).</string>
+    <string name="avoid_touching">Avoid touching the inside of the Thio Bag, lid or bottle.</string>
+    <string name="open_growth_medium">Open growth medium sachet and add powder medium or test bud straight to the sample from the sachet</string>
+    <string name="dissolve_medium_in_sample_a"><b>Powder medium:</b> Dissolve medium in sample for a few minutes. Gently swirl the bag several times until the medium is completely dissolved.</string>
+    <string name="dissolve_medium_in_sample_b"><b>Test bud:</b> Dissolve medium in sample for 10 – 12 minutes maximum by periodically swirling the bottle or squeezing the test bud in the Thio Bag to promote release of the medium from its plastic carrier</string>
+    <string name="when_medium_dissolved">When medium is completely dissolved, the water sample turns yellow.</string>
+    <string name="leave_test_bud_carrier">When using a test bud, leave it in the Thio Bag or bottle while pouring.</string>
     <string name="put_on_gloves">Put on plastic gloves</string>
     <string name="collect_100ml_water_sample">Collect <b>100 ml</b> water sample with bottle or Thio Bag.</string>
-    <string name="avoid_touching_with_bare_hands">Avoid touching the inside of the bottle, lid or Thio Bag with bare hands.</string>
-    <string name="open_growth_medium_sachet">Open growth medium sachet and add test bud straight to the sample from the sachet</string>
-    <string name="dissolve_medium_in_sample">Dissolve medium in sample for 10 – 12 minutes maximum by periodically swirling the bottle or squeezing the test bud in the Thio Bag to promote release of the medium from its plastic carrier</string>
-    <string name="medium_dissolves">The medium dissolves from its plastic carrier.</string>
-    <string name="when_medium_dissolved">When medium is completely dissolved, the plastic carrier turns white or nearly white.</string>
     <string name="label_compartment_bag">Label bag and/or attach barcode asset tag to compartment bag.</string>
     <string name="tear_perforated_seam">Tear off perforated seam at top of the bag.</string>
     <string name="rub_sides_of_compartment">Rub sides at the top of each compartment to open the bag, use the white tabs at top of the bag to keep the bag open while pouring.</string>
     <string name="slowly_pour_sample_into_bag">Slowly pour sample into bag while gently tilting and squeezing bag to distribute sample amongst five compartments.</string>
     <string name="fill_evenly_across_bag"><b>Fill evenly across bag to the black fill line</b>.</string>
-    <string name="leave_test_bud_carrier">Leave test bud carrier in bottle or Thio Bag while pouring.</string>
     <string name="attach_seal_clip">Attach seal clip across the bag above the fill line and below the compartment top openings.</string>
     <string name="snap_rod_shaped">Snap rod-shaped part of the clip from other side of bag into U-shape to lock in place across the bag.</string>
     <string name="roll_fold_bag">After attaching clip, bag can be kept vertical or horizontal.</string>
@@ -49,8 +50,9 @@
     <string name="let_incubate">Let the sample incubate, depending on the ambient temperature:</string>
     <string name="take_photo_of_incubated">Take photo of the incubated sample.</string>
     <string name="change_colors_to_match">Change the colours in the interface to match the colours of the sample in the bag compartments.</string>
-    <string name="click_compartments_to_change">Click the compartments to change colour.</string>
-    <string name="clean_cbt">After having scored the testing results: add 1–2 ml of liquid bleach (NaOCl) or sufficient free chlorine tablets (calcium hypochlorite or sodium dichloroisocyanurate) to provide about 100 milligrams of free chlorine. After 45 minutes, pour contents into a sink, toilet or hole in ground and safely dispose the empty compartment bag. Retain plastic seal clip for reuse.</string>
+    <string name="click_compartments_to_change">Click the compartments to change colour.\n\n<b>NOTE:</b> Any trace of blue or blue/green in a compartment indicates presence of E. coli, even just specks of blue/blue green color or just blue/blue green sediment at the bottom of a compartment.</string>
+    <string name="clean_cbt">After having scored the testing results: add 1–2 mL of liquid bleach (NaOCl) or sufficient free chlorine tablets (calcium hypochlorite or sodium dichloroisocyanurate) to provide about 100 milligrams of free chlorine. After 45 minutes, pour contents into a sink, toilet or hole in ground and safely dispose the empty compartment bag. Retain plastic seal clip for reuse.</string>
+    <string name="add_90ml_distilled_water">Add <b>90 ml</b> of distilled water to the water sample.</string>
 
     <string name="low_risk_safe">Low Risk / Safe</string>
     <string name="probably_safe">Intermediate Risk / Probably Safe</string>
@@ -62,9 +64,6 @@
     <string name="low_risk_possibly_safe">Low Risk / Possibly Safe</string>
     <string name="high_risk_probably_unsafe">High Risk / Probably Unsafe</string>
     <string name="very_unsafe">Very Unsafe</string>
-
-    <string name="collect_10ml_water_sample">Collect <b>10 ml</b> water sample with Thio Bag (or bottle).</string>
-    <string name="add_90ml_distilled_water">Add <b>90 ml</b> of distilled water to the water sample.</string>
 
     <string name="temperature">Temperature</string>
     <string name="incubation_time">Incubation Time</string>
