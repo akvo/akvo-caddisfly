@@ -902,95 +902,6 @@
       ]
     },
     {
-      "name": "Water - Arsenic (0 - 4000)",
-      "subtype": "striptest",
-      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
-      "brand": "EZ Arsenic High Range, HACH 2822800",
-      "image": "Hach-2822800-4000",
-      "imageScale": "centerCrop",
-      "groupingType": "INDIVIDUAL",
-      "hasImage": true,
-      "length": 82.3,
-      "height": 12.8,
-      "instructions": [
-        {
-          "section": [
-            "as_safety"
-          ]
-        },
-        {
-          "section": [
-            "as_ins_1",
-            "image:as_1"
-          ]
-        },
-        {
-          "section": [
-            "as_ins_7",
-            "image:as_5"
-          ]
-        },
-        {
-          "section": [
-            "as_ins_3",
-            "image:as_3"
-          ]
-        },
-        {
-          "section": [
-            "as_ins_4",
-            "image:as_4"
-          ]
-        },
-        {
-          "section": [
-            "as_ins_5"
-          ]
-        },
-        {
-          "section": [
-            "as_ins_6",
-            "image:place_clr"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "Arsenic",
-          "unit": "ug/l",
-          "patchPos": 6.2,
-          "patchWidth": 12,
-          "colors": [
-            {
-              "value": 0,
-              "lab": [95.22,-0.43,3.03]
-            },
-            {
-              "value": 75,
-              "lab": [92.32,-9.65,47.36]
-            },
-            {
-              "value": 175,
-              "lab": [90.24,-7.83,49.23]
-            },
-            {
-              "value": 500,
-              "lab": [72.07,15.98,61.50]
-            },
-            {
-              "value": 1500,
-              "lab": [67.78,23.69,54.87]
-            },
-            {
-              "value": 4000,
-              "lab": [49.37,26.81,42.77]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "name": "Water - Arsenic (0 - 500)",
       "subtype": "striptest",
       "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
@@ -1078,6 +989,119 @@
             {
               "value": 500,
               "lab": [69.81,13.51,33.62]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Water - Arsenic (0 - 4000)",
+      "subtype": "striptest",
+      "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
+      "brand": "EZ Arsenic High Range, HACH 2822800",
+      "image": "Hach-2822800-4000",
+      "imageScale": "centerCrop",
+      "groupingType": "INDIVIDUAL",
+      "hasImage": true,
+      "length": 82.3,
+      "height": 12.8,
+      "instructions": [
+        {
+          "section": [
+            "as_safety"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_1",
+            "image:as_1"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_7",
+            "image:as_5"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_3",
+            "image:as_3"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_4",
+            "image:as_4"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_5"
+          ]
+        },
+        {
+          "section": [
+            "as_ins_6",
+            "image:place_clr"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Arsenic",
+          "unit": "ug/l",
+          "patchPos": 6.2,
+          "patchWidth": 12,
+          "colors": [
+            {
+              "value": 0,
+              "lab": [
+                95.22,
+                -0.43,
+                3.03
+              ]
+            },
+            {
+              "value": 75,
+              "lab": [
+                92.32,
+                -9.65,
+                47.36
+              ]
+            },
+            {
+              "value": 175,
+              "lab": [
+                90.24,
+                -7.83,
+                49.23
+              ]
+            },
+            {
+              "value": 500,
+              "lab": [
+                72.07,
+                15.98,
+                61.50
+              ]
+            },
+            {
+              "value": 1500,
+              "lab": [
+                67.78,
+                23.69,
+                54.87
+              ]
+            },
+            {
+              "value": 4000,
+              "lab": [
+                49.37,
+                26.81,
+                42.77
+              ]
             }
           ]
         }
