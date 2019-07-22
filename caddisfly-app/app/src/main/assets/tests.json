@@ -914,12 +914,14 @@
       "instructions": [
         {
           "section": [
-            "as_safety"
+            "as_safety_1",
+            "as_safety_2"
           ]
         },
         {
           "section": [
-            "as_ins_1",
+            "as_ins_1a",
+            "as_ins_1b",
             "image:as_1"
           ]
         },
@@ -931,19 +933,18 @@
         },
         {
           "section": [
-            "as_ins_3",
+            "as_ins_3a",
+            "as_ins_3b",
+            "as_ins_3c",
             "image:as_3"
           ]
         },
         {
           "section": [
-            "as_ins_4",
+            "as_ins_4a",
+            "as_ins_4b",
+            "as_ins_5",
             "image:as_4"
-          ]
-        },
-        {
-          "section": [
-            "as_ins_5"
           ]
         },
         {
@@ -1007,36 +1008,38 @@
       "instructions": [
         {
           "section": [
-            "as_safety"
+            "as_safety_1",
+            "as_safety_2"
           ]
         },
         {
           "section": [
-            "as_ins_1",
+            "as_ins_1a",
+            "as_ins_1b",
             "image:as_1"
           ]
         },
         {
           "section": [
-            "as_ins_7",
+            "as_ins_7a",
+            "as_ins_7b",
             "image:as_5"
           ]
         },
         {
           "section": [
-            "as_ins_3",
+            "as_ins_3a",
+            "as_ins_3b",
+            "as_ins_3c",
             "image:as_3"
           ]
         },
         {
           "section": [
-            "as_ins_4",
+            "as_ins_4a",
+            "as_ins_4b",
+            "as_ins_5",
             "image:as_4"
-          ]
-        },
-        {
-          "section": [
-            "as_ins_5"
           ]
         },
         {
@@ -1543,7 +1546,8 @@
         },
         {
           "section": [
-            "place_strip_clr_hg",
+            "place_strip_clr_hg_1",
+            "place_strip_clr_hg_2",
             "image:place_clr"
           ]
         }
@@ -2382,6 +2386,12 @@
         },
         {
           "section": [
+            "prepare_sample_ka",
+            "prepare_sample_kb"
+          ]
+        },
+        {
+          "section": [
             "immerse_reaction_zone",
             "image:dip_sample_1"
           ]
@@ -2405,6 +2415,8 @@
         {
           "section": [
             "place_strip_clr",
+            "finish_ka",
+            "finish_kb",
             "image:place_clr"
           ]
         }

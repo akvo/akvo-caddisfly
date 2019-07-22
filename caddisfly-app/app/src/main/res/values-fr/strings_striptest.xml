@@ -62,21 +62,15 @@
     <string name="dip_sample_5s">Plongez la bandelette de test dans l\'échantillon pendant <b>5 secondes</b> et rétirez.</string>
     <string name="shake_excess_water_off">Secouez l\'excès d\'eau de la bandelette de test.</string>
     <string name="place_strip_clr">Mettez la bandelette de test avec le bout cotonné tourné vers la <b>gauche</b> sur la partie noire de la carte colorimétrique de référence et appuyez sur <b>Démarrer</b>.</string>
-    <string name="place_strip_clr_hg">Placez une bandelette propre sous la bandelette usagée de manière à ce que le patch ait un fond blanc. Placez les bandes empilées avec le patch vers <b>la gauche</b> sur la zone noire de la carte de référence des couleurs et appuyez sur <b>Démarrer</b>.</string>
     <string name="add_5_drops_po4_1">Ajoutez <b>5 gouttes</b> du <b>réactif PO4-1</b> à l\'échantillon.</string>
     <string name="place_smaller_container">Mettez le plus petit récipient sur la grille offerte.</string>
     <string name="add_6_drops_po4_2">Ajoutez <b>6 gouttes</b> du <b>réactif PO4-2</b> dans le plus petit contenant.</string>
     <string name="dip_sample_15s">Plongez la bandelette de test dans l\'échantillon pendant <b>15 secondes</b> et rétirez.</string>
     <string name="dip_container_15s">Plongez la bandelette de test dans le plus petit tube pendant <b>15 secondes</b> et rétirez.</string>
     <string name="dip_sample_1s">Plongez la bandelette de test dans l\'échantillon pendant <b>1 seconde</b> et retirez.</string>
-    <string name="as_ins_1">Insérez une bandelette de test dans le capuchon, de sorte que le rembourrage recouvre complètement la petite ouverture. Fermez le rabat et appuyez pour fixer.</string>
     <string name="as_ins_2">Remplissez le bidon avec un échantillon jusqu\' à la ligne de remplissage (50 ml).</string>
-    <string name="as_ins_3">Ajouter un <b>réactif #1</b> et une poudre du <b>réactif #2</b> à l\'échantillon. Si une odeur d\'oeuf pourri est détectée après l\'ajout du réactif #1, du sulfure est présent à des niveaux interférents, <b>[a topic=sulfide]cliquez ici[/a]</b> pour voir comment enlever le sulfure avant de continuer la procédure de test.</string>
-    <string name="as_ins_4">Fermez immédiatement le bidon. Remuez en continu pendant 60 secondes. <b>Ne secouez pas ni balancez ni laisser passer l\'échantillon sur la bandelette.</b></string>
     <string name="as_ins_5">Patientez 20 minutes. Remuez deux pendant la période de la réaction</string>
     <string name="as_ins_6">Retirez immédiatement la bandelette de test du capuchon et placez la tourné vers la <b>gauche</b> sur la carte colorimétrique de référence et appuyez sur <b>Démarrer</b>.</string>
-    <string name="as_ins_7">Remplissez le flacon de mesure carré jusqu\'au sommet avec un échantillon (9,6 ml). Versez l\'échantillon dans la bidon.</string>
-    <string name="as_safety"><b>DANGER</b>: Les gaz d\'hydrogène et d\'arsine sont générés pendant le test. Travaillez dans un endroit bien aéré loin des flammes et d\'autres sources d\'inflammation. Examinez les fiches de données de sécurité pour des informations sûres sur la manipulation, le stockage et l\'élimination.</string>
     <string name="dip_sample_60_back_forward_250_sample">Plonger la bandelette dans un échantillon de <b>plus de 250 ml</b> et la faire passer d\'avant en arrière pendant <b>60</b> secondes dans l\'échantillon.</string>
     <string name="shake_excess_water_once">Secouez <b>une fois</b> l\'excès d\'eau de la bandelette réactive.</string>
 
