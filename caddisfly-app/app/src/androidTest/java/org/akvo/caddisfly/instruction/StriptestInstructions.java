@@ -35,6 +35,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.common.TestConstants;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
 import org.akvo.caddisfly.repository.TestConfigRepository;
@@ -84,11 +85,9 @@ public class StriptestInstructions {
 
     private final StringBuilder jsArrayString = new StringBuilder();
     private final StringBuilder listString = new StringBuilder();
-
     @Rule
     public ActivityTestRule<TestActivity> mActivityTestRule =
             new ActivityTestRule<>(TestActivity.class, false, false);
-
     @Rule
     public ActivityTestRule<MainActivity> mMainActivityTestRule =
             new ActivityTestRule<>(MainActivity.class, false, false);
@@ -203,16 +202,39 @@ public class StriptestInstructions {
         TestConfigRepository testConfigRepository = new TestConfigRepository();
         List<TestInfo> testList = testConfigRepository.getTests(TestType.STRIP_TEST);
 
+        int resultWaitDelay;
+
         for (int i = 0; i < TestConstants.STRIP_TESTS_COUNT; i++) {
 
-            assertEquals(testList.get(i).getSubtype(), TestType.STRIP_TEST);
+            TestInfo testInfo = testList.get(i);
 
-            String uuid = testList.get(i).getUuid();
+            assertEquals(testInfo.getSubtype(), TestType.STRIP_TEST);
+
+            String uuid = testInfo.getUuid();
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-            if (("aa4a4e3100c9").contains(id))
+            if (("6843158b47b4").contains(id))
 //
             {
+
+                if (("6843158b47b4 6ed8142b6b07, 420551851acd 1b7db640037c d555f04db952 aa4a4e3100c9 " +
+                        "411a4093f6b6 321bbbd9876b 798b81d2b019 32d9b8f4aecf").contains(id)) {
+
+                    resultWaitDelay = 0;
+                    for (Result result :
+                            testInfo.getResults()) {
+                        if (result.getTimeDelay() > resultWaitDelay) {
+                            resultWaitDelay = result.getTimeDelay();
+                        }
+                    }
+
+                    resultWaitDelay = Math.max(5000, (resultWaitDelay + 5) * 1000);
+                } else {
+                    resultWaitDelay = 5000;
+                }
+
+                Log.e("Caddisfly Log", "id: " + id);
+
                 Intent intent = new Intent();
                 intent.setType("text/plain");
                 intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
@@ -221,9 +243,15 @@ public class StriptestInstructions {
                 data.putString(SensorConstants.LANGUAGE, mCurrentLanguage);
                 intent.putExtras(data);
 
+                mDevice.waitForIdle();
+
+                mActivityTestRule.finishActivity();
+
                 mActivityTestRule.launchActivity(intent);
 
-                int pages = navigateToTest(id);
+                navigateToTest(id);
+
+                int pages = navigateInstructions(id, 1);
 
                 onView(allOf(withId(R.id.buttonStart), withText("Start"),
                         childAtPosition(
@@ -233,11 +261,30 @@ public class StriptestInstructions {
                                 3),
                         isDisplayed())).perform(click());
 
-                sleep(2000);
+                if (("411a4093f6b6").contains(id)) {
 
-                takeScreenshot(id, ++pages);
+                    sleep(2000);
 
-                sleep(30000);
+                    takeScreenshot(id, pages);
+
+                    sleep(resultWaitDelay);
+
+                    pages = navigateInstructions(id, ++pages);
+
+                    onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(R.id.viewPager),
+                                            1),
+                                    3),
+                            isDisplayed())).perform(click());
+                }
+
+                sleep(1000);
+
+                takeScreenshot(id, pages);
+
+                sleep(resultWaitDelay);
 
                 takeScreenshot(id, ++pages);
 
@@ -256,7 +303,7 @@ public class StriptestInstructions {
 
     }
 
-    private int navigateToTest(String id) {
+    private void navigateToTest(String id) {
 
         mDevice.waitForIdle();
 
@@ -268,9 +315,14 @@ public class StriptestInstructions {
 
         onView(withText(R.string.prepare_test)).perform(click());
 
-        sleep(5000);
+        sleep(2000);
 
-        int pages = 0;
+        takeScreenshot(id, 0);
+    }
+
+    private int navigateInstructions(String id, int pages) {
+        sleep(3000);
+
         for (int i = 0; i < 17; i++) {
             try {
                 takeScreenshot(id, pages);
@@ -280,14 +332,14 @@ public class StriptestInstructions {
                 if (("ac33b44f9992, 32d9b8f4aecf").contains(id)) {
                     try {
 
-                        if (pages == 4) {
+                        if (pages == 5) {
                             //noinspection ConstantConditions
                             if (mCurrentLanguage.equals("en")) {
-                                mDevice.click(100, 600);
+                                mDevice.click(200, 390);
                             } else {
                                 mDevice.click(450, 600);
                             }
-                            sleep(600);
+                            sleep(3000);
                             takeScreenshot(id, pages);
                             pages++;
                             sleep(600);
@@ -304,6 +356,6 @@ public class StriptestInstructions {
                 break;
             }
         }
-        return pages + 1;
+        return pages;
     }
 }

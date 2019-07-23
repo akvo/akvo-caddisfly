@@ -213,15 +213,15 @@ public class DecodeData {
     }
 
     public void clearData() {
-        if (this.decodeImage != null) {
-            this.decodeImage.close();
+        if (decodeImage != null) {
+            decodeImage.close();
         }
-        this.decodeImage = null;
-        this.patternInfo = null;
-        this.decodeImageByteArray = null;
-        this.shadowPoints = null;
-        this.tilt = DecodeProcessor.NO_TILT;
-        this.distanceOk = true;
+        decodeImage = null;
+        patternInfo = null;
+        decodeImageByteArray = null;
+        shadowPoints = null;
+        tilt = DecodeProcessor.NO_TILT;
+        distanceOk = true;
         calMatrix = null;
         illumData = null;
     }

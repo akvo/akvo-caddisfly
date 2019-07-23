@@ -23,6 +23,8 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
+import static org.akvo.caddisfly.common.AppConfig.IS_TEST_MODE;
+
 /**
  * Static functions to get or set values of various preferences.
  */
@@ -54,9 +56,8 @@ public final class AppPreferences {
     }
 
     public static boolean isTestMode() {
-        return true;
-//        return isDiagnosticMode()
-//                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
+        return IS_TEST_MODE || (isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false));
     }
 
     public static boolean ignoreTimeDelays() {

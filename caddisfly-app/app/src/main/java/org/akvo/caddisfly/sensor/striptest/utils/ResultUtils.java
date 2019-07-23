@@ -63,6 +63,10 @@ public class ResultUtils {
         float[][] colorsValueLab = new float[patches.size()][3];
         double[][][] interpolTables = new double[patches.size()][][];
 
+        if (patchResultList.size() == 0) {
+            return new float[]{-1, Float.NaN, -1, -1};
+        }
+
         // create all interpol tables
         for (int p = 0; p < patches.size(); p++) {
             PatchResult patchResult = patchResultList.get(p);

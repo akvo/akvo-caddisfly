@@ -138,7 +138,7 @@ public class StriptestTest {
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.viewPager),
-                                        2),
+                                        1),
                                 3),
                         isDisplayed()));
         appCompatButton5.perform(click());

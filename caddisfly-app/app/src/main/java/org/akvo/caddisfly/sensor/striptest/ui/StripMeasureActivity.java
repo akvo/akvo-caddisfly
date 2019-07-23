@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -33,15 +34,17 @@ import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraPreview;
-import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
 import org.akvo.caddisfly.sensor.striptest.models.TimeDelayDetail;
 import org.akvo.caddisfly.sensor.striptest.widget.FinderPatternIndicatorView;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.widget.TimerView;
 
 import java.lang.ref.WeakReference;
@@ -56,7 +59,6 @@ import timber.log.Timber;
 public class StripMeasureActivity extends BaseActivity implements StripMeasureListener {
 
     public static final boolean DEBUG = false;
-    private static final DecodeData mDecodeData = new DecodeData();
     TestInfo testInfo;
     // a handler to handle the state machine of the preview, capture, decode, fullCapture cycle
     private StriptestHandler mStriptestHandler;
@@ -116,7 +118,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         // So we don't want to do actual work on it - just coordinate.
         // The camera and the decoder get their own thread.
         if (mStriptestHandler == null) {
-            mStriptestHandler = new StriptestHandler(this, mDecodeData,
+            mStriptestHandler = new StriptestHandler(this,
                     mCameraOpsManager, mFinderPatternIndicatorView, testInfo, currentStage);
         }
 
@@ -149,6 +151,14 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
 
         // initialize camera and start camera preview
         startCameraPreview();
+
+        if (AppPreferences.isTestMode()) {
+            byte[] bytes = ImageUtil.loadImageBytes(testInfo.getName(), FileHelper.FileType.TEST_IMAGE);
+            if (bytes.length == 0) {
+                setResult(Activity.RESULT_OK, new Intent());
+                (new Handler()).postDelayed(this::finish, 4000);
+            }
+        }
     }
 
     private void startCameraPreview() {

@@ -45,6 +45,7 @@ import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.GroupType;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
 import org.akvo.caddisfly.sensor.striptest.models.PatchResult;
 import org.akvo.caddisfly.sensor.striptest.utils.ColorUtils;
@@ -218,17 +219,19 @@ public class ResultFragment extends BaseFragment {
             value = result[1];
             bracket = createBracket(result[2], result[3]);
 
-            // apply formula when present
-            value = applyFormula(value, patchResultList.get(0));
+            if (patchResultList.size() > 0) {
+                // apply formula when present
+                value = applyFormula(value, patchResultList.get(0));
 
-            patchResultList.get(0).setValue(value);
-            patchResultList.get(0).setIndex(index);
-            patchResultList.get(0).setBracket(bracket);
+                patchResultList.get(0).setValue(value);
+                patchResultList.get(0).setIndex(index);
+                patchResultList.get(0).setBracket(bracket);
 
-            resultStringValues.put(patchResultList.get(0).getId(),
-                    Float.isNaN(value) ? ""
-                            : String.valueOf(roundSignificant(value)));
-            brackets.put(patchResultList.get(0).getId(), bracket);
+                resultStringValues.put(patchResultList.get(0).getId(),
+                        Float.isNaN(value) ? ""
+                                : String.valueOf(roundSignificant(value)));
+                brackets.put(patchResultList.get(0).getId(), bracket);
+            }
         } else {
             for (PatchResult patchResult : patchResultList) {
                 // get colours from strip json description for this patch
@@ -272,7 +275,7 @@ public class ResultFragment extends BaseFragment {
 
     private void createView(TestInfo testInfo, List<PatchResult> patchResultList) {
         // create view in case the strip was not found
-        if (patchResultList == null) {
+        if (patchResultList == null || patchResultList.size() == 0) {
             String patchDescription = getString(R.string.strip_not_detected);
             Bitmap resultImage = createErrorImage();
             inflateView(patchDescription, "", resultImage);
@@ -289,6 +292,12 @@ public class ResultFragment extends BaseFragment {
             String unit = patchResult.getPatch().getUnit();
             String valueString = createValueUnitString(patchResult.getValue(), unit, getString(R.string.no_result));
 
+            if (AppPreferences.isTestMode() && patchResultList.size() == 0) {
+                patchDescription = testInfo.getResults().get(0).getName();
+                unit = testInfo.getResults().get(0).getUnit();
+                valueString = createValueUnitString(0, unit, getString(R.string.no_result));
+            }
+
             // create image to display on screen
             Bitmap resultImage = createResultImageGroup(patchResultList);
             inflateView(patchDescription, valueString, resultImage);
@@ -300,6 +309,13 @@ public class ResultFragment extends BaseFragment {
 
             // handle any calculated result to be displayed
             displayCalculatedResults(testInfo, patchResultList);
+
+            if (AppPreferences.isTestMode() && patchResultList.size() == 0) {
+                String patchDescription = testInfo.getResults().get(0).getName();
+                String unit = testInfo.getResults().get(0).getUnit();
+                String valueString = createValueUnitString(0, unit, getString(R.string.no_result));
+                inflateView(patchDescription, valueString, null);
+            }
 
             for (PatchResult patchResult : patchResultList) {
                 // create strings for description, unit, and value

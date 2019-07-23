@@ -27,6 +27,11 @@ import org.akvo.caddisfly.BuildConfig;
 public final class AppConfig {
 
     /**
+     * For testing
+     */
+    public static final boolean IS_TEST_MODE = false;
+
+    /**
      * Stop animations only for running Espresso UI tests
      */
     public static final boolean STOP_ANIMATIONS = false;
@@ -56,7 +61,7 @@ public final class AppConfig {
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
     public static final boolean APP_EXPIRY = false;
-    public static final int APP_EXPIRY_DAY = 25;
+    public static final int APP_EXPIRY_DAY = 30;
     public static final int APP_EXPIRY_MONTH = 7;
     public static final int APP_EXPIRY_YEAR = 2019;
 
