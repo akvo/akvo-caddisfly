@@ -60,12 +60,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmaps;
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createErrorImage;
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createResultImageGroup;
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createResultImageSingle;
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createValueBitmap;
@@ -152,7 +152,7 @@ public class ResultFragment extends BaseFragment {
 
             intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
 
-            getActivity().setResult(Activity.RESULT_OK, intent);
+            Objects.requireNonNull(getActivity()).setResult(Activity.RESULT_OK, intent);
 
             getActivity().finish();
         });
@@ -276,9 +276,8 @@ public class ResultFragment extends BaseFragment {
     private void createView(TestInfo testInfo, List<PatchResult> patchResultList) {
         // create view in case the strip was not found
         if (patchResultList == null || patchResultList.size() == 0) {
-            String patchDescription = getString(R.string.strip_not_detected);
-            Bitmap resultImage = createErrorImage();
-            inflateView(patchDescription, "", resultImage);
+            String patchDescription = testInfo.getName();
+            inflateView(patchDescription, "", null);
         }
         // else create view in case the strip is of type GROUP
         else if (testInfo.getGroupingType() == GroupType.GROUP) {
@@ -334,9 +333,10 @@ public class ResultFragment extends BaseFragment {
         }
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({"InflateParams"})
     private void inflateView(String patchDescription, String valueString, Bitmap resultImage) {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(
+                getActivity()).getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout itemResult;
         if (inflater != null) {
             itemResult = (LinearLayout) inflater.inflate(R.layout.item_result, null, false);
@@ -347,7 +347,13 @@ public class ResultFragment extends BaseFragment {
             imageResult.setImageBitmap(resultImage);
 
             TextView textResult = itemResult.findViewById(R.id.text_result);
-            textResult.setText(valueString);
+            if (resultImage == null) {
+                TextView text_error = itemResult.findViewById(R.id.text_error);
+                text_error.setVisibility(View.VISIBLE);
+                textResult.setVisibility(View.GONE);
+            } else {
+                textResult.setText(valueString);
+            }
             layout.addView(itemResult);
         }
     }

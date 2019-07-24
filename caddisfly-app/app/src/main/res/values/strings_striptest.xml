@@ -33,6 +33,7 @@
     <string name="checking_image_quality">Checking image quality</string>
     <string name="seconds">Sec.</string>
     <string name="detecting_color_card">Looking for colour card</string>
+    <string name="no_strip_found">No strip found</string>
     <string name="ready_for_photo">Ready for photo</string>
     <string name="do_not_show_again">Do not show again</string>
     <string name="stop_test">Stop test</string>
@@ -110,6 +111,5 @@
     <string name="place_tube_in_provided_rack">Place the tube in the provided rack.</string>
     <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
     <string name="shake_excess_water">Shake excess water from test strip.</string>
-    <string name="strip_not_detected">Strip not detected</string>
 
 </resources>

@@ -58,24 +58,6 @@ public class BitmapUtils {
         return concatAllBitmaps(triangle, strip, colourDrop, colourBars);
     }
 
-    public static Bitmap createErrorImage() {
-        Bitmap resultImage = Bitmap.createBitmap(500, 40, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(resultImage);
-
-        Paint blackPaint = new Paint();
-        blackPaint.setColor(Color.BLACK);
-
-        // create paint
-        Paint redText = new Paint();
-        redText.setColor(Color.RED);
-        redText.setTextSize(30);
-        redText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        redText.setTextAlign(Paint.Align.CENTER);
-        canvas.drawRect(0, 0, 500, 40, blackPaint);
-        canvas.drawText("No strip found", 250, 35, redText);
-        return resultImage;
-    }
-
     public static Bitmap RotateBitmap(Bitmap source, float angle) {
         Matrix matrix = new Matrix();
         matrix.postRotate(angle);
