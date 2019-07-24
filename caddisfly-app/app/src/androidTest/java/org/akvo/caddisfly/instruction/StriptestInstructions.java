@@ -213,7 +213,8 @@ public class StriptestInstructions {
             String uuid = testInfo.getUuid();
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-            if (("6843158b47b4").contains(id))
+//            if (testInfo.getName().contains("Soil"))
+//                if (("ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id))
 //
             {
 

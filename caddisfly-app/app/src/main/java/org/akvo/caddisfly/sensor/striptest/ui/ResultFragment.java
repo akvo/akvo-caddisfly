@@ -347,7 +347,7 @@ public class ResultFragment extends BaseFragment {
             imageResult.setImageBitmap(resultImage);
 
             TextView textResult = itemResult.findViewById(R.id.text_result);
-            if (resultImage == null) {
+            if (valueString.isEmpty()) {
                 TextView text_error = itemResult.findViewById(R.id.text_error);
                 text_error.setVisibility(View.VISIBLE);
                 textResult.setVisibility(View.GONE);

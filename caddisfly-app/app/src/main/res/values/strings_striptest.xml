@@ -105,7 +105,6 @@
     <string name="collect_5ml_mehlich_sample">Collect <b>5 ml</b> Mehlich extraction sample using the provided bottle.</string>
     <string name="collect_water_extraction_sample">Collect water extraction sample</string>
     <string name="add_5_drops_reagent_1">Add <b>5 drops</b> of <b>reagent 1</b> to the sample</string>
-    <string name="swirl_to_mix_reagent">Swirl the sample to mix the reagent</string>
     <string name="put_6_drops_of_reagent_in_another_container">In the smaller container tube put <b>6 drops</b> of <b>reagent 2</b></string>
     <string name="dip_strip_15_seconds_in_reagent_and_remove">Dip the strip for <b>15 seconds</b> in the small tube containing <b>reagent 2</b>.</string>
     <string name="place_tube_in_provided_rack">Place the tube in the provided rack.</string>
