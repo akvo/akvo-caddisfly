@@ -97,7 +97,6 @@
     <string name="location_permission">L\'autorisation de localisation est nécessaire pour la connexion par Bluetooth</string>
     <string name="unknown_device">Inconnu</string>
     <string name="scanning">Numérisation …</string>
-    <string name="searching_for_device">Recherche de périphériques Bluetooth</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
