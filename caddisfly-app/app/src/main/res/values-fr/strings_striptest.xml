@@ -33,6 +33,7 @@
     <string name="checking_image_quality">Vérification de la qualité de l\'image</string>
     <string name="seconds">Seconde</string>
     <string name="detecting_color_card">À la recherche de la carte de couleur</string>
+    <string name="no_strip_found">Aucune bandelette trouvée</string>
     <string name="ready_for_photo">Prêt pour la photo</string>
     <string name="do_not_show_again">Ne plus montrer</string>
     <string name="stop_test">Arrêter le test</string>
@@ -42,17 +43,17 @@
     <string name="avoid_shadows_on_card">Évitez les ombres sur la carte</string>
     <string name="prepare_camera_instruction">Ne prélevez pas encore d\'échantillon. Tenez l\'appareil photo au-dessus de la carte de couleurs et réglez sa position jusqu\'à ce que la vérification soit réussie.</string>
 
-    <!--Water-->
-    <string name="collect_water_sample">Collectez l\'échantillon d\'eau</string>
-    <string name="fill_half_with_sample">Remplissez le flacon à moitié plein avec l\'échantillon d\'eau</string>
+    <string name="as_ins_5">Patientez 20 minutes. Remuez deux pendant la période de la réaction</string>
     <string name="open_one_foil_and_add_powder">Ouvrez un paquet d\'alluminium et ajoutez le contenu de la poudre dans le flacon</string>
     <string name="cap_vial_and_shake_rapidly">Fermez le flacon et secouez rapidement pendant <b>5 secondes</b>. Retirez le capuchon.</string>
     <string name="dip_strip_into_water_and_remove">Plongez une bandelette dans l\'échantillon et rétirez immédiatement</string>
     <string name="dip_strip_in_water_2_seconds">Plongez une bandelette dans l\'échantillon pendant au moins <b>2 secondes</b> et rétirez.</string>
     <string name="dip_strip_move_back_forth_15_seconds">Plongez la bandelette de test dans le flacon d\'échantillon, déplacez rapidement de l\'avant vers l\'arrière dans l\'eau pendant <b>15 secondes</b>.</string>
     <string name="dip_strip_move_back_forth_30_seconds">Plongez la bandelette dans l\'échantillon et déplacez de l\'avant vers l\'arrière dans l\'échantillon pendant <b>30 secondes</b>.</string>
+    <string name="dip_sample_60_back_forward_250_sample">Plonger la bandelette dans un échantillon de <b>plus de 250 ml</b> et la faire passer d\'avant en arrière pendant <b>60</b> secondes dans l\'échantillon.</string>
     <string name="immerse_reaction_zone">Immergez la zone de réaction de la bandelette de test dans l\'échantillon pré-traitté (15 – 30 °C) pendant <b>1 seconde</b></string>
     <string name="dry_off_excess_water_place_on_towel">Séchez l\'excès d\'eau. (Ex: placez-le sur une serviette)</string>
+    <string name="shake_excess_water_once">Secouez <b>une fois</b> l\'excès d\'eau de la bandelette réactive.</string>
     <string name="do_not_shake_excess_water">Ne pas secouez l\'excès d\'eau de la bandelette de test.</string>
     <string name="allow_excess_liquid_to_run_off">Laissez l\'excès de liquide sur le long de la bordure de la bandelette couler sur une serviette en papier absorbant.</string>
     <string name="add_reagent_k1">Ajoutez <b>1 goutte</b> de réactif K-1 sur la zone de réaction et laisser agir pendant <b>1 minute</b>.</string>
@@ -69,10 +70,6 @@
     <string name="dip_container_15s">Plongez la bandelette de test dans le plus petit tube pendant <b>15 secondes</b> et rétirez.</string>
     <string name="dip_sample_1s">Plongez la bandelette de test dans l\'échantillon pendant <b>1 seconde</b> et retirez.</string>
     <string name="as_ins_2">Remplissez le bidon avec un échantillon jusqu\' à la ligne de remplissage (50 ml).</string>
-    <string name="as_ins_5">Patientez 20 minutes. Remuez deux pendant la période de la réaction</string>
-    <string name="as_ins_6">Retirez immédiatement la bandelette de test du capuchon et placez la tourné vers la <b>gauche</b> sur la carte colorimétrique de référence et appuyez sur <b>Démarrer</b>.</string>
-    <string name="dip_sample_60_back_forward_250_sample">Plonger la bandelette dans un échantillon de <b>plus de 250 ml</b> et la faire passer d\'avant en arrière pendant <b>60</b> secondes dans l\'échantillon.</string>
-    <string name="shake_excess_water_once">Secouez <b>une fois</b> l\'excès d\'eau de la bandelette réactive.</string>
 
     <string name="as_remove_sulfide">Effectuez les étapes suivantes pour éliminer le sulfure avant le début de la procédure du test:</string>
     <string name="as_remove_sulfide_1">Déchirez un petit morceau de coton et formez une balle de la taille d\'un pois.</string>
@@ -86,12 +83,7 @@
     <string name="collect_mehlich_extraction_sample">Collect Mehlich extraction sample</string>
     <string name="collect_5ml_mehlich_sample">Collect <b>5 ml</b> Mehlich extraction sample using the provided bottle.</string>
     <string name="collect_water_extraction_sample">Collect water extraction sample</string>
-    <string name="add_5_drops_reagent_1">Add <b>5 drops</b> of <b>reagent 1</b> to the sample</string>
-    <string name="swirl_to_mix_reagent">Swirl the sample to mix the reagent</string>
-    <string name="put_6_drops_of_reagent_in_another_container">In the smaller container tube put <b>6 drops</b> of <b>reagent 2</b></string>
     <string name="dip_strip_15_seconds_in_reagent_and_remove">Dip the strip for <b>15 seconds</b> in the small tube containing <b>reagent 2</b>.</string>
-    <string name="place_tube_in_provided_rack">Place the tube in the provided rack.</string>
     <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
     <string name="shake_excess_water">Shake excess water from test strip.</string>
-
 </resources>

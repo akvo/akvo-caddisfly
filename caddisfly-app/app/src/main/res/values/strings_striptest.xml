@@ -53,7 +53,7 @@
     <string name="as_ins_7a">Fill the square measuring vial to the top with sample (9.6 mL).</string>
     <string name="as_ins_7b">Pour the sample into the reaction bottle.</string>
     <string name="as_ins_3a">Add one <b>Reagent #1</b>.</string>
-    <string name="as_ins_3b">If a rotten egg smell is detected after adding reagent #1, sulfide is present at interfering levels, <b>[a topic=sulfide]click here[/a]</b> to see how to remove sulfide before continuing the test procedure.</string>
+    <string name="as_ins_3b">If a rotten egg smell is detected after adding reagent #1, sulfide is present at interfering levels, <b>[a topic=sulfide]click here[/a]</b> to see how to remove sulfide before continuing.</string>
     <string name="as_ins_3c">Add one <b>Reagent #2</b> powder pillow to the sample.</string>
     <string name="as_ins_4a">Immediately attach the cap to the reaction bottle.</string>
     <string name="as_ins_4b">Swirl continuously for 60 seconds. <b>Do not shake or invert or allow sample to get on the strip.</b></string>
@@ -104,11 +104,7 @@
     <string name="collect_mehlich_extraction_sample">Collect Mehlich extraction sample</string>
     <string name="collect_5ml_mehlich_sample">Collect <b>5 ml</b> Mehlich extraction sample using the provided bottle.</string>
     <string name="collect_water_extraction_sample">Collect water extraction sample</string>
-    <string name="add_5_drops_reagent_1">Add <b>5 drops</b> of <b>reagent 1</b> to the sample</string>
-    <string name="put_6_drops_of_reagent_in_another_container">In the smaller container tube put <b>6 drops</b> of <b>reagent 2</b></string>
     <string name="dip_strip_15_seconds_in_reagent_and_remove">Dip the strip for <b>15 seconds</b> in the small tube containing <b>reagent 2</b>.</string>
-    <string name="place_tube_in_provided_rack">Place the tube in the provided rack.</string>
     <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
     <string name="shake_excess_water">Shake excess water from test strip.</string>
-
 </resources>

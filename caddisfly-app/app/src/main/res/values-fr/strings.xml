@@ -36,7 +36,7 @@
     <string name="close">Fermer</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
-    <string name="navigate_up">Revenir en haut de la page</string>
+    <string name="navigate_up">Naviguer vers le haut</string>
     <string name="logo">Logo</string>
     <string name="result">Résultat</string>
     <string name="language">Langue</string>
@@ -96,7 +96,6 @@
     <string name="error_bluetooth_not_supported">Bluetooth non pris en charge.</string>
     <string name="location_permission">L\'autorisation de localisation est nécessaire pour la connexion par Bluetooth</string>
     <string name="unknown_device">Inconnu</string>
-    <string name="scanning">Numérisation …</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>

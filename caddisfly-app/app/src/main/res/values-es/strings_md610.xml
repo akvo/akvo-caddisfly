@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
+  ~
+  ~ This file is part of Akvo Caddisfly.
+  ~
+  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <string name="optional">Optional</string>
+    <string name="skip">Omitir</string>
+
+    <string name="md610_photometer">MD 610 Photometer</string>
+    <string name="check_bluetooth_turned_on">Comprueba que el MD610 y su bluetooth estén encendidos</string>
+    <string name="to_turn_md610_on">Para activar el MD 610:</string>
+
+    <string name="press_on_button"><![CDATA[Press (*on*)]]></string>
+    <string name="press_mode_button"><![CDATA[Press (*mode*) to enter menu.]]></string>
+    <string name="select_bluetooth"><![CDATA[Press (*down*) to scroll to Bluetooth and press (*enter*)]]></string>
+    <string name="turn_bluetooth_on"><![CDATA[Press (*shift*) + (*1*) to turn bluetooth on.]]></string>
+    <string name="escape_to_menu"><![CDATA[Press (*enter*) and (*esc*) to return to main menu.]]></string>
+    <string name="perform_test"><![CDATA[Perform <b>%1$s</b> test on MD 610 and press (*f3*) when ready.]]></string>
+    <string name="select_correct_test"><![CDATA[Seleccione la prueba correcta y vuelva a intentarlo.]]></string>
+    <string name="data_does_not_match">Los datos recibidos no coinciden con el tipo de prueba esperado.</string>
+    <string name="invalid_data_received">Datos inválidos recibidos</string>
+    <string name="incorrect_test_selected">Prueba incorrecta seleccionada</string>
+    <string name="select_test"><![CDATA[Select <b>%1$s</b> test on MD610]]></string>
+    <string name="test_selected">Prueba seleccionada</string>
+    <string name="to_select_test">seleccionando la prueba</string>
+    <string name="test_instructions">Instrucciones de prueba</string>
+
+    <string name="select_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and then press (*enter*)]]></string>
+    <string name="select_diff_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'diff\'</b> and then press (*enter*)]]></string>
+    <string name="select_free_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'free\'</b> and then press (*enter*)]]></string>
+    <string name="select_Cr_VI_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'Cr(VI)\'</b> and then press (*enter*)]]></string>
+    <string name="select_Cr_III_VI_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'Cr(III+VI)\'</b> and then press (*enter*)]]></string>
+    <string name="fill_vial_10_with_5ml_sample_zero_a">Enjuague un vial (10 mm Ø) con la muestra de agua.</string>
+    <string name="fill_vial_10_with_5ml_sample_zero_b">Llene el vial (10 mm Ø) con <b>5 ml de su muestra</b>.</string>
+    <string name="fill_vial_10_with_5ml_sample_zero_c">Limpie el exterior del vial, sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="fill_vial_10_with_5ml_sample_zero_d">Presione (*cero*) para realizar  <b>prueba de cero</b>.</string>
+    <string name="fill_vial_16_with_10ml_sample_a">Enjuague un vial (16 mm Ø) con la muestra de agua.</string>
+    <string name="fill_vial_16_with_10ml_sample_b">Llene el vial (16 mm Ø) con <b>10 ml de muestra de agua</b>.</string>
+    <string name="fill_2nd_vial_16_with_10ml_sample">Llene un segundo vial limpio (16 mm Ø) con <b>10 ml de la muestra de agua</b>.</string>
+    <string name="fill_vial_24_with_10ml_sample_zero_a">Enjuague un vial (24 mm Ø) con la muestra de agua.</string>
+    <string name="fill_vial_24_with_10ml_sample_zero_b">Llene el vial (24 mm Ø) con <b>10 ml de su muestra</b>.</string>
+    <string name="fill_vial_24_with_10ml_sample_zero_c">Limpie el exterior del vial, sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="fill_vial_24_with_10ml_sample_zero_d">Presione (*cero*) para realizar  <b>prueba de cero</b>.</string>
+    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero_a">Enjuague un vial (24 mm Ø) con la muestra de agua.</string>
+    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero_b">Llene el vial (24 mm Ø) con <b>2 ml de su muestra</b> y <b>8 ml de agua desionizada</b>.</string>
+    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero_c">Limpie el exterior del vial, sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="fill_vial_24_with_2ml_sample_8ml_deionized_water_zero_d">Presione (*cero*) para realizar <b>la prueba de cero</b></string>
+    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero_a">Enjuague un vial (24 mm Ø) con agua desionizada.</string>
+    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero_b">Llene el vial (24 mm Ø) con <b>1 ml de su muestra</b> y <b>9 ml de agua desionizada</b>.</string>
+    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero_c">Limpie el exterior del vial, sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="fill_vial_24_with_1ml_sample_9ml_deionized_water_zero_d">Presione (*cero*) para realizar  <b>prueba de cero</b>.</string>
+    <string name="fill_vial_24_with_10ml_deionized_water_a">Enjuague un vial (24 mm Ø) con agua desionizada.</string>
+    <string name="fill_vial_24_with_10ml_deionized_water_b">Llene el vial (24 mm Ø) con <b>10 ml de agua desionizada (este es el blanco)</b>.</string>
+    <string name="fill_vial_24_with_10ml_sample">Llene otro vial limpio (24 mm Ø) con <b>10 ml de la muestra de agua (esta es la muestra)</b></string>
+    <string name="fill_new_vial_24_with_10ml_sample_a">Enjuague un vial (24 mm Ø) con la muestra de agua.</string>
+    <string name="fill_new_vial_24_with_10ml_sample_b">Llene el vial (24 mm Ø) con <b>10 ml de la muestra de agua (esta es la muestra)</b></string>
+    <string name="add_water_till_10ml">Añadir muestra de agua a la marca de 10 ml en el vial.</string>
+    <string name="add_sample_exact">Agregue<b> exactamente la %sampleQuantity de ml de la muestra de agua</b> al vial preparado. Precaución: Vial se llena hasta la parte superior!</string>
+    <string name="remove_vial">Retire el vial de la cámara de muestras.</string>
+    <string name="remove_vial_leave_drops">Retire el vial de la cámara de muestras y <b>vacíelo</b>, dejando unas gotas en el vial.</string>
+    <string name="remove_vial_empty">Retire el vial de la cámara de muestras y <b>vacíe el vial</b></string>
+    <string name="remove_vial_empty_fill_a">Retire el vial de la cámara de muestras y <b>vacíe el vial</b>.</string>
+    <string name="remove_vial_empty_fill_b">Enjuague el vial y la tapa varias veces y luego llene el vial con <b>%sampleQuantity ml</b> de la muestra de agua.</string>
+    <string name="add_reagent_1_tablet_a">Agregue <b>una tableta de %reactor1</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_reagent_1_tablet_b">Aplaste la tableta con una varilla de agitación limpia.</string>
+    <string name="add_reagent_1_tablet_no_crush">Agregue <b>una tableta de %reactor1</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_reagent_2_tablet_no_crush">Agregue <b>una tableta de %reactor2</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_reagent_3_tablet_no_crush">Agregue <b>una tableta de %reactor3</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_reagent_2_tablet_a">Agregue <b>una tableta de %reactor2</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_reagent_3_tablet_a">Agregue <b>una tableta de %reactor3</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_reagent_2_tablet_b">Aplaste la tableta con una varilla de agitación limpia</string>
+    <string name="add_reagent_1_powder_1vial">Agregue el contenido de <b>un paquete de polvo de %reactivo1</b> directamente de la lámina al vial.</string>
+    <string name="add_reagent_2_powder_1vial">Agregue el contenido de <b>un paquete de polvo de %reactivo2</b> directamente de la lámina al vial.</string>
+    <string name="add_reagent_1_powder_2vials">Agregue el contenido de <b>un paquete de polvo de %reactivo1</b> directamente de la lámina a cada vial.</string>
+    <string name="add_reagent_2_powder_2vials">Agregue el contenido de <b>un paquete de polvo de %reactivo2</b> directamente de la lámina a cada vial.</string>
+    <string name="add_two_reagent_1_powder_1vial">Agregue el contenido de <b>dos (!) paquetes de polvo de %reactivo1</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_two_reagent_2_powder_1vial">Agregue el contenido de <b>dos (!) paquetes de polvo de %reactivo2</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_reagent_1_liquid">Llene el frasco con gotas del mismo tamaño sosteniendo la botella verticalmente y apriete lentamente: <b>%reactivo1</b></string>
+    <string name="add_reagent_2_liquid">Llene el frasco con gotas del mismo tamaño sosteniendo la botella verticalmente y apriete lentamente: <b>%reactivo2</b></string>
+    <string name="add_reagent_3_liquid">Llene el frasco con gotas del mismo tamaño sosteniendo la botella verticalmente y apriete lentamente: <b>%reactivo3</b></string>
+    <string name="add_reagent_1_liquid_exact_ml">Agregue <b>exactamente la solución de reactivo de%reactor1</b> a la muestra de agua. (Precaución: el vial se llena hasta la parte superior!)</string>
+    <string name="fill_nitrate_test_tube">Llene el tubo de ensayo de nitrato con <b>20 ml de la muestra de agua</b>.</string>
+    <string name="add_spoon_nitrate_test_powder">Añade <b>una cuchara de %reactivo1 en polvo</b>.</string>
+    <string name="add_spoon_cyanide_1">Agregue <b>dos cucharas de n. ° 4 (blanco) de cianuro-11</b> a la muestra de agua preparada</string>
+    <string name="add_spoon_cyanide_2">Agregue <b>dos cucharas de n. ° 4 (blanco) de cianuro-12</b> a la muestra de agua preparada</string>
+    <string name="close_swirl_mix">Cierre fuertemente el vial con la tapa y gírelo varias veces para mezclar el contenido.</string>
+    <string name="close_swirl_gently">Cierre fuertemente el vial con la tapa y gírelo suavemente varias veces.</string>
+    <string name="close_swirl_mix_purple">Cierre fuertemente el vial con la tapa y gírelo varias veces para mezclar el contenido. Espere hasta que <font color="#2C2A74">la coloración púrpura</font> se vaya antes de continuar.</string>
+    <string name="close_invert_mix">Cierre fuertemente el vial con la tapa e inviértalo varias veces para mezclar el contenido</string>
+    <string name="close_invert_gently_mix">Cierre fuertemente el vial con la tapa e inviértalo suavemente varias veces para mezclar el contenido.</string>
+    <string name="close_invert_mix_hot">Cierre fuertemente el vial con la tapa e inviértalo suavemente varias veces para mezclar el contenido. <b>(PRECAUCIÓN: ¡El vial se calentará durante la mezcla!)</b></string>
+    <string name="close_and_swirl_vial_dissolve_tablet">Cierre firmemente el frasco con la tapa y gírelo varias veces hasta que la tableta se disuelva.</string>
+    <string name="close_and_mix_powder">Cierre los frascos con las tapas y agite para mezclar los contenidos.</string>
+    <string name="close_and_shake_powder">Cierre firmemente la tapa(s) del(de los) frasco(s) y agite bien hasta que el reactivo se disuelva completamente.</string>
+    <string name="close_gently_swirl_tablet">Cierre el frasco firmemente con la tapa y gírelo suavemente (¡no lo agite demasiado!) varias veces hasta que la tableta se disuelva</string>
+    <string name="close_swirl_vigorously">Cierre el tubo firmemente con la tapa y gírelo vigorosamente durante un minuto.</string>
+    <string name="wipe_place_align_vial_a">Limpie el exterior del vial.</string>
+    <string name="wipe_place_align_vial_b">Sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="wipe_place_align_vial_c">Presione la tecla (*prueba*).</string>
+    <string name="wipe_place_align_vial_wait_1_a">Limpie el exterior del vial.</string>
+    <string name="wipe_place_align_vial_wait_1_b">Sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="wipe_place_align_vial_wait_1_c">Presione (*prueba*) y espere un <b>tiempo de reacción de %reactionTime1</b>.</string>
+    <string name="wipe_place_align_vial_wait_2_a">Limpie el exterior del vial.</string>
+    <string name="wipe_place_align_vial_wait_2_b">Sostenga el frasco en la tapa y coloque el frasco en la cámara y alinee las marcas de flecha.</string>
+    <string name="wipe_place_align_vial_wait_2_c">Presione (*prueba*) y espere un <b>tiempo de reacción de %reactionTime2</b>.</string>
+    <string name="wipe_place_align_vial_wait_3_c">Presione (*prueba*) y espere un <b>tiempo de reacción de %reactionTime3</b>.</string>
+    <string name="wipe_place_align_prepared_vial_zero_a">Limpie el exterior del vial preparado.</string>
+    <string name="wipe_place_align_prepared_vial_zero_b">Sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="wipe_place_align_prepared_vial_zero_c">Presione (*cero*) para realizar <b>la prueba de cero</b></string>
+    <string name="wipe_place_align_vial_blank_zero_wait_a">Limpie el exterior del vial (en blanco), sostenga el vial en la tapa, coloque el vial (en blanco) en la cámara y alinee las marcas de flecha.</string>
+    <string name="wipe_place_align_vial_blank_zero_wait_b">Presione (*cero*) para realizar la <b>prueba de cero</b> y esperar un <b>período de reacción de %reactionTime1</b>.</string>
+    <string name="wipe_place_align_vial_sample_test_a">Limpie el exterior del vial (la muestra).</string>
+    <string name="wipe_place_align_vial_sample_test_b">Sostenga el vial en la tapa, coloque el vial (la muestra) en la cámara y alinee las marcas de flecha.</string>
+    <string name="wipe_place_align_vial_sample_test_c">Presione la tecla (*test*).</string>
+    <string name="press_enter_wait_1">Presione (*enter*) y espere un <b>período de reacción de $reactionTime1</b></string>
+    <string name="press_enter_wait_2">Presione (*enter*) y espere un <b>período de reacción de $reactionTime2</b></string>
+    <string name="remix">Remezcle la solución</string>
+    <string name="insert_16mm_adapter">Inserte el adaptador para viales de 16 mm Ø.</string>
+    <string name="reaction_tube_1ml_sample">Abre el vial de reactivo A de NitraX y agregue <b>1 ml de la muestra de agua</b>. Cierre la tapa fuertemente.</string>
+    <string name="reaction_tube_2ml_blank">Abre un vial de reacción con tapa blanca y agregue <b>2 ml de agua desionizada</b> (este es el blanco)</string>
+    <string name="reaction_tube_2ml_sample">Abre otro vial de reacción con tapa blanca y agregue <b>2 ml de agua desionizada</b> (este es el blanco)</string>
+    <string name="reaction_tube_1_tenth_ml_blank">Abre un vial de reacción tapado en blanco y agregue <b>0.1 ml de agua desionizada</b> (este es el blanco)</string>
+    <string name="reaction_tube_1_tenth_ml_sample">Abre otro frasco de reacción con tapa blanca y agregue <b>0.1 ml de la muestra de agua </b>(esta es la muestra).</string>
+    <string name="reaction_tube_1_fifth_ml_blank">Abre un vial de reacción con tapa blanca y agregue <b>0.2 ml de agua desionizada</b> (este es el blanco)</string>
+    <string name="reaction_tube_1_fifth_ml_sample">Abre otro vial de reacción con tapa blanca y agregue <b>0.2 ml de agua desionizada</b> (este es el blanco)</string>
+    <string name="heat_120_100">Caliente el vial durante <b>120 minutos</b> en un termorreactor precalentado a una temperatura de <b>100 ° C</b>.</string>
+    <string name="heat_120_150">Caliente los viales durante <b>120 minutos</b> en el reactor precalentado a una temperatura de <b>150 ° C</b>. (PRECAUCIÓN: ¡Los viales están calientes!)</string>
+    <string name="remove_cool_a">Retire el vial del termorreactor. <b>(PRECAUCIÓN: ¡Los viales están calientes!)</b></string>
+    <string name="remove_cool_b">Invertir el vial y dejar enfriar a temperatura ambiente. No coloque los viales calientes en la cámara de muestras.</string>
+    <string name="remove_cool_60_a"><b>(PRECAUCIÓN: ¡Los viales están calientes!)</b> Retire los tubos del bloque de calentamiento y déjelos enfriar a 60 ° C o menos.</string>
+    <string name="remove_cool_60_b">Mezcle el contenido invirtiendo cuidadosamente cada tubo varias veces mientras aún esté caliente.</string>
+    <string name="remove_cool_60_c">Permite que los tubos se enfríen a temperatura ambiente antes de medir. <b>No coloque los viales calientes en la cámara de muestras</b>.</string>
+    <string name="specific_260_a">Coloque el tubo en posición vertical y, una vez que el agente reductor se haya asentado en el fondo, inviértalo suavemente de tres a cuatro veces para completar la floculación del agente reductor. Luego deje reposar el tubo durante 2 minutos más.</string>
+    <string name="specific_260_b">Abre el tubo y limpie alrededor de la parte superior del tubo con un pañuelo de papel limpio para eliminar los residuos del agente reductor.</string>
+    <string name="specific_260_c">Escurre con cuidado <b>10 ml de la solución tratada</b> en el vial (24 mm Ø) utilizado para la puesta a cero, asegurándose de que no se arrastre ningún agente reductor.</string>
+    <string name="phosphate_syringe">Llene una jeringa limpia de 20 ml con <b>aprox. 14 ml de muestra de agua.</b></string>
+    <string name="phosphate_discharge">Conecte la jeringa al conjunto de filtración (utilizando un filtro GF/C) y descargue la jeringa para desecharla, hasta la marca de 10 ml.</string>
+    <string name="phosphate_fill_vial_test_a">Enjuague un vial (24 mm Ø) con muestra de agua.</string>
+    <string name="phosphate_fill_vial_test_b">Llene el vial (24 mm Ø) con <b>10 ml de su muestra</b> de la jeringa.</string>
+    <string name="phosphate_fill_vial_test_c">Limpie el exterior del vial, sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="phosphate_fill_vial_test_d">Presione (*cero*) para realizar <b>la prueba de cero</b></string>
+    <string name="blend_tss">Mezcla aprox. 500 ml de la muestra de agua (por ejemplo, en una licuadora) a alta velocidad durante 2 minutos.</string>
+    <string name="stir_blended_water_a">Revuelve la muestra de agua mezclada.</string>
+    <string name="stir_blended_water_b">Enjuague inmediatamente el vial con la muestra de agua.</string>
+    <string name="stir_blended_water_c">Llene el vial con <b>10 ml de muestra de agua.</b></string>
+    <string name="stir_water_sample_a">Revuelve la muestra de agua.</string>
+    <string name="stir_water_sample_b">Enjuague inmediatamente el vial con la muestra de agua.</string>
+    <string name="stir_water_sample_c">Llene el vial con <b>10 ml de muestra de agua.</b></string>
+    <string name="add_reagent_1_tablet_dissolve_a">Agregue <b>una tableta de %reactor1</b> directamente de la lámina a la muestra de agua.</string>
+    <string name="add_reagent_1_tablet_dissolve_b">Triture la tableta con una varilla de agitación limpia y disuelva la tableta por completo.</string>
+    <string name="clean_stirring_rod_deionised">Enjuague el vial y la varilla de agitación a fondo con agua desionizada.</string>
+    <string name="clean_deionised">Enjuague bien el vial con agua desionizada.</string>
+    <string name="once_test_result_shown">Una vez que se muestra el resultado de la prueba en el fotómetro MD610, presione (* f3 *) para transferir datos.</string>
+    <string name="over_range_is_valid"><![CDATA[<b>Note:</b> Debajo del rango y sobre el rango también son resultados válidos]]></string>
+    <string name="dechlorinate_residual_chlorine_1">En el caso de niveles altos de cloro residual, realice el análisis con una muestra de agua declorada. Para declorar:</string>
+    <string name="dechlorinate_residual_chlorine_2">Agregue una tableta DECHLOR a la muestra de agua.</string>
+    <string name="dechlorinate_residual_chlorine_3">Triture y mezcle para disolver la tableta. Luego continúe con el siguiente paso de las instrucciones.</string>
+    <string name="ci_dechlorinate_residual_chlorine_2">Agregue una tableta DECHLOR a la muestra de agua en la otra celda.</string>
+</resources>

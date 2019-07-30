@@ -52,11 +52,7 @@
     <string name="collect_mehlich_extraction_sample">Kumpulkan sampel ektraksi Mehlich</string>
     <string name="collect_5ml_mehlich_sample">Kumpulkan <b>5 ml</b> sampel ekstraksi Mehlich menggunakan botol yang disediakan.</string>
     <string name="collect_water_extraction_sample">Kumpulkan sampel ekstrasi air</string>
-    <string name="add_5_drops_reagent_1">Masukan <b>5 tetes</b> <b> bahan reaksi 1</b> ke dalam sampel</string>
-    <string name="swirl_to_mix_reagent">Aduk sampel untuk mencampur bahan reaksi</string>
-    <string name="put_6_drops_of_reagent_in_another_container">Dalam tabung wadah yang lebih kecil, masukan <b>6 tetes</b> <b>bahan reaksi 2</b></string>
     <string name="dip_strip_15_seconds_in_reagent_and_remove">Celupkan kepingan selama <b>15 detik</b> di dalam wadah tabung kecil <b>bahan reaksi 2</b></string>
-    <string name="place_tube_in_provided_rack">Tempatkan tabung di rak yang tersedia.</string>
     <string name="dip_strip_15_seconds_and_remove">Celupkan kepingan ke dalam sampel selama <b>15 detik</b> dan tarik kembali.</string>
     <string name="shake_excess_water">Guncangkan air lebih dari kepingan uji coba.</string>
 

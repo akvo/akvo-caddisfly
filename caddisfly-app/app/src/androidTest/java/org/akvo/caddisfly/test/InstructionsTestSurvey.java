@@ -115,8 +115,8 @@ public class InstructionsTestSurvey {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.add_5_drops_reagent_1))
-                .check(matches(isDisplayed()));
+//        onView(withText(R.string.add_5_drops_reagent_1))
+//                .check(matches(isDisplayed()));
 
 //        onView(withText(R.string.swirl_and_mix))
 //                .check(matches(isDisplayed()));
@@ -126,11 +126,11 @@ public class InstructionsTestSurvey {
         onView(withId(R.id.viewPager))
                 .perform(swipeLeft());
 
-        onView(withText(R.string.put_6_drops_of_reagent_in_another_container))
-                .check(matches(isDisplayed()));
-
-        onView(withText(R.string.place_tube_in_provided_rack))
-                .check(matches(isDisplayed()));
+//        onView(withText(R.string.put_6_drops_of_reagent_in_another_container))
+//                .check(matches(isDisplayed()));
+//
+//        onView(withText(R.string.place_tube_in_provided_rack))
+//                .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
 

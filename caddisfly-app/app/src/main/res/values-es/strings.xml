@@ -16,13 +16,27 @@
     <string name="survey">Encuesta</string>
     <string name="success" tools:ignore="UnusedResources">Éxito</string>
     <string name="done" tools:ignore="UnusedResources">Hecho</string>
-    <string name="next">El siguiente</string>
-    <string name="navigate_up">Desplazarse hacia arriba</string>
+    <string name="close">Cerrar</string>
+    <string name="previous">Anterior</string>
+    <string name="next">Siguiente</string>
+    <string name="navigate_up">Navegar hacia arriba</string>
+    <string name="logo">Símbolo</string>
     <string name="result">Resultado</string>
     <string name="language">Idioma</string>
     <string name="notSupported">No soportado</string>
+    <string name="stage_one"><b>Etapa 1 </b></string>
+    <string name="stage_two"><b>Etapa 2:</b> </string>
+    <string name="us_cm">μS/cm</string>
+    <string name="ms_cm">ms/cm</string>
+    <string name="select_unit">Seleccionar unidad</string>
+    <string name="submitResult">Enviar resultado</string>
     <string name="warning">Advertencia</string>
-    <string name="instructions">Los instrucciones</string>
+    <string name="notFound">No se puede encontrar</string>
+    <string name="instructions">Instrucciones</string>
+    <plurals name="minutes">
+        <item quantity="one">%1$d minuto</item>
+        <item quantity="other">%1$d minutos</item>
+    </plurals>
     <!--External-->
     <string name="sensor">Sensor</string>
     <string name="sensors">Sensores</string>
@@ -35,19 +49,20 @@
     <string name="selectTest">Seleccione prueba</string>
     <string name="awaitingResult">En espera para el resultado</string>
     <string name="deviceConnected">Dispositivo conectado</string>
+    <string name="unableToConnect">No se pudo conectar. Intenta conectarte nuevamente.</string>
     <string name="sensorDetails">Detalles del sensor</string>
     <string name="enterAnIdForSensor">Ingrese una identificación para este sensor</string>
     <string name="ecSensorId">ID del sensor conductividad eléctrica</string>
     <!--Alerts-->
     <string name="cannotStartTest">No se puede iniciar la prueba</string>
     <string name="errorTestNotAvailable">La prueba solicitada no está disponible</string>
-    <string name="pleaseContactSupport">Por favor, póngase en contacto con el soporte técnico</string>
+    <string name="pleaseContactSupport">Por favor, contacte a soporte técnico</string>
     <string name="versionExpired">Versión expirada</string>
     <string name="thisVersionHasExpired">Esta versión de la aplicación ha caducado.</string>
     <string name="uninstallAndInstallFromStore">Por favor, desinstale y luego instale la última versión de Play Store.</string>
     <!--Permission-->
     <string name="storagePermission">Se requiere permiso de almacenamiento</string>
-    <string name="cameraAndStoragePermissions">Cámara &amp; se requieren permisos de almacenamiento</string>
+    <string name="cameraAndStoragePermissions">Cámara y permisos de almacenamiento se requieren</string>
     <!--Sensor-->
     <string name="incorrectDevice">Dispositivo incorrecto</string>
     <string name="expectedDeviceNotFound">No se encontró el sensor esperado.</string>
@@ -59,17 +74,31 @@
     <string name="errorLoadingConfiguration">No se pudo cargar la información de configuración</string>
     <!--Bluetooth-->
     <string name="nearby_devices">Dispositivos cercanos</string>
-    <string name="connect_device">Conectate a tu dispositivo</string>
+    <string name="connect_device">Conéctate a tu dispositivo</string>
     <string name="to_turn_bluetooth_on">Para activar el bluetooth:</string>
     <string name="connect">Conectar</string>
     <string name="error_bluetooth_not_supported">Bluetooth no es compatible.</string>
     <string name="location_permission">Se requiere permiso de ubicación para la conexión Bluetooth</string>
     <string name="unknown_device">Desconocido</string>
-    <string name="scanning">Escaneado…</string>
     <!--About Screen-->
-    <string name="waterQualitySystem">Agua &amp; Sistema de calidad del suelo</string>
+    <string name="waterQualitySystem">Agua y sistema de calidad del suelo</string>
     <string name="copyrightMessage">Derechos de autor © Stichting Akvo</string>
     <string name="legalInformation">Información legal</string>
+    <string name="terms_of_service">Términos de servicio</string>
     <!--Software notices-->
+    <string name="software_incorporates_material">Este software incorpora material del proyecto listado abajo.</string>
+    <string name="apache_license_2">Licencia Apache 2.0</string>
+    <string name="mit_license">Licencia MIT</string>
+    <string name="cca_share_license">CC BY-NC-SA 4.0 – Internacional</string>
+    <string name="cca_license">CC BY 4.0 Internacional</string>
+    <string name="software_notices">Avisos de software</string>
+    <string name="eclipse_public_license">Licencia Pública Eclipse 1.0</string>
     <!--Intro-->
+    <string name="connect_with_app">Conectarse con Akvo Flow</string>
+    <string name="a_water_quality_testing_solution">Una solución de prueba de calidad del agua que admite más de 20 parámetros, como pH, E.coli o cloro libre.</string>
+    <string name="test_water_quality_using">Compruebe la calidad del agua utilizando la colorimetría conectada, microbiología, sensores y pruebas de tiras.</string>
+    <string name="app_is_integrated">Akvo Caddisfly está integrado con Akvo Flow, una herramienta de recopilación y monitoreo de datos.</string>
+    <string name="to_conduct_a_water_quality_test">Para realizar una prueba de calidad del agua, vaya a Akvo Flow y seleccione la pregunta de Caddisfly.</string>
+    <string name="go_to_external_app">Ir a Akvo Flow</string>
+    <string name="errorAkvoFlowRequired">Por favor, instale la aplicación Akvo Flow</string>
 </resources>

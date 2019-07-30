@@ -23,21 +23,20 @@
 
     <string name="read_instructions">Lire les instructions</string>
     <string name="take_photo_compartments">Prenez une photo du sac à compartiment</string>
-    <string name="confidenceInterval">Intervalle de confiance supérieur à 95&#37;</string>
+    <string name="confidenceInterval">Intervalle de confiance supérieur à 95&#37; </string>
     <string name="setCompartmentColors">Définir les couleurs des compartiments</string>
 
     <string name="health_risk_category">Catégorie de risque pour la santé (Basé sur le Nombre le Plus Probable et l\'Intervalle de Confiance)</string>
     <string name="recreational_health_risk_category">Catégorie de risque pour la santé récréative de l\'EPA des États-Unis Basé sur le Nombre le Plus Probable et sur un Niveau de Confiance Supérieur de 95%.</string>
 
+    <string name="collect_10ml_water_sample">Collecter <b>10 ml</b> d\'échantillon d\'eau avec Thio Bag (ou bouteille).</string>
     <string name="put_on_gloves">Portez des gants en plastique</string>
     <string name="collect_100ml_water_sample">Collectez <b>100 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
-    <string name="when_medium_dissolved">Lorsque le bourgeon est complètement dissous, le support plastique devient blanc ou presque blanc.</string>
     <string name="label_compartment_bag">Étiqueter le sac et/ou apposer l\'étiquette à code à barres sur le sac à compartiment.</string>
     <string name="tear_perforated_seam">Retirer la couture perforée qui se trouve au dessus du sac.</string>
     <string name="rub_sides_of_compartment">Frottez les côtés au sommet de chaque compartiment pour ouvrir le sac, utilisez les languettes blanches en haut du sac pour garder le sac ouvert en versant l\'echantillon dans les compartiments du sac.</string>
     <string name="slowly_pour_sample_into_bag">Verser lentement l\'échantillon dans le sac en inclinant doucement et en serrant le sac pour repartir l\'échantillon dans les cinq compartiments.</string>
     <string name="fill_evenly_across_bag"><b>Remplissez uniformément le sac jusqu\'à la ligne de remplissage noir</b>.</string>
-    <string name="leave_test_bud_carrier">Laisser le bourrelets /Bourgeon d\'essai dans la bouteille ou dans le sac Thio pendant le remplissage des compartiments.</string>
     <string name="attach_seal_clip">Fixez la pince d\'étanchéité sur le sac au-dessus de la ligne de remplissage et en dessous des ouvertures supérieures des compartiments.</string>
     <string name="snap_rod_shaped">Insérez la partie en forme de tige dans la pince de l\'autre côté du sac dans la tige en forme de U pour la verrouiller sur le sac.</string>
     <string name="roll_fold_bag">Après avoir pincé, le sac peut être maintenu verticalement ou horizontalement.</string>
@@ -45,8 +44,7 @@
     <string name="let_incubate">Laissez l\'échantillon incuber, selon la température ambiante:</string>
     <string name="take_photo_of_incubated">Prenez une photo de l\'échantillon incubé.</string>
     <string name="change_colors_to_match">Changez les couleurs sur l\'écran du téléphone pour les faire correspondre aux couleurs de l\'échantillon dans les compartiments du sac.</string>
-    <string name="click_compartments_to_change">Cliquez sur les compartiments pour changer de couleur.</string>
-    <string name="clean_cbt">Après avoir noté les résultats du test : ajouter 1–2 ml d\'eau de Javel liquide (NaOCl) ou suffisamment de comprimés de chlore libre (hypochlorite de calcium ou dichloroisocyanurate de sodium) pour obtenir environ 100 milligrammes de chlore libre. Après 45 minutes, verser le contenu dans un évier, une toilette ou un trou dans le sol et jeter le sac de compartiment vide en toute sécurité. Conservez le clip en plastique pour le réutiliser.</string>
+    <string name="add_90ml_distilled_water">Ajouter <b>90 ml</b> d\'eau distillée à l\'échantillon d\'eau.</string>
 
     <string name="low_risk_safe">Faible risque / Sûr</string>
     <string name="probably_safe">Risque intermédiaire / Probablement sûr</string>
@@ -58,9 +56,6 @@
     <string name="low_risk_possibly_safe">Faible risque / Possiblement sûr</string>
     <string name="high_risk_probably_unsafe">Risque très élevé / dangereux</string>
     <string name="very_unsafe">Très dangereux</string>
-
-    <string name="collect_10ml_water_sample">Collecter <b>10 ml</b> d\'échantillon d\'eau avec Thio Bag (ou bouteille).</string>
-    <string name="add_90ml_distilled_water">Ajouter <b>90 ml</b> d\'eau distillée à l\'échantillon d\'eau.</string>
 
     <string name="temperature">Température</string>
     <string name="incubation_time">Temps d\'incubation</string>
