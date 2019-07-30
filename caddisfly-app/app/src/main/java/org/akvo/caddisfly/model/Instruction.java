@@ -25,9 +25,10 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Instruction implements Parcelable {
+public class Instruction implements Parcelable, Cloneable {
 
     public static final Creator<Instruction> CREATOR = new Creator<Instruction>() {
         @Override
@@ -53,11 +54,23 @@ public class Instruction implements Parcelable {
     @Expose
     private final String layout;
 
+    public Instruction(Instruction instruction) {
+        section = new ArrayList<>(instruction.section);
+        image = instruction.image;
+        layout = instruction.layout;
+        testStage = instruction.testStage;
+    }
+
     private Instruction(Parcel in) {
         section = in.createStringArrayList();
         image = in.readString();
         layout = in.readString();
         testStage = in.readInt();
+    }
+
+    public Instruction clone() throws CloneNotSupportedException {
+        Instruction clone = (Instruction) super.clone();
+        return new Instruction(clone);
     }
 
     @Override

@@ -32,6 +32,7 @@ import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
+import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.Result;
@@ -43,6 +44,7 @@ import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
@@ -68,6 +70,8 @@ public class StripTestActivity extends BaseActivity {
     private int totalPageCount;
     private int skipToPageNumber;
     private int currentStage = 1;
+
+    private ArrayList<Instruction> instructionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +99,9 @@ public class StripTestActivity extends BaseActivity {
 
         int instructionCount;
 
-        instructionCount = testInfo.getInstructions().size();
+        InstructionHelper.setupInstructions(testInfo, instructionList);
+
+        instructionCount = instructionList.size();
 
         totalPageCount = instructionCount + 1;
         resultPageNumber = totalPageCount - 1;
@@ -106,7 +112,7 @@ public class StripTestActivity extends BaseActivity {
         }
 
         for (int i = 0; i < instructionCount; i++) {
-            if (testInfo.getInstructions().get(i).testStage > 0) {
+            if (instructionList.get(i).testStage > 0) {
                 skipToPageNumber = i;
                 break;
             }
@@ -236,10 +242,10 @@ public class StripTestActivity extends BaseActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
         } else if (viewPager.getCurrentItem() > 0 &&
-                testInfo.getInstructions().get(viewPager.getCurrentItem() - 1).testStage > 0) {
+                instructionList.get(viewPager.getCurrentItem() - 1).testStage > 0) {
             viewPager.setAllowedSwipeDirection(SwipeDirection.right);
             imagePageLeft.setVisibility(View.INVISIBLE);
-        } else if (testInfo.getInstructions().get(viewPager.getCurrentItem()).testStage > 0) {
+        } else if (instructionList.get(viewPager.getCurrentItem()).testStage > 0) {
             viewPager.setAllowedSwipeDirection(SwipeDirection.left);
             imagePageRight.setVisibility(View.INVISIBLE);
             showSkipMenu = false;
@@ -451,18 +457,18 @@ public class StripTestActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position < testInfo.getInstructions().size() &&
-                    testInfo.getInstructions().get(position).testStage > 0) {
-                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position),
+            if (position < instructionList.size() &&
+                    instructionList.get(position).testStage > 0) {
+                return PlaceholderFragment.newInstance(instructionList.get(position),
                         true);
             } else if (position == totalPageCount - 2) {
-                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position),
+                return PlaceholderFragment.newInstance(instructionList.get(position),
                         true);
             } else if (position == totalPageCount - 1) {
                 return resultFragment;
             } else {
                 return PlaceholderFragment.newInstance(
-                        testInfo.getInstructions().get(position), false);
+                        instructionList.get(position), false);
             }
         }
 
