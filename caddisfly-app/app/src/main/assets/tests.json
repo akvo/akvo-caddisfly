@@ -78,6 +78,266 @@
       ]
     },
     {
+      "name": "Water - pH",
+      "subtype": "manual",
+      "uuid": "dbd058b6-29ed-4c7f-8b11-fcdae725a518",
+      "brand": "Lovibond SD 50",
+      "imageScale": "centerCrop",
+      "ranges": "0,14",
+      "hasImage": true,
+      "hasEndInstruction": "true",
+      "instructions": [
+        {
+          "section": [
+            "1. sd_on",
+            "2. sd_50_dip_sample_1",
+            "image:sd_50_dip_sample"
+          ]
+        },
+        {
+          "section": [
+            "3. sd_50_dip_sample_2",
+            "4. sd_50_dip_sample_3"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. sd_turn_off",
+            "2. sd_rinse",
+            "sd_maintenance"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "pH",
+          "range": "0-14"
+        }
+      ]
+    },
+    {
+      "name": "Water - Electrical Conductivity",
+      "subtype": "manual",
+      "uuid": "578c5768-273d-455f-ba12-57a6ced96c17",
+      "brand": "Lovibond SD 70",
+      "imageScale": "centerCrop",
+      "ranges": "0,20000",
+      "hasImage": true,
+      "hasEndInstruction": "true",
+      "instructions": [
+        {
+          "section": [
+            "1. sd_on",
+            "2. sd_70_dip_sample_1",
+            "3. sd_70_dip_sample_2",
+            "image:sd_70_dip_sample"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "1. sd_turn_off",
+            "2. sd_70_rinse",
+            "sd_maintenance"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Electrical Conductivity",
+          "unit": "μS/cm",
+          "range": "0-20000",
+          "unitChoice": "μS/cm,mS/cm"
+        }
+      ]
+    },
+    {
+      "name": "Water - Turbidity",
+      "subtype": "manual",
+      "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
+      "brand": "DelAgua Tube",
+      "imageScale": "centerCrop",
+      "ranges": "5,2000",
+      "hasEndInstruction": "true",
+      "instructions": [
+        {
+          "section": [
+            "fill_turbidity_tube",
+            "image:fill_turbidity_tube"
+          ]
+        },
+        {
+          "section": [
+            "empty_turbidity_tube",
+            "image:empty_turbidity_tube"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "clean_turbidity_tube"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Turbidity",
+          "unit": "NTU",
+          "range": "5-2000"
+        }
+      ]
+    },
+    {
+      "name": "Water - Chlorine, pH",
+      "subtype": "manual_color_select",
+      "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
+      "brand": "Lovibond Tester",
+      "imageScale": "centerCrop",
+      "ranges": "6.8,8.2,0.1,3.0",
+      "hasEndInstruction": "true",
+      "instructions": [
+        {
+          "section": [
+            "1.pt_open_lid",
+            "image:pt_1_open"
+          ]
+        },
+        {
+          "section": [
+            "2.pt_fill_compartments_1",
+            "3.pt_fill_compartments_2",
+            "image:pt_2_fill"
+          ]
+        },
+        {
+          "section": [
+            "4.pt_add_reagent_1",
+            "image:pt_3_reagent_1"
+          ]
+        },
+        {
+          "section": [
+            "5.pt_add_reagent_2",
+            "image:pt_4_reagent_2"
+          ]
+        },
+        {
+          "section": [
+            "6.pt_close_shake",
+            "image:pt_5_shake"
+          ]
+        },
+        {
+          "section": [
+            "7.pt_read_result",
+            "image:pt_observe"
+          ]
+        },
+        {
+          "section": [
+            "8.pt_select_result_next",
+            "image:pt_6_interface_lr"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "pt_clean_compartments"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "pH",
+          "range": "6.8-8.2"
+        },
+        {
+          "id": 2,
+          "name": "Chlorine",
+          "unit": "mg/l",
+          "range": "0.1-3.0"
+        }
+      ]
+    },
+    {
+      "name": "Water - Chlorine, pH",
+      "subtype": "manual_color_select",
+      "uuid": "63e0e106-6ff6-4f57-a169-a32a4a821d42",
+      "brand": "Lovibond Tester",
+      "imageScale": "centerCrop",
+      "ranges": "6.8,8.2,0.5,6.0",
+      "hasEndInstruction": "true",
+      "instructions": [
+        {
+          "section": [
+            "1.pt_open_lid",
+            "image:pt_1_open"
+          ]
+        },
+        {
+          "section": [
+            "2.pt_fill_compartments_1",
+            "3.pt_fill_compartments_2",
+            "image:pt_2_fill"
+          ]
+        },
+        {
+          "section": [
+            "4.pt_add_reagent_1",
+            "image:pt_3_reagent_1"
+          ]
+        },
+        {
+          "section": [
+            "5.pt_add_reagent_2",
+            "image:pt_4_reagent_2"
+          ]
+        },
+        {
+          "section": [
+            "6.pt_close_shake",
+            "image:pt_5_shake"
+          ]
+        },
+        {
+          "section": [
+            "7.pt_read_result",
+            "image:pt_observe"
+          ]
+        },
+        {
+          "section": [
+            "8.pt_select_result_next",
+            "image:pt_6_interface_lr"
+          ]
+        },
+        {
+          "section": [
+            "<b>round_off_test</b>",
+            "pt_clean_compartments"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "pH",
+          "range": "6.8-8.2"
+        },
+        {
+          "id": 2,
+          "name": "Chlorine",
+          "unit": "mg/l",
+          "range": "0.5-6.0"
+        }
+      ]
+    },
+    {
       "name": "Soil - Nitrogen",
       "subtype": "striptest",
       "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",
@@ -7576,266 +7836,6 @@
         {
           "id": 3,
           "name": "string:confidenceInterval"
-        }
-      ]
-    },
-    {
-      "name": "Water - pH",
-      "subtype": "manual",
-      "uuid": "dbd058b6-29ed-4c7f-8b11-fcdae725a518",
-      "brand": "Lovibond SD 50",
-      "imageScale": "centerCrop",
-      "ranges": "0,14",
-      "hasImage": true,
-      "hasEndInstruction": "true",
-      "instructions": [
-        {
-          "section": [
-            "1. sd_on",
-            "2. sd_50_dip_sample_1",
-            "image:sd_50_dip_sample"
-          ]
-        },
-        {
-          "section": [
-            "3. sd_50_dip_sample_2",
-            "4. sd_50_dip_sample_3"
-          ]
-        },
-        {
-          "section": [
-            "<b>round_off_test</b>",
-            "1. sd_turn_off",
-            "2. sd_rinse",
-            "sd_maintenance"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "pH",
-          "range": "0-14"
-        }
-      ]
-    },
-    {
-      "name": "Water - Electrical Conductivity",
-      "subtype": "manual",
-      "uuid": "578c5768-273d-455f-ba12-57a6ced96c17",
-      "brand": "Lovibond SD 70",
-      "imageScale": "centerCrop",
-      "ranges": "0,20000",
-      "hasImage": true,
-      "hasEndInstruction": "true",
-      "instructions": [
-        {
-          "section": [
-            "1. sd_on",
-            "2. sd_70_dip_sample_1",
-            "3. sd_70_dip_sample_2",
-            "image:sd_70_dip_sample"
-          ]
-        },
-        {
-          "section": [
-            "<b>round_off_test</b>",
-            "1. sd_turn_off",
-            "2. sd_70_rinse",
-            "sd_maintenance"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "Electrical Conductivity",
-          "unit": "μS/cm",
-          "range": "0-20000",
-          "unitChoice": "μS/cm,mS/cm"
-        }
-      ]
-    },
-    {
-      "name": "Water - Turbidity",
-      "subtype": "manual",
-      "uuid": "7af4cbcc-f1f5-4fa5-9416-3752f1af4519",
-      "brand": "DelAgua Tube",
-      "imageScale": "centerCrop",
-      "ranges": "5,2000",
-      "hasEndInstruction": "true",
-      "instructions": [
-        {
-          "section": [
-            "fill_turbidity_tube",
-            "image:fill_turbidity_tube"
-          ]
-        },
-        {
-          "section": [
-            "empty_turbidity_tube",
-            "image:empty_turbidity_tube"
-          ]
-        },
-        {
-          "section": [
-            "<b>round_off_test</b>",
-            "clean_turbidity_tube"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "Turbidity",
-          "unit": "NTU",
-          "range": "5-2000"
-        }
-      ]
-    },
-    {
-      "name": "Water - Chlorine, pH",
-      "subtype": "manual_color_select",
-      "uuid": "520ba67c-233f-4dc7-a2ad-17d86047d7c4",
-      "brand": "Lovibond Tester",
-      "imageScale": "centerCrop",
-      "ranges": "6.8,8.2,0.1,3.0",
-      "hasEndInstruction": "true",
-      "instructions": [
-        {
-          "section": [
-            "1.pt_open_lid",
-            "image:pt_1_open"
-          ]
-        },
-        {
-          "section": [
-            "2.pt_fill_compartments_1",
-            "3.pt_fill_compartments_2",
-            "image:pt_2_fill"
-          ]
-        },
-        {
-          "section": [
-            "4.pt_add_reagent_1",
-            "image:pt_3_reagent_1"
-          ]
-        },
-        {
-          "section": [
-            "5.pt_add_reagent_2",
-            "image:pt_4_reagent_2"
-          ]
-        },
-        {
-          "section": [
-            "6.pt_close_shake",
-            "image:pt_5_shake"
-          ]
-        },
-        {
-          "section": [
-            "7.pt_read_result",
-            "image:pt_observe"
-          ]
-        },
-        {
-          "section": [
-            "8.pt_select_result_next",
-            "image:pt_6_interface_lr"
-          ]
-        },
-        {
-          "section": [
-            "<b>round_off_test</b>",
-            "pt_clean_compartments"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "pH",
-          "range": "6.8-8.2"
-        },
-        {
-          "id": 2,
-          "name": "Chlorine",
-          "unit": "mg/l",
-          "range": "0.1-3.0"
-        }
-      ]
-    },
-    {
-      "name": "Water - Chlorine, pH",
-      "subtype": "manual_color_select",
-      "uuid": "63e0e106-6ff6-4f57-a169-a32a4a821d42",
-      "brand": "Lovibond Tester",
-      "imageScale": "centerCrop",
-      "ranges": "6.8,8.2,0.5,6.0",
-      "hasEndInstruction": "true",
-      "instructions": [
-        {
-          "section": [
-            "1.pt_open_lid",
-            "image:pt_1_open"
-          ]
-        },
-        {
-          "section": [
-            "2.pt_fill_compartments_1",
-            "3.pt_fill_compartments_2",
-            "image:pt_2_fill"
-          ]
-        },
-        {
-          "section": [
-            "4.pt_add_reagent_1",
-            "image:pt_3_reagent_1"
-          ]
-        },
-        {
-          "section": [
-            "5.pt_add_reagent_2",
-            "image:pt_4_reagent_2"
-          ]
-        },
-        {
-          "section": [
-            "6.pt_close_shake",
-            "image:pt_5_shake"
-          ]
-        },
-        {
-          "section": [
-            "7.pt_read_result",
-            "image:pt_observe"
-          ]
-        },
-        {
-          "section": [
-            "8.pt_select_result_next",
-            "image:pt_6_interface_lr"
-          ]
-        },
-        {
-          "section": [
-            "<b>round_off_test</b>",
-            "pt_clean_compartments"
-          ]
-        }
-      ],
-      "results": [
-        {
-          "id": 1,
-          "name": "pH",
-          "range": "6.8-8.2"
-        },
-        {
-          "id": 2,
-          "name": "Chlorine",
-          "unit": "mg/l",
-          "range": "0.5-6.0"
         }
       ]
     },
