@@ -226,6 +226,10 @@ public class DecodeData {
         illumData = null;
     }
 
+    public void clearImageMap() {
+        stripImageMap.clear();
+    }
+
     // debug code
 //    public void saveImage() {
 //        ImageUtil.saveImage(decodeImageByteArray, FileHelper.FileType.TEST_IMAGE,

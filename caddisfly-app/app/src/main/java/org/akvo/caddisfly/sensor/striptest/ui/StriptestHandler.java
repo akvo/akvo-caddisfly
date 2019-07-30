@@ -106,6 +106,10 @@ public final class StriptestHandler extends Handler {
         }
         mDecodeData.setTestInfo(testInfo);
 
+        if (currentStage == 1) {
+            mDecodeData.clearImageMap();
+        }
+
         this.context = context;
     }
 
