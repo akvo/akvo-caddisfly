@@ -71,6 +71,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import org.akvo.caddisfly.R;
@@ -81,10 +85,6 @@ import org.akvo.caddisfly.util.ApiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -198,7 +198,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        setTitle(R.string.scanning);
+        setTitle(R.string.nearby_devices);
     }
 
     private void showInstructionDialog() {
