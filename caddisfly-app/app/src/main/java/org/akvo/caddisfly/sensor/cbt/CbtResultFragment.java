@@ -26,6 +26,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.MpnValue;
@@ -33,9 +36,6 @@ import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.StringUtil;
 
 import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class CbtResultFragment extends BaseFragment {
     private static final String ARG_RESULT = "result";
@@ -75,9 +75,9 @@ public class CbtResultFragment extends BaseFragment {
 
         TextView textResult = view.findViewById(R.id.textResult);
         TextView textResult1 = view.findViewById(R.id.textResult1);
+        TextView textResult2 = view.findViewById(R.id.textResult2);
         LinearLayout layoutResult = view.findViewById(R.id.layoutResult);
         LinearLayout layoutResult1 = view.findViewById(R.id.layoutResult1);
-        LinearLayout layoutResult2 = view.findViewById(R.id.layoutResult2);
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult, mSampleQuantity);
 
@@ -91,12 +91,7 @@ public class CbtResultFragment extends BaseFragment {
 
         layoutResult.setBackgroundColor(mpnValue.getBackgroundColor1());
         layoutResult1.setBackgroundColor(mpnValue.getBackgroundColor2());
-        layoutResult2.setBackgroundColor(mpnValue.getBackgroundColor1());
-
-        TextView textResult2 = view.findViewById(R.id.textResult2);
-        TextView textResult3 = view.findViewById(R.id.textResult3);
         textResult2.setText(mpnValue.getMpn());
-        textResult3.setText(String.valueOf(mpnValue.getConfidence()));
 
         return view;
     }
