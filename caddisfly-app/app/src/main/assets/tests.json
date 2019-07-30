@@ -976,8 +976,8 @@
         },
         {
           "section": [
-            "as_ins_1a",
-            "as_ins_1b",
+            "1.as_ins_1a",
+            "2.as_ins_1b",
             "image:as_1"
           ]
         },
@@ -989,17 +989,17 @@
         },
         {
           "section": [
-            "as_ins_3a",
+            "1.as_ins_3a",
             "as_ins_3b",
-            "as_ins_3c",
+            "2.as_ins_3c",
             "image:as_3"
           ]
         },
         {
           "section": [
-            "as_ins_4a",
-            "as_ins_4b",
-            "as_ins_5",
+            "1.as_ins_4a",
+            "2.as_ins_4b",
+            "3.as_ins_5",
             "image:as_4"
           ]
         },
@@ -1070,31 +1070,31 @@
         },
         {
           "section": [
-            "as_ins_1a",
-            "as_ins_1b",
+            "1.as_ins_1a",
+            "2.as_ins_1b",
             "image:as_1"
           ]
         },
         {
           "section": [
-            "as_ins_7a",
-            "as_ins_7b",
+            "1.as_ins_7a",
+            "2.as_ins_7b",
             "image:as_5"
           ]
         },
         {
           "section": [
-            "as_ins_3a",
+            "1.as_ins_3a",
             "as_ins_3b",
-            "as_ins_3c",
+            "2.as_ins_3c",
             "image:as_3"
           ]
         },
         {
           "section": [
-            "as_ins_4a",
-            "as_ins_4b",
-            "as_ins_5",
+            "1.as_ins_4a",
+            "2.as_ins_4b",
+            "3.as_ins_5",
             "image:as_4"
           ]
         },
