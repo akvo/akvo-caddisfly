@@ -71,7 +71,7 @@
     <string name="fill_new_vial_24_with_10ml_sample_a">Rinse a vial (24 mm Ø) with the water sample.</string>
     <string name="fill_new_vial_24_with_10ml_sample_b">Fill vial (24 mm Ø) with <b>10 ml of the water sample (this is the sample)</b></string>
     <string name="add_water_till_10ml">Add water sample to the 10 ml mark in the vial</string>
-    <string name="add_sample_exact">Add <b>exactly %sampleQuantity ml of the water sample</b> to the prepared vial. Caution: Vial is filled up to the top!</string>
+    <string name="add_sample_exact">Add <b>exactly %sampleQuantity ml of the water sample</b> to the prepared vial. <b>Caution: Vial is filled up to the top!</b></string>
     <string name="remove_vial">Remove the vial from the sample chamber.</string>
     <string name="remove_vial_leave_drops">Remove the vial from the sample chamber and <b>empty it</b>, leaving a few drops remaining in the vial.</string>
     <string name="remove_vial_empty">Remove the vial from the sample chamber and <b>empty the vial</b></string>
@@ -94,7 +94,7 @@
     <string name="add_reagent_1_liquid">Fill the vial with drops of the same size by holding the bottle vertically and squeeze slowly: <b>%reagent1</b></string>
     <string name="add_reagent_2_liquid">Fill the vial with drops of the same size by holding the bottle vertically and squeeze slowly: <b>%reagent2</b></string>
     <string name="add_reagent_3_liquid">Fill the vial with drops of the same size by holding the bottle vertically and squeeze slowly: <b>%reagent3</b></string>
-    <string name="add_reagent_1_liquid_exact_ml">Add <b>exactly %reagent1 reagent solution</b> to the water sample. (Caution: Vial is filled up to the top!)</string>
+    <string name="add_reagent_1_liquid_exact_ml">Add <b>exactly %reagent1 reagent solution</b> to the water sample. <b>(Caution: Vial is filled up to the top!)</b></string>
     <string name="fill_nitrate_test_tube">Fill the Nitrate test tube with <b>20 ml of the water sample</b>.</string>
     <string name="add_spoon_nitrate_test_powder">Add <b>one level spoon of %reagent1 powder</b>.</string>
     <string name="add_spoon_cyanide_1">Add <b>two level spoons No. 4 (white) of Cyanide-11</b> into the prepared water sample</string>
@@ -140,7 +140,7 @@
     <string name="reaction_tube_1_fifth_ml_blank">Open one white capped reaction vial and add <b>0.2 ml deionised water</b> (this is the blank)</string>
     <string name="reaction_tube_1_fifth_ml_sample">Open another white capped reaction vial and add <b>0.2 ml of the water sample</b> (this is the sample).</string>
     <string name="heat_120_100">Heat the vial for <b>120 minutes</b> in a preheated thermoreactor at a temperature of <b>100°C</b>.</string>
-    <string name="heat_120_150">Heat the vials for <b>120 minutes</b> in the preheated reactor at a temperature of <b>150°C</b>. (CAUTION: The vials are hot!)</string>
+    <string name="heat_120_150">Heat the vials for <b>120 minutes</b> in the preheated reactor at a temperature of <b>150°C</b>. <b>(CAUTION: The vials are hot!)</b></string>
     <string name="remove_cool_a">Remove the vial from the thermoreactor. <b>(CAUTION: The vials are hot!)</b>.</string>
     <string name="remove_cool_b">Invert the vial and allow to cool to room temperature. Do not place the hot vials in the sample chamber.</string>
     <string name="remove_cool_60_a"><b>(CAUTION: The vials are hot!)</b> Remove the tubes from the heating block and allow them to cool to 60°C or less.</string>

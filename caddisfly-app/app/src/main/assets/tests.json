@@ -102,10 +102,10 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "sd_turn_off",
-            "sd_rinse",
-            "sd_maintenance"
+            "/<b>round_off_test</b>",
+            "1.sd_turn_off",
+            "2.sd_rinse",
+            "/sd_maintenance"
           ]
         }
       ],
@@ -137,10 +137,10 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "sd_turn_off",
-            "sd_70_rinse",
-            "sd_maintenance"
+            "/<b>round_off_test</b>",
+            "1/sd_turn_off",
+            "2.sd_70_rinse",
+            "/sd_maintenance"
           ]
         }
       ],
@@ -177,8 +177,8 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "clean_turbidity_tube"
+            "/<b>round_off_test</b>",
+            "/clean_turbidity_tube"
           ]
         }
       ],
@@ -245,8 +245,8 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "pt_clean_compartments"
+            "/<b>round_off_test</b>",
+            "/pt_clean_compartments"
           ]
         }
       ],
@@ -318,8 +318,8 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "pt_clean_compartments"
+            "/<b>round_off_test</b>",
+            "/pt_clean_compartments"
           ]
         }
       ],
@@ -1230,8 +1230,8 @@
       "instructions": [
         {
           "section": [
-            "as_safety_1",
-            "as_safety_2"
+            "/as_safety_1",
+            "/as_safety_2"
           ]
         },
         {
@@ -1250,7 +1250,7 @@
         {
           "section": [
             "as_ins_3a",
-            "as_ins_3b",
+            "/as_ins_3b",
             "as_ins_3c",
             "image:as_3"
           ]
@@ -1324,8 +1324,8 @@
       "instructions": [
         {
           "section": [
-            "as_safety_1",
-            "as_safety_2"
+            "/as_safety_1",
+            "/as_safety_2"
           ]
         },
         {
@@ -1345,7 +1345,7 @@
         {
           "section": [
             "as_ins_3a",
-            "as_ins_3b",
+            "/as_ins_3b",
             "as_ins_3c",
             "image:as_3"
           ]
@@ -1643,8 +1643,7 @@
           "testStage": 1,
           "section": [
             "place_strip_clr",
-            "image:place_clr",
-            "<start>"
+            "image:place_clr"
           ]
         },
         {
@@ -7588,9 +7587,9 @@
         },
         {
           "section": [
-            "<b>optional</b>",
-            "dechlorinate_residual_chlorine_1",
-            "dechlorinate_residual_chlorine_2",
+            "/<b>optional</b>",
+            "/dechlorinate_residual_chlorine_1",
+            "i.dechlorinate_residual_chlorine_2",
             "dechlorinate_residual_chlorine_3"
           ]
         },
@@ -7655,7 +7654,7 @@
       "name": "Water - E.coli",
       "subtype": "cbt",
       "uuid": "e40d4764-e73f-46dd-a598-ed4db0fd3386",
-      "brand": "Aquagenx",
+      "brand": "Aquagenx CBT",
       "imageScale": "centerCrop",
       "sampleQuantity": "100",
       "ranges": "0,100",
@@ -7672,8 +7671,8 @@
         },
         {
           "section": [
-            "4a.dissolve_medium_in_sample_a",
-            "4b.dissolve_medium_in_sample_b",
+            "a.dissolve_medium_in_sample_a",
+            "b.dissolve_medium_in_sample_b",
             "image:2"
           ]
         },
@@ -7746,7 +7745,7 @@
       "name": "Water - E.coli",
       "subtype": "cbt",
       "uuid": "5baa9d29-b271-4521-b05f-4bfd645c26cf",
-      "brand": "Aquagenx",
+      "brand": "Aquagenx CBT",
       "imageScale": "centerCrop",
       "sampleQuantity": "10",
       "ranges": "0,1000",
@@ -7769,8 +7768,8 @@
         },
         {
           "section": [
-            "5a.dissolve_medium_in_sample_a",
-            "5b.dissolve_medium_in_sample_b",
+            "a.dissolve_medium_in_sample_a",
+            "b.dissolve_medium_in_sample_b",
             "image:2"
           ]
         },
@@ -7896,9 +7895,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -7981,9 +7980,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8066,9 +8065,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8173,9 +8172,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8286,9 +8285,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8358,7 +8357,7 @@
         {
           "section": [
             "<b>optional</b>",
-            "dechlorinate_residual_chlorine_1",
+            "/dechlorinate_residual_chlorine_1",
             "ci_dechlorinate_residual_chlorine_2",
             "dechlorinate_residual_chlorine_3"
           ]
@@ -8379,7 +8378,7 @@
         {
           "section": [
             "<b>optional</b>",
-            "edta_complex_zinc_1",
+            "/edta_complex_zinc_1",
             "edta_complex_zinc_2",
             "edta_complex_zinc_3"
           ]
@@ -8392,9 +8391,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1,rinse_cells",
+            "2,store_dark"
           ]
         }
       ],
@@ -8465,9 +8464,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8539,9 +8538,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8569,7 +8568,7 @@
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "1,10",
+      "ranges": "0,10",
       "hasImage": true,
       "hasEndInstruction": "true",
       "instructions": [
@@ -8613,9 +8612,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8624,7 +8623,7 @@
           "id": 1,
           "name": "Iron",
           "unit": "mg/l",
-          "range": "1-10"
+          "range": "0-10"
         }
       ]
     },
@@ -8703,9 +8702,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8831,9 +8830,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8905,9 +8904,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8978,9 +8977,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -9051,9 +9050,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -9135,9 +9134,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -9207,9 +9206,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -9273,7 +9272,7 @@
         {
           "section": [
             "<b>optional</b>",
-            "dechlorinate_residual_chlorine_1",
+            "/dechlorinate_residual_chlorine_1",
             "ci_dechlorinate_residual_chlorine_2",
             "dechlorinate_residual_chlorine_3"
           ]
@@ -9294,7 +9293,7 @@
         {
           "section": [
             "<b>optional</b>",
-            "edta_complex_copper_1",
+            "/edta_complex_copper_1",
             "edta_complex_copper_2",
             "edta_complex_copper_3"
           ]
@@ -9307,9 +9306,9 @@
         },
         {
           "section": [
-            "<b>round_off_test</b>",
-            "rinse_cells",
-            "store_dark"
+            "/<b>round_off_test</b>",
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
