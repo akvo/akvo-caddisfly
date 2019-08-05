@@ -138,7 +138,7 @@
         {
           "section": [
             "/<b>round_off_test</b>",
-            "1/sd_turn_off",
+            "1.sd_turn_off",
             "2.sd_70_rinse",
             "/sd_maintenance"
           ]
@@ -7705,7 +7705,7 @@
         {
           "section": [
             "let_incubate",
-            "include:incubation_table",
+            "/include:incubation_table",
             "image:7"
           ]
         },
@@ -7713,7 +7713,7 @@
           "section": [
             "take_photo_of_incubated",
             "change_colors_to_match. click_compartments_to_change",
-            "note_blue_green_specks",
+            "/note_blue_green_specks",
             "image:8"
           ]
         },
@@ -7802,7 +7802,7 @@
         {
           "section": [
             "let_incubate",
-            "include:incubation_table",
+            "/include:incubation_table",
             "image:7"
           ]
         },
@@ -7810,7 +7810,7 @@
           "section": [
             "take_photo_of_incubated",
             "change_colors_to_match. click_compartments_to_change",
-            "note_blue_green_specks",
+            "/note_blue_green_specks",
             "image:8"
           ]
         },
@@ -7858,7 +7858,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -7936,7 +7936,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8021,7 +8021,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8106,7 +8106,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8219,7 +8219,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8337,7 +8337,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8356,9 +8356,9 @@
         },
         {
           "section": [
-            "<b>optional</b>",
+            "/<b>optional</b>",
             "/dechlorinate_residual_chlorine_1",
-            "ci_dechlorinate_residual_chlorine_2",
+            "i.ci_dechlorinate_residual_chlorine_2",
             "dechlorinate_residual_chlorine_3"
           ]
         },
@@ -8377,9 +8377,9 @@
         },
         {
           "section": [
-            "<b>optional</b>",
+            "/<b>optional</b>",
             "/edta_complex_zinc_1",
-            "edta_complex_zinc_2",
+            "i.edta_complex_zinc_2",
             "edta_complex_zinc_3"
           ]
         },
@@ -8392,8 +8392,8 @@
         {
           "section": [
             "/<b>round_off_test</b>",
-            "1,rinse_cells",
-            "2,store_dark"
+            "1.rinse_cells",
+            "2.store_dark"
           ]
         }
       ],
@@ -8426,7 +8426,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8500,7 +8500,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8574,7 +8574,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8658,7 +8658,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8750,7 +8750,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8866,7 +8866,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8939,7 +8939,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -8971,7 +8971,7 @@
         {
           "section": [
             "match_colors_by_rotating",
-            "ph_coloration",
+            "/ph_coloration",
             "image:ci_match_colors_by_rotating"
           ]
         },
@@ -9012,7 +9012,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -9090,7 +9090,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -9169,7 +9169,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -9252,7 +9252,7 @@
       "instructions": [
         {
           "section": [
-            "checkit_comparator_uses",
+            "/checkit_comparator_uses",
             "insert_colored_disk",
             "image:ci_insert_colored_disk"
           ]
@@ -9271,9 +9271,9 @@
         },
         {
           "section": [
-            "<b>optional</b>",
+            "/<b>optional</b>",
             "/dechlorinate_residual_chlorine_1",
-            "ci_dechlorinate_residual_chlorine_2",
+            "i.ci_dechlorinate_residual_chlorine_2",
             "dechlorinate_residual_chlorine_3"
           ]
         },
@@ -9292,9 +9292,9 @@
         },
         {
           "section": [
-            "<b>optional</b>",
+            "/<b>optional</b>",
             "/edta_complex_copper_1",
-            "edta_complex_copper_2",
+            "i.edta_complex_copper_2",
             "edta_complex_copper_3"
           ]
         },
