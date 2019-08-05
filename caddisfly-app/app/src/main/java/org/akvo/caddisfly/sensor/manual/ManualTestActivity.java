@@ -33,6 +33,7 @@ import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
@@ -46,6 +47,7 @@ import org.akvo.caddisfly.widget.SwipeDirection;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
@@ -80,6 +82,7 @@ public class ManualTestActivity extends BaseActivity
     private int skipToPageNumber;
     private int instructionCount;
     private float scale;
+    private ArrayList<Instruction> instructionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,10 +109,12 @@ public class ManualTestActivity extends BaseActivity
             return;
         }
 
+        InstructionHelper.setupInstructions(testInfo, instructionList);
+
         if (testInfo.getHasEndInstruction()) {
-            instructionCount = testInfo.getInstructions().size() - 1;
+            instructionCount = instructionList.size() - 1;
         } else {
-            instructionCount = testInfo.getInstructions().size();
+            instructionCount = instructionList.size();
         }
 
         if (testInfo.getHasImage()) {
@@ -128,8 +133,8 @@ public class ManualTestActivity extends BaseActivity
             totalPageCount += 1;
         }
 
-        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
-            if (testInfo.getInstructions().get(i).section.get(0).contains("<photo1>")) {
+        for (int i = 0; i < instructionList.size(); i++) {
+            if (instructionList.get(i).section.get(0).contains("<photo1>")) {
                 photo1PageNumber = i;
                 result1PageNumber = i + 1;
             }
@@ -224,17 +229,19 @@ public class ManualTestActivity extends BaseActivity
     private void createFragments() {
         int resultId = 1;
 
-        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
-            if (testInfo.getInstructions().get(i).section.get(0).contains("<photo1>")) {
+        for (int i = 0; i < instructionList.size(); i++) {
+            if (instructionList.get(i).section.get(0).contains("<photo1>")) {
                 photo1PageNumber = i;
                 result1PageNumber = i + 1;
                 if (result1Fragment == null) {
-                    result1Fragment = MeasurementInputFragment.newInstance(testInfo, resultId);
+                    result1Fragment = MeasurementInputFragment.newInstance(testInfo, resultId,
+                            instructionList.get(result1PageNumber).getIndex());
                     result1Fragment.setFragmentId(result1PageNumber);
                 }
                 if (result1PhotoFragment == null) {
                     result1PhotoFragment = ResultPhotoFragment.newInstance(
-                            testInfo.getResults().get(resultId - 1).getName());
+                            testInfo.getResults().get(resultId - 1).getName(),
+                            instructionList.get(photo1PageNumber).getIndex());
                     result1PhotoFragment.setFragmentId(photo1PageNumber);
                 }
                 resultId++;
@@ -242,12 +249,14 @@ public class ManualTestActivity extends BaseActivity
         }
 
         if (resultFragment == null) {
-            resultFragment = MeasurementInputFragment.newInstance(testInfo, resultId);
+            resultFragment = MeasurementInputFragment.newInstance(testInfo, resultId,
+                    instructionList.get(resultPageNumber - 1).getIndex() + 1);
             resultFragment.setFragmentId(resultPageNumber);
         }
-        if (resultPhotoFragment == null) {
+        if (resultPhotoFragment == null && photoPageNumber > 0) {
             resultPhotoFragment = ResultPhotoFragment.newInstance(
-                    testInfo.getResults().get(resultId - 1).getName());
+                    testInfo.getResults().get(resultId - 1).getName(),
+                    instructionList.get(photoPageNumber).getIndex());
             resultPhotoFragment.setFragmentId(photoPageNumber);
         }
     }
@@ -472,7 +481,7 @@ public class ManualTestActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         if (resultLayout.getVisibility() == View.VISIBLE) {
-            viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+            viewPager.setCurrentItem(instructionList.size() + 1);
             showWaitingView();
         } else if (viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
@@ -603,10 +612,10 @@ public class ManualTestActivity extends BaseActivity
                 return resultFragment;
             } else if (position == totalPageCount - 1) {
                 return PlaceholderFragment.newInstance(
-                        testInfo.getInstructions().get(instructionCount), true);
+                        instructionList.get(instructionCount), true);
             } else {
                 return PlaceholderFragment.newInstance(
-                        testInfo.getInstructions().get(position), false);
+                        instructionList.get(position), false);
             }
         }
 

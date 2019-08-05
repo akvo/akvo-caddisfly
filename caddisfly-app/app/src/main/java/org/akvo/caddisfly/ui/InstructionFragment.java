@@ -25,13 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
-import org.akvo.caddisfly.databinding.FragmentInstructionsBinding;
-import org.akvo.caddisfly.model.Instruction;
-import org.akvo.caddisfly.model.TestInfo;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -40,12 +33,22 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
+import org.akvo.caddisfly.databinding.FragmentInstructionsBinding;
+import org.akvo.caddisfly.helper.InstructionHelper;
+import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.TestInfo;
+
+import java.util.ArrayList;
+
 public class InstructionFragment extends Fragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private FragmentInstructionsBinding b;
 
-    private TestInfo mTestInfo;
+    private ArrayList<Instruction> instructionList = new ArrayList<>();
 
     public static InstructionFragment getInstance(Parcelable testInfo) {
         InstructionFragment fragment = new InstructionFragment();
@@ -63,9 +66,12 @@ public class InstructionFragment extends Fragment {
         b = DataBindingUtil.inflate(inflater, R.layout.fragment_instructions, container, false);
 
         if (getArguments() != null) {
-            mTestInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+            TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
+            if (testInfo != null) {
+                InstructionHelper.setupInstructions(testInfo, instructionList);
+            }
             b.imagePageRight.setOnClickListener(view ->
-                    b.viewPager.setCurrentItem(Math.min(mTestInfo.getInstructions().size() - 1,
+                    b.viewPager.setCurrentItem(Math.min(instructionList.size() - 1,
                             b.viewPager.getCurrentItem() + 1)));
         }
 
@@ -171,12 +177,12 @@ public class InstructionFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(mTestInfo.getInstructions().get(position));
+            return PlaceholderFragment.newInstance(instructionList.get(position));
         }
 
         @Override
         public int getCount() {
-            return mTestInfo.getInstructions().size();
+            return instructionList.size();
         }
     }
 }

@@ -49,6 +49,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -60,6 +61,7 @@ import static org.akvo.caddisfly.common.AppConfig.SKIP_PHOTO_VALIDATION;
 public class ResultPhotoFragment extends BaseFragment {
 
     private static final String ARG_RESULT_NAME = "resultName";
+    private static final String ARG_RESULT_SERIAL = "resultSerial";
     private static final int MANUAL_TEST = 2;
     private OnPhotoTakenListener mListener;
     private String imageFileName = "";
@@ -72,12 +74,14 @@ public class ResultPhotoFragment extends BaseFragment {
     /**
      * Get the instance.
      *
-     * @param testName: Name of the test
+     * @param testName : Name of the test
+     * @param serial   : instruction step number
      */
-    public static ResultPhotoFragment newInstance(String testName) {
+    public static ResultPhotoFragment newInstance(String testName, int serial) {
         ResultPhotoFragment fragment = new ResultPhotoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_RESULT_NAME, testName);
+        args.putInt(ARG_RESULT_SERIAL, serial);
         fragment.setArguments(args);
         return fragment;
 
@@ -98,9 +102,12 @@ public class ResultPhotoFragment extends BaseFragment {
         imageResult = view.findViewById(R.id.imageResult);
         takePhotoButton = view.findViewById(R.id.takePhoto);
         TextView textName = view.findViewById(R.id.textName);
+        TextView textSerial = view.findViewById(R.id.textSerial);
 
         if (getArguments() != null) {
             textName.setText(getArguments().getString(ARG_RESULT_NAME));
+            textSerial.setText(String.format(Locale.US, "%d.",
+                    getArguments().getInt(ARG_RESULT_SERIAL)));
         }
 
         if (!imageFileName.isEmpty()) {

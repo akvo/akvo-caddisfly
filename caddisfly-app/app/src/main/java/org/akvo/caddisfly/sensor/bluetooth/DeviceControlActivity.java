@@ -57,12 +57,14 @@ import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
+import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -115,6 +117,8 @@ public class DeviceControlActivity extends BaseActivity {
     private String mData;
     private PageIndicatorView pagerIndicator;
     private boolean registered;
+    private ArrayList<Instruction> instructionList = new ArrayList<>();
+
     /**
      * The pager adapter, which provides the pages to the view pager widget.
      */
@@ -173,6 +177,7 @@ public class DeviceControlActivity extends BaseActivity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
+        InstructionHelper.setupInstructions(testInfo, instructionList);
 
         hookBluetooth();
 
@@ -216,11 +221,11 @@ public class DeviceControlActivity extends BaseActivity {
                     showSelectTestView();
                 } else if (position == 1) {
                     showInstructionsView();
-                } else if (position == testInfo.getInstructions().size() + 1) {
+                } else if (position == instructionList.size() + 1) {
                     showWaitingView();
                 } else {
                     showInstructionsView();
-                    onInstructionFinish(testInfo.getInstructions().size() - position);
+                    onInstructionFinish(instructionList.size() - position);
                 }
             }
 
@@ -250,7 +255,7 @@ public class DeviceControlActivity extends BaseActivity {
     }
 
     private boolean waitingForResult() {
-        return viewPager.getCurrentItem() == testInfo.getInstructions().size() + 1;
+        return viewPager.getCurrentItem() == instructionList.size() + 1;
     }
 
     @Override
@@ -329,7 +334,7 @@ public class DeviceControlActivity extends BaseActivity {
             debugResultHandler.removeCallbacksAndMessages(null);
         }
         if (resultLayout.getVisibility() == View.VISIBLE) {
-            viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+            viewPager.setCurrentItem(instructionList.size() + 1);
             showWaitingView();
         } else if (viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
@@ -465,7 +470,7 @@ public class DeviceControlActivity extends BaseActivity {
     }
 
     public void onSkipClick(MenuItem item) {
-        viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+        viewPager.setCurrentItem(instructionList.size() + 1);
         showWaitingView();
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
@@ -540,16 +545,16 @@ public class DeviceControlActivity extends BaseActivity {
         public Fragment getItem(int position) {
             if (position == 0) {
                 return selectTestFragment;
-            } else if (position == testInfo.getInstructions().size() + 1) {
+            } else if (position == instructionList.size() + 1) {
                 return waitingFragment;
             } else {
-                return PlaceholderFragment.newInstance(testInfo.getInstructions().get(position - 1));
+                return PlaceholderFragment.newInstance(instructionList.get(position - 1));
             }
         }
 
         @Override
         public int getCount() {
-            return testInfo.getInstructions().size() + 2;
+            return instructionList.size() + 2;
         }
     }
 }

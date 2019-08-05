@@ -32,6 +32,7 @@ import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
+import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.Result;
@@ -42,6 +43,7 @@ import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
@@ -67,6 +69,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     private int totalPageCount;
     private int skipToPageNumber;
     private float scale;
+    private ArrayList<Instruction> instructionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +93,14 @@ public class SwatchSelectTestActivity extends BaseActivity
             return;
         }
 
+        InstructionHelper.setupInstructions(testInfo, instructionList);
+
         resultFragment = SwatchSelectFragment.newInstance(testResults, testInfo.getRanges());
         int instructionCount;
         if (testInfo.getHasEndInstruction()) {
-            instructionCount = testInfo.getInstructions().size() - 1;
+            instructionCount = instructionList.size() - 1;
         } else {
-            instructionCount = testInfo.getInstructions().size();
+            instructionCount = instructionList.size();
         }
 
         totalPageCount = instructionCount + 1;
@@ -107,7 +112,7 @@ public class SwatchSelectTestActivity extends BaseActivity
         }
 
         submitFragment = PlaceholderFragment.newInstance(
-                testInfo.getInstructions().get(instructionCount), true);
+                instructionList.get(instructionCount), true);
 
         SectionsPagerAdapter mSectionsPagerAdapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
@@ -195,7 +200,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         if (resultLayout.getVisibility() == View.VISIBLE) {
-            viewPager.setCurrentItem(testInfo.getInstructions().size() + 1);
+            viewPager.setCurrentItem(instructionList.size() + 1);
             showWaitingView();
         } else if (viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
@@ -397,7 +402,7 @@ public class SwatchSelectTestActivity extends BaseActivity
                 return submitFragment;
             } else {
                 return PlaceholderFragment.newInstance(
-                        testInfo.getInstructions().get(position), false);
+                        instructionList.get(position), false);
             }
         }
 

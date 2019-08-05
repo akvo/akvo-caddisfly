@@ -38,11 +38,14 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseFragment;
 
+import java.util.Locale;
+
 import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
 
 public class MeasurementInputFragment extends BaseFragment {
     private static final String ARG_TEST_INFO = "testInfo";
     private static final String ARG_RESULT_ID = "resultId";
+    private static final String ARG_RESULT_SERIAL = "resultSerial";
     private Float resultFloat;
     private EditText editResult;
     private OnSubmitResultListener mListener;
@@ -54,10 +57,11 @@ public class MeasurementInputFragment extends BaseFragment {
     /**
      * Get the instance.
      */
-    public static MeasurementInputFragment newInstance(TestInfo testInfo, int resultId) {
+    public static MeasurementInputFragment newInstance(TestInfo testInfo, int resultId, int serial) {
         MeasurementInputFragment fragment = new MeasurementInputFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_TEST_INFO, testInfo);
+        args.putInt(ARG_RESULT_SERIAL, serial);
         args.putInt(ARG_RESULT_ID, resultId);
         fragment.setArguments(args);
 
@@ -74,6 +78,7 @@ public class MeasurementInputFragment extends BaseFragment {
         radioValidation = view.findViewById(R.id.editRadioValidation);
         TextView textName = view.findViewById(R.id.textName);
         TextView textRange = view.findViewById(R.id.textRange);
+        TextView textSerial = view.findViewById(R.id.textSerial);
         unitRadioGroup = view.findViewById(R.id.unitChoice);
 
         if (getArguments() != null) {
@@ -85,6 +90,9 @@ public class MeasurementInputFragment extends BaseFragment {
                 testResult = testInfo.getResults().get(resultId - 1);
 
                 textName.setText(testResult.getName());
+                textSerial.setText(String.format(Locale.US, "%d.",
+                        getArguments().getInt(ARG_RESULT_SERIAL)));
+
                 if (testResult.getUnit().isEmpty()) {
                     textRange.setText(String.format("(%s)", testInfo.getMinMaxRange()));
                 } else {
