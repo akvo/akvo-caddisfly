@@ -213,6 +213,7 @@ public class StriptestInstructions {
             String uuid = testInfo.getUuid();
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
+//            if (("32d9b8f4aecf").contains(id))
 //            if (testInfo.getName().contains("Soil"))
 //                if (("ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id))
 //
@@ -336,7 +337,7 @@ public class StriptestInstructions {
                         if (pages == 5) {
                             //noinspection ConstantConditions
                             if (mCurrentLanguage.equals("en")) {
-                                mDevice.click(200, 390);
+                                mDevice.click(350, 390);
                             } else {
                                 mDevice.click(450, 600);
                             }

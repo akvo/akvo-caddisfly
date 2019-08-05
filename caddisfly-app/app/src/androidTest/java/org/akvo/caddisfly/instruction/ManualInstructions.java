@@ -177,6 +177,8 @@ public class ManualInstructions {
 
                 takeScreenshot(id, i);
 
+                sleep(100);
+
                 nextPage();
 
                 sleep(200);
@@ -188,7 +190,7 @@ public class ManualInstructions {
                 break;
             }
         }
-        return pages - 1;
+        return pages;
     }
 
     @Test

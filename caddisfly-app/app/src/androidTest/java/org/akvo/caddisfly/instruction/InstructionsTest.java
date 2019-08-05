@@ -22,7 +22,6 @@ package org.akvo.caddisfly.instruction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.test.espresso.Espresso;
@@ -52,8 +51,6 @@ import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -109,7 +106,7 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (id.equalsIgnoreCase("73f866e8d1ac"))
+//            if (("9991fb84dd90 606b771e0ffe 6060e4dbe59d").contains(id))
 //
             {
                 Intent intent = new Intent();
@@ -202,7 +199,7 @@ public class InstructionsTest {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (("4fb1cc6c12c6").contains(id))
+//            if (("fcdae725a518 57a6ced96c17 3752f1af4519").contains(id))
 //                    || testList.get(i).getBrand().contains("Tester")
 //                            || testList.get(i).getBrand().contains("SD")
 //                            || testList.get(i).getBrand().contains("Tube"))
@@ -258,16 +255,16 @@ public class InstructionsTest {
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                pages++;
+//                pages++;
 
-                onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                        .perform(replaceText("1"), closeSoftKeyboard());
-
-                SystemClock.sleep(500);
-
-                takeScreenshot(id, i + 1);
-
-                onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
+//                onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+//                        .perform(replaceText("1"), closeSoftKeyboard());
+//
+//                SystemClock.sleep(500);
+//
+//                takeScreenshot(id, i + 1);
+//
+//                onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
                 if (hasEndPage) {
 
