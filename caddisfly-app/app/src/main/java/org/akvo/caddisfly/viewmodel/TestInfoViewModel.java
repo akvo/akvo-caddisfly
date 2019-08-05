@@ -102,7 +102,7 @@ public class TestInfoViewModel extends AndroidViewModel {
 
                 RowView rowView = new RowView(context);
 
-                Matcher m = Pattern.compile("^(\\d+?[a-zA-Z]\\.\\s*)(.*)").matcher(text);
+                Matcher m = Pattern.compile("^(\\d*?[a-zA-Z]{1,3}\\.\\s*)(.*)").matcher(text);
                 Matcher m1 = Pattern.compile("^(\\d+?\\.\\s*)(.*)").matcher(text);
                 Matcher m2 = Pattern.compile("^(\\.\\s*)(.*)").matcher(text);
 
