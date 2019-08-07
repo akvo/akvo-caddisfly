@@ -7708,13 +7708,25 @@
             "/include:incubation_table",
             "image:7"
           ]
-        },
+        }
+      ],
+      "instructions2": [
         {
           "section": [
             "take_photo_of_incubated",
+            "/<photo>"
+          ]
+        },
+        {
+          "section": [
             "change_colors_to_match. click_compartments_to_change",
             "/note_blue_green_specks",
             "image:8"
+          ]
+        },
+        {
+          "section": [
+            "/<input>"
           ]
         },
         {
@@ -7805,13 +7817,25 @@
             "/include:incubation_table",
             "image:7"
           ]
-        },
+        }
+      ],
+      "instructions2": [
         {
           "section": [
             "take_photo_of_incubated",
+            "/<photo>"
+          ]
+        },
+        {
+          "section": [
             "change_colors_to_match. click_compartments_to_change",
             "/note_blue_green_specks",
             "image:8"
+          ]
+        },
+        {
+          "section": [
+            "/<input>"
           ]
         },
         {
