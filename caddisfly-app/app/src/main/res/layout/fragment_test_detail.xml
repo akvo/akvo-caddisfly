@@ -17,7 +17,8 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -94,7 +95,7 @@
                 android:enabled="true"
                 android:minWidth="230dp"
                 android:onClick="onStartTestClick"
-                android:text="@string/next"
+                android:text="@string/prepare_sample"
                 android:theme="?primaryButtonStyle" />
 
             <Button
@@ -104,16 +105,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="16dp"
+                android:text="@string/submit_incubation_result"
                 android:drawableEnd="@drawable/ic_play_arrow_black_24dp"
                 android:onClick="onInstructionsClick"
                 android:paddingStart="@dimen/activity_horizontal_margin"
                 android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:text="@string/instructions"
+                android:textAllCaps="false"
                 android:textAlignment="textEnd"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
     </LinearLayout>

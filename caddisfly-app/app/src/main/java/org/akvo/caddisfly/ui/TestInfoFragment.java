@@ -94,16 +94,12 @@ public class TestInfoFragment extends Fragment {
 
                 b.setTestInfo(testInfo);
 
-                if (testInfo.getSubtype() == TestType.CBT) {
-                    b.buttonInstructions.setVisibility(View.VISIBLE);
-                }
-
-                if (testInfo.getInstructions() == null || testInfo.getInstructions().size() == 0) {
-                    b.buttonInstructions.setVisibility(View.GONE);
-                }
-
                 if (testInfo.getSubtype() == TestType.STRIP_TEST) {
                     b.buttonPrepare.setText(R.string.prepare_test);
+                } else if (testInfo.getSubtype() == TestType.CBT) {
+                    b.buttonPrepare.setText(R.string.prepare_sample);
+                    b.buttonInstructions.setText(R.string.submit_incubation_result);
+                    b.buttonInstructions.setVisibility(View.VISIBLE);
                 }
             }
         }
