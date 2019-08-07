@@ -85,7 +85,7 @@ public class CbtTest {
         controller.start();
 
         Activity activity = (Activity) controller.get();
-        Button button = activity.findViewById(R.id.button_instructions);
+        Button button = activity.findViewById(R.id.button_phase_2);
 
         button.performClick();
 

@@ -40,7 +40,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -78,6 +77,7 @@ import java.lang.ref.WeakReference;
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.helper.FileHelper.cleanResultImagesFolder;
+import static org.akvo.caddisfly.model.TestType.CBT;
 
 public class TestActivity extends BaseActivity {
 
@@ -361,13 +361,22 @@ public class TestActivity extends BaseActivity {
      */
     public void onInstructionsClick(@SuppressWarnings("unused") View view) {
 
-        InstructionFragment instructionFragment = InstructionFragment.getInstance(testInfo);
+        if (testInfo.getSubtype() == CBT) {
+            String[] checkPermissions = permissions;
+            if (permissionsDelegate.hasPermissions(checkPermissions)) {
+                startTest();
+            } else {
+                permissionsDelegate.requestPermissions(checkPermissions);
+            }
+        } else {
+            InstructionFragment instructionFragment = InstructionFragment.getInstance(testInfo);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack("instructions")
-                .replace(R.id.fragment_container,
-                        instructionFragment, null).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack("instructions")
+                    .replace(R.id.fragment_container,
+                            instructionFragment, null).commit();
+        }
     }
 
     /**
@@ -493,16 +502,6 @@ public class TestActivity extends BaseActivity {
                     finish();
                 }
         );
-    }
-
-    /**
-     * Show CBT incubation times instructions in a dialog.
-     *
-     * @param view the view
-     */
-    public void onClickIncubationTimes(@SuppressWarnings("unused") View view) {
-        DialogFragment newFragment = new CbtActivity.IncubationTimesDialogFragment();
-        newFragment.show(getSupportFragmentManager(), "incubationTimes");
     }
 
     @Override

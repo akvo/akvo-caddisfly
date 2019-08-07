@@ -98,8 +98,7 @@ public class TestInfoFragment extends Fragment {
                     b.buttonPrepare.setText(R.string.prepare_test);
                 } else if (testInfo.getSubtype() == TestType.CBT) {
                     b.buttonPrepare.setText(R.string.prepare_sample);
-                    b.buttonInstructions.setText(R.string.submit_incubation_result);
-                    b.buttonInstructions.setVisibility(View.VISIBLE);
+                    b.buttonPhase2.setVisibility(View.VISIBLE);
                 }
             }
         }

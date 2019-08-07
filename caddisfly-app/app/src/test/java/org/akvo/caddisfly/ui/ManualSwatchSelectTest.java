@@ -23,11 +23,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.viewpager.widget.ViewPager;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
@@ -44,7 +41,6 @@ import org.robolectric.shadows.ShadowLooper;
 import org.robolectric.shadows.ShadowToast;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.robolectric.Shadows.shadowOf;
@@ -69,32 +65,6 @@ public class ManualSwatchSelectTest {
         Activity activity = (Activity) controller.get();
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), "Water - Chlorine, pH");
-    }
-
-    @Test
-    public void clickingInstructions() {
-
-        TestConfigRepository testConfigRepository = new TestConfigRepository();
-        TestInfo testInfo = testConfigRepository.getTestInfo(Constants.SWATCH_SELECT_TEST_ID);
-
-        Intent intent = new Intent();
-        Bundle data = new Bundle();
-        data.putParcelable(ConstantKey.TEST_INFO, testInfo);
-        intent.putExtras(data);
-
-        ActivityController controller = Robolectric.buildActivity(TestActivity.class, intent).create();
-        controller.start();
-
-        Activity activity = (Activity) controller.get();
-        Button button = activity.findViewById(R.id.button_instructions);
-
-        button.performClick();
-
-        ViewPager viewPager = activity.findViewById(R.id.viewPager);
-
-        assertNotNull(viewPager);
-        assertEquals(viewPager.getVisibility(), View.VISIBLE);
-
     }
 
     @Test

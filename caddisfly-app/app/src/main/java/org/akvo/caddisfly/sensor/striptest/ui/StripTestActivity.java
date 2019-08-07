@@ -97,11 +97,9 @@ public class StripTestActivity extends BaseActivity {
             return;
         }
 
-        int instructionCount;
-
         InstructionHelper.setupInstructions(testInfo, instructionList);
 
-        instructionCount = instructionList.size();
+        int instructionCount = instructionList.size();
 
         totalPageCount = instructionCount + 1;
         resultPageNumber = totalPageCount - 1;

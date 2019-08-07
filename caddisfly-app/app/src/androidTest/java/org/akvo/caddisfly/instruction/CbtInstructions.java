@@ -107,17 +107,17 @@ public class CbtInstructions {
         textView3.check(matches(withText(resourceId)));
     }
 
-    private static void CheckTextInTable(String text) {
-        ViewInteraction textView3 = onView(
-                allOf(withText(text),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textView3.check(matches(withText(text)));
-    }
+//    private static void CheckTextInTable(String text) {
+//        ViewInteraction textView3 = onView(
+//                allOf(withText(text),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
+//                                        0),
+//                                1),
+//                        isDisplayed()));
+//        textView3.check(matches(withText(text)));
+//    }
 
     @Before
     public void setUp() {
@@ -167,7 +167,7 @@ public class CbtInstructions {
 //        textView2.check(matches(withText("E.coli – Aquagenx CBT")));
 
         ViewInteraction button2 = onView(
-                allOf(withId(R.id.button_instructions),
+                allOf(withId(R.id.button_phase_2),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
@@ -177,7 +177,7 @@ public class CbtInstructions {
         button2.check(matches(isDisplayed()));
 
         ViewInteraction button3 = onView(
-                allOf(withId(R.id.button_instructions),
+                allOf(withId(R.id.button_phase_2),
                         childAtPosition(
                                 childAtPosition(
                                         IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
@@ -187,7 +187,7 @@ public class CbtInstructions {
         button3.check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_instructions),
+                allOf(withId(R.id.button_phase_2),
                         withText(R.string.instructions),
                         childAtPosition(
                                 childAtPosition(
@@ -256,14 +256,7 @@ public class CbtInstructions {
 
         onView(withContentDescription("7")).check(matches(hasDrawable()));
 
-        ViewInteraction appCompatTextView14 = onView(
-                allOf(withId(R.id.button_instructions), withText(R.string.read_instructions),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.TableLayout")),
-                                        7),
-                                2)));
-        appCompatTextView14.perform(scrollTo(), click());
+        onView(withText(R.string.read_instructions)).perform(click());
 
         onView(withText(R.string.below25Degrees)).check(matches(isDisplayed()));
 
@@ -286,7 +279,7 @@ public class CbtInstructions {
 
         mDevice.pressBack();
 
-        onView(withId(R.id.button_instructions)).perform(click());
+        onView(withId(R.id.button_phase_2)).perform(click());
 
         CheckTextInTable(R.string.put_on_gloves);
 
@@ -380,7 +373,7 @@ public class CbtInstructions {
                 pages++;
 
                 try {
-                    onView(withId(R.id.button_instructions)).perform(click());
+                    onView(withId(R.id.button_phase_2)).perform(click());
                     sleep(600);
                     takeScreenshot(id, pages);
                     pages++;
