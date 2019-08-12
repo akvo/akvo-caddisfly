@@ -7665,7 +7665,7 @@
       "instructions": [
         {
           "section": [
-            "put_on_gloves",
+            "prepare_area_put_on_gloves",
             "collect_100ml_water_sample. avoid_touching",
             "open_growth_medium",
             "image:1"
@@ -7768,7 +7768,7 @@
       "instructions": [
         {
           "section": [
-            "put_on_gloves",
+            "prepare_area_put_on_gloves",
             "collect_10ml_water_sample. avoid_touching",
             "add_90ml_distilled_water",
             "image:cbt_dilution"

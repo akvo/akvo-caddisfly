@@ -93,7 +93,7 @@
                 android:padding="7dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="20dp"
-                android:text="@string/temperature_34_44"
+                android:text="@string/temperature_35_37"
                 android:textSize="16sp" />
 
             <View
@@ -108,7 +108,7 @@
                 android:paddingTop="7dp"
                 android:paddingEnd="0dp"
                 android:paddingBottom="7dp"
-                android:text="@string/hours_20_24"
+                android:text="@string/hours_20"
                 android:textSize="16sp" />
         </TableRow>
 

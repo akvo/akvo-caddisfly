@@ -197,7 +197,7 @@ public class CbtInstructions {
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        CheckTextInTable(R.string.put_on_gloves);
+        CheckTextInTable(R.string.prepare_area_put_on_gloves);
 
 //        CheckTextInTable(R.string.open_growth_medium_sachet);
 
@@ -281,7 +281,7 @@ public class CbtInstructions {
 
         onView(withId(R.id.button_phase_2)).perform(click());
 
-        CheckTextInTable(R.string.put_on_gloves);
+        CheckTextInTable(R.string.prepare_area_put_on_gloves);
 
 //        CheckTextInTable(R.string.open_growth_medium_sachet);
 

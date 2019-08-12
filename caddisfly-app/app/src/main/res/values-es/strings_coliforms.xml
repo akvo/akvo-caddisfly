@@ -30,7 +30,7 @@
     <string name="recreational_health_risk_category">Categoría de riesgo de salud recreativa de la EPA de los EE. UU. Basada en NMP y nivel de confianza superior del 95%</string>
 
     <string name="collect_10ml_water_sample">Recoger <b>10 ml </b>de muestra de agua con Thio Bag (o botella).</string>
-    <string name="put_on_gloves">Ponerse guantes </string>
+
     <string name="collect_100ml_water_sample">Recoger <b>100 ml </b> de muestra de agua con botella o bolsa de Thio.</string>
     <string name="label_compartment_bag">Etiquete la bolsa y / o pegue la etiqueta del código de barras en la bolsa del compartimiento.</string>
     <string name="tear_perforated_seam">Rasgar la costura perforada en la parte superior de la bolsa.</string>
@@ -59,11 +59,11 @@
 
     <string name="temperature">Temperatura</string>
     <string name="incubation_time">Tiempo de incubación</string>
-    <string name="temperature_34_44">35 – 44.5°C</string>
+    <string name="temperature_35_37">35 – 44.5°C</string>
     <string name="temperature_31_34">31 – 34°C</string>
     <string name="temperature_25_30">25 – 30°C</string>
     <string name="below25Degrees">Por debajo de 25 ºC</string>
-    <string name="hours_20_24">20 – 24 horas</string>
+    <string name="hours_20">20 – 24 horas</string>
     <string name="hours_24_30">24 – 30 horas</string>
     <string name="hours_40_48">40 – 48 horas</string>
     <string name="incubate_in_portable">Incubar en una incubadora portátil, preferiblemente a 35 – 37 ° C durante 48 horas o colocar en o cerca de otra fuente de calor.</string>

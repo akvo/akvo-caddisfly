@@ -30,7 +30,6 @@
     <string name="recreational_health_risk_category">Catégorie de risque pour la santé récréative de l\'EPA des États-Unis Basé sur le Nombre le Plus Probable et sur un Niveau de Confiance Supérieur de 95%.</string>
 
     <string name="collect_10ml_water_sample">Collecter <b>10 ml</b> d\'échantillon d\'eau avec Thio Bag (ou bouteille).</string>
-    <string name="put_on_gloves">Portez des gants en plastique</string>
     <string name="collect_100ml_water_sample">Collectez <b>100 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
     <string name="label_compartment_bag">Étiqueter le sac et/ou apposer l\'étiquette à code à barres sur le sac à compartiment.</string>
     <string name="tear_perforated_seam">Retirer la couture perforée qui se trouve au dessus du sac.</string>
@@ -59,11 +58,11 @@
 
     <string name="temperature">Température</string>
     <string name="incubation_time">Temps d\'incubation</string>
-    <string name="temperature_34_44">35 – 44.5°C</string>
+    <string name="temperature_35_37">35 – 44.5°C</string>
     <string name="temperature_31_34">31 – 34°C</string>
     <string name="temperature_25_30">25 – 30°C</string>
     <string name="below25Degrees">En dessous de 25 °C</string>
-    <string name="hours_20_24">20 – 24 heures</string>
+    <string name="hours_20">20 – 24 heures</string>
     <string name="hours_24_30">24 – 30 heures</string>
     <string name="hours_40_48">40 – 48 heures</string>
     <string name="incubate_in_portable">Incuber dans un incubateur portatif, de préférence entre 35 et 37 ° C pendant 48 heures, ou mettre dans ou à proximité d\'une autre source de chaleur.</string>

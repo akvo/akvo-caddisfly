@@ -38,7 +38,7 @@
     <string name="dissolve_medium_in_sample_b"><b>Test bud:</b> Dissolve medium in sample for 10 – 12 minutes maximum by periodically swirling the bottle or squeezing the test bud in the Thio Bag to promote release of the medium from its plastic carrier</string>
     <string name="when_medium_dissolved">When medium is completely dissolved, the water sample turns yellow.</string>
     <string name="leave_test_bud_carrier">When using a test bud, leave it in the Thio Bag or bottle while pouring.</string>
-    <string name="put_on_gloves">Put on plastic gloves</string>
+    <string name="prepare_area_put_on_gloves">Prepare the work area and put on plastic gloves.</string>
     <string name="collect_100ml_water_sample">Collect <b>100 ml</b> water sample with bottle or Thio Bag.</string>
     <string name="label_compartment_bag">Label bag and/or attach barcode asset tag to compartment bag.</string>
     <string name="tear_perforated_seam">Tear off perforated seam at top of the bag.</string>
@@ -70,11 +70,11 @@
 
     <string name="temperature">Temperature</string>
     <string name="incubation_time">Incubation Time</string>
-    <string name="temperature_34_44">35 – 44.5°C</string>
+    <string name="temperature_35_37">35 – 37°C</string>
     <string name="temperature_31_34">31 – 34°C</string>
     <string name="temperature_25_30">25 – 30°C</string>
     <string name="below25Degrees">Below 25 °C</string>
-    <string name="hours_20_24">20 – 24 hours</string>
+    <string name="hours_20">20 hours</string>
     <string name="hours_24_30">24 – 30 hours</string>
     <string name="hours_40_48">40 – 48 hours</string>
     <string name="incubate_in_portable">Incubate in a portable incubator, preferably at 35 – 37 °C for 48 hours or put in or near another heat source.</string>
