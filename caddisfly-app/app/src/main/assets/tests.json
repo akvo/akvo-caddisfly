@@ -8782,13 +8782,7 @@
         {
           "section": [
             "fill_one_cell",
-            "image:ci_fill_one_cell"
-          ]
-        },
-        {
-          "section": [
-            "close_the_cell",
-            "image:ci_close_the_cell"
+            "close_the_cell"
           ]
         },
         {
@@ -8800,50 +8794,18 @@
         {
           "section": [
             "add_one_level_spoon",
-            "image:add_one_level_spoon"
-          ]
-        },
-        {
-          "section": [
             "close_with_lid_shake",
-            "image:close_with_lid_shake"
-          ]
-        },
-        {
-          "section": [
             "allow_minute_flocculation",
-            "image:allow_minute_flocculation"
-          ]
-        },
-        {
-          "section": [
-            "invert_test_tube",
-            "image:invert_test_tube"
+            "invert_test_tube"
           ]
         },
         {
           "section": [
             "allow_time_complete_sediment",
-            "image:allow_time_complete_sediment"
-          ]
-        },
-        {
-          "section": [
             "fill_clear_solution",
-            "image:fill_clear_solution"
-          ]
-        },
-        {
-          "section": [
             "add_tablet_crush_stir",
-            "image:add_tablet_crush_stir"
-          ]
-        },
-        {
-          "section": [
             "wait_for_color_reaction_3",
-            "place_cell_right_space",
-            "image:place_cell_right_space"
+            "place_cell_right_space"
           ]
         },
         {
