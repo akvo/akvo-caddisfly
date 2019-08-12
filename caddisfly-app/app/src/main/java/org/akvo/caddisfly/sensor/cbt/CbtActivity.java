@@ -49,6 +49,7 @@ import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.StringUtil;
+import org.akvo.caddisfly.widget.ButtonType;
 import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
@@ -366,6 +367,10 @@ public class CbtActivity extends BaseActivity
         finish();
     }
 
+    public void onCloseClick(View view) {
+        finish();
+    }
+
     public static class IncubationTimesDialogFragment extends DialogFragment {
         @NonNull
         @SuppressLint("InflateParams")
@@ -394,7 +399,7 @@ public class CbtActivity extends BaseActivity
         private static final String ARG_SHOW_OK = "show_ok";
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
-        private boolean showOk;
+        private ButtonType showButton;
         private LinearLayout layout;
         private ViewGroup viewRoot;
 
@@ -402,14 +407,15 @@ public class CbtActivity extends BaseActivity
          * Returns a new instance of this fragment for the given section number.
          *
          * @param instruction The information to to display
+         * @param showButton  The button to be shown
          * @return The instance
          */
         @SuppressWarnings("SameParameterValue")
-        static PlaceholderFragment newInstance(Instruction instruction, boolean showOkButton) {
+        static PlaceholderFragment newInstance(Instruction instruction, ButtonType showButton) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putParcelable(ARG_SECTION_NUMBER, instruction);
-            args.putBoolean(ARG_SHOW_OK, showOkButton);
+            args.putSerializable(ARG_SHOW_OK, showButton);
             fragment.setArguments(args);
             return fragment;
         }
@@ -425,14 +431,19 @@ public class CbtActivity extends BaseActivity
 
             if (getArguments() != null) {
                 instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
-                showOk = getArguments().getBoolean(ARG_SHOW_OK);
+                showButton = (ButtonType) getArguments().getSerializable(ARG_SHOW_OK);
                 fragmentInstructionBinding.setInstruction(instruction);
             }
 
             View view = fragmentInstructionBinding.getRoot();
 
-            if (showOk) {
-                view.findViewById(R.id.buttonStart).setVisibility(View.VISIBLE);
+            switch (showButton) {
+                case START:
+                    view.findViewById(R.id.buttonStart).setVisibility(View.VISIBLE);
+                    break;
+                case CLOSE:
+                    view.findViewById(R.id.buttonClose).setVisibility(View.VISIBLE);
+                    break;
             }
 
             layout = view.findViewById(R.id.layout_results);
@@ -487,9 +498,12 @@ public class CbtActivity extends BaseActivity
         public Fragment getItem(int position) {
             if (position == totalPageCount - 1) {
                 return resultFragment;
+            } else if (position == totalPageCount - 2) {
+                return PlaceholderFragment.newInstance(
+                        instructionList.get(position), ButtonType.CLOSE);
             } else {
                 return PlaceholderFragment.newInstance(
-                        instructionList.get(position), false);
+                        instructionList.get(position), ButtonType.NONE);
             }
         }
 

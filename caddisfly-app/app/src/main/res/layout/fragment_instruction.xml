@@ -77,6 +77,21 @@
             android:visibility="gone" />
 
         <Button
+            android:id="@+id/buttonClose"
+            style="@style/Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/scrollView"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:enabled="true"
+            android:onClick="onCloseClick"
+            android:text="@string/close"
+            android:theme="?primaryButtonStyle"
+            android:visibility="gone" />
+
+        <Button
             android:id="@+id/buttonStart"
             style="@style/Button"
             android:layout_width="wrap_content"

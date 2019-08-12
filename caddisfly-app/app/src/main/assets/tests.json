@@ -7707,8 +7707,7 @@
         {
           "section": [
             "let_incubate",
-            "/include:incubation_table",
-            "image:7"
+            "/include:incubation_table"
           ]
         }
       ],
@@ -7816,8 +7815,7 @@
         {
           "section": [
             "let_incubate",
-            "/include:incubation_table",
-            "image:7"
+            "/include:incubation_table"
           ]
         }
       ],
