@@ -30,7 +30,9 @@
     <string name="sd_turn_off">Press and hold (*sd_on_off*) (3 sec.) to turn the instrument off.</string>
     <string name="sd_rinse">Rinse the sensor with distilled water (never touch the electrode with anything) and place the protective cap back. Make sure the protective cap is filled with KCL solution.</string>
     <string name="fill_turbidity_tube">Connect the turbidity tubes and fill the tube with the water sample until you cannot see the black circle at the yellow bottom anymore.</string>
-    <string name="empty_turbidity_tube">Empty the tube with small intervals until you can see the black circle at the yellow bottom again and read out the turbidity on the side of the tube.</string>
+    <string name="empty_tube_see_black_circle">Empty the tube with small intervals until you can see the black circle at the yellow bottom again.</string>
+    <string name="read_turbidity_on_side_tube">Read out the turbidity on the side of the tube.</string>
+
     <string name="fill_in_value_turbidity_tube">Fill in the obtained turbidity value in the app.</string>
     <string name="clean_turbidity_tube">Empty the tube completely, clean if necessary, disconnect tubes and store them.</string>
     <string name="sd_70_rinse">Rinse the sensor with distilled water (never touch the electrode with anything) and place the protective cap back.</string>

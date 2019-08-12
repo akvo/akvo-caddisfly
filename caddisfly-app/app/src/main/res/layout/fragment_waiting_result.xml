@@ -1,47 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="16dp">
 
-    <LinearLayout
+    <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp">
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:clickable="false"
+        android:columnCount="2"
+        android:focusable="false">
+
+        <TextView
+            android:id="@+id/text_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="0dp"
+            android:paddingEnd="3dp"
+            android:textColor="#696969"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="1." />
 
         <org.akvo.caddisfly.widget.HtmlTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:lineSpacingExtra="9dp"
             android:text="@string/once_test_result_shown"
             android:textSize="16sp" />
 
-        <org.akvo.caddisfly.widget.HtmlTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:lineSpacingExtra="9dp"
-            android:text="@string/over_range_is_valid"
-            android:textSize="16sp" />
+    </TableRow>
 
-        <ProgressBar
-            android:id="@+id/progressCircle"
-            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="30dp"
-            android:indeterminate="true"
-            android:visibility="gone" />
+    <org.akvo.caddisfly.widget.HtmlTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="16dp"
+        android:lineSpacingExtra="9dp"
+        android:text="@string/over_range_is_valid"
+        android:textSize="16sp" />
 
-    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progressCircle"
+        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="30dp"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
 </LinearLayout>

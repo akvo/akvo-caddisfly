@@ -35,7 +35,7 @@ public final class InstructionHelper {
     private InstructionHelper() {
     }
 
-    public static void setupInstructions(TestInfo testInfo, ArrayList<Instruction> instructions) {
+    public static int setupInstructions(TestInfo testInfo, ArrayList<Instruction> instructions) {
         int instructionIndex = 1;
         int subSequenceIndex;
         String[] subSequenceNumbers = {"i", "ii", "iii"};
@@ -96,5 +96,6 @@ public final class InstructionHelper {
                 e.printStackTrace();
             }
         }
+        return instructionIndex;
     }
 }

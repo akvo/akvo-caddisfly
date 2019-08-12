@@ -172,4 +172,11 @@
     <string name="dechlorinate_residual_chlorine_2">Add one DECHLOR tablet to the water sample.</string>
     <string name="dechlorinate_residual_chlorine_3">Crush and mix to dissolve the tablet. Then continue with the next step of the instructions.</string>
     <string name="ci_dechlorinate_residual_chlorine_2">Add one DECHLOR tablet to the water sample in the other cell.</string>
+
+    <string name="wipe_outside_prepared_vial_blank">Wipe the outside of the prepared vial (blank).</string>
+    <string name="hold_blank_vial_place_in_chamber">Hold the blank vial at the lid, place vial in the chamber and align arrow marks.</string>
+    <string name="press_zero_perform_test">Press (*zero*) to perform <b>zero test</b></string>
+    <string name="tube_upright_invert_flocculation">Stand the tube upright and after the reducing agent has settled to the bottom, gently invert it three to four times so as to complete the flocculation of the reducing agent.</string>
+    <string name="stand_tube_further_2_minutes">Let the tube stand for a further 2 minutes.</string>
+
 </resources>

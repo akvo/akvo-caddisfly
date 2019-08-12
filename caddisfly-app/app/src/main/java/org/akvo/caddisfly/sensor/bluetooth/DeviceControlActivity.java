@@ -177,11 +177,11 @@ public class DeviceControlActivity extends BaseActivity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
-        InstructionHelper.setupInstructions(testInfo, instructionList);
+        int stepCount = InstructionHelper.setupInstructions(testInfo, instructionList);
 
         hookBluetooth();
 
-        waitingFragment = WaitingFragment.getInstance();
+        waitingFragment = WaitingFragment.getInstance(stepCount);
         mBluetoothResultFragment = BluetoothResultFragment.getInstance(testInfo);
         selectTestFragment = SelectTestFragment.getInstance(testInfo);
         viewPager = findViewById(R.id.viewPager);

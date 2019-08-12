@@ -5,17 +5,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.AppConfig;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
+
+import java.util.Locale;
+
 public class WaitingFragment extends Fragment {
 
-    public static WaitingFragment getInstance() {
-        return new WaitingFragment();
+    private static final String INSTRUCTION_INDEX = "instruction_index";
+
+    public static WaitingFragment getInstance(int index) {
+        WaitingFragment fragment = new WaitingFragment();
+        Bundle args = new Bundle();
+        args.putInt(INSTRUCTION_INDEX, index);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -24,6 +33,11 @@ public class WaitingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_waiting_result, container, false);
 
         ProgressBar progressCircle = view.findViewById(R.id.progressCircle);
+
+        if (getArguments() != null) {
+            TextView textIndex = view.findViewById(R.id.text_index);
+            textIndex.setText(String.format(Locale.US, "%d.", getArguments().getInt(INSTRUCTION_INDEX)));
+        }
 
         if (!AppConfig.STOP_ANIMATIONS) {
             progressCircle.setVisibility(View.VISIBLE);

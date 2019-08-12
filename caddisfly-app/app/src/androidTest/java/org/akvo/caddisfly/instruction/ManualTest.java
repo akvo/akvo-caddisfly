@@ -140,7 +140,7 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.empty_turbidity_tube)).check(matches(isDisplayed()));
+        onView(withText(R.string.empty_tube_see_black_circle)).check(matches(isDisplayed()));
 
         onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
 
@@ -169,7 +169,7 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        onView(withText(R.string.empty_turbidity_tube))
+        onView(withText(R.string.empty_tube_see_black_circle))
                 .check(matches(isDisplayed()));
 
         TestUtil.nextPage();
