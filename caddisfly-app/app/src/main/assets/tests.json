@@ -171,7 +171,8 @@
         },
         {
           "section": [
-            "empty_turbidity_tube",
+            "empty_tube_see_black_circle",
+            "read_turbidity_on_side_tube",
             "image:empty_turbidity_tube"
           ]
         },
@@ -3407,9 +3408,9 @@
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero_a",
-            "wipe_place_align_prepared_vial_zero_b",
-            "wipe_place_align_prepared_vial_zero_c",
+            "wipe_outside_prepared_vial_blank",
+            "hold_blank_vial_place_in_chamber",
+            "press_zero_perform_test",
             "image:place_vial_test"
           ]
         },
@@ -3503,9 +3504,9 @@
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero_a",
-            "wipe_place_align_prepared_vial_zero_b",
-            "wipe_place_align_prepared_vial_zero_c",
+            "wipe_outside_prepared_vial_blank",
+            "hold_blank_vial_place_in_chamber",
+            "press_zero_perform_test",
             "image:place_vial_test_16"
           ]
         },
@@ -3599,9 +3600,9 @@
         },
         {
           "section": [
-            "wipe_place_align_prepared_vial_zero_a",
-            "wipe_place_align_prepared_vial_zero_b",
-            "wipe_place_align_prepared_vial_zero_c",
+            "wipe_outside_prepared_vial_blank",
+            "hold_blank_vial_place_in_chamber",
+            "press_zero_perform_test",
             "image:place_vial_test_16"
           ]
         },
@@ -6499,7 +6500,8 @@
         },
         {
           "section": [
-            "specific_260_a",
+            "tube_upright_invert_flocculation",
+            "stand_tube_further_2_mins",
             "specific_260_b",
             "specific_260_c"
           ]
