@@ -352,7 +352,7 @@ public class CbtInstructions {
 
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (("9991fb84dd90 606b771e0ffe 6060e4dbe59d").contains(id))
+//            if (("4bfd645c26cf ").contains(id))
 //
             {
                 Intent intent = new Intent();
@@ -367,13 +367,21 @@ public class CbtInstructions {
 
                 int pages = navigateToCbtTest(id);
 
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+                sleep(2000);
 
-                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
-                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
+                mTestActivityRule.launchActivity(intent);
 
-                TestHelper.getCurrentActivity().finish();
-                mTestActivityRule.finishActivity();
+                navigateToCbtTest2(id, pages);
+
+                sleep(1000);
+
+//                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+
+//                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+//                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
+
+//                TestHelper.getCurrentActivity().finish();
+//                mTestActivityRule.finishActivity();
             }
 
         }
@@ -384,7 +392,7 @@ public class CbtInstructions {
 
     private int navigateToCbtTest(String id) {
 
-        TestUtil.sleep(1000);
+        sleep(1000);
 
         mDevice.waitForIdle();
 
@@ -392,7 +400,7 @@ public class CbtInstructions {
 
         onView(withText(R.string.prepare_sample)).check(matches(isDisplayed())).perform(click());
 
-        TestUtil.sleep(1000);
+        sleep(1000);
 
         mDevice.waitForIdle();
 
@@ -405,15 +413,97 @@ public class CbtInstructions {
             pages++;
 
             try {
-                TestUtil.sleep(1000);
+                sleep(1000);
 
-                takeScreenshot(id, i + 1);
+                takeScreenshot(id, i);
 
                 onView(withId(R.id.image_pageRight)).perform(click());
 
             } catch (Exception e) {
-                TestHelper.navigateUp();
-                TestUtil.sleep(300);
+
+                ViewInteraction appCompatTextView = onView(
+                        allOf(withText("Read Instructions"),
+                                childAtPosition(
+                                        childAtPosition(
+                                                withClassName(is("android.widget.TableLayout")),
+                                                7),
+                                        2)));
+                appCompatTextView.perform(scrollTo(), click());
+
+                sleep(1000);
+
+                takeScreenshot(id, i + 1);
+
+                sleep(200);
+
+                ViewInteraction appCompatButton4 = onView(
+                        allOf(withId(android.R.id.button1), withText("OK"),
+                                childAtPosition(
+                                        childAtPosition(
+                                                withId(R.id.buttonPanel),
+                                                0),
+                                        3)));
+                appCompatButton4.perform(scrollTo(), click());
+
+                sleep(1000);
+
+                mDevice.waitForIdle();
+
+                ViewInteraction appCompatButton5 = onView(
+                        allOf(withId(R.id.buttonClose), withText("Close"),
+                                childAtPosition(
+                                        childAtPosition(
+                                                withId(R.id.viewPager),
+                                                1),
+                                        3),
+                                isDisplayed()));
+                appCompatButton5.perform(click());
+
+                sleep(300);
+                break;
+            }
+        }
+        return pages + 1;
+    }
+
+    private int navigateToCbtTest2(String id, int startIndex) {
+
+        sleep(1000);
+
+        mDevice.waitForIdle();
+
+        takeScreenshot(id, startIndex);
+
+        onView(withText(R.string.submit_incubation_result)).check(matches(isDisplayed())).perform(click());
+
+        sleep(1000);
+
+        mDevice.waitForIdle();
+
+        int pages = 0;
+        for (int i = 0; i < 17; i++) {
+            pages++;
+
+            try {
+                sleep(1000);
+
+                takeScreenshot(id, startIndex + i + 1);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
+
+                ViewInteraction appCompatButton4 = onView(
+                        allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
+                                childAtPosition(
+                                        childAtPosition(
+                                                withId(R.id.viewPager),
+                                                1),
+                                        5),
+                                isDisplayed()));
+                appCompatButton4.perform(click());
+
+                sleep(300);
                 break;
             }
         }
