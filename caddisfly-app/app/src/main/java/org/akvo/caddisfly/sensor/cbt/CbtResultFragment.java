@@ -37,11 +37,13 @@ import org.akvo.caddisfly.util.StringUtil;
 import java.util.Objects;
 
 public class CbtResultFragment extends BaseFragment {
-    private static final String ARG_RESULT = "result";
-    private static final String ARG_SAMPLE_QTY = "sample_quantity";
 
-    private String mResult;
-    private String mSampleQuantity;
+    private TextView textResult;
+    private TextView textResult1;
+    private TextView textResult2;
+    private LinearLayout layoutResult;
+    private LinearLayout layoutResult1;
+    private MpnValue mpnValue = null;
 
     /**
      * Use this factory method to create a new instance of
@@ -49,22 +51,8 @@ public class CbtResultFragment extends BaseFragment {
      *
      * @return A new instance of fragment CbtResultFragment.
      */
-    public static CbtResultFragment newInstance(String result, String sampleQuantity) {
-        CbtResultFragment fragment = new CbtResultFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_RESULT, result);
-        args.putString(ARG_SAMPLE_QTY, sampleQuantity);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mResult = getArguments().getString(ARG_RESULT);
-            mSampleQuantity = getArguments().getString(ARG_SAMPLE_QTY);
-        }
+    public static CbtResultFragment newInstance() {
+        return new CbtResultFragment();
     }
 
     @Override
@@ -72,14 +60,27 @@ public class CbtResultFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cbt_result, container, false);
 
-        TextView textResult = view.findViewById(R.id.textResult);
-        TextView textResult1 = view.findViewById(R.id.textResult1);
-        TextView textResult2 = view.findViewById(R.id.textResult2);
-        LinearLayout layoutResult = view.findViewById(R.id.layoutResult);
-        LinearLayout layoutResult1 = view.findViewById(R.id.layoutResult1);
+        if (mpnValue == null) {
+            mpnValue = TestConfigHelper.getMpnValueForKey("00000", "0");
+        }
 
-        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(mResult, mSampleQuantity);
+        textResult = view.findViewById(R.id.textResult);
+        textResult1 = view.findViewById(R.id.textResult1);
+        textResult2 = view.findViewById(R.id.textResult2);
+        layoutResult = view.findViewById(R.id.layoutResult);
+        layoutResult1 = view.findViewById(R.id.layoutResult1);
 
+        showResult();
+
+        return view;
+    }
+
+    public void setResult(String result, String sampleQuantity) {
+        mpnValue = TestConfigHelper.getMpnValueForKey(result, sampleQuantity);
+        showResult();
+    }
+
+    private void showResult() {
         String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
                 mpnValue.getRiskCategory()).toString().split("/");
 
@@ -91,7 +92,5 @@ public class CbtResultFragment extends BaseFragment {
         layoutResult.setBackgroundColor(mpnValue.getBackgroundColor1());
         layoutResult1.setBackgroundColor(mpnValue.getBackgroundColor2());
         textResult2.setText(mpnValue.getMpn());
-
-        return view;
     }
 }

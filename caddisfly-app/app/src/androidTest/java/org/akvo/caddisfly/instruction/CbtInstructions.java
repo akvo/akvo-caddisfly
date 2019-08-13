@@ -20,6 +20,9 @@
 package org.akvo.caddisfly.instruction;
 
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.StringRes;
@@ -33,10 +36,15 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.uiautomator.UiDevice;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.AppConfig;
+import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.common.TestConstants;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.ui.MainActivity;
+import org.akvo.caddisfly.ui.TestActivity;
+import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 import org.hamcrest.core.IsInstanceOf;
@@ -46,6 +54,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
@@ -61,6 +70,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
@@ -83,6 +93,11 @@ public class CbtInstructions {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+    @Rule
+    // third parameter is set to false which means the activity is not started automatically
+    public ActivityTestRule<TestActivity> mTestActivityRule =
+            new ActivityTestRule<>(TestActivity.class, false, false);
 
     @BeforeClass
     public static void initialize() {
@@ -312,6 +327,97 @@ public class CbtInstructions {
         button1.check(matches(isDisplayed()));
 
         mActivityTestRule.finishActivity();
+    }
+
+    @Test
+    @RequiresDevice
+    public void testInstructionsCbt() {
+
+        TestConfigRepository testConfigRepository = new TestConfigRepository();
+
+        String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
+
+        File folder = new File(path);
+        if (!folder.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            folder.mkdirs();
+        }
+
+        List<TestInfo> testList = testConfigRepository.getTests(TestType.CBT);
+        for (int i = 0; i < TestConstants.CBT_TESTS_COUNT; i++) {
+
+            assertEquals(testList.get(i).getSubtype(), TestType.CBT);
+
+            String uuid = testList.get(i).getUuid();
+
+            String id = uuid.substring(uuid.lastIndexOf("-") + 1);
+
+//            if (("9991fb84dd90 606b771e0ffe 6060e4dbe59d").contains(id))
+//
+            {
+                Intent intent = new Intent();
+                intent.setType("text/plain");
+                intent.setAction(AppConfig.EXTERNAL_APP_ACTION);
+                Bundle data = new Bundle();
+                data.putString(SensorConstants.RESOURCE_ID, uuid);
+                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage);
+                intent.putExtras(data);
+
+                mTestActivityRule.launchActivity(intent);
+
+                int pages = navigateToCbtTest(id);
+
+                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+
+                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
+
+                TestHelper.getCurrentActivity().finish();
+                mTestActivityRule.finishActivity();
+            }
+
+        }
+
+        Log.d("Caddisfly", jsArrayString.toString());
+        Log.d("Caddisfly", listString.toString());
+    }
+
+    private int navigateToCbtTest(String id) {
+
+        TestUtil.sleep(1000);
+
+        mDevice.waitForIdle();
+
+        takeScreenshot(id, -1);
+
+        onView(withText(R.string.prepare_sample)).check(matches(isDisplayed())).perform(click());
+
+        TestUtil.sleep(1000);
+
+        mDevice.waitForIdle();
+
+//        takeScreenshot(id, 0);
+//
+//        onView(withText(R.string.test_selected)).perform(click());
+
+        int pages = 0;
+        for (int i = 0; i < 17; i++) {
+            pages++;
+
+            try {
+                TestUtil.sleep(1000);
+
+                takeScreenshot(id, i + 1);
+
+                onView(withId(R.id.image_pageRight)).perform(click());
+
+            } catch (Exception e) {
+                TestHelper.navigateUp();
+                TestUtil.sleep(300);
+                break;
+            }
+        }
+        return pages + 1;
     }
 
     @Test

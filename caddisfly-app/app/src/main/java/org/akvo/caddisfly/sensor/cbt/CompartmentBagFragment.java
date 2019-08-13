@@ -32,11 +32,8 @@ import org.akvo.caddisfly.ui.BaseFragment;
 
 public class CompartmentBagFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
-    private static final int BUTTON_ENABLE_DELAY = 1500;
-    private static final int ANIMATION_DURATION_MILLIS = 500;
-    private static final float BUTTON_START_ALPHA = 0.1f;
     private OnCompartmentBagSelectListener mListener;
-    private String mKey = "00000";
+    private String mKey = "";
 
     public static CompartmentBagFragment newInstance(String key) {
         CompartmentBagFragment fragment = new CompartmentBagFragment();
@@ -49,7 +46,7 @@ public class CompartmentBagFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+        if (getArguments() != null && mKey.isEmpty()) {
             mKey = getArguments().getString(ARG_PARAM1);
         }
     }

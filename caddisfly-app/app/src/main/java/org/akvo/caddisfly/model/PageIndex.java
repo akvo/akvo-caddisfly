@@ -4,6 +4,7 @@ public class PageIndex {
     private int photoIndex = -1;
     private int inputIndex = -1;
     private int resultIndex = -1;
+    private int skipToIndex = -1;
 
     public int getPhotoIndex() {
         return photoIndex;
@@ -27,5 +28,13 @@ public class PageIndex {
 
     public void setResultIndex(int resultIndex) {
         this.resultIndex = resultIndex;
+    }
+
+    public int getSkipToIndex() {
+        return skipToIndex;
+    }
+
+    public void setSkipToIndex(int skipToIndex) {
+        this.skipToIndex = skipToIndex;
     }
 }

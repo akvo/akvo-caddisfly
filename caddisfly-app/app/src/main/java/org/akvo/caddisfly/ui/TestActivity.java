@@ -359,6 +359,8 @@ public class TestActivity extends BaseActivity {
 
             this.setResult(Activity.RESULT_OK, intent);
             finish();
+        } else {
+            finish();
         }
     }
 

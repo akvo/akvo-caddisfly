@@ -6,19 +6,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -28,7 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -49,7 +45,6 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.manual.ResultPhotoFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
-import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.StringUtil;
 import org.akvo.caddisfly.widget.ButtonType;
 import org.akvo.caddisfly.widget.CustomViewPager;
@@ -67,7 +62,6 @@ public class CbtActivity extends BaseActivity
         implements CompartmentBagFragment.OnCompartmentBagSelectListener,
         ResultPhotoFragment.OnPhotoTakenListener {
 
-    private static final int CBT_TEST = 1;
     CbtResultFragment resultFragment;
     ResultPhotoFragment resultPhotoFragment;
     CompartmentBagFragment inputFragment;
@@ -82,8 +76,6 @@ public class CbtActivity extends BaseActivity
     private FirebaseAnalytics mFirebaseAnalytics;
     private ArrayList<Instruction> instructionList = new ArrayList<>();
     private int totalPageCount;
-    private FrameLayout resultLayout;
-    private FrameLayout pagerLayout;
     private RelativeLayout footerLayout;
     private PageIndicatorView pagerIndicator;
     private boolean showSkipMenu = true;
@@ -99,8 +91,6 @@ public class CbtActivity extends BaseActivity
 
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
-        resultLayout = findViewById(R.id.resultLayout);
-        pagerLayout = findViewById(R.id.pagerLayout);
         footerLayout = findViewById(R.id.layout_footer);
 
         if (savedInstanceState != null) {
@@ -167,14 +157,12 @@ public class CbtActivity extends BaseActivity
             }
         });
 
-//        if (savedInstanceState == null) {
-//            startCbtTest();
-//        }
+        showHideFooter();
     }
 
     private void createFragments() {
         if (resultFragment == null) {
-            resultFragment = CbtResultFragment.newInstance(cbtResult, testInfo.getSampleQuantity());
+            resultFragment = CbtResultFragment.newInstance();
             resultFragment.setFragmentId(pageIndex.getResultIndex());
         }
     }
@@ -196,9 +184,12 @@ public class CbtActivity extends BaseActivity
 
         setTitle(testInfo.getName());
 
-        showSkipMenu = viewPager.getCurrentItem() < pageIndex.getInputIndex() - 2;
+        showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 2;
 
-        if (viewPager.getCurrentItem() == pageIndex.getInputIndex()) {
+        if (viewPager.getCurrentItem() == totalPageCount - 1) {
+            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+            imagePageRight.setVisibility(View.INVISIBLE);
+        } else if (viewPager.getCurrentItem() == pageIndex.getInputIndex()) {
             setTitle(R.string.setCompartmentColors);
         } else if (viewPager.getCurrentItem() == pageIndex.getResultIndex()) {
             setTitle(R.string.result);
@@ -274,8 +265,7 @@ public class CbtActivity extends BaseActivity
     }
 
     public void onSkipClick(MenuItem item) {
-        viewPager.setCurrentItem(pageIndex.getInputIndex());
-        showWaitingView();
+        viewPager.setCurrentItem(pageIndex.getSkipToIndex());
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
             Bundle bundle = new Bundle();
@@ -287,52 +277,9 @@ public class CbtActivity extends BaseActivity
         }
     }
 
-    private void showWaitingView() {
-        pagerLayout.setVisibility(View.VISIBLE);
-        resultLayout.setVisibility(View.GONE);
-        showSkipMenu = false;
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == CBT_TEST) {
-                (new Handler()).postDelayed(this::showCompartmentInput, 1000);
-
-                final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
-                String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
-                ImageUtil.resizeImage(currentPhotoPath, resultImagePath, 1280);
-
-                File imageFile = new File(currentPhotoPath);
-                if (imageFile.exists() && !new File(currentPhotoPath).delete()) {
-                    Toast.makeText(this, R.string.delete_error, Toast.LENGTH_SHORT).show();
-                }
-            }
-        } else {
-            finish();
-        }
-    }
-
-    private void showCompartmentInput() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,
-                CompartmentBagFragment.newInstance(cbtResult), "compartmentFragment")
-                .commit();
-    }
-
     public void onCompartmentBagSelect(String key) {
         cbtResult = key;
-    }
-
-    @SuppressWarnings("unused")
-    public void onClickMatchedButton(View view) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container,
-                CbtResultFragment.newInstance(cbtResult, testInfo.getSampleQuantity()), "resultFragment")
-                .addToBackStack(null)
-                .commit();
+        resultFragment.setResult(cbtResult, testInfo.getSampleQuantity());
     }
 
     public void onNextClick(View view) {
@@ -340,6 +287,7 @@ public class CbtActivity extends BaseActivity
     }
 
     public void onCloseClick(View view) {
+        setResult(Activity.RESULT_CANCELED, new Intent());
         finish();
     }
 
@@ -509,9 +457,7 @@ public class CbtActivity extends BaseActivity
                     inputFragment = CompartmentBagFragment.newInstance(cbtResult);
                     inputFragment.setFragmentId(position);
                 }
-
                 return inputFragment;
-
             } else if (pageIndex.getPhotoIndex() == position) {
 
                 if (resultPhotoFragment == null) {
@@ -521,7 +467,6 @@ public class CbtActivity extends BaseActivity
                             instructionList.get(position).getIndex());
                     resultPhotoFragment.setFragmentId(position);
                 }
-
                 return resultPhotoFragment;
             } else if (position == totalPageCount - 1) {
                 if (testPhase == 2) {
