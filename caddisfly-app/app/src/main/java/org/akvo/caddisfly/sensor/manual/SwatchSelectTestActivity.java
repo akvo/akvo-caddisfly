@@ -35,6 +35,7 @@ import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -55,6 +56,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     ImageView imagePageLeft;
     SwatchSelectFragment resultFragment;
     PlaceholderFragment submitFragment;
+    PageIndex pageIndex = new PageIndex();
 
     private float[] testResults;
     private TestInfo testInfo;
@@ -93,7 +95,7 @@ public class SwatchSelectTestActivity extends BaseActivity
             return;
         }
 
-        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
+        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
 
         resultFragment = SwatchSelectFragment.newInstance(testResults, testInfo.getRanges());
         int instructionCount;

@@ -59,6 +59,7 @@ import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -82,6 +83,7 @@ public class DeviceControlActivity extends BaseActivity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
+    PageIndex pageIndex = new PageIndex();
     private SelectTestFragment selectTestFragment;
     private WaitingFragment waitingFragment;
     private ViewPager viewPager;
@@ -177,7 +179,7 @@ public class DeviceControlActivity extends BaseActivity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
-        int stepCount = InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
+        int stepCount = InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
 
         hookBluetooth();
 

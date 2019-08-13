@@ -45,6 +45,7 @@
             tools:text="1." />
 
         <TextView
+            android:id="@+id/textInstruction"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:lineSpacingExtra="3dp"

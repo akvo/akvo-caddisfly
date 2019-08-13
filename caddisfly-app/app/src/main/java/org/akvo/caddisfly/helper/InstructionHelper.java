@@ -20,6 +20,7 @@
 package org.akvo.caddisfly.helper;
 
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.PageIndex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public final class InstructionHelper {
     }
 
     public static int setupInstructions(List<Instruction> testInstructions,
-                                        ArrayList<Instruction> instructions) {
+                                        ArrayList<Instruction> instructions, PageIndex pageIndex) {
         int instructionIndex = 1;
         int subSequenceIndex;
         String[] subSequenceNumbers = {"i", "ii", "iii"};
@@ -55,6 +56,14 @@ public final class InstructionHelper {
 
                     for (int i1 = 0; i1 < section.size(); i1++) {
                         String item = section.get(i1);
+
+                        if (item.contains("<photo>")) {
+                            pageIndex.setPhotoIndex(i);
+                        } else if (item.contains("<input>")) {
+                            pageIndex.setInputIndex(i);
+                        } else if (item.contains("<result>")) {
+                            pageIndex.setResultIndex(i);
+                        }
 
                         Matcher m = Pattern.compile("^(\\d+?\\.\\s*)(.*)").matcher(item);
                         Matcher m1 = Pattern.compile("^([a-zA-Z]\\.\\s*)(.*)").matcher(item);

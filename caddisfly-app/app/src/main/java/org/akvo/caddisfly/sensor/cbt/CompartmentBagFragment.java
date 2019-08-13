@@ -26,12 +26,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
-
-import java.util.Objects;
 
 public class CompartmentBagFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
@@ -77,13 +74,6 @@ public class CompartmentBagFragment extends BaseFragment {
 
         return view;
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Objects.requireNonNull(getActivity()).setTitle(R.string.setCompartmentColors);
-    }
-
 
     @Override
     public void onAttach(Context context) {

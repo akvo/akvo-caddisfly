@@ -51,10 +51,12 @@
     <string name="close_top_of_bag">Close the top of the bag with the yellow Whirl-Pak seal and then roll down the bag toward the seal clip <b>(step 1)</b> and fold the yellow ends <b>(step 2)</b>.</string>
     <string name="let_incubate">Let the sample incubate, depending on the ambient temperature:</string>
     <string name="take_photo_of_incubated">Take photo of the incubated sample.</string>
-    <string name="change_colors_to_match">Change the colours in the interface to match the colours of the sample in the bag compartments.</string>
+    <string name="change_colors_to_match">In the next screen, change the colours in the interface to match the colours of the sample in the bag compartments.</string>
     <string name="click_compartments_to_change">Click the compartments to change colour.</string>
     <string name="note_blue_green_specks"><b>NOTE:</b> Any trace of blue or blue/green in a compartment indicates presence of E. coli, even just specks of blue/blue green color or just blue/blue green sediment at the bottom of a compartment.</string>
-    <string name="clean_cbt">After having scored the testing results: add 1–2 mL of liquid bleach (NaOCl) or sufficient free chlorine tablets (calcium hypochlorite or sodium dichloroisocyanurate) to provide about 100 milligrams of free chlorine. After 45 minutes, pour contents into a sink, toilet or hole in ground and safely dispose the empty compartment bag. Retain plastic seal clip for reuse.</string>
+    <string name="add_free_chlorine">Add 1–2 mL of liquid bleach (NaOCl) or sufficient free chlorine tablets (calcium hypochlorite or sodium dichloroisocyanurate) to provide about 100 milligrams of free chlorine.</string>
+    <string name="dispose_contents_bag">After 45 minutes, pour contents into a sink, toilet or hole in ground and safely dispose the empty compartment bag.</string>
+    <string name="retain_plastic_seal_reuse">Retain plastic seal clip for reuse.</string>
     <string name="add_90ml_distilled_water">Add <b>90 ml</b> of distilled water to the water sample.</string>
 
     <string name="low_risk_safe">Low Risk / Safe</string>

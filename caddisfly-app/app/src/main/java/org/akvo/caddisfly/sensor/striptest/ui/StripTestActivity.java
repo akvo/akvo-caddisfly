@@ -35,6 +35,7 @@ import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -57,6 +58,7 @@ public class StripTestActivity extends BaseActivity {
     ImageView imagePageRight;
     ImageView imagePageLeft;
     ResultFragment resultFragment;
+    PageIndex pageIndex = new PageIndex();
 
     private TestInfo testInfo;
     private CustomViewPager viewPager;
@@ -97,7 +99,7 @@ public class StripTestActivity extends BaseActivity {
             return;
         }
 
-        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
+        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
 
         int instructionCount = instructionList.size();
 

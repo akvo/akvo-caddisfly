@@ -39,15 +39,16 @@ import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.databinding.FragmentInstructionsBinding;
 import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.TestInfo;
 
 import java.util.ArrayList;
 
 public class InstructionFragment extends Fragment {
 
+    PageIndex pageIndex = new PageIndex();
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private FragmentInstructionsBinding b;
-
     private ArrayList<Instruction> instructionList = new ArrayList<>();
 
     public static InstructionFragment getInstance(Parcelable testInfo) {
@@ -68,7 +69,7 @@ public class InstructionFragment extends Fragment {
         if (getArguments() != null) {
             TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
             if (testInfo != null) {
-                InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
+                InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
             }
             b.imagePageRight.setOnClickListener(view ->
                     b.viewPager.setCurrentItem(Math.min(instructionList.size() - 1,

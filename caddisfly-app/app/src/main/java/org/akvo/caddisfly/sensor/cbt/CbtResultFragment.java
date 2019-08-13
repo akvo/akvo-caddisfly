@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.helper.TestConfigHelper;
@@ -94,13 +93,5 @@ public class CbtResultFragment extends BaseFragment {
         textResult2.setText(mpnValue.getMpn());
 
         return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (getActivity() != null) {
-            getActivity().setTitle(R.string.result);
-        }
     }
 }

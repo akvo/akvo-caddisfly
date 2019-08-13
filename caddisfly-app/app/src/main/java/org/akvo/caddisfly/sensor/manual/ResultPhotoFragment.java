@@ -60,6 +60,7 @@ import static org.akvo.caddisfly.common.AppConfig.SKIP_PHOTO_VALIDATION;
 
 public class ResultPhotoFragment extends BaseFragment {
 
+    private static final String ARG_INSTRUCTION = "resultInstruction";
     private static final String ARG_RESULT_NAME = "resultName";
     private static final String ARG_RESULT_SERIAL = "resultSerial";
     private static final int MANUAL_TEST = 2;
@@ -77,9 +78,10 @@ public class ResultPhotoFragment extends BaseFragment {
      * @param testName : Name of the test
      * @param serial   : instruction step number
      */
-    public static ResultPhotoFragment newInstance(String testName, int serial) {
+    public static ResultPhotoFragment newInstance(String testName, String instruction, int serial) {
         ResultPhotoFragment fragment = new ResultPhotoFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_INSTRUCTION, instruction);
         args.putString(ARG_RESULT_NAME, testName);
         args.putInt(ARG_RESULT_SERIAL, serial);
         fragment.setArguments(args);
@@ -101,11 +103,21 @@ public class ResultPhotoFragment extends BaseFragment {
 
         imageResult = view.findViewById(R.id.imageResult);
         takePhotoButton = view.findViewById(R.id.takePhoto);
+        TextView textInstruction = view.findViewById(R.id.textInstruction);
         TextView textName = view.findViewById(R.id.textName);
         TextView textSerial = view.findViewById(R.id.textSerial);
 
         if (getArguments() != null) {
-            textName.setText(getArguments().getString(ARG_RESULT_NAME));
+
+            String instruction = getArguments().getString(ARG_INSTRUCTION);
+            textInstruction.setText(instruction);
+
+            String title = getArguments().getString(ARG_RESULT_NAME);
+            if (title == null || title.isEmpty()) {
+                textName.setVisibility(View.GONE);
+            } else {
+                textName.setText(title);
+            }
             textSerial.setText(String.format(Locale.US, "%d.",
                     getArguments().getInt(ARG_RESULT_SERIAL)));
         }

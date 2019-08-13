@@ -7738,7 +7738,9 @@
         {
           "section": [
             "/<b>round_off_test</b>",
-            "/clean_cbt"
+            "1.add_free_chlorine",
+            "2.dispose_contents_bag",
+            "3.retain_plastic_seal_reuse"
           ]
         }
       ],
@@ -7851,7 +7853,9 @@
         {
           "section": [
             "/<b>round_off_test</b>",
-            "/clean_cbt"
+            "1.add_free_chlorine",
+            "2.dispose_contents_bag",
+            "3.retain_plastic_seal_reuse"
           ]
         }
       ],

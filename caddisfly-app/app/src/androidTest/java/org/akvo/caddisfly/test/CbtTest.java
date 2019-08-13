@@ -62,6 +62,7 @@ import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
@@ -159,8 +160,7 @@ public class CbtTest {
 
         sleep(1000);
 
-        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
-                isDisplayed())).perform(click());
+        nextPage();
 
         String[] riskText = getString(R.string.very_high_risk_unsafe).split("/");
         String risk1 = riskText[0].trim();
@@ -303,8 +303,7 @@ public class CbtTest {
 
         sleep(100);
 
-        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
-                isDisplayed())).perform(click());
+        nextPage();
 
         onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
         onView(withText(">1000")).check(matches(isDisplayed()));
@@ -320,8 +319,7 @@ public class CbtTest {
 
         mDevice.waitForIdle();
 
-        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
-                isDisplayed())).perform(click());
+        nextPage();
 
         String[] riskText = getString(R.string.very_high_risk_unsafe).split("/");
         String risk1 = riskText[0].trim();
@@ -342,8 +340,7 @@ public class CbtTest {
 
         mDevice.waitForIdle();
 
-        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
-                isDisplayed())).perform(click());
+        nextPage();
 
         riskText = getString(R.string.low_risk_possibly_safe).split("/");
         risk1 = riskText[0].trim();
@@ -365,8 +362,7 @@ public class CbtTest {
 
         mDevice.waitForIdle();
 
-        onView(allOf(withId(R.id.buttonNext), withText(R.string.next),
-                isDisplayed())).perform(click());
+        nextPage();
 
         onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
         onView(withText(">1000")).check(matches(isDisplayed()));

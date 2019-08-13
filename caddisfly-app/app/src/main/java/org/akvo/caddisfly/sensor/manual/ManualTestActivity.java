@@ -36,6 +36,7 @@ import org.akvo.caddisfly.helper.FileHelper;
 import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
+import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -62,6 +63,8 @@ public class ManualTestActivity extends BaseActivity
     ImageView imagePageRight;
     ImageView imagePageLeft;
     SectionsPagerAdapter mSectionsPagerAdapter;
+    PageIndex pageIndex = new PageIndex();
+
     private TestInfo testInfo;
     private CustomViewPager viewPager;
     private FrameLayout resultLayout;
@@ -109,7 +112,7 @@ public class ManualTestActivity extends BaseActivity
             return;
         }
 
-        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
+        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
 
         if (testInfo.getHasEndInstruction()) {
             instructionCount = instructionList.size() - 1;
@@ -241,6 +244,7 @@ public class ManualTestActivity extends BaseActivity
                 if (result1PhotoFragment == null) {
                     result1PhotoFragment = ResultPhotoFragment.newInstance(
                             testInfo.getResults().get(resultId - 1).getName(),
+                            getString(R.string.take_photo_of_result),
                             instructionList.get(photo1PageNumber).getIndex());
                     result1PhotoFragment.setFragmentId(photo1PageNumber);
                 }
@@ -256,6 +260,7 @@ public class ManualTestActivity extends BaseActivity
         if (resultPhotoFragment == null && photoPageNumber > 0) {
             resultPhotoFragment = ResultPhotoFragment.newInstance(
                     testInfo.getResults().get(resultId - 1).getName(),
+                    getString(R.string.take_photo_of_result),
                     instructionList.get(photoPageNumber).getIndex());
             resultPhotoFragment.setFragmentId(photoPageNumber);
         }
