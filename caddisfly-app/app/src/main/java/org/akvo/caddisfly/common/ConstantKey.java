@@ -7,6 +7,7 @@ public class ConstantKey {
     public static final String RESULT_IMAGE_PATH = "result_image_path";
     public static final String FRAGMENT_ID = "fragment_id";
     public static final String START_MEASURE = "start_measure";
+    public static final String TEST_PHASE = "test_phase";
     private static final String NAMESPACE_PREFIX = "org.akvo.caddisfly.";
     public static final String TOP_LEFT = NAMESPACE_PREFIX + "top_left";
     public static final String TOP_RIGHT = NAMESPACE_PREFIX + "top_right";

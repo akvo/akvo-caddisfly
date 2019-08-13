@@ -100,6 +100,9 @@ public class TestActivity extends BaseActivity {
     private LinearLayout mainLayout;
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    // Tests like CBT has two test phases
+    private int testPhase = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +124,7 @@ public class TestActivity extends BaseActivity {
 
         if (savedInstanceState != null) {
             testInfo = savedInstanceState.getParcelable(ConstantKey.TEST_INFO);
+            testPhase = savedInstanceState.getInt(ConstantKey.TEST_PHASE);
         }
 
         if (testInfo == null) {
@@ -158,6 +162,7 @@ public class TestActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        outState.putInt(ConstantKey.TEST_PHASE, testPhase);
         super.onSaveInstanceState(outState);
     }
 
@@ -213,6 +218,8 @@ public class TestActivity extends BaseActivity {
      * @param view the View
      */
     public void onStartTestClick(@SuppressWarnings("unused") View view) {
+
+        testPhase = 1;
 
         String[] checkPermissions = permissions;
 
@@ -293,6 +300,7 @@ public class TestActivity extends BaseActivity {
 
         Intent intent = new Intent(this, CbtActivity.class);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+        intent.putExtra(ConstantKey.TEST_PHASE, testPhase);
         startActivityForResult(intent, REQUEST_TEST);
     }
 
@@ -360,6 +368,8 @@ public class TestActivity extends BaseActivity {
      * @param view the View
      */
     public void onInstructionsClick(@SuppressWarnings("unused") View view) {
+
+        testPhase = 2;
 
         if (testInfo.getSubtype() == CBT) {
             String[] checkPermissions = permissions;

@@ -68,7 +68,7 @@ public class InstructionFragment extends Fragment {
         if (getArguments() != null) {
             TestInfo testInfo = getArguments().getParcelable(ConstantKey.TEST_INFO);
             if (testInfo != null) {
-                InstructionHelper.setupInstructions(testInfo, instructionList);
+                InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
             }
             b.imagePageRight.setOnClickListener(view ->
                     b.viewPager.setCurrentItem(Math.min(instructionList.size() - 1,

@@ -109,7 +109,7 @@ public class ManualTestActivity extends BaseActivity
             return;
         }
 
-        InstructionHelper.setupInstructions(testInfo, instructionList);
+        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
 
         if (testInfo.getHasEndInstruction()) {
             instructionCount = instructionList.size() - 1;

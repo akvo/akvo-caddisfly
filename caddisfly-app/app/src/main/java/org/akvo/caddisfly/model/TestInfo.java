@@ -124,6 +124,9 @@ public class TestInfo implements Parcelable {
     @SerializedName("instructions")
     @Expose
     private List<Instruction> instructions = null;
+    @SerializedName("instructions2")
+    @Expose
+    private List<Instruction> instructions2 = null;
     @SerializedName("image")
     @Expose
     private String image;
@@ -163,7 +166,7 @@ public class TestInfo implements Parcelable {
         brand = in.readString();
         brandUrl = in.readString();
         String tmpGroupingType = in.readString();
-        if (!tmpGroupingType.equalsIgnoreCase("null")) {
+        if (tmpGroupingType != null && !tmpGroupingType.equalsIgnoreCase("null")) {
             groupingType = GroupType.valueOf(tmpGroupingType);
         }
         illuminant = in.readString();
@@ -179,7 +182,7 @@ public class TestInfo implements Parcelable {
         }
         unit = in.readString();
         byte tmpHasImage = in.readByte();
-        hasImage = tmpHasImage != 0 && tmpHasImage == 1;
+        hasImage = tmpHasImage == 1;
         ranges = in.readString();
         if (in.readByte() == 0) {
             monthsValid = null;
@@ -194,10 +197,13 @@ public class TestInfo implements Parcelable {
 
         instructions = new ArrayList<>();
         in.readTypedList(instructions, Instruction.CREATOR);
+        instructions2 = new ArrayList<>();
+        in.readTypedList(instructions2, Instruction.CREATOR);
+
         selectInstruction = in.readString();
         endInstruction = in.readString();
         byte tmpHasEndInstruction = in.readByte();
-        hasEndInstruction = tmpHasEndInstruction != 0 && tmpHasEndInstruction == 1;
+        hasEndInstruction = tmpHasEndInstruction == 1;
         image = in.readString();
         imageScale = in.readString();
         if (in.readByte() == 0) {
@@ -327,6 +333,10 @@ public class TestInfo implements Parcelable {
         return instructions;
     }
 
+    public List<Instruction> getInstructions2() {
+        return instructions2;
+    }
+
     public String getImage() {
         return image;
     }
@@ -380,6 +390,7 @@ public class TestInfo implements Parcelable {
         parcel.writeString(sampleQuantity);
         parcel.writeTypedList(results);
         parcel.writeTypedList(instructions);
+        parcel.writeTypedList(instructions2);
         parcel.writeString(selectInstruction);
         parcel.writeString(endInstruction);
         parcel.writeByte((byte) (hasEndInstruction == null ? 0 : hasEndInstruction ? 1 : 2));

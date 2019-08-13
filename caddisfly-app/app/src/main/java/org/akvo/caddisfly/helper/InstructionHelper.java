@@ -20,7 +20,6 @@
 package org.akvo.caddisfly.helper;
 
 import org.akvo.caddisfly.model.Instruction;
-import org.akvo.caddisfly.model.TestInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,17 +34,18 @@ public final class InstructionHelper {
     private InstructionHelper() {
     }
 
-    public static int setupInstructions(TestInfo testInfo, ArrayList<Instruction> instructions) {
+    public static int setupInstructions(List<Instruction> testInstructions,
+                                        ArrayList<Instruction> instructions) {
         int instructionIndex = 1;
         int subSequenceIndex;
         String[] subSequenceNumbers = {"i", "ii", "iii"};
         boolean alphaSequence = false;
 
         instructions.clear();
-        for (int i = 0; i < testInfo.getInstructions().size(); i++) {
+        for (int i = 0; i < testInstructions.size(); i++) {
             Instruction instruction;
             try {
-                instruction = testInfo.getInstructions().get(i).clone();
+                instruction = testInstructions.get(i).clone();
                 if (instruction != null) {
                     List<String> section = instruction.section;
                     boolean indent = false;

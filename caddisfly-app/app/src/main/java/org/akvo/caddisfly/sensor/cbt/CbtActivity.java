@@ -111,7 +111,11 @@ public class CbtActivity extends BaseActivity
             return;
         }
 
-        InstructionHelper.setupInstructions(testInfo, instructionList);
+        if (getIntent().getIntExtra(ConstantKey.TEST_PHASE, 0) == 2) {
+            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList);
+        } else {
+            InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
+        }
 
         int instructionCount = instructionList.size();
 

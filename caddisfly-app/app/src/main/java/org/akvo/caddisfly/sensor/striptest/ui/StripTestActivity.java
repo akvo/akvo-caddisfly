@@ -97,7 +97,7 @@ public class StripTestActivity extends BaseActivity {
             return;
         }
 
-        InstructionHelper.setupInstructions(testInfo, instructionList);
+        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
 
         int instructionCount = instructionList.size();
 

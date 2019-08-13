@@ -93,7 +93,7 @@ public class SwatchSelectTestActivity extends BaseActivity
             return;
         }
 
-        InstructionHelper.setupInstructions(testInfo, instructionList);
+        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList);
 
         resultFragment = SwatchSelectFragment.newInstance(testResults, testInfo.getRanges());
         int instructionCount;
