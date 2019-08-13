@@ -91,12 +91,11 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/buttonSubmitResult"
         style="@style/Button"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/view_gutter_bottom"
-        android:onClick="onClickSubmitResult"
-        android:text="@string/submitResult"
+        android:onClick="onNextClick"
+        android:text="@string/next"
         android:theme="?primaryButtonStyle" />
 
 </LinearLayout>

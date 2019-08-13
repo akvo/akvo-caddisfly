@@ -1,7 +1,6 @@
 package org.akvo.caddisfly.sensor.cbt;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -46,6 +45,7 @@ import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.sensor.manual.ResultPhotoFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.StringUtil;
@@ -57,15 +57,20 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
 public class CbtActivity extends BaseActivity
-        implements CompartmentBagFragment.OnCompartmentBagSelectListener {
+        implements CompartmentBagFragment.OnCompartmentBagSelectListener,
+        ResultPhotoFragment.OnPhotoTakenListener {
 
     private static final int CBT_TEST = 1;
     CbtResultFragment resultFragment;
+    ResultPhotoFragment resultPhotoFragment;
+    CompartmentBagFragment inputFragment;
+
     ImageView imagePageRight;
     ImageView imagePageLeft;
     private String imageFileName = "";
@@ -74,9 +79,11 @@ public class CbtActivity extends BaseActivity
     private TestInfo testInfo;
     private FirebaseAnalytics mFirebaseAnalytics;
     private ArrayList<Instruction> instructionList = new ArrayList<>();
-    private int resultPageNumber;
     private int totalPageCount;
     private int skipToPageNumber;
+
+    private int resultPageNumber;
+
     private FrameLayout resultLayout;
     private FrameLayout pagerLayout;
     private RelativeLayout footerLayout;
@@ -119,7 +126,7 @@ public class CbtActivity extends BaseActivity
 
         int instructionCount = instructionList.size();
 
-        totalPageCount = instructionCount + 1;
+        totalPageCount = instructionCount;
         resultPageNumber = totalPageCount - 1;
         skipToPageNumber = resultPageNumber - 1;
 
@@ -139,7 +146,7 @@ public class CbtActivity extends BaseActivity
         viewPager.setAdapter(mSectionsPagerAdapter);
 
         pagerIndicator.showDots(true);
-        pagerIndicator.setPageCount(totalPageCount - 1);
+        pagerIndicator.setPageCount(totalPageCount);
 
         imagePageRight = findViewById(R.id.image_pageRight);
         imagePageRight.setOnClickListener(view -> nextPage());
@@ -344,7 +351,7 @@ public class CbtActivity extends BaseActivity
     }
 
     @SuppressWarnings("unused")
-    public void onClickSubmitResult(View view) {
+    public void onNextClick(View view) {
 
         SparseArray<String> results = new SparseArray<>();
 
@@ -366,13 +373,17 @@ public class CbtActivity extends BaseActivity
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
         resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
 
-        setResult(Activity.RESULT_OK, resultIntent);
 
-        finish();
+        nextPage();
     }
 
     public void onCloseClick(View view) {
         finish();
+    }
+
+    @Override
+    public void onPhotoTaken(String photoPath) {
+        nextPage();
     }
 
     public static class IncubationTimesDialogFragment extends DialogFragment {
@@ -500,9 +511,28 @@ public class CbtActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            if (position == totalPageCount - 1) {
+            List<String> section = instructionList.get(position).section;
+            if (section.get(0).contains("<result>")) {
                 return resultFragment;
-            } else if (position == totalPageCount - 2) {
+            } else if (section.get(0).contains("<input>")) {
+                if (inputFragment == null) {
+                    inputFragment = CompartmentBagFragment.newInstance(cbtResult);
+                    inputFragment.setFragmentId(position);
+                }
+
+                return inputFragment;
+
+            } else if (section.size() > 1 && section.get(1).contains("<photo>")) {
+
+                if (resultPhotoFragment == null) {
+                    resultPhotoFragment = ResultPhotoFragment.newInstance(
+                            testInfo.getResults().get(0).getName(),
+                            instructionList.get(position).getIndex());
+                    resultPhotoFragment.setFragmentId(position);
+                }
+
+                return resultPhotoFragment;
+            } else if (position == totalPageCount - 1) {
                 return PlaceholderFragment.newInstance(
                         instructionList.get(position), ButtonType.CLOSE);
             } else {

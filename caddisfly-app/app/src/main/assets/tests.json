@@ -7732,8 +7732,13 @@
         },
         {
           "section": [
-            "clean_cbt",
-            "image:9"
+            "/<result>"
+          ]
+        },
+        {
+          "section": [
+            "/<b>round_off_test</b>",
+            "/clean_cbt"
           ]
         }
       ],
@@ -7840,8 +7845,13 @@
         },
         {
           "section": [
-            "clean_cbt",
-            "image:9"
+            "/<result>"
+          ]
+        },
+        {
+          "section": [
+            "/<b>round_off_test</b>",
+            "/clean_cbt"
           ]
         }
       ],
