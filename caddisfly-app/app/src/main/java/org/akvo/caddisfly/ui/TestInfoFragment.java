@@ -94,11 +94,14 @@ public class TestInfoFragment extends Fragment {
 
                 b.setTestInfo(testInfo);
 
+                b.layoutPrepareSubmit.setVisibility(View.GONE);
+                b.layoutNext.setVisibility(View.VISIBLE);
+
                 if (testInfo.getSubtype() == TestType.STRIP_TEST) {
-                    b.buttonPrepare.setText(R.string.prepare_test);
+                    b.buttonNext.setText(R.string.prepare_test);
                 } else if (testInfo.getSubtype() == TestType.CBT) {
-                    b.buttonPrepare.setText(R.string.prepare_sample);
-                    b.buttonPhase2.setVisibility(View.VISIBLE);
+                    b.layoutPrepareSubmit.setVisibility(View.VISIBLE);
+                    b.layoutNext.setVisibility(View.GONE);
                 }
             }
         }

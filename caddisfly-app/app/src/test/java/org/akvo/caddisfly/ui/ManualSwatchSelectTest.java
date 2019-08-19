@@ -38,11 +38,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.shadows.ShadowLooper;
-import org.robolectric.shadows.ShadowToast;
 
 import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
@@ -107,17 +104,18 @@ public class ManualSwatchSelectTest {
         ActivityController controller = Robolectric.buildActivity(SwatchSelectTestActivity.class, intent).create().start();
         Activity activity = (Activity) controller.get();
 
+        for (int i = 0; i < 7; i++) {
+            activity.findViewById(R.id.image_pageRight).performClick();
+        }
+
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
         assertEquals(textView.getText(), activity.getString(R.string.select_color_intervals));
 
-        TextView textView2 = activity.findViewById(R.id.textInfo2);
-        assertEquals(textView2.getText(), activity.getString(R.string.select_color_intervals));
-
         SystemClock.sleep(3000);
 
-        Button button = activity.findViewById(R.id.buttonNext);
-        button.performClick();
+//        Button button = activity.findViewById(R.id.image_pageRight);
+//        button.performClick();
 
-        assertThat(ShadowToast.getTextOfLatestToast(), equalTo("Select the color intervals before continuing"));
+//        assertThat(ShadowToast.getTextOfLatestToast(), equalTo("Select the color intervals before continuing"));
     }
 }

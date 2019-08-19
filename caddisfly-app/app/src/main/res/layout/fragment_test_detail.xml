@@ -17,8 +17,7 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -42,13 +41,12 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.35">
+            android:layout_weight="0.9">
 
             <ImageView
                 android:id="@+id/imageBrand"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="40dp"
                 android:adjustViewBounds="false"
                 android:contentDescription="@null"
                 android:cropToPadding="false"
@@ -61,7 +59,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginStart="5sp"
-                android:layout_marginBottom="45dp"
                 android:onClick="onSiteLinkClick"
                 android:text="@{testInfo.brandUrl}"
                 android:textColor="#006384"
@@ -74,17 +71,19 @@
                 android:layout_gravity="center_horizontal"
                 android:background="#ccffffff"
                 android:visibility="gone" />
-
         </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/layoutNext"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.65"
-            android:orientation="vertical">
+            android:layout_weight="0.6"
+            android:orientation="vertical"
+            android:paddingTop="30dp"
+            android:visibility="gone">
 
             <Button
-                android:id="@+id/button_prepare"
+                android:id="@+id/button_next"
                 style="@style/Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,27 +96,53 @@
                 android:onClick="onStartTestClick"
                 android:text="@string/next"
                 android:theme="?primaryButtonStyle" />
+        </LinearLayout>
 
-            <Button
-                android:id="@+id/button_phase_2"
-                style="?android:attr/buttonBarButtonStyle"
+        <LinearLayout
+            android:id="@+id/layoutPrepareSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:visibility="visible">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_prepare"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
-                android:drawableEnd="@drawable/ic_play_arrow_black_24dp"
-                android:onClick="onInstructionsClick"
-                android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingEnd="@dimen/activity_horizontal_margin"
-                android:text="@string/submit_incubation_result"
-                android:textAlignment="textEnd"
-                android:textAllCaps="false"
-                android:textColor="@android:color/holo_blue_dark"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:visibility="gone"
-                tools:visibility="visible" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:enabled="true"
+                android:letterSpacing="0"
+                android:minWidth="230dp"
+                android:minHeight="65dp"
+                android:onClick="onStartTestClick"
+                android:text="@string/prepare_sample"
+                android:textAllCaps="true"
+                android:textColor="@color/button_green_selected"
+                android:textSize="15sp"
+                app:cornerRadius="3dp"
+                app:strokeColor="@color/button_green_selected"
+                app:strokeWidth="1dp" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_phase_2"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/button_green"
+                android:enabled="true"
+                android:letterSpacing="0"
+                android:minWidth="230dp"
+                android:minHeight="65dp"
+                android:onClick="onInstructionsClick"
+                android:text="@string/submitResult"
+                android:textAllCaps="true"
+                android:textSize="15sp"
+                app:cornerRadius="3dp" />
         </LinearLayout>
     </LinearLayout>
 </layout>

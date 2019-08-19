@@ -21,7 +21,6 @@
 
     <string name="cbt">E.coli - Aquagenx CBT</string>
     <string name="prepare_sample">Prepare sample</string>
-    <string name="submit_incubation_result">Submit result after incubation</string>
 
     <string name="read_instructions">Read Instructions</string>
     <string name="take_photo_compartments">Take a photo of the compartment bag</string>
