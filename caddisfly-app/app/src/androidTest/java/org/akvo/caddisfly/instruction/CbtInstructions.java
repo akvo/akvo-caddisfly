@@ -404,10 +404,6 @@ public class CbtInstructions {
 
         mDevice.waitForIdle();
 
-//        takeScreenshot(id, 0);
-//
-//        onView(withText(R.string.test_selected)).perform(click());
-
         int pages = 0;
         for (int i = 0; i < 17; i++) {
             pages++;
@@ -474,7 +470,7 @@ public class CbtInstructions {
 
         takeScreenshot(id, startIndex);
 
-        onView(withText(R.string.submit_incubation_result)).check(matches(isDisplayed())).perform(click());
+        onView(withText(R.string.submitResult)).check(matches(isDisplayed())).perform(click());
 
         sleep(1000);
 

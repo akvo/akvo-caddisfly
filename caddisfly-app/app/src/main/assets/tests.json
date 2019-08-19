@@ -7675,13 +7675,8 @@
           "section": [
             "a.dissolve_medium_in_sample_a",
             "b.dissolve_medium_in_sample_b",
-            "image:2"
-          ]
-        },
-        {
-          "section": [
             "when_medium_dissolved",
-            "image:3"
+            "image:2"
           ]
         },
         {
@@ -7790,13 +7785,8 @@
           "section": [
             "a.dissolve_medium_in_sample_a",
             "b.dissolve_medium_in_sample_b",
-            "image:2"
-          ]
-        },
-        {
-          "section": [
             "when_medium_dissolved",
-            "image:3"
+            "image:2"
           ]
         },
         {

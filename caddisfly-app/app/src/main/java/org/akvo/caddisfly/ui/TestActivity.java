@@ -359,7 +359,7 @@ public class TestActivity extends BaseActivity {
 
             this.setResult(Activity.RESULT_OK, intent);
             finish();
-        } else {
+        } else if (resultCode == Activity.RESULT_FIRST_USER) {
             finish();
         }
     }

@@ -287,7 +287,7 @@ public class CbtActivity extends BaseActivity
     }
 
     public void onCloseClick(View view) {
-        setResult(Activity.RESULT_CANCELED, new Intent());
+        setResult(Activity.RESULT_FIRST_USER, new Intent());
         finish();
     }
 
