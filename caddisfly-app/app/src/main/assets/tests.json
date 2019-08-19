@@ -7675,7 +7675,6 @@
           "section": [
             "a.dissolve_medium_in_sample_a",
             "b.dissolve_medium_in_sample_b",
-            "when_medium_dissolved",
             "image:2"
           ]
         },
@@ -7785,7 +7784,6 @@
           "section": [
             "a.dissolve_medium_in_sample_a",
             "b.dissolve_medium_in_sample_b",
-            "when_medium_dissolved",
             "image:2"
           ]
         },
@@ -7862,6 +7860,262 @@
         },
         {
           "id": 3,
+          "name": "string:confidenceInterval"
+        }
+      ]
+    },
+    {
+      "name": "Water - E.coli + Total Coliform",
+      "subtype": "cbt",
+      "uuid": "c43b7f5e-c5e3-438a-b4d9-bf80d7197176",
+      "brand": "Aquagenx CBT",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "100",
+      "ranges": "0,100,0,100",
+      "brandUrl": "www.aquagenx.com",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "prepare_area_put_on_gloves",
+            "collect_100ml_water_sample. avoid_touching",
+            "open_growth_medium",
+            "image:1"
+          ]
+        },
+        {
+          "section": [
+            "dissolve_medium_in_sample_ECTC",
+            "image:2"
+          ]
+        },
+        {
+          "section": [
+            "label_compartment_bag",
+            "tear_perforated_seam. rub_sides_of_compartment",
+            "slowly_pour_sample_into_bag. fill_evenly_across_bag.",
+            "image:4"
+          ]
+        },
+        {
+          "section": [
+            "attach_seal_clip. snap_rod_shaped",
+            "image:5"
+          ]
+        },
+        {
+          "section": [
+            "roll_fold_bag. close_top_of_bag",
+            "image:6"
+          ]
+        },
+        {
+          "section": [
+            "let_incubate",
+            "include:incubation_table"
+          ]
+        }
+      ],
+      "instructions2": [
+        {
+          "section": [
+            "take_photo_of_incubated",
+            "/<photo>"
+          ]
+        },
+        {
+          "section": [
+            "change_colors_to_match. click_compartments_to_change",
+            "/note_blue_green_specks",
+            "image:8"
+          ]
+        },
+        {
+          "section": [
+            "take_photo_of_incubated_TC",
+            "/<photo>"
+          ]
+        },
+        {
+          "section": [
+            "change_colors_to_match. click_compartments_to_change_TC",
+            "/note_blue_green_specks",
+            "image:8"
+          ]
+        },
+        {
+          "section": [
+            "/<input>"
+          ]
+        },
+        {
+          "section": [
+            "/<result>"
+          ]
+        },
+        {
+          "section": [
+            "/<b>round_off_test</b>",
+            "1.add_free_chlorine",
+            "2.dispose_contents_bag",
+            "3.retain_plastic_seal_reuse"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "string:health_risk_category"
+        },
+        {
+          "id": 2,
+          "name": "MPN",
+          "unit": "MPN/100ml",
+          "range": "0-100"
+        },
+        {
+          "id": 3,
+          "name": "string:confidenceInterval"
+        },
+        {
+          "id": 4,
+          "name": "MPN",
+          "unit": "MPN/100ml",
+          "range": "0-100"
+        },
+        {
+          "id": 5,
+          "name": "string:confidenceInterval"
+        }
+      ]
+    },
+    {
+      "name": "Water - E.coli + Total Coliform",
+      "subtype": "cbt",
+      "uuid": "a0467617-cbeb-4c7f-9610-ac22c9afa0ab",
+      "brand": "Aquagenx CBT",
+      "imageScale": "centerCrop",
+      "sampleQuantity": "10",
+      "ranges": "0,1000,0,1000",
+      "brandUrl": "www.aquagenx.com",
+      "hasImage": true,
+      "instructions": [
+        {
+          "section": [
+            "prepare_area_put_on_gloves",
+            "collect_10ml_water_sample. avoid_touching",
+            "add_90ml_distilled_water",
+            "image:cbt_dilution"
+          ]
+        },
+        {
+          "section": [
+            "open_growth_medium",
+            "image:1"
+          ]
+        },
+        {
+          "section": [
+            "dissolve_medium_in_sample_ECTC",
+            "image:2"
+          ]
+        },
+        {
+          "section": [
+            "label_compartment_bag",
+            "tear_perforated_seam. rub_sides_of_compartment",
+            "slowly_pour_sample_into_bag. fill_evenly_across_bag.",
+            "image:4"
+          ]
+        },
+        {
+          "section": [
+            "attach_seal_clip. snap_rod_shaped",
+            "image:5"
+          ]
+        },
+        {
+          "section": [
+            "roll_fold_bag. close_top_of_bag",
+            "image:6"
+          ]
+        },
+        {
+          "section": [
+            "let_incubate",
+            "include:incubation_table"
+          ]
+        }
+      ],
+      "instructions2": [
+        {
+          "section": [
+            "take_photo_of_incubated",
+            "/<photo>"
+          ]
+        },
+        {
+          "section": [
+            "change_colors_to_match. click_compartments_to_change",
+            "/note_blue_green_specks",
+            "image:8"
+          ]
+        },
+        {
+          "section": [
+            "take_photo_of_incubated_TC",
+            "/<photo>"
+          ]
+        },
+        {
+          "section": [
+            "change_colors_to_match. click_compartments_to_change_TC",
+            "/note_blue_green_specks",
+            "image:8"
+          ]
+        },
+        {
+          "section": [
+            "/<input>"
+          ]
+        },
+        {
+          "section": [
+            "/<result>"
+          ]
+        },
+        {
+          "section": [
+            "/<b>round_off_test</b>",
+            "1.add_free_chlorine",
+            "2.dispose_contents_bag",
+            "3.retain_plastic_seal_reuse"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "string:recreational_health_risk_category"
+        },
+        {
+          "id": 2,
+          "name": "MPN",
+          "unit": "MPN/100ml",
+          "range": "0-1000"
+        },
+        {
+          "id": 3,
+          "name": "string:confidenceInterval"
+        },
+        {
+          "id": 4,
+          "name": "MPN",
+          "unit": "MPN/100ml",
+          "range": "0-1000"
+        },
+        {
+          "id": 5,
           "name": "string:confidenceInterval"
         }
       ]
