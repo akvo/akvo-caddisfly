@@ -62,7 +62,7 @@
         </ScrollView>
 
         <Button
-            android:id="@+id/buttonDone"
+            android:id="@+id/buttonSubmit"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
             android:enabled="true"
-            android:onClick="onSendResults"
+            android:onClick="onSubmitClick"
             android:text="@string/submitResult"
             android:theme="?primaryButtonStyle"
             android:visibility="gone" />
@@ -103,21 +103,6 @@
             android:enabled="true"
             android:onClick="onStartTest"
             android:text="@string/start"
-            android:theme="?primaryButtonStyle"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/buttonSubmit"
-            style="@style/Button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/scrollView"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:enabled="true"
-            android:onClick="onSubmitClick"
-            android:text="@string/submitResult"
             android:theme="?primaryButtonStyle"
             android:visibility="gone" />
     </RelativeLayout>

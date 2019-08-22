@@ -7932,6 +7932,11 @@
         },
         {
           "section": [
+            "/<input>"
+          ]
+        },
+        {
+          "section": [
             "take_photo_of_incubated_TC",
             "/<photo>"
           ]
@@ -7946,19 +7951,6 @@
         {
           "section": [
             "/<input>"
-          ]
-        },
-        {
-          "section": [
-            "/<result>"
-          ]
-        },
-        {
-          "section": [
-            "/<b>round_off_test</b>",
-            "1.add_free_chlorine",
-            "2.dispose_contents_bag",
-            "3.retain_plastic_seal_reuse"
           ]
         }
       ],
@@ -8063,6 +8055,11 @@
         },
         {
           "section": [
+            "/<input>"
+          ]
+        },
+        {
+          "section": [
             "take_photo_of_incubated_TC",
             "/<photo>"
           ]
@@ -8077,19 +8074,6 @@
         {
           "section": [
             "/<input>"
-          ]
-        },
-        {
-          "section": [
-            "/<result>"
-          ]
-        },
-        {
-          "section": [
-            "/<b>round_off_test</b>",
-            "1.add_free_chlorine",
-            "2.dispose_contents_bag",
-            "3.retain_plastic_seal_reuse"
           ]
         }
       ],

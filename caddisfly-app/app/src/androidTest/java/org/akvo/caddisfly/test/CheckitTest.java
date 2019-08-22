@@ -65,6 +65,7 @@ import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
 
@@ -237,7 +238,15 @@ public class CheckitTest {
 
         sleep(500);
 
-        onView(withText(R.string.submitResult)).perform(click());
+        ViewInteraction submitButton = onView(
+                allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                2),
+                        isDisplayed()));
+        submitButton.perform(click());
 
         mIntentsRule.finishActivity();
 

@@ -84,9 +84,9 @@ public class CbtTest {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
 
-            for (int i = 0; i < 5; i++) {
-                mDevice.pressBack();
-            }
+//            for (int i = 0; i < 5; i++) {
+//                mDevice.pressBack();
+//            }
         }
     }
 
@@ -135,11 +135,13 @@ public class CbtTest {
         sleep(1000);
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_prepare), withText(R.string.next),
+                allOf(withId(R.id.button_phase_2), withText(R.string.submitResult),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        sleep(3000);
+        sleep(1000);
+
+        nextPage(2);
 
         mDevice.waitForIdle();
 
@@ -199,28 +201,6 @@ public class CbtTest {
                         isDisplayed()));
         textView2.check(matches(withText("MPN/100ml")));
 
-        ViewInteraction textView4 = onView(
-                allOf(withId(R.id.textResult3), withText("9435.1"),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult2),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                2)),
-                                0),
-                        isDisplayed()));
-        textView4.check(matches(withText("9435.1")));
-
-        ViewInteraction textView5 = onView(
-                allOf(withText(R.string.confidenceInterval),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult2),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                2)),
-                                1),
-                        isDisplayed()));
-        textView5.check(matches(withText(R.string.confidenceInterval)));
-
         ViewInteraction textView6 = onView(
                 allOf(withId(R.id.textResult1), withText(risk2),
                         childAtPosition(
@@ -232,30 +212,22 @@ public class CbtTest {
                         isDisplayed()));
         textView6.check(matches(withText(risk2)));
 
-        ViewInteraction button = onView(
-                allOf(withId(R.id.buttonSubmitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fragment_container),
-                                        0),
-                                3),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
-
         onView(withText(R.string.result)).check(matches(isDisplayed()));
+
+        nextPage();
 
         final String result1 = getString(R.string.health_risk_category);
         final String interval = getString(R.string.confidenceInterval);
 
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.buttonSubmitResult), withText(R.string.submitResult),
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.fragment_container),
-                                        0),
-                                3),
+                                        withId(R.id.viewPager),
+                                        1),
+                                2),
                         isDisplayed()));
-        appCompatButton4.perform(click());
+        appCompatButton3.perform(click());
 
         mIntentsRule.finishActivity();
 
@@ -280,11 +252,13 @@ public class CbtTest {
         sleep(1000);
 
         ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_prepare), withText(R.string.next),
+                allOf(withId(R.id.button_phase_2), withText(R.string.submitResult),
                         isDisplayed()));
         appCompatButton2.perform(click());
 
-        sleep(3000);
+        sleep(1000);
+
+        nextPage(2);
 
         mDevice.waitForIdle();
 
@@ -308,8 +282,6 @@ public class CbtTest {
         onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
         onView(withText(">1000")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
-        onView(withText("94351.0")).check(matches(isDisplayed()));
-        onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -329,8 +301,6 @@ public class CbtTest {
         onView(withText(risk2)).check(matches(isDisplayed()));
         onView(withText("483")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
-        onView(withText("3519.1")).check(matches(isDisplayed()));
-        onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -349,8 +319,6 @@ public class CbtTest {
         onView(withText(risk2)).check(matches(isDisplayed()));
         onView(withText("58")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
-        onView(withText("168.7")).check(matches(isDisplayed()));
-        onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -358,7 +326,7 @@ public class CbtTest {
 
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
 
-        sleep(3000);
+        sleep(1000);
 
         mDevice.waitForIdle();
 
@@ -367,26 +335,27 @@ public class CbtTest {
         onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
         onView(withText(">1000")).check(matches(isDisplayed()));
         onView(withText("MPN/100ml")).check(matches(isDisplayed()));
-        onView(withText("94351.0")).check(matches(isDisplayed()));
-        onView(withText(R.string.confidenceInterval)).check(matches(isDisplayed()));
+
+        nextPage();
+
+        sleep(5000);
 
         final String result1 = getString(R.string.recreational_health_risk_category);
         final String interval = getString(R.string.confidenceInterval);
 
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.buttonSubmitResult), withText(R.string.submitResult),
+        ViewInteraction appCompatButton3 = onView(
+                allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.fragment_container),
-                                        0),
-                                3),
+                                        withId(R.id.viewPager),
+                                        1),
+                                2),
                         isDisplayed()));
-        appCompatButton4.perform(click());
-
+        appCompatButton3.perform(click());
 
         mIntentsRule.finishActivity();
 
-        sleep(2000);
+        sleep(1000);
 
         assertNotNull(mDevice.findObject(By.text(result1 + ": " + "Very Unsafe ")));
         assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")));

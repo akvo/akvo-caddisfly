@@ -274,7 +274,7 @@ public class SwatchSelectTestActivity extends BaseActivity
         }
     }
 
-    public void onSendResults(View view) {
+    public void onSubmitClick(View view) {
         sendResults();
     }
 
@@ -345,7 +345,7 @@ public class SwatchSelectTestActivity extends BaseActivity
             View view = fragmentInstructionBinding.getRoot();
 
             if (showOk) {
-                view.findViewById(R.id.buttonDone).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.buttonSubmit).setVisibility(View.VISIBLE);
             }
 
             layout = view.findViewById(R.id.layout_results);

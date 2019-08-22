@@ -327,7 +327,7 @@ public class StripTestActivity extends BaseActivity {
         invalidateOptionsMenu();
     }
 
-    public void onSendResults(View view) {
+    public void onSubmitClick(View view) {
         sendResults();
     }
 

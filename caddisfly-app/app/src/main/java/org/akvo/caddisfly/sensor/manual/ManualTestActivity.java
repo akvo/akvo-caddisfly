@@ -412,36 +412,40 @@ public class ManualTestActivity extends BaseActivity
 
         final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
 
-        String resultImagePath = photoPath.getAbsolutePath() + File.separator +
-                resultPhotoFragment.getImageFileName();
+        String resultImagePath = "";
+        String imageFileName = "";
 
-        String imageFileName = resultPhotoFragment.getImageFileName();
+        if (resultPhotoFragment != null) {
+            resultImagePath = photoPath.getAbsolutePath() + File.separator +
+                    resultPhotoFragment.getImageFileName();
+            imageFileName = resultPhotoFragment.getImageFileName();
 
-        if (result1PhotoFragment != null) {
-            String result1ImagePath = photoPath.getAbsolutePath() + File.separator +
-                    result1PhotoFragment.getImageFileName();
-            Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
-            Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
-            Bitmap resultBitmap;
-            if (bitmap1 != null && bitmap2 != null) {
+            if (result1PhotoFragment != null) {
+                String result1ImagePath = photoPath.getAbsolutePath() + File.separator +
+                        result1PhotoFragment.getImageFileName();
+                Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
+                Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
+                Bitmap resultBitmap;
+                if (bitmap1 != null && bitmap2 != null) {
 
-                if (Math.abs(bitmap1.getWidth() - bitmap2.getWidth()) > 50) {
-                    bitmap2 = BitmapUtils.RotateBitmap(bitmap2, 90);
+                    if (Math.abs(bitmap1.getWidth() - bitmap2.getWidth()) > 50) {
+                        bitmap2 = BitmapUtils.RotateBitmap(bitmap2, 90);
+                    }
+
+                    if (bitmap1.getWidth() > bitmap1.getHeight()) {
+                        resultBitmap = concatTwoBitmapsHorizontal(bitmap1, bitmap2);
+                    } else {
+                        resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
+                    }
+
+                    //noinspection ResultOfMethodCallIgnored
+                    new File(result1ImagePath).delete();
+                    //noinspection ResultOfMethodCallIgnored
+                    new File(resultImagePath).delete();
+                    imageFileName = UUID.randomUUID().toString() + ".jpg";
+                    resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+                    ImageUtil.saveImage(resultBitmap, resultImagePath);
                 }
-
-                if (bitmap1.getWidth() > bitmap1.getHeight()) {
-                    resultBitmap = concatTwoBitmapsHorizontal(bitmap1, bitmap2);
-                } else {
-                    resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
-                }
-
-                //noinspection ResultOfMethodCallIgnored
-                new File(result1ImagePath).delete();
-                //noinspection ResultOfMethodCallIgnored
-                new File(resultImagePath).delete();
-                imageFileName = UUID.randomUUID().toString() + ".jpg";
-                resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
-                ImageUtil.saveImage(resultBitmap, resultImagePath);
             }
         }
 
@@ -539,7 +543,7 @@ public class ManualTestActivity extends BaseActivity
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
 
-    public void onSendResults(View view) {
+    public void onSubmitClick(View view) {
         sendResults();
     }
 
@@ -589,7 +593,7 @@ public class ManualTestActivity extends BaseActivity
             View view = fragmentInstructionBinding.getRoot();
 
             if (showOk) {
-                view.findViewById(R.id.buttonDone).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.buttonSubmit).setVisibility(View.VISIBLE);
             }
             return view;
         }

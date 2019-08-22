@@ -254,6 +254,15 @@ public class CbtActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            pageBack();
+        }
+    }
+
     /**
      * Show CBT incubation times instructions in a dialog.
      *

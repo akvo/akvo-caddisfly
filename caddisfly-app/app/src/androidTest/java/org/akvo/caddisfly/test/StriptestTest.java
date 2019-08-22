@@ -52,9 +52,9 @@ public class StriptestTest {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
 
-            for (int i = 0; i < 5; i++) {
-                mDevice.pressBack();
-            }
+//            for (int i = 0; i < 5; i++) {
+//                mDevice.pressBack();
+//            }
         }
     }
 
@@ -117,13 +117,15 @@ public class StriptestTest {
 
         onView(withText(R.string.skip)).check(doesNotExist());
 
-        onView(allOf(withId(R.id.buttonStart), withText("Start"),
-                childAtPosition(
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.buttonStart), withText("Start"),
                         childAtPosition(
-                                withId(R.id.viewPager),
-                                1),
-                        3),
-                isDisplayed())).perform(click());
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                4),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
 
         sleep(36000);
 
@@ -133,15 +135,15 @@ public class StriptestTest {
 
         onView(withText(R.string.skip)).check(doesNotExist());
 
-        ViewInteraction appCompatButton5 = onView(
+        ViewInteraction buttonStart = onView(
                 allOf(withId(R.id.buttonStart), withText("Start"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.viewPager),
                                         1),
-                                3),
+                                4),
                         isDisplayed()));
-        appCompatButton5.perform(click());
+        buttonStart.perform(click());
 
         sleep(35000);
 
@@ -169,7 +171,7 @@ public class StriptestTest {
         onView(withText("pH")).check(matches(isDisplayed()));
         onView(withText("6.2")).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+        onView(allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
                 childAtPosition(
                         allOf(withId(R.id.layoutFooter),
                                 childAtPosition(
@@ -214,13 +216,15 @@ public class StriptestTest {
             }
         }
 
-        onView(allOf(withId(R.id.buttonStart), withText("Start"),
-                childAtPosition(
+        ViewInteraction buttonStart = onView(
+                allOf(withId(R.id.buttonStart), withText("Start"),
                         childAtPosition(
-                                withId(R.id.viewPager),
-                                1),
-                        3),
-                isDisplayed())).perform(click());
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                4),
+                        isDisplayed()));
+        buttonStart.perform(click());
 
         sleep(65000);
 
@@ -232,7 +236,7 @@ public class StriptestTest {
         onView(withText("Nitrite Nitrogen")).check(matches(isDisplayed()));
         onView(withText("0.03 mg/l")).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+        onView(allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
                 childAtPosition(
                         allOf(withId(R.id.layoutFooter),
                                 childAtPosition(
@@ -275,13 +279,15 @@ public class StriptestTest {
             }
         }
 
-        onView(allOf(withId(R.id.buttonStart), withText("Start"),
-                childAtPosition(
+        ViewInteraction buttonStart = onView(
+                allOf(withId(R.id.buttonStart), withText("Start"),
                         childAtPosition(
-                                withId(R.id.viewPager),
-                                1),
-                        3),
-                isDisplayed())).perform(click());
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                4),
+                        isDisplayed()));
+        buttonStart.perform(click());
 
         sleep(5000);
 
@@ -291,7 +297,7 @@ public class StriptestTest {
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+        onView(allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
                 childAtPosition(
                         allOf(withId(R.id.layoutFooter),
                                 childAtPosition(
@@ -326,13 +332,15 @@ public class StriptestTest {
             }
         }
 
-        onView(allOf(withId(R.id.buttonStart), withText("Start"),
-                childAtPosition(
+        ViewInteraction buttonStart = onView(
+                allOf(withId(R.id.buttonStart), withText("Start"),
                         childAtPosition(
-                                withId(R.id.viewPager),
-                                1),
-                        3),
-                isDisplayed())).perform(click());
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                4),
+                        isDisplayed()));
+        buttonStart.perform(click());
 
         sleep(60000);
 
@@ -342,7 +350,7 @@ public class StriptestTest {
         onView(withText("Nitrite")).check(matches(isDisplayed()));
         onView(withText("1.85 mg/l")).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+        onView(allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
                 childAtPosition(
                         allOf(withId(R.id.layoutFooter),
                                 childAtPosition(
@@ -384,13 +392,15 @@ public class StriptestTest {
             }
         }
 
-        onView(allOf(withId(R.id.buttonStart), withText("Start"),
-                childAtPosition(
+        ViewInteraction buttonStart = onView(
+                allOf(withId(R.id.buttonStart), withText("Start"),
                         childAtPosition(
-                                withId(R.id.viewPager),
-                                1),
-                        3),
-                isDisplayed())).perform(click());
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                4),
+                        isDisplayed()));
+        buttonStart.perform(click());
 
         sleep(35000);
 
@@ -400,7 +410,7 @@ public class StriptestTest {
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.buttonDone), withText("Submit Result"),
+        onView(allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
                 childAtPosition(
                         allOf(withId(R.id.layoutFooter),
                                 childAtPosition(

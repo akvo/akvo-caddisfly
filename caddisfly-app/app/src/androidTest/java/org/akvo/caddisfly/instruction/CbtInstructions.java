@@ -26,8 +26,6 @@ import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.StringRes;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -46,7 +44,6 @@ import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.ui.TestActivity;
 import org.akvo.caddisfly.util.TestHelper;
 import org.akvo.caddisfly.util.TestUtil;
-import org.akvo.caddisfly.viewmodel.TestListViewModel;
 import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -55,9 +52,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Random;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -67,20 +62,22 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
+import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -122,6 +119,21 @@ public class CbtInstructions {
         textView3.check(matches(withText(resourceId)));
     }
 
+    @SuppressWarnings("SameParameterValue")
+    private static void CheckTextInTable(@StringRes int resId1, @StringRes int resId2) {
+
+        String text = getString(resId1) + " " + getString((resId2));
+        ViewInteraction textView3 = onView(
+                allOf(withText(text),
+                        childAtPosition(
+                                childAtPosition(
+                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
+                                        0),
+                                1),
+                        isDisplayed()));
+        textView3.check(matches(withText(text)));
+    }
+
 //    private static void CheckTextInTable(String text) {
 //        ViewInteraction textView3 = onView(
 //                allOf(withText(text),
@@ -161,60 +173,19 @@ public class CbtInstructions {
                         isDisplayed()));
         textView.check(matches(withText("www.aquagenx.com")));
 
-        ViewInteraction button = onView(
-                allOf(withId(R.id.button_prepare),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                0),
-                        isDisplayed()));
-        button.check(matches(isDisplayed()));
+        onView(withText(R.string.prepare_sample)).check(matches(isDisplayed()));
 
-        onView(allOf(withId(R.id.textToolbarTitle),
-                childAtPosition(
-                        allOf(withId(R.id.toolbar),
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        0)),
-                        1),
-                isDisplayed()));
-//        textView2.check(matches(withText("E.coli – Aquagenx CBT")));
+        onView(withText("Water - E.coli")).check(matches(isDisplayed()));
 
-        ViewInteraction button2 = onView(
-                allOf(withId(R.id.button_phase_2),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                1),
-                        isDisplayed()));
-        button2.check(matches(isDisplayed()));
+        onView(withText(R.string.submitResult)).check(matches(isDisplayed()));
 
-        ViewInteraction button3 = onView(
-                allOf(withId(R.id.button_phase_2),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                        1),
-                                1),
-                        isDisplayed()));
-        button3.check(matches(isDisplayed()));
+        onView(withText(R.string.prepare_sample)).perform(click());
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_phase_2),
-                        withText(R.string.instructions),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.LinearLayout")),
-                                        1),
-                                1),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
+        onView(withId(R.id.image_pageLeft)).check(matches(not(isDisplayed())));
 
         CheckTextInTable(R.string.prepare_area_put_on_gloves);
 
-//        CheckTextInTable(R.string.open_growth_medium_sachet);
+        CheckTextInTable(R.string.open_growth_medium);
 
         onView(withContentDescription("1")).check(matches(hasDrawable()));
 
@@ -237,39 +208,23 @@ public class CbtInstructions {
                         0),
                 isDisplayed()));
 
-        ViewInteraction appCompatImageView = onView(
-                allOf(withId(R.id.image_pageRight),
-                        childAtPosition(
-                                allOf(withId(R.id.layout_footer),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.RelativeLayout")),
-                                                1)),
-                                2),
-                        isDisplayed()));
-        appCompatImageView.perform(click());
-
-//        CheckTextInTable(R.string.dissolve_medium_in_sample);
+        nextPage();
 
         onView(withContentDescription("2")).check(matches(hasDrawable()));
 
-        TestUtil.nextPage();
+        CheckTextInTable(R.string.dissolve_medium_in_sample_a);
 
-//        CheckTextInTable(getString(R.string.medium_dissolves)
-//                + " " + getString(R.string.when_medium_dissolved));
+        CheckTextInTable(R.string.dissolve_medium_in_sample_b);
 
-        onView(withContentDescription("3")).check(matches(hasDrawable()));
-
-        TestUtil.nextPage();
-
-        CheckTextInTable(R.string.label_compartment_bag);
+        nextPage();
 
         onView(withContentDescription("4")).check(matches(hasDrawable()));
 
-        TestUtil.nextPage(3);
+        CheckTextInTable(R.string.label_compartment_bag);
+
+        nextPage(3);
 
         CheckTextInTable(R.string.let_incubate);
-
-        onView(withContentDescription("7")).check(matches(hasDrawable()));
 
         onView(withText(R.string.read_instructions)).perform(click());
 
@@ -286,47 +241,79 @@ public class CbtInstructions {
                                 3)));
         appCompatButton3.perform(scrollTo(), click());
 
-        TestUtil.nextPage();
+        onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
 
-        CheckTextInTable(R.string.take_photo_of_incubated);
+        onView(withId(R.id.image_pageRight)).check(matches(not(isDisplayed())));
 
-        onView(withContentDescription("8")).check(matches(hasDrawable()));
+        mDevice.waitForIdle();
 
-        mDevice.pressBack();
+        ViewInteraction appCompatButton4 = onView(
+                allOf(withId(R.id.buttonClose), withText("Close"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.viewPager),
+                                        1),
+                                3),
+                        isDisplayed()));
+        appCompatButton4.perform(click());
+
+        mDevice.waitForIdle();
+
+        clickExternalSourceButton(0);
 
         onView(withId(R.id.button_phase_2)).perform(click());
 
-        CheckTextInTable(R.string.prepare_area_put_on_gloves);
+        onView(withId(R.id.image_pageLeft)).check(matches(not(isDisplayed())));
 
-//        CheckTextInTable(R.string.open_growth_medium_sachet);
+        onView(withText(R.string.take_photo_of_incubated)).check(matches(isDisplayed()));
 
-        onView(withContentDescription("1")).check(matches(hasDrawable()));
+        nextPage();
 
-        TestUtil.nextPage();
+        onView(withContentDescription("8")).check(matches(hasDrawable()));
 
-//        CheckTextInTable(R.string.dissolve_medium_in_sample);
+        CheckTextInTable(R.string.change_colors_to_match, R.string.click_compartments_to_change);
 
-        onView(withContentDescription("2")).check(matches(hasDrawable()));
+        CheckTextInTable(R.string.note_blue_green_specks);
 
-        TestUtil.nextPage();
+        nextPage();
 
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withContentDescription(R.string.navigate_up),
-                        withParent(withId(R.id.toolbar)),
-                        isDisplayed()));
-        appCompatImageButton.perform(click());
+        onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()));
 
-        ViewInteraction button1 = onView(
-                allOf(withId(R.id.button_prepare),
+        onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.image_pageRight)).check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText("Low Risk")).check(matches(isDisplayed()));
+
+        onView(withText("Safe")).check(matches(isDisplayed()));
+
+        mDevice.pressBack();
+
+        sleep(500);
+
+        onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()));
+
+        nextPage();
+
+        onView(withText(R.string.next)).perform(click());
+
+        CheckTextInTable(R.string.dispose_contents_bag);
+
+        onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
+
+        onView(withId(R.id.image_pageRight)).check(matches(not(isDisplayed())));
+
+        ViewInteraction submitButton = onView(
+                allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
                         childAtPosition(
                                 childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
+                                        withId(R.id.viewPager),
                                         1),
-                                0),
+                                2),
                         isDisplayed()));
-        button1.check(matches(isDisplayed()));
-
-        mActivityTestRule.finishActivity();
+        submitButton.perform(click());
     }
 
     @Test
@@ -462,6 +449,7 @@ public class CbtInstructions {
         return pages + 1;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     private int navigateToCbtTest2(String id, int startIndex) {
 
         sleep(1000);
@@ -495,7 +483,7 @@ public class CbtInstructions {
                                         childAtPosition(
                                                 withId(R.id.viewPager),
                                                 1),
-                                        5),
+                                        2),
                                 isDisplayed()));
                 appCompatButton4.perform(click());
 
@@ -506,87 +494,87 @@ public class CbtInstructions {
         return pages + 1;
     }
 
-    @Test
-    @RequiresDevice
-    public void testInstructionsAll() {
+//    @Test
+//    @RequiresDevice
+//    public void testInstructionsAll() {
+//
+//        final TestListViewModel viewModel =
+//                ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
+//
+//        List<TestInfo> testList = viewModel.getTests(TestType.CBT);
+//
+//        for (int i = 0; i < TestConstants.CBT_TESTS_COUNT; i++) {
+//            TestInfo testInfo = testList.get(i);
+//
+//            String id = testInfo.getUuid();
+//            id = id.substring(id.lastIndexOf("-") + 1);
+//
+//            int pages = navigateToTest(i, id);
+//
+//            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
+//
+//            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
+//
+//            mDevice.pressBack();
+//
+//            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
+//        }
+//
+//        mActivityTestRule.finishActivity();
+//
+//        Log.d("Caddisfly", jsArrayString.toString());
+//        Log.d("Caddisfly", listString.toString());
+//
+//    }
 
-        final TestListViewModel viewModel =
-                ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
-
-        List<TestInfo> testList = viewModel.getTests(TestType.CBT);
-
-        for (int i = 0; i < TestConstants.CBT_TESTS_COUNT; i++) {
-            TestInfo testInfo = testList.get(i);
-
-            String id = testInfo.getUuid();
-            id = id.substring(id.lastIndexOf("-") + 1);
-
-            int pages = navigateToTest(i, id);
-
-            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
-
-            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
-
-            mDevice.pressBack();
-
-            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-        }
-
-        mActivityTestRule.finishActivity();
-
-        Log.d("Caddisfly", jsArrayString.toString());
-        Log.d("Caddisfly", listString.toString());
-
-    }
-
-    private int navigateToTest(int index, String id) {
-
-        gotoSurveyForm();
-
-        TestUtil.nextSurveyPage("Coliforms");
-
-        clickExternalSourceButton(index);
-
-        mDevice.waitForIdle();
-
-        sleep(1000);
-
-        takeScreenshot(id, -1);
-
-        mDevice.waitForIdle();
-
-        onView(withText(R.string.instructions)).perform(click());
-
-        int pages = 0;
-        for (int i = 0; i < 17; i++) {
-            try {
-                takeScreenshot(id, pages);
-
-                pages++;
-
-                try {
-                    onView(withId(R.id.button_phase_2)).perform(click());
-                    sleep(600);
-                    takeScreenshot(id, pages);
-                    pages++;
-                    sleep(600);
-                    mDevice.pressBack();
-                } catch (Exception ignore) {
-                }
-
-                onView(withId(R.id.image_pageRight)).perform(click());
-
-            } catch (Exception e) {
-                sleep(600);
-                Random random = new Random(Calendar.getInstance().getTimeInMillis());
-                if (random.nextBoolean()) {
-                    Espresso.pressBack();
-                } else {
-                    mDevice.pressBack();
-                }
-                break;
-            }
-        }
-        return pages;
-    }
+//    private int navigateToTest(int index, String id) {
+//
+//        gotoSurveyForm();
+//
+//        TestUtil.nextSurveyPage("Coliforms");
+//
+//        clickExternalSourceButton(index);
+//
+//        mDevice.waitForIdle();
+//
+//        sleep(1000);
+//
+//        takeScreenshot(id, -1);
+//
+//        mDevice.waitForIdle();
+//
+//        onView(withText(R.string.prepare_sample)).perform(click());
+//
+//        int pages = 0;
+//        for (int i = 0; i < 17; i++) {
+//            try {
+//                takeScreenshot(id, pages);
+//
+//                pages++;
+//
+//                try {
+//                    onView(withId(R.id.button_phase_2)).perform(click());
+//                    sleep(600);
+//                    takeScreenshot(id, pages);
+//                    pages++;
+//                    sleep(600);
+//                    mDevice.pressBack();
+//                } catch (Exception ignore) {
+//                }
+//
+//                onView(withId(R.id.image_pageRight)).perform(click());
+//
+//            } catch (Exception e) {
+//                sleep(600);
+//                Random random = new Random(Calendar.getInstance().getTimeInMillis());
+//                if (random.nextBoolean()) {
+//                    Espresso.pressBack();
+//                } else {
+//                    mDevice.pressBack();
+//                }
+//                break;
+//            }
+//        }
+//        return pages;
+//    }
 }

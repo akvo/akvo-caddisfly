@@ -170,7 +170,7 @@ public class StriptestInstructions {
                                 childAtPosition(
                                         withId(R.id.viewPager),
                                         1),
-                                3),
+                                4),
                         isDisplayed()));
         appCompatButton4.perform(click());
 
@@ -183,7 +183,7 @@ public class StriptestInstructions {
         onView(withText("pH")).check(matches(isDisplayed()));
 
         ViewInteraction appCompatButton5 = onView(
-                allOf(withId(R.id.buttonDone), withText(R.string.submitResult),
+                allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
                         childAtPosition(
                                 allOf(withId(R.id.layoutFooter),
                                         childAtPosition(
@@ -260,7 +260,7 @@ public class StriptestInstructions {
                                 childAtPosition(
                                         withId(R.id.viewPager),
                                         1),
-                                3),
+                                4),
                         isDisplayed())).perform(click());
 
                 if (("411a4093f6b6").contains(id)) {
@@ -278,7 +278,7 @@ public class StriptestInstructions {
                                     childAtPosition(
                                             withId(R.id.viewPager),
                                             1),
-                                    3),
+                                    4),
                             isDisplayed())).perform(click());
                 }
 

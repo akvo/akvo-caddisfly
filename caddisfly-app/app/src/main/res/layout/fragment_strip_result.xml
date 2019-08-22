@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
-    tools:context=".sensor.striptest.ui.ResultFragment">
+    tools:context=".sensor.striptest.ui.StripTestActivity">
 
     <ScrollView
         android:id="@+id/resultScrollView"
@@ -48,13 +48,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/buttonDone"
+            android:id="@+id/buttonSubmit"
             style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp"
-            android:onClick="onSendResults"
+            android:onClick="onSubmitClick"
             android:text="@string/submitResult"
             android:theme="?primaryButtonStyle"
             android:visibility="visible" />

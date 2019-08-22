@@ -62,6 +62,7 @@ import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.Matchers.allOf;
@@ -125,7 +126,15 @@ public class ManualInstructions {
 
             takeScreenshot(id, ++pages);
 
-            onView(withText(R.string.submitResult)).perform(click());
+            ViewInteraction submitButton = onView(
+                    allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
+                            childAtPosition(
+                                    childAtPosition(
+                                            withId(R.id.viewPager),
+                                            1),
+                                    2),
+                            isDisplayed()));
+            submitButton.perform(click());
 
             mDevice.pressBack();
 
