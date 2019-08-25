@@ -17,75 +17,67 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="20dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TableRow
+    <data>
+
+        <variable
+            name="testInfoViewModel"
+            type="org.akvo.caddisfly.viewmodel.TestInfoViewModel" />
+
+        <variable
+            name="instruction"
+            type="org.akvo.caddisfly.model.Instruction" />
+
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="20dp"
-        android:clickable="false"
-        android:columnCount="2"
-        android:focusable="false">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            style="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textIsSelectable="true"
+            app:content="@{instruction}" />
 
         <TextView
-            android:id="@+id/textSerial"
+            android:id="@+id/textName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/fluoride"
+            android:textSize="@dimen/default_text_size"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageResult"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:background="@drawable/view_border"
+            android:contentDescription="@string/result" />
+
+        <Button
+            android:id="@+id/takePhoto"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="0dp"
-            android:paddingEnd="3dp"
-            android:textColor="#696969"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="1." />
-
-        <TextView
-            android:id="@+id/textInstruction"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:lineSpacingExtra="3dp"
-            android:paddingStart="2dp"
-            android:paddingTop="3dp"
-            android:paddingEnd="0dp"
-            android:paddingBottom="15dp"
-            android:text="@string/take_photo_of_result"
-            android:textSize="16sp" />
-
-    </TableRow>
-
-    <TextView
-        android:id="@+id/textName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_horizontal"
-        android:text="@string/fluoride"
-        android:textSize="@dimen/default_text_size"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/imageResult"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:background="@drawable/view_border"
-        android:contentDescription="@string/result" />
-
-    <Button
-        android:id="@+id/takePhoto"
-        style="@style/Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:text="@string/takePhoto"
-        android:theme="?primaryButtonStyle" />
-</LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="@string/takePhoto"
+            android:theme="?primaryButtonStyle" />
+    </LinearLayout>
+</layout>

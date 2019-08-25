@@ -44,6 +44,7 @@ public class CbtResultFragment extends BaseFragment {
     private LinearLayout layoutResult;
     private LinearLayout layoutResult1;
     private MpnValue mpnValue = null;
+    private String result = "00000";
 
     /**
      * Use this factory method to create a new instance of
@@ -76,21 +77,28 @@ public class CbtResultFragment extends BaseFragment {
     }
 
     public void setResult(String result, String sampleQuantity) {
+        this.result = result;
         mpnValue = TestConfigHelper.getMpnValueForKey(result, sampleQuantity);
         showResult();
     }
 
     private void showResult() {
-        String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
-                mpnValue.getRiskCategory()).toString().split("/");
+        if (getActivity() != null) {
+            String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
+                    mpnValue.getRiskCategory()).toString().split("/");
 
-        textResult.setText(results[0].trim());
-        if (results.length > 1) {
-            textResult1.setText(results[1].trim());
+            textResult.setText(results[0].trim());
+            if (results.length > 1) {
+                textResult1.setText(results[1].trim());
+            }
+
+            layoutResult.setBackgroundColor(mpnValue.getBackgroundColor1());
+            layoutResult1.setBackgroundColor(mpnValue.getBackgroundColor2());
+            textResult2.setText(mpnValue.getMpn());
         }
+    }
 
-        layoutResult.setBackgroundColor(mpnValue.getBackgroundColor1());
-        layoutResult1.setBackgroundColor(mpnValue.getBackgroundColor2());
-        textResult2.setText(mpnValue.getMpn());
+    public String getResult() {
+        return result;
     }
 }

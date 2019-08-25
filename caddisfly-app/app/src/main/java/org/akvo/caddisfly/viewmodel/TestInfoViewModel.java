@@ -86,7 +86,10 @@ public class TestInfoViewModel extends AndroidViewModel {
 
         for (int i = 0; i < instruction.section.size(); i++) {
             String text = instruction.section.get(i);
-            if (text.contains("include:incubation_table")) {
+            Matcher tag = Pattern.compile("~.*?~").matcher(text);
+            if (tag.find()) {
+                return;
+            } else if (text.contains("include:incubation_table")) {
 
                 LayoutInflater inflater = (LayoutInflater) linearLayout.getContext()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -95,7 +98,6 @@ public class TestInfoViewModel extends AndroidViewModel {
                     view = inflater.inflate(R.layout.incubation_table, linearLayout, false);
                     linearLayout.addView(view);
                 }
-
             } else if (text.contains("image:")) {
                 insertImage(linearLayout, context, size, displayMetrics, i, text);
             } else {

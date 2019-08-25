@@ -39,7 +39,6 @@ public final class InstructionHelper {
                                         ArrayList<Instruction> instructions, PageIndex pageIndex) {
         int instructionIndex = 1;
         int subSequenceIndex;
-        pageIndex.setSkipToIndex(testInstructions.size());
 
         String[] subSequenceNumbers = {"i", "ii", "iii"};
         boolean alphaSequence = false;
@@ -59,15 +58,17 @@ public final class InstructionHelper {
                     for (int i1 = 0; i1 < section.size(); i1++) {
                         String item = section.get(i1);
 
-                        if (item.contains("<photo>")) {
+                        if (item.contains("~photo~")) {
                             pageIndex.setPhotoIndex(i);
-                            pageIndex.setSkipToIndex(i);
-                        } else if (item.contains("<input>")) {
+                            if (pageIndex.getSkipToIndex() < 0) {
+                                pageIndex.setSkipToIndex(i);
+                            }
+                        } else if (item.contains("~input~")) {
                             pageIndex.setInputIndex(i);
                             if (pageIndex.getSkipToIndex() < 0) {
                                 pageIndex.setSkipToIndex(i);
                             }
-                        } else if (item.contains("<result>")) {
+                        } else if (item.contains("~result~")) {
                             pageIndex.setResultIndex(i);
                         }
 

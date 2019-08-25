@@ -67,8 +67,7 @@ public final class TestConfigHelper {
         }
 
         HashMap<String, MpnValue> mpnTable = loadMpnTable(fileName);
-
-        MpnValue mpnValue = mpnTable.get(key);
+        MpnValue mpnValue = mpnTable.get(key.replace("2", "1"));
 
         populateDisplayColors(mpnValue, fileName);
 

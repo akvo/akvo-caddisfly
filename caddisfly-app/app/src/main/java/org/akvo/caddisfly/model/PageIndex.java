@@ -1,25 +1,18 @@
 package org.akvo.caddisfly.model;
 
+import android.util.SparseArray;
+
 public class PageIndex {
-    private int photoIndex = -1;
-    private int inputIndex = -1;
+    private SparseArray<PageType> pages = new SparseArray<>();
     private int resultIndex = -1;
     private int skipToIndex = -1;
 
-    public int getPhotoIndex() {
-        return photoIndex;
+    public void setPhotoIndex(int index) {
+        pages.put(index, PageType.PHOTO);
     }
 
-    public void setPhotoIndex(int photoIndex) {
-        this.photoIndex = photoIndex;
-    }
-
-    public int getInputIndex() {
-        return inputIndex;
-    }
-
-    public void setInputIndex(int inputIndex) {
-        this.inputIndex = inputIndex;
+    public void setInputIndex(int index) {
+        pages.put(index, PageType.INPUT);
     }
 
     public int getResultIndex() {
@@ -36,5 +29,9 @@ public class PageIndex {
 
     public void setSkipToIndex(int skipToIndex) {
         this.skipToIndex = skipToIndex;
+    }
+
+    public PageType getType(int position) {
+        return pages.get(position);
     }
 }

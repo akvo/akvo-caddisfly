@@ -35,8 +35,9 @@ public class CompartmentBagFragment extends BaseFragment {
     private OnCompartmentBagSelectListener mListener;
     private String mKey = "";
 
-    public static CompartmentBagFragment newInstance(String key) {
+    public static CompartmentBagFragment newInstance(String key, int id) {
         CompartmentBagFragment fragment = new CompartmentBagFragment();
+        fragment.setFragmentId(id);
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, key);
         fragment.setArguments(args);
@@ -65,11 +66,15 @@ public class CompartmentBagFragment extends BaseFragment {
             mKey = customShapeButton.getKey();
 
             if (mListener != null) {
-                mListener.onCompartmentBagSelect(mKey);
+                mListener.onCompartmentBagSelect(mKey, getFragmentId());
             }
         });
 
         return view;
+    }
+
+    public String getKey() {
+        return mKey;
     }
 
     @Override
@@ -89,7 +94,11 @@ public class CompartmentBagFragment extends BaseFragment {
         mListener = null;
     }
 
+    public void setKey(String key) {
+        mKey = key;
+    }
+
     public interface OnCompartmentBagSelectListener {
-        void onCompartmentBagSelect(String key);
+        void onCompartmentBagSelect(String key, int fragmentId);
     }
 }

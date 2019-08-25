@@ -39,17 +39,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import androidx.databinding.DataBindingUtil;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.databinding.FragmentResultPhotoBinding;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -62,28 +64,27 @@ public class ResultPhotoFragment extends BaseFragment {
 
     private static final String ARG_INSTRUCTION = "resultInstruction";
     private static final String ARG_RESULT_NAME = "resultName";
-    private static final String ARG_RESULT_SERIAL = "resultSerial";
     private static final int MANUAL_TEST = 2;
     private OnPhotoTakenListener mListener;
     private String imageFileName = "";
     private String currentPhotoPath;
     private String resultImagePath;
     private ImageView imageResult;
-
+    private FragmentResultPhotoBinding fragmentResultPhotoBinding;
     private Button takePhotoButton;
 
     /**
      * Get the instance.
      *
      * @param testName : Name of the test
-     * @param serial   : instruction step number
+     * @param id       : fragment id
      */
-    public static ResultPhotoFragment newInstance(String testName, String instruction, int serial) {
+    public static ResultPhotoFragment newInstance(String testName, Instruction instruction, int id) {
         ResultPhotoFragment fragment = new ResultPhotoFragment();
+        fragment.setFragmentId(id);
         Bundle args = new Bundle();
-        args.putString(ARG_INSTRUCTION, instruction);
+        args.putParcelable(ARG_INSTRUCTION, instruction);
         args.putString(ARG_RESULT_NAME, testName);
-        args.putInt(ARG_RESULT_SERIAL, serial);
         fragment.setArguments(args);
         return fragment;
 
@@ -93,7 +94,10 @@ public class ResultPhotoFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_result_photo, container, false);
+//        View view = inflater.inflate(R.layout.fragment_result_photo, container, false);
+        fragmentResultPhotoBinding = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_result_photo, container, false);
+
 
         if (savedInstanceState != null) {
             currentPhotoPath = savedInstanceState.getString(ConstantKey.CURRENT_PHOTO_PATH);
@@ -101,16 +105,16 @@ public class ResultPhotoFragment extends BaseFragment {
             resultImagePath = savedInstanceState.getString(ConstantKey.RESULT_IMAGE_PATH);
         }
 
+        View view = fragmentResultPhotoBinding.getRoot();
+
         imageResult = view.findViewById(R.id.imageResult);
         takePhotoButton = view.findViewById(R.id.takePhoto);
-        TextView textInstruction = view.findViewById(R.id.textInstruction);
         TextView textName = view.findViewById(R.id.textName);
-        TextView textSerial = view.findViewById(R.id.textSerial);
 
         if (getArguments() != null) {
 
-            String instruction = getArguments().getString(ARG_INSTRUCTION);
-            textInstruction.setText(instruction);
+            Instruction instruction = getArguments().getParcelable(ARG_INSTRUCTION);
+            fragmentResultPhotoBinding.setInstruction(instruction);
 
             String title = getArguments().getString(ARG_RESULT_NAME);
             if (title == null || title.isEmpty()) {
@@ -118,8 +122,6 @@ public class ResultPhotoFragment extends BaseFragment {
             } else {
                 textName.setText(title);
             }
-            textSerial.setText(String.format(Locale.US, "%d.",
-                    getArguments().getInt(ARG_RESULT_SERIAL)));
         }
 
         if (!imageFileName.isEmpty()) {

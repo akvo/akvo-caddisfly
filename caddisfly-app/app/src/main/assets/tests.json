@@ -7709,7 +7709,7 @@
         {
           "section": [
             "take_photo_of_incubated",
-            "/<photo>"
+            "/~photo~"
           ]
         },
         {
@@ -7721,12 +7721,12 @@
         },
         {
           "section": [
-            "/<input>"
+            "/~input~"
           ]
         },
         {
           "section": [
-            "/<result>"
+            "/~result~"
           ]
         },
         {
@@ -7818,7 +7818,7 @@
         {
           "section": [
             "take_photo_of_incubated",
-            "/<photo>"
+            "/~photo~"
           ]
         },
         {
@@ -7830,12 +7830,12 @@
         },
         {
           "section": [
-            "/<input>"
+            "/~input~"
           ]
         },
         {
           "section": [
-            "/<result>"
+            "/~result~"
           ]
         },
         {
@@ -7920,7 +7920,7 @@
         {
           "section": [
             "take_photo_of_incubated",
-            "/<photo>"
+            "/~photo~"
           ]
         },
         {
@@ -7932,13 +7932,13 @@
         },
         {
           "section": [
-            "/<input>"
+            "/~input~"
           ]
         },
         {
           "section": [
             "take_photo_of_incubated_TC",
-            "/<photo>"
+            "/~photo~"
           ]
         },
         {
@@ -7950,7 +7950,20 @@
         },
         {
           "section": [
-            "/<input>"
+            "/~input~"
+          ]
+        },
+        {
+          "section": [
+            "/~result~"
+          ]
+        },
+        {
+          "section": [
+            "/<b>round_off_test</b>",
+            "1.add_free_chlorine",
+            "2.dispose_contents_bag",
+            "3.retain_plastic_seal_reuse"
           ]
         }
       ],
@@ -8043,7 +8056,7 @@
         {
           "section": [
             "take_photo_of_incubated",
-            "/<photo>"
+            "/~photo~"
           ]
         },
         {
@@ -8055,13 +8068,13 @@
         },
         {
           "section": [
-            "/<input>"
+            "/~input~"
           ]
         },
         {
           "section": [
             "take_photo_of_incubated_TC",
-            "/<photo>"
+            "/~photo~"
           ]
         },
         {
@@ -8073,7 +8086,20 @@
         },
         {
           "section": [
-            "/<input>"
+            "/~input~"
+          ]
+        },
+        {
+          "section": [
+            "/~result~"
+          ]
+        },
+        {
+          "section": [
+            "/<b>round_off_test</b>",
+            "1.add_free_chlorine",
+            "2.dispose_contents_bag",
+            "3.retain_plastic_seal_reuse"
           ]
         }
       ],

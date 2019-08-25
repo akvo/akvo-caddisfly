@@ -17,10 +17,11 @@ public class CustomShapeButton extends View {
 
     private final Path mPath = new Path();
     private final Path markerPath = new Path();
-    private final Paint fillPaint = new Paint();
-    private final Paint fillSelectPaint = new Paint();
+    private final Paint yellowPaint = new Paint();
+    private final Paint yellowSelectPaint = new Paint();
     private final Paint greenPaint = new Paint();
     private final Paint greenSelectPaint = new Paint();
+    private final Paint disabledPaint = new Paint();
     private final Paint strokePaint = new Paint();
     private final Paint markerPaint = new Paint();
     private final Paint textPaint = new Paint();
@@ -30,11 +31,11 @@ public class CustomShapeButton extends View {
     private int bottom3;
     private int bottom2;
     private int bottom1;
-    private boolean area1 = false;
-    private boolean area2 = false;
-    private boolean area3 = false;
-    private boolean area4 = false;
-    private boolean area5 = false;
+    private int area1 = 0;
+    private int area2 = 0;
+    private int area3 = 0;
+    private int area4 = 0;
+    private int area5 = 0;
 
     private boolean active1 = false;
     private boolean active2 = false;
@@ -49,12 +50,16 @@ public class CustomShapeButton extends View {
         super(context, attrs);
 
         // fill
-        fillPaint.setStyle(Paint.Style.FILL);
-        fillPaint.setColor(Color.rgb(229, 239, 97));
-        fillSelectPaint.setColor(Color.rgb(240, 250, 97));
+        yellowPaint.setStyle(Paint.Style.FILL);
+        yellowPaint.setColor(Color.rgb(229, 239, 97));
+        yellowSelectPaint.setColor(Color.rgb(240, 250, 97));
 
         greenPaint.setColor(Color.rgb(69, 159, 159));
         greenSelectPaint.setColor(Color.rgb(79, 165, 165));
+
+//        greenPaint.setColor(Color.rgb(150, 150, 150));
+
+        disabledPaint.setColor(Color.rgb(200, 200, 200));
 
         // stroke
         strokePaint.setStyle(Paint.Style.STROKE);
@@ -76,33 +81,23 @@ public class CustomShapeButton extends View {
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getActionMasked();
 
-        if (action == MotionEvent.ACTION_DOWN) {
+        float x = event.getX();
+        float y = event.getY();
 
-            float x = event.getX();
-            float y = event.getY();
+        if (action == MotionEvent.ACTION_UP) {
 
             if (x < colWidth && y < bottom3) {
-                area1 = !area1;
-                active1 = true;
+                area1 = toggle(area1);
             } else if (x < colWidth * 2 && y < bottom) {
-                area2 = !area2;
-                active2 = true;
+                area2 = toggle(area2);
             } else if (x > colWidth * 4 && y < bottom1) {
-                area5 = !area5;
-                active5 = true;
+                area5 = toggle(area5);
             } else if (x > colWidth * 3 && x < colWidth * 4 && y < bottom2) {
-                area4 = !area4;
-                active4 = true;
+                area4 = toggle(area4);
             } else if ((x > colWidth * 2 && x < colWidth * 3)
-                    || (x > colWidth * 3 && y > bottom2 && x < (colWidth * 4) + (colWidth / 3))) {
-                area3 = !area3;
-                active3 = true;
+                    || (x > colWidth * 3 && y > bottom2 && x < (colWidth * 4) + (colWidth / (double) 3))) {
+                area3 = toggle(area3);
             }
-
-            invalidate();
-
-            return true;
-        } else if (action == MotionEvent.ACTION_UP) {
 
             active1 = false;
             active2 = false;
@@ -114,11 +109,39 @@ public class CustomShapeButton extends View {
             performClick();
 
             return true;
+        } else if (action == MotionEvent.ACTION_DOWN) {
+
+            if (x < colWidth && y < bottom3) {
+                active1 = true;
+            } else if (x < colWidth * 2 && y < bottom) {
+                active2 = true;
+            } else if (x > colWidth * 4 && y < bottom1) {
+                active5 = true;
+            } else if (x > colWidth * 3 && x < colWidth * 4 && y < bottom2) {
+                active4 = true;
+            } else if ((x > colWidth * 2 && x < colWidth * 3)
+                    || (x > colWidth * 3 && y > bottom2 && x < (colWidth * 4) + (colWidth / (double) 3))) {
+                active3 = true;
+            }
+
+            invalidate();
+            return true;
         }
 
         getKey();
 
         return false;
+    }
+
+    private int toggle(int area1) {
+        if (area1 != 2) {
+            if (area1 == 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        return area1;
     }
 
     @Override
@@ -153,26 +176,39 @@ public class CustomShapeButton extends View {
             rect1 = new Rect(left, fillLine, colWidth, bottom3);
         }
 
-        canvas.drawRect(rect1, area1 ? active1
-                ? greenSelectPaint : greenPaint : (active1 ? fillSelectPaint : fillPaint));
+        canvas.drawRect(rect1, getPaint(area1, active1));
 
-        canvas.drawRect(left, bottom3, colWidth, bottom, area2
-                ? (active2 ? greenSelectPaint : greenPaint) : (active2 ? fillSelectPaint : fillPaint));
+        canvas.drawRect(left, bottom3, colWidth, bottom, getPaint(area2, active2));
 
-        canvas.drawRect(colWidth, fillLine, colWidth * 2, bottom, area2
-                ? active2 ? greenSelectPaint : greenPaint : (active2 ? fillSelectPaint : fillPaint));
+        canvas.drawRect(colWidth, fillLine, colWidth * 2, bottom, getPaint(area2, active2));
 
-        canvas.drawRect(colWidth * 2, fillLine, colWidth * 3, bottom, area3
-                ? active3 ? greenSelectPaint : greenPaint : fillPaint);
+        canvas.drawRect(colWidth * 2, fillLine, colWidth * 3, bottom, getPaint(area3, active3));
 
-        canvas.drawRect(colWidth * 3, bottom2, colWidth * 4 + (colWidth / 3), bottom, area3
-                ? active3 ? greenSelectPaint : greenPaint : fillPaint);
+        canvas.drawRect(colWidth * 3, bottom2, colWidth * 4 + (colWidth / 3), bottom, getPaint(area3, active3));
 
-        canvas.drawRect(colWidth * 3, fillLine, colWidth * 4, bottom2, area4 ? active4
-                ? greenSelectPaint : greenPaint : fillPaint);
+        canvas.drawRect(colWidth * 3, fillLine, colWidth * 4, bottom2, getPaint(area4, active4));
 
-        canvas.drawRect(colWidth * 4, fillLine, colWidth * 5, bottom1, area5 ? active5
-                ? greenSelectPaint : greenPaint : fillPaint);
+        canvas.drawRect(colWidth * 4, fillLine, colWidth * 5, bottom1, getPaint(area5, active5));
+
+//        canvas.drawRect(left, bottom3, colWidth, bottom, area2 == 1
+//                ? (active2 ? greenSelectPaint : greenPaint)
+//                : (active2 ? yellowSelectPaint : yellowPaint));
+
+//        canvas.drawRect(colWidth, fillLine, colWidth * 2, bottom, area2 == 1
+//                ? active2 ? greenSelectPaint : greenPaint
+//                : (active2 ? yellowSelectPaint : yellowPaint));
+//
+//        canvas.drawRect(colWidth * 2, fillLine, colWidth * 3, bottom, area3 == 1
+//                ? active3 ? greenSelectPaint : greenPaint : yellowPaint);
+//
+//        canvas.drawRect(colWidth * 3, bottom2, colWidth * 4 + (colWidth / 3), bottom, area3 == 1
+//                ? active3 ? greenSelectPaint : greenPaint : yellowPaint);
+//
+//        canvas.drawRect(colWidth * 3, fillLine, colWidth * 4, bottom2, area4 == 1
+//                ? active4 ? greenSelectPaint : greenPaint : yellowPaint);
+//
+//        canvas.drawRect(colWidth * 4, fillLine, colWidth * 5, bottom1, area5 == 1
+//                ? active5 ? greenSelectPaint : greenPaint : yellowPaint);
 
         mPath.moveTo(left, lineTop);
         mPath.lineTo(left, bottom);
@@ -197,7 +233,9 @@ public class CustomShapeButton extends View {
         canvas.drawPath(mPath, strokePaint);
 
         markerPath.moveTo(left, 30f);
-        markerPath.lineTo(getWidth(), 30f);
+        markerPath.lineTo(
+
+                getWidth(), 30f);
 
         canvas.drawPath(markerPath, markerPaint);
 
@@ -211,11 +249,11 @@ public class CustomShapeButton extends View {
     }
 
     public String getKey() {
-        mKey = (area1 ? "1" : "0")
-                + (area2 ? "1" : "0")
-                + (area3 ? "1" : "0")
-                + (area4 ? "1" : "0")
-                + (area5 ? "1" : "0");
+        mKey = String.valueOf(area1)
+                + area2
+                + area3
+                + area4
+                + area5;
 
         return mKey;
     }
@@ -223,10 +261,20 @@ public class CustomShapeButton extends View {
     public void setKey(String key) {
         mKey = key;
         String[] values = mKey.split("");
-        area1 = values[1].equals("1");
-        area2 = values[2].equals("1");
-        area3 = values[3].equals("1");
-        area4 = values[4].equals("1");
-        area5 = values[5].equals("1");
+        area1 = Integer.parseInt(values[1]);
+        area2 = Integer.parseInt(values[2]);
+        area3 = Integer.parseInt(values[3]);
+        area4 = Integer.parseInt(values[4]);
+        area5 = Integer.parseInt(values[5]);
+    }
+
+    private Paint getPaint(int value, boolean active) {
+        switch (value) {
+            case 0:
+                return active ? yellowSelectPaint : yellowPaint;
+            case 1:
+                return active ? greenSelectPaint : greenPaint;
+        }
+        return disabledPaint;
     }
 }

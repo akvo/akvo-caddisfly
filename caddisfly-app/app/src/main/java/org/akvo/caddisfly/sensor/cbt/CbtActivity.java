@@ -41,6 +41,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.MpnValue;
 import org.akvo.caddisfly.model.PageIndex;
+import org.akvo.caddisfly.model.PageType;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.manual.ResultPhotoFragment;
@@ -62,16 +63,19 @@ public class CbtActivity extends BaseActivity
         implements CompartmentBagFragment.OnCompartmentBagSelectListener,
         ResultPhotoFragment.OnPhotoTakenListener {
 
-    CbtResultFragment resultFragment;
-    ResultPhotoFragment resultPhotoFragment;
-    CompartmentBagFragment inputFragment;
+    private CbtResultFragment resultFragment;
 
-    ImageView imagePageRight;
-    ImageView imagePageLeft;
-    PageIndex pageIndex = new PageIndex();
+    private SparseArray<ResultPhotoFragment> resultPhotoFragment = new SparseArray<>();
+    private SparseArray<CompartmentBagFragment> inputFragment = new SparseArray<>();
+
+    private ArrayList<Integer> inputIndexes = new ArrayList<>();
+    private SparseArray<String> cbtResultKeys = new SparseArray<>();
+
+    private ImageView imagePageRight;
+    private ImageView imagePageLeft;
+    private PageIndex pageIndex = new PageIndex();
     private String imageFileName = "";
     private String currentPhotoPath;
-    private String cbtResult = "00000";
     private TestInfo testInfo;
     private FirebaseAnalytics mFirebaseAnalytics;
     private ArrayList<Instruction> instructionList = new ArrayList<>();
@@ -186,10 +190,16 @@ public class CbtActivity extends BaseActivity
 
         showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 2;
 
+        if (viewPager.getCurrentItem() < pageIndex.getResultIndex()) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+        }
+
         if (viewPager.getCurrentItem() == totalPageCount - 1) {
             viewPager.setAllowedSwipeDirection(SwipeDirection.left);
             imagePageRight.setVisibility(View.INVISIBLE);
-        } else if (viewPager.getCurrentItem() == pageIndex.getInputIndex()) {
+        } else if (pageIndex.getType(viewPager.getCurrentItem()) == PageType.INPUT) {
             setTitle(R.string.setCompartmentColors);
         } else if (viewPager.getCurrentItem() == pageIndex.getResultIndex()) {
             setTitle(R.string.result);
@@ -286,9 +296,35 @@ public class CbtActivity extends BaseActivity
         }
     }
 
-    public void onCompartmentBagSelect(String key) {
-        cbtResult = key;
-        resultFragment.setResult(cbtResult, testInfo.getSampleQuantity());
+    public void onCompartmentBagSelect(String key, int fragmentId) {
+
+        cbtResultKeys.put(fragmentId, key);
+
+        for (int i = 0; i < inputIndexes.size(); i++) {
+            inputFragment.get(inputIndexes.get(0));
+        }
+
+        if (inputIndexes.size() > 1) {
+            String newSecondResult = key.replace("1", "2");
+            if (fragmentId == inputIndexes.get(0)) {
+                int secondFragmentId = inputIndexes.get(1);
+                CompartmentBagFragment secondFragment = inputFragment.get(secondFragmentId);
+                String secondResult = secondFragment.getKey();
+                for (int i = 0; i < secondResult.length(); i++) {
+                    if (secondResult.charAt(i) == '1' && newSecondResult.charAt(i) != '2') {
+                        char[] chars = newSecondResult.toCharArray();
+                        chars[i] = '1';
+                        newSecondResult = String.valueOf(chars);
+                    }
+                }
+                secondFragment.setKey(newSecondResult);
+            }
+
+            resultFragment.setResult(newSecondResult, testInfo.getSampleQuantity());
+        } else {
+            resultFragment.setResult(cbtResultKeys.get(fragmentId), testInfo.getSampleQuantity());
+        }
+
     }
 
     public void onNextClick(View view) {
@@ -307,7 +343,8 @@ public class CbtActivity extends BaseActivity
 
         String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
 
-        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(cbtResult, testInfo.getSampleQuantity());
+        MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(
+                resultFragment.getResult(), testInfo.getSampleQuantity());
 
         results.put(1, StringUtil.getStringResourceByName(this,
                 mpnValue.getRiskCategory(), "en").toString());
@@ -461,22 +498,27 @@ public class CbtActivity extends BaseActivity
         public Fragment getItem(int position) {
             if (pageIndex.getResultIndex() == position) {
                 return resultFragment;
-            } else if (pageIndex.getInputIndex() == position) {
-                if (inputFragment == null) {
-                    inputFragment = CompartmentBagFragment.newInstance(cbtResult);
-                    inputFragment.setFragmentId(position);
+            } else if (pageIndex.getType(position) == PageType.INPUT) {
+                if (inputFragment.get(position) == null) {
+                    String key = "00000";
+                    if (inputIndexes.size() > 0) {
+                        int firstFragmentId = inputIndexes.get(0);
+                        if (cbtResultKeys.get(firstFragmentId) == null) {
+                            cbtResultKeys.put(firstFragmentId, key);
+                        }
+                        key = cbtResultKeys.get(firstFragmentId).replace("1", "2");
+                    }
+                    inputFragment.put(position,
+                            CompartmentBagFragment.newInstance(key, position));
+                    inputIndexes.add(position);
                 }
-                return inputFragment;
-            } else if (pageIndex.getPhotoIndex() == position) {
-
-                if (resultPhotoFragment == null) {
-                    resultPhotoFragment = ResultPhotoFragment.newInstance(
-                            "",
-                            getString(R.string.take_photo_of_incubated),
-                            instructionList.get(position).getIndex());
-                    resultPhotoFragment.setFragmentId(position);
+                return inputFragment.get(position);
+            } else if (pageIndex.getType(position) == PageType.PHOTO) {
+                if (resultPhotoFragment.get(position) == null) {
+                    resultPhotoFragment.put(position, ResultPhotoFragment.newInstance(
+                            testInfo.getName(), instructionList.get(position), position));
                 }
-                return resultPhotoFragment;
+                return resultPhotoFragment.get(position);
             } else if (position == totalPageCount - 1) {
                 if (testPhase == 2) {
                     return PlaceholderFragment.newInstance(

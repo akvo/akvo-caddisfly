@@ -244,8 +244,7 @@ public class ManualTestActivity extends BaseActivity
                 if (result1PhotoFragment == null) {
                     result1PhotoFragment = ResultPhotoFragment.newInstance(
                             testInfo.getResults().get(resultId - 1).getName(),
-                            getString(R.string.take_photo_of_result),
-                            instructionList.get(photo1PageNumber).getIndex());
+                            instructionList.get(photo1PageNumber), photo1PageNumber);
                     result1PhotoFragment.setFragmentId(photo1PageNumber);
                 }
                 resultId++;
@@ -260,8 +259,7 @@ public class ManualTestActivity extends BaseActivity
         if (resultPhotoFragment == null && photoPageNumber > 0) {
             resultPhotoFragment = ResultPhotoFragment.newInstance(
                     testInfo.getResults().get(resultId - 1).getName(),
-                    getString(R.string.take_photo_of_result),
-                    instructionList.get(photoPageNumber).getIndex());
+                    instructionList.get(photo1PageNumber), photoPageNumber);
             resultPhotoFragment.setFragmentId(photoPageNumber);
         }
     }
