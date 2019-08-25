@@ -358,6 +358,7 @@ public class CbtInstructions {
 
                 mTestActivityRule.launchActivity(intent);
 
+//                int pages = 0;
                 navigateToCbtTest2(id, pages);
 
                 sleep(1000);
@@ -477,7 +478,7 @@ public class CbtInstructions {
 
             } catch (Exception e) {
 
-                ViewInteraction appCompatButton4 = onView(
+                ViewInteraction appCompatButton3 = onView(
                         allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
                                 childAtPosition(
                                         childAtPosition(
@@ -485,7 +486,8 @@ public class CbtInstructions {
                                                 1),
                                         2),
                                 isDisplayed()));
-                appCompatButton4.perform(click());
+                appCompatButton3.perform(click());
+
 
                 sleep(300);
                 break;
