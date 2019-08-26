@@ -181,7 +181,6 @@ public final class TestHelper {
         }
     }
 
-
     public static void goToMainScreen() {
 
         boolean found = false;

@@ -334,12 +334,10 @@ public class CbtInstructions {
         for (int i = 0; i < TestConstants.CBT_TESTS_COUNT; i++) {
 
             assertEquals(testList.get(i).getSubtype(), TestType.CBT);
-
             String uuid = testList.get(i).getUuid();
-
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (("4bfd645c26cf ").contains(id))
+//            if (("bf80d7197176, ac22c9afa0ab").contains(id))
 //
             {
                 Intent intent = new Intent();
@@ -358,20 +356,16 @@ public class CbtInstructions {
 
                 mTestActivityRule.launchActivity(intent);
 
-//                int pages = 0;
                 navigateToCbtTest2(id, pages);
 
                 sleep(1000);
 
 //                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-
 //                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
 //                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
-
 //                TestHelper.getCurrentActivity().finish();
 //                mTestActivityRule.finishActivity();
             }
-
         }
 
         Log.d("Caddisfly", jsArrayString.toString());
@@ -472,6 +466,19 @@ public class CbtInstructions {
             try {
                 sleep(1000);
 
+
+                if (i == 2) {
+                    ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments),
+                            isDisplayed()));
+
+                    customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
+                    customShapeButton.perform(TestUtil.clickPercent(0.5f, 0.5f));
+                    customShapeButton.perform(TestUtil.clickPercent(0.7f, 0.1f));
+                } else if (i == 5) {
+                    ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments),
+                            isDisplayed()));
+                    customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f));
+                }
                 takeScreenshot(id, startIndex + i + 1);
 
                 onView(withId(R.id.image_pageRight)).perform(click());
@@ -487,7 +494,6 @@ public class CbtInstructions {
                                         2),
                                 isDisplayed()));
                 appCompatButton3.perform(click());
-
 
                 sleep(300);
                 break;
