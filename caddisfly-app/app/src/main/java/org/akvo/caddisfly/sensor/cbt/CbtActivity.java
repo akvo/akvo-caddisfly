@@ -320,7 +320,8 @@ public class CbtActivity extends BaseActivity
                 secondFragment.setKey(newSecondResult);
             }
 
-            resultFragment.setResult(newSecondResult, testInfo.getSampleQuantity());
+            resultFragment.setResult(cbtResultKeys.get(inputIndexes.get(0)), testInfo.getSampleQuantity());
+            resultFragment.setResult2(newSecondResult, testInfo.getSampleQuantity());
         } else {
             resultFragment.setResult(cbtResultKeys.get(fragmentId), testInfo.getSampleQuantity());
         }
@@ -345,11 +346,16 @@ public class CbtActivity extends BaseActivity
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(
                 resultFragment.getResult(), testInfo.getSampleQuantity());
+        MpnValue mpnTcValue = TestConfigHelper.getMpnValueForKey(
+                resultFragment.getResult2(), testInfo.getSampleQuantity());
 
         results.put(1, StringUtil.getStringResourceByName(this,
                 mpnValue.getRiskCategory(), "en").toString());
         results.put(2, mpnValue.getMpn());
         results.put(3, String.valueOf(mpnValue.getConfidence()));
+
+        results.put(4, mpnTcValue.getMpn());
+        results.put(5, String.valueOf(mpnTcValue.getConfidence()));
 
         JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo,
                 results, null, imageFileName);
@@ -516,7 +522,7 @@ public class CbtActivity extends BaseActivity
             } else if (pageIndex.getType(position) == PageType.PHOTO) {
                 if (resultPhotoFragment.get(position) == null) {
                     resultPhotoFragment.put(position, ResultPhotoFragment.newInstance(
-                            testInfo.getName(), instructionList.get(position), position));
+                            "", instructionList.get(position), position));
                 }
                 return resultPhotoFragment.get(position);
             } else if (position == totalPageCount - 1) {

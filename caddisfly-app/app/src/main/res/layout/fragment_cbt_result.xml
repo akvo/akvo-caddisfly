@@ -27,7 +27,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/layoutResult"
+        android:id="@+id/layoutRisk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -37,7 +37,7 @@
         android:paddingBottom="19dp">
 
         <TextView
-            android:id="@+id/textResult"
+            android:id="@+id/textRisk1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -48,7 +48,7 @@
             tools:text="Extremely High Risky" />
 
         <TextView
-            android:id="@+id/textResult1"
+            android:id="@+id/textRisk2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -63,31 +63,104 @@
         android:id="@+id/layoutResult1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#d23f3f"
-        android:orientation="vertical"
-        android:paddingTop="19dp"
-        android:paddingBottom="9dp">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/textResult2"
+            android:id="@+id/textName1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#fff9f9"
-            android:textSize="41dp"
-            tools:ignore="SpUsage"
-            tools:text="> 100" />
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="E.coli"
+            android:textColor="#555"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/textResult1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/result_top_margin"
+                android:gravity="center_vertical"
+                android:textColor="#444"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                tools:text="> 100" />
+
+            <TextView
+                android:id="@+id/textUnit1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="3dp"
+                android:text="@string/mpn"
+                android:textColor="#444"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutResult2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textName2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="20dp"
-            android:text="@string/mpn"
-            android:textColor="#ccececec"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            tools:ignore="SpUsage" />
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:text="Total Coliform"
+            android:textColor="#555"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:id="@+id/textResult2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/result_top_margin"
+                android:gravity="center_vertical"
+                android:textColor="#444"
+                android:textSize="35sp"
+                android:textStyle="bold"
+                tools:text="> 100" />
+
+            <TextView
+                android:id="@+id/textUnit2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="4dp"
+                android:layout_marginBottom="3dp"
+                android:text="@string/mpn"
+                android:textColor="#444"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#ddd" />
+
     </LinearLayout>
 
     <Button

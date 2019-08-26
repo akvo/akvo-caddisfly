@@ -38,13 +38,15 @@ import java.util.Objects;
 
 public class CbtResultFragment extends BaseFragment {
 
-    private TextView textResult;
+    private TextView textRisk1;
+    private TextView textRisk2;
     private TextView textResult1;
     private TextView textResult2;
-    private LinearLayout layoutResult;
-    private LinearLayout layoutResult1;
+    private LinearLayout layoutRisk;
     private MpnValue mpnValue = null;
+    private MpnValue mpnValue2 = null;
     private String result = "00000";
+    private String result2 = "00000";
 
     /**
      * Use this factory method to create a new instance of
@@ -64,21 +66,30 @@ public class CbtResultFragment extends BaseFragment {
         if (mpnValue == null) {
             mpnValue = TestConfigHelper.getMpnValueForKey("00000", "0");
         }
+        if (mpnValue2 == null) {
+            mpnValue2 = TestConfigHelper.getMpnValueForKey("00000", "0");
+        }
 
-        textResult = view.findViewById(R.id.textResult);
+        textRisk1 = view.findViewById(R.id.textRisk1);
+        textRisk2 = view.findViewById(R.id.textRisk2);
         textResult1 = view.findViewById(R.id.textResult1);
         textResult2 = view.findViewById(R.id.textResult2);
-        layoutResult = view.findViewById(R.id.layoutResult);
-        layoutResult1 = view.findViewById(R.id.layoutResult1);
+        layoutRisk = view.findViewById(R.id.layoutRisk);
 
         showResult();
 
         return view;
     }
 
-    public void setResult(String result, String sampleQuantity) {
+    void setResult(String result, String sampleQuantity) {
         this.result = result;
         mpnValue = TestConfigHelper.getMpnValueForKey(result, sampleQuantity);
+        showResult();
+    }
+
+    void setResult2(String result, String sampleQuantity) {
+        this.result2 = result;
+        mpnValue2 = TestConfigHelper.getMpnValueForKey(result, sampleQuantity);
         showResult();
     }
 
@@ -87,18 +98,22 @@ public class CbtResultFragment extends BaseFragment {
             String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
                     mpnValue.getRiskCategory()).toString().split("/");
 
-            textResult.setText(results[0].trim());
+            textRisk1.setText(results[0].trim());
             if (results.length > 1) {
-                textResult1.setText(results[1].trim());
+                textRisk2.setText(results[1].trim());
             }
 
-            layoutResult.setBackgroundColor(mpnValue.getBackgroundColor1());
-            layoutResult1.setBackgroundColor(mpnValue.getBackgroundColor2());
-            textResult2.setText(mpnValue.getMpn());
+            layoutRisk.setBackgroundColor(mpnValue.getBackgroundColor1());
+            textResult1.setText(mpnValue.getMpn());
+            textResult2.setText(mpnValue2.getMpn());
         }
     }
 
-    public String getResult() {
+    String getResult() {
         return result;
+    }
+
+    String getResult2() {
+        return result2;
     }
 }
