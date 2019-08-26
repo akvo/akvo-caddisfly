@@ -7715,7 +7715,7 @@
         {
           "section": [
             "change_colors_to_match. click_compartments_to_change",
-            "/note_blue_green_specks",
+            "/-note_blue_green_specks",
             "image:8"
           ]
         },
@@ -7824,7 +7824,7 @@
         {
           "section": [
             "change_colors_to_match. click_compartments_to_change",
-            "/note_blue_green_specks",
+            "/-note_blue_green_specks",
             "image:8"
           ]
         },
@@ -7885,7 +7885,7 @@
         },
         {
           "section": [
-            "dissolve_medium_in_sample_ECTC",
+            "dissolve_medium_in_sample_tc",
             "image:2"
           ]
         },
@@ -7893,7 +7893,7 @@
           "section": [
             "label_compartment_bag",
             "tear_perforated_seam. rub_sides_of_compartment",
-            "slowly_pour_sample_into_bag. fill_evenly_across_bag.",
+            "slowly_pour_sample_into_bag. fill_evenly_across_bag. leave_test_bud_carrier",
             "image:4"
           ]
         },
@@ -7926,7 +7926,7 @@
         {
           "section": [
             "change_colors_to_match. click_compartments_to_change",
-            "/note_blue_green_specks",
+            "/-note_blue_green_specks",
             "image:8"
           ]
         },
@@ -7937,14 +7937,14 @@
         },
         {
           "section": [
-            "take_photo_of_incubated_TC",
+            "take_photo_incubated_tc",
             "/~photo~"
           ]
         },
         {
           "section": [
-            "change_colors_to_match. click_compartments_to_change_TC",
-            "/note_blue_green_specks",
+            "change_colors_to_match. click_compartments_to_change",
+            "/-note_total_coliform",
             "image:8"
           ]
         },
@@ -7984,13 +7984,13 @@
         },
         {
           "id": 4,
-          "name": "MPN",
+          "name": "TC MPN",
           "unit": "MPN/100ml",
           "range": "0-100"
         },
         {
           "id": 5,
-          "name": "string:confidenceInterval"
+          "name": "string:confidenceIntervalTc"
         }
       ]
     },
@@ -8021,7 +8021,7 @@
         },
         {
           "section": [
-            "dissolve_medium_in_sample_ECTC",
+            "dissolve_medium_in_sample_tc",
             "image:2"
           ]
         },
@@ -8029,7 +8029,7 @@
           "section": [
             "label_compartment_bag",
             "tear_perforated_seam. rub_sides_of_compartment",
-            "slowly_pour_sample_into_bag. fill_evenly_across_bag.",
+            "slowly_pour_sample_into_bag. fill_evenly_across_bag. leave_test_bud_carrier",
             "image:4"
           ]
         },
@@ -8062,7 +8062,7 @@
         {
           "section": [
             "change_colors_to_match. click_compartments_to_change",
-            "/note_blue_green_specks",
+            "/-note_blue_green_specks",
             "image:8"
           ]
         },
@@ -8073,14 +8073,14 @@
         },
         {
           "section": [
-            "take_photo_of_incubated_TC",
+            "take_photo_incubated_tc",
             "/~photo~"
           ]
         },
         {
           "section": [
-            "change_colors_to_match. click_compartments_to_change_TC",
-            "/note_blue_green_specks",
+            "change_colors_to_match. click_compartments_to_change",
+            "/-note_total_coliform",
             "image:8"
           ]
         },
@@ -8120,13 +8120,13 @@
         },
         {
           "id": 4,
-          "name": "MPN",
+          "name": "TC MPN",
           "unit": "MPN/100ml",
           "range": "0-1000"
         },
         {
           "id": 5,
-          "name": "string:confidenceInterval"
+          "name": "string:confidenceIntervalTc"
         }
       ]
     },

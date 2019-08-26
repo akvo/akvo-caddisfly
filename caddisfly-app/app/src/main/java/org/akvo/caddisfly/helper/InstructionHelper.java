@@ -94,7 +94,9 @@ public final class InstructionHelper {
                                 section.set(i1, item);
                                 indent = true;
                             } else if (item.startsWith("/")) {
-                                if (indent) {
+                                if (item.startsWith("/-")) {
+                                    section.set(i1, item.substring(2));
+                                } else if (indent) {
                                     section.set(i1, "." + item.substring(1));
                                 } else {
                                     section.set(i1, item.substring(1));
@@ -112,6 +114,11 @@ public final class InstructionHelper {
                 e.printStackTrace();
             }
         }
+
+        if (pageIndex.getSkipToIndex() < 0) {
+            pageIndex.setSkipToIndex(testInstructions.size());
+        }
+
         return instructionIndex;
     }
 }
