@@ -25,6 +25,7 @@ public class CustomShapeButton extends View {
     private final Paint strokePaint = new Paint();
     private final Paint markerPaint = new Paint();
     private final Paint textPaint = new Paint();
+    private final Paint disabledTextPaint = new Paint();
 
     private int colWidth;
     private int bottom;
@@ -51,15 +52,13 @@ public class CustomShapeButton extends View {
 
         // fill
         yellowPaint.setStyle(Paint.Style.FILL);
-        yellowPaint.setColor(Color.rgb(229, 239, 97));
-        yellowSelectPaint.setColor(Color.rgb(240, 250, 97));
+        yellowPaint.setColor(Color.rgb(255, 238, 170));
+        yellowSelectPaint.setColor(Color.rgb(255, 248, 180));
 
         greenPaint.setColor(Color.rgb(69, 159, 159));
         greenSelectPaint.setColor(Color.rgb(79, 165, 165));
 
-//        greenPaint.setColor(Color.rgb(150, 150, 150));
-
-        disabledPaint.setColor(Color.rgb(200, 200, 200));
+        disabledPaint.setColor(Color.rgb(180, 180, 180));
 
         // stroke
         strokePaint.setStyle(Paint.Style.STROKE);
@@ -75,6 +74,11 @@ public class CustomShapeButton extends View {
         textPaint.setColor(Color.rgb(30, 30, 30));
         int sizeInPx = context.getResources().getDimensionPixelSize(R.dimen.cbt_shapes_text_size);
         textPaint.setTextSize(sizeInPx);
+
+        disabledTextPaint.setStyle(Paint.Style.FILL);
+        disabledTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        disabledTextPaint.setColor(Color.rgb(150, 150, 150));
+        disabledTextPaint.setTextSize(sizeInPx);
     }
 
     @Override
@@ -124,6 +128,14 @@ public class CustomShapeButton extends View {
                 active3 = true;
             }
 
+            invalidate();
+            return true;
+        } else if (action == MotionEvent.ACTION_CANCEL) {
+            active1 = false;
+            active2 = false;
+            active3 = false;
+            active4 = false;
+            active5 = false;
             invalidate();
             return true;
         }
@@ -190,26 +202,6 @@ public class CustomShapeButton extends View {
 
         canvas.drawRect(colWidth * 4, fillLine, colWidth * 5, bottom1, getPaint(area5, active5));
 
-//        canvas.drawRect(left, bottom3, colWidth, bottom, area2 == 1
-//                ? (active2 ? greenSelectPaint : greenPaint)
-//                : (active2 ? yellowSelectPaint : yellowPaint));
-
-//        canvas.drawRect(colWidth, fillLine, colWidth * 2, bottom, area2 == 1
-//                ? active2 ? greenSelectPaint : greenPaint
-//                : (active2 ? yellowSelectPaint : yellowPaint));
-//
-//        canvas.drawRect(colWidth * 2, fillLine, colWidth * 3, bottom, area3 == 1
-//                ? active3 ? greenSelectPaint : greenPaint : yellowPaint);
-//
-//        canvas.drawRect(colWidth * 3, bottom2, colWidth * 4 + (colWidth / 3), bottom, area3 == 1
-//                ? active3 ? greenSelectPaint : greenPaint : yellowPaint);
-//
-//        canvas.drawRect(colWidth * 3, fillLine, colWidth * 4, bottom2, area4 == 1
-//                ? active4 ? greenSelectPaint : greenPaint : yellowPaint);
-//
-//        canvas.drawRect(colWidth * 4, fillLine, colWidth * 5, bottom1, area5 == 1
-//                ? active5 ? greenSelectPaint : greenPaint : yellowPaint);
-
         mPath.moveTo(left, lineTop);
         mPath.lineTo(left, bottom);
         mPath.lineTo(colWidth * 2, bottom);
@@ -240,11 +232,11 @@ public class CustomShapeButton extends View {
         canvas.drawPath(markerPath, markerPaint);
 
         int halfWidth = colWidth / 2;
-        canvas.drawText("1", halfWidth - 10, fillLine + (bottom3 / 2) - 10, textPaint);
-        canvas.drawText("2", colWidth - 10, bottom3 + ((bottom - bottom3) / 2), textPaint);
-        canvas.drawText("3", (colWidth * 3) + 20, fillLine + (bottom - bottom2), textPaint);
-        canvas.drawText("4", halfWidth - 10 + colWidth * 3, fillLine + (bottom2 / 2) - 20, textPaint);
-        canvas.drawText("5", halfWidth - 10 + colWidth * 4, fillLine + (bottom1 / 2) - 26, textPaint);
+        canvas.drawText("1", halfWidth - 10, fillLine + (bottom3 / 2) - 10, getTextPaint(area1));
+        canvas.drawText("2", colWidth - 10, bottom3 + ((bottom - bottom3) / 2), getTextPaint(area2));
+        canvas.drawText("3", (colWidth * 3) + 20, fillLine + (bottom - bottom2), getTextPaint(area3));
+        canvas.drawText("4", halfWidth - 10 + colWidth * 3, fillLine + (bottom2 / 2) - 20, getTextPaint(area4));
+        canvas.drawText("5", halfWidth - 10 + colWidth * 4, fillLine + (bottom1 / 2) - 26, getTextPaint(area5));
 
     }
 
@@ -276,5 +268,12 @@ public class CustomShapeButton extends View {
                 return active ? greenSelectPaint : greenPaint;
         }
         return disabledPaint;
+    }
+
+    private Paint getTextPaint(int value) {
+        if (value == 2) {
+            return disabledTextPaint;
+        }
+        return textPaint;
     }
 }
