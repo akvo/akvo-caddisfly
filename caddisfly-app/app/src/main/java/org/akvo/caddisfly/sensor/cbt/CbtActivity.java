@@ -171,6 +171,12 @@ public class CbtActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        showHideFooter();
+    }
+
     private void pageBack() {
         viewPager.setCurrentItem(Math.max(0, viewPager.getCurrentItem() - 1));
     }
@@ -196,7 +202,17 @@ public class CbtActivity extends BaseActivity
             }
         }
 
-        if (viewPager.getCurrentItem() == totalPageCount - 1) {
+        if (PageType.PHOTO == pageIndex.getType(viewPager.getCurrentItem())) {
+            if (resultPhotoFragment.get(viewPager.getCurrentItem()) != null) {
+                if (resultPhotoFragment.get(viewPager.getCurrentItem()).isValid()) {
+                    viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                    imagePageRight.setVisibility(View.VISIBLE);
+                } else {
+                    viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                    imagePageRight.setVisibility(View.INVISIBLE);
+                }
+            }
+        } else if (viewPager.getCurrentItem() == totalPageCount - 1) {
             viewPager.setAllowedSwipeDirection(SwipeDirection.left);
             imagePageRight.setVisibility(View.INVISIBLE);
         } else if (pageIndex.getType(viewPager.getCurrentItem()) == PageType.INPUT) {
@@ -220,9 +236,10 @@ public class CbtActivity extends BaseActivity
         } else {
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
-            if (viewPager.getCurrentItem() == 0) {
-                imagePageLeft.setVisibility(View.INVISIBLE);
-            }
+        }
+
+        if (viewPager.getCurrentItem() == 0) {
+            imagePageLeft.setVisibility(View.INVISIBLE);
         }
 
         invalidateOptionsMenu();

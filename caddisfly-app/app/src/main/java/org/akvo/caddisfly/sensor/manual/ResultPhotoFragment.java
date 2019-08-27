@@ -248,7 +248,7 @@ public class ResultPhotoFragment extends BaseFragment {
         mListener = null;
     }
 
-    boolean isValid() {
+    public boolean isValid() {
         return SKIP_PHOTO_VALIDATION || (resultImagePath != null &&
                 !resultImagePath.isEmpty() && new File(resultImagePath).exists());
     }
