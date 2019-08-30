@@ -82,7 +82,8 @@
     <string name="incubate_in_portable">Incubate in a portable incubator, preferably at 35 – 37 °C for 48 hours or put in or near another heat source.</string>
     <string name="in_addition_to_portable">In addition to portable incubators, samples can be maintained at 25°C to 44.5°C using: thermal coolers/bags; proximity to heat sources for humans and food; poultry or reptile incubator, or near refrigerator coils or room heating vents.</string>
 
-    <string name="dissolve_medium_in_sample_tc">Dissolve medium in sample for a few minutes maximum by periodically swirling the bottle or squeezing the test bud in the Thio Bag to promote release of the medium from its plastic carrier</string>
+    <string name="dissolve_medium_in_sample_tc">Dissolve medium in sample for a few minutes maximum by periodically swirling the Thio Bag</string>
     <string name="take_photo_incubated_tc">Take a photo of the incubated sample while shining with a UV light (365 nm) on the compartment bag in a dark environment.</string>
     <string name="note_total_coliform"><b>NOTE:</b> Compartments positive for E. coli are automatically also positive for Total Coliform and greyed out in the next interface. Remember to shine a UV light to observe the fluorescent blue colour (positive for Total Coliform).</string>
+    <string name="open_growth_medium_powder">Open growth medium sachet and add powder medium straight to the sample from the sachet</string>
 </resources>

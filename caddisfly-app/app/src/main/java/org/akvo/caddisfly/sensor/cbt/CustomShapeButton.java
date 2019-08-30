@@ -19,8 +19,8 @@ public class CustomShapeButton extends View {
     private final Path markerPath = new Path();
     private final Paint yellowPaint = new Paint();
     private final Paint yellowSelectPaint = new Paint();
-    private final Paint greenPaint = new Paint();
-    private final Paint greenSelectPaint = new Paint();
+    private final Paint selectPaint = new Paint();
+    private final Paint activePaint = new Paint();
     private final Paint disabledPaint = new Paint();
     private final Paint strokePaint = new Paint();
     private final Paint markerPaint = new Paint();
@@ -54,9 +54,6 @@ public class CustomShapeButton extends View {
         yellowPaint.setStyle(Paint.Style.FILL);
         yellowPaint.setColor(Color.rgb(255, 238, 170));
         yellowSelectPaint.setColor(Color.rgb(255, 248, 180));
-
-        greenPaint.setColor(Color.rgb(69, 159, 159));
-        greenSelectPaint.setColor(Color.rgb(79, 165, 165));
 
         disabledPaint.setColor(Color.rgb(180, 180, 180));
 
@@ -265,7 +262,7 @@ public class CustomShapeButton extends View {
             case 0:
                 return active ? yellowSelectPaint : yellowPaint;
             case 1:
-                return active ? greenSelectPaint : greenPaint;
+                return active ? activePaint : selectPaint;
         }
         return disabledPaint;
     }
@@ -275,5 +272,15 @@ public class CustomShapeButton extends View {
             return disabledTextPaint;
         }
         return textPaint;
+    }
+
+    public void useBlueSelection(boolean value) {
+        if (value) {
+            selectPaint.setColor(Color.rgb(34, 206, 255));
+            activePaint.setColor(Color.rgb(20, 170, 235));
+        } else {
+            selectPaint.setColor(Color.rgb(69, 159, 159));
+            activePaint.setColor(Color.rgb(79, 165, 165));
+        }
     }
 }
