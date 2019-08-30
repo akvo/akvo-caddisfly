@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.instruction;
 
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.test.espresso.Espresso;
@@ -42,7 +41,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -94,14 +92,6 @@ public class BluetoothInstructions {
     public void testInstructionsAll() {
 
         activateTestMode();
-
-        String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
-
-        File folder = new File(path);
-        if (!folder.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            folder.mkdirs();
-        }
 
         mDevice.waitForWindowUpdate("", 2000);
 

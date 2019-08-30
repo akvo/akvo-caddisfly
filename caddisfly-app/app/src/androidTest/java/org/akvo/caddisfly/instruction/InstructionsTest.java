@@ -21,10 +21,10 @@ package org.akvo.caddisfly.instruction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.test.espresso.Espresso;
+import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.RequiresDevice;
 import androidx.test.rule.ActivityTestRule;
@@ -46,7 +46,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -59,6 +58,8 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
+import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class InstructionsTest {
@@ -88,14 +89,6 @@ public class InstructionsTest {
     public void testInstructionsMd610() {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
-
-        String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
-
-        File folder = new File(path);
-        if (!folder.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            folder.mkdirs();
-        }
 
         List<TestInfo> testList = testConfigRepository.getTests(TestType.BLUETOOTH);
         for (int i = 0; i < TestConstants.MD610_TESTS_COUNT; i++) {
@@ -182,14 +175,6 @@ public class InstructionsTest {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
 
-        String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
-
-        File folder = new File(path);
-        if (!folder.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            folder.mkdirs();
-        }
-
         List<TestInfo> testList = testConfigRepository.getTests(TestType.MANUAL);
         for (int i = 0; i < TestConstants.MANUAL_TESTS_COUNT; i++) {
 
@@ -241,7 +226,16 @@ public class InstructionsTest {
 
         takeScreenshot(id, -1);
 
-        onView(withText(R.string.next)).perform(click());
+        ViewInteraction appCompatButton2 = onView(
+                allOf(withId(R.id.button_next), withText("Next"),
+                        childAtPosition(
+                                allOf(withId(R.id.linearLayout),
+                                        childAtPosition(
+                                                withId(android.R.id.content),
+                                                0)),
+                                3),
+                        isDisplayed()));
+        appCompatButton2.perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {

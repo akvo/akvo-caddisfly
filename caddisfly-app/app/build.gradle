@@ -136,7 +136,7 @@ dependencies {
     implementation 'com.github.felHR85:UsbSerial:4.5.1'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.1.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
 
     // Sentry
     implementation 'io.sentry:sentry-android:1.7.23'
@@ -151,9 +151,9 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:1.1.1"
 
     // Espresso
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
-    androidTestImplementation('androidx.test.espresso:espresso-contrib:3.2.0') {
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0-alpha02'
+    androidTestImplementation('androidx.test.espresso:espresso-contrib:3.3.0-alpha02') {
         exclude group: 'com.android.support'
         exclude group: 'javax.inject'
     }
@@ -163,7 +163,6 @@ dependencies {
     testImplementation "com.github.nimbl3:robolectric.shadows-supportv4:4.1-SNAPSHOT"
     testImplementation 'androidx.test:rules:1.2.0'
     testImplementation "androidx.test.ext:junit:1.1.1"
-    testImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // UIAutomator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'

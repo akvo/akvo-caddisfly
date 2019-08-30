@@ -57,7 +57,8 @@ public class MeasurementInputFragment extends BaseFragment {
     /**
      * Get the instance.
      */
-    public static MeasurementInputFragment newInstance(TestInfo testInfo, int resultId, int serial) {
+    public static MeasurementInputFragment newInstance(TestInfo testInfo, int resultId,
+                                                       int serial, int id) {
         MeasurementInputFragment fragment = new MeasurementInputFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_TEST_INFO, testInfo);
@@ -87,7 +88,7 @@ public class MeasurementInputFragment extends BaseFragment {
             int resultId = getArguments().getInt(ARG_RESULT_ID);
             Result testResult;
             if (testInfo != null) {
-                testResult = testInfo.getResults().get(resultId - 1);
+                testResult = testInfo.getResults().get(resultId);
 
                 textName.setText(testResult.getName());
                 textSerial.setText(String.format(Locale.US, "%d.",

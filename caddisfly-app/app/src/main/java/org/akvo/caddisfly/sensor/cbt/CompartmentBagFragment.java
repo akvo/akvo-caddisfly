@@ -31,15 +31,18 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.BaseFragment;
 
 public class CompartmentBagFragment extends BaseFragment {
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_RESULT_VALUES = "result_key";
+    private static final String ARG_USE_BLUE = "use_blue_selection";
     private OnCompartmentBagSelectListener mListener;
-    private String mKey = "";
+    private String resultValues = "";
+    private Boolean useBlue;
 
-    public static CompartmentBagFragment newInstance(String key, int id) {
+    public static CompartmentBagFragment newInstance(String key, int id, boolean useBlue) {
         CompartmentBagFragment fragment = new CompartmentBagFragment();
         fragment.setFragmentId(id);
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, key);
+        args.putString(ARG_RESULT_VALUES, key);
+        args.putBoolean(ARG_USE_BLUE, useBlue);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,8 +50,9 @@ public class CompartmentBagFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null && mKey.isEmpty()) {
-            mKey = getArguments().getString(ARG_PARAM1);
+        if (getArguments() != null && resultValues.isEmpty()) {
+            resultValues = getArguments().getString(ARG_RESULT_VALUES);
+            useBlue = getArguments().getBoolean(ARG_USE_BLUE);
         }
     }
 
@@ -60,13 +64,14 @@ public class CompartmentBagFragment extends BaseFragment {
 
         final CustomShapeButton customShapeButton = view.findViewById(R.id.compartments);
 
-        customShapeButton.setKey(mKey);
+        customShapeButton.setKey(resultValues);
+        customShapeButton.useBlueSelection(useBlue);
 
         customShapeButton.setOnClickListener(v -> {
-            mKey = customShapeButton.getKey();
+            resultValues = customShapeButton.getKey();
 
             if (mListener != null) {
-                mListener.onCompartmentBagSelect(mKey, getFragmentId());
+                mListener.onCompartmentBagSelect(resultValues, getFragmentId());
             }
         });
 
@@ -74,7 +79,7 @@ public class CompartmentBagFragment extends BaseFragment {
     }
 
     public String getKey() {
-        return mKey;
+        return resultValues;
     }
 
     @Override
@@ -95,7 +100,7 @@ public class CompartmentBagFragment extends BaseFragment {
     }
 
     public void setKey(String key) {
-        mKey = key;
+        resultValues = key;
     }
 
     public interface OnCompartmentBagSelectListener {

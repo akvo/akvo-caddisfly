@@ -46,6 +46,7 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.manual.ResultPhotoFragment;
 import org.akvo.caddisfly.ui.BaseActivity;
+import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.StringUtil;
 import org.akvo.caddisfly.widget.ButtonType;
 import org.akvo.caddisfly.widget.CustomViewPager;
@@ -172,6 +173,33 @@ public class CbtActivity extends BaseActivity
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(ConstantKey.CURRENT_PHOTO_PATH, currentPhotoPath);
+        outState.putString(ConstantKey.CURRENT_IMAGE_FILE_NAME, imageFileName);
+        outState.putParcelable(ConstantKey.TEST_INFO, testInfo);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle inState) {
+        for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
+            Fragment fragment = getSupportFragmentManager().getFragments().get(i);
+            if (fragment instanceof ResultPhotoFragment) {
+                resultPhotoFragment.put(((BaseFragment) fragment).getFragmentId(),
+                        (ResultPhotoFragment) fragment);
+            }
+            if (fragment instanceof CompartmentBagFragment) {
+                inputFragment.put(((BaseFragment) fragment).getFragmentId(),
+                        (CompartmentBagFragment) fragment);
+            }
+        }
+
+        createFragments();
+
+        super.onRestoreInstanceState(inState);
+    }
+
+    @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
         showHideFooter();
@@ -243,14 +271,6 @@ public class CbtActivity extends BaseActivity
         }
 
         invalidateOptionsMenu();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putString(ConstantKey.CURRENT_PHOTO_PATH, currentPhotoPath);
-        outState.putString(ConstantKey.CURRENT_IMAGE_FILE_NAME, imageFileName);
-        outState.putParcelable(ConstantKey.TEST_INFO, testInfo);
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -524,6 +544,7 @@ public class CbtActivity extends BaseActivity
             } else if (pageIndex.getType(position) == PageType.INPUT) {
                 if (inputFragment.get(position) == null) {
                     String key = "00000";
+                    boolean useBlue = false;
                     if (inputIndexes.size() > 0) {
                         int firstFragmentId = inputIndexes.get(0);
                         if (cbtResultKeys.get(firstFragmentId) == null) {
@@ -531,8 +552,11 @@ public class CbtActivity extends BaseActivity
                         }
                         key = cbtResultKeys.get(firstFragmentId).replace("1", "2");
                     }
+                    if (inputFragment.size() > 0) {
+                        useBlue = true;
+                    }
                     inputFragment.put(position,
-                            CompartmentBagFragment.newInstance(key, position));
+                            CompartmentBagFragment.newInstance(key, position, useBlue));
                     inputIndexes.add(position);
                 }
                 return inputFragment.get(position);

@@ -19,156 +19,197 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/layoutRisk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="#c20f0f"
-        android:orientation="vertical"
-        android:paddingTop="19dp"
-        android:paddingBottom="19dp">
-
-        <TextView
-            android:id="@+id/textRisk1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="#faf1f1"
-            android:textSize="32dp"
-            android:textStyle="bold"
-            tools:ignore="SpUsage"
-            tools:text="Extremely High Risky" />
-
-        <TextView
-            android:id="@+id/textRisk2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="#faf1f1"
-            android:textSize="26dp"
-            android:textStyle="bold"
-            tools:ignore="SpUsage"
-            tools:text="Possibly Unsafe" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutResult1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textName1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="E.coli"
-            android:textColor="#555"
-            android:textSize="20sp" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/layoutRisk5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:background="#c20f0f"
+            android:orientation="vertical"
+            android:paddingTop="19dp"
+            android:paddingBottom="19dp">
 
             <TextView
-                android:id="@+id/textResult1"
-                android:layout_width="wrap_content"
+                android:id="@+id/textRisk"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/result_top_margin"
-                android:gravity="center_vertical"
-                android:textColor="#444"
-                android:textSize="35sp"
+                android:gravity="center_horizontal"
+                android:textColor="#faf1f1"
+                android:textSize="30dp"
                 android:textStyle="bold"
-                tools:text="> 100" />
+                tools:ignore="SpUsage"
+                tools:text="Extremely High Risk" />
 
             <TextView
-                android:id="@+id/textUnit1"
-                android:layout_width="wrap_content"
+                android:id="@+id/textSubRisk"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="4dp"
-                android:layout_marginBottom="3dp"
-                android:text="@string/mpn"
-                android:textColor="#444"
-                android:textSize="16sp" />
+                android:gravity="center_horizontal"
+                android:textColor="#faf1f1"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                tools:ignore="SpUsage"
+                tools:text="Possibly Unsafe" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layoutResult2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textName2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="Total Coliform"
-            android:textColor="#555"
-            android:textSize="20sp" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/layoutResult1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textResult2"
+                android:id="@+id/textName1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/result_top_margin"
-                android:gravity="center_vertical"
-                android:textColor="#444"
-                android:textSize="35sp"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="E.coli"
+                android:textColor="#555"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                tools:text="> 100" />
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/textUnit2"
+            <LinearLayout
+                android:id="@+id/layoutRisk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="5dp"
+                android:background="#c20f0f"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="12dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/textRisk1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="#faf1f1"
+                    android:textSize="28dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage"
+                    tools:text="Extremely High Risk" />
+
+                <TextView
+                    android:id="@+id/textRisk2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="#faf1f1"
+                    android:textSize="23dp"
+                    android:textStyle="bold"
+                    tools:ignore="SpUsage"
+                    tools:text="Possibly Unsafe" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="4dp"
-                android:layout_marginBottom="3dp"
-                android:text="@string/mpn"
-                android:textColor="#444"
-                android:textSize="16sp" />
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/textResult1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_top_margin"
+                    android:gravity="center_vertical"
+                    android:textColor="#444"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="> 100" />
+
+                <TextView
+                    android:id="@+id/textUnit1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/mpn"
+                    android:textColor="#444"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <View
+        <LinearLayout
+            android:id="@+id/layoutResult2"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#ddd" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#ddd" />
+
+            <TextView
+                android:id="@+id/textName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="Total Coliform"
+                android:textColor="#555"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/textResult2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/result_top_margin"
+                    android:gravity="center_vertical"
+                    android:textColor="#444"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    tools:text="> 100" />
+
+                <TextView
+                    android:id="@+id/textUnit2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginBottom="3dp"
+                    android:text="@string/mpn"
+                    android:textColor="#444"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            style="@style/Button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:onClick="onNextClick"
+            android:text="@string/next"
+            android:theme="?primaryButtonStyle" />
 
     </LinearLayout>
-
-    <Button
-        style="@style/Button"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/view_gutter_bottom"
-        android:onClick="onNextClick"
-        android:text="@string/next"
-        android:theme="?primaryButtonStyle" />
-
-</LinearLayout>
+</layout>

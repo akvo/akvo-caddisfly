@@ -36,6 +36,7 @@ import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.PageIndex;
+import org.akvo.caddisfly.model.PageType;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -54,7 +55,7 @@ public class SwatchSelectTestActivity extends BaseActivity
 
     ImageView imagePageRight;
     ImageView imagePageLeft;
-    SwatchSelectFragment resultFragment;
+    private SparseArray<SwatchSelectFragment> inputFragment = new SparseArray<>();
     PlaceholderFragment submitFragment;
     PageIndex pageIndex = new PageIndex();
 
@@ -62,14 +63,11 @@ public class SwatchSelectTestActivity extends BaseActivity
     private TestInfo testInfo;
     private CustomViewPager viewPager;
     private FrameLayout resultLayout;
-    private FrameLayout pagerLayout;
     private RelativeLayout footerLayout;
     private PageIndicatorView pagerIndicator;
     private boolean showSkipMenu = true;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private int resultPageNumber;
     private int totalPageCount;
-    private int skipToPageNumber;
     private float scale;
     private ArrayList<Instruction> instructionList = new ArrayList<>();
 
@@ -84,7 +82,6 @@ public class SwatchSelectTestActivity extends BaseActivity
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
         resultLayout = findViewById(R.id.resultLayout);
-        pagerLayout = findViewById(R.id.pagerLayout);
         footerLayout = findViewById(R.id.layout_footer);
 
         if (testInfo == null) {
@@ -97,24 +94,11 @@ public class SwatchSelectTestActivity extends BaseActivity
 
         InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
 
-        resultFragment = SwatchSelectFragment.newInstance(testResults, testInfo.getRanges());
-        int instructionCount;
-        if (testInfo.getHasEndInstruction()) {
-            instructionCount = instructionList.size() - 1;
-        } else {
-            instructionCount = instructionList.size();
-        }
-
-        totalPageCount = instructionCount + 1;
-        resultPageNumber = totalPageCount - 1;
-        skipToPageNumber = resultPageNumber;
+        totalPageCount = instructionList.size();
 
         if (testInfo.getHasEndInstruction()) {
             totalPageCount += 1;
         }
-
-        submitFragment = PlaceholderFragment.newInstance(
-                instructionList.get(instructionCount), true);
 
         SectionsPagerAdapter mSectionsPagerAdapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
@@ -139,19 +123,6 @@ public class SwatchSelectTestActivity extends BaseActivity
             @Override
             public void onPageSelected(int position) {
                 pagerIndicator.setActiveIndex(position);
-
-                if (position > resultPageNumber) {
-                    if (!resultFragment.isValid()) {
-                        viewPager.setCurrentItem(resultPageNumber);
-                    }
-                }
-
-                if (position < 1) {
-                    imagePageLeft.setVisibility(View.INVISIBLE);
-                } else {
-                    imagePageLeft.setVisibility(View.VISIBLE);
-                }
-
                 showHideFooter();
             }
 
@@ -168,9 +139,12 @@ public class SwatchSelectTestActivity extends BaseActivity
         pagerIndicator.setVisibility(View.VISIBLE);
         footerLayout.setVisibility(View.VISIBLE);
         setTitle(testInfo.getName());
-        if (viewPager.getCurrentItem() == resultPageNumber) {
+
+        showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 2;
+
+        if (pageIndex.getType(viewPager.getCurrentItem()) == PageType.INPUT) {
             setTitle(R.string.select_color_intervals);
-            if (resultFragment.isValid()) {
+            if (inputFragment.get(pageIndex.getInputPageIndex(0)).isValid()) {
                 viewPager.setAllowedSwipeDirection(SwipeDirection.all);
                 imagePageRight.setVisibility(View.VISIBLE);
             } else {
@@ -189,9 +163,6 @@ public class SwatchSelectTestActivity extends BaseActivity
         } else {
             footerLayout.setVisibility(View.VISIBLE);
             viewPager.setAllowedSwipeDirection(SwipeDirection.all);
-            if (viewPager.getCurrentItem() < resultPageNumber - 1) {
-                showSkipMenu = true;
-            }
             if (viewPager.getCurrentItem() == 0) {
                 imagePageLeft.setVisibility(View.INVISIBLE);
             }
@@ -203,7 +174,6 @@ public class SwatchSelectTestActivity extends BaseActivity
     public void onBackPressed() {
         if (resultLayout.getVisibility() == View.VISIBLE) {
             viewPager.setCurrentItem(instructionList.size() + 1);
-            showWaitingView();
         } else if (viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
         } else {
@@ -244,8 +214,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     }
 
     public void onSkipClick(MenuItem item) {
-        viewPager.setCurrentItem(skipToPageNumber);
-        showWaitingView();
+        viewPager.setCurrentItem(pageIndex.getSkipToIndex());
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
             Bundle bundle = new Bundle();
@@ -257,16 +226,9 @@ public class SwatchSelectTestActivity extends BaseActivity
         }
     }
 
-    private void showWaitingView() {
-        pagerLayout.setVisibility(View.VISIBLE);
-        resultLayout.setVisibility(View.GONE);
-        showSkipMenu = false;
-        invalidateOptionsMenu();
-    }
-
     public void onSwatchSelect(float[] key) {
         showHideFooter();
-        if (resultFragment.isValid()) {
+        if (inputFragment.get(pageIndex.getInputPageIndex(0)).isValid()) {
             testResults = key;
             testInfo.getResults().get(0).setResultValue(key[0]);
             testInfo.getResults().get(1).setResultValue(key[1]);
@@ -279,7 +241,7 @@ public class SwatchSelectTestActivity extends BaseActivity
     }
 
     private void sendResults() {
-        if (resultFragment.isValid()) {
+        if (inputFragment.get(pageIndex.getInputPageIndex(0)).isValid()) {
             SparseArray<String> results = new SparseArray<>();
 
             results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
@@ -398,9 +360,17 @@ public class SwatchSelectTestActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            if (position == resultPageNumber) {
-                return resultFragment;
+            if (pageIndex.getType(position) == PageType.INPUT) {
+                if (inputFragment.get(position) == null) {
+                    inputFragment.put(position,
+                            SwatchSelectFragment.newInstance(testResults, testInfo.getRanges()));
+                }
+                return inputFragment.get(position);
             } else if (position == totalPageCount - 1) {
+                if (submitFragment == null) {
+                    submitFragment = PlaceholderFragment.newInstance(
+                            instructionList.get(position), true);
+                }
                 return submitFragment;
             } else {
                 return PlaceholderFragment.newInstance(

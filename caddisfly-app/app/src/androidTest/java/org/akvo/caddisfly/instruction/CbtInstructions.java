@@ -22,7 +22,6 @@ package org.akvo.caddisfly.instruction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.StringRes;
@@ -51,7 +50,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.File;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
@@ -322,14 +320,6 @@ public class CbtInstructions {
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
 
-        String path = Environment.getExternalStorageDirectory().getPath() + "/Akvo Caddisfly/screenshots";
-
-        File folder = new File(path);
-        if (!folder.exists()) {
-            //noinspection ResultOfMethodCallIgnored
-            folder.mkdirs();
-        }
-
         List<TestInfo> testList = testConfigRepository.getTests(TestType.CBT);
         for (int i = 0; i < TestConstants.CBT_TESTS_COUNT; i++) {
 
@@ -337,7 +327,7 @@ public class CbtInstructions {
             String uuid = testList.get(i).getUuid();
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (("bf80d7197176, ac22c9afa0ab").contains(id))
+            if (("bf80d7197176, ac22c9afa0ab").contains(id))
 //
             {
                 Intent intent = new Intent();
@@ -466,14 +456,13 @@ public class CbtInstructions {
             try {
                 sleep(1000);
 
-
                 if (i == 2) {
                     ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments),
                             isDisplayed()));
 
                     customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
                     customShapeButton.perform(TestUtil.clickPercent(0.5f, 0.5f));
-                    customShapeButton.perform(TestUtil.clickPercent(0.7f, 0.1f));
+                    customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
                 } else if (i == 5) {
                     ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments),
                             isDisplayed()));
