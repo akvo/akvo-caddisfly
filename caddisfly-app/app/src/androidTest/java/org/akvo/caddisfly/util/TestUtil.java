@@ -203,7 +203,7 @@ public final class TestUtil {
                 if (tab != null && tab.isSelected()) {
                     break;
                 }
-                tab = mDevice.findObject(By.text("Fluoride"));
+                tab = mDevice.findObject(By.text("Striptest"));
                 if (tab != null && tab.isSelected()) {
                     for (int j = 0; j < 20; j++) {
                         mDevice.waitForIdle();

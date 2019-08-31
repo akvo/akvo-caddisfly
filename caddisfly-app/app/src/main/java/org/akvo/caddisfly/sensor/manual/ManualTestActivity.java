@@ -69,7 +69,6 @@ public class ManualTestActivity extends BaseActivity
     private TestInfo testInfo;
     private CustomViewPager viewPager;
     private FrameLayout resultLayout;
-    private FrameLayout pagerLayout;
     private RelativeLayout footerLayout;
     private PageIndicatorView pagerIndicator;
     private boolean showSkipMenu = true;
@@ -77,7 +76,7 @@ public class ManualTestActivity extends BaseActivity
     private SparseArray<ResultPhotoFragment> resultPhotoFragment = new SparseArray<>();
     private SparseArray<MeasurementInputFragment> inputFragment = new SparseArray<>();
     private int totalPageCount;
-    private float scale;
+    //    private float scale;
     private ArrayList<Instruction> instructionList = new ArrayList<>();
 
     @Override
@@ -85,12 +84,11 @@ public class ManualTestActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_test);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        scale = getResources().getDisplayMetrics().density;
+//        scale = getResources().getDisplayMetrics().density;
 
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
         resultLayout = findViewById(R.id.resultLayout);
-        pagerLayout = findViewById(R.id.pagerLayout);
         footerLayout = findViewById(R.id.layout_footer);
 
         if (savedInstanceState != null) {
@@ -167,6 +165,12 @@ public class ManualTestActivity extends BaseActivity
         setKeyboardVisibilityListener(this);
     }
 
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        showHideFooter();
+    }
+
     private void nextPage() {
         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
@@ -195,7 +199,6 @@ public class ManualTestActivity extends BaseActivity
     }
 
     private void showHideFooter() {
-        showSkipMenu = false;
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
@@ -203,7 +206,7 @@ public class ManualTestActivity extends BaseActivity
 
         setTitle(testInfo.getName());
 
-        showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 2;
+        showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 1;
 
         if (viewPager.getCurrentItem() < pageIndex.getResultIndex()) {
             if (getSupportActionBar() != null) {
@@ -361,7 +364,6 @@ public class ManualTestActivity extends BaseActivity
     public void onBackPressed() {
         if (resultLayout.getVisibility() == View.VISIBLE) {
             viewPager.setCurrentItem(instructionList.size() + 1);
-            showWaitingView();
         } else if (viewPager.getCurrentItem() == 0) {
             super.onBackPressed();
         } else {
@@ -371,13 +373,6 @@ public class ManualTestActivity extends BaseActivity
 
     private void pageBack() {
         viewPager.setCurrentItem(Math.max(0, viewPager.getCurrentItem() - 1));
-    }
-
-    private void showWaitingView() {
-        pagerLayout.setVisibility(View.VISIBLE);
-        resultLayout.setVisibility(View.GONE);
-        showSkipMenu = false;
-        invalidateOptionsMenu();
     }
 
     public void onSkipClick(MenuItem item) {

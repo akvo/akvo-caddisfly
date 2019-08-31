@@ -327,7 +327,7 @@ public class CbtInstructions {
             String uuid = testList.get(i).getUuid();
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-            if (("bf80d7197176, ac22c9afa0ab").contains(id))
+//            if (("bf80d7197176, ac22c9afa0ab").contains(id))
 //
             {
                 Intent intent = new Intent();

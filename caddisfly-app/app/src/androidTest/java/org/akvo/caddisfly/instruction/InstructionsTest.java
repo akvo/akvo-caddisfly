@@ -24,7 +24,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.RequiresDevice;
 import androidx.test.rule.ActivityTestRule;
@@ -58,8 +57,6 @@ import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentat
 import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestHelper.takeScreenshot;
-import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
-import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
 public class InstructionsTest {
@@ -199,7 +196,7 @@ public class InstructionsTest {
 
                 mActivityRule.launchActivity(intent);
 
-                int pages = navigateToTest(id, testList.get(i).getHasEndInstruction());
+                int pages = navigateToTest(id);
 
                 jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
 
@@ -216,7 +213,7 @@ public class InstructionsTest {
 
     }
 
-    private int navigateToTest(String id, boolean hasEndPage) {
+    private int navigateToTest(String id) {
 
         mDevice.waitForIdle();
 
@@ -226,16 +223,7 @@ public class InstructionsTest {
 
         takeScreenshot(id, -1);
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_next), withText("Next"),
-                        childAtPosition(
-                                allOf(withId(R.id.linearLayout),
-                                        childAtPosition(
-                                                withId(android.R.id.content),
-                                                0)),
-                                3),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
+        onView(withText(R.string.next)).perform(click());
 
         int pages = 0;
         for (int i = 0; i < 17; i++) {
@@ -260,13 +248,10 @@ public class InstructionsTest {
 //
 //                onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
-                if (hasEndPage) {
+                pages++;
 
-                    pages++;
+                takeScreenshot(id, i + 1);
 
-                    takeScreenshot(id, i + 1);
-
-                }
                 TestUtil.sleep(300);
                 break;
             }

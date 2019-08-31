@@ -167,7 +167,7 @@ public class CbtActivity extends BaseActivity
 
     private void createFragments() {
         if (resultFragment == null) {
-            resultFragment = CbtResultFragment.newInstance();
+            resultFragment = CbtResultFragment.newInstance(testInfo.getResults().size());
             resultFragment.setFragmentId(pageIndex.getResultIndex());
         }
     }
@@ -214,7 +214,6 @@ public class CbtActivity extends BaseActivity
     }
 
     private void showHideFooter() {
-        showSkipMenu = false;
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);

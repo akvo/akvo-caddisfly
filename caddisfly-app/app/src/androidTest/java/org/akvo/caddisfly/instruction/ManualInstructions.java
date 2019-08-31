@@ -110,7 +110,7 @@ public class ManualInstructions {
             String id = testInfo.getUuid();
             id = id.substring(id.lastIndexOf("-") + 1);
 
-            int pages = navigateToTest("Manual 2", i, id, testInfo.getName());
+            int pages = navigateToTest("Tester", i, id, testInfo.getName());
 
             sleep(500);
 
@@ -209,9 +209,9 @@ public class ManualInstructions {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual");
+        TestUtil.nextSurveyPage("Sensor");
 
-        clickExternalSourceButton(1);
+        clickExternalSourceButton(0);
 
         sleep(1000);
 

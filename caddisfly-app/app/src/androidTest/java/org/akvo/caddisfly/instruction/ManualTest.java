@@ -66,6 +66,7 @@ import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
+import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
@@ -125,9 +126,9 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual");
+        TestUtil.nextSurveyPage("Sensor");
 
-        clickExternalSourceButton(0);
+        clickExternalSourceButton(2);
 
         sleep(1000);
 
@@ -224,9 +225,9 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual");
+        TestUtil.nextSurveyPage("Sensor");
 
-        clickExternalSourceButton(1);
+        clickExternalSourceButton(0);
 
         sleep(1000);
 
@@ -289,11 +290,17 @@ public class ManualTest {
         onView(withText(R.string.sd_50_dip_sample_2))
                 .check(matches(isDisplayed()));
 
+        onView(withText(R.string.skip)).check(doesNotExist());
+
         TestUtil.nextPage();
 
         pressBack();
 
-        onView(withText(R.string.skip)).perform(click());
+        sleep(500);
+
+        onView(withText(R.string.skip)).check(doesNotExist());
+
+        TestUtil.nextPage();
 
         sleep(500);
 
@@ -303,7 +310,7 @@ public class ManualTest {
 
         onView(withText(R.string.next)).perform(click());
 
-        ViewInteraction submitButton = onView(
+        ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
                         childAtPosition(
                                 childAtPosition(
@@ -311,7 +318,7 @@ public class ManualTest {
                                         1),
                                 2),
                         isDisplayed()));
-        submitButton.perform(click());
+        appCompatButton5.perform(click());
 
         mIntentsRule.finishActivity();
 
@@ -332,9 +339,9 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual");
+        TestUtil.nextSurveyPage("Sensor");
 
-        clickExternalSourceButton(2);
+        clickExternalSourceButton(1);
 
         sleep(1000);
 
@@ -407,7 +414,9 @@ public class ManualTest {
 
         pressBack();
 
-        onView(withText(R.string.skip)).perform(click());
+        onView(withText(R.string.skip)).check(doesNotExist());
+
+        nextPage();
 
         sleep(500);
 
@@ -463,15 +472,17 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual");
+        TestUtil.nextSurveyPage("Sensor");
 
-        clickExternalSourceButton(2);
+        clickExternalSourceButton(1);
 
         sleep(500);
 
         onView(withText(R.string.next)).perform(click());
 
-        onView(withText(R.string.skip)).perform(click());
+        onView(withText(R.string.skip)).check(doesNotExist());
+
+        nextPage();
 
         sleep(1000);
 

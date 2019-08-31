@@ -426,10 +426,6 @@ public class TestInfo implements Parcelable {
         return endInstruction;
     }
 
-    public Boolean getHasEndInstruction() {
-        return hasEndInstruction;
-    }
-
     public double getStripLength() {
         return length;
     }

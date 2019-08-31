@@ -38,11 +38,13 @@ import java.util.Objects;
 
 public class CbtResultFragment extends BaseFragment {
 
+    private static final String ARG_RESULT_COUNT = "result_count";
     private MpnValue mpnValue = null;
     private MpnValue mpnValue2 = null;
     private String result = "00000";
     private String result2 = "00000";
     private FragmentCbtResultBinding b;
+    private int resultCount = 1;
 
     /**
      * Use this factory method to create a new instance of
@@ -50,8 +52,21 @@ public class CbtResultFragment extends BaseFragment {
      *
      * @return A new instance of fragment CbtResultFragment.
      */
-    public static CbtResultFragment newInstance() {
-        return new CbtResultFragment();
+    public static CbtResultFragment newInstance(int resultCount) {
+        CbtResultFragment fragment = new CbtResultFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_RESULT_COUNT, resultCount);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            resultCount = getArguments().getInt(ARG_RESULT_COUNT);
+        }
     }
 
     @Override
@@ -89,11 +104,25 @@ public class CbtResultFragment extends BaseFragment {
             String[] results = StringUtil.getStringResourceByName(Objects.requireNonNull(getActivity()),
                     mpnValue.getRiskCategory()).toString().split("/");
 
-            b.textRisk1.setText(results[0].trim());
-            b.textRisk.setText(results[0].trim());
-            if (results.length > 1) {
-                b.textRisk2.setText(results[1].trim());
-                b.textSubRisk.setText(results[1].trim());
+            b.textSubRisk.setText("");
+            if (resultCount > 3) {
+                b.layoutResult2.setVisibility(View.VISIBLE);
+                b.layoutRisk.setVisibility(View.GONE);
+                b.layoutRisk2.setVisibility(View.VISIBLE);
+                b.textName1.setVisibility(View.VISIBLE);
+                b.textRisk1.setText(results[0].trim());
+                if (results.length > 1) {
+                    b.textSubRisk2.setText(results[1].trim());
+                }
+            } else {
+                b.layoutResult2.setVisibility(View.GONE);
+                b.layoutRisk.setVisibility(View.VISIBLE);
+                b.layoutRisk2.setVisibility(View.GONE);
+                b.textName1.setVisibility(View.GONE);
+                b.textRisk.setText(results[0].trim());
+                if (results.length > 1) {
+                    b.textSubRisk.setText(results[1].trim());
+                }
             }
 
             b.layoutRisk.setBackgroundColor(mpnValue.getBackgroundColor1());

@@ -124,7 +124,7 @@ public class SensorInstructions {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Sensors");
+        TestUtil.nextSurveyPage("Sensor");
 
         clickExternalSourceButton(index);
 

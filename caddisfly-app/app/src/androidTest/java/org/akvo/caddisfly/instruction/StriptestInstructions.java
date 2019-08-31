@@ -21,6 +21,7 @@ package org.akvo.caddisfly.instruction;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -115,7 +116,7 @@ public class StriptestInstructions {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Strip Tests");
+        TestUtil.nextSurveyPage("Striptest");
 
         clickExternalSourceButton(2);
 
@@ -176,11 +177,13 @@ public class StriptestInstructions {
 
         sleep(7000);
 
-        onView(withText("4.8")).check(matches(isDisplayed()));
-
-        pressBack();
-
-        onView(withText("pH")).check(matches(isDisplayed()));
+        if (Build.MANUFACTURER.equals("samsung")) {
+            onView(withText("4.8")).check(matches(isDisplayed()));
+            pressBack();
+            onView(withText("pH")).check(matches(isDisplayed()));
+        } else {
+            onView(withText("No strip found")).check(matches(isDisplayed()));
+        }
 
         ViewInteraction appCompatButton5 = onView(
                 allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
@@ -193,7 +196,11 @@ public class StriptestInstructions {
                         isDisplayed()));
         appCompatButton5.perform(click());
 
-        assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")));
+        if (Build.MANUFACTURER.equals("samsung")) {
+            assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")));
+        } else {
+            assertNotNull(mDevice.findObject(By.text("pH: null ")));
+        }
     }
 
     @Test

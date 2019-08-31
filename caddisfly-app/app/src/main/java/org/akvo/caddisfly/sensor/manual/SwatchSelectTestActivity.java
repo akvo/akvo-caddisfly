@@ -96,10 +96,6 @@ public class SwatchSelectTestActivity extends BaseActivity
 
         totalPageCount = instructionList.size();
 
-        if (testInfo.getHasEndInstruction()) {
-            totalPageCount += 1;
-        }
-
         SectionsPagerAdapter mSectionsPagerAdapter =
                 new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mSectionsPagerAdapter);
