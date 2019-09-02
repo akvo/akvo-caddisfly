@@ -220,6 +220,9 @@ public class StripTestActivity extends BaseActivity {
     }
 
     private void showHideFooter() {
+        if (imagePageLeft == null) {
+            return;
+        }
         showSkipMenu = false;
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);

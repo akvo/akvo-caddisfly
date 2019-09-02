@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -93,6 +94,7 @@ public class CbtActivity extends BaseActivity
     private boolean showSkipMenu = true;
     private CustomViewPager viewPager;
     private int testPhase;
+    private float scale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,8 @@ public class CbtActivity extends BaseActivity
         setContentView(R.layout.activity_cbt);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        scale = getResources().getDisplayMetrics().density;
 
         viewPager = findViewById(R.id.viewPager);
         pagerIndicator = findViewById(R.id.pager_indicator);
@@ -221,6 +225,9 @@ public class CbtActivity extends BaseActivity
     }
 
     private void showHideFooter() {
+        if (imagePageLeft == null) {
+            return;
+        }
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
@@ -273,6 +280,12 @@ public class CbtActivity extends BaseActivity
         // Last page
         if (viewPager.getCurrentItem() == totalPageCount - 1) {
             imagePageRight.setVisibility(View.INVISIBLE);
+            if (testPhase == 2) {
+                if (scale <= 1.5) {
+                    // don't show footer page indicator for smaller screens
+                    (new Handler()).postDelayed(() -> footerLayout.setVisibility(View.GONE), 400);
+                }
+            }
         }
 
         // First page

@@ -54,7 +54,7 @@
     <string name="change_colors_to_match">In the next screen, change the colours in the interface to match the colours of the sample in the bag compartments.</string>
     <string name="click_compartments_to_change">Click the compartments to change colour.</string>
     <string name="note_blue_green_specks"><b>NOTE:</b> Any trace of blue or blue/green in a compartment indicates presence of E. coli, even just specks of blue/blue green color or just blue/blue green sediment at the bottom of a compartment.</string>
-    <string name="add_free_chlorine">Add 1–2 mL of liquid bleach (NaOCl) or sufficient free chlorine tablets (calcium hypochlorite or sodium dichloroisocyanurate) to provide about 100 milligrams of free chlorine.</string>
+    <string name="add_free_chlorine">Add 1–2 mL of liquid bleach (NaOCl) or sufficient free chlorine tablets (calcium hypochlorite or sodium dichloroisocyanurate) to provide about 100 mg of free chlorine.</string>
     <string name="dispose_contents_bag">After 45 minutes, pour contents into a sink, toilet or hole in ground and safely dispose the empty compartment bag.</string>
     <string name="retain_plastic_seal_reuse">Retain plastic seal clip for reuse.</string>
     <string name="add_90ml_distilled_water">Add <b>90 ml</b> of distilled water to the water sample.</string>

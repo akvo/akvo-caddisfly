@@ -186,6 +186,9 @@ public class ManualTestActivity extends BaseActivity
     }
 
     private void showHideFooter() {
+        if (imagePageLeft == null) {
+            return;
+        }
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);

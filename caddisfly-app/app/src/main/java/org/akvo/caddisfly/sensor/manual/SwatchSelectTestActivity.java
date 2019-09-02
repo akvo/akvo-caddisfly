@@ -129,6 +129,9 @@ public class SwatchSelectTestActivity extends BaseActivity
     }
 
     private void showHideFooter() {
+        if (imagePageLeft == null) {
+            return;
+        }
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
@@ -152,9 +155,6 @@ public class SwatchSelectTestActivity extends BaseActivity
 
             case RESULT:
                 setTitle(R.string.result);
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                }
                 break;
 
             case DEFAULT:
