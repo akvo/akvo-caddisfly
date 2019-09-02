@@ -95,6 +95,8 @@ public final class InstructionHelper {
                             } else if (item.startsWith("stage")) {
                                 section.set(i1, item);
                                 indent = true;
+                            } else if (item.startsWith("~")) {
+                                section.set(i1, item);
                             } else if (item.startsWith("/")) {
                                 if (item.startsWith("/-")) {
                                     section.set(i1, item.substring(2));

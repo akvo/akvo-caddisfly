@@ -32,9 +32,6 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,9 +66,7 @@ public class ResultPhotoFragment extends BaseFragment {
     private String imageFileName = "";
     private String currentPhotoPath;
     private String resultImagePath;
-    private ImageView imageResult;
-    private FragmentResultPhotoBinding fragmentResultPhotoBinding;
-    private Button takePhotoButton;
+    private FragmentResultPhotoBinding b;
 
     /**
      * Get the instance.
@@ -95,7 +90,7 @@ public class ResultPhotoFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 //        View view = inflater.inflate(R.layout.fragment_result_photo, container, false);
-        fragmentResultPhotoBinding = DataBindingUtil.inflate(inflater,
+        b = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_result_photo, container, false);
 
 
@@ -105,22 +100,18 @@ public class ResultPhotoFragment extends BaseFragment {
             resultImagePath = savedInstanceState.getString(ConstantKey.RESULT_IMAGE_PATH);
         }
 
-        View view = fragmentResultPhotoBinding.getRoot();
-
-        imageResult = view.findViewById(R.id.imageResult);
-        takePhotoButton = view.findViewById(R.id.takePhoto);
-        TextView textName = view.findViewById(R.id.textName);
+        View view = b.getRoot();
 
         if (getArguments() != null) {
 
             Instruction instruction = getArguments().getParcelable(ARG_INSTRUCTION);
-            fragmentResultPhotoBinding.setInstruction(instruction);
+            b.setInstruction(instruction);
 
             String title = getArguments().getString(ARG_RESULT_NAME);
             if (title == null || title.isEmpty()) {
-                textName.setVisibility(View.GONE);
+                b.textName.setVisibility(View.GONE);
             } else {
-                textName.setText(title);
+                b.textName.setText(title);
             }
         }
 
@@ -132,13 +123,13 @@ public class ResultPhotoFragment extends BaseFragment {
             File imgFile = new File(resultImagePath);
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                imageResult.setImageBitmap(myBitmap);
-                imageResult.setBackground(null);
-                takePhotoButton.setText(R.string.retakePhoto);
+                b.imageResult.setImageBitmap(myBitmap);
+                b.imageResult.setBackground(null);
+                b.takePhoto.setText(R.string.retakePhoto);
             }
         }
 
-        takePhotoButton.setOnClickListener(view1 -> takePhoto());
+        b.takePhoto.setOnClickListener(view1 -> takePhoto());
 
         return view;
     }
@@ -203,9 +194,9 @@ public class ResultPhotoFragment extends BaseFragment {
             File imgFile = new File(resultImagePath);
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                imageResult.setImageBitmap(myBitmap);
-                imageResult.setBackground(null);
-                takePhotoButton.setText(R.string.retakePhoto);
+                b.imageResult.setImageBitmap(myBitmap);
+                b.imageResult.setBackground(null);
+                b.takePhoto.setText(R.string.retakePhoto);
             }
 
             (new Handler()).postDelayed(() -> mListener.onPhotoTaken(imageFileName), 600);

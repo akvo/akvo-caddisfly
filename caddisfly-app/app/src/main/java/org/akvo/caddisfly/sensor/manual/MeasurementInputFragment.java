@@ -25,45 +25,41 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.databinding.FragmentManualInputBinding;
+import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseFragment;
 
-import java.util.Locale;
-
 import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
 
 public class MeasurementInputFragment extends BaseFragment {
+    private static final String ARG_INSTRUCTION = "resultInstruction";
     private static final String ARG_TEST_INFO = "testInfo";
     private static final String ARG_RESULT_ID = "resultId";
-    private static final String ARG_RESULT_SERIAL = "resultSerial";
     private Float resultFloat;
-    private EditText editResult;
-    private OnSubmitResultListener mListener;
-    private EditText radioValidation;
-    private RadioGroup unitRadioGroup;
+    private OnSubmitResultListener listener;
     private Float minValue;
     private Float maxValue;
+    private FragmentManualInputBinding b;
 
     /**
      * Get the instance.
      */
     public static MeasurementInputFragment newInstance(TestInfo testInfo, int resultId,
-                                                       int serial, int id) {
+                                                       Instruction instruction, int id) {
         MeasurementInputFragment fragment = new MeasurementInputFragment();
+        fragment.setFragmentId(id);
         Bundle args = new Bundle();
         args.putParcelable(ARG_TEST_INFO, testInfo);
-        args.putInt(ARG_RESULT_SERIAL, serial);
         args.putInt(ARG_RESULT_ID, resultId);
+        args.putParcelable(ARG_INSTRUCTION, instruction);
         fragment.setArguments(args);
 
         return fragment;
@@ -73,16 +69,13 @@ public class MeasurementInputFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_manual_input, container, false);
-
-        editResult = view.findViewById(R.id.editResult);
-        radioValidation = view.findViewById(R.id.editRadioValidation);
-        TextView textName = view.findViewById(R.id.textName);
-        TextView textRange = view.findViewById(R.id.textRange);
-        TextView textSerial = view.findViewById(R.id.textSerial);
-        unitRadioGroup = view.findViewById(R.id.unitChoice);
+        b = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_manual_input, container, false);
 
         if (getArguments() != null) {
+
+            Instruction instruction = getArguments().getParcelable(ARG_INSTRUCTION);
+            b.setInstruction(instruction);
 
             TestInfo testInfo = getArguments().getParcelable(ARG_TEST_INFO);
             int resultId = getArguments().getInt(ARG_RESULT_ID);
@@ -90,14 +83,12 @@ public class MeasurementInputFragment extends BaseFragment {
             if (testInfo != null) {
                 testResult = testInfo.getResults().get(resultId);
 
-                textName.setText(testResult.getName());
-                textSerial.setText(String.format(Locale.US, "%d.",
-                        getArguments().getInt(ARG_RESULT_SERIAL)));
+                b.textName.setText(testResult.getName());
 
                 if (testResult.getUnit().isEmpty()) {
-                    textRange.setText(String.format("(%s)", testInfo.getMinMaxRange()));
+                    b.textRange.setText(String.format("(%s)", testInfo.getMinMaxRange()));
                 } else {
-                    textRange.setText(String.format("(%s %s)", testInfo.getMinMaxRange(), testResult.getUnit()));
+                    b.textRange.setText(String.format("(%s %s)", testInfo.getMinMaxRange(), testResult.getUnit()));
                 }
 
                 String range = testInfo.getRanges();
@@ -108,61 +99,59 @@ public class MeasurementInputFragment extends BaseFragment {
                 String unitChoice = testResult.getUnitChoice();
 
                 if (unitChoice == null || unitChoice.isEmpty()) {
-                    unitRadioGroup.setVisibility(View.GONE);
+                    b.unitChoice.setVisibility(View.GONE);
                 } else {
-                    unitRadioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
-                        radioValidation.setError(null);
-                        editResult.setActivated(true);
-                        editResult.requestFocus();
+                    b.unitChoice.setOnCheckedChangeListener((radioGroup, i) -> {
+                        b.editRadioValidation.setError(null);
+                        b.editResult.setActivated(true);
+                        b.editResult.requestFocus();
                     });
                 }
 
-                final Button buttonSubmitResult = view.findViewById(R.id.buttonSubmitResult);
-
-                buttonSubmitResult.setOnClickListener(view1 -> {
-                    if (mListener != null) {
+                b.buttonSubmitResult.setOnClickListener(view1 -> {
+                    if (listener != null) {
                         resultFloat = isValidResult(true);
                         if (resultFloat != -1f) {
-                            mListener.onSubmitResult(String.valueOf(resultFloat));
+                            listener.onSubmitResult(String.valueOf(resultFloat));
                         }
                     }
                 });
             }
         }
 
-        return view;
+        return b.getRoot();
     }
 
     private Float isValidResult(boolean showEmptyError) {
         boolean okToSubmit = true;
         Float resultFloat = -1f;
 
-        if (editResult == null) {
+        if (b.editResult == null) {
             return resultFloat;
         }
 
-        String result = editResult.getText().toString();
+        String result = b.editResult.getText().toString();
         if (result.isEmpty()) {
             if (showEmptyError) {
-                editResult.setError("Enter result");
+                b.editResult.setError("Enter result");
             }
             resultFloat = -1f;
         } else {
 
             resultFloat = Float.parseFloat(result);
 
-            if (unitRadioGroup.getVisibility() == View.VISIBLE) {
-                int radioButtonId = unitRadioGroup.getCheckedRadioButtonId();
+            if (b.unitChoice.getVisibility() == View.VISIBLE) {
+                int radioButtonId = b.unitChoice.getCheckedRadioButtonId();
 
                 if (radioButtonId == -1) {
-                    radioValidation.setActivated(true);
-                    radioValidation.requestFocus();
-                    radioValidation.setError("Select unit");
+                    b.editRadioValidation.setActivated(true);
+                    b.editRadioValidation.requestFocus();
+                    b.editRadioValidation.setError("Select unit");
                     resultFloat = -1f;
                     okToSubmit = false;
                 } else {
-                    RadioButton selectedRadioButton = unitRadioGroup.findViewById(radioButtonId);
-                    int index = unitRadioGroup.indexOfChild(selectedRadioButton);
+                    RadioButton selectedRadioButton = b.unitChoice.findViewById(radioButtonId);
+                    int index = b.unitChoice.indexOfChild(selectedRadioButton);
 
                     if (index == 1) {
                         resultFloat = resultFloat * 1000;
@@ -172,10 +161,10 @@ public class MeasurementInputFragment extends BaseFragment {
 
             if (okToSubmit) {
                 if (resultFloat < minValue || resultFloat > maxValue) {
-                    editResult.setError("Invalid result");
+                    b.editResult.setError("Invalid result");
                     resultFloat = -1f;
                 } else {
-                    hideSoftKeyboard(editResult);
+                    hideSoftKeyboard(b.editResult);
                 }
             }
         }
@@ -184,7 +173,7 @@ public class MeasurementInputFragment extends BaseFragment {
     }
 
     void showSoftKeyboard() {
-        showSoftKeyboard(editResult);
+        showSoftKeyboard(b.editResult);
     }
 
     private void showSoftKeyboard(View view) {
@@ -198,9 +187,9 @@ public class MeasurementInputFragment extends BaseFragment {
     }
 
     void hideSoftKeyboard() {
-        hideSoftKeyboard(editResult);
-        if (editResult != null) {
-            editResult.setError(null);
+        hideSoftKeyboard(b.editResult);
+        if (b.editResult != null) {
+            b.editResult.setError(null);
         }
     }
 
@@ -219,7 +208,7 @@ public class MeasurementInputFragment extends BaseFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnSubmitResultListener) {
-            mListener = (OnSubmitResultListener) context;
+            listener = (OnSubmitResultListener) context;
         } else {
             throw new IllegalArgumentException(context.toString()
                     + " must implement OnSubmitResultListener");
@@ -229,7 +218,7 @@ public class MeasurementInputFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
     }
 
     boolean isValid(boolean showEmptyError) {

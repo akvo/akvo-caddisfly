@@ -136,7 +136,7 @@ public class SwatchSelectTestActivity extends BaseActivity
 
         setTitle(testInfo.getName());
 
-        showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 2;
+        showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 1;
 
         switch (pageIndex.getType(viewPager.getCurrentItem())) {
             case INPUT:

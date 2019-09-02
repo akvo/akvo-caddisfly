@@ -101,11 +101,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -145,11 +147,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -195,6 +199,7 @@
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -273,7 +278,8 @@
         {
           "section": [
             "/<b>round_off_test</b>",
-            "/pt_clean_compartments"
+            "/pt_clean_compartments",
+            "~result~"
           ]
         }
       ],
@@ -350,7 +356,8 @@
         {
           "section": [
             "/<b>round_off_test</b>",
-            "/pt_clean_compartments"
+            "/pt_clean_compartments",
+            "~result~"
           ]
         }
       ],
@@ -8212,11 +8219,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8307,11 +8316,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8402,11 +8413,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8490,11 +8503,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8519,11 +8534,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8613,11 +8630,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8642,11 +8661,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8758,11 +8779,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8841,11 +8864,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -8925,11 +8950,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9009,11 +9036,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9109,11 +9138,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9209,11 +9240,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9293,11 +9326,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9376,11 +9411,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9459,11 +9496,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9553,11 +9592,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9635,11 +9676,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },
@@ -9745,11 +9788,13 @@
         },
         {
           "section": [
+            "take_photo_of_result",
             "~photo~"
           ]
         },
         {
           "section": [
+            "enter_measured_value",
             "~input~"
           ]
         },

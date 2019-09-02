@@ -128,13 +128,6 @@ public class ManualTestActivity extends BaseActivity
             @Override
             public void onPageSelected(int position) {
                 pagerIndicator.setActiveIndex(position);
-
-                if (position < 1) {
-                    imagePageLeft.setVisibility(View.INVISIBLE);
-                } else {
-                    imagePageLeft.setVisibility(View.VISIBLE);
-                }
-
                 showHideFooter();
             }
 
@@ -481,13 +474,14 @@ public class ManualTestActivity extends BaseActivity
             if (pageIndex.getType(position) == PageType.PHOTO) {
                 if (resultPhotoFragment.get(position) == null) {
                     resultPhotoFragment.put(position, ResultPhotoFragment.newInstance(
-                            "", instructionList.get(position), position));
+                            testInfo.getResults().get(resultPhotoFragment.size()).getName(),
+                            instructionList.get(position), position));
                 }
                 return resultPhotoFragment.get(position);
             } else if (pageIndex.getType(position) == PageType.INPUT) {
                 if (inputFragment.get(position) == null) {
                     inputFragment.put(position, MeasurementInputFragment.newInstance(
-                            testInfo, inputFragment.size(), position, position));
+                            testInfo, inputFragment.size(), instructionList.get(position), position));
                 }
                 return inputFragment.get(position);
             } else if (position == totalPageCount - 1) {
