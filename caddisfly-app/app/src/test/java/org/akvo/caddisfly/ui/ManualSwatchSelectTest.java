@@ -109,7 +109,7 @@ public class ManualSwatchSelectTest {
         }
 
         TextView textView = activity.findViewById(R.id.textToolbarTitle);
-        assertEquals(textView.getText(), activity.getString(R.string.select_color_intervals));
+        assertEquals(activity.getString(R.string.select_color_intervals), textView.getText());
 
         SystemClock.sleep(3000);
 

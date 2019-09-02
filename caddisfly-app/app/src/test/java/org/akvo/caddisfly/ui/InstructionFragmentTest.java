@@ -73,7 +73,7 @@ public class InstructionFragmentTest {
         ImageView imageView = view.findViewById(3);
         assertNotNull(imageView);
         int drawableResId = shadowOf(imageView.getDrawable()).getCreatedFromResId();
-        assertEquals(-1, drawableResId);
+        assertEquals(R.drawable.in_1, drawableResId);
     }
 
 }

@@ -62,6 +62,8 @@ public final class InstructionHelper {
                             pageIndex.setPhotoIndex(i);
                             if (pageIndex.getSkipToIndex() < 0) {
                                 pageIndex.setSkipToIndex(i);
+                            } else if (pageIndex.getSkipToIndex2() < 0) {
+                                pageIndex.setSkipToIndex2(i);
                             }
                         } else if (item.contains("~input~")) {
                             pageIndex.setInputIndex(i);

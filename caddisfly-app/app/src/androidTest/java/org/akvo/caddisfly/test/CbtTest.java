@@ -36,7 +36,6 @@ import androidx.test.uiautomator.UiDevice;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.ui.MainActivity;
 import org.akvo.caddisfly.util.TestUtil;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -168,49 +167,13 @@ public class CbtTest {
         String risk1 = riskText[0].trim();
         String risk2 = riskText[1].trim();
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.textResult), withText(risk1),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText(risk1)));
+        onView(withText(risk1)).check(matches(isDisplayed()));
 
-        ViewInteraction textView3 = onView(
-                allOf(withId(R.id.textResult2), withText(">100"),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult1),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                1)),
-                                0),
-                        isDisplayed()));
-        textView3.check(matches(withText(">100")));
+        onView(withText(risk2)).check(matches(isDisplayed()));
 
-        ViewInteraction textView2 = onView(
-                allOf(withText("MPN/100ml"),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult1),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                1)),
-                                1),
-                        isDisplayed()));
-        textView2.check(matches(withText("MPN/100ml")));
+        onView(withText(">100")).check(matches(isDisplayed()));
 
-        ViewInteraction textView6 = onView(
-                allOf(withId(R.id.textResult1), withText(risk2),
-                        childAtPosition(
-                                allOf(withId(R.id.layoutResult),
-                                        childAtPosition(
-                                                IsInstanceOf.instanceOf(android.widget.LinearLayout.class),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        textView6.check(matches(withText(risk2)));
+//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
 
         onView(withText(R.string.result)).check(matches(isDisplayed()));
 
@@ -281,7 +244,7 @@ public class CbtTest {
 
         onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
         onView(withText(">1000")).check(matches(isDisplayed()));
-        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -300,7 +263,7 @@ public class CbtTest {
         onView(withText(risk1)).check(matches(isDisplayed()));
         onView(withText(risk2)).check(matches(isDisplayed()));
         onView(withText("483")).check(matches(isDisplayed()));
-        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -318,7 +281,7 @@ public class CbtTest {
         onView(withText(risk1)).check(matches(isDisplayed()));
         onView(withText(risk2)).check(matches(isDisplayed()));
         onView(withText("58")).check(matches(isDisplayed()));
-        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
 
         pressBack();
 
@@ -334,7 +297,7 @@ public class CbtTest {
 
         onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
         onView(withText(">1000")).check(matches(isDisplayed()));
-        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
 
         nextPage();
 

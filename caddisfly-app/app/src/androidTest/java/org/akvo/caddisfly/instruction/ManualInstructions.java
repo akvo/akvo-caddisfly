@@ -209,7 +209,7 @@ public class ManualInstructions {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Sensor");
+        TestUtil.nextSurveyPage("Meter");
 
         clickExternalSourceButton(0);
 

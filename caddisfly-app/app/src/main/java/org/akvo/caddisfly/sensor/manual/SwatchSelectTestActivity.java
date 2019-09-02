@@ -129,25 +129,42 @@ public class SwatchSelectTestActivity extends BaseActivity
     }
 
     private void showHideFooter() {
-        showSkipMenu = false;
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
         footerLayout.setVisibility(View.VISIBLE);
+
         setTitle(testInfo.getName());
 
         showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 2;
 
-        if (pageIndex.getType(viewPager.getCurrentItem()) == PageType.INPUT) {
-            setTitle(R.string.select_color_intervals);
-            if (inputFragment.get(pageIndex.getInputPageIndex(0)).isValid()) {
+        switch (pageIndex.getType(viewPager.getCurrentItem())) {
+            case INPUT:
+                setTitle(R.string.select_color_intervals);
+                if (inputFragment.get(pageIndex.getInputPageIndex(0)).isValid()) {
+                    viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                    imagePageRight.setVisibility(View.VISIBLE);
+                } else {
+                    viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                    imagePageRight.setVisibility(View.INVISIBLE);
+                }
+                break;
+
+            case RESULT:
+                setTitle(R.string.result);
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                }
+                break;
+
+            case DEFAULT:
+                footerLayout.setVisibility(View.VISIBLE);
                 viewPager.setAllowedSwipeDirection(SwipeDirection.all);
-                imagePageRight.setVisibility(View.VISIBLE);
-            } else {
-                viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-                imagePageRight.setVisibility(View.INVISIBLE);
-            }
-        } else if (viewPager.getCurrentItem() == totalPageCount - 1) {
+                break;
+        }
+
+        // Last page
+        if (viewPager.getCurrentItem() == totalPageCount - 1) {
             viewPager.setAllowedSwipeDirection(SwipeDirection.left);
             imagePageRight.setVisibility(View.INVISIBLE);
             imagePageLeft.setVisibility(View.VISIBLE);
@@ -156,13 +173,13 @@ public class SwatchSelectTestActivity extends BaseActivity
                 // don't show footer page indicator for smaller screens
                 (new Handler()).postDelayed(() -> footerLayout.setVisibility(View.GONE), 400);
             }
-        } else {
-            footerLayout.setVisibility(View.VISIBLE);
-            viewPager.setAllowedSwipeDirection(SwipeDirection.all);
-            if (viewPager.getCurrentItem() == 0) {
-                imagePageLeft.setVisibility(View.INVISIBLE);
-            }
         }
+
+        // First page
+        if (viewPager.getCurrentItem() == 0) {
+            imagePageLeft.setVisibility(View.INVISIBLE);
+        }
+
         invalidateOptionsMenu();
     }
 

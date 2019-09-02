@@ -126,7 +126,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Sensor");
+        TestUtil.nextSurveyPage("Meter");
 
         clickExternalSourceButton(2);
 
@@ -225,7 +225,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Sensor");
+        TestUtil.nextSurveyPage("Meter");
 
         clickExternalSourceButton(0);
 
@@ -302,11 +302,11 @@ public class ManualTest {
 
         TestUtil.nextPage();
 
-        sleep(500);
+        sleep(1500);
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        sleep(500);
+        sleep(1500);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -339,7 +339,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Sensor");
+        TestUtil.nextSurveyPage("Meter");
 
         clickExternalSourceButton(1);
 
@@ -472,7 +472,7 @@ public class ManualTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Sensor");
+        TestUtil.nextSurveyPage("Meter");
 
         clickExternalSourceButton(1);
 

@@ -91,7 +91,7 @@ public class SwatchSelectTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual 2");
+        TestUtil.nextSurveyPage("Tester");
 
         clickExternalSourceButton(1);
 
@@ -136,9 +136,9 @@ public class SwatchSelectTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual 2");
+        TestUtil.nextSurveyPage("Tester");
 
-        clickExternalSourceButton(1);
+        clickExternalSourceButton(0);
 
         sleep(200);
 
@@ -375,9 +375,9 @@ public class SwatchSelectTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Manual 2");
+        TestUtil.nextSurveyPage("Tester");
 
-        clickExternalSourceButton(0);
+        clickExternalSourceButton(1);
 
         sleep(200);
 

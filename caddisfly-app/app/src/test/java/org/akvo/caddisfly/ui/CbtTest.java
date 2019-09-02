@@ -23,11 +23,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.viewpager.widget.ViewPager;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
@@ -44,7 +41,6 @@ import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertNull;
 import static org.robolectric.Shadows.shadowOf;
 
@@ -73,6 +69,8 @@ public class CbtTest {
     @Test
     public void clickingInstructions() {
 
+        String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
         TestConfigRepository testConfigRepository = new TestConfigRepository();
         TestInfo testInfo = testConfigRepository.getTestInfo(Constants.CBT_ID);
 
@@ -89,10 +87,30 @@ public class CbtTest {
 
         button.performClick();
 
-        ViewPager viewPager = activity.findViewById(R.id.viewPager);
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
-        assertNotNull(viewPager);
-        assertEquals(viewPager.getVisibility(), View.VISIBLE);
+        Intent nextIntent = shadowOf(activity).getNextStartedActivity();
+        assertNull(nextIntent);
+
+//        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(null));
+
+        ShadowApplication application = shadowOf(activity.getApplication());
+        application.grantPermissions(permissions);
+        controller.resume();
+
+        button.performClick();
+
+        ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+        Intent nextIntent2 = shadowOf(activity).getNextStartedActivity();
+        if (nextIntent2.getComponent() != null) {
+            assertEquals(CbtActivity.class.getCanonicalName(),
+                    nextIntent2.getComponent().getClassName());
+        }
+
+//        ViewPager viewPager = activity.findViewById(R.id.viewPager);
+//        assertNotNull(viewPager);
+//        assertEquals(viewPager.getVisibility(), View.VISIBLE);
 
     }
 

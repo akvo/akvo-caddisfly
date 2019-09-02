@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -45,8 +47,10 @@ import org.akvo.caddisfly.model.PageType;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.manual.ResultPhotoFragment;
+import org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.ui.BaseFragment;
+import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.StringUtil;
 import org.akvo.caddisfly.widget.ButtonType;
 import org.akvo.caddisfly.widget.CustomViewPager;
@@ -57,7 +61,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
 public class CbtActivity extends BaseActivity
@@ -223,48 +230,52 @@ public class CbtActivity extends BaseActivity
 
         showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 2;
 
+        if (viewPager.getCurrentItem() > pageIndex.getSkipToIndex()) {
+            showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex2() - 2;
+        }
+
         if (viewPager.getCurrentItem() < pageIndex.getResultIndex()) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
 
-        if (PageType.PHOTO == pageIndex.getType(viewPager.getCurrentItem())) {
-            if (resultPhotoFragment.get(viewPager.getCurrentItem()) != null) {
-                if (resultPhotoFragment.get(viewPager.getCurrentItem()).isValid()) {
-                    viewPager.setAllowedSwipeDirection(SwipeDirection.all);
-                    imagePageRight.setVisibility(View.VISIBLE);
-                } else {
-                    viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-                    imagePageRight.setVisibility(View.INVISIBLE);
+        switch (pageIndex.getType(viewPager.getCurrentItem())) {
+            case PHOTO:
+                if (resultPhotoFragment.get(viewPager.getCurrentItem()) != null) {
+                    if (resultPhotoFragment.get(viewPager.getCurrentItem()).isValid()) {
+                        viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                        imagePageRight.setVisibility(View.VISIBLE);
+                    } else {
+                        viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                        imagePageRight.setVisibility(View.INVISIBLE);
+                    }
                 }
-            }
-        } else if (viewPager.getCurrentItem() == totalPageCount - 1) {
-            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-            imagePageRight.setVisibility(View.INVISIBLE);
-        } else if (pageIndex.getType(viewPager.getCurrentItem()) == PageType.INPUT) {
-            setTitle(R.string.setCompartmentColors);
-        } else if (viewPager.getCurrentItem() == pageIndex.getResultIndex()) {
-            setTitle(R.string.result);
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            }
-        } else if (viewPager.getCurrentItem() > 0 &&
-                instructionList.get(viewPager.getCurrentItem() - 1).testStage > 0) {
-            viewPager.setAllowedSwipeDirection(SwipeDirection.right);
-            imagePageLeft.setVisibility(View.INVISIBLE);
-        } else if (instructionList.get(viewPager.getCurrentItem()).testStage > 0) {
-            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-            imagePageRight.setVisibility(View.INVISIBLE);
-            showSkipMenu = false;
-        } else if (viewPager.getCurrentItem() == pageIndex.getResultIndex()) {
-            imagePageRight.setVisibility(View.INVISIBLE);
-            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-        } else {
-            footerLayout.setVisibility(View.VISIBLE);
-            viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                break;
+
+            case INPUT:
+                setTitle(R.string.setCompartmentColors);
+                break;
+
+            case RESULT:
+                setTitle(R.string.result);
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                }
+                break;
+
+            case DEFAULT:
+                footerLayout.setVisibility(View.VISIBLE);
+                viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                break;
         }
 
+        // Last page
+        if (viewPager.getCurrentItem() == totalPageCount - 1) {
+            imagePageRight.setVisibility(View.INVISIBLE);
+        }
+
+        // First page
         if (viewPager.getCurrentItem() == 0) {
             imagePageLeft.setVisibility(View.INVISIBLE);
         }
@@ -374,11 +385,51 @@ public class CbtActivity extends BaseActivity
     }
 
     public void onSubmitClick(View view) {
+        sendResults();
+    }
+
+    private void sendResults() {
+
         SparseArray<String> results = new SparseArray<>();
+        Intent resultIntent = new Intent();
 
         final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
 
-        String resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+        String resultImagePath = "";
+        String imageFileName = "";
+
+        if (resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)) != null) {
+            imageFileName = resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)).getImageFileName();
+            resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+
+            if (resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)) != null) {
+                String result1ImagePath = photoPath.getAbsolutePath() + File.separator +
+                        resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)).getImageFileName();
+                Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
+                Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
+                Bitmap resultBitmap;
+                if (bitmap1 != null && bitmap2 != null) {
+
+                    if (Math.abs(bitmap1.getWidth() - bitmap2.getWidth()) > 50) {
+                        bitmap2 = BitmapUtils.RotateBitmap(bitmap2, 90);
+                    }
+
+                    if (bitmap1.getWidth() > bitmap1.getHeight()) {
+                        resultBitmap = concatTwoBitmapsHorizontal(bitmap1, bitmap2);
+                    } else {
+                        resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
+                    }
+
+                    //noinspection ResultOfMethodCallIgnored
+                    new File(result1ImagePath).delete();
+                    //noinspection ResultOfMethodCallIgnored
+                    new File(resultImagePath).delete();
+                    imageFileName = UUID.randomUUID().toString() + ".jpg";
+                    resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+                    ImageUtil.saveImage(resultBitmap, resultImagePath);
+                }
+            }
+        }
 
         MpnValue mpnValue = TestConfigHelper.getMpnValueForKey(
                 resultFragment.getResult(), testInfo.getSampleQuantity());
@@ -396,9 +447,10 @@ public class CbtActivity extends BaseActivity
         JSONObject resultJson = TestConfigHelper.getJsonResult(this, testInfo,
                 results, null, imageFileName);
 
-        Intent resultIntent = new Intent();
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-        resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
+        if (!imageFileName.isEmpty()) {
+            resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
+        }
 
         setResult(Activity.RESULT_OK, resultIntent);
 

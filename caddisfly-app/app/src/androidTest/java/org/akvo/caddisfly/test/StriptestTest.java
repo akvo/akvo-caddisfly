@@ -47,6 +47,8 @@ public class StriptestTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
 
+    private static String surveyTab = "Striptest";
+
     @BeforeClass
     public static void initialize() {
         if (mDevice == null) {
@@ -86,7 +88,7 @@ public class StriptestTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Strip Tests");
+        TestUtil.nextSurveyPage(surveyTab);
 
         clickExternalSourceButton(3);
 
@@ -258,7 +260,7 @@ public class StriptestTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Strip Tests");
+        TestUtil.nextSurveyPage(surveyTab);
 
         clickExternalSourceButton(2);
 
@@ -313,7 +315,7 @@ public class StriptestTest {
 
         gotoSurveyForm();
 
-        nextSurveyPage("Strip Tests");
+        nextSurveyPage(surveyTab);
 
         clickExternalSourceButton(5);
 
@@ -364,7 +366,7 @@ public class StriptestTest {
 
         gotoSurveyForm();
 
-        TestUtil.nextSurveyPage("Strip Tests");
+        TestUtil.nextSurveyPage(surveyTab);
 
         UiScrollable listView = new UiScrollable(new UiSelector());
         try {
@@ -373,7 +375,7 @@ public class StriptestTest {
             e.printStackTrace();
         }
 
-        clickExternalSourceButton(2);
+        clickExternalSourceButton(1);
 
         mDevice.waitForIdle();
 

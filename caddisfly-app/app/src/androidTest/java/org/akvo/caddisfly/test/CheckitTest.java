@@ -67,6 +67,7 @@ import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
 import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -224,7 +225,9 @@ public class CheckitTest {
 
         TestUtil.swipeLeft();
 
-        onView(withText(R.string.next)).perform(click());
+        onView(withId(R.id.image_pageLeft)).check(matches(not(isDisplayed())));
+
+        onView(withId(R.id.image_pageRight)).check(matches(not(isDisplayed())));
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("4.1"), closeSoftKeyboard());

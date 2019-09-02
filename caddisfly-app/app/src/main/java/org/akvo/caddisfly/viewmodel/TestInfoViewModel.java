@@ -197,6 +197,9 @@ public class TestInfoViewModel extends AndroidViewModel {
             imageView.setLayoutParams(llp);
             imageView.setContentDescription(imageName);
 
+            // set an id for the view to be able to find it for unit testing
+            imageView.setId(i);
+
             linearLayout.addView(imageView);
 
         } else {

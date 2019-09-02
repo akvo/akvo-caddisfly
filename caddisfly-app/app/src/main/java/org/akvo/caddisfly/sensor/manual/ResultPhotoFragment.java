@@ -253,7 +253,7 @@ public class ResultPhotoFragment extends BaseFragment {
                 !resultImagePath.isEmpty() && new File(resultImagePath).exists());
     }
 
-    String getImageFileName() {
+    public String getImageFileName() {
         return imageFileName;
     }
 

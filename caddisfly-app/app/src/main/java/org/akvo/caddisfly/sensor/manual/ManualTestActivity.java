@@ -60,7 +60,6 @@ public class ManualTestActivity extends BaseActivity
         implements MeasurementInputFragment.OnSubmitResultListener,
         ResultPhotoFragment.OnPhotoTakenListener, OnKeyboardVisibilityListener {
 
-    SparseArray<String> results = new SparseArray<>();
     ImageView imagePageRight;
     ImageView imagePageLeft;
     SectionsPagerAdapter mSectionsPagerAdapter;
@@ -141,24 +140,19 @@ public class ManualTestActivity extends BaseActivity
 
             @Override
             public void onPageScrollStateChanged(int state) {
-//                if (state == ViewPager.SCROLL_STATE_IDLE) {
-//                    if (viewPager.getCurrentItem() == resultPageNumber &&
-//                            !resultFragment.isValid(false)) {
-//                        resultFragment.showSoftKeyboard();
-//                    } else if (viewPager.getCurrentItem() == result1PageNumber &&
-//                            !result1Fragment.isValid(false)) {
-//                        if (result1Fragment != null) {
-//                            result1Fragment.showSoftKeyboard();
-//                        }
-//                    } else {
-//                        if (resultFragment != null) {
-//                            resultFragment.hideSoftKeyboard();
-//                        }
-//                        if (result1Fragment != null) {
-//                            result1Fragment.hideSoftKeyboard();
-//                        }
-//                    }
-//                }
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    if (pageIndex.getType(viewPager.getCurrentItem()) == PageType.INPUT
+                            && !inputFragment.get(viewPager.getCurrentItem()).isValid(false)) {
+                        inputFragment.get(viewPager.getCurrentItem()).showSoftKeyboard();
+                    } else {
+                        if (inputFragment.get(pageIndex.getInputPageIndex(0)) != null) {
+                            inputFragment.get(pageIndex.getInputPageIndex(0)).hideSoftKeyboard();
+                        }
+                        if (inputFragment.get(pageIndex.getInputPageIndex(1)) != null) {
+                            inputFragment.get(pageIndex.getInputPageIndex(1)).hideSoftKeyboard();
+                        }
+                    }
+                }
             }
         });
 
@@ -206,7 +200,11 @@ public class ManualTestActivity extends BaseActivity
 
         setTitle(testInfo.getName());
 
-        showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 1;
+        if (viewPager.getCurrentItem() > pageIndex.getSkipToIndex() + 1) {
+            showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex2() - 1;
+        } else {
+            showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 1;
+        }
 
         if (viewPager.getCurrentItem() < pageIndex.getResultIndex()) {
             if (getSupportActionBar() != null) {
@@ -214,42 +212,55 @@ public class ManualTestActivity extends BaseActivity
             }
         }
 
-        if (PageType.PHOTO == pageIndex.getType(viewPager.getCurrentItem())) {
-            if (resultPhotoFragment.get(viewPager.getCurrentItem()) != null) {
-                if (resultPhotoFragment.get(viewPager.getCurrentItem()).isValid()) {
-                    viewPager.setAllowedSwipeDirection(SwipeDirection.all);
-                    imagePageRight.setVisibility(View.VISIBLE);
-                } else {
+        switch (pageIndex.getType(viewPager.getCurrentItem())) {
+            case PHOTO:
+                if (resultPhotoFragment.get(viewPager.getCurrentItem()) != null) {
+                    if (resultPhotoFragment.get(viewPager.getCurrentItem()).isValid()) {
+                        viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                        imagePageRight.setVisibility(View.VISIBLE);
+                    } else {
+                        viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                        imagePageRight.setVisibility(View.INVISIBLE);
+                    }
+                }
+                break;
+
+            case INPUT:
+                viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                imagePageRight.setVisibility(View.INVISIBLE);
+                break;
+
+            case RESULT:
+                setTitle(R.string.result);
+                if (getSupportActionBar() != null) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                }
+                imagePageRight.setVisibility(View.INVISIBLE);
+                viewPager.setAllowedSwipeDirection(SwipeDirection.left);
+                break;
+
+            case DEFAULT:
+                if (viewPager.getCurrentItem() > 0 &&
+                        instructionList.get(viewPager.getCurrentItem() - 1).testStage > 0) {
+                    viewPager.setAllowedSwipeDirection(SwipeDirection.right);
+                    imagePageLeft.setVisibility(View.INVISIBLE);
+                } else if (instructionList.get(viewPager.getCurrentItem()).testStage > 0) {
                     viewPager.setAllowedSwipeDirection(SwipeDirection.left);
                     imagePageRight.setVisibility(View.INVISIBLE);
+                    showSkipMenu = false;
+                } else {
+                    footerLayout.setVisibility(View.VISIBLE);
+                    viewPager.setAllowedSwipeDirection(SwipeDirection.all);
                 }
-            }
-        } else if (viewPager.getCurrentItem() == totalPageCount - 1) {
-            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-            imagePageRight.setVisibility(View.INVISIBLE);
-        } else if (pageIndex.getType(viewPager.getCurrentItem()) == PageType.INPUT) {
-            setTitle(R.string.setCompartmentColors);
-        } else if (viewPager.getCurrentItem() == pageIndex.getResultIndex()) {
-            setTitle(R.string.result);
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            }
-        } else if (viewPager.getCurrentItem() > 0 &&
-                instructionList.get(viewPager.getCurrentItem() - 1).testStage > 0) {
-            viewPager.setAllowedSwipeDirection(SwipeDirection.right);
-            imagePageLeft.setVisibility(View.INVISIBLE);
-        } else if (instructionList.get(viewPager.getCurrentItem()).testStage > 0) {
-            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-            imagePageRight.setVisibility(View.INVISIBLE);
-            showSkipMenu = false;
-        } else if (viewPager.getCurrentItem() == pageIndex.getResultIndex()) {
-            imagePageRight.setVisibility(View.INVISIBLE);
-            viewPager.setAllowedSwipeDirection(SwipeDirection.left);
-        } else {
-            footerLayout.setVisibility(View.VISIBLE);
-            viewPager.setAllowedSwipeDirection(SwipeDirection.all);
+                break;
         }
 
+        // Last page
+        if (viewPager.getCurrentItem() == totalPageCount - 1) {
+            imagePageRight.setVisibility(View.INVISIBLE);
+        }
+
+        // First page
         if (viewPager.getCurrentItem() == 0) {
             imagePageLeft.setVisibility(View.INVISIBLE);
         }
@@ -283,6 +294,7 @@ public class ManualTestActivity extends BaseActivity
 
     private void sendResults() {
 
+        SparseArray<String> results = new SparseArray<>();
         Intent resultIntent = new Intent();
 
         final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
@@ -290,14 +302,14 @@ public class ManualTestActivity extends BaseActivity
         String resultImagePath = "";
         String imageFileName = "";
 
-        if (resultPhotoFragment.get(0) != null) {
-            resultImagePath = photoPath.getAbsolutePath() + File.separator +
-                    resultPhotoFragment.get(0).getImageFileName();
-            imageFileName = resultPhotoFragment.get(0).getImageFileName();
+        if (resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)) != null) {
 
-            if (resultPhotoFragment.get(1) != null) {
+            imageFileName = resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)).getImageFileName();
+            resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
+
+            if (resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)) != null) {
                 String result1ImagePath = photoPath.getAbsolutePath() + File.separator +
-                        resultPhotoFragment.get(1).getImageFileName();
+                        resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)).getImageFileName();
                 Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
                 Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
                 Bitmap resultBitmap;
@@ -376,7 +388,12 @@ public class ManualTestActivity extends BaseActivity
     }
 
     public void onSkipClick(MenuItem item) {
-        viewPager.setCurrentItem(pageIndex.getSkipToIndex());
+
+        if (viewPager.getCurrentItem() > pageIndex.getSkipToIndex() + 1) {
+            viewPager.setCurrentItem(pageIndex.getSkipToIndex2());
+        } else {
+            viewPager.setCurrentItem(pageIndex.getSkipToIndex());
+        }
 
         if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
             Bundle bundle = new Bundle();
