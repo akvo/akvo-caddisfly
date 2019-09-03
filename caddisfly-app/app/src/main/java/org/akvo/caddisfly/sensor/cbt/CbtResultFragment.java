@@ -126,6 +126,7 @@ public class CbtResultFragment extends BaseFragment {
             }
 
             b.layoutRisk.setBackgroundColor(mpnValue.getBackgroundColor1());
+            b.layoutRisk2.setBackgroundColor(mpnValue.getBackgroundColor1());
             b.textResult1.setText(mpnValue.getMpn());
             b.textResult2.setText(mpnValue2.getMpn());
         }

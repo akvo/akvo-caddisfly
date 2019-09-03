@@ -218,14 +218,13 @@ public class CustomShapeButton extends View {
 
         mPath.moveTo(colWidth * 4, bottom1);
         mPath.lineTo(colWidth * 5, bottom1);
+        mPath.lineTo(colWidth * 5, lineTop);
 
         canvas.drawPath(mPath, strokePaint);
 
+        // Yellow marker on the top of the bag
         markerPath.moveTo(left, 30f);
-        markerPath.lineTo(
-
-                getWidth(), 30f);
-
+        markerPath.lineTo(getWidth(), 30f);
         canvas.drawPath(markerPath, markerPaint);
 
         int halfWidth = colWidth / 2;
@@ -234,7 +233,6 @@ public class CustomShapeButton extends View {
         canvas.drawText("3", (colWidth * 3) + 20, fillLine + (bottom - bottom2), getTextPaint(area3));
         canvas.drawText("4", halfWidth - 10 + colWidth * 3, fillLine + (bottom2 / 2) - 20, getTextPaint(area4));
         canvas.drawText("5", halfWidth - 10 + colWidth * 4, fillLine + (bottom1 / 2) - 26, getTextPaint(area5));
-
     }
 
     public String getKey() {

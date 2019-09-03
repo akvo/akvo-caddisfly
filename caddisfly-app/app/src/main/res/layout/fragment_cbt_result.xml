@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="E.coli"
+                android:text="@string/e_coli"
                 android:textColor="#555"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -167,7 +167,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:text="Total Coliform"
+                android:text="@string/total_coliform"
                 android:textColor="#555"
                 android:textSize="20sp"
                 android:textStyle="bold" />

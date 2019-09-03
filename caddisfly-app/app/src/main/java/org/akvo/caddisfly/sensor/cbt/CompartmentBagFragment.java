@@ -26,21 +26,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.databinding.FragmentCompartmentBagBinding;
+import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.ui.BaseFragment;
 
 public class CompartmentBagFragment extends BaseFragment {
+    private static final String ARG_INSTRUCTION = "resultInstruction";
     private static final String ARG_RESULT_VALUES = "result_key";
     private static final String ARG_USE_BLUE = "use_blue_selection";
     private OnCompartmentBagSelectListener mListener;
     private String resultValues = "";
     private Boolean useBlue;
+    private FragmentCompartmentBagBinding b;
 
-    public static CompartmentBagFragment newInstance(String key, int id, boolean useBlue) {
+    public static CompartmentBagFragment newInstance(String key, int id,
+                                                     Instruction instruction, boolean useBlue) {
         CompartmentBagFragment fragment = new CompartmentBagFragment();
         fragment.setFragmentId(id);
         Bundle args = new Bundle();
+        args.putParcelable(ARG_INSTRUCTION, instruction);
         args.putString(ARG_RESULT_VALUES, key);
         args.putBoolean(ARG_USE_BLUE, useBlue);
         fragment.setArguments(args);
@@ -59,23 +66,24 @@ public class CompartmentBagFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_compartment_bag, container, false);
+        b = DataBindingUtil.inflate(inflater,
+                R.layout.fragment_compartment_bag, container, false);
 
-        final CustomShapeButton customShapeButton = view.findViewById(R.id.compartments);
+        Instruction instruction = getArguments().getParcelable(ARG_INSTRUCTION);
+        b.setInstruction(instruction);
 
-        customShapeButton.setKey(resultValues);
-        customShapeButton.useBlueSelection(useBlue);
+        b.compartments.setKey(resultValues);
+        b.compartments.useBlueSelection(useBlue);
 
-        customShapeButton.setOnClickListener(v -> {
-            resultValues = customShapeButton.getKey();
+        b.compartments.setOnClickListener(v -> {
+            resultValues = b.compartments.getKey();
 
             if (mListener != null) {
                 mListener.onCompartmentBagSelect(resultValues, getFragmentId());
             }
         });
 
-        return view;
+        return b.getRoot();
     }
 
     public String getKey() {

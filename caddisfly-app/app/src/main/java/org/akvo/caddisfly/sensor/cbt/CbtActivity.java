@@ -136,9 +136,7 @@ public class CbtActivity extends BaseActivity
             createFragments();
         }
 
-        SectionsPagerAdapter mSectionsPagerAdapter =
-                new SectionsPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
 
         pagerIndicator.showDots(true);
         pagerIndicator.setPageCount(totalPageCount);
@@ -158,14 +156,21 @@ public class CbtActivity extends BaseActivity
             @Override
             public void onPageSelected(int position) {
                 pagerIndicator.setActiveIndex(position);
-
-                if (position < 1) {
-                    imagePageLeft.setVisibility(View.INVISIBLE);
-                } else {
-                    imagePageLeft.setVisibility(View.VISIBLE);
-                }
-
                 showHideFooter();
+                if (pageIndex.getType(position) == PageType.PHOTO && position > 2) {
+                    if (cbtResultKeys.size() > 0) {
+                        if (cbtResultKeys.get(inputIndexes.get(0)).equals("11111")) {
+                            viewPager.setCurrentItem(viewPager.getCurrentItem() + 3, true);
+                        }
+                    }
+                }
+                if (pageIndex.getType(position) == PageType.INPUT && position > 3) {
+                    if (cbtResultKeys.size() > 0) {
+                        if (cbtResultKeys.get(inputIndexes.get(0)).equals("11111")) {
+                            viewPager.setCurrentItem(pageIndex.getInputPageIndex(0), true);
+                        }
+                    }
+                }
             }
 
             @Override
@@ -616,12 +621,13 @@ public class CbtActivity extends BaseActivity
                             cbtResultKeys.put(firstFragmentId, key);
                         }
                         key = cbtResultKeys.get(firstFragmentId).replace("1", "2");
+                        resultFragment.setResult2(key, testInfo.getSampleQuantity());
                     }
                     if (inputFragment.size() > 0) {
                         useBlue = true;
                     }
-                    inputFragment.put(position,
-                            CompartmentBagFragment.newInstance(key, position, useBlue));
+                    inputFragment.put(position, CompartmentBagFragment.newInstance(key, position,
+                            instructionList.get(position), useBlue));
                     inputIndexes.add(position);
                 }
                 return inputFragment.get(position);
