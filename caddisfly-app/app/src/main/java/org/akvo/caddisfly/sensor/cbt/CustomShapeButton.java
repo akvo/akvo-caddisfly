@@ -55,7 +55,7 @@ public class CustomShapeButton extends View {
         yellowPaint.setColor(Color.rgb(255, 238, 170));
         yellowSelectPaint.setColor(Color.rgb(255, 248, 180));
 
-        disabledPaint.setColor(Color.rgb(180, 180, 180));
+        disabledPaint.setColor(Color.rgb(69, 159, 159));
 
         // stroke
         strokePaint.setStyle(Paint.Style.STROKE);
@@ -74,7 +74,7 @@ public class CustomShapeButton extends View {
 
         disabledTextPaint.setStyle(Paint.Style.FILL);
         disabledTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        disabledTextPaint.setColor(Color.rgb(150, 150, 150));
+        disabledTextPaint.setColor(Color.rgb(120, 120, 120));
         disabledTextPaint.setTextSize(sizeInPx);
     }
 

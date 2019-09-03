@@ -224,6 +224,7 @@ public class StripTestActivity extends BaseActivity {
             return;
         }
         showSkipMenu = false;
+        viewPager.setAllowedSwipeDirection(SwipeDirection.all);
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);

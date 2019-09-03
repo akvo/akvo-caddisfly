@@ -132,6 +132,7 @@ public class SwatchSelectTestActivity extends BaseActivity
         if (imagePageLeft == null) {
             return;
         }
+        viewPager.setAllowedSwipeDirection(SwipeDirection.all);
         imagePageLeft.setVisibility(View.VISIBLE);
         imagePageRight.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
