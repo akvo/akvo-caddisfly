@@ -29,7 +29,6 @@ public class Reagent implements Parcelable {
 
     public static final Creator<Reagent> CREATOR = new Creator<Reagent>() {
 
-        @SuppressWarnings({"unchecked"})
         public Reagent createFromParcel(Parcel in) {
             return new Reagent(in);
         }

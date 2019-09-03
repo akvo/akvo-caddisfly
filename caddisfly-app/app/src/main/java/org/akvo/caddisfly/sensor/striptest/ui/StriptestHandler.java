@@ -456,7 +456,6 @@ public final class StriptestHandler extends Handler {
         return mQualityScore;
     }
 
-    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     private int timeElapsedSeconds() {
         return (int) Math.floor((Constants.MEASURE_TIME_COMPENSATION_MILLIS
                 + System.currentTimeMillis() - startTimeMillis) / 1000);

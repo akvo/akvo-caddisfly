@@ -88,11 +88,8 @@ public class ResultPhotoFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_result_photo, container, false);
         b = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_result_photo, container, false);
-
 
         if (savedInstanceState != null) {
             currentPhotoPath = savedInstanceState.getString(ConstantKey.CURRENT_PHOTO_PATH);

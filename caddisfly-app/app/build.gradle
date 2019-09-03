@@ -29,8 +29,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 267
-        versionName "CBT Testing 1"
+        versionCode 268
+        versionName "CBT Testing 2"
         resConfigs "en", "en_US", "fr", "in", "es"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -83,7 +83,7 @@ android {
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            zipAlignEnabled true
 //            buildConfigField "String", "sentryDsn", "\"${sentryDsn}\""
-//            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
+//            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
 //        }
 //    }
 

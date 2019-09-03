@@ -17,7 +17,8 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -125,7 +126,8 @@
                 android:textSize="15sp"
                 app:cornerRadius="3dp"
                 app:strokeColor="@color/button_green_selected"
-                app:strokeWidth="1dp" />
+                app:strokeWidth="1dp"
+                tools:targetApi="lollipop" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_phase_2"
@@ -142,7 +144,8 @@
                 android:text="@string/submitResult"
                 android:textAllCaps="true"
                 android:textSize="15sp"
-                app:cornerRadius="3dp" />
+                app:cornerRadius="3dp"
+                tools:targetApi="lollipop" />
         </LinearLayout>
     </LinearLayout>
 </layout>

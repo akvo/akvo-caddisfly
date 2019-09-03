@@ -27,7 +27,7 @@
     <string name="setCompartmentColors">Establecer colores de los compartimentos.</string>
 
     <string name="health_risk_category">Categoría de riesgo para la salud (basado en la NMP y el intervalo de confianza)</string>
-    <string name="recreational_health_risk_category">Categoría de riesgo de salud recreativa de la EPA de los EE. UU. Basada en NMP y nivel de confianza superior del 95%</string>
+    <string name="recreational_health_risk_category">Categoría de riesgo de salud recreativa de la EPA de los EE. UU. Basada en NMP y nivel de confianza superior del 95&#37;</string>
 
     <string name="collect_10ml_water_sample">Recoger <b>10 ml </b>de muestra de agua con Thio Bag (o botella).</string>
 

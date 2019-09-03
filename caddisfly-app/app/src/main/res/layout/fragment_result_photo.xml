@@ -23,10 +23,6 @@
     <data>
 
         <variable
-            name="testInfoViewModel"
-            type="org.akvo.caddisfly.viewmodel.TestInfoViewModel" />
-
-        <variable
             name="instruction"
             type="org.akvo.caddisfly.model.Instruction" />
 

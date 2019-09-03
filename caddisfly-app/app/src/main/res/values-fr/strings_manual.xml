@@ -26,7 +26,6 @@
     <string name="sd_turn_off">Appuyez et maintenez enfoncé (*sd_on_off*) (3 sec.) pour éteindre l\'instrument.</string>
     <string name="sd_rinse">Rincer le capteur à l\'eau distillée (ne jamais toucher l\'électrode avec quoi que ce soit) et remettre le capuchon protecteur en place. S\'assurer que le capuchon de protection est rempli de solution KCL.</string>
     <string name="fill_turbidity_tube">Connectez les tubes de turbidité et remplissez le tube avec l\'échantillon d\'eau jusqu\'à ce que vous ne puissiez plus voir le cercle noir au fond jaune.</string>
-    <string name="empty_turbidity_tube">Videz le tube à de petits intervalles jusqu\'à ce que vous puissiez voir à nouveau le cercle noir au fond jaune et lire la turbidité sur le côté du tube.</string>
     <string name="fill_in_value_turbidity_tube">Remplir la valeur de turbidité obtenue dans l\'app.</string>
     <string name="clean_turbidity_tube">Videz complètement le tube, nettoyez-le si nécessaire, débranchez les tubes et rangez-les.</string>
     <string name="sd_70_rinse">Rincer le capteur à l\'eau distillée (ne jamais toucher l\'électrode avec quoi que ce soit) et remettre le capuchon protecteur en place.</string>

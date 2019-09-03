@@ -30,7 +30,6 @@
     <string name="sd_turn_off">Mantenga presionado (*sd_on_off*) (3 segundos) para apagar el instrumento.</string>
     <string name="sd_rinse">Enjuague el sensor con agua destilada (nunca toque el electrodo con nada) y vuelva a colocar la tapa protectora. Asegúrese de que la tapa protectora esté llena de solución KCL.</string>
     <string name="fill_turbidity_tube">Conecte los tubos de turbidez y llene el tubo con la muestra de agua hasta que ya no pueda ver el círculo negro en el fondo amarillo.</string>
-    <string name="empty_turbidity_tube">Vacíe el tubo a intervalos pequeños hasta que pueda ver nuevamente el círculo negro en el fondo amarillo y lea la turbidez en el lado del tubo.</string>
     <string name="fill_in_value_turbidity_tube">Ingrese el valor de turbidez obtenido en la aplicación.</string>
     <string name="clean_turbidity_tube">Vacíe el tubo completamente, límpielo si es necesario, desconecte los tubos y guárdelos.</string>
     <string name="sd_70_rinse">Enjuague el sensor con agua destilada (nunca toque el electrodo con nada) y vuelva a colocar la tapa protectora.</string>

@@ -25,6 +25,8 @@ import android.hardware.Camera;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import androidx.annotation.Nullable;
+
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 
@@ -32,13 +34,11 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 /**
  * Created by linda on 7/7/15
  */
-@SuppressWarnings("deprecation")
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final int MIN_CAMERA_WIDTH = 1300;

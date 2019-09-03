@@ -67,9 +67,9 @@ public class PercentageMeterView extends View {
         }
         canvas.save();
 
-        float barWidth = canvas.getHeight() / 3.0f;
+        float barWidth = getHeight() / 3.0f;
         float gutterWidth = 0.2f * barWidth;
-        float distHor = 0.5f * (canvas.getWidth() - (barWidth + gutterWidth) * NUMBER_OF_BARS);
+        float distHor = 0.5f * (getWidth() - (barWidth + gutterWidth) * NUMBER_OF_BARS);
 
         canvas.translate(distHor, 0);
         for (int i = 0; i < NUMBER_OF_BARS; i++) {
@@ -79,7 +79,7 @@ public class PercentageMeterView extends View {
 
             if (percentage > 10 * i)
                 paint.setARGB(255, colours[i][0], colours[i][1], colours[i][2]);
-            canvas.drawRect(0f, 0f, 20, canvas.getHeight(), paint);
+            canvas.drawRect(0f, 0f, 20, getHeight(), paint);
 
             // Position next bar
             canvas.translate(barWidth + gutterWidth, 0);

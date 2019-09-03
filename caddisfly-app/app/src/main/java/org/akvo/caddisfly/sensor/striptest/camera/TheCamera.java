@@ -24,7 +24,6 @@ import android.hardware.Camera;
 /**
  * Created by linda on 7/7/15
  */
-@SuppressWarnings("deprecation")
 final class TheCamera {
 
     private TheCamera() {

@@ -83,7 +83,7 @@ public final class TestHelper {
     private static final Map<String, String> STRING_HASH_MAP_IN = new HashMap<>();
     public static Map<String, String> currentHashMap;
     public static UiDevice mDevice;
-    @SuppressWarnings("FieldCanBeLocal")
+
     private static int mCounter;
 
     private TestHelper() {

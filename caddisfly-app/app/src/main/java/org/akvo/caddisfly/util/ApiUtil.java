@@ -40,7 +40,6 @@ import timber.log.Timber;
 /**
  * Utility functions for api related actions.
  */
-@SuppressWarnings("deprecation")
 public final class ApiUtil {
 
     private ApiUtil() {

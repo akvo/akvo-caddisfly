@@ -24,11 +24,11 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.util.SparseIntArray;
 
+import androidx.annotation.RawRes;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.preference.AppPreferences;
-
-import androidx.annotation.RawRes;
 
 /**
  * Manages various sounds used in the app.
@@ -44,7 +44,7 @@ public class SoundPoolPlayer {
     }
 
     private void setupPlayer(Context context) {
-        //noinspection deprecation
+        //noinspection
         mPlayer = new SoundPool(4, AudioManager.STREAM_ALARM, 0);
 
         //low beep sound
