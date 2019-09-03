@@ -7746,24 +7746,25 @@
         {
           "section": [
             "take_photo_of_incubated",
-            "/~photo~"
+            "~photo~"
           ]
         },
         {
           "section": [
-            "change_colors_to_match. click_compartments_to_change",
+            "/change_colors_to_match",
             "/-note_blue_green_specks",
             "image:8"
           ]
         },
         {
           "section": [
-            "/~input~"
+            "click_compartments_to_change",
+            "~input~"
           ]
         },
         {
           "section": [
-            "/~result~"
+            "~result~"
           ]
         },
         {
@@ -7855,24 +7856,25 @@
         {
           "section": [
             "take_photo_of_incubated",
-            "/~photo~"
+            "~photo~"
           ]
         },
         {
           "section": [
-            "change_colors_to_match. click_compartments_to_change",
+            "/change_colors_to_match",
             "/-note_blue_green_specks",
             "image:8"
           ]
         },
         {
           "section": [
-            "/~input~"
+            "click_compartments_to_change",
+            "~input~"
           ]
         },
         {
           "section": [
-            "/~result~"
+            "~result~"
           ]
         },
         {
@@ -7957,42 +7959,45 @@
         {
           "section": [
             "take_photo_of_incubated",
-            "/~photo~"
+            "~photo~"
           ]
         },
         {
           "section": [
-            "change_colors_to_match. click_compartments_to_change",
+            "/change_colors_to_match",
             "/-note_blue_green_specks",
             "image:8"
           ]
         },
         {
           "section": [
-            "/~input~"
+            "click_compartments_to_change",
+            "~input~"
           ]
         },
         {
           "section": [
             "take_photo_incubated_tc",
-            "/~photo~"
+            "~photo~"
           ]
         },
         {
           "section": [
-            "change_colors_to_match. click_compartments_to_change",
+            "/change_colors_to_match",
             "/-note_total_coliform",
-            "image:8"
+            "/remember_to_shine",
+            "image:cbt_uv"
           ]
         },
         {
           "section": [
-            "/~input~"
+            "click_compartments_to_change",
+            "~input~"
           ]
         },
         {
           "section": [
-            "/~result~"
+            "~result~"
           ]
         },
         {
@@ -8088,42 +8093,45 @@
         {
           "section": [
             "take_photo_of_incubated",
-            "/~photo~"
+            "~photo~"
           ]
         },
         {
           "section": [
-            "change_colors_to_match. click_compartments_to_change",
+            "/change_colors_to_match",
             "/-note_blue_green_specks",
             "image:8"
           ]
         },
         {
           "section": [
-            "/~input~"
+            "click_compartments_to_change",
+            "~input~"
           ]
         },
         {
           "section": [
             "take_photo_incubated_tc",
-            "/~photo~"
+            "~photo~"
           ]
         },
         {
           "section": [
-            "change_colors_to_match. click_compartments_to_change",
+            "/change_colors_to_match",
             "/-note_total_coliform",
-            "image:8"
+            "/remember_to_shine",
+            "image:cbt_uv"
           ]
         },
         {
           "section": [
-            "/~input~"
+            "click_compartments_to_change",
+            "~input~"
           ]
         },
         {
           "section": [
-            "/~result~"
+            "~result~"
           ]
         },
         {
@@ -8240,7 +8248,7 @@
       "results": [
         {
           "id": 1,
-          "name": "Alkalinity Total M)",
+          "name": "Alkalinity Total M",
           "unit": "mg/l",
           "range": "20-240"
         }

@@ -20,6 +20,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="cbt">E.coli - Aquagenx CBT</string>
+    <string name="e_coli">E.coli</string>
+    <string name="total_coliform">Total Coliform</string>
     <string name="prepare_sample">Prepare sample</string>
 
     <string name="read_instructions">Read Instructions</string>
@@ -29,7 +31,7 @@
     <string name="setCompartmentColors">Set compartment colors</string>
 
     <string name="health_risk_category">Health Risk Category (Based on MPN and Confidence Interval)</string>
-    <string name="recreational_health_risk_category">US EPA Recreational Health Risk Category Based on MPN and Upper 95% Confidence Level</string>
+    <string name="recreational_health_risk_category">US EPA Recreational Health Risk Category Based on MPN and Upper 95&#37; Confidence Level</string>
 
     <string name="collect_10ml_water_sample">Collect <b>10 ml</b> water sample with Thio Bag (or bottle).</string>
     <string name="avoid_touching">Avoid touching the inside of the Thio Bag, lid or bottle.</string>
@@ -84,6 +86,7 @@
 
     <string name="dissolve_medium_in_sample_tc">Dissolve medium in sample for a few minutes maximum by periodically swirling the Thio Bag</string>
     <string name="take_photo_incubated_tc">Take a photo of the incubated sample while shining with a UV light (365 nm) on the compartment bag in a dark environment.</string>
-    <string name="note_total_coliform"><b>NOTE:</b> Compartments positive for E. coli are automatically also positive for Total Coliform and greyed out in the next interface. Remember to shine a UV light to observe the fluorescent blue colour (positive for Total Coliform).</string>
+    <string name="note_total_coliform"><b>NOTE:</b> Compartments positive for E. coli are automatically also positive for Total Coliform and will be preselected in the next interface.</string>
+    <string name="remember_to_shine">Remember to shine a UV light to observe the fluorescent blue colour (positive for Total Coliform).</string>
     <string name="open_growth_medium_powder">Open growth medium sachet and add powder medium straight to the sample from the sachet</string>
 </resources>
