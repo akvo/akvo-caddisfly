@@ -1363,6 +1363,76 @@
       ]
     },
     {
+      "name": "E.coli + Total Coliform",
+      "uuid": "c43b7f5e-c5e3-438a-b4d9-bf80d7197176",
+      "sample": "Water",
+      "device": "Microbiology",
+      "brand": "Aquagenx",
+      "model": "CBT",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "Health Risk Category (Based on MPN and Confidence Interval)"
+        },
+        {
+          "id": 2,
+          "name": "MPN",
+          "unit": "MPN/100ml",
+          "range": "0-100"
+        },
+        {
+          "id": 3,
+          "name": "Upper 95% Confidence Interval"
+        },
+        {
+          "id": 4,
+          "name": "TC MPN",
+          "unit": "MPN/100ml",
+          "range": "0-100"
+        },
+        {
+          "id": 5,
+          "name": "TC Upper 95% Confidence Interval"
+        }
+      ]
+    },
+    {
+      "name": "E.coli + Total Coliform",
+      "uuid": "a0467617-cbeb-4c7f-9610-ac22c9afa0ab",
+      "sample": "Water",
+      "device": "Microbiology",
+      "brand": "Aquagenx",
+      "model": "CBT",
+      "hasImage": true,
+      "results": [
+        {
+          "id": 1,
+          "name": "US EPA Recreational Health Risk Category Based on MPN and Upper 95% Confidence Level"
+        },
+        {
+          "id": 2,
+          "name": "MPN",
+          "unit": "MPN/100ml",
+          "range": "0-1000"
+        },
+        {
+          "id": 3,
+          "name": "Upper 95% Confidence Interval"
+        },
+        {
+          "id": 4,
+          "name": "TC MPN",
+          "unit": "MPN/100ml",
+          "range": "0-1000"
+        },
+        {
+          "id": 5,
+          "name": "TC Upper 95% Confidence Interval"
+        }
+      ]
+    },
+    {
       "name": "Alkalinity-m",
       "uuid": "cbcad2d6-0266-429a-a6dd-340d80c7833e",
       "sample": "Water",
@@ -1378,7 +1448,7 @@
       "results": [
         {
           "id": 1,
-          "name": "Alkalinity Total M)",
+          "name": "Alkalinity Total M",
           "chemical": "CaCO3",
           "unit": "mg/l",
           "range": "20-240"
@@ -1597,7 +1667,7 @@
           "name": "Iron",
           "chemical": "Fe",
           "unit": "mg/l",
-          "range": "1-10"
+          "range": "0-10"
         }
       ]
     },
