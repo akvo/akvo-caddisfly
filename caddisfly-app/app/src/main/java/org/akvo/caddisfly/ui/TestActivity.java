@@ -137,7 +137,6 @@ public class TestActivity extends BaseActivity {
             String type = intent.getType();
             if (("text/plain".equals(type))
                     && AppConfig.EXTERNAL_APP_ACTION.equals(intent.getAction())) {
-
                 getTestSelectedByExternalApp(fragmentManager, intent);
             }
         }

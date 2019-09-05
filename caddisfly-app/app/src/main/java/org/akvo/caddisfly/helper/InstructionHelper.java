@@ -36,14 +36,17 @@ public final class InstructionHelper {
     }
 
     public static int setupInstructions(List<Instruction> testInstructions,
-                                        ArrayList<Instruction> instructions, PageIndex pageIndex) {
+                                        ArrayList<Instruction> instructions,
+                                        PageIndex pageIndex, boolean skip) {
         int instructionIndex = 1;
         int subSequenceIndex;
+        instructions.clear();
+        pageIndex.clear();
+        int index = 0;
 
         String[] subSequenceNumbers = {"i", "ii", "iii"};
         boolean alphaSequence = false;
 
-        instructions.clear();
         for (int i = 0; i < testInstructions.size(); i++) {
             Instruction instruction;
             try {
@@ -53,25 +56,38 @@ public final class InstructionHelper {
                     boolean indent = false;
                     subSequenceIndex = 0;
 
+                    boolean leaveOut = false;
+                    if (skip) {
+                        for (int i1 = 0; i1 < section.size(); i1++) {
+                            String item = section.get(i1);
+                            if (item.contains("~skippable~")) {
+                                leaveOut = true;
+                            }
+                        }
+                    }
+                    if (leaveOut) {
+                        continue;
+                    }
+
                     instruction.setIndex(instructionIndex);
 
                     for (int i1 = 0; i1 < section.size(); i1++) {
                         String item = section.get(i1);
 
                         if (item.contains("~photo~")) {
-                            pageIndex.setPhotoIndex(i);
+                            pageIndex.setPhotoIndex(index);
                             if (pageIndex.getSkipToIndex() < 0) {
-                                pageIndex.setSkipToIndex(i);
+                                pageIndex.setSkipToIndex(index);
                             } else if (pageIndex.getSkipToIndex2() < 0) {
-                                pageIndex.setSkipToIndex2(i);
+                                pageIndex.setSkipToIndex2(index);
                             }
                         } else if (item.contains("~input~")) {
-                            pageIndex.setInputIndex(i);
+                            pageIndex.setInputIndex(index);
                             if (pageIndex.getSkipToIndex() < 0) {
-                                pageIndex.setSkipToIndex(i);
+                                pageIndex.setSkipToIndex(index);
                             }
                         } else if (item.contains("~result~")) {
-                            pageIndex.setResultIndex(i);
+                            pageIndex.setResultIndex(index);
                         }
 
                         Matcher m = Pattern.compile("^(\\d+?\\.\\s*)(.*)").matcher(item);
@@ -113,6 +129,7 @@ public final class InstructionHelper {
                         }
                     }
                 }
+                index++;
                 instructions.add(instruction);
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();

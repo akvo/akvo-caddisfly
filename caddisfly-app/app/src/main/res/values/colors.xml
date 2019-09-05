@@ -58,4 +58,9 @@
     <color name="diagnostic_status">#e20101</color>
 
     <color name="error_background">#a90404</color>
+
+    <!-- Risk -->
+    <color name="safe">#54b71e</color>
+    <color name="unsafe">#d21717</color>
+    <color name="possibly_safe">#b0ad1e</color>
 </resources>

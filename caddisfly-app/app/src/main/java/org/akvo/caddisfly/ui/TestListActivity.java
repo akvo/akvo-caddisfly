@@ -29,6 +29,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+
 import com.google.android.material.snackbar.Snackbar;
 
 import org.akvo.caddisfly.BuildConfig;
@@ -43,9 +46,6 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ConfigDownloader;
-
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
 
 public class TestListActivity extends BaseActivity
         implements TestListFragment.OnListFragmentInteractionListener {
@@ -113,7 +113,7 @@ public class TestListActivity extends BaseActivity
             fragment = TestListFragment.newInstance(testType);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, fragment, TestListFragment.TAG).commit();
+                    .add(R.id.fragment_container, fragment, "TestListViewModel").commit();
         }
     }
 
@@ -121,7 +121,6 @@ public class TestListActivity extends BaseActivity
      * Shows the detail fragment.
      */
     private void navigateToTestDetails() {
-
         startTest();
     }
 

@@ -179,7 +179,8 @@ public class DeviceControlActivity extends BaseActivity {
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
 
         testInfo = intent.getParcelableExtra(ConstantKey.TEST_INFO);
-        int stepCount = InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
+        int stepCount = InstructionHelper.setupInstructions(testInfo.getInstructions(),
+                instructionList, pageIndex, false);
 
         hookBluetooth();
 

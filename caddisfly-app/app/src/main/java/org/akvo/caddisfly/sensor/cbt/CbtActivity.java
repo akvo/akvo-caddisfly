@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -125,9 +126,9 @@ public class CbtActivity extends BaseActivity
 
         testPhase = getIntent().getIntExtra(ConstantKey.TEST_PHASE, 0);
         if (testPhase == 2) {
-            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex);
+            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, false);
         } else {
-            InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
+            InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex, false);
         }
 
         totalPageCount = instructionList.size();
@@ -370,28 +371,53 @@ public class CbtActivity extends BaseActivity
             inputFragment.get(inputIndexes.get(0));
         }
 
-        if (inputIndexes.size() > 1) {
-            String newSecondResult = key.replace("1", "2");
-            if (fragmentId == inputIndexes.get(0)) {
+        String secondResult;
+        String newSecondResult = key.replace("1", "2");
+        CompartmentBagFragment secondFragment = null;
+
+        if (fragmentId == inputIndexes.get(0)) {
+
+            resultFragment.setResult(cbtResultKeys.get(fragmentId), testInfo.getSampleQuantity());
+
+            if (inputIndexes.size() > 1) {
                 int secondFragmentId = inputIndexes.get(1);
-                CompartmentBagFragment secondFragment = inputFragment.get(secondFragmentId);
-                String secondResult = secondFragment.getKey();
-                for (int i = 0; i < secondResult.length(); i++) {
-                    if (secondResult.charAt(i) == '1' && newSecondResult.charAt(i) != '2') {
-                        char[] chars = newSecondResult.toCharArray();
-                        chars[i] = '1';
-                        newSecondResult = String.valueOf(chars);
-                    }
-                }
-                secondFragment.setKey(newSecondResult);
+                secondFragment = inputFragment.get(secondFragmentId);
+                secondResult = secondFragment.getKey();
+            } else {
+                secondResult = newSecondResult;
             }
 
-            resultFragment.setResult(cbtResultKeys.get(inputIndexes.get(0)), testInfo.getSampleQuantity());
-            resultFragment.setResult2(newSecondResult, testInfo.getSampleQuantity());
-        } else {
-            resultFragment.setResult(cbtResultKeys.get(fragmentId), testInfo.getSampleQuantity());
+            for (int i = 0; i < secondResult.length(); i++) {
+                if (secondResult.charAt(i) == '1' && newSecondResult.charAt(i) != '2') {
+                    char[] chars = newSecondResult.toCharArray();
+                    chars[i] = '1';
+                    newSecondResult = String.valueOf(chars);
+                }
+            }
+            if (secondFragment != null) {
+                secondFragment.setKey(newSecondResult);
+            }
         }
 
+        resultFragment.setResult2(newSecondResult, testInfo.getSampleQuantity());
+
+        if (key.equals("11111")) {
+            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, true);
+            totalPageCount = instructionList.size();
+            pagerIndicator.setPageCount(totalPageCount);
+            Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+            pagerIndicator.setVisibility(View.GONE);
+            pagerIndicator.invalidate();
+            pagerIndicator.setVisibility(View.VISIBLE);
+        } else if (totalPageCount < 6) {
+            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, false);
+            totalPageCount = instructionList.size();
+            pagerIndicator.setPageCount(totalPageCount);
+            Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+            pagerIndicator.setVisibility(View.GONE);
+            pagerIndicator.invalidate();
+            pagerIndicator.setVisibility(View.VISIBLE);
+        }
     }
 
     public void onNextClick(View view) {
@@ -653,6 +679,11 @@ public class CbtActivity extends BaseActivity
         @Override
         public int getCount() {
             return totalPageCount;
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return PagerAdapter.POSITION_NONE;
         }
     }
 }

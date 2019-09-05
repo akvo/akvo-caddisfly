@@ -112,7 +112,7 @@ public class ResultPhotoFragment extends BaseFragment {
             }
         }
 
-        if (!imageFileName.isEmpty()) {
+        if (imageFileName != null && !imageFileName.isEmpty()) {
 
             final File newPhotoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
             resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;

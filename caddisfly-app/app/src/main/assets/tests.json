@@ -7978,7 +7978,8 @@
         {
           "section": [
             "take_photo_incubated_tc",
-            "~photo~"
+            "~photo~",
+            "~skippable~"
           ]
         },
         {
@@ -7986,13 +7987,15 @@
             "/change_colors_to_match",
             "/-note_total_coliform",
             "/remember_to_shine",
-            "image:cbt_uv"
+            "image:cbt_uv",
+            "~skippable~"
           ]
         },
         {
           "section": [
             "click_compartments_to_change",
-            "~input~"
+            "~input~",
+            "~skippable~"
           ]
         },
         {
@@ -8112,7 +8115,8 @@
         {
           "section": [
             "take_photo_incubated_tc",
-            "~photo~"
+            "~photo~",
+            "~skippable~"
           ]
         },
         {
@@ -8120,13 +8124,15 @@
             "/change_colors_to_match",
             "/-note_total_coliform",
             "/remember_to_shine",
-            "image:cbt_uv"
+            "image:cbt_uv",
+            "~skippable~"
           ]
         },
         {
           "section": [
             "click_compartments_to_change",
-            "~input~"
+            "~input~",
+            "~skippable~"
           ]
         },
         {

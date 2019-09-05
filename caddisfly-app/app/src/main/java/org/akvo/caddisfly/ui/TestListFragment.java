@@ -26,15 +26,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.databinding.FragmentListBinding;
-import org.akvo.caddisfly.model.TestInfo;
-import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.viewmodel.TestListViewModel;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -44,9 +35,16 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-public class TestListFragment extends Fragment {
+import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.common.ConstantKey;
+import org.akvo.caddisfly.databinding.FragmentListBinding;
+import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.model.TestType;
+import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
-    public static final String TAG = "TestListViewModel";
+import java.util.List;
+
+public class TestListFragment extends Fragment {
 
     private FragmentListBinding b;
 
@@ -126,7 +124,7 @@ public class TestListFragment extends Fragment {
         }
     }
 
-    public void refresh() {
+    void refresh() {
         loadTests();
         mTestInfoAdapter.notifyDataSetChanged();
         b.listTypes.getAdapter().notifyDataSetChanged();

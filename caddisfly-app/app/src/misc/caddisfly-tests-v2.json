@@ -1448,7 +1448,7 @@
       "results": [
         {
           "id": 1,
-          "name": "Alkalinity Total M)",
+          "name": "Alkalinity Total M",
           "chemical": "CaCO3",
           "unit": "mg/l",
           "range": "20-240"

@@ -86,7 +86,6 @@ public final class TestConfigHelper {
 
                 if (mpnValue.getConfidence() > threshold) {
                     mpnValue.setBackgroundColor1(Color.parseColor(item.getString("background1")));
-                    mpnValue.setBackgroundColor2(Color.parseColor(item.getString("background2")));
                     break;
                 }
             }

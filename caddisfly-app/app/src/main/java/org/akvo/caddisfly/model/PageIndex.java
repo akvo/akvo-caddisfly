@@ -70,4 +70,10 @@ public class PageIndex {
             return pages.get(position);
         }
     }
+
+    public void clear() {
+        pages.clear();
+        photoIndexes.clear();
+        inputIndexes.clear();
+    }
 }

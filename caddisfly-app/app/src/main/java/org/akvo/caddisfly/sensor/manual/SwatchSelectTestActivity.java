@@ -92,7 +92,8 @@ public class SwatchSelectTestActivity extends BaseActivity
             return;
         }
 
-        InstructionHelper.setupInstructions(testInfo.getInstructions(), instructionList, pageIndex);
+        InstructionHelper.setupInstructions(testInfo.getInstructions(),
+                instructionList, pageIndex, false);
 
         totalPageCount = instructionList.size();
 
