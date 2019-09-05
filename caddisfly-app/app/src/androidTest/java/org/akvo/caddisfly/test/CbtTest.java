@@ -63,6 +63,7 @@ import static org.akvo.caddisfly.util.TestHelper.mDevice;
 import static org.akvo.caddisfly.util.TestUtil.childAtPosition;
 import static org.akvo.caddisfly.util.TestUtil.nextPage;
 import static org.akvo.caddisfly.util.TestUtil.sleep;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -82,10 +83,6 @@ public class CbtTest {
     public static void initialize() {
         if (mDevice == null) {
             mDevice = UiDevice.getInstance(getInstrumentation());
-
-//            for (int i = 0; i < 5; i++) {
-//                mDevice.pressBack();
-//            }
         }
     }
 
@@ -133,10 +130,8 @@ public class CbtTest {
 
         sleep(1000);
 
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_phase_2), withText(R.string.submitResult),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
+        onView(allOf(withId(R.id.button_phase_2), withText(R.string.submitResult), isDisplayed()))
+                .perform(click());
 
         sleep(1000);
 
@@ -146,17 +141,13 @@ public class CbtTest {
 
         onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()));
 
-        ViewInteraction customShapeButton = onView(
-                allOf(withId(R.id.compartments),
-                        isDisplayed()));
+        ViewInteraction customShapeButton = onView(allOf(withId(R.id.compartments),
+                isDisplayed()));
+
         customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.5f, 0.5f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.7f, 0.1f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
 
         sleep(1000);
@@ -171,9 +162,11 @@ public class CbtTest {
 
         onView(withText(risk2)).check(matches(isDisplayed()));
 
-        onView(withText(">100")).check(matches(isDisplayed()));
-
-//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult1)).check(matches(withText(">100")));
+        onView(withId(R.id.textResult1)).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult2)).check(matches(withText(">100")));
+        onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.textUnit2)).check(matches(withText("MPN/100ml")));
 
         onView(withText(R.string.result)).check(matches(isDisplayed()));
 
@@ -229,13 +222,9 @@ public class CbtTest {
                 allOf(withId(R.id.compartments),
                         isDisplayed()));
         customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.5f, 0.5f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.7f, 0.1f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
 
         sleep(100);
@@ -243,8 +232,11 @@ public class CbtTest {
         nextPage();
 
         onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
-        onView(withText(">1000")).check(matches(isDisplayed()));
-//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult1)).check(matches(withText(">1000")));
+        onView(withId(R.id.textResult1)).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult2)).check(matches(withText(">1000")));
+        onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.textUnit2)).check(matches(withText("MPN/100ml")));
 
         pressBack();
 
@@ -262,8 +254,11 @@ public class CbtTest {
 
         onView(withText(risk1)).check(matches(isDisplayed()));
         onView(withText(risk2)).check(matches(isDisplayed()));
-        onView(withText("483")).check(matches(isDisplayed()));
-//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult1)).check(matches(withText("483")));
+        onView(withId(R.id.textResult1)).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult2)).check(matches(withText("483")));
+        onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.textUnit2)).check(matches(withText("MPN/100ml")));
 
         pressBack();
 
@@ -280,13 +275,15 @@ public class CbtTest {
         risk2 = riskText[1].trim();
         onView(withText(risk1)).check(matches(isDisplayed()));
         onView(withText(risk2)).check(matches(isDisplayed()));
-        onView(withText("58")).check(matches(isDisplayed()));
-//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult1)).check(matches(withText("58")));
+        onView(withId(R.id.textResult1)).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult2)).check(matches(withText("58")));
+        onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.textUnit2)).check(matches(withText("MPN/100ml")));
 
         pressBack();
 
         customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f));
-
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f));
 
         sleep(1000);
@@ -296,8 +293,11 @@ public class CbtTest {
         nextPage();
 
         onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()));
-        onView(withText(">1000")).check(matches(isDisplayed()));
-//        onView(withText("MPN/100ml")).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult1)).check(matches(withText(">1000")));
+        onView(withId(R.id.textResult1)).check(matches(isDisplayed()));
+        onView(withId(R.id.textResult2)).check(matches(withText(">1000")));
+        onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.textUnit2)).check(matches(withText("MPN/100ml")));
 
         nextPage();
 

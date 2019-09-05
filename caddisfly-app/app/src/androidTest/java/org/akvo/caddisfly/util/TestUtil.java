@@ -145,15 +145,27 @@ public final class TestUtil {
         }
     }
 
-    public static void goBack(int times) {
-        for (int i = 0; i < times; i++) {
-            mDevice.pressBack();
-        }
-    }
-
     public static void nextPage(int times) {
         for (int i = 0; i < times; i++) {
             nextPage();
+        }
+    }
+
+    public static void nextPage() {
+        onView(allOf(withId(R.id.image_pageRight),
+                isDisplayed())).perform(click());
+        mDevice.waitForIdle();
+    }
+
+    public static void prevPage() {
+        onView(allOf(withId(R.id.image_pageLeft),
+                isDisplayed())).perform(click());
+        mDevice.waitForIdle();
+    }
+
+    public static void goBack(int times) {
+        for (int i = 0; i < times; i++) {
+            mDevice.pressBack();
         }
     }
 
@@ -174,18 +186,6 @@ public final class TestUtil {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
-    }
-
-    public static void nextPage() {
-        onView(allOf(withId(R.id.image_pageRight),
-                isDisplayed())).perform(click());
-        mDevice.waitForIdle();
-    }
-
-    public static void prevPage() {
-        onView(allOf(withId(R.id.image_pageLeft),
-                isDisplayed())).perform(click());
-        mDevice.waitForIdle();
     }
 
     public static void nextSurveyPage() {

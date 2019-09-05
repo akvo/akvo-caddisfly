@@ -269,11 +269,13 @@ public class CbtInstructions {
 
         onView(withContentDescription("8")).check(matches(hasDrawable()));
 
-        CheckTextInTable(R.string.change_colors_to_match, R.string.click_compartments_to_change);
+        CheckTextInTable(R.string.change_colors_to_match);
 
         CheckTextInTable(R.string.note_blue_green_specks);
 
         nextPage();
+
+        CheckTextInTable(R.string.click_compartments_to_change);
 
         onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()));
 

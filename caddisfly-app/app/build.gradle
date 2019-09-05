@@ -18,6 +18,8 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'de.mobilej.unmock'
 apply plugin: 'io.sentry.android.gradle'
 
@@ -169,5 +171,11 @@ dependencies {
 
     // Unmock
     unmock 'org.robolectric:android-all:4.3_r2-robolectric-0'
+    implementation "androidx.core:core-ktx:1.0.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}
