@@ -365,6 +365,13 @@ public class CbtActivity extends BaseActivity
 
     public void onCompartmentBagSelect(String key, int fragmentId) {
 
+        int secondFragmentId = 0;
+
+        // Get the id of the TC input fragment
+        if (inputIndexes.size() > 1) {
+            secondFragmentId = inputIndexes.get(1);
+        }
+
         cbtResultKeys.put(fragmentId, key);
 
         for (int i = 0; i < inputIndexes.size(); i++) {
@@ -380,7 +387,6 @@ public class CbtActivity extends BaseActivity
             resultFragment.setResult(cbtResultKeys.get(fragmentId), testInfo.getSampleQuantity());
 
             if (inputIndexes.size() > 1) {
-                int secondFragmentId = inputIndexes.get(1);
                 secondFragment = inputFragment.get(secondFragmentId);
                 secondResult = secondFragment.getKey();
             } else {
@@ -401,22 +407,25 @@ public class CbtActivity extends BaseActivity
 
         resultFragment.setResult2(newSecondResult, testInfo.getSampleQuantity());
 
-        if (key.equals("11111")) {
-            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, true);
-            totalPageCount = instructionList.size();
-            pagerIndicator.setPageCount(totalPageCount);
-            Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
-            pagerIndicator.setVisibility(View.GONE);
-            pagerIndicator.invalidate();
-            pagerIndicator.setVisibility(View.VISIBLE);
-        } else if (totalPageCount < 6) {
-            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, false);
-            totalPageCount = instructionList.size();
-            pagerIndicator.setPageCount(totalPageCount);
-            Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
-            pagerIndicator.setVisibility(View.GONE);
-            pagerIndicator.invalidate();
-            pagerIndicator.setVisibility(View.VISIBLE);
+        // If E.coli input fragment then add or remove TC part based on input
+        if (fragmentId != secondFragmentId) {
+            if (key.equals("11111")) {
+                InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, true);
+                totalPageCount = instructionList.size();
+                pagerIndicator.setPageCount(totalPageCount);
+                Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+                pagerIndicator.setVisibility(View.GONE);
+                pagerIndicator.invalidate();
+                pagerIndicator.setVisibility(View.VISIBLE);
+            } else {
+                InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, false);
+                totalPageCount = instructionList.size();
+                pagerIndicator.setPageCount(totalPageCount);
+                Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+                pagerIndicator.setVisibility(View.GONE);
+                pagerIndicator.invalidate();
+                pagerIndicator.setVisibility(View.VISIBLE);
+            }
         }
     }
 

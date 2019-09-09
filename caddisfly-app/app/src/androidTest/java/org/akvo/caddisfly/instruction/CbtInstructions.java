@@ -66,7 +66,6 @@ import static junit.framework.Assert.assertEquals;
 import static org.akvo.caddisfly.util.DrawableMatcher.hasDrawable;
 import static org.akvo.caddisfly.util.TestHelper.clearPreferences;
 import static org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton;
-import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -85,6 +84,7 @@ public class CbtInstructions {
 
     private final StringBuilder jsArrayString = new StringBuilder();
     private final StringBuilder listString = new StringBuilder();
+    private float scale;
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -117,39 +117,15 @@ public class CbtInstructions {
         textView3.check(matches(withText(resourceId)));
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private static void CheckTextInTable(@StringRes int resId1, @StringRes int resId2) {
-
-        String text = getString(resId1) + " " + getString((resId2));
-        ViewInteraction textView3 = onView(
-                allOf(withText(text),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
-                                        0),
-                                1),
-                        isDisplayed()));
-        textView3.check(matches(withText(text)));
-    }
-
-//    private static void CheckTextInTable(String text) {
-//        ViewInteraction textView3 = onView(
-//                allOf(withText(text),
-//                        childAtPosition(
-//                                childAtPosition(
-//                                        IsInstanceOf.instanceOf(android.widget.TableRow.class),
-//                                        0),
-//                                1),
-//                        isDisplayed()));
-//        textView3.check(matches(withText(text)));
-//    }
-
     @Before
     public void setUp() {
 
         loadData(mActivityTestRule.getActivity(), mCurrentLanguage);
 
         clearPreferences(mActivityTestRule);
+
+        scale = mActivityTestRule.getActivity().getResources().getDisplayMetrics().density;
+
     }
 
     @Test
@@ -301,7 +277,9 @@ public class CbtInstructions {
 
         CheckTextInTable(R.string.dispose_contents_bag);
 
-        onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
+        if (scale > 1.5) {
+            onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
+        }
 
         onView(withId(R.id.image_pageRight)).check(matches(not(isDisplayed())));
 

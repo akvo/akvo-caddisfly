@@ -66,6 +66,7 @@ public class SwatchSelectTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mIntentsRule = new ActivityTestRule<>(MainActivity.class);
+    private float scale;
 
     @BeforeClass
     public static void initialize() {
@@ -84,6 +85,9 @@ public class SwatchSelectTest {
         loadData(mIntentsRule.getActivity(), mCurrentLanguage);
 
         clearPreferences(mIntentsRule);
+
+        scale = mIntentsRule.getActivity().getResources().getDisplayMetrics().density;
+
     }
 
     @Test
@@ -473,7 +477,9 @@ public class SwatchSelectTest {
 
         onView(withText("2 mg/l")).check(matches(isDisplayed()));
 
-        onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
+        if (scale > 1.5) {
+            onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()));
+        }
 
         onView(withId(R.id.image_pageRight)).check(matches(not(isDisplayed())));
 

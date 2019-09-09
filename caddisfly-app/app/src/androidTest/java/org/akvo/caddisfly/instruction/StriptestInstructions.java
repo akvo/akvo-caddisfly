@@ -118,13 +118,15 @@ public class StriptestInstructions {
 
         TestUtil.nextSurveyPage("Striptest");
 
+        sleep(500);
+
         clickExternalSourceButton(2);
 
         mDevice.waitForIdle();
 
         onView(withText(R.string.prepare_test)).perform(click());
 
-        sleep(6000);
+        sleep(7000);
 
         onView(withText(R.string.skip)).check(matches(isDisplayed()));
 
@@ -165,15 +167,24 @@ public class StriptestInstructions {
 
         sleep(1500);
 
-        ViewInteraction appCompatButton4 = onView(
-                allOf(withId(R.id.buttonStart), withText(R.string.start),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                4),
-                        isDisplayed()));
-        appCompatButton4.perform(click());
+        ViewInteraction startButton;
+        try {
+            startButton = onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(R.id.viewPager),
+                                    2),
+                            4)));
+            startButton.perform(click());
+        } catch (Exception ignore) {
+            startButton = onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                    childAtPosition(
+                            childAtPosition(
+                                    withId(R.id.viewPager),
+                                    1),
+                            4)));
+            startButton.perform(click());
+        }
 
         sleep(7000);
 
@@ -195,6 +206,8 @@ public class StriptestInstructions {
                                 0),
                         isDisplayed()));
         appCompatButton5.perform(click());
+
+        sleep(1000);
 
         if (Build.MANUFACTURER.equals("samsung")) {
             assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")));
@@ -220,7 +233,7 @@ public class StriptestInstructions {
             String uuid = testInfo.getUuid();
             String id = uuid.substring(uuid.lastIndexOf("-") + 1);
 
-//            if (("32d9b8f4aecf").contains(id))
+//            if (("411a4093f6b6").contains(id))
 //            if (testInfo.getName().contains("Soil"))
 //                if (("ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id))
 //
@@ -280,13 +293,26 @@ public class StriptestInstructions {
 
                     pages = navigateInstructions(id, ++pages);
 
-                    onView(allOf(withId(R.id.buttonStart), withText("Start"),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(R.id.viewPager),
-                                            1),
-                                    4),
-                            isDisplayed())).perform(click());
+                    sleep(1000);
+
+                    ViewInteraction startButton;
+                    try {
+                        startButton = onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                                childAtPosition(
+                                        childAtPosition(
+                                                withId(R.id.viewPager),
+                                                2),
+                                        4)));
+                        startButton.perform(click());
+                    } catch (Exception ignore) {
+                        startButton = onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                                childAtPosition(
+                                        childAtPosition(
+                                                withId(R.id.viewPager),
+                                                1),
+                                        4)));
+                        startButton.perform(click());
+                    }
                 }
 
                 sleep(1000);

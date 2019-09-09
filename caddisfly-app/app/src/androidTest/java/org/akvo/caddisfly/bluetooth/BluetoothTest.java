@@ -106,9 +106,13 @@ public class BluetoothTest {
 
         gotoSurveyForm();
 
+        sleep(1000);
+
         TestUtil.nextSurveyPage("MD610");
 
-        clickExternalSourceButton(2);
+        sleep(1500);
+
+        clickExternalSourceButton(1);
 
         TestConfigRepository testConfigRepository = new TestConfigRepository();
         List<TestInfo> testList = testConfigRepository.getTests(TestType.BLUETOOTH);
@@ -146,9 +150,9 @@ public class BluetoothTest {
         }
         mActivityTestRule.finishActivity();
 
-        sleep(2000);
+        sleep(3000);
 
-        assertNotNull(mDevice.findObject(By.text("3. Calcium Hardness")));
+        assertNotNull(mDevice.findObject(By.text("2. Calcium Hardness")));
 
         assertNotNull(mDevice.findObject(By.text("Calcium Hardness: >500 mg/l")));
 
@@ -166,49 +170,9 @@ public class BluetoothTest {
 
         TestUtil.nextSurveyPage("MD610");
 
-        clickExternalSourceButton(1);
+        clickExternalSourceButton(0);
 
         onView(withText(R.string.next)).perform(click());
-
-        onView(withText(R.string.test_selected)).perform(click());
-
-        onView(withText(R.string.fill_vial_24_with_10ml_sample_zero_a))
-                .check(matches(isDisplayed()));
-
-        TestUtil.nextPage();
-
-        onView(withText(R.string.remove_vial))
-                .check(matches(isDisplayed()));
-
-        TestUtil.nextPage();
-
-        String phrase = getString(R.string.add_reagent_1_liquid_exact_ml);
-        phrase = phrase.replace("%reagent1", "2 ml SPADNS (467481)");
-        onView(withText(phrase)).check(matches(isDisplayed()));
-
-        TestUtil.nextPage();
-
-        onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
-                .check(matches(isDisplayed()));
-
-        TestUtil.nextPage();
-
-        onView(withText(R.string.wipe_place_align_vial_wait_2_a))
-                .check(matches(isDisplayed()));
-
-        TestUtil.swipeRight();
-
-        onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
-                .check(matches(isDisplayed()));
-
-        TestUtil.goBack(4);
-
-        TestHelper.navigateUp();
-
-        ViewInteraction appCompatButton2 = onView(
-                allOf(withId(R.id.button_prepare), withText(R.string.next),
-                        isDisplayed()));
-        appCompatButton2.perform(click());
 
         if (!AppConfig.SKIP_BLUETOOTH_SCAN) {
             if (TestUtil.isEmulator()) {
@@ -250,8 +214,44 @@ public class BluetoothTest {
             }
         }
 
-        onView(withText("Select Test"))
+        onView(withText(R.string.test_selected)).perform(click());
+
+        onView(withText(R.string.fill_vial_24_with_10ml_sample_zero_a))
                 .check(matches(isDisplayed()));
+
+        TestUtil.nextPage();
+
+        onView(withText(R.string.remove_vial))
+                .check(matches(isDisplayed()));
+
+        TestUtil.nextPage();
+
+        String phrase = getString(R.string.add_reagent_1_liquid_exact_ml);
+        phrase = phrase.replace("%reagent1", "2 ml SPADNS (467481)");
+        onView(withText(phrase)).check(matches(isDisplayed()));
+
+        TestUtil.nextPage();
+
+        onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
+                .check(matches(isDisplayed()));
+
+        TestUtil.nextPage();
+
+        onView(withText(R.string.wipe_place_align_vial_wait_2_a))
+                .check(matches(isDisplayed()));
+
+        TestUtil.swipeRight();
+
+        onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
+                .check(matches(isDisplayed()));
+
+        TestUtil.goBack(4);
+
+        TestHelper.navigateUp();
+
+        onView(withText(R.string.next)).perform(click());
+
+        onView(withText("Select Test")).check(matches(isDisplayed()));
 
         onView(withText("Press and hold (*shift*) + (*1*)(*7*)(*0*) to select Fluoride test and then press (*enter*)"))
                 .check(matches(isDisplayed()));
@@ -294,5 +294,12 @@ public class BluetoothTest {
         onView(withId(R.id.button_submit_result)).perform(click());
 
         mActivityTestRule.finishActivity();
+
+        sleep(2000);
+
+        assertNotNull(mDevice.findObject(By.text("1. Fluoride")));
+
+        assertNotNull(mDevice.findObject(By.text("Fluoride: >2 mg/l")));
+
     }
 }

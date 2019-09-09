@@ -105,8 +105,7 @@ public class SwatchSelectTestActivity extends BaseActivity
         pagerIndicator.setPageCount(totalPageCount);
 
         imagePageRight = findViewById(R.id.image_pageRight);
-        imagePageRight.setOnClickListener(view ->
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1));
+        imagePageRight.setOnClickListener(view -> nextPage());
 
         imagePageLeft = findViewById(R.id.image_pageLeft);
         imagePageLeft.setVisibility(View.INVISIBLE);
@@ -127,6 +126,10 @@ public class SwatchSelectTestActivity extends BaseActivity
             public void onPageScrollStateChanged(int state) {
             }
         });
+    }
+
+    private void nextPage() {
+        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
     }
 
     private void showHideFooter() {

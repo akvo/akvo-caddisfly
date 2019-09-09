@@ -114,8 +114,7 @@ public class ManualTestActivity extends BaseActivity
         pagerIndicator.setPageCount(totalPageCount);
 
         imagePageRight = findViewById(R.id.image_pageRight);
-        imagePageRight.setOnClickListener(view ->
-                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1));
+        imagePageRight.setOnClickListener(view -> nextPage());
 
         imagePageLeft = findViewById(R.id.image_pageLeft);
         imagePageLeft.setVisibility(View.INVISIBLE);
@@ -405,7 +404,7 @@ public class ManualTestActivity extends BaseActivity
 
     @Override
     public void onPhotoTaken(String photoPath) {
-        viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+        nextPage();
     }
 
     public void onSubmitClick(View view) {

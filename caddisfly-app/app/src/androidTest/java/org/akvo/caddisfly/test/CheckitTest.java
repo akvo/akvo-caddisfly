@@ -190,7 +190,7 @@ public class CheckitTest {
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        sleep(500);
+        sleep(1500);
 
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click());
 
@@ -219,7 +219,7 @@ public class CheckitTest {
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        sleep(500);
+        sleep(1500);
 
         onView(withText(R.string.next)).perform(click());
 

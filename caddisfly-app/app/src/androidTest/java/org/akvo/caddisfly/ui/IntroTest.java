@@ -1,6 +1,8 @@
 package org.akvo.caddisfly.ui;
 
 
+import android.os.Build;
+
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
@@ -30,6 +32,7 @@ import static org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode;
 import static org.akvo.caddisfly.util.TestHelper.getString;
 import static org.akvo.caddisfly.util.TestHelper.goToMainScreen;
 import static org.akvo.caddisfly.util.TestHelper.gotoSurveyForm;
+import static org.akvo.caddisfly.util.TestHelper.isLowMemoryDevice;
 import static org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode;
 import static org.akvo.caddisfly.util.TestHelper.loadData;
 import static org.akvo.caddisfly.util.TestHelper.mCurrentLanguage;
@@ -129,17 +132,20 @@ public class IntroTest {
 
         onView(withText(R.string.go_to_external_app)).perform(click());
 
-        sleep(500);
+        if (isLowMemoryDevice(Build.MODEL)) {
 
-        mDevice.waitForIdle();
+            sleep(500);
 
-        gotoSurveyForm();
+            mDevice.waitForIdle();
 
-        mActivityTestRule.finishActivity();
+            gotoSurveyForm();
 
-        sleep(2000);
+            mActivityTestRule.finishActivity();
 
-        assertNotNull(mDevice.findObject(By.text(goToTest)));
+            sleep(2000);
+
+            assertNotNull(mDevice.findObject(By.text(goToTest)));
+        }
     }
 
     @Test
@@ -153,17 +159,20 @@ public class IntroTest {
 
         onView(withText(R.string.go_to_external_app)).perform(click());
 
-        sleep(500);
+        if (isLowMemoryDevice(Build.MODEL)) {
 
-        mActivityTestRule.finishActivity();
+            sleep(500);
 
-        mDevice.waitForIdle();
+            mActivityTestRule.finishActivity();
 
-        gotoSurveyForm();
+            mDevice.waitForIdle();
 
-        sleep(2000);
+            gotoSurveyForm();
 
-        assertNotNull(mDevice.findObject(By.text(goToTest)));
+            sleep(2000);
+
+            assertNotNull(mDevice.findObject(By.text(goToTest)));
+        }
     }
 
     private void navigateUp() {

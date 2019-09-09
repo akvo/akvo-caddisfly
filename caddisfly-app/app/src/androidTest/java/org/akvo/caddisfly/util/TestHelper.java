@@ -47,6 +47,7 @@ import androidx.test.uiautomator.UiSelector;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
+import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.TestConstants;
 
 import java.io.File;
@@ -76,7 +77,7 @@ import static org.hamcrest.Matchers.allOf;
 public final class TestHelper {
 
     public static final String mCurrentLanguage = "en";
-    private static final boolean TAKE_SCREENSHOTS = false;
+    private static final boolean TAKE_SCREENSHOTS = true;
     private static final Map<String, String> STRING_HASH_MAP_EN = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_ES = new HashMap<>();
     private static final Map<String, String> STRING_HASH_MAP_FR = new HashMap<>();
@@ -196,19 +197,22 @@ public final class TestHelper {
 
     public static void activateTestMode() {
 
-        onView(withId(R.id.button_info)).perform(click());
+        if (!AppConfig.IS_TEST_MODE) {
 
-        onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
+            onView(withId(R.id.button_info)).perform(click());
 
-        String version = CaddisflyApp.getAppVersion(false);
+            onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click());
 
-        onView(withText(version)).check(matches(isDisplayed()));
+            String version = CaddisflyApp.getAppVersion(false);
 
-        enterDiagnosticMode();
+            onView(withText(version)).check(matches(isDisplayed()));
 
-        onView(withId(R.id.actionSettings)).perform(click());
+            enterDiagnosticMode();
 
-        clickListViewItem("Test Mode");
+            onView(withId(R.id.actionSettings)).perform(click());
+
+            clickListViewItem("Test Mode");
+        }
 
         goToMainScreen();
     }
@@ -377,5 +381,9 @@ public final class TestHelper {
             }
         });
         return currentActivity[0];
+    }
+
+    public static boolean isLowMemoryDevice(String model) {
+        return model.contains("ASUS_Z007");
     }
 }

@@ -250,7 +250,7 @@ public class ManualTest {
 
         onView(withText(R.string.takePhoto)).check(matches(isDisplayed())).perform(click());
 
-        sleep(500);
+        sleep(1500);
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
@@ -362,7 +362,7 @@ public class ManualTest {
 
         onView(withText(R.string.takePhoto)).check(matches(isDisplayed())).perform(click());
 
-        sleep(500);
+        sleep(1500);
 
         onView(withId(R.id.editResult)).check(matches(isDisplayed()))
                 .perform(replaceText("12345"), closeSoftKeyboard());
@@ -422,7 +422,7 @@ public class ManualTest {
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        sleep(500);
+        sleep(1500);
 
         onView(withText(R.string.next)).perform(click());
 
@@ -444,13 +444,17 @@ public class ManualTest {
 
         assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
 
-        clickExternalSourceButton(2);
+        clickExternalSourceButton(1);
 
         sleep(500);
 
         onView(withText(R.string.next)).perform(click());
 
-        onView(withText(R.string.skip)).perform(click());
+        onView(withText(R.string.skip)).check(doesNotExist());
+
+        nextPage();
+
+        sleep(500);
 
         onView(allOf(withContentDescription(R.string.navigate_up),
                 withParent(withId(R.id.toolbar)),
@@ -463,6 +467,8 @@ public class ManualTest {
         onView(allOf(withContentDescription(R.string.navigate_up),
                 withParent(withId(R.id.toolbar)),
                 isDisplayed())).perform(click());
+
+        sleep(1000);
 
         assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")));
     }
@@ -488,7 +494,7 @@ public class ManualTest {
 
         onView(withText(R.string.takePhoto)).perform(click());
 
-        sleep(500);
+        sleep(1500);
 
         onView(withId(R.id.editResult)).perform(replaceText("200"));
 
