@@ -54,6 +54,6 @@
     <string name="collect_water_extraction_sample">Kumpulkan sampel ekstrasi air</string>
     <string name="dip_strip_15_seconds_in_reagent_and_remove">Celupkan kepingan selama <b>15 detik</b> di dalam wadah tabung kecil <b>bahan reaksi 2</b></string>
     <string name="dip_strip_15_seconds_and_remove">Celupkan kepingan ke dalam sampel selama <b>15 detik</b> dan tarik kembali.</string>
-    <string name="shake_excess_water">Guncangkan air lebih dari kepingan uji coba.</string>
+    <string name="shake_excess_water_off">Guncangkan air lebih dari kepingan uji coba.</string>
 
 </resources>

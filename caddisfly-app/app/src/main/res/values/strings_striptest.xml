@@ -106,5 +106,4 @@
     <string name="collect_water_extraction_sample">Collect water extraction sample</string>
     <string name="dip_strip_15_seconds_in_reagent_and_remove">Dip the strip for <b>15 seconds</b> in the small tube containing <b>reagent 2</b>.</string>
     <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
-    <string name="shake_excess_water">Shake excess water from test strip.</string>
 </resources>

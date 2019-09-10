@@ -38,16 +38,16 @@ package org.akvo.caddisfly.ui;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.databinding.TestItemBinding;
 import org.akvo.caddisfly.model.TestInfo;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class TestInfoAdapter extends RecyclerView.Adapter<TestInfoAdapter.TestInfoViewHolder> {
 
@@ -55,11 +55,11 @@ public class TestInfoAdapter extends RecyclerView.Adapter<TestInfoAdapter.TestIn
     private final TestInfoClickCallback mTestInfoClickCallback;
     private List<? extends TestInfo> mTestList;
 
-    public TestInfoAdapter(@Nullable TestInfoClickCallback clickCallback) {
+    TestInfoAdapter(@Nullable TestInfoClickCallback clickCallback) {
         mTestInfoClickCallback = clickCallback;
     }
 
-    public void setTestList(final List<? extends TestInfo> testList) {
+    void setTestList(final List<? extends TestInfo> testList) {
         if (mTestList != null) {
             mTestList.clear();
         }

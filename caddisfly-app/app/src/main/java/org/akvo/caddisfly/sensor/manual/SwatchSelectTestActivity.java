@@ -46,7 +46,6 @@ import org.akvo.caddisfly.widget.SwipeDirection;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
@@ -334,9 +333,9 @@ public class SwatchSelectTestActivity extends BaseActivity
         }
 
         public void setResult(TestInfo testInfo) {
-            if (testInfo != null) {
+            if (testInfo != null && getActivity() != null) {
 
-                LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(getActivity())
+                LayoutInflater inflater = (LayoutInflater) getActivity()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 layout.removeAllViews();

@@ -78,12 +78,4 @@
     <string name="as_remove_sulfide_4">Insérez la bandelette de test comme indiqué à l\'étape 1 du test 0–500 ou 0–4000 ppb de la procédure et continuez le test.</string>
     <string name="as_remove_sulfide_note">Remarque: L\'acétate de plomb ne doit pas être en contact avec la bandelette de test!</string>
     <string name="as_remove_sulfide_wear_gloves">Portez toujours des gants ou lavez vous bien les mains après avoir manipulé de l\'acétate de plomb.</string>
-
-    <!--Soil-->
-    <string name="collect_mehlich_extraction_sample">Collect Mehlich extraction sample</string>
-    <string name="collect_5ml_mehlich_sample">Collect <b>5 ml</b> Mehlich extraction sample using the provided bottle.</string>
-    <string name="collect_water_extraction_sample">Collect water extraction sample</string>
-    <string name="dip_strip_15_seconds_in_reagent_and_remove">Dip the strip for <b>15 seconds</b> in the small tube containing <b>reagent 2</b>.</string>
-    <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
-    <string name="shake_excess_water">Shake excess water from test strip.</string>
 </resources>

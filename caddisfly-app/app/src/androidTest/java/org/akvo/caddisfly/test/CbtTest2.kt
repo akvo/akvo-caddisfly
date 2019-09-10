@@ -19,8 +19,23 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.ui.MainActivity
-import org.akvo.caddisfly.util.TestHelper.*
-import org.akvo.caddisfly.util.TestUtil.*
+import org.akvo.caddisfly.util.TestHelper
+import org.akvo.caddisfly.util.TestHelper.clearPreferences
+import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
+import org.akvo.caddisfly.util.TestHelper.currentActivity
+import org.akvo.caddisfly.util.TestHelper.getString
+import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
+import org.akvo.caddisfly.util.TestHelper.loadData
+import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
+import org.akvo.caddisfly.util.TestUtil.childAtPosition
+import org.akvo.caddisfly.util.TestUtil.clickPercent
+import org.akvo.caddisfly.util.TestUtil.goBack
+import org.akvo.caddisfly.util.TestUtil.nextPage
+import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
+import org.akvo.caddisfly.util.TestUtil.prevPage
+import org.akvo.caddisfly.util.isLowMemoryDevice
+import org.akvo.caddisfly.util.mDevice
+import org.akvo.caddisfly.util.sleep
 import org.hamcrest.Matchers.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -38,7 +53,7 @@ class CbtTest2 {
         @JvmStatic
         @BeforeClass
         fun setup() {
-            if (mDevice == null) {
+            if (!TestHelper.isDeviceInitialized()) {
                 mDevice = UiDevice.getInstance(getInstrumentation())
             }
         }
@@ -342,9 +357,9 @@ class CbtTest2 {
     }
 
     private fun assertBackgroundColor(view: Int, color: Int) {
-        val bar = getCurrentActivity().findViewById<View>(view)
+        val bar = currentActivity.findViewById<View>(view)
         val actualColor = (bar.background as ColorDrawable).color
-        val expectedColor = ContextCompat.getColor(getCurrentActivity(), color)
+        val expectedColor = ContextCompat.getColor(currentActivity, color)
         assertEquals(actualColor, expectedColor)
     }
 }
