@@ -45,6 +45,8 @@ import org.akvo.caddisfly.R
 import org.akvo.caddisfly.app.CaddisflyApp
 import org.akvo.caddisfly.common.AppConfig
 import org.akvo.caddisfly.common.TestConstants
+import org.akvo.caddisfly.util.TestUtil.childAtPosition
+import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import timber.log.Timber
 import java.io.File
@@ -52,8 +54,13 @@ import java.util.*
 
 lateinit var mDevice: UiDevice
 
-val isPatchAvailable: Boolean
-    get() = Build.MANUFACTURER == "samsung"
+fun isPatchAvailable(test: String = ""): Boolean {
+    return if (test == "Mercury") {
+        ("ASUS_Z01BDB SM-J500F").contains(Build.MODEL)
+    } else {
+        ("SM-J500F").contains(Build.MODEL)
+    }
+}
 
 fun isLowMemoryDevice(model: String): Boolean {
     return model.contains("ASUS_Z007")
@@ -270,7 +277,6 @@ object TestHelper {
         } catch (e: UiObjectNotFoundException) {
             Timber.e(e)
         }
-
     }
 
     fun gotoSurveyForm() {
@@ -294,8 +300,6 @@ object TestHelper {
             }
 
         }
-
-        // mDevice.findObject(By.text("Caddisfly Tests")).click();
     }
 
     fun enterDiagnosticMode() {
@@ -323,5 +327,42 @@ object TestHelper {
 
     fun isDeviceInitialized(): Boolean {
         return ::mDevice.isInitialized
+    }
+
+    fun clickSubmitButton() {
+        onView(allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
+                childAtPosition(
+                        allOf(withId(R.id.buttonsLayout),
+                                childAtPosition(
+                                        withClassName(`is`("android.widget.RelativeLayout")),
+                                        2)),
+                        0),
+                isDisplayed())).perform(click())
+    }
+
+    fun clickCloseButton() {
+        onView(allOf(withId(R.id.buttonClose), withText("Close"),
+                childAtPosition(
+                        allOf(withId(R.id.buttonsLayout),
+                                childAtPosition(
+                                        withClassName(`is`("android.widget.RelativeLayout")),
+                                        2)),
+                        1),
+                isDisplayed())).perform(click())
+    }
+
+    fun clickStartButton() {
+        onView(allOf(withId(R.id.buttonStart), withText("Start"),
+                childAtPosition(
+                        childAtPosition(
+                                withClassName(`is`<String>("android.widget.RelativeLayout")),
+                                2),
+                        2),
+                isDisplayed())).perform(click())
+    }
+
+    fun clickSubmitResultButton() {
+        onView(allOf(withId(R.id.buttonSubmitResult), withText("Submit Result"), isDisplayed()))
+                .perform(click())
     }
 }

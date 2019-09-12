@@ -127,7 +127,7 @@ public class ResultFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_strip_result, container, false);
         layout = rootView.findViewById(R.id.layout_results);
 
-        buttonSave = rootView.findViewById(R.id.buttonSubmit);
+        buttonSave = rootView.findViewById(R.id.buttonSubmitResult);
         buttonSave.setOnClickListener(v -> {
             Intent intent = new Intent();
             String path;

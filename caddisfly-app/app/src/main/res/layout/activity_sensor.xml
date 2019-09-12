@@ -50,9 +50,9 @@
             android:layout_height="wrap_content"
             android:background="?colorPrimary"
             android:orientation="vertical"
-            android:paddingBottom="20dp"
-            android:paddingEnd="6dp"
             android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingEnd="6dp"
+            android:paddingBottom="20dp"
             tools:ignore="UnknownId,UnknownIdInLayout">
 
             <TextView
@@ -62,8 +62,8 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="sans-serif-light"
                 android:textColor="#fff"
-                android:textSize="25sp"
-                tools:text="Contaminant" />
+                android:textSize="22sp"
+                tools:text="Water - Electrical Conductivity" />
 
             <TextView
                 android:id="@+id/textSubtitle"

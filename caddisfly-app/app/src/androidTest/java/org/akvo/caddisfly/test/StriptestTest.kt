@@ -1,6 +1,7 @@
 package org.akvo.caddisfly.test
 
 import android.view.View
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
@@ -20,14 +21,12 @@ import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
-import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
 import org.akvo.caddisfly.util.isPatchAvailable
 import org.akvo.caddisfly.util.mDevice
 import org.akvo.caddisfly.util.sleep
-import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.BeforeClass
@@ -38,7 +37,9 @@ class StriptestTest {
 
     companion object {
 
-        private const val surveyTab = "Striptest"
+        private const val waterTab = "Striptest"
+        private const val waterTab2 = "Striptest2"
+        private const val soilTab = "Soil Striptest"
 
         @JvmStatic
         @BeforeClass
@@ -57,20 +58,36 @@ class StriptestTest {
     fun setUp() {
         loadData(mActivityRule.activity, mCurrentLanguage)
         clearPreferences(mActivityRule)
+        activateTestMode()
     }
 
     @Test
     @RequiresDevice
     fun startStriptest() {
-
-        activateTestMode()
-
-        sleep(10000)
-
         test5in1()
+    }
+
+    @Test
+    @RequiresDevice
+    fun startSoilNitrogenTest() {
         testSoilNitrogen()
+    }
+
+    @Test
+    @RequiresDevice
+    fun startMerckpHTest() {
         testMerckPH()
+    }
+
+    @Test
+    @RequiresDevice
+    fun startNitrateTest() {
         testNitrate100()
+    }
+
+    @Test
+    @RequiresDevice
+    fun startMercuryTest() {
         testMercury()
     }
 
@@ -78,7 +95,7 @@ class StriptestTest {
 
         gotoSurveyForm()
 
-        nextSurveyPage(surveyTab)
+        nextSurveyPage(waterTab)
 
         clickExternalSourceButton(3)
 
@@ -105,22 +122,16 @@ class StriptestTest {
                 sleep(200)
                 break
             }
-
         }
 
         onView(withText(R.string.skip)).check(doesNotExist())
 
-        val appCompatButton4 = onView(
-                allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                4),
-                        isDisplayed()))
-        appCompatButton4.perform(click())
-
-        sleep(36000)
+        TestHelper.clickStartButton()
+        if (isPatchAvailable()) {
+            sleep(36000)
+        } else {
+            sleep(5000)
+        }
 
         onView(withText(R.string.skip)).check(doesNotExist())
 
@@ -128,21 +139,12 @@ class StriptestTest {
 
         onView(withText(R.string.skip)).check(doesNotExist())
 
-        val buttonStart = onView(
-                allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                4),
-                        isDisplayed()))
-        buttonStart.perform(click())
+        TestHelper.clickStartButton()
 
-        sleep(35000)
+        if (isPatchAvailable()) {
+            sleep(35000)
 
-        onView(withText(R.string.result)).check(matches(isDisplayed()))
-
-        if (isPatchAvailable) {
+            onView(withText(R.string.result)).check(matches(isDisplayed()))
             onView(withText("Total Chlorine")).check(matches(isDisplayed()))
             onView(withText("0 mg/l")).check(matches(isDisplayed()))
             onView(withText("Free Chlorine")).check(matches(isDisplayed()))
@@ -166,23 +168,18 @@ class StriptestTest {
             onView(withText("pH")).check(matches(isDisplayed()))
             onView(withText("6.2")).check(matches(isDisplayed()))
         } else {
+            sleep(5000)
+            onView(withText(R.string.result)).check(matches(isDisplayed()))
             onView(withText("No strip found")).check(matches(isDisplayed()))
         }
 
-        onView(allOf<View>(withId(R.id.buttonSubmit), withText("Submit Result"),
-                childAtPosition(
-                        allOf<View>(withId(R.id.layoutFooter),
-                                childAtPosition(
-                                        withClassName(`is`("android.widget.RelativeLayout")),
-                                        1)),
-                        0),
-                isDisplayed())).perform(click())
+        TestHelper.clickSubmitResultButton()
 
         mActivityRule.finishActivity()
 
         sleep(2000)
 
-        if (isPatchAvailable) {
+        if (isPatchAvailable()) {
             assertNotNull(mDevice.findObject(By.text("Total Chlorine: 0.0 mg/l")))
             assertNotNull(mDevice.findObject(By.text("Free Chlorine: 0.15 mg/l")))
             assertNotNull(mDevice.findObject(By.text("Total Hardness:  mg/l")))
@@ -193,9 +190,15 @@ class StriptestTest {
 
     private fun testSoilNitrogen() {
 
+        mDevice.waitForIdle()
+
         gotoSurveyForm()
 
-        nextSurveyPage("Soil Striptest")
+        nextSurveyPage(soilTab)
+
+        sleep(1000)
+
+        mDevice.waitForIdle()
 
         clickExternalSourceButton(0)
 
@@ -217,21 +220,14 @@ class StriptestTest {
 
         }
 
-        val buttonStart = onView(
-                allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                4),
-                        isDisplayed()))
-        buttonStart.perform(click())
+        TestHelper.clickStartButton()
 
-        sleep(65000)
+        if (isPatchAvailable()) {
 
-        onView(withText(R.string.result)).check(matches(isDisplayed()))
+            sleep(65000)
 
-        if (isPatchAvailable) {
+            onView(withText(R.string.result)).check(matches(isDisplayed()))
+
             onView(withText("Nitrogen")).check(matches(isDisplayed()))
             onView(withText("205.15 mg/l")).check(matches(isDisplayed()))
             onView(withText("Nitrate Nitrogen")).check(matches(isDisplayed()))
@@ -239,23 +235,18 @@ class StriptestTest {
             onView(withText("Nitrite Nitrogen")).check(matches(isDisplayed()))
             onView(withText("0.03 mg/l")).check(matches(isDisplayed()))
         } else {
+            sleep(5000)
+            onView(withText(R.string.result)).check(matches(isDisplayed()))
             onView(withText("No strip found")).check(matches(isDisplayed()))
         }
 
-        onView(allOf<View>(withId(R.id.buttonSubmit), withText("Submit Result"),
-                childAtPosition(
-                        allOf<View>(withId(R.id.layoutFooter),
-                                childAtPosition(
-                                        withClassName(`is`("android.widget.RelativeLayout")),
-                                        1)),
-                        0),
-                isDisplayed())).perform(click())
+        TestHelper.clickSubmitResultButton()
 
         mActivityRule.finishActivity()
 
         sleep(2000)
 
-        if (isPatchAvailable) {
+        if (isPatchAvailable()) {
             assertNotNull(mDevice.findObject(By.text("Nitrogen: 205.15 mg/l")))
             assertNotNull(mDevice.findObject(By.text("Nitrate Nitrogen: 41.0 mg/l")))
             assertNotNull(mDevice.findObject(By.text("Nitrite Nitrogen: 0.03 mg/l")))
@@ -266,7 +257,7 @@ class StriptestTest {
 
         gotoSurveyForm()
 
-        nextSurveyPage(surveyTab)
+        nextSurveyPage(waterTab)
 
         clickExternalSourceButton(2)
 
@@ -288,21 +279,13 @@ class StriptestTest {
 
         }
 
-        val buttonStart = onView(
-                allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                4),
-                        isDisplayed()))
-        buttonStart.perform(click())
+        TestHelper.clickStartButton()
 
         sleep(5000)
 
         onView(withText(R.string.result)).check(matches(isDisplayed()))
 
-        if (isPatchAvailable) {
+        if (isPatchAvailable()) {
             onView(withText("pH")).check(matches(isDisplayed()))
             onView(withText("4.8")).check(matches(isDisplayed()))
         } else {
@@ -311,16 +294,9 @@ class StriptestTest {
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()))
 
-        onView(allOf<View>(withId(R.id.buttonSubmit), withText("Submit Result"),
-                childAtPosition(
-                        allOf<View>(withId(R.id.layoutFooter),
-                                childAtPosition(
-                                        withClassName(`is`("android.widget.RelativeLayout")),
-                                        1)),
-                        0),
-                isDisplayed())).perform(click())
+        TestHelper.clickSubmitResultButton()
 
-        if (isPatchAvailable) {
+        if (isPatchAvailable()) {
             assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")))
         }
     }
@@ -329,9 +305,9 @@ class StriptestTest {
 
         gotoSurveyForm()
 
-        nextSurveyPage(surveyTab)
+        nextSurveyPage(waterTab2)
 
-        clickExternalSourceButton(5)
+        clickExternalSourceButton(2)
 
         sleep(1000)
 
@@ -348,44 +324,29 @@ class StriptestTest {
             }
         }
 
-        val buttonStart = onView(
-                allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                4),
-                        isDisplayed()))
-        buttonStart.perform(click())
+        TestHelper.clickStartButton()
 
-        sleep(60000)
-
-        onView(withText(R.string.result)).check(matches(isDisplayed()))
-
-        if (isPatchAvailable) {
+        if (isPatchAvailable()) {
+            sleep(60000)
+            onView(withText(R.string.result)).check(matches(isDisplayed()))
             onView(withText("Nitrate")).check(matches(isDisplayed()))
             onView(withText("14.5 mg/l")).check(matches(isDisplayed()))
             onView(withText("Nitrite")).check(matches(isDisplayed()))
             onView(withText("1.85 mg/l")).check(matches(isDisplayed()))
         } else {
+            sleep(5000)
+            onView(withText(R.string.result)).check(matches(isDisplayed()))
             onView(withText("No strip found")).check(matches(isDisplayed()))
         }
 
-        onView(allOf<View>(withId(R.id.buttonSubmit), withText("Submit Result"),
-                childAtPosition(
-                        allOf<View>(withId(R.id.layoutFooter),
-                                childAtPosition(
-                                        withClassName(`is`("android.widget.RelativeLayout")),
-                                        1)),
-                        0),
-                isDisplayed())).perform(click())
+        TestHelper.clickSubmitResultButton()
     }
 
     private fun testMercury() {
 
         gotoSurveyForm()
 
-        nextSurveyPage(surveyTab)
+        nextSurveyPage(waterTab2)
 
         val listView = UiScrollable(UiSelector())
         try {
@@ -394,7 +355,7 @@ class StriptestTest {
             e.printStackTrace()
         }
 
-        clickExternalSourceButton(1)
+        clickExternalSourceButton(0)
 
         mDevice.waitForIdle()
 
@@ -414,39 +375,177 @@ class StriptestTest {
 
         }
 
-        val buttonStart = onView(
-                allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                4),
-                        isDisplayed()))
-        buttonStart.perform(click())
+        TestHelper.clickStartButton()
 
-        sleep(35000)
+        if (isPatchAvailable("Mercury")) {
+            sleep(35000)
+            onView(withText(R.string.result)).check(matches(isDisplayed()))
+            onView(withText("Mercury")).check(matches(isDisplayed()))
+            onView(withText("5 ug/l")).check(matches(isDisplayed()))
+            onView(withId(R.id.image_result)).check(matches(isDisplayed()))
+        } else {
+            sleep(5000)
+            onView(withText(R.string.result)).check(matches(isDisplayed()))
+            onView(withText("No strip found")).check(matches(isDisplayed()))
+        }
 
-        onView(withText(R.string.result)).check(matches(isDisplayed()))
-        onView(withText("Mercury")).check(matches(isDisplayed()))
-        onView(withText("5 ug/l")).check(matches(isDisplayed()))
-
-        onView(withId(R.id.image_result)).check(matches(isDisplayed()))
-
-        onView(allOf<View>(withId(R.id.buttonSubmit), withText("Submit Result"),
-                childAtPosition(
-                        allOf<View>(withId(R.id.layoutFooter),
-                                childAtPosition(
-                                        withClassName(`is`("android.widget.RelativeLayout")),
-                                        1)),
-                        0),
-                isDisplayed())).perform(click())
+        TestHelper.clickSubmitResultButton()
 
         mActivityRule.finishActivity()
 
         sleep(2000)
 
-        mDevice.swipe(200, 750, 200, 600, 4)
+        if (isPatchAvailable("Mercury")) {
+            mDevice.swipe(200, 750, 200, 600, 4)
+            assertNotNull(mDevice.findObject(By.text("Mercury: 5.0 ug/l")))
+        } else {
+            assertNotNull(mDevice.findObject(By.text("Mercury: null ug/l")))
+        }
+    }
 
-        assertNotNull(mDevice.findObject(By.text("Mercury: 5.0 ug/l")))
+    @Test
+    fun instructionsTest() {
+
+        gotoSurveyForm()
+
+        nextSurveyPage("Soil Striptest")
+
+        clickExternalSourceButton(1)
+
+        mDevice.waitForIdle()
+
+        onView(withText(R.string.prepare_test)).perform(click())
+
+        sleep(5000)
+
+        onView(withText(R.string.collect_5ml_mehlich_sample))
+                .check(matches(isDisplayed()))
+
+        onView(withText("Soil - Phosphorous"))
+                .check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.add_5_drops_po4_1)).check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.swirl_and_mix)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.place_smaller_container)).check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.add_6_drops_po4_2)).check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.dip_strip_15_seconds_and_remove)).check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.shake_excess_water_off)).check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.dip_strip_15_seconds_in_reagent_and_remove)).check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.shake_excess_water_off)).check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.place_strip_clr)).check(matches(isDisplayed()))
+
+        onView(Matchers.allOf<View>(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click())
+
+        onView(Matchers.allOf<View>(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click())
+
+        onView(withText(R.string.prepare_test)).perform(click())
+
+        Espresso.pressBack()
+
+        Espresso.pressBack()
+
+        sleep(1000)
+
+        onView(withText(R.string.prepare_test)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun ironStripTestInstructions() {
+
+        TestHelper.goToMainScreen()
+
+        gotoSurveyForm()
+
+        nextSurveyPage("Striptest")
+
+        clickExternalSourceButton(0)
+
+        sleep(1000)
+
+        mDevice.waitForIdle()
+
+        sleep(1000)
+
+        onView(withText("Water - Iron"))
+                .check(matches(isDisplayed()))
+
+        onView(withText(R.string.prepare_test)).perform(click())
+
+        sleep(5000)
+
+        onView(withText(R.string.fill_half_with_sample))
+                .check(matches(isDisplayed()))
+
+        onView(withText("Water - Iron"))
+                .check(matches(isDisplayed()))
+
+        nextPage()
+
+        onView(withText(R.string.open_one_foil_and_add_powder))
+                .check(matches(isDisplayed()))
+
+        onView(withId(R.id.pager_indicator)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.viewPager)).perform(ViewActions.swipeLeft())
+
+        onView(Matchers.allOf<View>(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click())
+
+        onView(Matchers.allOf<View>(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click())
+
+        onView(withText(R.string.prepare_test)).perform(click())
+
+        Espresso.pressBack()
+
+        onView(withText(R.string.fill_half_with_sample))
+                .check(matches(isDisplayed()))
+
+        Espresso.pressBack()
+
+        sleep(1000)
+
+        onView(withText(R.string.prepare_test)).perform(click())
+
+        onView(Matchers.allOf<View>(withContentDescription(R.string.navigate_up),
+                withParent(withId(R.id.toolbar)),
+                isDisplayed())).perform(click())
+
+        onView(withText(R.string.fill_half_with_sample))
+                .check(matches(isDisplayed()))
     }
 }

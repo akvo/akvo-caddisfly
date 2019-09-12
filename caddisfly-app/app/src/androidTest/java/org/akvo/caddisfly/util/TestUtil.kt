@@ -182,25 +182,27 @@ object TestUtil {
 
         var tab: UiObject2? = mDevice.findObject(By.text(tabName))
         if (tab == null || !tab.isSelected) {
-
-            for (i in 0..11) {
-                swipeRight()
-                tab = mDevice.findObject(By.text(tabName))
-                if (tab != null && tab.isSelected) {
-                    break
-                }
-                tab = mDevice.findObject(By.text("Striptest"))
-                if (tab != null && tab.isSelected) {
-                    for (j in 0..19) {
-                        mDevice.waitForIdle()
-                        swipeLeft()
-                        sleep(200)
-                        tab = mDevice.findObject(By.text(tabName))
-                        if (tab != null && tab.isSelected) {
-                            break
-                        }
+            swipeLeft()
+            if (tab == null || !tab.isSelected) {
+                for (i in 0..11) {
+                    swipeRight()
+                    tab = mDevice.findObject(By.text(tabName))
+                    if (tab != null && tab.isSelected) {
+                        break
                     }
-                    break
+                    tab = mDevice.findObject(By.text("Striptest"))
+                    if (tab != null && tab.isSelected) {
+                        for (j in 0..19) {
+                            mDevice.waitForIdle()
+                            swipeLeft()
+                            sleep(200)
+                            tab = mDevice.findObject(By.text(tabName))
+                            if (tab != null && tab.isSelected) {
+                                break
+                            }
+                        }
+                        break
+                    }
                 }
             }
         }

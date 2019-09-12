@@ -49,7 +49,6 @@ import org.akvo.caddisfly.util.TestHelper.getString
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
-import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.akvo.caddisfly.util.TestUtil.clickPercent
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
@@ -152,7 +151,8 @@ class CbtTest {
 
         nextPage()
 
-        val riskText = getString(R.string.very_high_risk_unsafe).split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val riskText = getString(R.string.very_high_risk_unsafe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val risk1 = riskText[0].trim { it <= ' ' }
         val risk2 = riskText[1].trim { it <= ' ' }
 
@@ -173,15 +173,7 @@ class CbtTest {
         val result1 = getString(R.string.health_risk_category)
         val interval = getString(R.string.confidenceInterval)
 
-        val appCompatButton3 = onView(
-                allOf<View>(withId(R.id.buttonSubmit), withText("Submit Result"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        appCompatButton3.perform(click())
+        TestHelper.clickSubmitButton()
 
         mIntentsRule.finishActivity()
 
@@ -246,7 +238,8 @@ class CbtTest {
 
         nextPage()
 
-        var riskText = getString(R.string.very_high_risk_unsafe).split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        var riskText = getString(R.string.very_high_risk_unsafe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         var risk1 = riskText[0].trim { it <= ' ' }
         var risk2 = riskText[1].trim { it <= ' ' }
 
@@ -268,7 +261,8 @@ class CbtTest {
 
         nextPage()
 
-        riskText = getString(R.string.low_risk_possibly_safe).split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        riskText = getString(R.string.low_risk_possibly_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         risk1 = riskText[0].trim { it <= ' ' }
         risk2 = riskText[1].trim { it <= ' ' }
         onView(withText(risk1)).check(matches(isDisplayed()))
@@ -304,15 +298,7 @@ class CbtTest {
         val result1 = getString(R.string.recreational_health_risk_category)
         val interval = getString(R.string.confidenceInterval)
 
-        val appCompatButton3 = onView(
-                allOf<View>(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        appCompatButton3.perform(click())
+        TestHelper.clickSubmitButton()
 
         mIntentsRule.finishActivity()
 

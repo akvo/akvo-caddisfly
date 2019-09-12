@@ -124,7 +124,7 @@ class IntroTest {
 
         onView(withText(R.string.go_to_external_app)).perform(click())
 
-        if (isLowMemoryDevice(Build.MODEL)) {
+        if (!isLowMemoryDevice(Build.MODEL)) {
 
             sleep(500)
 
@@ -149,9 +149,11 @@ class IntroTest {
 
         onView(withText(R.string.next)).perform(click())
 
-        onView(withText(R.string.go_to_external_app)).perform(click())
+        onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 
-        if (isLowMemoryDevice(Build.MODEL)) {
+        if (!isLowMemoryDevice(Build.MODEL)) {
+
+            onView(withText(R.string.go_to_external_app)).perform(click())
 
             sleep(500)
 

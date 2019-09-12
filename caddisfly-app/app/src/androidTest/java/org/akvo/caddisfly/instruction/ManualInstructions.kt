@@ -47,7 +47,6 @@ import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
-import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.akvo.caddisfly.util.TestUtil.clickPercent
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
@@ -120,15 +119,7 @@ class ManualInstructions {
 
             takeScreenshot(id, ++pages)
 
-            val submitButton = onView(
-                    allOf<View>(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                            childAtPosition(
-                                    childAtPosition(
-                                            withId(R.id.viewPager),
-                                            1),
-                                    2),
-                            isDisplayed()))
-            submitButton.perform(click())
+            TestHelper.clickSubmitButton()
 
             mDevice.pressBack()
 

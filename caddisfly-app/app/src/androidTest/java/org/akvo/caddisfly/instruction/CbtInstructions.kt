@@ -45,6 +45,7 @@ import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.ui.TestActivity
 import org.akvo.caddisfly.util.DrawableMatcher.Companion.hasDrawable
+import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
@@ -206,15 +207,7 @@ class CbtInstructions {
 
         mDevice.waitForIdle()
 
-        val appCompatButton4 = onView(
-                allOf<View>(withId(R.id.buttonClose), withText("Close"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                3),
-                        isDisplayed()))
-        appCompatButton4.perform(click())
+        TestHelper.clickCloseButton()
 
         mDevice.waitForIdle()
 
@@ -268,15 +261,7 @@ class CbtInstructions {
 
         onView(withId(R.id.image_pageRight)).check(matches(not<View>(isDisplayed())))
 
-        val submitButton = onView(
-                allOf<View>(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        submitButton.perform(click())
+        TestHelper.clickSubmitButton()
     }
 
     @Test
@@ -382,15 +367,7 @@ class CbtInstructions {
 
                 mDevice.waitForIdle()
 
-                val appCompatButton5 = onView(
-                        allOf<View>(withId(R.id.buttonClose), withText("Close"),
-                                childAtPosition(
-                                        childAtPosition(
-                                                withId(R.id.viewPager),
-                                                1),
-                                        3),
-                                isDisplayed()))
-                appCompatButton5.perform(click())
+                TestHelper.clickCloseButton()
 
                 sleep(300)
                 break
@@ -439,15 +416,7 @@ class CbtInstructions {
 
             } catch (e: Exception) {
 
-                val appCompatButton3 = onView(
-                        allOf<View>(withId(R.id.buttonSubmit), withText("Submit Result"),
-                                childAtPosition(
-                                        childAtPosition(
-                                                withId(R.id.viewPager),
-                                                1),
-                                        2),
-                                isDisplayed()))
-                appCompatButton3.perform(click())
+                TestHelper.clickSubmitButton()
 
                 sleep(300)
                 break

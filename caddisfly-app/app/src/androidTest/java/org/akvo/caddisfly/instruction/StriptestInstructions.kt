@@ -26,7 +26,6 @@ import android.util.Log
 import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -54,13 +53,11 @@ import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
-import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
 import org.akvo.caddisfly.util.isPatchAvailable
 import org.akvo.caddisfly.util.mDevice
 import org.akvo.caddisfly.util.sleep
-import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -163,28 +160,11 @@ class StriptestInstructions {
 
         sleep(1500)
 
-        var startButton: ViewInteraction
-        try {
-            startButton = onView(allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                    childAtPosition(
-                            childAtPosition(
-                                    withId(R.id.viewPager),
-                                    2),
-                            4)))
-            startButton.perform(click())
-        } catch (ignore: Exception) {
-            startButton = onView(allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                    childAtPosition(
-                            childAtPosition(
-                                    withId(R.id.viewPager),
-                                    1),
-                            4)))
-            startButton.perform(click())
-        }
+        TestHelper.clickStartButton()
 
         sleep(7000)
 
-        if (isPatchAvailable) {
+        if (isPatchAvailable()) {
             onView(withText("4.8")).check(matches(isDisplayed()))
             pressBack()
             onView(withText("pH")).check(matches(isDisplayed()))
@@ -192,20 +172,11 @@ class StriptestInstructions {
             onView(withText("No strip found")).check(matches(isDisplayed()))
         }
 
-        val appCompatButton5 = onView(
-                allOf<View>(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                allOf<View>(withId(R.id.layoutFooter),
-                                        childAtPosition(
-                                                withClassName(`is`("android.widget.RelativeLayout")),
-                                                1)),
-                                0),
-                        isDisplayed()))
-        appCompatButton5.perform(click())
+        TestHelper.clickSubmitResultButton()
 
         sleep(1000)
 
-        if (isPatchAvailable) {
+        if (isPatchAvailable()) {
             assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")))
         } else {
             assertNotNull(mDevice.findObject(By.text("pH: null ")))
@@ -229,104 +200,82 @@ class StriptestInstructions {
             val uuid = testInfo.uuid
             val id = uuid.substring(uuid.lastIndexOf("-") + 1)
 
-            //            if (("411a4093f6b6").contains(id))
-            //            if (testInfo.getName().contains("Soil"))
-            //                if (("ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id))
-            //
-            run {
+            if (("aa4a4e3100c9").contains(id)) {
+                //            if (testInfo.getName().contains("Soil"))
+                //                if (("ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id))
+                //
+                run {
 
-                if (("6843158b47b4 6ed8142b6b07, 420551851acd 1b7db640037c d555f04db952 aa4a4e3100c9 " + "411a4093f6b6 321bbbd9876b 798b81d2b019 32d9b8f4aecf").contains(id)) {
+                    if (("6843158b47b4 6ed8142b6b07, 420551851acd 1b7db640037c d555f04db952 aa4a4e3100c9 " + "411a4093f6b6 321bbbd9876b 798b81d2b019 32d9b8f4aecf").contains(id)) {
 
-                    resultWaitDelay = 0
-                    for (result in testInfo.results) {
-                        if (result.timeDelay > resultWaitDelay) {
-                            resultWaitDelay = result.timeDelay!!
+                        resultWaitDelay = 0
+                        for (result in testInfo.results) {
+                            if (result.timeDelay > resultWaitDelay) {
+                                resultWaitDelay = result.timeDelay!!
+                            }
                         }
+
+                        resultWaitDelay = max(5000, (resultWaitDelay + 5) * 1000)
+                    } else {
+                        resultWaitDelay = 5000
                     }
 
-                    resultWaitDelay = max(5000, (resultWaitDelay + 5) * 1000)
-                } else {
-                    resultWaitDelay = 5000
-                }
+                    Log.e("Caddisfly Log", "id: $id")
 
-                Log.e("Caddisfly Log", "id: $id")
+                    val intent = Intent()
+                    intent.type = "text/plain"
+                    intent.action = AppConfig.EXTERNAL_APP_ACTION
+                    val data = Bundle()
+                    data.putString(SensorConstants.RESOURCE_ID, uuid)
+                    data.putString(SensorConstants.LANGUAGE, mCurrentLanguage)
+                    intent.putExtras(data)
 
-                val intent = Intent()
-                intent.type = "text/plain"
-                intent.action = AppConfig.EXTERNAL_APP_ACTION
-                val data = Bundle()
-                data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, mCurrentLanguage)
-                intent.putExtras(data)
+                    mDevice.waitForIdle()
 
-                mDevice.waitForIdle()
+                    mActivityTestRule.finishActivity()
 
-                mActivityTestRule.finishActivity()
+                    mActivityTestRule.launchActivity(intent)
 
-                mActivityTestRule.launchActivity(intent)
+                    navigateToTest(id)
 
-                navigateToTest(id)
+                    var pages = navigateInstructions(id, 1)
 
-                var pages = navigateInstructions(id, 1)
+                    TestHelper.clickStartButton()
 
-                onView(allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                4),
-                        isDisplayed())).perform(click())
+                    if ("411a4093f6b6".contains(id)) {
 
-                if ("411a4093f6b6".contains(id)) {
+                        sleep(2000)
 
-                    sleep(2000)
+                        takeScreenshot(id, pages)
+
+                        sleep(resultWaitDelay)
+
+                        pages = navigateInstructions(id, ++pages)
+
+                        sleep(1000)
+
+                        TestHelper.clickStartButton()
+                    }
+
+                    sleep(1000)
 
                     takeScreenshot(id, pages)
 
                     sleep(resultWaitDelay)
 
-                    pages = navigateInstructions(id, ++pages)
+                    takeScreenshot(id, ++pages)
 
-                    sleep(1000)
+                    jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],")
 
-                    var startButton: ViewInteraction
-                    try {
-                        startButton = onView(allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                                childAtPosition(
-                                        childAtPosition(
-                                                withId(R.id.viewPager),
-                                                2),
-                                        4)))
-                        startButton.perform(click())
-                    } catch (ignore: Exception) {
-                        startButton = onView(allOf<View>(withId(R.id.buttonStart), withText("Start"),
-                                childAtPosition(
-                                        childAtPosition(
-                                                withId(R.id.viewPager),
-                                                1),
-                                        4)))
-                        startButton.perform(click())
-                    }
+                    listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+                            .append("\')\">").append(testList[i].name).append("</span></li>")
 
+                    currentActivity.finish()
+                    mActivityTestRule.finishActivity()
                 }
-
-                sleep(1000)
-
-                takeScreenshot(id, pages)
-
-                sleep(resultWaitDelay)
-
-                takeScreenshot(id, ++pages)
-
-                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],")
-
-                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
-                        .append("\')\">").append(testList[i].name).append("</span></li>")
-
-                currentActivity.finish()
-                mActivityTestRule.finishActivity()
             }
         }
+
 
         Log.d("Caddisfly", jsArrayString.toString())
         Log.d("Caddisfly", listString.toString())
@@ -379,7 +328,6 @@ class StriptestInstructions {
                         }
                     } catch (ignore: Exception) {
                     }
-
                 }
 
                 onView(withId(R.id.image_pageRight)).perform(click())

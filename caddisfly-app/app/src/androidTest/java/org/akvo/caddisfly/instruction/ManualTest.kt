@@ -48,7 +48,6 @@ import org.akvo.caddisfly.util.TestHelper.goToMainScreen
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
-import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
 import org.akvo.caddisfly.util.mDevice
@@ -185,15 +184,7 @@ class ManualTest {
 
         onView(withId(R.id.image_pageRight)).check(matches(not<View>(isDisplayed())))
 
-        val submitButton = onView(
-                allOf<View>(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        submitButton.perform(click())
+        TestHelper.clickSubmitButton()
 
         mIntentsRule.finishActivity()
 
@@ -298,15 +289,7 @@ class ManualTest {
 
         onView(withText(R.string.next)).perform(click())
 
-        val appCompatButton5 = onView(
-                allOf<View>(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        appCompatButton5.perform(click())
+        TestHelper.clickSubmitButton()
 
         mIntentsRule.finishActivity()
 
@@ -416,15 +399,7 @@ class ManualTest {
 
         sleep(500)
 
-        val submitButton = onView(
-                allOf<View>(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        submitButton.perform(click())
+        TestHelper.clickSubmitButton()
 
         mIntentsRule.finishActivity()
 
@@ -507,15 +482,7 @@ class ManualTest {
 
         onView(withText(R.string.next)).perform(click())
 
-        val submitButton = onView(
-                allOf<View>(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        submitButton.perform(click())
+        TestHelper.clickSubmitButton()
 
         mIntentsRule.finishActivity()
 

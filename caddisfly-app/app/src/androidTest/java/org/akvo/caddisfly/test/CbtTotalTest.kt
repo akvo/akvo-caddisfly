@@ -47,7 +47,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class CbtTest2 {
+class CbtTotalTest {
 
     companion object {
         @JvmStatic
@@ -79,7 +79,7 @@ class CbtTest2 {
     @Test
     fun testCbtResults() {
 
-        if (isLowMemoryDevice(Build.MODEL)) {
+        if (!isLowMemoryDevice(Build.MODEL)) {
             onView(allOf(withId(R.id.button_next), withText("Next"))).perform(click())
             onView(allOf(withId(R.id.button_ok), withText("Go to Akvo Flow"))).perform(click())
             sleep(2000)
@@ -197,15 +197,7 @@ class CbtTest2 {
         val result1 = getString(R.string.health_risk_category)
         val interval = getString(R.string.confidenceInterval)
 
-        val appCompatButton3 = onView(
-                allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        appCompatButton3.perform(click())
+        TestHelper.clickSubmitButton()
 
         sleep(1000)
 
@@ -217,7 +209,7 @@ class CbtTest2 {
     @Test
     fun testCbtTcResults() {
 
-        if (isLowMemoryDevice(Build.MODEL)) {
+        if (!isLowMemoryDevice(Build.MODEL)) {
             onView(allOf(withId(R.id.button_next), withText("Next"))).perform(click())
             onView(allOf(withId(R.id.button_ok), withText("Go to Akvo Flow"))).perform(click())
             sleep(2000)
@@ -337,15 +329,7 @@ class CbtTest2 {
         val result1 = getString(R.string.health_risk_category)
         val interval = getString(R.string.confidenceInterval)
 
-        val appCompatButton3 = onView(
-                allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.viewPager),
-                                        1),
-                                2),
-                        isDisplayed()))
-        appCompatButton3.perform(click())
+        TestHelper.clickSubmitButton()
 
         sleep(1000)
 

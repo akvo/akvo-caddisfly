@@ -32,11 +32,11 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
+import org.akvo.caddisfly.common.AppConfig
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
-import org.akvo.caddisfly.util.TestHelper.currentHashMap
 import org.akvo.caddisfly.util.TestHelper.goToMainScreen
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
@@ -79,19 +79,21 @@ class SensorTest {
     @RequiresDevice
     fun eCTest() {
 
-        onView(allOf<View>(withId(R.id.textToolbarTitle), withText(R.string.selectTest))).check(matches(isDisplayed()))
+        gotoSurveyForm()
 
-        val relativeLayout = onView(
-                allOf<View>(childAtPosition(
-                        withId(R.id.list_types),
-                        0),
-                        isDisplayed()))
+        TestUtil.nextSurveyPage("Sensor")
 
-        relativeLayout.perform(click())
+        clickExternalSourceButton(1)
 
-        SystemClock.sleep(7000)
+        SystemClock.sleep(6000)
 
-        if (TestUtil.isEmulator) {
+        onView(allOf<View>(withId(R.id.textToolbarTitle), withText("Soil - Moisture"))).check(matches(isDisplayed()))
+
+        onView(withText("Next")).perform(click())
+
+        onView(allOf<View>(withId(R.id.textTitle), withText("Soil - Moisture"))).check(matches(isDisplayed()))
+
+        if (TestUtil.isEmulator || AppConfig.NO_SENSOR_CONNECTED) {
             return
         }
 
@@ -179,15 +181,19 @@ class SensorTest {
 
         gotoSurveyForm()
 
-        TestUtil.nextSurveyPage("Sensors")
+        TestUtil.nextSurveyPage("Sensor")
 
-        clickExternalSourceButton("useExternalSource")
+        clickExternalSourceButton(2)
 
-        SystemClock.sleep(6000)
+        SystemClock.sleep(1000)
+
+        onView(allOf<View>(withId(R.id.textToolbarTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
+
+        onView(withText("Next")).perform(click())
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator) {
+        if (TestUtil.isEmulator || AppConfig.NO_SENSOR_CONNECTED) {
 
             mDevice.pressBack()
 
@@ -214,9 +220,9 @@ class SensorTest {
 
         gotoSurveyForm()
 
-        TestUtil.nextSurveyPage("Sensors")
+        TestUtil.nextSurveyPage("Sensor")
 
-        clickExternalSourceButton(0)
+        clickExternalSourceButton(2)
 
         onView(withText("Next")).perform(click())
 
@@ -226,7 +232,7 @@ class SensorTest {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator) {
+        if (TestUtil.isEmulator || AppConfig.NO_SENSOR_CONNECTED) {
             return
         }
 
@@ -238,7 +244,7 @@ class SensorTest {
 
         onView(withId(R.id.buttonSubmitResult)).perform(click())
 
-        clickExternalSourceButton(1)
+        clickExternalSourceButton(0)
 
         SystemClock.sleep(12000)
 
@@ -254,7 +260,7 @@ class SensorTest {
 
         onView(withId(R.id.buttonSubmitResult)).perform(click())
 
-        clickExternalSourceButton(2)
+        clickExternalSourceButton(1)
 
         SystemClock.sleep(12000)
 
@@ -276,15 +282,19 @@ class SensorTest {
     @RequiresDevice
     fun testEC() {
 
-        goToMainScreen()
+        gotoSurveyForm()
 
-        mDevice.waitForWindowUpdate("", 2000)
+        TestUtil.nextSurveyPage("Sensor")
 
-        onView(withText(R.string.sensors)).perform(click())
+        clickExternalSourceButton(2)
 
-        onView(withText(currentHashMap["electricalConductivity"])).perform(click())
+        onView(withText("Next")).perform(click())
 
-        onView(withText(R.string.electricalConductivity)).check(matches(isDisplayed()))
+        SystemClock.sleep(12000)
+
+        onView(allOf<View>(withId(R.id.textToolbarTitle), withText("Sensor"))).check(matches(isDisplayed()))
+
+        onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
         mDevice.waitForWindowUpdate("", 2000)
 
@@ -296,6 +306,5 @@ class SensorTest {
 
         Espresso.pressBack()
 
-        Espresso.pressBack()
     }
 }
