@@ -69,6 +69,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:text="@string/software_incorporates_material" />
 
             <TextView
@@ -83,7 +86,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:layoutDirection="ltr"
                 android:lineSpacingMultiplier="1.5"
                 android:tag="link"
@@ -95,17 +98,20 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"
                 android:text="@string/cca_share_license"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layoutDirection="ltr"
                 android:lineSpacingMultiplier="1.5"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:tag="link"
                 android:text="@string/lovibond_software"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -115,17 +121,19 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:text="@string/cca_license"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layoutDirection="ltr"
                 android:lineSpacingMultiplier="1.5"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:tag="link"
                 android:text="@string/cca_software"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -135,17 +143,19 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:text="@string/eclipse_public_license"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layoutDirection="ltr"
                 android:lineSpacingMultiplier="1.5"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:tag="link"
                 android:text="@string/eclipse_software"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -155,17 +165,19 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:text="@string/mit_license"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:layoutDirection="ltr"
                 android:lineSpacingMultiplier="1.5"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
                 android:tag="link"
                 android:text="@string/mit_software"
                 android:textAppearance="?android:attr/textAppearanceSmall"

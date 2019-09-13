@@ -32,6 +32,11 @@ public final class AppConfig {
     public static final boolean IS_TEST_MODE = false;
 
     /**
+     * Do not run sensor tests if no sensors connected
+     */
+    public static final boolean SENSOR_NOT_CONNECTED = false;
+
+    /**
      * Stop animations only for running Espresso UI tests
      */
     public static final boolean STOP_ANIMATIONS = false;
@@ -62,7 +67,7 @@ public final class AppConfig {
      */
     public static final boolean APP_EXPIRY = false;
     public static final int APP_EXPIRY_DAY = 9;
-    public static final int APP_EXPIRY_MONTH = 9;
+    public static final int APP_EXPIRY_MONTH = 10;
     public static final int APP_EXPIRY_YEAR = 2019;
 
     /**

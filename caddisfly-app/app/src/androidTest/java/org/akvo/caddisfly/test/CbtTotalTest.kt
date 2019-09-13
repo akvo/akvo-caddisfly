@@ -19,7 +19,7 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.ui.MainActivity
-import org.akvo.caddisfly.util.TestHelper
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.currentActivity
@@ -33,9 +33,6 @@ import org.akvo.caddisfly.util.TestUtil.goBack
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
 import org.akvo.caddisfly.util.TestUtil.prevPage
-import org.akvo.caddisfly.util.isLowMemoryDevice
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.sleep
 import org.hamcrest.Matchers.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -45,9 +42,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class CbtTotalTest {
+class CbtTotalTest : BaseTest() {
 
     companion object {
         @JvmStatic
@@ -71,7 +69,8 @@ class CbtTotalTest {
                     "android.permission.WRITE_EXTERNAL_STORAGE")
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         loadData(mActivityTestRule.activity, mCurrentLanguage)
         clearPreferences(mActivityTestRule)
     }
@@ -79,7 +78,7 @@ class CbtTotalTest {
     @Test
     fun testCbtResults() {
 
-        if (!isLowMemoryDevice(Build.MODEL)) {
+        if (!skipOpeningExternalApp(Build.MODEL)) {
             onView(allOf(withId(R.id.button_next), withText("Next"))).perform(click())
             onView(allOf(withId(R.id.button_ok), withText("Go to Akvo Flow"))).perform(click())
             sleep(2000)
@@ -209,7 +208,7 @@ class CbtTotalTest {
     @Test
     fun testCbtTcResults() {
 
-        if (!isLowMemoryDevice(Build.MODEL)) {
+        if (!skipOpeningExternalApp(Build.MODEL)) {
             onView(allOf(withId(R.id.button_next), withText("Next"))).perform(click())
             onView(allOf(withId(R.id.button_ok), withText("Go to Akvo Flow"))).perform(click())
             sleep(2000)

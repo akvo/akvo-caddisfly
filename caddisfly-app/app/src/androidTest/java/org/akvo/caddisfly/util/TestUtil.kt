@@ -44,6 +44,11 @@ import org.hamcrest.Matchers.allOf
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.core.IsInstanceOf
 
+
+@Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.CLASS)
+annotation class RequiresExternalApp
+
 fun findButtonInScrollable(name: String) {
     val listView = UiScrollable(UiSelector().className(ScrollView::class.java.name))
     listView.maxSearchSwipes = 10

@@ -44,8 +44,8 @@ import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.ui.TestActivity
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.DrawableMatcher.Companion.hasDrawable
-import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
@@ -58,8 +58,6 @@ import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.akvo.caddisfly.util.TestUtil.clickPercent
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.sleep
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
@@ -71,9 +69,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class CbtInstructions {
+class CbtInstructions : BaseTest() {
 
     private val jsArrayString = StringBuilder()
     private val listString = StringBuilder()
@@ -106,7 +105,8 @@ class CbtInstructions {
                     "android.permission.WRITE_EXTERNAL_STORAGE")
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         loadData(mActivityTestRule.activity, mCurrentLanguage)
         clearPreferences(mActivityTestRule)
         scale = mActivityTestRule.activity.resources.displayMetrics.density

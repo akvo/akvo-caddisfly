@@ -28,6 +28,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Environment
 import android.preference.PreferenceManager
+import android.provider.Settings
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.test.espresso.Espresso
@@ -36,6 +37,7 @@ import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
@@ -54,15 +56,27 @@ import java.util.*
 
 lateinit var mDevice: UiDevice
 
-fun isPatchAvailable(test: String = ""): Boolean {
-    return if (test == "Mercury") {
+fun isPatchAvailable(id: String = ""): Boolean {
+    return if (("aa4a4e3100c9").contains(id)) {
         ("ASUS_Z01BDB SM-J500F").contains(Build.MODEL)
     } else {
         ("SM-J500F").contains(Build.MODEL)
     }
 }
 
-fun isLowMemoryDevice(model: String): Boolean {
+fun skipOpeningExternalApp(model: String): Boolean {
+
+    try {
+        val testLabSetting: String = Settings.System.getString(
+                InstrumentationRegistry.getInstrumentation()
+                        .targetContext.contentResolver, "firebase.test.lab")
+
+        if ("true" == testLabSetting) {
+            return true
+        }
+    } catch (e: IllegalStateException) {
+    }
+
     return model.contains("ASUS_Z007")
 }
 

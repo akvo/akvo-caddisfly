@@ -38,8 +38,8 @@ import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.ui.MainActivity
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.DrawableMatcher.Companion.hasDrawable
-import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.goToMainScreen
@@ -50,8 +50,6 @@ import org.akvo.caddisfly.util.TestHelper.takeScreenshot
 import org.akvo.caddisfly.util.TestUtil.clickPercent
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.sleep
 import org.akvo.caddisfly.viewmodel.TestListViewModel
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
@@ -60,9 +58,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class ManualInstructions {
+class ManualInstructions : BaseTest() {
 
     private val jsArrayString = StringBuilder()
 
@@ -82,7 +81,8 @@ class ManualInstructions {
 
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         loadData(mActivityTestRule.activity, mCurrentLanguage)
         clearPreferences(mActivityTestRule)
     }

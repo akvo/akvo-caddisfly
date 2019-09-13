@@ -37,17 +37,14 @@ import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.TestActivity
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.DrawableMatcher.Companion.hasDrawable
-import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
-import org.akvo.caddisfly.util.TestUtil
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.sleep
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
@@ -55,8 +52,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
-class SensorInstructions {
+class SensorInstructions : BaseTest() {
     companion object {
         @JvmStatic
         @BeforeClass
@@ -72,7 +70,8 @@ class SensorInstructions {
     var mActivityTestRule = ActivityTestRule(TestActivity::class.java, false, false)
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         mActivityTestRule.launchActivity(Intent())
         loadData(mActivityTestRule.activity, mCurrentLanguage)
         clearPreferences(mActivityTestRule)

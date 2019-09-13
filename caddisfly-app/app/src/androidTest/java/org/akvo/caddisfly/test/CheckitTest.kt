@@ -42,16 +42,13 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.ui.MainActivity
-import org.akvo.caddisfly.util.TestHelper
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.getString
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
-import org.akvo.caddisfly.util.TestUtil
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.sleep
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.allOf
 import org.junit.Assert.assertNotNull
@@ -61,9 +58,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class CheckitTest {
+class CheckitTest : BaseTest() {
 
     companion object {
         @JvmStatic
@@ -80,7 +78,8 @@ class CheckitTest {
     var mIntentsRule = IntentsTestRule(MainActivity::class.java)
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         loadData(mIntentsRule.activity, mCurrentLanguage)
         clearPreferences(mIntentsRule)
         stubCameraIntent()

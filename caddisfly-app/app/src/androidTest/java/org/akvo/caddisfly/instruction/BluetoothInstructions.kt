@@ -36,7 +36,7 @@ import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.MainActivity
-import org.akvo.caddisfly.util.TestHelper
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.activateTestMode
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
@@ -44,9 +44,6 @@ import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
-import org.akvo.caddisfly.util.TestUtil
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.sleep
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
@@ -55,8 +52,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
+@RequiresExternalApp
 @LargeTest
-class BluetoothInstructions {
+class BluetoothInstructions : BaseTest() {
     private val jsArrayString = StringBuilder()
 
     companion object {
@@ -74,7 +72,8 @@ class BluetoothInstructions {
     var mActivityRule = ActivityTestRule(MainActivity::class.java)
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         loadData(mActivityRule.activity, mCurrentLanguage)
         clearPreferences(mActivityRule)
     }

@@ -34,16 +34,14 @@ import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConfig
 import org.akvo.caddisfly.ui.MainActivity
-import org.akvo.caddisfly.util.TestHelper
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.goToMainScreen
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
-import org.akvo.caddisfly.util.TestUtil
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
-import org.akvo.caddisfly.util.mDevice
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.Before
@@ -52,8 +50,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
-class SensorTest {
+class SensorTest : BaseTest() {
 
     companion object {
         @JvmStatic
@@ -70,7 +69,8 @@ class SensorTest {
     var mActivityRule = ActivityTestRule(MainActivity::class.java)
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         loadData(mActivityRule.activity, mCurrentLanguage)
         clearPreferences(mActivityRule)
     }
@@ -93,7 +93,7 @@ class SensorTest {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Soil - Moisture"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.NO_SENSOR_CONNECTED) {
+        if (TestUtil.isEmulator || AppConfig.SENSOR_NOT_CONNECTED) {
             return
         }
 
@@ -193,7 +193,7 @@ class SensorTest {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.NO_SENSOR_CONNECTED) {
+        if (TestUtil.isEmulator || AppConfig.SENSOR_NOT_CONNECTED) {
 
             mDevice.pressBack()
 
@@ -232,7 +232,7 @@ class SensorTest {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.NO_SENSOR_CONNECTED) {
+        if (TestUtil.isEmulator || AppConfig.SENSOR_NOT_CONNECTED) {
             return
         }
 

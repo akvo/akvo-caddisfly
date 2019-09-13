@@ -24,9 +24,8 @@ import org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
-import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
-import org.akvo.caddisfly.util.isLowMemoryDevice
 import org.akvo.caddisfly.util.mDevice
+import org.akvo.caddisfly.util.skipOpeningExternalApp
 import org.akvo.caddisfly.util.sleep
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
@@ -44,10 +43,7 @@ class IntroTest {
         @JvmStatic
         @BeforeClass
         fun initialize() {
-            if (TestHelper.isDeviceInitialized()) {
-                nextSurveyPage("Fluoride")
-                mDevice.pressBack()
-            } else {
+            if (!TestHelper.isDeviceInitialized()) {
                 mDevice = UiDevice.getInstance(getInstrumentation())
             }
         }
@@ -122,9 +118,11 @@ class IntroTest {
 
         pressBack()
 
-        onView(withText(R.string.go_to_external_app)).perform(click())
+        onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 
-        if (!isLowMemoryDevice(Build.MODEL)) {
+        if (!skipOpeningExternalApp(Build.MODEL)) {
+
+            onView(withText(R.string.go_to_external_app)).perform(click())
 
             sleep(500)
 
@@ -151,7 +149,7 @@ class IntroTest {
 
         onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 
-        if (!isLowMemoryDevice(Build.MODEL)) {
+        if (!skipOpeningExternalApp(Build.MODEL)) {
 
             onView(withText(R.string.go_to_external_app)).perform(click())
 

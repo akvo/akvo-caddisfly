@@ -14,7 +14,7 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.*
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.ui.MainActivity
-import org.akvo.caddisfly.util.TestHelper
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.activateTestMode
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
@@ -23,9 +23,6 @@ import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
-import org.akvo.caddisfly.util.isPatchAvailable
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.sleep
 import org.hamcrest.Matchers
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -33,7 +30,8 @@ import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 
-class StriptestTest {
+@RequiresExternalApp
+class StriptestTest : BaseTest() {
 
     companion object {
 
@@ -55,7 +53,8 @@ class StriptestTest {
     var mActivityRule = ActivityTestRule(MainActivity::class.java)
 
     @Before
-    fun setUp() {
+    override fun setUp() {
+        super.setUp()
         loadData(mActivityRule.activity, mCurrentLanguage)
         clearPreferences(mActivityRule)
         activateTestMode()
@@ -377,7 +376,7 @@ class StriptestTest {
 
         TestHelper.clickStartButton()
 
-        if (isPatchAvailable("Mercury")) {
+        if (isPatchAvailable("aa4a4e3100c9")) {
             sleep(35000)
             onView(withText(R.string.result)).check(matches(isDisplayed()))
             onView(withText("Mercury")).check(matches(isDisplayed()))
@@ -395,7 +394,7 @@ class StriptestTest {
 
         sleep(2000)
 
-        if (isPatchAvailable("Mercury")) {
+        if (isPatchAvailable("aa4a4e3100c9")) {
             mDevice.swipe(200, 750, 200, 600, 4)
             assertNotNull(mDevice.findObject(By.text("Mercury: 5.0 ug/l")))
         } else {
