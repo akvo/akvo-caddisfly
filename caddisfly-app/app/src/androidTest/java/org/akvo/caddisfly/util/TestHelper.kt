@@ -56,7 +56,7 @@ import java.util.*
 
 lateinit var mDevice: UiDevice
 
-fun isPatchAvailable(id: String = ""): Boolean {
+fun isPatchAvailable(id: String = "."): Boolean {
     return if (("aa4a4e3100c9").contains(id)) {
         ("ASUS_Z01BDB SM-J500F").contains(Build.MODEL)
     } else {

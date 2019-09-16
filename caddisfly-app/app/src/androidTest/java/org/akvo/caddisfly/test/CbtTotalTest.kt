@@ -208,6 +208,8 @@ class CbtTotalTest : BaseTest() {
     @Test
     fun testCbtTcResults() {
 
+        sleep(2000)
+
         if (!skipOpeningExternalApp(Build.MODEL)) {
             onView(allOf(withId(R.id.button_next), withText("Next"))).perform(click())
             onView(allOf(withId(R.id.button_ok), withText("Go to Akvo Flow"))).perform(click())

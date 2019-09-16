@@ -3,38 +3,31 @@
   "displayColors": [
     {
       "threshold": 0,
-      "background1": "#54b71e",
-      "background2": "#5ead14"
+      "background1": "#54b71e"
     },
     {
       "threshold": 30,
-      "background1": "#8ea314",
-      "background2": "#969914"
+      "background1": "#8ea314"
     },
     {
       "threshold": 110,
-      "background1": "#b0ad1e",
-      "background2": "#baa314"
+      "background1": "#b0ad1e"
     },
     {
       "threshold": 300,
-      "background1": "#ba8510",
-      "background2": "#c48f0a"
+      "background1": "#ff055d"
     },
     {
       "threshold": 500,
-      "background1": "#be4606",
-      "background2": "#b43f1e"
+      "background1": "#ff033e"
     },
     {
       "threshold": 1000,
-      "background1": "#d21717",
-      "background2": "#bf0303"
+      "background1": "#ff011f"
     },
     {
       "threshold": 5000,
-      "background1": "#d21717",
-      "background2": "#bf0303"
+      "background1": "#ff0000"
     }
   ],
   "rows": [

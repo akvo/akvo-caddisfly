@@ -98,6 +98,10 @@ class IntroTest {
 
         navigateUp()
 
+        onView(withText(R.string.appName)).check(matches(isDisplayed()))
+
+        onView(withText(R.string.next)).perform(click())
+
         onView(withText(R.string.connect_with_app)).check(matches(isDisplayed()))
 
         onView(withText(R.string.app_is_integrated))
@@ -117,6 +121,8 @@ class IntroTest {
         leaveDiagnosticMode()
 
         pressBack()
+
+        onView(withText(R.string.next)).perform(click())
 
         onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 

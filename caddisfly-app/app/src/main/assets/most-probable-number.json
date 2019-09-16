@@ -11,19 +11,19 @@
     },
     {
       "threshold": 10,
-      "background1": "#b0ad1e"
+      "background1": "#ff055d"
     },
     {
       "threshold": 50,
-      "background1": "#ba8510"
+      "background1": "#ff033e"
     },
     {
       "threshold": 100,
-      "background1": "#be4606"
+      "background1": "#ff011f"
     },
     {
       "threshold": 9000,
-      "background1": "#d21717"
+      "background1": "#ff0000"
     }
   ],
   "rows": [
