@@ -288,7 +288,7 @@ public class SwatchSelectTestActivity extends BaseActivity
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
         private boolean showOk;
-        private LinearLayout layout;
+        private LinearLayout resultLayout;
         private ViewGroup viewRoot;
 
         /**
@@ -327,7 +327,7 @@ public class SwatchSelectTestActivity extends BaseActivity
                 view.findViewById(R.id.buttonSubmit).setVisibility(View.VISIBLE);
             }
 
-            layout = view.findViewById(R.id.layout_results);
+            resultLayout = view.findViewById(R.id.layout_results);
 
             return view;
         }
@@ -338,7 +338,7 @@ public class SwatchSelectTestActivity extends BaseActivity
                 LayoutInflater inflater = (LayoutInflater) getActivity()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                layout.removeAllViews();
+                resultLayout.removeAllViews();
 
                 SparseArray<String> results = new SparseArray<>();
 
@@ -357,10 +357,10 @@ public class SwatchSelectTestActivity extends BaseActivity
 
                     TextView textResult = itemResult.findViewById(R.id.text_result);
                     textResult.setText(valueString);
-                    layout.addView(itemResult);
+                    resultLayout.addView(itemResult);
                 }
 
-                layout.setVisibility(View.VISIBLE);
+                resultLayout.setVisibility(View.VISIBLE);
             }
         }
     }

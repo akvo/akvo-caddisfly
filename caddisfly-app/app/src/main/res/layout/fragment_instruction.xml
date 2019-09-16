@@ -38,16 +38,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:orientation="vertical"
-            android:paddingBottom="8dp"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/buttonsLayout"
-            android:layout_below="@id/layout_results"
-            android:layout_alignParentTop="true">
+            android:layout_below="@id/layout_results">
 
             <LinearLayout
                 style="?android:attr/textAppearanceLarge"

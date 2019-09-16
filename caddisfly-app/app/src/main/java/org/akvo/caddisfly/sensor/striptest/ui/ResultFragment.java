@@ -86,7 +86,7 @@ public class ResultFragment extends BaseFragment {
     private Button buttonSave;
     private Bitmap totalImage;
     private String totalImageUrl;
-    private LinearLayout layout;
+    private LinearLayout resultLayout;
     private TestInfo testInfo;
 
 
@@ -103,15 +103,15 @@ public class ResultFragment extends BaseFragment {
     void setDecodeData(DecodeData decodeData) {
         mDecodeData = decodeData;
 
-        if (layout != null) {
-            layout.removeAllViews();
+        if (resultLayout != null) {
+            resultLayout.removeAllViews();
         }
 
         if (getArguments() != null) {
             testInfo = getArguments().getParcelable(ARG_TEST_INFO);
             if (testInfo != null) {
                 List<PatchResult> patchResultList = computeResults(testInfo);
-                if (layout != null) {
+                if (resultLayout != null) {
                     showResults(patchResultList, testInfo);
                 }
             }
@@ -123,9 +123,8 @@ public class ResultFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_strip_result, container, false);
-        layout = rootView.findViewById(R.id.layout_results);
+        resultLayout = rootView.findViewById(R.id.layout_results);
 
         buttonSave = rootView.findViewById(R.id.buttonSubmitResult);
         buttonSave.setOnClickListener(v -> {
@@ -354,7 +353,7 @@ public class ResultFragment extends BaseFragment {
             } else {
                 textResult.setText(valueString);
             }
-            layout.addView(itemResult);
+            resultLayout.addView(itemResult);
         }
     }
 

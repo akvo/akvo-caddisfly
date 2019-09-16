@@ -327,7 +327,7 @@ public class StripTestActivity extends BaseActivity {
 
     private void showWaitingView() {
         pagerLayout.setVisibility(View.VISIBLE);
-        resultLayout.setVisibility(View.GONE);
+        resultLayout.setVisibility(View.INVISIBLE);
         showSkipMenu = false;
         invalidateOptionsMenu();
     }
@@ -373,7 +373,7 @@ public class StripTestActivity extends BaseActivity {
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
         private boolean showOk;
-        private LinearLayout layout;
+        private LinearLayout resultLayout;
         private ViewGroup viewRoot;
 
         /**
@@ -412,7 +412,7 @@ public class StripTestActivity extends BaseActivity {
                 view.findViewById(R.id.buttonStart).setVisibility(View.VISIBLE);
             }
 
-            layout = view.findViewById(R.id.layout_results);
+            resultLayout = view.findViewById(R.id.layout_results);
 
             return view;
         }
@@ -423,7 +423,7 @@ public class StripTestActivity extends BaseActivity {
                 LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(getActivity())
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                layout.removeAllViews();
+                resultLayout.removeAllViews();
 
                 SparseArray<String> results = new SparseArray<>();
 
@@ -442,10 +442,10 @@ public class StripTestActivity extends BaseActivity {
 
                     TextView textResult = itemResult.findViewById(R.id.text_result);
                     textResult.setText(valueString);
-                    layout.addView(itemResult);
+                    resultLayout.addView(itemResult);
                 }
 
-                layout.setVisibility(View.VISIBLE);
+                resultLayout.setVisibility(View.VISIBLE);
             }
         }
     }

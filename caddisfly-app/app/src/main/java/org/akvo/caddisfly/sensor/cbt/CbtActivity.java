@@ -545,7 +545,7 @@ public class CbtActivity extends BaseActivity
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
         private ButtonType showButton;
-        private LinearLayout layout;
+        private LinearLayout resultLayout;
         private ViewGroup viewRoot;
 
         /**
@@ -594,7 +594,7 @@ public class CbtActivity extends BaseActivity
                     break;
             }
 
-            layout = view.findViewById(R.id.layout_results);
+            resultLayout = view.findViewById(R.id.layout_results);
 
             return view;
         }
@@ -605,7 +605,7 @@ public class CbtActivity extends BaseActivity
                 LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(getActivity())
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-                layout.removeAllViews();
+                resultLayout.removeAllViews();
 
                 SparseArray<String> results = new SparseArray<>();
 
@@ -624,10 +624,10 @@ public class CbtActivity extends BaseActivity
 
                     TextView textResult = itemResult.findViewById(R.id.text_result);
                     textResult.setText(valueString);
-                    layout.addView(itemResult);
+                    resultLayout.addView(itemResult);
                 }
 
-                layout.setVisibility(View.VISIBLE);
+                resultLayout.setVisibility(View.VISIBLE);
             }
         }
     }
