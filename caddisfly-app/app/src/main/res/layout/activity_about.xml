@@ -146,6 +146,7 @@
                 android:layout_alignBottom="@+id/textDiagnostics"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="0dp"
+                android:contentDescription="@string/disableDiagnostics"
                 android:onClick="disableDiagnosticsMode"
                 android:src="@drawable/ic_revert_24dp"
                 app:backgroundTint="@color/diagnostic"

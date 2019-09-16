@@ -28,16 +28,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.databinding.ActivityAboutBinding;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.preference.SettingsActivity;
+import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
-
-import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProviders;
 
 import static org.akvo.caddisfly.common.AppConfig.TERMS_OF_USE_URL;
 
@@ -49,18 +50,14 @@ public class AboutActivity extends BaseActivity {
     private static final int CHANGE_MODE_MIN_CLICKS = 10;
 
     private int clickCount = 0;
-
-    NoticesDialogFragment dialog;
+    private ActivityAboutBinding b;
+    private NoticesDialogFragment dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActivityAboutBinding b =
-                DataBindingUtil.setContentView(this, R.layout.activity_about);
-
-        b.textVersion.setText(CaddisflyApp.getAppVersion(AppPreferences.isDiagnosticMode()));
-
+        b = DataBindingUtil.setContentView(this, R.layout.activity_about);
     }
 
     @Override
@@ -126,7 +123,14 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (PreferencesUtil.getBoolean(this, R.string.refreshAboutKey, false)) {
+            PreferencesUtil.removeKey(this, R.string.refreshAboutKey);
+            this.recreate();
+            return;
+        }
+
         switchLayoutForDiagnosticOrUserMode();
+        b.textVersion.setText(CaddisflyApp.getAppVersion(AppPreferences.isDiagnosticMode()));
     }
 
     /**
@@ -141,6 +145,7 @@ public class AboutActivity extends BaseActivity {
                 findViewById(R.id.layoutDiagnostics).setVisibility(View.GONE);
             }
         }
+        b.textVersion.setText(CaddisflyApp.getAppVersion(AppPreferences.isDiagnosticMode()));
     }
 
     public void onSettingsClick(@SuppressWarnings("unused") MenuItem item) {
@@ -157,7 +162,7 @@ public class AboutActivity extends BaseActivity {
     }
 
     public void onHomeClick(View view) {
-        if (dialog!= null) {
+        if (dialog != null) {
             dialog.dismiss();
         }
     }

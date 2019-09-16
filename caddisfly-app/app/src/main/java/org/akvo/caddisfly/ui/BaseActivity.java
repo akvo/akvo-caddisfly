@@ -31,14 +31,14 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
 
 import java.util.Locale;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 
 /**
  * The base activity with common functions.
@@ -61,12 +61,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         }
-
-        TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true);
-        int windowBackground = typedValue.data;
-        getWindow().setBackgroundDrawable(new ColorDrawable(windowBackground));
-
     }
 
     @Override
@@ -93,7 +87,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
         }
-
         setTitle(mTitle);
     }
 

@@ -66,8 +66,7 @@
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
             android:label="@string/appName"
-            android:screenOrientation="nosensor"
-            android:theme="@style/AppTheme.Launcher">
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -90,7 +89,7 @@
             android:screenOrientation="nosensor" />
         <activity
             android:name=".preference.SettingsActivity"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName=".ui.AboutActivity"
             android:screenOrientation="nosensor" />
         <activity
             android:name=".ui.AboutActivity"

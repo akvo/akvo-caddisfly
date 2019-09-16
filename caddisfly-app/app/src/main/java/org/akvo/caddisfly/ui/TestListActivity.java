@@ -85,7 +85,7 @@ public class TestListActivity extends BaseActivity
                     .setAction("SETTINGS", view -> ApiUtil.startInstalledAppDetailsActivity(this));
 
             TypedValue typedValue = new TypedValue();
-            getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+            getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
 
             snackbar.setActionTextColor(typedValue.data);
             View snackView = snackbar.getView();

@@ -17,19 +17,21 @@
   ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<menu xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <item
-        android:title=""
+        android:contentDescription="@string/settings"
         android:icon="@drawable/ic_revert_24dp"
         android:onClick="onDisableDiagnostics"
+        android:title=""
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
     <item
-        android:title=""
+        android:contentDescription="@string/disableDiagnostics"
         android:enabled="false"
         android:icon="@drawable/ic_settings_disabled_24dp"
         android:onClick="onDisableDiagnostics"
+        android:title=""
         app:showAsAction="always" />
 </menu>

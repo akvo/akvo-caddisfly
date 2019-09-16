@@ -30,6 +30,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.ListViewUtil;
@@ -37,7 +39,6 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Calendar;
 
-import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 /**
@@ -96,7 +97,7 @@ public class TestingPreferenceFragment extends PreferenceFragment {
         if (AppPreferences.isTestMode()) {
             view.setBackgroundColor(Color.rgb(255, 165, 0));
         } else {
-            view.setBackgroundColor(Color.rgb(255, 240, 220));
+            view.setBackgroundColor(Color.rgb(255, 255, 255));
         }
     }
 

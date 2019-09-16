@@ -48,8 +48,8 @@
     <string name="diagnosticModeKey">diagnosticMode</string>
     <string name="showDebugMessagesKey">showDebugMessages</string>
     <string name="soundOnKey">soundOn</string>
-    <string name="themeChangedKey">themeChanged</string>
     <string name="refreshKey">refresh</string>
+    <string name="refreshAboutKey">refreshAbout</string>
     <string name="testModeOnKey">testModeOn</string>
 
     <string name="ignoreTimeDelaysKey">ignoreTimeDelays</string>
@@ -66,6 +66,7 @@
     <string name="download_experimental_tests">Download experimental tests</string>
     <string name="testModeOn">Test Mode</string>
     <string name="diagnostics_options">Diagnostic Options</string>
+    <string name="disableDiagnostics">Close diagnostics mode</string>t
 
     <!--Diagnostic Mode: Messages -->
     <string name="diagnosticModeEnabled">Diagnostic mode enabled</string>

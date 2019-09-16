@@ -1965,7 +1965,7 @@
         },
         {
           "section": [
-            "dip_strip_into_water_and_remove ",
+            "dip_strip_into_water_and_remove",
             "do_not_shake_excess_water",
             "image:dip_sample_remove"
           ]
@@ -7932,7 +7932,7 @@
         {
           "section": [
             "tear_perforated_seam. rub_sides_of_compartment",
-            "slowly_pour_sample_into_bag. fill_evenly_across_bag. ",
+            "slowly_pour_sample_into_bag. fill_evenly_across_bag",
             "image:4"
           ]
         },
@@ -8069,7 +8069,7 @@
           "section": [
             "label_compartment_bag",
             "tear_perforated_seam. rub_sides_of_compartment",
-            "slowly_pour_sample_into_bag. fill_evenly_across_bag.",
+            "slowly_pour_sample_into_bag. fill_evenly_across_bag",
             "image:4"
           ]
         },

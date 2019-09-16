@@ -20,8 +20,6 @@
 package org.akvo.caddisfly.instruction
 
 
-import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.test.espresso.Espresso.onView
@@ -37,8 +35,6 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig
-import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
@@ -269,6 +265,8 @@ class CbtInstructions : BaseTest() {
     fun testInstructionsCbt() {
 
         val testConfigRepository = TestConfigRepository()
+        var buttonIndex = 0
+        var tabName = "Coliforms"
 
         val testList = testConfigRepository.getTests(TestType.CBT)
         for (i in 0 until TestConstants.CBT_TESTS_COUNT) {
@@ -280,31 +278,52 @@ class CbtInstructions : BaseTest() {
             //            if (("bf80d7197176, ac22c9afa0ab").contains(id))
             //
             run {
-                val intent = Intent()
-                intent.type = "text/plain"
-                intent.action = AppConfig.EXTERNAL_APP_ACTION
-                val data = Bundle()
-                data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, mCurrentLanguage)
-                intent.putExtras(data)
+                when {
+                    "ed4db0fd3386".contains(id) -> {
+                        buttonIndex = 0
+                        tabName = "Coliforms"
+                    }
+                    "4bfd645c26cf".contains(id) -> {
+                        buttonIndex = 1
+                        tabName = "Coliforms"
+                    }
+                    "bf80d7197176".contains(id) -> {
+                        buttonIndex = 0
+                        tabName = "Coliforms2"
+                    }
+                    "ac22c9afa0ab".contains(id) -> {
+                        buttonIndex = 1
+                        tabName = "Coliforms2"
+                    }
+                }
 
-                mTestActivityRule.launchActivity(intent)
+                gotoSurveyForm()
+
+                nextSurveyPage(tabName)
+
+                clickExternalSourceButton(buttonIndex)
+
+                mDevice.waitForIdle()
+
+                sleep(1000)
 
                 val pages = navigateToCbtTest(id)
 
                 sleep(2000)
 
-                mTestActivityRule.launchActivity(intent)
+                gotoSurveyForm()
+
+                nextSurveyPage(tabName)
+
+                clickExternalSourceButton(buttonIndex)
+
+                mDevice.waitForIdle()
+
+                sleep(1000)
 
                 navigateToCbtTest2(id, pages)
 
                 sleep(1000)
-
-                //                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-                //                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
-                //                        .append("\')\">").append(testList.get(i).getName()).append("</span></li>");
-                //                TestHelper.getCurrentActivity().finish();
-                //                mTestActivityRule.finishActivity();
             }
         }
 
@@ -418,96 +437,14 @@ class CbtInstructions : BaseTest() {
 
                 TestHelper.clickSubmitButton()
 
-                sleep(300)
+                sleep(1000)
+
+                takeScreenshot(id, startIndex + i + 2)
+
                 break
             }
 
         }
         return pages + 1
     }
-
-
-    //    @Test
-    //    @RequiresDevice
-    //    public void testInstructionsAll() {
-    //
-    //        final TestListViewModel viewModel =
-    //                ViewModelProviders.of(mActivityTestRule.getActivity()).get(TestListViewModel.class);
-    //
-    //        List<TestInfo> testList = viewModel.getTests(TestType.CBT);
-    //
-    //        for (int i = 0; i < TestConstants.CBT_TESTS_COUNT; i++) {
-    //            TestInfo testInfo = testList.get(i);
-    //
-    //            String id = testInfo.getUuid();
-    //            id = id.substring(id.lastIndexOf("-") + 1);
-    //
-    //            int pages = navigateToTest(i, id);
-    //
-    //            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()));
-    //
-    //            onView(withText(testInfo.getName())).check(matches(isDisplayed()));
-    //
-    //            mDevice.pressBack();
-    //
-    //            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],");
-    //        }
-    //
-    //        mActivityTestRule.finishActivity();
-    //
-    //        Log.d("Caddisfly", jsArrayString.toString());
-    //        Log.d("Caddisfly", listString.toString());
-    //
-    //    }
-
-    //    private int navigateToTest(int index, String id) {
-    //
-    //        gotoSurveyForm();
-    //
-    //        TestUtil.nextSurveyPage("Coliforms");
-    //
-    //        clickExternalSourceButton(index);
-    //
-    //        mDevice.waitForIdle();
-    //
-    //        sleep(1000);
-    //
-    //        takeScreenshot(id, -1);
-    //
-    //        mDevice.waitForIdle();
-    //
-    //        onView(withText(R.string.prepare_sample)).perform(click());
-    //
-    //        int pages = 0;
-    //        for (int i = 0; i < 17; i++) {
-    //            try {
-    //                takeScreenshot(id, pages);
-    //
-    //                pages++;
-    //
-    //                try {
-    //                    onView(withId(R.id.button_phase_2)).perform(click());
-    //                    sleep(600);
-    //                    takeScreenshot(id, pages);
-    //                    pages++;
-    //                    sleep(600);
-    //                    mDevice.pressBack();
-    //                } catch (Exception ignore) {
-    //                }
-    //
-    //                onView(withId(R.id.image_pageRight)).perform(click());
-    //
-    //            } catch (Exception e) {
-    //                sleep(600);
-    //                Random random = new Random(Calendar.getInstance().getTimeInMillis());
-    //                if (random.nextBoolean()) {
-    //                    Espresso.pressBack();
-    //                } else {
-    //                    mDevice.pressBack();
-    //                }
-    //                break;
-    //            }
-    //        }
-    //        return pages;
-    //    }
 }

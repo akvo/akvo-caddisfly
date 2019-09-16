@@ -62,17 +62,9 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:clickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:text="@string/software_incorporates_material" />
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingEnd="@dimen/activity_horizontal_margin">
 
             <TextView
                 style="?android:textAppearanceSmall"
@@ -86,9 +78,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:layoutDirection="ltr"
                 android:lineSpacingMultiplier="1.5"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
                 android:tag="link"
                 android:text="@string/apache_software"
                 android:textAppearance="?android:attr/textAppearanceSmall"

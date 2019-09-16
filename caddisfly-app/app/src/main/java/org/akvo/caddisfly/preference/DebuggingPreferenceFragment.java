@@ -20,7 +20,6 @@
 package org.akvo.caddisfly.preference;
 
 import android.app.Fragment;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
@@ -28,10 +27,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.util.ListViewUtil;
-
-import androidx.annotation.NonNull;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,9 +47,7 @@ public class DebuggingPreferenceFragment extends PreferenceFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.card_row, container, false);
-        view.setBackgroundColor(Color.rgb(255, 240, 220));
-        return view;
+        return inflater.inflate(R.layout.card_row, container, false);
     }
 
 

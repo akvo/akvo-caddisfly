@@ -31,6 +31,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.AppConfig;
@@ -41,17 +50,9 @@ import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.util.AlertUtil;
 import org.akvo.caddisfly.util.AnimatedColor;
 import org.akvo.caddisfly.util.PreferencesUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends BaseActivity {
 
@@ -64,9 +65,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        CaddisflyApp.getApp().setAppLanguage(this, null, false, null);
-
         b = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        b.pageIndicator.setPageCount(INTRO_PAGE_COUNT);
 
         setTitle(R.string.appName);
 
@@ -79,13 +80,14 @@ public class MainActivity extends BaseActivity {
 
         hideActionBar();
 
-        (new Handler()).postDelayed(this::setUpViews, 10);
-
-        b.pageIndicator.setPageCount(INTRO_PAGE_COUNT);
-
         b.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                b.pageIndicator.setActiveIndex(position);
                 if (position == 1) {
                     b.buttonNext.setVisibility(View.GONE);
                     b.buttonOk.setVisibility(View.VISIBLE);
@@ -93,11 +95,6 @@ public class MainActivity extends BaseActivity {
                     b.buttonNext.setVisibility(View.VISIBLE);
                     b.buttonOk.setVisibility(View.GONE);
                 }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                b.pageIndicator.setActiveIndex(position);
             }
 
             @Override
@@ -110,25 +107,6 @@ public class MainActivity extends BaseActivity {
             final Intent intent = new Intent(getBaseContext(), AboutActivity.class);
             startActivity(intent);
         });
-    }
-
-    private void hideActionBar() {
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null) {
-            supportActionBar.hide();
-        }
-    }
-
-    private void setUpViews() {
-        IntroFragmentAdapter adapter = new IntroFragmentAdapter(
-                getSupportFragmentManager());
-        b.viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (AppPreferences.isDiagnosticMode()) {
                 statusBarColors = new AnimatedColor(
@@ -142,26 +120,45 @@ public class MainActivity extends BaseActivity {
             animateStatusBar();
         }
 
-        CaddisflyApp.getApp().setAppLanguage(this, null, false, refreshHandler);
+        (new Handler()).postDelayed(this::setUpViews, 10);
+    }
 
-        if (PreferencesUtil.getBoolean(this, R.string.themeChangedKey, false)) {
-            PreferencesUtil.setBoolean(this, R.string.themeChangedKey, false);
-            refreshHandler.sendEmptyMessage(0);
+    private void hideActionBar() {
+        ActionBar supportActionBar = getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.hide();
         }
     }
 
-    public void onSettingsClick(@SuppressWarnings("unused") MenuItem item) {
-        final Intent intent = new Intent(this, SettingsActivity.class);
-        startActivityForResult(intent, 100);
+    private void setUpViews() {
+        b.viewPager.setAdapter(new IntroFragmentAdapter(getSupportFragmentManager()));
+        b.pageIndicator.setActiveIndex(0);
+        if (b.viewPager.getCurrentItem() == 1) {
+            b.buttonNext.setVisibility(View.GONE);
+            b.buttonOk.setVisibility(View.VISIBLE);
+        } else {
+            b.buttonNext.setVisibility(View.VISIBLE);
+            b.buttonOk.setVisibility(View.GONE);
+        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && PreferencesUtil.getBoolean(this, R.string.refreshKey, false)) {
-            PreferencesUtil.setBoolean(this, R.string.refreshKey, false);
-            this.recreate();
+    protected void onResume() {
+        super.onResume();
+
+        CaddisflyApp.getApp().setAppLanguage(this, null, false, refreshHandler);
+
+        if (PreferencesUtil.getBoolean(this, R.string.refreshKey, false)) {
+            PreferencesUtil.removeKey(this, R.string.refreshKey);
+            refreshHandler.sendEmptyMessage(0);
+            return;
         }
+
+        (new Handler()).postDelayed(this::setUpViews, 300);
+    }
+
+    public void onSettingsClick(@SuppressWarnings("unused") MenuItem item) {
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     @Override
@@ -239,6 +236,15 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (b.viewPager.getCurrentItem() > 0) {
+            b.viewPager.setCurrentItem(b.viewPager.getCurrentItem() - 1);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     public class IntroFragmentAdapter extends FragmentStatePagerAdapter {
 
         private static final int FIRST_PAGE = 0;
@@ -259,6 +265,10 @@ public class MainActivity extends BaseActivity {
         @Override
         public int getCount() {
             return INTRO_PAGE_COUNT;
+        }
+
+        public int getItemPosition(@NotNull Object object) {
+            return POSITION_NONE;
         }
     }
 }

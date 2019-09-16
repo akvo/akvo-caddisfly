@@ -101,7 +101,7 @@ class CbtInternal {
                 intent.action = AppConfig.EXTERNAL_APP_ACTION
                 val data = Bundle()
                 data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, "en")
+                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage)
                 intent.putExtras(data)
 
                 mTestActivityRule.launchActivity(intent)

@@ -78,7 +78,7 @@
     <string name="uninstallAndInstallFromStore">Veuillez désinstaller puis installer la dernière version à partir de Play Store.</string>
     <!--Permission-->
     <string name="storagePermission">L\'autorisation de stockage est requise</string>
-    <string name="cameraAndStoragePermissions">Caméra &amp; amp; les autorisations de stockage sont requises</string>
+    <string name="cameraAndStoragePermissions">Caméra &amp; les autorisations de stockage sont requises</string>
     <!--Sensor-->
     <string name="incorrectDevice">Dispositif incorrect</string>
     <string name="expectedDeviceNotFound">Le capteur attendu n\'a pas été trouvé.</string>

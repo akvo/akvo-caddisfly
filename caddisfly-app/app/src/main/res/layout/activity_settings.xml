@@ -40,6 +40,12 @@
             android:orientation="vertical">
 
             <FrameLayout
+                android:id="@+id/layoutGeneral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <FrameLayout
                 android:id="@+id/layoutDiagnostics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,12 +59,6 @@
 
             <FrameLayout
                 android:id="@+id/layoutDebugging"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-
-            <FrameLayout
-                android:id="@+id/layoutGeneral"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
