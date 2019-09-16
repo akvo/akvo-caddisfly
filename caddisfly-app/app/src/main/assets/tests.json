@@ -8562,7 +8562,8 @@
           "section": [
             "/<b>round_off_test</b>",
             "1.rinse_cells",
-            "2.store_dark"
+            "2.store_dark",
+            "~result~"
           ]
         }
       ],
@@ -8689,7 +8690,8 @@
           "section": [
             "/<b>round_off_test</b>",
             "1.rinse_cells",
-            "2.store_dark"
+            "2.store_dark",
+            "~result~"
           ]
         }
       ],

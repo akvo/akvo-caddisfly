@@ -113,6 +113,9 @@ public class CbtResultFragment extends BaseFragment {
                 b.textRisk1.setText(results[0].trim());
                 if (results.length > 1) {
                     b.textSubRisk2.setText(results[1].trim());
+                    b.textSubRisk2.setVisibility(View.VISIBLE);
+                } else {
+                    b.textSubRisk2.setVisibility(View.GONE);
                 }
             } else {
                 b.layoutResult2.setVisibility(View.GONE);
@@ -122,6 +125,9 @@ public class CbtResultFragment extends BaseFragment {
                 b.textRisk.setText(results[0].trim());
                 if (results.length > 1) {
                     b.textSubRisk.setText(results[1].trim());
+                    b.textSubRisk.setVisibility(View.VISIBLE);
+                } else {
+                    b.textSubRisk.setVisibility(View.GONE);
                 }
             }
 

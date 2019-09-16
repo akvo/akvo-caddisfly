@@ -248,12 +248,6 @@ public class CbtActivity extends BaseActivity
             showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex2() - 2;
         }
 
-        if (viewPager.getCurrentItem() < pageIndex.getResultIndex()) {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-        }
-
         switch (pageIndex.getType(viewPager.getCurrentItem())) {
             case PHOTO:
                 if (resultPhotoFragment.get(viewPager.getCurrentItem()) != null) {
@@ -273,9 +267,6 @@ public class CbtActivity extends BaseActivity
 
             case RESULT:
                 setTitle(R.string.result);
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                }
                 break;
 
             case DEFAULT:

@@ -112,7 +112,7 @@ public class MeasurementInputFragment extends BaseFragment {
                     if (listener != null) {
                         resultFloat = isValidResult(true);
                         if (resultFloat != -1f) {
-                            listener.onSubmitResult(String.valueOf(resultFloat));
+                            listener.onSubmitResult(testResult.getId(), String.valueOf(resultFloat));
                         }
                     }
                 });
@@ -231,6 +231,6 @@ public class MeasurementInputFragment extends BaseFragment {
     }
 
     public interface OnSubmitResultListener {
-        void onSubmitResult(String key);
+        void onSubmitResult(Integer id, String key);
     }
 }

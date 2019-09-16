@@ -177,7 +177,7 @@ class CbtTest : BaseTest() {
 
         mIntentsRule.finishActivity()
 
-        sleep(2000)
+        sleep(3000)
 
         assertNotNull(mDevice.findObject(By.text("$result1: Very High Risk / Unsafe ")))
         assertNotNull(mDevice.findObject(By.text("MPN: >100 MPN/100ml")))
@@ -302,7 +302,7 @@ class CbtTest : BaseTest() {
 
         mIntentsRule.finishActivity()
 
-        sleep(1000)
+        sleep(2500)
 
         assertNotNull(mDevice.findObject(By.text("$result1: Very Unsafe ")))
         assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")))

@@ -61,6 +61,7 @@
 
     <!-- Risk -->
     <color name="safe">#54b71e</color>
-    <color name="unsafe">#d21717</color>
+    <color name="probably_safe">#8ea314</color>
     <color name="possibly_safe">#b0ad1e</color>
+    <color name="unsafe">#ff0000</color>
 </resources>

@@ -151,6 +151,8 @@ class IntroTest {
 
         val goToTest = getString(R.string.goToTest)
 
+        sleep(2000)
+
         onView(withText(R.string.next)).perform(click())
 
         onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))

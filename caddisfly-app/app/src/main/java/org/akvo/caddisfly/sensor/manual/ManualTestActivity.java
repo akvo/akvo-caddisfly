@@ -1,6 +1,7 @@
 package org.akvo.caddisfly.sensor.manual;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -37,6 +40,7 @@ import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.PageType;
+import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -54,6 +58,7 @@ import java.util.UUID;
 
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
 import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 import static org.akvo.caddisfly.util.ApiUtil.setKeyboardVisibilityListener;
 
 public class ManualTestActivity extends BaseActivity
@@ -77,6 +82,7 @@ public class ManualTestActivity extends BaseActivity
     private int totalPageCount;
     //    private float scale;
     private ArrayList<Instruction> instructionList = new ArrayList<>();
+    private PlaceholderFragment submitFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +155,9 @@ public class ManualTestActivity extends BaseActivity
             }
         });
 
+        submitFragment = PlaceholderFragment.newInstance(
+                instructionList.get(totalPageCount - 1), ButtonType.SUBMIT);
+
         setKeyboardVisibilityListener(this);
     }
 
@@ -203,12 +212,6 @@ public class ManualTestActivity extends BaseActivity
             showSkipMenu = viewPager.getCurrentItem() < pageIndex.getSkipToIndex() - 1;
         }
 
-        if (viewPager.getCurrentItem() < pageIndex.getResultIndex()) {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
-        }
-
         switch (pageIndex.getType(viewPager.getCurrentItem())) {
             case PHOTO:
                 if (resultPhotoFragment.get(viewPager.getCurrentItem()) != null) {
@@ -229,9 +232,6 @@ public class ManualTestActivity extends BaseActivity
 
             case RESULT:
                 setTitle(R.string.result);
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                }
                 imagePageRight.setVisibility(View.INVISIBLE);
                 viewPager.setAllowedSwipeDirection(SwipeDirection.left);
                 break;
@@ -255,6 +255,7 @@ public class ManualTestActivity extends BaseActivity
         // Last page
         if (viewPager.getCurrentItem() == totalPageCount - 1) {
             imagePageRight.setVisibility(View.INVISIBLE);
+            submitFragment.setResult(testInfo);
         }
 
         // First page
@@ -351,7 +352,11 @@ public class ManualTestActivity extends BaseActivity
     }
 
     @Override
-    public void onSubmitResult(String result) {
+    public void onSubmitResult(Integer id, String result) {
+        if (inputFragment.get(pageIndex.getInputPageIndex(id - 1)).isValid(false)) {
+            testInfo.getResults().get(id - 1).setResultValue(Float.parseFloat(result));
+            submitFragment.setResult(testInfo);
+        }
         nextPage();
     }
 
@@ -425,6 +430,8 @@ public class ManualTestActivity extends BaseActivity
         FragmentInstructionBinding fragmentInstructionBinding;
         Instruction instruction;
         private ButtonType showButton;
+        private LinearLayout resultLayout;
+        private ViewGroup viewRoot;
 
         /**
          * Returns a new instance of this fragment for the given section number.
@@ -448,6 +455,8 @@ public class ManualTestActivity extends BaseActivity
             fragmentInstructionBinding = DataBindingUtil.inflate(inflater,
                     R.layout.fragment_instruction, container, false);
 
+            viewRoot = container;
+
             if (getArguments() != null) {
                 instruction = getArguments().getParcelable(ARG_SECTION_NUMBER);
                 showButton = (ButtonType) getArguments().getSerializable(ARG_SHOW_OK);
@@ -459,7 +468,40 @@ public class ManualTestActivity extends BaseActivity
             if (showButton == ButtonType.SUBMIT) {
                 view.findViewById(R.id.buttonSubmit).setVisibility(View.VISIBLE);
             }
+
+            resultLayout = view.findViewById(R.id.layout_results);
+
             return view;
+        }
+
+        public void setResult(TestInfo testInfo) {
+            if (testInfo != null && testInfo.getResults().size() > 1 && getActivity() != null) {
+
+                LayoutInflater inflater = (LayoutInflater) getActivity()
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                resultLayout.removeAllViews();
+
+                SparseArray<String> results = new SparseArray<>();
+
+                for (Result result : testInfo.getResults()) {
+                    results.put(result.getId(), String.valueOf(result.getResultValue()));
+
+                    String valueString = createValueUnitString(result.getResultValue(), result.getUnit(),
+                            getString(R.string.no_result));
+
+                    LinearLayout itemResult;
+                    itemResult = (LinearLayout) inflater.inflate(R.layout.item_result,
+                            viewRoot, false);
+                    TextView textTitle = itemResult.findViewById(R.id.text_title);
+                    textTitle.setText(result.getName());
+
+                    TextView textResult = itemResult.findViewById(R.id.text_result);
+                    textResult.setText(valueString);
+                    resultLayout.addView(itemResult);
+                }
+                resultLayout.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -489,8 +531,11 @@ public class ManualTestActivity extends BaseActivity
                 }
                 return inputFragment.get(position);
             } else if (position == totalPageCount - 1) {
-                return PlaceholderFragment.newInstance(
-                        instructionList.get(position), ButtonType.SUBMIT);
+                if (submitFragment == null) {
+                    submitFragment = PlaceholderFragment.newInstance(
+                            instructionList.get(position), ButtonType.SUBMIT);
+                }
+                return submitFragment;
             } else {
                 return PlaceholderFragment.newInstance(
                         instructionList.get(position), ButtonType.NONE);

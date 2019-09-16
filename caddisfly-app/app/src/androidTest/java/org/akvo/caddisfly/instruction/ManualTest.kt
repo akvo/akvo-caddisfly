@@ -403,7 +403,7 @@ class ManualTest : BaseTest() {
 
         mIntentsRule.finishActivity()
 
-        sleep(1000)
+        sleep(2500)
 
         assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")))
 
@@ -431,7 +431,7 @@ class ManualTest : BaseTest() {
                 withParent(withId(R.id.toolbar)),
                 isDisplayed())).perform(click())
 
-        sleep(1000)
+        sleep(2500)
 
         assertNotNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")))
     }

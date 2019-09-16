@@ -159,7 +159,7 @@ class StriptestInstructions : BaseTest() {
 
         TestHelper.clickSubmitResultButton()
 
-        sleep(1000)
+        sleep(2500)
 
         if (isPatchAvailable()) {
             assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")))
