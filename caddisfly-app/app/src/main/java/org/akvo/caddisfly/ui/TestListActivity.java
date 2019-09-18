@@ -31,6 +31,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -38,6 +39,7 @@ import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.ActivityTestListBinding;
+import org.akvo.caddisfly.helper.ApkHelper;
 import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestInfo;
@@ -46,6 +48,7 @@ import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.util.ApiUtil;
 import org.akvo.caddisfly.util.ConfigDownloader;
+import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 public class TestListActivity extends BaseActivity
         implements TestListFragment.OnListFragmentInteractionListener {
@@ -104,6 +107,19 @@ public class TestListActivity extends BaseActivity
         b = DataBindingUtil.setContentView(this, R.layout.activity_test_list);
 
         setTitle(R.string.selectTest);
+
+        if (getIntent().getData() != null && !ApkHelper.isNonStoreVersion(this)) {
+            String uuid = getIntent().getData().getQueryParameter("id");
+            if (uuid != null && !uuid.isEmpty()) {
+                final Intent intent = new Intent(getBaseContext(), TestActivity.class);
+                final TestListViewModel viewModel =
+                        ViewModelProviders.of(this).get(TestListViewModel.class);
+                testInfo = viewModel.getTestInfo(uuid);
+                intent.putExtra(ConstantKey.TEST_INFO, testInfo);
+                startActivity(intent);
+            }
+            finish();
+        }
 
         // Add list fragment if this is first creation
         if (savedInstanceState == null) {

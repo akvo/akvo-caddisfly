@@ -451,7 +451,7 @@ class StriptestTest : BaseTest() {
 
         nextPage()
 
-        onView(withText(R.string.dip_strip_15_seconds_in_reagent_and_remove)).check(matches(isDisplayed()))
+        onView(withText(R.string.dip_container_15s)).check(matches(isDisplayed()))
 
         nextPage()
 

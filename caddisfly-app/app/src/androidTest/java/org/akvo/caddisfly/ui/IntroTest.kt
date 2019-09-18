@@ -98,6 +98,8 @@ class IntroTest {
 
         navigateUp()
 
+        sleep(1000)
+
         onView(withText(R.string.appName)).check(matches(isDisplayed()))
 
         onView(withText(R.string.next)).perform(click())

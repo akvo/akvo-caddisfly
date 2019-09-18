@@ -37,7 +37,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import org.akvo.caddisfly.R;
@@ -245,7 +245,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public class IntroFragmentAdapter extends FragmentStatePagerAdapter {
+    public class IntroFragmentAdapter extends FragmentPagerAdapter {
 
         private static final int FIRST_PAGE = 0;
 

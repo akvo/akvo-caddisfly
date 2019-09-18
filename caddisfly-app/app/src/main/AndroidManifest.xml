@@ -86,7 +86,18 @@
         </activity>
         <activity
             android:name=".ui.TestListActivity"
-            android:screenOrientation="nosensor" />
+            android:screenOrientation="nosensor">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="caddisfly"
+                    android:scheme="akvo" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".preference.SettingsActivity"
             android:parentActivityName=".ui.AboutActivity"

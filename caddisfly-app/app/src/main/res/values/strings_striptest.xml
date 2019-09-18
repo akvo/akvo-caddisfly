@@ -46,7 +46,7 @@
     <!--Water-->
     <string name="place_strip_clr_hg_1"><b>Place a clean test strip below the used test strip so that patch has a white background.</b></string>
     <string name="place_strip_clr_hg_2">Place the stacked strips with the patch facing <b>left</b> on the black area of the Colour Reference Card and press <b>Start</b>.</string>
-    <string name="as_safety_1">DANGER: Hydrogen and arsine gases are generated during the test. Work in a well-ventilated area away from open flames and other sources of ignition.</string>
+    <string name="as_safety_1"><b>DANGER:</b> Hydrogen and arsine gases are generated during the test. Work in a well-ventilated area away from open flames and other sources of ignition.</string>
     <string name="as_safety_2">Review Material Safety Data Sheets for safe handling, storage and disposal information. Dispose of in accordance with local regulations. Dispose of waste in accordance with environmental legislation.</string>
     <string name="as_ins_1a">Insert a test strip into the cap so the pad completely covers the small opening.</string>
     <string name="as_ins_1b">Close the flap and press to secure.</string>
@@ -77,7 +77,7 @@
     <string name="shake_excess_water_once">Shake <b>once </b> the excess water from test strip.</string>
     <string name="do_not_shake_excess_water">Do not shake excess water from the test strip.</string>
     <string name="allow_excess_liquid_to_run_off">Allow excess liquid to run off via the long edge of the strip onto an absorbent paper towel.</string>
-    <string name="add_reagent_k1">Add <b>1 drop</b> of reagent K-1 on the reaction zone and allow to react for <b>1 minute</b>.</string>
+    <string name="add_reagent_k1">Add <b>1 drop</b> of <b>reagent K-1</b> on the reaction zone and allow to react for <b>1 minute</b>.</string>
     <string name="fill_bottle_5ml">Fill the provided bottle with <b>5 ml</b> of your water sample.</string>
     <string name="add_10_drops_nh1">Add <b>10 drops</b> of the <b>NH4-1 Reagent</b> to the sample.</string>
     <string name="swirl_and_mix">Swirl the sample to mix the reagent.</string>
@@ -97,13 +97,12 @@
     <string name="as_remove_sulfide_2">Saturate the cotton with a few drops of lead acetate. Squeeze excess liquid out of the cotton, leaving it damp.</string>
     <string name="as_remove_sulfide_3">Press the saturated cotton ball into the small opening of the reaction bottle cap from the bottom. Be sure that the cotton is firmly in place and that a gap remains between the cotton and the top surface of the cap.</string>
     <string name="as_remove_sulfide_4">Insert the test strip as detailed in step 1 of the 0–500 or 0–4000 ppb test procedure and continue with the test.</string>
-    <string name="as_remove_sulfide_note">Note: The lead acetate must not contact the test strip!</string>
+    <string name="as_remove_sulfide_note"><b>Note:</b> The lead acetate must not contact the test strip!</string>
     <string name="as_remove_sulfide_wear_gloves">Always wear gloves or wash hands thoroughly after handling lead acetate.</string>
 
     <!--Soil-->
     <string name="collect_mehlich_extraction_sample">Collect Mehlich extraction sample</string>
     <string name="collect_5ml_mehlich_sample">Collect <b>5 ml</b> Mehlich extraction sample using the provided bottle.</string>
     <string name="collect_water_extraction_sample">Collect water extraction sample</string>
-    <string name="dip_strip_15_seconds_in_reagent_and_remove">Dip the strip for <b>15 seconds</b> in the small tube containing <b>reagent 2</b>.</string>
     <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
 </resources>

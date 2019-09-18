@@ -574,7 +574,7 @@
         {
           "section": [
             "dip_strip_in_water_2_seconds",
-            "image:dip_sample_1"
+            "image:dip_sample_2"
           ]
         },
         {
@@ -920,7 +920,7 @@
         },
         {
           "section": [
-            "dip_strip_15_seconds_in_reagent_and_remove",
+            "dip_container_15s",
             "image:dip_tube_15"
           ]
         },
@@ -1030,7 +1030,7 @@
         },
         {
           "section": [
-            "dip_strip_15_seconds_in_reagent_and_remove",
+            "dip_container_15s",
             "image:dip_tube_15"
           ]
         },

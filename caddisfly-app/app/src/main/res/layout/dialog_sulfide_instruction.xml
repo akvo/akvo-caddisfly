@@ -139,14 +139,14 @@
             </TableRow>
         </TableLayout>
 
-        <org.akvo.caddisfly.widget.HtmlTextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
             android:text="@string/as_remove_sulfide_note"
             android:textSize="16sp" />
 
-        <org.akvo.caddisfly.widget.HtmlTextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/as_remove_sulfide_wear_gloves"

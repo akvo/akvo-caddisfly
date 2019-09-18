@@ -119,7 +119,7 @@ class StriptestInternal {
 
 //            if (("411a4093f6b6").contains(id)) {
             //            if (testInfo.getName().contains("Soil"))
-            if (("aa4a4e3100c9 411a4093f6b6 ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id)) {
+//            if (("aa4a4e3100c9 411a4093f6b6 ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id)) {
                 //
                 run {
 
@@ -185,7 +185,7 @@ class StriptestInternal {
 
                     TestHelper.clickSubmitResultButton()
                 }
-            }
+//            }
         }
     }
 
