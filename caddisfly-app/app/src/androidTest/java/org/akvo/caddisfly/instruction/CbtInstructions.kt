@@ -28,8 +28,6 @@ import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
-import androidx.test.filters.RequiresDevice
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
@@ -41,7 +39,6 @@ import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.ui.TestActivity
 import org.akvo.caddisfly.util.*
-import org.akvo.caddisfly.util.DrawableMatcher.Companion.hasDrawable
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
@@ -49,15 +46,11 @@ import org.akvo.caddisfly.util.TestHelper.isDeviceInitialized
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
-import org.akvo.caddisfly.util.TestUtil.checkTextInTable
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.akvo.caddisfly.util.TestUtil.clickPercent
-import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
-import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
-import org.hamcrest.core.IsInstanceOf
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
@@ -66,7 +59,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RequiresExternalApp
-@LargeTest
 @RunWith(AndroidJUnit4::class)
 class CbtInstructions : BaseTest() {
 
@@ -109,159 +101,7 @@ class CbtInstructions : BaseTest() {
         mActivityTestRule.finishActivity()
     }
 
-
     @Test
-    fun cbtInstructions() {
-
-        gotoSurveyForm()
-
-        nextSurveyPage("Coliforms")
-
-        clickExternalSourceButton(0)
-
-        val textView = onView(
-                allOf<View>(withText("www.aquagenx.com"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf<View>(android.widget.LinearLayout::class.java),
-                                        0),
-                                1),
-                        isDisplayed()))
-        textView.check(matches(withText("www.aquagenx.com")))
-
-        onView(withText(R.string.prepare_sample)).check(matches(isDisplayed()))
-
-        onView(withText("Water - E.coli")).check(matches(isDisplayed()))
-
-        onView(withText(R.string.submitResult)).check(matches(isDisplayed()))
-
-        onView(withText(R.string.prepare_sample)).perform(click())
-
-        onView(withId(R.id.image_pageLeft)).check(matches(not<View>(isDisplayed())))
-
-        checkTextInTable(R.string.prepare_area_put_on_gloves)
-
-        checkTextInTable(R.string.open_growth_medium)
-
-        onView(withContentDescription("1")).check(matches(hasDrawable()))
-
-        val imageView = onView(
-                allOf<View>(withContentDescription("1"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf<View>(android.widget.ScrollView::class.java),
-                                        0),
-                                6),
-                        isDisplayed()))
-        imageView.check(matches(isDisplayed()))
-
-        onView(allOf<View>(withId(R.id.pager_indicator),
-                childAtPosition(
-                        allOf<View>(withId(R.id.layout_footer),
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf<View>(android.widget.RelativeLayout::class.java),
-                                        1)),
-                        0),
-                isDisplayed()))
-
-        nextPage()
-
-        onView(withContentDescription("2")).check(matches(hasDrawable()))
-
-        checkTextInTable(R.string.dissolve_medium_in_sample_a)
-
-        checkTextInTable(R.string.dissolve_medium_in_sample_b)
-
-        nextPage()
-
-        onView(withContentDescription("4")).check(matches(hasDrawable()))
-
-        checkTextInTable(R.string.label_compartment_bag)
-
-        nextPage(3)
-
-        checkTextInTable(R.string.let_incubate)
-
-        onView(withText(R.string.read_instructions)).perform(click())
-
-        onView(withText(R.string.below25Degrees)).check(matches(isDisplayed()))
-
-        onView(withText(R.string.incubate_in_portable)).check(matches(isDisplayed()))
-
-        val appCompatButton3 = onView(
-                allOf<View>(withId(android.R.id.button1), withText("OK"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.buttonPanel),
-                                        0),
-                                3)))
-        appCompatButton3.perform(scrollTo(), click())
-
-        onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()))
-
-        onView(withId(R.id.image_pageRight)).check(matches(not<View>(isDisplayed())))
-
-        mDevice.waitForIdle()
-
-        TestHelper.clickCloseButton()
-
-        mDevice.waitForIdle()
-
-        clickExternalSourceButton(0)
-
-        onView(withId(R.id.button_phase_2)).perform(click())
-
-        onView(withId(R.id.image_pageLeft)).check(matches(not<View>(isDisplayed())))
-
-        onView(withText(R.string.take_photo_of_incubated)).check(matches(isDisplayed()))
-
-        nextPage()
-
-        onView(withContentDescription("8")).check(matches(hasDrawable()))
-
-        checkTextInTable(R.string.change_colors_to_match)
-
-        checkTextInTable(R.string.note_blue_green_specks)
-
-        nextPage()
-
-        checkTextInTable(R.string.click_compartments_to_change)
-
-        onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()))
-
-        onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()))
-
-        onView(withId(R.id.image_pageRight)).check(matches(isDisplayed()))
-
-        nextPage()
-
-        onView(withText("Low Risk")).check(matches(isDisplayed()))
-
-        onView(withText("Safe")).check(matches(isDisplayed()))
-
-        mDevice.pressBack()
-
-        sleep(500)
-
-        onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()))
-
-        nextPage()
-
-        onView(withText(R.string.next)).perform(click())
-
-        checkTextInTable(R.string.dispose_contents_bag)
-
-        if (scale > 1.5) {
-            onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()))
-        }
-
-        onView(withId(R.id.image_pageRight)).check(matches(not<View>(isDisplayed())))
-
-        TestHelper.clickSubmitButton()
-    }
-
-    @Test
-    @RequiresDevice
     fun testInstructionsCbt() {
 
         val testConfigRepository = TestConfigRepository()

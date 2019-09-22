@@ -379,14 +379,6 @@ public class TestActivity extends BaseActivity {
             } else {
                 permissionsDelegate.requestPermissions(checkPermissions);
             }
-        } else {
-            InstructionFragment instructionFragment = InstructionFragment.getInstance(testInfo);
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .addToBackStack("instructions")
-                    .replace(R.id.fragment_container,
-                            instructionFragment, null).commit();
         }
     }
 

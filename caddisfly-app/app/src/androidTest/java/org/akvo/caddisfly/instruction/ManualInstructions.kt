@@ -107,7 +107,7 @@ class ManualInstructions : BaseTest() {
 
             sleep(500)
 
-            val customShapeButton = onView(allOf<View>(withId(R.id.compartments), isDisplayed()))
+            val customShapeButton = onView(allOf<View>(withId(R.id.swatch_select), isDisplayed()))
 
             customShapeButton.perform(clickPercent(0.1f, 0.7f))
 

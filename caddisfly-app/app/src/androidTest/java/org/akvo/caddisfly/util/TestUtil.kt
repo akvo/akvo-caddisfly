@@ -184,7 +184,6 @@ object TestUtil {
     }
 
     fun nextSurveyPage(tabName: String) {
-
         var tab: UiObject2? = mDevice.findObject(By.text(tabName))
         if (tab == null || !tab.isSelected) {
             swipeLeft()

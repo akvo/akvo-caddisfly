@@ -118,6 +118,7 @@
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
     <string name="legalInformation">Legal Information</string>
     <string name="terms_of_service">Terms of Service</string>
+    <string name="settings_disabled">Settings disabled</string>
 
     <!--Software notices-->
     <string name="software_incorporates_material">This software incorporates material from the projects listed below</string>

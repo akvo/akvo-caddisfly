@@ -96,6 +96,8 @@
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:text="@string/us_cm" />
 
                 <RadioButton
@@ -103,6 +105,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:text="@string/ms_cm" />
 
                 <com.google.android.material.textfield.TextInputEditText

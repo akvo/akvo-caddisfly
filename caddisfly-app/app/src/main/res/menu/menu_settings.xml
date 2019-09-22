@@ -21,17 +21,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item
-        android:contentDescription="@string/settings"
         android:icon="@drawable/ic_revert_24dp"
         android:onClick="onDisableDiagnostics"
-        android:title=""
+        android:title="@string/disableDiagnostics"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
     <item
-        android:contentDescription="@string/disableDiagnostics"
         android:enabled="false"
         android:icon="@drawable/ic_settings_disabled_24dp"
         android:onClick="onDisableDiagnostics"
-        android:title=""
+        android:title="@string/settings_disabled"
         app:showAsAction="always" />
 </menu>

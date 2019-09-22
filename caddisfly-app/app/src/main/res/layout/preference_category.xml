@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textAllCaps="true"
-        android:textColor="?colorPrimary"
+        android:textColor="?colorError"
         android:textSize="14sp"
         android:textStyle="bold" />
 </LinearLayout>

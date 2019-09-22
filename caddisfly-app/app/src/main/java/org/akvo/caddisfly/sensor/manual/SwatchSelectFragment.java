@@ -68,7 +68,7 @@ public class SwatchSelectFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_swatch_select, container, false);
 
-        final SwatchSelectWidget swatchSelect = view.findViewById(R.id.compartments);
+        final SwatchSelectWidget swatchSelect = view.findViewById(R.id.swatch_select);
 
         if (range.contains("6.0")) {
             swatchSelect.setRange(2);

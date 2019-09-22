@@ -283,7 +283,7 @@ class SwatchSelectTest : BaseTest() {
 
         onView(withId(R.id.image_pageRight)).check(matches(not<View>(isDisplayed())))
 
-        val customShapeButton = onView(allOf<View>(withId(R.id.compartments), isDisplayed()))
+        val customShapeButton = onView(allOf<View>(withId(R.id.swatch_select), isDisplayed()))
 
         customShapeButton.perform(clickPercent(0.1f, 0.55f))
         customShapeButton.perform(clickPercent(0.9f, 0.55f))
@@ -452,7 +452,7 @@ class SwatchSelectTest : BaseTest() {
 
         onView(withId(R.id.image_pageLeft)).check(matches(isDisplayed()))
 
-        val customShapeButton = onView(allOf<View>(withId(R.id.compartments), isDisplayed()))
+        val customShapeButton = onView(allOf<View>(withId(R.id.swatch_select), isDisplayed()))
 
         customShapeButton.perform(clickPercent(0.1f, 0.55f))
 

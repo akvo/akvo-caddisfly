@@ -26,6 +26,9 @@ public class Constants {
 
     public static final String FLUORIDE_ID = "d839537b-8106-44e8-953a-6060e4dbe59d";
     public static final String CBT_ID = "e40d4764-e73f-46dd-a598-ed4db0fd3386";
+    public static final String CBT_ID_2 = "5baa9d29-b271-4521-b05f-4bfd645c26cf";
+    public static final String CBT_ID_3 = "c43b7f5e-c5e3-438a-b4d9-bf80d7197176";
+    public static final String CBT_ID_4 = "a0467617-cbeb-4c7f-9610-ac22c9afa0ab";
     public static final String SWATCH_SELECT_TEST_ID = "520ba67c-233f-4dc7-a2ad-17d86047d7c4";
 
     public static final String MPN_TABLE_FILENAME = "most-probable-number.json";

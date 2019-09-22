@@ -64,7 +64,7 @@ fun isPatchAvailable(id: String = "."): Boolean {
     }
 }
 
-fun skipOpeningExternalApp(model: String): Boolean {
+fun skipOpeningExternalApp(model: String = ""): Boolean {
 
     try {
         val testLabSetting: String = Settings.System.getString(
@@ -88,7 +88,7 @@ object TestHelper {
     private val STRING_HASH_MAP_ES = HashMap<String, String>()
     private val STRING_HASH_MAP_FR = HashMap<String, String>()
     private val STRING_HASH_MAP_IN = HashMap<String, String>()
-    lateinit var currentHashMap: Map<String, String>
+    private lateinit var currentHashMap: Map<String, String>
 
 //    private var mCounter: Int = 0
 

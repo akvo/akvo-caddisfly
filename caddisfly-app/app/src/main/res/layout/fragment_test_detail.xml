@@ -56,14 +56,19 @@
                 app:imageUrl="@{testInfo.image == null ? testInfo.brand : testInfo.image}" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_marginStart="5sp"
                 android:onClick="onSiteLinkClick"
+                android:paddingTop="25dp"
+                android:paddingBottom="5dp"
+                android:shadowColor="@color/white"
+                android:shadowRadius="20"
                 android:text="@{testInfo.brandUrl}"
-                android:textColor="#006384"
-                android:visibility="@{testInfo.brandUrl.isEmpty() ? View.GONE : View.VISIBLE}" />
+                android:textColor="#00516D"
+                android:visibility="@{testInfo.brandUrl.isEmpty() ? View.GONE : View.VISIBLE}"
+                tools:text="www.website.link" />
 
             <org.akvo.caddisfly.widget.SwatchView
                 android:id="@+id/swatchView"

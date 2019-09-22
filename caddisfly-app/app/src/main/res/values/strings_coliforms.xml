@@ -23,6 +23,7 @@
     <string name="e_coli">E.coli</string>
     <string name="total_coliform">Total Coliform</string>
     <string name="prepare_sample">Prepare sample</string>
+    <string name="cbt_compartments">CBT Compartments</string>
 
     <string name="read_instructions">Read Instructions</string>
     <string name="take_photo_compartments">Take a photo of the compartment bag</string>
