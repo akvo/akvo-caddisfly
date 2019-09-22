@@ -30,7 +30,6 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.filters.RequiresDevice
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
@@ -88,7 +87,6 @@ class ManualInstructions : BaseTest() {
     }
 
     @Test
-    @RequiresDevice
     fun testInstructionsSwatchSelect() {
 
         goToMainScreen()

@@ -32,7 +32,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
@@ -66,7 +66,7 @@ class CbtInternal {
         @BeforeClass
         fun setup() {
             if (!TestHelper.isDeviceInitialized()) {
-                mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+                mDevice = UiDevice.getInstance(getInstrumentation())
             }
         }
     }
@@ -94,30 +94,31 @@ class CbtInternal {
     fun setUp() {
         TestHelper.loadData(mActivityTestRule.activity, TestHelper.mCurrentLanguage)
         scale = mActivityTestRule.activity.resources.displayMetrics.density
+        TestHelper.clearPreferences(mActivityTestRule)
         mActivityTestRule.finishActivity()
     }
 
     @Test
     fun testCbt1() {
-        cbtInstructions(Constants.CBT_ID)
+        cbtInstructions(Constants.CBT_ID, 0)
     }
 
     @Test
     fun testCbt2() {
-        cbtInstructions(Constants.CBT_ID_2)
+        cbtInstructions(Constants.CBT_ID_2, 1)
     }
 
     @Test
     fun testCbt3() {
-        cbtInstructions2(Constants.CBT_ID_3)
+        cbtInstructions2(Constants.CBT_ID_3, 0)
     }
 
     @Test
     fun testCbt4() {
-        cbtInstructions2(Constants.CBT_ID_4)
+        cbtInstructions2(Constants.CBT_ID_4, 1)
     }
 
-    private fun cbtInstructions(id: String) {
+    private fun cbtInstructions(id: String, buttonIndex: Int) {
 
         val intent = Intent()
         if (skipOpeningExternalApp()) {
@@ -132,7 +133,7 @@ class CbtInternal {
         } else {
             TestHelper.gotoSurveyForm()
             TestUtil.nextSurveyPage("Coliforms")
-            TestHelper.clickExternalSourceButton(0)
+            TestHelper.clickExternalSourceButton(buttonIndex)
         }
 
         val textView = onView(
@@ -195,6 +196,8 @@ class CbtInternal {
 
         TestUtil.nextPage(3)
 
+        getInstrumentation().waitForIdleSync()
+
         TestUtil.checkTextInTable(R.string.let_incubate)
 
         onView(withText(R.string.read_instructions)).perform(click())
@@ -225,12 +228,14 @@ class CbtInternal {
         if (skipOpeningExternalApp()) {
             mTestActivityRule.launchActivity(intent)
         } else {
-            TestHelper.clickExternalSourceButton(0)
+            TestHelper.clickExternalSourceButton(buttonIndex)
         }
 
         onView(withId(R.id.button_phase_2)).perform(click())
 
         onView(withId(R.id.image_pageLeft)).check(matches(not(isDisplayed())))
+
+        getInstrumentation().waitForIdleSync()
 
         onView(withText(R.string.take_photo_of_incubated)).check(matches(isDisplayed()))
 
@@ -279,6 +284,8 @@ class CbtInternal {
 
         TestUtil.nextPage()
 
+        getInstrumentation().waitForIdleSync()
+
         if (id == Constants.CBT_ID_2) {
             onView(withText("Low Risk")).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText("56")))
@@ -297,6 +304,8 @@ class CbtInternal {
 
         onView(withText(R.string.next)).perform(click())
 
+        getInstrumentation().waitForIdleSync()
+
         TestUtil.checkTextInTable(R.string.dispose_contents_bag)
 
         if (scale > 1.5) {
@@ -308,7 +317,7 @@ class CbtInternal {
         TestHelper.clickSubmitButton()
     }
 
-    private fun cbtInstructions2(id: String) {
+    private fun cbtInstructions2(id: String, buttonIndex: Int) {
 
         val intent = Intent()
         if (skipOpeningExternalApp()) {
@@ -322,8 +331,8 @@ class CbtInternal {
             mTestActivityRule.launchActivity(intent)
         } else {
             TestHelper.gotoSurveyForm()
-            TestUtil.nextSurveyPage("Coliforms")
-            TestHelper.clickExternalSourceButton(0)
+            TestUtil.nextSurveyPage("Coliforms2")
+            TestHelper.clickExternalSourceButton(buttonIndex)
         }
 
         val textView = onView(
@@ -350,6 +359,8 @@ class CbtInternal {
 
         if (id == Constants.CBT_ID_4) {
             TestUtil.nextPage()
+
+            TestUtil.checkTextInTable(R.string.dissolve_medium_in_sample_tc)
         }
 
         TestUtil.checkTextInTable(R.string.open_growth_medium_powder)
@@ -372,13 +383,15 @@ class CbtInternal {
 
         TestUtil.nextPage()
 
-        onView(withContentDescription("2")).check(matches(DrawableMatcher.hasDrawable()))
+        if (id == Constants.CBT_ID_3) {
+            onView(withContentDescription("2")).check(matches(DrawableMatcher.hasDrawable()))
 
-        TestUtil.checkTextInTable(R.string.dissolve_medium_in_sample_tc)
+            TestUtil.checkTextInTable(R.string.dissolve_medium_in_sample_tc)
 
-        TestUtil.checkTextInTable(R.string.label_compartment_bag)
+            TestUtil.checkTextInTable(R.string.label_compartment_bag)
 
-        TestUtil.nextPage()
+            TestUtil.nextPage()
+        }
 
         onView(withContentDescription("4")).check(matches(DrawableMatcher.hasDrawable()))
 
@@ -430,7 +443,7 @@ class CbtInternal {
         if (skipOpeningExternalApp()) {
             mTestActivityRule.launchActivity(intent)
         } else {
-            TestHelper.clickExternalSourceButton(0)
+            TestHelper.clickExternalSourceButton(buttonIndex)
         }
 
         onView(withId(R.id.button_phase_2)).perform(click())
@@ -498,6 +511,8 @@ class CbtInternal {
         customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f))
 
         TestUtil.nextPage()
+
+        getInstrumentation().waitForIdleSync()
 
         if (id == Constants.CBT_ID_4) {
             onView(withText("Low Risk")).check(matches(isDisplayed()))

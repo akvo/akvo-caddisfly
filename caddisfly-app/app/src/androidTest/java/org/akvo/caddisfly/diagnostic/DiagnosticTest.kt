@@ -19,14 +19,14 @@
 
 package org.akvo.caddisfly.diagnostic
 
+import android.content.Intent
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
-import androidx.test.filters.RequiresDevice
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
@@ -34,10 +34,14 @@ import org.akvo.caddisfly.R
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
+import org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode
 import org.akvo.caddisfly.util.TestHelper.goToMainScreen
+import org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
+import org.akvo.caddisfly.util.TestHelper.navigateUp
 import org.akvo.caddisfly.util.mDevice
+import org.akvo.caddisfly.util.sleep
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
@@ -45,7 +49,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-@LargeTest
 class DiagnosticTest {
 
     companion object {
@@ -69,16 +72,13 @@ class DiagnosticTest {
     }
 
     @Test
-    @RequiresDevice
     fun testDiagnosticMode() {
 
         onView(withId(R.id.button_info)).perform(click())
 
         onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click())
 
-        for (i in 0..9) {
-            onView(withId(R.id.textVersion)).perform(click())
-        }
+        enterDiagnosticMode()
 
         onView(withId(R.id.actionSettings)).perform(click())
 
@@ -87,5 +87,149 @@ class DiagnosticTest {
         onView(withId(R.id.fabDisableDiagnostics)).check(matches(isDisplayed()))
 
         goToMainScreen()
+
+        sleep(500)
+
+        onView(withText(R.string.next)).perform(click())
+
+        sleep(500)
+
+        onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        leaveDiagnosticMode()
+
+        navigateUp()
+
+        sleep(500)
+
+        onView(withText(R.string.next)).perform(click())
+
+        sleep(500)
+
+        getInstrumentation().waitForIdleSync()
+
+        onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        sleep(500)
+
+        enterDiagnosticMode()
+
+        onView(withId(R.id.actionSettings)).perform(click())
+
+        onView(withText("English")).perform(click())
+
+        onView(withText("Français")).perform(click())
+
+        Espresso.pressBackUnconditionally()
+
+        sleep(1000)
+
+        mActivityRule.finishActivity()
+
+        getInstrumentation().waitForIdleSync()
+
+        mActivityRule.launchActivity(Intent())
+
+        getInstrumentation().waitForIdleSync()
+
+        sleep(1000)
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        sleep(500)
+
+        pressBack()
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        onView(withText("L'information légale")).check(matches(isDisplayed())).perform(click())
+
+        navigateUp()
+
+        pressBack()
+
+        onView(withText("Suivant")).perform(click())
+
+        sleep(1500)
+
+        getInstrumentation().waitForIdleSync()
+
+        onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        onView(withId(R.id.actionSettings)).perform(click())
+
+        onView(withText("Français")).perform(click())
+
+        onView(withText("Español")).perform(click())
+
+        Espresso.pressBackUnconditionally()
+
+        sleep(1000)
+
+        mActivityRule.finishActivity()
+
+        getInstrumentation().waitForIdleSync()
+
+        mActivityRule.launchActivity(Intent())
+
+        getInstrumentation().waitForIdleSync()
+
+        sleep(1000)
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        onView(withText("Información legal")).check(matches(isDisplayed())).perform(click())
+
+        navigateUp()
+
+        pressBack()
+
+        onView(withText("Siguiente")).perform(click())
+
+        sleep(1500)
+
+        getInstrumentation().waitForIdleSync()
+
+        onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        onView(withId(R.id.actionSettings)).perform(click())
+
+        onView(withText("Español")).perform(click())
+
+        onView(withText("English")).perform(click())
+
+        Espresso.pressBackUnconditionally()
+
+        sleep(1000)
+
+        mActivityRule.finishActivity()
+
+        getInstrumentation().waitForIdleSync()
+
+        mActivityRule.launchActivity(Intent())
+
+        getInstrumentation().waitForIdleSync()
+
+        sleep(1000)
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        getInstrumentation().waitForIdleSync()
+
+        onView(withId(R.id.actionSettings)).perform(click())
+
+        getInstrumentation().waitForIdleSync()
+
+        onView(withId(R.id.disable_diagnostics)).perform(click())
+
+        getInstrumentation().waitForIdleSync()
     }
 }

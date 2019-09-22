@@ -110,8 +110,8 @@ public class MainActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (AppPreferences.isDiagnosticMode()) {
                 statusBarColors = new AnimatedColor(
-                        ContextCompat.getColor(this, R.color.diagnostic_status),
-                        ContextCompat.getColor(this, R.color.black_main));
+                        ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                        ContextCompat.getColor(this, R.color.diagnostic_status));
             } else {
                 statusBarColors = new AnimatedColor(
                         ContextCompat.getColor(this, R.color.colorPrimaryDark),
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
             animateStatusBar();
         }
 
-        (new Handler()).postDelayed(this::setUpViews, 10);
+        setUpViews();
     }
 
     private void hideActionBar() {

@@ -78,7 +78,7 @@ public class StripTestActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_swatch_select);
+        setContentView(R.layout.activity_test_steps);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         viewPager = findViewById(R.id.viewPager);

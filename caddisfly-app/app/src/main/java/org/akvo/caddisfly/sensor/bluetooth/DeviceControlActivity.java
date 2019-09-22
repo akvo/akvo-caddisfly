@@ -171,7 +171,7 @@ public class DeviceControlActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_external_result);
+        setContentView(R.layout.activity_test_steps);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 

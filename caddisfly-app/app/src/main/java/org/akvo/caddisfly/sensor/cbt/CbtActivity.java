@@ -100,7 +100,7 @@ public class CbtActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cbt);
+        setContentView(R.layout.activity_test_steps);
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 

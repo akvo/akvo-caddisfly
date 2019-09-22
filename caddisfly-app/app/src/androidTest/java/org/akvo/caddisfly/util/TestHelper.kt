@@ -332,11 +332,8 @@ object TestHelper {
     }
 
     fun navigateUp() {
-        val appCompatImageButton = onView(
-                allOf<View>(withContentDescription(R.string.navigate_up),
-                        withParent(withId(R.id.toolbar)),
-                        isDisplayed()))
-        appCompatImageButton.perform(click())
+        onView(allOf<View>(withContentDescription(R.string.navigate_up),
+                isDisplayed())).perform(click())
     }
 
     fun isDeviceInitialized(): Boolean {

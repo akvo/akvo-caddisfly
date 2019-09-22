@@ -23,8 +23,12 @@ package org.akvo.caddisfly.internal
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.RootMatchers
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -41,15 +45,13 @@ import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.ui.TestActivity
-import org.akvo.caddisfly.util.TestHelper
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.activateTestMode
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
-import org.akvo.caddisfly.util.isPatchAvailable
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.sleep
+import org.hamcrest.Matchers
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
@@ -120,71 +122,78 @@ class StriptestInternal {
 //            if (("411a4093f6b6").contains(id)) {
             //            if (testInfo.getName().contains("Soil"))
 //            if (("aa4a4e3100c9 411a4093f6b6 ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id)) {
-                //
-                run {
+            //
+            run {
 
-                    if (!isPatchAvailable(id)) {
-                        resultWaitDelay = 7000
-                    } else if (("6843158b47b4 6ed8142b6b07, 420551851acd 1b7db640037c d555f04db952 aa4a4e3100c9 "
-                                    + "411a4093f6b6 321bbbd9876b 798b81d2b019 32d9b8f4aecf").contains(id)) {
-                        resultWaitDelay = 0
-                        for (result in testInfo.results) {
-                            if (result.timeDelay > resultWaitDelay) {
-                                resultWaitDelay = result.timeDelay!!
-                            }
+                if (!isPatchAvailable(id)) {
+                    resultWaitDelay = 7000
+                } else if (("6843158b47b4 6ed8142b6b07, 420551851acd 1b7db640037c d555f04db952 aa4a4e3100c9 "
+                                + "411a4093f6b6 321bbbd9876b 798b81d2b019 32d9b8f4aecf").contains(id)) {
+                    resultWaitDelay = 0
+                    for (result in testInfo.results) {
+                        if (result.timeDelay > resultWaitDelay) {
+                            resultWaitDelay = result.timeDelay!!
                         }
-                        resultWaitDelay = max(7000, (resultWaitDelay + 5) * 1000)
-                    } else {
-                        resultWaitDelay = 7000
                     }
+                    resultWaitDelay = max(7000, (resultWaitDelay + 5) * 1000)
+                } else {
+                    resultWaitDelay = 7000
+                }
 
-                    Log.e("Caddisfly Log", "id: $id")
+                Log.e("Caddisfly Log", "id: $id")
 
-                    val intent = Intent()
-                    intent.type = "text/plain"
-                    intent.action = AppConfig.EXTERNAL_APP_ACTION
-                    val data = Bundle()
-                    data.putString(SensorConstants.RESOURCE_ID, uuid)
-                    data.putString(SensorConstants.LANGUAGE, mCurrentLanguage)
-                    intent.putExtras(data)
+                val intent = Intent()
+                intent.type = "text/plain"
+                intent.action = AppConfig.EXTERNAL_APP_ACTION
+                val data = Bundle()
+                data.putString(SensorConstants.RESOURCE_ID, uuid)
+                data.putString(SensorConstants.LANGUAGE, mCurrentLanguage)
+                intent.putExtras(data)
 
-                    mDevice.waitForIdle()
+                mDevice.waitForIdle()
 
-                    mActivityTestRule.finishActivity()
+                mActivityTestRule.finishActivity()
 
-                    mActivityTestRule.launchActivity(intent)
+                mActivityTestRule.launchActivity(intent)
 
-                    navigateToTest(id)
+                navigateToTest(id)
 
-                    var pages = navigateInstructions(id, 1)
+                var pages = navigateInstructions(id, 1)
 
-                    TestHelper.clickStartButton()
+                if (TestUtil.isEmulator) {
+                    onView(withText(R.string.camera_not_good))
+                            .inRoot(RootMatchers.withDecorView(Matchers.not<View>(Matchers.`is`<View>(mActivityTestRule.activity.window
+                                    .decorView)))).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+                    return@run
+                }
 
-                    if ("411a4093f6b6".contains(id)) {
+                TestHelper.clickStartButton()
 
-                        sleep(2000)
+                if ("411a4093f6b6".contains(id)) {
 
-                        takeScreenshot(id, pages)
-
-                        sleep(resultWaitDelay)
-
-                        pages = navigateInstructions(id, ++pages)
-
-                        sleep(1000)
-
-                        TestHelper.clickStartButton()
-                    }
-
-                    sleep(1000)
+                    sleep(2000)
 
                     takeScreenshot(id, pages)
 
                     sleep(resultWaitDelay)
 
-                    takeScreenshot(id, ++pages)
+                    pages = navigateInstructions(id, ++pages)
 
-                    TestHelper.clickSubmitResultButton()
+                    sleep(1000)
+
+                    TestHelper.clickStartButton()
                 }
+
+                sleep(1000)
+
+                takeScreenshot(id, pages)
+
+                sleep(resultWaitDelay)
+
+                takeScreenshot(id, ++pages)
+
+                TestHelper.clickSubmitResultButton()
+            }
 //            }
         }
     }

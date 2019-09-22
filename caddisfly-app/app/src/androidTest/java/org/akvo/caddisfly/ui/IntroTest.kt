@@ -74,11 +74,15 @@ class IntroTest {
 
         onView(withId(R.id.button_info)).perform(click())
 
+        getInstrumentation().waitForIdleSync()
+
         onView(withText(R.string.legalInformation)).perform(click())
 
         pressBack()
 
         navigateUp()
+
+        sleep(2000)
 
         onView(withText(R.string.appName)).check(matches(isDisplayed()))
 
@@ -90,6 +94,8 @@ class IntroTest {
 
         onView(withText(R.string.next)).perform(click())
 
+        getInstrumentation().waitForIdleSync()
+
         onView(withId(R.id.button_info)).perform(click())
 
         onView(withText(R.string.legalInformation)).perform(click())
@@ -98,11 +104,13 @@ class IntroTest {
 
         navigateUp()
 
-        sleep(1000)
+        sleep(2000)
 
         onView(withText(R.string.appName)).check(matches(isDisplayed()))
 
         onView(withText(R.string.next)).perform(click())
+
+        getInstrumentation().waitForIdleSync()
 
         onView(withText(R.string.connect_with_app)).check(matches(isDisplayed()))
 
@@ -124,13 +132,21 @@ class IntroTest {
 
         pressBack()
 
+        sleep(2000)
+
+        getInstrumentation().waitForIdleSync()
+
         onView(withText(R.string.next)).perform(click())
+
+        getInstrumentation().waitForIdleSync()
 
         onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 
         if (!skipOpeningExternalApp(Build.MODEL)) {
 
             onView(withText(R.string.go_to_external_app)).perform(click())
+
+            getInstrumentation().waitForIdleSync()
 
             sleep(500)
 

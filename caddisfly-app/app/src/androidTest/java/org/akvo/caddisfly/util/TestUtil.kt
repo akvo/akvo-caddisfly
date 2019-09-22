@@ -36,6 +36,7 @@ import androidx.test.espresso.action.Tap
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.*
 import org.akvo.caddisfly.R
 import org.hamcrest.Description
@@ -89,14 +90,16 @@ internal fun clickListViewItem(name: String): Boolean {
 object TestUtil {
 
     val isEmulator: Boolean
-        get() = (Build.FINGERPRINT.startsWith("generic")
+        get() = ((Build.ID.contains("KOT49H") && Build.MODEL.contains("MLA-AL10"))
+                || Build.FINGERPRINT.startsWith("generic")
                 || Build.HOST.startsWith("SWDG2909")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.MODEL.contains("google_sdk")
                 || Build.MODEL.contains("Emulator")
                 || Build.MODEL.contains("Android SDK built for x86")
                 || Build.MANUFACTURER.contains("Genymotion")
-                || Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")
+                || Build.BRAND.startsWith("generic")
+                && Build.DEVICE.startsWith("generic")
                 || "google_sdk" == Build.PRODUCT)
 
     fun clickPercent(pctX: Float, pctY: Float): ViewAction {
@@ -147,13 +150,15 @@ object TestUtil {
     fun nextPage() {
         onView(allOf(withId(R.id.image_pageRight),
                 isDisplayed())).perform(click())
+        sleep(300)
         mDevice.waitForIdle()
+        getInstrumentation().waitForIdleSync()
     }
 
     fun prevPage() {
         onView(allOf(withId(R.id.image_pageLeft),
                 isDisplayed())).perform(click())
-        mDevice.waitForIdle()
+        getInstrumentation().waitForIdleSync()
     }
 
     fun goBack(times: Int) {

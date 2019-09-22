@@ -87,7 +87,7 @@ public class ManualTestActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manual_test);
+        setContentView(R.layout.activity_test_steps);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 //        scale = getResources().getDisplayMetrics().density;
 
