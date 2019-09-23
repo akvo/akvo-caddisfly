@@ -76,6 +76,7 @@
     <string name="mpn">MPN/100ml</string>
 
     <string name="delete_error">Error on file delete</string>
+    <string name="test_list">Test List</string>
 
     <!--Software Notices-->
     <string name="lovibond_software"><a href="http://www.lovibond.com/">Lovibond Testing Instruction Visuals</a></string>

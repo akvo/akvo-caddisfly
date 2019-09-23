@@ -108,7 +108,7 @@ public class TestListActivity extends BaseActivity
 
         setTitle(R.string.selectTest);
 
-        if (getIntent().getData() != null && !ApkHelper.isNonStoreVersion(this)) {
+        if (getIntent().getData() != null && ApkHelper.isNonStoreVersion(this)) {
             String uuid = getIntent().getData().getQueryParameter("id");
             if (uuid != null && !uuid.isEmpty()) {
                 final Intent intent = new Intent(getBaseContext(), TestActivity.class);

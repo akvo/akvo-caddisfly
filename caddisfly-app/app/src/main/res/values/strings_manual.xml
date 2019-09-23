@@ -49,6 +49,7 @@
     <string name="pt_add_reagent_2">Add the DPD No.1 tablet directly from the foil into the right (Cl DPD) compartment. Avoid touching the reagent tablets.</string>
     <string name="pt_close_shake">Close the box with the lid and shake until the reagents are dissolved. Be sure to place the lid correctly with the arrow facing you.</string>
     <string name="select_color_intervals">Select colour intervals</string>
+    <string name="color_intervals">Color intervals</string>
     <string name="select_colors_before_continue">Select the colour intervals before continuing</string>
 
     <string name="checkit_comparator_uses">The Checkit Comparator uses two cells and a coloured disc.</string>

@@ -86,13 +86,15 @@ class DiagnosticTest {
 
         onView(withId(R.id.fabDisableDiagnostics)).check(matches(isDisplayed()))
 
+        sleep(500)
+
         goToMainScreen()
 
-        sleep(500)
+        sleep(3000)
 
         onView(withText(R.string.next)).perform(click())
 
-        sleep(500)
+        sleep(1500)
 
         onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 
@@ -100,15 +102,17 @@ class DiagnosticTest {
 
         leaveDiagnosticMode()
 
+        sleep(1000)
+
         navigateUp()
 
-        sleep(500)
+        sleep(3000)
 
         onView(withText(R.string.next)).perform(click())
 
-        sleep(500)
-
         getInstrumentation().waitForIdleSync()
+
+        sleep(3000)
 
         onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 
@@ -152,6 +156,10 @@ class DiagnosticTest {
 
         pressBack()
 
+        sleep(2000)
+
+        getInstrumentation().waitForIdleSync()
+
         onView(withText("Suivant")).perform(click())
 
         sleep(1500)
@@ -189,6 +197,10 @@ class DiagnosticTest {
         navigateUp()
 
         pressBack()
+
+        sleep(2000)
+
+        getInstrumentation().waitForIdleSync()
 
         onView(withText("Siguiente")).perform(click())
 

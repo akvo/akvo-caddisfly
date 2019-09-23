@@ -130,9 +130,11 @@ class IntroTest {
 
         leaveDiagnosticMode()
 
+        sleep(1000)
+
         pressBack()
 
-        sleep(2000)
+        sleep(3000)
 
         getInstrumentation().waitForIdleSync()
 

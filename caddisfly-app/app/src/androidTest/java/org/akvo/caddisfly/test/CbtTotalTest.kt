@@ -29,10 +29,8 @@ import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.akvo.caddisfly.util.TestUtil.clickPercent
-import org.akvo.caddisfly.util.TestUtil.goBack
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
-import org.akvo.caddisfly.util.TestUtil.prevPage
 import org.hamcrest.Matchers.*
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -134,7 +132,7 @@ class CbtTotalTest : BaseTest() {
         onView(withText("Round off test")).check(matches(isDisplayed()))
         onView(allOf(withId(R.id.buttonSubmit), isDisplayed())).check(matches(isDisplayed()))
 
-        goBack(2)
+        TestUtil.prevPage(2)
 
         sleep(2000)
 
@@ -162,7 +160,7 @@ class CbtTotalTest : BaseTest() {
         assertBackgroundColor(R.id.layoutRisk, R.color.unsafe)
         assertBackgroundColor(R.id.layoutRisk2, R.color.unsafe)
 
-        prevPage()
+        TestUtil.prevPage()
 
         sleep(2000)
 
@@ -292,7 +290,7 @@ class CbtTotalTest : BaseTest() {
         assertBackgroundColor(R.id.layoutRisk, R.color.safe)
         assertBackgroundColor(R.id.layoutRisk2, R.color.safe)
 
-        prevPage()
+        TestUtil.prevPage()
 
         onView(withText(R.string.skip)).check(doesNotExist())
 

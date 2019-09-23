@@ -161,7 +161,7 @@ object TestUtil {
         getInstrumentation().waitForIdleSync()
     }
 
-    fun goBack(times: Int) {
+    fun prevPage(times: Int) {
         for (i in 0 until times) {
             mDevice.pressBack()
         }

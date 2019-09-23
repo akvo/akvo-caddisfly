@@ -45,6 +45,7 @@
             android:id="@+id/list_types"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/test_list"
             android:focusable="true"
             android:longClickable="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

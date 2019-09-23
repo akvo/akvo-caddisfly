@@ -238,7 +238,7 @@ class BluetoothTest : BaseTest() {
         onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
                 .check(matches(isDisplayed()))
 
-        TestUtil.goBack(4)
+        TestUtil.prevPage(4)
 
         navigateUp()
 

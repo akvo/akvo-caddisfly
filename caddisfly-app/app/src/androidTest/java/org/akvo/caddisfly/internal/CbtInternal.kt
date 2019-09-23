@@ -99,22 +99,22 @@ class CbtInternal {
     }
 
     @Test
-    fun testCbt1() {
+    fun testCbt() {
         cbtInstructions(Constants.CBT_ID, 0)
     }
 
     @Test
-    fun testCbt2() {
+    fun testCbtDilution() {
         cbtInstructions(Constants.CBT_ID_2, 1)
     }
 
     @Test
-    fun testCbt3() {
+    fun testCbtTotal() {
         cbtInstructions2(Constants.CBT_ID_3, 0)
     }
 
     @Test
-    fun testCbt4() {
+    fun testCbtTotalDilution() {
         cbtInstructions2(Constants.CBT_ID_4, 1)
     }
 
@@ -302,10 +302,41 @@ class CbtInternal {
         onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())))
         onView(withId(R.id.textUnit2)).check(matches(withText("MPN/100ml")))
 
-        onView(withText(R.string.next)).perform(click())
+        TestUtil.prevPage()
+
+        sleep(500)
+
+        onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()))
+
+        val customShapeButton1 = onView(Matchers
+                .allOf(withId(R.id.compartments), isDisplayed()))
+
+        customShapeButton1.perform(TestUtil.clickPercent(0.1f, 0.5f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.3f, 0.5f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.5f, 0.5f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.7f, 0.1f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.9f, 0.1f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.1f, 0.5f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.5f, 0.5f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.9f, 0.1f))
+
+        TestUtil.nextPage()
+
+        if (id == Constants.CBT_ID_2) {
+            onView(withText("Very Unsafe")).check(matches(isDisplayed()))
+            onView(withId(R.id.textResult1)).check(matches(withText(">1000")))
+            onView(withId(R.id.textResult2)).check(matches(withText(">1000")))
+        } else {
+            onView(withText("Very High Risk")).check(matches(isDisplayed()))
+            onView(withId(R.id.textResult1)).check(matches(withText(">100")))
+            onView(withId(R.id.textResult2)).check(matches(withText(">100")))
+        }
 
         getInstrumentation().waitForIdleSync()
 
+        TestUtil.nextPage()
+
+        onView(withText(R.string.round_off_test)).check(matches(isDisplayed()))
         TestUtil.checkTextInTable(R.string.dispose_contents_bag)
 
         if (scale > 1.5) {
@@ -503,8 +534,8 @@ class CbtInternal {
 
         onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()))
 
-        val customShapeButton = onView(Matchers.allOf(withId(R.id.compartments),
-                isDisplayed()))
+        val customShapeButton = onView(Matchers
+                .allOf(withId(R.id.compartments), isDisplayed()))
 
         customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f))
         customShapeButton.perform(TestUtil.clickPercent(0.5f, 0.5f))
@@ -529,6 +560,35 @@ class CbtInternal {
         onView(withId(R.id.textResult1)).check(matches(isDisplayed()))
         onView(withId(R.id.textResult2)).check(matches(isDisplayed()))
         onView(withId(R.id.textUnit2)).check(matches(withText("MPN/100ml")))
+
+        TestUtil.prevPage(4)
+
+        sleep(500)
+
+        onView(withText(R.string.setCompartmentColors)).check(matches(isDisplayed()))
+
+        val customShapeButton1 = onView(Matchers
+                .allOf(withId(R.id.compartments), isDisplayed()))
+
+        customShapeButton1.perform(TestUtil.clickPercent(0.1f, 0.5f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.3f, 0.5f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.5f, 0.5f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.7f, 0.1f))
+        customShapeButton1.perform(TestUtil.clickPercent(0.9f, 0.1f))
+
+        TestUtil.nextPage()
+
+        if (id == Constants.CBT_ID_4) {
+            onView(withText("Very Unsafe")).check(matches(isDisplayed()))
+            onView(withId(R.id.textResult1)).check(matches(withText(">1000")))
+            onView(withId(R.id.textResult2)).check(matches(withText(">1000")))
+        } else {
+            onView(withText("Very High Risk")).check(matches(isDisplayed()))
+            onView(withId(R.id.textResult1)).check(matches(withText(">100")))
+            onView(withId(R.id.textResult2)).check(matches(withText(">100")))
+        }
+
+        getInstrumentation().waitForIdleSync()
 
         onView(withText(R.string.next)).perform(click())
 
