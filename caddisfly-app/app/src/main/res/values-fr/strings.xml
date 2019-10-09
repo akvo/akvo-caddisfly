@@ -1,21 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?><!--
-  ~ Copyright (C) Stichting Akvo (Akvo Foundation)
-  ~
-  ~ This file is part of Akvo Caddisfly.
-  ~
-  ~ Akvo Caddisfly is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ Akvo Caddisfly is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
-  -->
+<?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Common-->
     <string name="ok">OK</string>
@@ -36,7 +19,7 @@
     <string name="close">Fermer</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
-    <string name="navigate_up">Naviguer vers le haut</string>
+    <string name="navigate_up">Revenir en haut de la page</string>
     <string name="logo">Logo</string>
     <string name="result">Résultat</string>
     <string name="language">Langue</string>
@@ -66,6 +49,7 @@
     <string name="selectTest">Sélectionnez Test</string>
     <string name="awaitingResult">Résultat en attente</string>
     <string name="deviceConnected">Appareil connecté</string>
+    <string name="unableToConnect">Impossible de se connecter. Essayez à nouveau de vous connecter.</string>
     <string name="sensorDetails">Les détails du capteur</string>
     <string name="enterAnIdForSensor">Entrez un identifiant pour ce capteur</string>
     <string name="ecSensorId">Identifiant de la sonde CE</string>
@@ -78,7 +62,7 @@
     <string name="uninstallAndInstallFromStore">Veuillez désinstaller puis installer la dernière version à partir de Play Store.</string>
     <!--Permission-->
     <string name="storagePermission">L\'autorisation de stockage est requise</string>
-    <string name="cameraAndStoragePermissions">Caméra &amp; les autorisations de stockage sont requises</string>
+    <string name="cameraAndStoragePermissions">Caméra &amp; amp; les autorisations de stockage sont requises</string>
     <!--Sensor-->
     <string name="incorrectDevice">Dispositif incorrect</string>
     <string name="expectedDeviceNotFound">Le capteur attendu n\'a pas été trouvé.</string>
@@ -96,11 +80,13 @@
     <string name="error_bluetooth_not_supported">Bluetooth non pris en charge.</string>
     <string name="location_permission">L\'autorisation de localisation est nécessaire pour la connexion par Bluetooth</string>
     <string name="unknown_device">Inconnu</string>
+    <string name="scanning">Recherche d\'un photomètre MD610.....</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Système de qualité de l\'eau</string>
     <string name="copyrightMessage">Copyright © Stichting Akvo</string>
     <string name="legalInformation">L\'information légale</string>
     <string name="terms_of_service">Conditions d\'utilisation</string>
+    <string name="settings_disabled">Réglages désactivés</string>
     <!--Software notices-->
     <string name="software_incorporates_material">Ce logiciel incorpore du matériel provenant des projets énumérés ci-dessous</string>
     <string name="apache_license_2">Licence Apache 2.0</string>

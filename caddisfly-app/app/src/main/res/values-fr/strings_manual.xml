@@ -19,6 +19,10 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <string name="takePhoto">Prendre une photo</string>
+    <string name="retakePhoto">Reprendre la photo</string>
+    <string name="take_photo_of_result">Prendre une photo du résultat</string>
+    <string name="take_photo_meter_result">Prendre une photo du résultat de mesure sur l\'appareil</string>
     <string name="enter_measured_value">Entrer la valeur mesurée</string>
 
     <string name="sd_on">Appuyez brièvement (*sd_on_off*) pour allumer l\'appareil.</string>
@@ -26,16 +30,26 @@
     <string name="sd_turn_off">Appuyez et maintenez enfoncé (*sd_on_off*) (3 sec.) pour éteindre l\'instrument.</string>
     <string name="sd_rinse">Rincer le capteur à l\'eau distillée (ne jamais toucher l\'électrode avec quoi que ce soit) et remettre le capuchon protecteur en place. S\'assurer que le capuchon de protection est rempli de solution KCL.</string>
     <string name="fill_turbidity_tube">Connectez les tubes de turbidité et remplissez le tube avec l\'échantillon d\'eau jusqu\'à ce que vous ne puissiez plus voir le cercle noir au fond jaune.</string>
+    <string name="empty_tube_see_black_circle">Videz le tube à de petits intervalles jusqu\'à ce que vous puissiez voir à nouveau le cercle noir au fond jaune.</string>
+    <string name="read_turbidity_on_side_tube">Lire la turbidité sur le côté du tube.</string>
+
     <string name="fill_in_value_turbidity_tube">Remplir la valeur de turbidité obtenue dans l\'app.</string>
     <string name="clean_turbidity_tube">Videz complètement le tube, nettoyez-le si nécessaire, débranchez les tubes et rangez-les.</string>
     <string name="sd_70_rinse">Rincer le capteur à l\'eau distillée (ne jamais toucher l\'électrode avec quoi que ce soit) et remettre le capuchon protecteur en place.</string>
 
     <!--pH Cl Manual Swatch Select Tester-->
     <string name="pt_open_lid">Ouvrez le couvercle du testeur.</string>
+    <string name="pt_fill_compartments_1">Rincer les compartiments avec l\'échantillon d\'eau.</string>
+    <string name="pt_fill_compartments_2">Remplissez les trois compartiments jusqu\'au bord avec l\'échantillon d\'eau. Évitez de toucher l\'échantillon d\'eau ou l\'intérieur du testeur.</string>
+    <string name="pt_read_result">Comparez la couleur de l\'échantillon avec les intervalles pour le pH et le chlore libre afin de trouver la meilleure correspondance.</string>
+    <string name="pt_select_result">Sélectionnez les intervalles de couleurs qui correspondent le mieux à votre échantillon.</string>
+    <string name="pt_select_result_next">Dans l\'écran suivant, appuyez sur les deux intervalles de couleurs qui correspondent le mieux à votre échantillon, comme indiqué dans l\'exemple ci-dessous.</string>
+    <string name="pt_clean_compartments">Nettoyer les compartiments avec de l\'eau distillée.</string>
     <string name="pt_add_reagent_1">Ajouter le réactif Phenol Red en comprimé directement de l\'emballage protecteur dans le compartiment gauche (pH Phenol Red). Éviter de toucher les comprimés de réactifs.</string>
     <string name="pt_add_reagent_2">Ajoutez le comprimé DPD No.1 directement de l\'emballage protecteur dans le compartiment droit (Cl DPD). Éviter de toucher les comprimés de réactifs.</string>
     <string name="pt_close_shake">Fermer la boîte avec le couvercle et agiter jusqu\'à ce que les réactifs soient dissous. Veillez à placer correctement le couvercle avec la flèche tournée vers vous.</string>
     <string name="select_color_intervals">Sélectionner les intervalles de couleurs</string>
+    <string name="color_intervals">Intervalles de couleurs</string>
     <string name="select_colors_before_continue">Sélectionner les intervalles de couleurs avant de continuer</string>
 
     <string name="checkit_comparator_uses">Le comparateur Checkit utilise deux cellules et un disque de couleur.</string>
@@ -59,11 +73,36 @@
     <string name="pipet_reagent_close_cells">Pipetter 2 ml de %reagent1 Solution de réactif dans chaque cellule. Fermer les cellules avec les couvercles et agiter doucement.</string>
 
 
+    <string name="add_tablet1_crush">Ajouter un comprimé de %réactif1 à l\'autre cuve et écraser le comprimé.</string>
+    <string name="add_tablet2_dissolve">Ajouter ensuite une pastille de %réactif2, écraser la pastille et la fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
+    <string name="take_right_cell">Retirer la cuve du compartiment droit du comparateur et retirer le couvercle.</string>
+    <string name="add_tablet2_swirl">Ajouter un comprimé de %réactif2 à la cuve dans l\'espace prévu à cet effet dans la partie droite du comparateur, le fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
+    <string name="edta_complex_zinc_1">Dans le cas de fortes teneurs en zinc :</string>
+    <string name="edta_complex_zinc_2">Ajouter un comprimé d\'EDTA à l\'échantillon d\'eau déjà coloré.</string>
     <string name="edta_complex_zinc_3">Écraser et mélanger pour dissoudre le comprimé. Passez ensuite à l\'étape suivante des instructions.</string>
+    <string name="add_reagent1_swirl_gently">Ajouter un % de réactif1 dans chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
+    <string name="add_reagent2_swirl_gently">Ajouter 15 gouttes de %réactif2 à chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
+    <string name="add_reagent3_swirl_gently">Ajouter 21 gouttes de %réactif3 à chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
+    <string name="remove_lids_place_sample_cell">Retirez les couvercles. Placer la cuve avec l\'échantillon tourné vers la marque (point) dans le compartiment droit du comparateur.</string>
+    <string name="place_reference_cell">Placez la cellule de référence face à la marque (point) dans le compartiment gauche du comparateur.</string>
+    <string name="match_colors_by_rotating_angle">Tenez le comparateur à un angle de façon à ce qu\'il y ait suffisamment de lumière du jour vers le nord pour traverser la cellule. Le miroir utilise la vue sur toute la longueur de la cellule.</string>
+    <string name="rinse_cells">Il est essentiel de bien rincer les cellules après chaque test.</string>
+    <string name="store_dark">Conservez le disque CHECKIT® dans l\'obscurité.</string>
+    <string name="round_off_test">Test d\'arrondi</string>
+    <string name="ph_coloration"><b>Remarque</b>: les valeurs de pH inférieures à 4 produisent toujours une coloration rouge. Les valeurs de pH supérieures à 10 produisent toujours une coloration violette.</string>
+    <string name="fill_one_cell">Remplir une cuvette jusqu\'à la marque de 10 ml avec l\'échantillon d\'eau.</string>
+    <string name="fill_both_cells">Remplir les deux cellules jusqu\'au trait de jauge de 10 ml avec l\'échantillon d\'eau.</string>
+    <string name="fill_other_cell_deionized">Remplir l\'autre cellule avec de l\'eau déminéralisée jusqu\'à la marque de 10 ml.</string>
+    <string name="close_the_cell">Fermer le tube à l\'aide d\'un couvercle et le placer face à la marque (point) dans l\'espace gauche du comparateur. Il agit comme un blanc.</string>
+    <string name="close_one_cell">Fermer une cuve avec un couvercle et la placer face à la marque (point) dans l\'espace gauche du comparateur. Il agit comme un blanc.</string>
+    <string name="place_sample_left_space">Placer la cuve avec l\'échantillon d\'eau tourné vers la marque (point) dans l\'espace gauche du comparateur.</string>
+    <string name="place_deionized_right_space">Placer la cuve avec l\'eau déminéralisée face à la marque (point) dans l\'espace de droite du comparateur.</string>
+    <string name="place_cell_right_space">Placez cette cellule face à la marque (point) dans l\'espace de droite du comparateur.</string>
+    <string name="place_second_cell">Placez la deuxième cellule face à la marque (point) dans l\'espace de droite du comparateur.</string>
     <string name="sd_50_dip_sample_1">Retirer cache de protection et rincez l\'électrode avec de l\'eau distillée.</string>
     <string name="sd_50_dip_sample_2">Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Agiter le capteur doucement pendant qu\'il est dans l\'échantillon.</string>
     <string name="sd_50_dip_sample_3">Appuyer brièvement sur (*sd_on_off*) pour geler/valider la valeur mesurée.</string>
-    <string name="sd_maintenance"><b>Remarque</b>: Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
+    <string name="sd_maintenance">Remarque: Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
     <string name="sd_70_dip_sample_1">Retirer cache de protection et rincez l\'électrode l\'échantillon d\'eau.</string>
     <string name="sd_70_dip_sample_2">Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Appuyer brièvement sur (*sd_on_off*) pour geler/valider la valeur mesurée.</string>
     <string name="wait_for_color_reaction">Attendre <b>Temps de %reactionTime1</b> pour une réaction complète de la couleur.</string>
@@ -71,5 +110,8 @@
     <string name="wait_for_color_reaction_3">Attendre le <b>Temps de %reactionTime3</b> pour une réaction complète de la couleur.</string>
     <string name="add_tablet_crush_swirl">Ajouter un comprimé de %reagent1 dans l\'autre cellule. Écrasez le comprimé et fermez-le avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
     <string name="add_tablet_crush_stir">Ajouter une pastille du %reagent3 à ce tube, l\'écraser et la mélanger avec un agitateur propre. Fermez-le avec le couvercle.</string>
+    <string name="edta_complex_copper_1">Dans le cas de teneurs élevées en cuivre :</string>
+    <string name="edta_complex_copper_2">Mesurez d\'abord le résultat (A). Ajouter ensuite un comprimé d\'EDTA à l\'échantillon d\'eau déjà coloré.</string>
+    <string name="edta_complex_copper_3">Écraser et mélanger pour dissoudre le comprimé. Lisez le deuxième résultat (B). La concentration Zinc est le premier résultat (A) moins le deuxième résultat (B).</string>
 
 </resources>

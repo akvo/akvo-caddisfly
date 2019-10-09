@@ -20,16 +20,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="cbt">E.coli - Aquagenx CBT</string>
+    <string name="e_coli">E.coli</string>
+    <string name="total_coliform">Coliforme Total</string>
+    <string name="prepare_sample">Préparer l\'échantillon</string>
+    <string name="cbt_compartments">Compartiments CBT</string>
 
     <string name="read_instructions">Lire les instructions</string>
     <string name="take_photo_compartments">Prenez une photo du sac à compartiment</string>
     <string name="confidenceInterval">Intervalle de confiance supérieur à 95&#37; </string>
+    <string name="confidenceIntervalTc">TC Intervalle de confiance supérieur à 95&#37; </string>
     <string name="setCompartmentColors">Définir les couleurs des compartiments</string>
 
     <string name="health_risk_category">Catégorie de risque pour la santé (Basé sur le Nombre le Plus Probable et l\'Intervalle de Confiance)</string>
-    <string name="recreational_health_risk_category">Catégorie de risque pour la santé récréative de l\'EPA des États-Unis Basé sur le Nombre le Plus Probable et sur un Niveau de Confiance Supérieur de 95%.</string>
+    <string name="recreational_health_risk_category">US EPA Catégorie de risque pour la santé récréative basée sur le MPN et le niveau de confiance supérieur à 95&#37; Niveau de confiance</string>
 
     <string name="collect_10ml_water_sample">Collecter <b>10 ml</b> d\'échantillon d\'eau avec Thio Bag (ou bouteille).</string>
+    <string name="avoid_touching">Évitez de toucher l\'intérieur du Thio Bag, du couvercle ou de la bouteille.</string>
+    <string name="open_growth_medium">Ouvrir le sachet de milieu de croissance et ajouter le milieu en poudre ou le bourgeon d\'essai directement dans l\'échantillon du sachet.</string>
+    <string name="dissolve_medium_in_sample_a"><b>Milieu de poudre</b> : Dissoudre le milieu dans l\'échantillon pendant quelques minutes. Tourner doucement le sac plusieurs fois jusqu\'à ce que le milieu soit complètement dissous.</string>
+    <string name="dissolve_medium_in_sample_b"><b>Bourgeon d\'essai</b> : Dissoudre le milieu dans l\'échantillon pendant 10 à 12 minutes maximum en agitant périodiquement la bouteille ou en pressant le bouton de test dans le sac Thio pour favoriser la libération du milieu de son support en plastique.</string>
+    <string name="when_medium_dissolved">Lorsque le milieu est complètement dissous, l\'échantillon d\'eau devient jaune.</string>
+    <string name="leave_test_bud_carrier">Lors de l\'utilisation d\'un bourgeon-test, laissez-le dans le Thio Bag ou dans la bouteille tout en versant la solution.</string>
+    <string name="prepare_area_put_on_gloves">Préparer la zone de travail et mettre des gants en plastique.</string>
     <string name="collect_100ml_water_sample">Collectez <b>100 ml</b> d\'échantillon d\'eau avec une bouteille ou avec un sac Thio.</string>
     <string name="label_compartment_bag">Étiqueter le sac et/ou apposer l\'étiquette à code à barres sur le sac à compartiment.</string>
     <string name="tear_perforated_seam">Retirer la couture perforée qui se trouve au dessus du sac.</string>
@@ -42,7 +54,12 @@
     <string name="close_top_of_bag">Fermez le haut du sac avec le joint jaune "Whirl-Pak", puis roulez le sac vers le joint d\'étanchéité <b>(étape 1)</b> et pliez les extrémités jaunes <b>(étape 2)</b> .</string>
     <string name="let_incubate">Laissez l\'échantillon incuber, selon la température ambiante:</string>
     <string name="take_photo_of_incubated">Prenez une photo de l\'échantillon incubé.</string>
-    <string name="change_colors_to_match">Changez les couleurs sur l\'écran du téléphone pour les faire correspondre aux couleurs de l\'échantillon dans les compartiments du sac.</string>
+    <string name="change_colors_to_match">Dans l\'écran suivant, changez les couleurs de l\'interface pour qu\'elles correspondent à celles de l\'échantillon dans les compartiments du sac.</string>
+    <string name="click_compartments_to_change">Cliquez sur les compartiments pour changer de couleur.</string>
+    <string name="note_blue_green_specks"><b>REMARQUE</b> : Toute trace de bleu ou de bleu/vert dans un compartiment indique la présence d\'E. coli, ne serait-ce que des taches de couleur bleu/bleu-vert ou simplement du sédiment bleu/bleu-vert au fond d\'un compartiment.</string>
+    <string name="add_free_chlorine">Ajouter 1 à 2 ml d\'eau de Javel liquide (NaOCl) ou suffisamment de comprimés de chlore libre (hypochlorite de calcium ou dichloroisocyanurate de sodium) pour obtenir environ 100 mg de chlore libre.</string>
+    <string name="dispose_contents_bag">Après 45 minutes, verser le contenu dans un évier, une toilette ou un trou dans le sol et jeter le sac de compartiment vide en toute sécurité.</string>
+    <string name="retain_plastic_seal_reuse">Conservez le clip en plastique pour le réutiliser.</string>
     <string name="add_90ml_distilled_water">Ajouter <b>90 ml</b> d\'eau distillée à l\'échantillon d\'eau.</string>
 
     <string name="low_risk_safe">Faible risque / Sûr</string>
@@ -58,14 +75,19 @@
 
     <string name="temperature">Température</string>
     <string name="incubation_time">Temps d\'incubation</string>
-    <string name="temperature_35_37">35 – 44.5°C</string>
+    <string name="temperature_35_37">35 – 37°C</string>
     <string name="temperature_31_34">31 – 34°C</string>
     <string name="temperature_25_30">25 – 30°C</string>
     <string name="below25Degrees">En dessous de 25 °C</string>
-    <string name="hours_20">20 – 24 heures</string>
+    <string name="hours_20">20 heures</string>
     <string name="hours_24_30">24 – 30 heures</string>
     <string name="hours_40_48">40 – 48 heures</string>
     <string name="incubate_in_portable">Incuber dans un incubateur portatif, de préférence entre 35 et 37 ° C pendant 48 heures, ou mettre dans ou à proximité d\'une autre source de chaleur.</string>
     <string name="in_addition_to_portable">En plus des incubateurs portables, les échantillons peuvent être maintenus entre 25 ° C et 44.5 ° C en utilisant: des refroidisseurs / sachets thermiques; proximité des sources de chaleur pour les humains et les aliments; l\'incubateur de volaille ou de reptile, ou près des bobines du réfrigérateur ou des évents de chauffage de la pièce.</string>
 
+    <string name="dissolve_medium_in_sample_tc">Dissoudre le milieu dans l\'échantillon pendant quelques minutes maximum en agitant périodiquement le Thio Bag.</string>
+    <string name="take_photo_incubated_tc">Prendre une photo de l\'échantillon incubé en le faisant briller avec une lumière UV (365 nm) sur le sac du compartiment dans un environnement sombre.</string>
+    <string name="note_total_coliform"><b>REMARQUE</b> : Les compartiments positifs pour E. coli sont automatiquement positifs pour les coliformes totaux et seront présélectionnés dans la prochaine interface.</string>
+    <string name="remember_to_shine">N\'oubliez pas de faire briller une lumière UV pour observer la couleur bleue fluorescente (positive pour les coliformes totaux).</string>
+    <string name="open_growth_medium_powder">Ouvrir le sachet de milieu de croissance et ajouter le milieu en poudre directement dans l\'échantillon à partir du sachet.</string>
 </resources>

@@ -43,7 +43,28 @@
     <string name="avoid_shadows_on_card">Évitez les ombres sur la carte</string>
     <string name="prepare_camera_instruction">Ne prélevez pas encore d\'échantillon. Tenez l\'appareil photo au-dessus de la carte de couleurs et réglez sa position jusqu\'à ce que la vérification soit réussie.</string>
 
+    <!--Water-->
+    <string name="place_strip_clr_hg_1"><b>Placez une bandelette-test propre sous la bandelette-test utilisée de manière à ce que le patch ait un fond blanc.</b></string>
+    <string name="place_strip_clr_hg_2">Placez les bandes empilées avec le patch tourné vers <b>la gauche</b> sur la zone noire de la carte de référence couleur et appuyez sur <b>Start</b>.</string>
+    <string name="as_safety_1"><b>DANGER</b> : De l\'hydrogène et de l\'arsine sont générés pendant l\'essai. Travailler dans un endroit bien aéré, loin des flammes nues et autres sources d\'inflammation.</string>
+    <string name="as_safety_2">Consulter les fiches signalétiques pour obtenir des renseignements sur la manipulation, l\'entreposage et l\'élimination sécuritaires. Éliminer conformément à la réglementation locale. Éliminer les déchets conformément à la législation environnementale.</string>
+    <string name="as_ins_1a">Insérez une bandelette-test dans le capuchon de façon à ce que le tampon recouvre complètement la petite ouverture.</string>
+    <string name="as_ins_1b">Fermez le rabat et appuyez pour le fixer.</string>
+    <string name="as_ins_7a">Remplissez la fiole de mesure carrée jusqu\'au sommet avec l\'échantillon (9,6 ml).</string>
+    <string name="as_ins_7b">Verser l\'échantillon dans le flacon de réaction.</string>
+    <string name="as_ins_3a">Ajouter un <b>réactif #1</b>.</string>
+    <string name="as_ins_3b">Si une odeur d\'oeuf pourri est détectée après l\'ajout du réactif #1, le sulfure est présent à des niveaux interférents,<b>[un sujet=sulfure]cliquez ici[/a]</b>pour voir comment enlever le sulfure avant de continuer.</string>
+    <string name="as_ins_3c">Ajouter un oreiller en poudre du <b>réactif #2</b> à l\'échantillon.</string>
+    <string name="as_ins_4a">Fixer immédiatement le bouchon à la bouteille de réaction.</string>
+    <string name="as_ins_4b">Agiter continuellement pendant 60 secondes. <b>Ne pas agiter, ne pas inverser ni laisser l\'échantillon se déposer sur la bandelette</b>.</string>
     <string name="as_ins_5">Patientez 20 minutes. Remuez deux pendant la période de la réaction</string>
+    <string name="as_ins_6">Retirez la bandelette-test de son capuchon et placez immédiatement la bandelette-test tournée vers <b>la gauche</b> sur la carte de référence couleur et appuyez sur <b>Démarrer</b>.</string>
+    <string name="fill_half_with_sample">Remplir <b>la moitié</b> de la cuvette avec de l\'eau de l\'échantillon.</string>
+    <string name="collect_water_sample">Prélever un échantillon d\'eau.</string>
+    <string name="prepare_sample_ka">Les échantillons contenant plus de 1500 mg/l de K doivent être dilués avec de l\'eau distillée.</string>
+    <string name="prepare_sample_kb">Le pH doit être compris entre 5 et 14. Ajuster, si nécessaire, avec de l\'hydroxyde de calcium.</string>
+    <string name="finish_ka">Fermez le flacon de réactif et le tube contenant les bandelettes réactives immédiatement après utilisation.</string>
+    <string name="finish_kb">Rincer le récipient de test uniquement avec de l\'eau distillée.</string>
     <string name="open_one_foil_and_add_powder">Ouvrez un paquet d\'alluminium et ajoutez le contenu de la poudre dans le flacon</string>
     <string name="cap_vial_and_shake_rapidly">Fermez le flacon et secouez rapidement pendant <b>5 secondes</b>. Retirez le capuchon.</string>
     <string name="dip_strip_into_water_and_remove">Plongez une bandelette dans l\'échantillon et rétirez immédiatement</string>
@@ -56,7 +77,7 @@
     <string name="shake_excess_water_once">Secouez <b>une fois</b> l\'excès d\'eau de la bandelette réactive.</string>
     <string name="do_not_shake_excess_water">Ne pas secouez l\'excès d\'eau de la bandelette de test.</string>
     <string name="allow_excess_liquid_to_run_off">Laissez l\'excès de liquide sur le long de la bordure de la bandelette couler sur une serviette en papier absorbant.</string>
-    <string name="add_reagent_k1">Ajoutez <b>1 goutte</b> de réactif K-1 sur la zone de réaction et laisser agir pendant <b>1 minute</b>.</string>
+    <string name="add_reagent_k1">Ajouter <b>1 goutte</b> de <b>réactif K-1 </b>sur la zone de réaction et laisser réagir pendant <b>1 minute</b>.</string>
     <string name="fill_bottle_5ml">Remplissez le bidon fournie avec <b>5 ml</b> de votre échantillon d\'eau.</string>
     <string name="add_10_drops_nh1">Ajoutez <b>10 gouttes</b> du <b>réactif NH4-1</b> à l\'échantillon.</string>
     <string name="swirl_and_mix">Secouez très bien l\'échantillon pour mélanger le réactif.</string>
@@ -76,6 +97,7 @@
     <string name="as_remove_sulfide_2">Imbibez le coton avec quelques gouttes d\'acétate de plomb. Pressez pour enlever l\'excès de liquide du coton, laissant l\'humidité.</string>
     <string name="as_remove_sulfide_3">Appuyez sur la boule de coton imbibée pour la faire entrer dans la petite ouverture du capuchon du bidon. Rassurez-vous que le coton est bien en place et qu\'il y a de l\'espace restant entre le coton et la surface supérieure du capuchon.</string>
     <string name="as_remove_sulfide_4">Insérez la bandelette de test comme indiqué à l\'étape 1 du test 0–500 ou 0–4000 ppb de la procédure et continuez le test.</string>
-    <string name="as_remove_sulfide_note">Remarque: L\'acétate de plomb ne doit pas être en contact avec la bandelette de test!</string>
+    <string name="as_remove_sulfide_note"><b>Remarque</b> : L\'acétate de plomb ne doit pas entrer en contact avec la bandelette de test !</string>
     <string name="as_remove_sulfide_wear_gloves">Portez toujours des gants ou lavez vous bien les mains après avoir manipulé de l\'acétate de plomb.</string>
+
 </resources>

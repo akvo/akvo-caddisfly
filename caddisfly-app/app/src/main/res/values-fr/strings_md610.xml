@@ -71,7 +71,7 @@
     <string name="fill_new_vial_24_with_10ml_sample_a">Rincez le flacon (24 mm Ø) avec l\'échantillon d\'eau.</string>
     <string name="fill_new_vial_24_with_10ml_sample_b">Remplissez un flacon propre de (24 mm Ø) avec <b>10 ml de l\'échantillon d\'eau (celui-ci est l\'échantillon)</b></string>
     <string name="add_water_till_10ml">Ajoutez l\'échantillon d\'eau jusqu\'au trait de 10 ml marqué sur le flacon</string>
-    <string name="add_sample_exact">Ajoutez <b>exactement %sampleQuantity d\'échantillon d\'eau</b> au flacon préparé. Avertissement: Le flacon doit être rempli jusqu\'au sommet!</string>
+    <string name="add_sample_exact">Verser la quantité <b>exacte%s de l\'échantillon d\'eau en ml dans </b>la cuvette préparée.<b>  Attention : Le flacon est rempli jusqu\'en haut !</b></string>
     <string name="remove_vial">Rétirez le tube d\'echantillon de la chambre.</string>
     <string name="remove_vial_leave_drops">Rétirez le tube de la chambre d\'echantillon et <b>videz</b> le, laissez un peu de gouttes dans le flacon</string>
     <string name="remove_vial_empty">Rétirez le tube d\'échantillon de la chambre et <b>videz le flacon</b></string>
@@ -94,7 +94,7 @@
     <string name="add_reagent_1_liquid">Remplissez le flacon de gouttes de la même taille en maintenant la bouteille verticalement tout en serrant lentement: <b>%reagent1</b></string>
     <string name="add_reagent_2_liquid">Remplissez le flacon avec des gouttes de la même taille en maintenant la bouteille verticalement tout en serrant lentement: <b>%reagent2</b></string>
     <string name="add_reagent_3_liquid">Remplissez le flacon avec des gouttes de la même taille en maintenant la bouteille verticalement tout en serrant lentement: <b>%reagent3</b></string>
-    <string name="add_reagent_1_liquid_exact_ml">Ajoutez <b>exactement %reagent1 à l\'échantillon d\'eau</b> au flacon préparé. (Avertissement: Le flacon doit être rempli jusqu\'au sommet!)</string>
+    <string name="add_reagent_1_liquid_exact_ml">Ajouter<b> exactement la solution de réactif %reagent1</b> à l\'échantillon d\'eau. <b>(Attention : la fiole est remplie jusqu\'en haut !)</b></string>
     <string name="fill_nitrate_test_tube">Remplissez le tube du test de Nitrate avec <b>20 ml de l\'échantillon d\'eau</b>.</string>
     <string name="add_spoon_nitrate_test_powder">Ajouter <b>une cuillère à soupe de poudre de %reagent1</b>.</string>
     <string name="add_spoon_cyanide_1">Ajouter <b>deux cuillères n° 4 (blanches) de Cyanide-11</b> dans l\'échantillon d\'eau préparé.</string>
@@ -140,7 +140,7 @@
     <string name="reaction_tube_1_fifth_ml_blank">Ouvrez un flacon de réaction à couvercle blanc et ajoutez <b>0.2 ml d\'eau déminéralisée</b> (ceci est la cuvette de calibrage).</string>
     <string name="reaction_tube_1_fifth_ml_sample">Ouvrez un autre flacon de réaction à couvercle blanc et ajoutez <b>0.2 ml de l\'échantillon d\'eau</b> (ceci est l\'échantillon).</string>
     <string name="heat_120_100">Chauffez le flacon pendant <b>120 minutes</b> dans un thermoréacteur préchauffé à une temperature de <b>100°C</b></string>
-    <string name="heat_120_150">Chauffez les flacons pendant <b>120 minutes</b> dans un thermoréacteur préchauffé à une temperature de <b>150°C</b>. (Attention: les flacons sont chauds!)</string>
+    <string name="heat_120_150">Chauffer les flacons pendant <b>120 minutes</b> dans le réacteur préchauffé à une température de<b> 150°C</b>. <b>(ATTENTION : Les fioles sont chaudes !)</b></string>
     <string name="remove_cool_a">Rétirez le flacon du thermoréacteur. <b>(Attention: les flacons sont chauds!)</b>.</string>
     <string name="remove_cool_b">Inverser le flacon et laisser refroidir à température ambiante. Ne pas placer les flacons chauds dans la chambre de mesure de l\'appareil.</string>
     <string name="remove_cool_60_a"><b>(Attention: les flacons sont chauds!)</b> Rétirez les tubes du bloc chauffant et laissez-les refroidir à 60°C ou moins.</string>
@@ -171,4 +171,12 @@
     <string name="dechlorinate_residual_chlorine_1">Dans le cas d\'un niveaux élevés de chlore résiduel, effectuer l\'analyse avec un échantillon d\'eau déchlorée. Pour la déchloration :</string>
     <string name="dechlorinate_residual_chlorine_2">Ajouter un comprimé DECHLOR à l\'échantillon d\'eau.</string>
     <string name="dechlorinate_residual_chlorine_3">Écraser et mélanger pour dissoudre le comprimé. Passez ensuite à l\'étape suivante des instructions.</string>
+    <string name="ci_dechlorinate_residual_chlorine_2">Ajouter un comprimé DECHLOR à l\'échantillon d\'eau dans l\'autre cuvette.</string>
+
+    <string name="wipe_outside_prepared_vial_blank">Essuyer l\'extérieur de la fiole préparée (blanc).</string>
+    <string name="hold_blank_vial_place_in_chamber">Tenir la fiole vide par le couvercle, placer la fiole dans la chambre et aligner les repères fléchés.</string>
+    <string name="press_zero_perform_test">Appuyez sur (*zero*) pour effectuer le <b>test zéro</b></string>
+    <string name="tube_upright_invert_flocculation">Tenir le tube à la verticale et après que l\'agent réducteur se soit déposé au fond, l\'inverser doucement trois à quatre fois afin de compléter la floculation de l\'agent réducteur.</string>
+    <string name="stand_tube_further_2_minutes">Laissez le tube reposer pendant 2 minutes supplémentaires.</string>
+
 </resources>
