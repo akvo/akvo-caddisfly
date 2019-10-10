@@ -52,6 +52,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 @RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
 class SensorInstructions : BaseTest() {

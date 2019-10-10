@@ -55,7 +55,7 @@ public class Instruction implements Parcelable, Cloneable {
     private final String layout;
     private int index;
 
-    public Instruction(Instruction instruction) {
+    private Instruction(Instruction instruction) {
         index = instruction.index;
         section = new ArrayList<>(instruction.section);
         image = instruction.image;

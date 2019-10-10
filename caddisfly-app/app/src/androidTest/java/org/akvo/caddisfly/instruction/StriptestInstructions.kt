@@ -54,6 +54,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 @RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -154,7 +155,7 @@ class StriptestInstructions : BaseTest() {
             pressBack()
             onView(withText("pH")).check(matches(isDisplayed()))
         } else {
-            onView(withText("No strip found")).check(matches(isDisplayed()))
+            onView(withText(R.string.no_strip_found)).check(matches(isDisplayed()))
         }
 
         TestHelper.clickSubmitResultButton()

@@ -19,7 +19,7 @@
     <string name="close">Fermer</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
-    <string name="navigate_up">Revenir en haut de la page</string>
+    <string name="navigate_up">Naviguer vers le haut</string>
     <string name="logo">Logo</string>
     <string name="result">Résultat</string>
     <string name="language">Langue</string>
@@ -62,7 +62,7 @@
     <string name="uninstallAndInstallFromStore">Veuillez désinstaller puis installer la dernière version à partir de Play Store.</string>
     <!--Permission-->
     <string name="storagePermission">L\'autorisation de stockage est requise</string>
-    <string name="cameraAndStoragePermissions">Caméra &amp; amp; les autorisations de stockage sont requises</string>
+    <string name="cameraAndStoragePermissions">Caméra &amp; les autorisations de stockage sont requises</string>
     <!--Sensor-->
     <string name="incorrectDevice">Dispositif incorrect</string>
     <string name="expectedDeviceNotFound">Le capteur attendu n\'a pas été trouvé.</string>

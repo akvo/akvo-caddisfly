@@ -59,7 +59,7 @@ import timber.log.Timber;
 public class StripMeasureActivity extends BaseActivity implements StripMeasureListener {
 
     public static final boolean DEBUG = false;
-    TestInfo testInfo;
+    private TestInfo testInfo;
     // a handler to handle the state machine of the preview, capture, decode, fullCapture cycle
     private StriptestHandler mStriptestHandler;
     private FinderPatternIndicatorView mFinderPatternIndicatorView;

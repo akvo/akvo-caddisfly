@@ -151,7 +151,7 @@ public class TestInfo implements Parcelable {
         isCategory = true;
     }
 
-    protected TestInfo(Parcel in) {
+    private TestInfo(Parcel in) {
         isCategory = in.readByte() != 0;
         category = in.readString();
         name = in.readString();

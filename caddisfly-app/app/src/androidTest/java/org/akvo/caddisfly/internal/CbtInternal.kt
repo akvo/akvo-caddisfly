@@ -98,15 +98,18 @@ class CbtInternal {
         mActivityTestRule.finishActivity()
     }
 
+
     @Test
     fun testCbt() {
         cbtInstructions(Constants.CBT_ID, 0)
     }
 
+
     @Test
     fun testCbtDilution() {
         cbtInstructions(Constants.CBT_ID_2, 1)
     }
+
 
     @Test
     fun testCbtTotal() {
@@ -259,9 +262,13 @@ class CbtInternal {
 
         TestUtil.nextPage()
 
-        onView(withText("Low Risk")).check(matches(isDisplayed()))
+        val riskText = getString(R.string.low_risk_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val lowRisk = riskText[0].trim { it <= ' ' }
+        val safe = riskText[1].trim { it <= ' ' }
 
-        onView(withText("Safe")).check(matches(isDisplayed()))
+        onView(withText(lowRisk)).check(matches(isDisplayed()))
+        onView(withText(safe)).check(matches(isDisplayed()))
 
         onView(withId(R.id.textResult1)).check(matches(withText("0")))
         onView(withId(R.id.textResult1)).check(matches(isDisplayed()))
@@ -286,17 +293,22 @@ class CbtInternal {
 
         getInstrumentation().waitForIdleSync()
 
+        val riskText2 = getString(R.string.intermediate_possibly_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val intermediateRisk = riskText2[0].trim { it <= ' ' }
+        val possiblySafe = riskText2[1].trim { it <= ' ' }
+
         if (id == Constants.CBT_ID_2) {
-            onView(withText("Low Risk")).check(matches(isDisplayed()))
+            onView(withText(lowRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText("56")))
             onView(withId(R.id.textResult2)).check(matches(withText("56")))
         } else {
-            onView(withText("Intermediate Risk")).check(matches(isDisplayed()))
+            onView(withText(intermediateRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText("5.6")))
             onView(withId(R.id.textResult2)).check(matches(withText("5.6")))
         }
 
-        onView(withText("Possibly Safe")).check(matches(isDisplayed()))
+        onView(withText(possiblySafe)).check(matches(isDisplayed()))
 
         onView(withId(R.id.textResult1)).check(matches(isDisplayed()))
         onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())))
@@ -322,12 +334,16 @@ class CbtInternal {
 
         TestUtil.nextPage()
 
+        val riskText3 = getString(R.string.very_high_risk_unsafe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val veryHighRisk = riskText3[1].trim { it <= ' ' }
+
         if (id == Constants.CBT_ID_2) {
-            onView(withText("Very Unsafe")).check(matches(isDisplayed()))
+            onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText(">1000")))
             onView(withId(R.id.textResult2)).check(matches(withText(">1000")))
         } else {
-            onView(withText("Very High Risk")).check(matches(isDisplayed()))
+            onView(withText(veryHighRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText(">100")))
             onView(withId(R.id.textResult2)).check(matches(withText(">100")))
         }
@@ -519,8 +535,13 @@ class CbtInternal {
 
         TestUtil.nextPage()
 
-        onView(withText("Low Risk")).check(matches(isDisplayed()))
-        onView(withText("Safe")).check(matches(isDisplayed()))
+        val riskText = getString(R.string.low_risk_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val lowRisk = riskText[0].trim { it <= ' ' }
+        val safe = riskText[1].trim { it <= ' ' }
+
+        onView(withText(lowRisk)).check(matches(isDisplayed()))
+        onView(withText(safe)).check(matches(isDisplayed()))
 
         onView(withId(R.id.textResult1)).check(matches(withText("0")))
         onView(withId(R.id.textResult1)).check(matches(isDisplayed()))
@@ -546,16 +567,16 @@ class CbtInternal {
         getInstrumentation().waitForIdleSync()
 
         if (id == Constants.CBT_ID_4) {
-            onView(withText("Low Risk")).check(matches(isDisplayed()))
+            onView(withText(lowRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText("0")))
             onView(withId(R.id.textResult2)).check(matches(withText("56")))
         } else {
-            onView(withText("Low Risk")).check(matches(isDisplayed()))
+            onView(withText(lowRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText("0")))
             onView(withId(R.id.textResult2)).check(matches(withText("5.6")))
         }
 
-        onView(withText("Safe")).check(matches(isDisplayed()))
+        onView(withText(safe)).check(matches(isDisplayed()))
 
         onView(withId(R.id.textResult1)).check(matches(isDisplayed()))
         onView(withId(R.id.textResult2)).check(matches(isDisplayed()))
@@ -578,12 +599,16 @@ class CbtInternal {
 
         TestUtil.nextPage()
 
+        val riskText3 = getString(R.string.very_high_risk_unsafe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val veryHighRisk = riskText3[1].trim { it <= ' ' }
+
         if (id == Constants.CBT_ID_4) {
-            onView(withText("Very Unsafe")).check(matches(isDisplayed()))
+            onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText(">1000")))
             onView(withId(R.id.textResult2)).check(matches(withText(">1000")))
         } else {
-            onView(withText("Very High Risk")).check(matches(isDisplayed()))
+            onView(withText(veryHighRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText(">100")))
             onView(withId(R.id.textResult2)).check(matches(withText(">100")))
         }
@@ -602,6 +627,7 @@ class CbtInternal {
 
         TestHelper.clickSubmitButton()
     }
+
 
     @Test
     fun testCbtWithoutSurvey() {

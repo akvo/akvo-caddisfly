@@ -65,10 +65,10 @@ public class ManualTestActivity extends BaseActivity
         implements MeasurementInputFragment.OnSubmitResultListener,
         ResultPhotoFragment.OnPhotoTakenListener, OnKeyboardVisibilityListener {
 
-    ImageView imagePageRight;
-    ImageView imagePageLeft;
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    PageIndex pageIndex = new PageIndex();
+    private ImageView imagePageRight;
+    private ImageView imagePageLeft;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private PageIndex pageIndex = new PageIndex();
 
     private TestInfo testInfo;
     private CustomViewPager viewPager;
@@ -474,7 +474,7 @@ public class ManualTestActivity extends BaseActivity
             return view;
         }
 
-        public void setResult(TestInfo testInfo) {
+        void setResult(TestInfo testInfo) {
             if (testInfo != null && testInfo.getResults().size() > 1 && getActivity() != null) {
 
                 LayoutInflater inflater = (LayoutInflater) getActivity()

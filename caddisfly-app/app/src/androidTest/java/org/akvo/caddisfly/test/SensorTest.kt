@@ -89,7 +89,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textToolbarTitle), withText("Soil - Moisture"))).check(matches(isDisplayed()))
 
-        onView(withText("Next")).perform(click())
+        onView(withText(R.string.next)).perform(click())
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Soil - Moisture"))).check(matches(isDisplayed()))
 
@@ -189,7 +189,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textToolbarTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        onView(withText("Next")).perform(click())
+        onView(withText(R.string.next)).perform(click())
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
@@ -224,11 +224,11 @@ class SensorTest : BaseTest() {
 
         clickExternalSourceButton(2)
 
-        onView(withText("Next")).perform(click())
+        onView(withText(R.string.next)).perform(click())
 
         SystemClock.sleep(12000)
 
-        onView(allOf<View>(withId(R.id.textToolbarTitle), withText("Sensor"))).check(matches(isDisplayed()))
+        onView(allOf<View>(withId(R.id.textToolbarTitle), withText(R.string.sensor))).check(matches(isDisplayed()))
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
@@ -288,11 +288,11 @@ class SensorTest : BaseTest() {
 
         clickExternalSourceButton(2)
 
-        onView(withText("Next")).perform(click())
+        onView(withText(R.string.next)).perform(click())
 
         SystemClock.sleep(12000)
 
-        onView(allOf<View>(withId(R.id.textToolbarTitle), withText("Sensor"))).check(matches(isDisplayed()))
+        onView(allOf<View>(withId(R.id.textToolbarTitle), withText(R.string.sensor))).check(matches(isDisplayed()))
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 

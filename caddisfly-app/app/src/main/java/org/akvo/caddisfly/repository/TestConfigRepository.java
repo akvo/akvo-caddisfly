@@ -1,5 +1,7 @@
 package org.akvo.caddisfly.repository;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -14,7 +16,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import androidx.annotation.Nullable;
 import timber.log.Timber;
 
 public class TestConfigRepository {
@@ -137,11 +138,7 @@ public class TestConfigRepository {
         }
 
         testInfo = getTestInfoItem(assetsManager.getCustomJson(), id);
-        if (testInfo != null) {
-            return testInfo;
-        }
-
-        return null;
+        return testInfo;
     }
 
     @Nullable

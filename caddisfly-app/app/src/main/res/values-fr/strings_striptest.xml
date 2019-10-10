@@ -100,4 +100,9 @@
     <string name="as_remove_sulfide_note"><b>Remarque</b> : L\'acétate de plomb ne doit pas entrer en contact avec la bandelette de test !</string>
     <string name="as_remove_sulfide_wear_gloves">Portez toujours des gants ou lavez vous bien les mains après avoir manipulé de l\'acétate de plomb.</string>
 
+    <!--Soil-->
+    <string name="collect_mehlich_extraction_sample">Collecter l\'échantillon d\'extraction de Mehlich</string>
+    <string name="collect_5ml_mehlich_sample">Collecter <b>5 ml</b> d\'échantillon d\'extraction de Mehlich à l\'aide du flacon fourni.</string>
+    <string name="collect_water_extraction_sample">collecter l\'échantillon d\'eau d\'extraction </string>
+    <string name="dip_strip_15_seconds_and_remove">Plonger une bandelette dans l\'échantillon pendant <b>15 secondes</b> et la retirer.</string>
 </resources>

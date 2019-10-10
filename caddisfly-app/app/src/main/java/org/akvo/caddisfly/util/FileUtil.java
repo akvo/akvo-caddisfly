@@ -79,7 +79,7 @@ public final class FileUtil {
 
         PrintWriter pw = null;
         try {
-            Writer w = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            Writer w = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             pw = new PrintWriter(w);
             pw.write(data);
 

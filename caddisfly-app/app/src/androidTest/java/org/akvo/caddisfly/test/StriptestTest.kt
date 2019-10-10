@@ -30,6 +30,7 @@ import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 
+
 @RequiresExternalApp
 class StriptestTest : BaseTest() {
 
@@ -74,7 +75,7 @@ class StriptestTest : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun startMerckpHTest() {
+    fun pHMerckTest() {
         testMerckPH()
     }
 
@@ -169,7 +170,7 @@ class StriptestTest : BaseTest() {
         } else {
             sleep(5000)
             onView(withText(R.string.result)).check(matches(isDisplayed()))
-            onView(withText("No strip found")).check(matches(isDisplayed()))
+            onView(withText(R.string.no_strip_found)).check(matches(isDisplayed()))
         }
 
         TestHelper.clickSubmitResultButton()
@@ -236,7 +237,7 @@ class StriptestTest : BaseTest() {
         } else {
             sleep(5000)
             onView(withText(R.string.result)).check(matches(isDisplayed()))
-            onView(withText("No strip found")).check(matches(isDisplayed()))
+            onView(withText(R.string.no_strip_found)).check(matches(isDisplayed()))
         }
 
         TestHelper.clickSubmitResultButton()
@@ -288,7 +289,7 @@ class StriptestTest : BaseTest() {
             onView(withText("pH")).check(matches(isDisplayed()))
             onView(withText("4.8")).check(matches(isDisplayed()))
         } else {
-            onView(withText("No strip found")).check(matches(isDisplayed()))
+            onView(withText(R.string.no_strip_found)).check(matches(isDisplayed()))
         }
 
         onView(withId(R.id.image_result)).check(matches(isDisplayed()))
@@ -335,7 +336,7 @@ class StriptestTest : BaseTest() {
         } else {
             sleep(5000)
             onView(withText(R.string.result)).check(matches(isDisplayed()))
-            onView(withText("No strip found")).check(matches(isDisplayed()))
+            onView(withText(R.string.no_strip_found)).check(matches(isDisplayed()))
         }
 
         TestHelper.clickSubmitResultButton()
@@ -385,7 +386,7 @@ class StriptestTest : BaseTest() {
         } else {
             sleep(5000)
             onView(withText(R.string.result)).check(matches(isDisplayed()))
-            onView(withText("No strip found")).check(matches(isDisplayed()))
+            onView(withText(R.string.no_strip_found)).check(matches(isDisplayed()))
         }
 
         TestHelper.clickSubmitResultButton()

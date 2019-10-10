@@ -116,6 +116,6 @@ class AppPreferencesTest {
 
     companion object {
 
-        private val DEFAULT_FALSE = false
+        private const val DEFAULT_FALSE = false
     }
 }

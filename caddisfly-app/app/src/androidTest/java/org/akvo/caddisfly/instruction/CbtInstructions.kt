@@ -199,7 +199,7 @@ class CbtInstructions : BaseTest() {
             } catch (e: Exception) {
 
                 val appCompatTextView = onView(
-                        allOf<View>(withText("Read Instructions"),
+                        allOf<View>(withText(R.string.read_instructions),
                                 childAtPosition(
                                         childAtPosition(
                                                 withClassName(`is`("android.widget.TableLayout")),

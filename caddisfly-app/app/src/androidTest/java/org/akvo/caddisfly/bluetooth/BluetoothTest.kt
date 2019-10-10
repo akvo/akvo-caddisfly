@@ -58,6 +58,7 @@ import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.*
 
 @RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
@@ -87,6 +88,7 @@ class BluetoothTest : BaseTest() {
         loadData(mActivityTestRule.activity, mCurrentLanguage)
         clearPreferences(mActivityTestRule)
     }
+
 
     @Test
     @RequiresDevice
@@ -225,7 +227,7 @@ class BluetoothTest : BaseTest() {
 
         TestUtil.nextPage()
 
-        onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
+        onView(withText(R.string.close_swirl_mix))
                 .check(matches(isDisplayed()))
 
         TestUtil.nextPage()
@@ -235,7 +237,7 @@ class BluetoothTest : BaseTest() {
 
         TestUtil.swipeRight()
 
-        onView(withText("Close the vial tightly with the cap and swirl several times to mix the contents"))
+        onView(withText(R.string.close_swirl_mix))
                 .check(matches(isDisplayed()))
 
         TestUtil.prevPage(4)
@@ -244,10 +246,13 @@ class BluetoothTest : BaseTest() {
 
         onView(withText(R.string.next)).perform(click())
 
-        onView(withText("Select Test")).check(matches(isDisplayed()))
+        onView(withText(R.string.selectTest)).check(matches(isDisplayed()))
 
-        onView(withText("Press and hold (*shift*) + (*1*)(*7*)(*0*) to select Fluoride test and then press (*enter*)"))
-                .check(matches(isDisplayed()))
+        val text = String.format(Locale.US, getString(R.string.select_test_instruction),
+                "(*1*)(*7*)(*0*)", "Fluoride")
+                .replace("<b>", "").replace("</b>", "")
+
+        onView(withText(text)).check(matches(isDisplayed()))
 
         onView(withText(R.string.test_selected)).perform(click())
 

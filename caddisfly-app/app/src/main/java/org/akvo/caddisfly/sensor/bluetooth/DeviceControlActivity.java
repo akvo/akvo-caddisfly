@@ -83,7 +83,7 @@ public class DeviceControlActivity extends BaseActivity {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     private static final long RESULT_DISPLAY_DELAY = 2000;
-    PageIndex pageIndex = new PageIndex();
+    private PageIndex pageIndex = new PageIndex();
     private SelectTestFragment selectTestFragment;
     private WaitingFragment waitingFragment;
     private ViewPager viewPager;
@@ -462,7 +462,7 @@ public class DeviceControlActivity extends BaseActivity {
         pagerLayout.setVisibility(View.GONE);
     }
 
-    public void onInstructionFinish(int page) {
+    private void onInstructionFinish(int page) {
         if (page > 1) {
             showSkipMenu = true;
             invalidateOptionsMenu();

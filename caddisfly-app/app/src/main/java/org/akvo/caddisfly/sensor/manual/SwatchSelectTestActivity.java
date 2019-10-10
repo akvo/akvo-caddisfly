@@ -52,11 +52,11 @@ import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueU
 public class SwatchSelectTestActivity extends BaseActivity
         implements SwatchSelectFragment.OnSwatchSelectListener {
 
-    ImageView imagePageRight;
-    ImageView imagePageLeft;
+    private ImageView imagePageRight;
+    private ImageView imagePageLeft;
     private SparseArray<SwatchSelectFragment> inputFragment = new SparseArray<>();
-    PlaceholderFragment submitFragment;
-    PageIndex pageIndex = new PageIndex();
+    private PlaceholderFragment submitFragment;
+    private PageIndex pageIndex = new PageIndex();
 
     private float[] testResults;
     private TestInfo testInfo;
@@ -332,7 +332,7 @@ public class SwatchSelectTestActivity extends BaseActivity
             return view;
         }
 
-        public void setResult(TestInfo testInfo) {
+        void setResult(TestInfo testInfo) {
             if (testInfo != null && getActivity() != null) {
 
                 LayoutInflater inflater = (LayoutInflater) getActivity()

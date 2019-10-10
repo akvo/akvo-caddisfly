@@ -82,8 +82,8 @@ fun skipOpeningExternalApp(model: String = ""): Boolean {
 
 object TestHelper {
 
-    const val mCurrentLanguage = "en"
-    private const val TAKE_SCREENSHOTS = false
+    const val mCurrentLanguage = "fr"
+    private const val TAKE_SCREENSHOTS = true
     private val STRING_HASH_MAP_EN = HashMap<String, String>()
     private val STRING_HASH_MAP_ES = HashMap<String, String>()
     private val STRING_HASH_MAP_FR = HashMap<String, String>()
@@ -341,7 +341,7 @@ object TestHelper {
     }
 
     fun clickSubmitButton() {
-        onView(allOf(withId(R.id.buttonSubmit), withText("Submit Result"),
+        onView(allOf(withId(R.id.buttonSubmit), withText(R.string.submitResult),
                 childAtPosition(
                         allOf(withId(R.id.buttonsLayout),
                                 childAtPosition(
@@ -352,7 +352,7 @@ object TestHelper {
     }
 
     fun clickCloseButton() {
-        onView(allOf(withId(R.id.buttonClose), withText("Close"),
+        onView(allOf(withId(R.id.buttonClose), withText(R.string.close),
                 childAtPosition(
                         allOf(withId(R.id.buttonsLayout),
                                 childAtPosition(
@@ -363,7 +363,7 @@ object TestHelper {
     }
 
     fun clickStartButton() {
-        onView(allOf(withId(R.id.buttonStart), withText("Start"),
+        onView(allOf(withId(R.id.buttonStart), withText(R.string.start),
                 childAtPosition(
                         childAtPosition(
                                 withClassName(`is`<String>("android.widget.RelativeLayout")),
@@ -373,7 +373,7 @@ object TestHelper {
     }
 
     fun clickSubmitResultButton() {
-        onView(allOf(withId(R.id.buttonSubmitResult), withText("Submit Result"), isDisplayed()))
+        onView(allOf(withId(R.id.buttonSubmitResult), withText(R.string.submitResult), isDisplayed()))
                 .perform(click())
     }
 }

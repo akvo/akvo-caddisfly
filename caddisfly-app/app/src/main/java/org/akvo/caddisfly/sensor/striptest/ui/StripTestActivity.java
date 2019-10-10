@@ -55,10 +55,10 @@ public class StripTestActivity extends BaseActivity {
     private static final int REQUEST_QUALITY_TEST = 1;
     private static final int REQUEST_TEST = 2;
 
-    ImageView imagePageRight;
-    ImageView imagePageLeft;
-    ResultFragment resultFragment;
-    PageIndex pageIndex = new PageIndex();
+    private ImageView imagePageRight;
+    private ImageView imagePageLeft;
+    private ResultFragment resultFragment;
+    private PageIndex pageIndex = new PageIndex();
 
     private TestInfo testInfo;
     private CustomViewPager viewPager;

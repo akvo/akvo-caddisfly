@@ -55,6 +55,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 @RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
 class SwatchSelectTest : BaseTest() {
@@ -83,12 +84,13 @@ class SwatchSelectTest : BaseTest() {
         scale = mIntentsRule.activity.resources.displayMetrics.density
     }
 
+
     @Test
     fun runSwatchSelectCancelLR() {
 
         gotoSurveyForm()
 
-        nextSurveyPage("Tester")
+        nextSurveyPage("Testers")
 
         clickExternalSourceButton(1)
 
@@ -133,7 +135,7 @@ class SwatchSelectTest : BaseTest() {
 
         gotoSurveyForm()
 
-        nextSurveyPage("Tester")
+        nextSurveyPage("Testers")
 
         clickExternalSourceButton(0)
 
@@ -372,7 +374,7 @@ class SwatchSelectTest : BaseTest() {
 
         gotoSurveyForm()
 
-        nextSurveyPage("Tester")
+        nextSurveyPage("Testers")
 
         clickExternalSourceButton(1)
 

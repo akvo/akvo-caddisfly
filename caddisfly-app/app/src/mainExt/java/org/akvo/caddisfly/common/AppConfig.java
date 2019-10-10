@@ -29,27 +29,27 @@ public final class AppConfig {
     /**
      * For testing
      */
-    public static final boolean IS_TEST_MODE = false;
+    public static final boolean IS_TEST_MODE = true;
 
     /**
      * Do not run sensor tests if no sensors connected
      */
-    public static final boolean SENSOR_NOT_CONNECTED = false;
+    public static final boolean SENSOR_NOT_CONNECTED = true;
 
     /**
      * Stop animations only for running Espresso UI tests
      */
-    public static final boolean STOP_ANIMATIONS = false;
+    public static final boolean STOP_ANIMATIONS = true;
 
     /**
      * Stop analytics only for testing
      */
-    public static final boolean STOP_ANALYTICS = false;
+    public static final boolean STOP_ANALYTICS = true;
 
     /**
      * Stop analytics only for testing
      */
-    public static final boolean SKIP_BLUETOOTH_SCAN = false;
+    public static final boolean SKIP_BLUETOOTH_SCAN = true;
 
     /**
      * Stop result validation only for testing
@@ -59,15 +59,15 @@ public final class AppConfig {
     /**
      * Stop result validation only for testing
      */
-    public static final boolean SKIP_PHOTO_VALIDATION = false;
+    public static final boolean SKIP_PHOTO_VALIDATION = true;
 
     /**
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
-    public static final boolean APP_EXPIRY = false;
+    public static final boolean APP_EXPIRY = true;
     public static final int APP_EXPIRY_DAY = 1;
-    public static final int APP_EXPIRY_MONTH = 10;
+    public static final int APP_EXPIRY_MONTH = 11;
     public static final int APP_EXPIRY_YEAR = 2019;
 
     /**

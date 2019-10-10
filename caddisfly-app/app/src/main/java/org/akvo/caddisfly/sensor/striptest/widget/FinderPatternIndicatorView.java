@@ -29,6 +29,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPattern;
@@ -36,8 +38,6 @@ import org.akvo.caddisfly.sensor.striptest.qrdetector.PerspectiveTransform;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * Created by linda on 9/9/15
@@ -54,7 +54,7 @@ public class FinderPatternIndicatorView extends View {
     private final Bitmap closerBitmap;
     private final Matrix matrix = new Matrix();
     private List<FinderPattern> patterns;
-    private boolean shadowGrid[][];
+    private boolean[][] shadowGrid;
     private int previewScreenHeight;
     private int previewScreenWidth;
     private int decodeHeight;

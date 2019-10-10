@@ -228,7 +228,7 @@ public final class StringUtil {
                 .getIdentifier(name, "string", context.getPackageName()));
     }
 
-    public static class SulfideDialogFragment extends DialogFragment {
+    static class SulfideDialogFragment extends DialogFragment {
         @NonNull
         @SuppressLint("InflateParams")
         @Override

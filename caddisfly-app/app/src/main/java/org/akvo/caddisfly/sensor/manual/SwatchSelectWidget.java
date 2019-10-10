@@ -39,8 +39,8 @@ public class SwatchSelectWidget extends View {
     private final Paint buttonSelectPaint = new Paint();
     private final Paint buttonShadowPaint = new Paint();
 
-    Rect nameBounds = new Rect();
-    Path lidPath = new Path();
+    private Rect nameBounds = new Rect();
+    private Path lidPath = new Path();
     private Rect rect1;
     private int buttonWidth;
     private int buttonHeight;
@@ -153,7 +153,7 @@ public class SwatchSelectWidget extends View {
     }
 
     // stackoverflow.com/questions/5896234/how-to-use-android-canvas-to-draw-a-rectangle-with-only-topleft-and-topright-cor
-    public static Path RoundedRect(
+    private static Path RoundedRect(
             float left, float top, float right, float bottom, float rx, float ry,
             boolean tl, boolean tr, boolean br, boolean bl
     ) {

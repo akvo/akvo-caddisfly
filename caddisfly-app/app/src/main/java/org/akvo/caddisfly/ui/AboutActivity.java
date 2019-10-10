@@ -171,7 +171,7 @@ public class AboutActivity extends BaseActivity {
         openUrl(this, TERMS_OF_USE_URL);
     }
 
-    public void openUrl(@NonNull Context context, String url) {
+    private void openUrl(@NonNull Context context, String url) {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         context.startActivity(browserIntent);
     }

@@ -84,7 +84,7 @@ public class CaddisflyApp extends Application {
     }
 
     // https://stackoverflow.com/a/52164101
-    public static String decrypt(String str) {
+    private static String decrypt(String str) {
         str = str.replace("-", "");
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < str.length(); i += 3) {

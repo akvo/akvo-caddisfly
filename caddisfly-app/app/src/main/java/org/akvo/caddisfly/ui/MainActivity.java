@@ -57,8 +57,8 @@ import java.lang.ref.WeakReference;
 public class MainActivity extends BaseActivity {
 
     private final WeakRefHandler refreshHandler = new WeakRefHandler(this);
-    ActivityMainBinding b;
-    AnimatedColor statusBarColors;
+    private ActivityMainBinding b;
+    private AnimatedColor statusBarColors;
     private int INTRO_PAGE_COUNT = 2;
 
     @Override
@@ -245,7 +245,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public class IntroFragmentAdapter extends FragmentPagerAdapter {
+    class IntroFragmentAdapter extends FragmentPagerAdapter {
 
         private static final int FIRST_PAGE = 0;
 

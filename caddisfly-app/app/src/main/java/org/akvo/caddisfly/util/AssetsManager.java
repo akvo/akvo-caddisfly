@@ -28,6 +28,7 @@ import org.akvo.caddisfly.helper.FileHelper;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import timber.log.Timber;
 
@@ -72,7 +73,7 @@ public final class AssetsManager {
             //noinspection ResultOfMethodCallIgnored
             is.read(buffer);
 
-            json = new String(buffer, "UTF-8");
+            json = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException ex) {
             Timber.e(ex);
             return null;

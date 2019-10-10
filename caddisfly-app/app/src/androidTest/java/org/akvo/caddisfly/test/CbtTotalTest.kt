@@ -40,6 +40,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
 @RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -79,8 +80,8 @@ class CbtTotalTest : BaseTest() {
         sleep(2000)
 
         if (!skipOpeningExternalApp(Build.MODEL)) {
-            onView(allOf(withId(R.id.button_next), withText("Next"))).perform(click())
-            onView(allOf(withId(R.id.button_ok), withText("Go to Akvo Flow"))).perform(click())
+            onView(allOf(withId(R.id.button_next), withText(R.string.next))).perform(click())
+            onView(allOf(withId(R.id.button_ok), withText(R.string.go_to_external_app))).perform(click())
             sleep(2000)
         }
 
@@ -93,7 +94,7 @@ class CbtTotalTest : BaseTest() {
         sleep(2000)
 
         val materialButton = onView(
-                allOf(withId(R.id.button_phase_2), withText("Submit Result"),
+                allOf(withId(R.id.button_phase_2), withText(R.string.submitResult),
                         childAtPosition(
                                 allOf(withId(R.id.layoutPrepareSubmit),
                                         childAtPosition(
@@ -103,7 +104,7 @@ class CbtTotalTest : BaseTest() {
                         isDisplayed()))
         materialButton.perform(click())
 
-        onView(allOf(withId(R.id.takePhoto), withText("Take Photo"),
+        onView(allOf(withId(R.id.takePhoto), withText(R.string.takePhoto),
                 childAtPosition(
                         childAtPosition(
                                 withId(R.id.viewPager),
@@ -122,14 +123,19 @@ class CbtTotalTest : BaseTest() {
         assertBackgroundColor(R.id.layoutRisk, R.color.safe)
         assertBackgroundColor(R.id.layoutRisk2, R.color.safe)
 
-        onView(withId(R.id.textRisk)).check(matches(withText("Low Risk")))
-        onView(withId(R.id.textSubRisk)).check(matches(withText("Safe")))
+        val riskText = getString(R.string.low_risk_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val lowRisk = riskText[0].trim { it <= ' ' }
+        val safe = riskText[1].trim { it <= ' ' }
+
+        onView(withId(R.id.textRisk)).check(matches(withText(lowRisk)))
+        onView(withId(R.id.textSubRisk)).check(matches(withText(safe)))
 
         nextPage()
 
         onView(withText(R.string.skip)).check(doesNotExist())
 
-        onView(withText("Round off test")).check(matches(isDisplayed()))
+        onView(withText(R.string.round_off_test)).check(matches(isDisplayed()))
         onView(allOf(withId(R.id.buttonSubmit), isDisplayed())).check(matches(isDisplayed()))
 
         TestUtil.prevPage(2)
@@ -154,8 +160,13 @@ class CbtTotalTest : BaseTest() {
         onView(withId(R.id.textResult1)).check(matches(withText(">100")))
         onView(withId(R.id.textUnit1)).check(matches(withText("MPN/100ml")))
 
-        onView(withId(R.id.textRisk)).check(matches(withText("Very High Risk")))
-        onView(withId(R.id.textSubRisk)).check(matches(withText("Unsafe")))
+        val riskText2 = getString(R.string.very_high_risk_unsafe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val veryHighRisk = riskText2[0].trim { it <= ' ' }
+        val unsafe = riskText2[1].trim { it <= ' ' }
+
+        onView(withId(R.id.textRisk)).check(matches(withText(veryHighRisk)))
+        onView(withId(R.id.textSubRisk)).check(matches(withText(unsafe)))
 
         assertBackgroundColor(R.id.layoutRisk, R.color.unsafe)
         assertBackgroundColor(R.id.layoutRisk2, R.color.unsafe)
@@ -181,8 +192,13 @@ class CbtTotalTest : BaseTest() {
         onView(withId(R.id.textResult1)).check(matches(withText("4")))
         onView(withId(R.id.textUnit1)).check(matches(withText("MPN/100ml")))
 
-        onView(withId(R.id.textRisk)).check(matches(withText("Intermediate Risk")))
-        onView(withId(R.id.textSubRisk)).check(matches(withText("Possibly Safe")))
+        val riskText3 = getString(R.string.intermediate_possibly_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val intermediate = riskText3[0].trim { it <= ' ' }
+        val possiblySafe = riskText3[1].trim { it <= ' ' }
+
+        onView(withId(R.id.textRisk)).check(matches(withText(intermediate)))
+        onView(withId(R.id.textSubRisk)).check(matches(withText(possiblySafe)))
 
         assertBackgroundColor(R.id.layoutRisk, R.color.possibly_safe)
         assertBackgroundColor(R.id.layoutRisk2, R.color.possibly_safe)
@@ -211,8 +227,8 @@ class CbtTotalTest : BaseTest() {
         sleep(2000)
 
         if (!skipOpeningExternalApp(Build.MODEL)) {
-            onView(allOf(withId(R.id.button_next), withText("Next"))).perform(click())
-            onView(allOf(withId(R.id.button_ok), withText("Go to Akvo Flow"))).perform(click())
+            onView(allOf(withId(R.id.button_next), withText(R.string.next))).perform(click())
+            onView(allOf(withId(R.id.button_ok), withText(R.string.go_to_external_app))).perform(click())
             sleep(2000)
         }
 
@@ -225,7 +241,7 @@ class CbtTotalTest : BaseTest() {
         sleep(2000)
 
         val materialButton = onView(
-                allOf(withId(R.id.button_phase_2), withText("Submit Result"),
+                allOf(withId(R.id.button_phase_2), withText(R.string.submitResult),
                         childAtPosition(
                                 allOf(withId(R.id.layoutPrepareSubmit),
                                         childAtPosition(
@@ -235,7 +251,7 @@ class CbtTotalTest : BaseTest() {
                         isDisplayed()))
         materialButton.perform(click())
 
-        onView(allOf(withId(R.id.takePhoto), withText("Take Photo"),
+        onView(allOf(withId(R.id.takePhoto), withText(R.string.takePhoto),
                 childAtPosition(
                         childAtPosition(
                                 withId(R.id.viewPager),
@@ -284,8 +300,13 @@ class CbtTotalTest : BaseTest() {
         onView(withId(R.id.textRisk)).check(matches(not(isDisplayed())))
         onView(withId(R.id.textSubRisk)).check(matches(not(isDisplayed())))
 
-        onView(withId(R.id.textRisk1)).check(matches(withText("Low Risk")))
-        onView(withId(R.id.textSubRisk2)).check(matches(withText("Safe")))
+        val riskText = getString(R.string.low_risk_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val lowRisk = riskText[0].trim { it <= ' ' }
+        val safe = riskText[1].trim { it <= ' ' }
+
+        onView(withId(R.id.textRisk1)).check(matches(withText(lowRisk)))
+        onView(withId(R.id.textSubRisk2)).check(matches(withText(safe)))
 
         assertBackgroundColor(R.id.layoutRisk, R.color.safe)
         assertBackgroundColor(R.id.layoutRisk2, R.color.safe)
@@ -315,8 +336,8 @@ class CbtTotalTest : BaseTest() {
         onView(withId(R.id.textResult2)).check(matches(withText("4")))
         onView(withId(R.id.textUnit2)).check(matches(withText("MPN/100ml")))
 
-        onView(withId(R.id.textRisk1)).check(matches(withText("Low Risk")))
-        onView(withId(R.id.textSubRisk2)).check(matches(withText("Safe")))
+        onView(withId(R.id.textRisk1)).check(matches(withText(lowRisk)))
+        onView(withId(R.id.textSubRisk2)).check(matches(withText(safe)))
 
         assertBackgroundColor(R.id.layoutRisk, R.color.safe)
         assertBackgroundColor(R.id.layoutRisk2, R.color.safe)

@@ -124,9 +124,14 @@ class DiagnosticTest {
 
         onView(withId(R.id.actionSettings)).perform(click())
 
-        onView(withText("English")).perform(click())
-
-        onView(withText("Français")).perform(click())
+        @Suppress("ConstantConditionIf")
+        if (mCurrentLanguage == "en") {
+            onView(withText("English")).perform(click())
+            onView(withText("Français")).perform(click())
+        } else {
+            onView(withText("Français")).perform(click())
+            onView(withText("Annuler")).perform(click())
+        }
 
         Espresso.pressBackUnconditionally()
 
@@ -241,6 +246,8 @@ class DiagnosticTest {
         getInstrumentation().waitForIdleSync()
 
         onView(withId(R.id.disable_diagnostics)).perform(click())
+
+        clearPreferences(mActivityRule)
 
         getInstrumentation().waitForIdleSync()
     }

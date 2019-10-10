@@ -101,7 +101,7 @@ class ManualInstructions : BaseTest() {
             var id = testInfo.uuid
             id = id.substring(id.lastIndexOf("-") + 1)
 
-            var pages = navigateToTest("Tester", i, id)
+            var pages = navigateToTest("Testers", i, id)
 
             sleep(500)
 
