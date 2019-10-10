@@ -82,8 +82,8 @@ fun skipOpeningExternalApp(model: String = ""): Boolean {
 
 object TestHelper {
 
-    const val mCurrentLanguage = "fr"
-    private const val TAKE_SCREENSHOTS = true
+    const val mCurrentLanguage = "en"
+    private const val TAKE_SCREENSHOTS = false
     private val STRING_HASH_MAP_EN = HashMap<String, String>()
     private val STRING_HASH_MAP_ES = HashMap<String, String>()
     private val STRING_HASH_MAP_FR = HashMap<String, String>()

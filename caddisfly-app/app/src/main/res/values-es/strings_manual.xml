@@ -50,14 +50,14 @@
 
     <string name="checkit_comparator_uses">El comparador Checkit utiliza dos celdas y un disco de color.</string>
     <string name="insert_colored_disk">Inserte el disco de color en el comparador.</string>
-    <string name="add_one_tablet_to_other_cell">Agregue una tableta de %reactivo1 a la otra celda y ciérrela con una tapa. Agite la célula hasta que el reactivo esté completamente disuelto.</string>
-    <string name="add_one_powder_to_other_cell">Agregue un paquete de polvo de %reactivo1 a la otra celda y ciérrelo con una tapa. Agite la célula hasta que el reactivo esté completamente disuelto.</string>
+    <string name="add_one_tablet_to_other_cell">Agregue una tableta de %reagent1 a la otra celda y ciérrela con una tapa. Agite la célula hasta que el reactivo esté completamente disuelto.</string>
+    <string name="add_one_powder_to_other_cell">Agregue un paquete de polvo de %reagent1 a la otra celda y ciérrelo con una tapa. Agite la célula hasta que el reactivo esté completamente disuelto.</string>
     <string name="match_colors_by_rotating">Al girar el disco, utilice la luz del día y haga coincidir los dos colores. NO MIRE DIRECTO AL SOL.</string>
     <string name="rinse_vial_sample">Enjuague el vial con la muestra de agua.</string>
 
     <!--Nitrate Checkit-->
     <string name="fill_nitrate_tube">Llene el tubo de ensayo de nitrato hasta la marca de 20 ml.</string>
-    <string name="add_one_level_spoon">Agregue una cuchara llena de %reactivo1 en polvo y una tableta de %reactivo2 al tubo de ensayo. <b>¡No triture la tableta!</b></string>
+    <string name="add_one_level_spoon">Agregue una cuchara llena de %reagent1 en polvo y una tableta de %reactivo2 al tubo de ensayo. <b>¡No triture la tableta!</b></string>
     <string name="close_with_lid_shake">Ciérrelo con una tapa y agite por<b>1 minuto</b>.</string>
     <string name="allow_minute_flocculation">Permite <b>1 minuto</b> para la floculación del polvo de la prueba de Nitrato.</string>
     <string name="invert_test_tube">Invierte el tubo de ensayo dos o tres veces para completar la floculación.</string>
@@ -66,19 +66,19 @@
 
     <!--Fluoride Checkit-->
     <string name="fill_one_cell_other_deionized">Llene una celda hasta la marca de 10 ml. Llene la otra celda con agua desionizada hasta la marca de 10 ml.</string>
-    <string name="pipet_reagent_close_cells">Pipetear 2 ml %reactivo1 de solución de reactivo en cada celda. Cierre las celdas con tapas y agite suavemente.</string>
+    <string name="pipet_reagent_close_cells">Pipetear 2 ml %reagent1 de solución de reactivo en cada celda. Cierre las celdas con tapas y agite suavemente.</string>
 
 
-    <string name="add_tablet1_crush">Agregue un tableta de %reactivo1 a la otra celda y aplaste la tableta.</string>
-    <string name="add_tablet2_dissolve">Luego agregue una tableta de %reactivo2, aplaste la tableta y ciérrela con una tapa. Agite la celda hasta que el reactivo se disuelva completamente.</string>
+    <string name="add_tablet1_crush">Agregue un tableta de %reagent1 a la otra celda y aplaste la tableta.</string>
+    <string name="add_tablet2_dissolve">Luego agregue una tableta de %reagent2, aplaste la tableta y ciérrela con una tapa. Agite la celda hasta que el reactivo se disuelva completamente.</string>
     <string name="take_right_cell">Tome la celda del compartimiento derecho del comparador y retire la tapa.</string>
-    <string name="add_tablet2_swirl">Agregue una tableta de %reactivo2 a la celda en el espacio de la derecha del comparador, ciérrelo con una tapa. Agite la celda hasta que el reactivo se disuelva completamente.</string>
+    <string name="add_tablet2_swirl">Agregue una tableta de %reagent2 a la celda en el espacio de la derecha del comparador, ciérrelo con una tapa. Agite la celda hasta que el reactivo se disuelva completamente.</string>
     <string name="edta_complex_zinc_1">En el caso de altos niveles de zinc: </string>
     <string name="edta_complex_zinc_2">Agregue una tableta de EDTA a la muestra de agua ya coloreada.</string>
     <string name="edta_complex_zinc_3">Triture y mezcle para disolver la tableta. Luego continúe con el siguiente paso de las instrucciones.</string>
-    <string name="add_reagent1_swirl_gently">Añade un %reactivo1 en cada celda. Cierre las celdas con una tapa y agite suavemente.</string>
-    <string name="add_reagent2_swirl_gently">Agregue 15 gotas de %reactivo2 a cada celda. Cierre las celdas con una tapa y agite suavemente.</string>
-    <string name="add_reagent3_swirl_gently">Agregue 21 gotas de %reactivo3 a cada celda. Cierre las celdas con una tapa y agite suavemente.</string>
+    <string name="add_reagent1_swirl_gently">Añade un %reagent1 en cada celda. Cierre las celdas con una tapa y agite suavemente.</string>
+    <string name="add_reagent2_swirl_gently">Agregue 15 gotas de %reagent2 a cada celda. Cierre las celdas con una tapa y agite suavemente.</string>
+    <string name="add_reagent3_swirl_gently">Agregue 21 gotas de %reagent3 a cada celda. Cierre las celdas con una tapa y agite suavemente.</string>
     <string name="remove_lids_place_sample_cell">Retire las tapas. Coloque la celda con la muestra orientada hacia la marca (punto) en el compartimiento derecho del comparador.</string>
     <string name="place_reference_cell">Coloque la celda de referencia orientada hacia la marca (punto) en el compartimiento izquierdo del comparador.</string>
     <string name="match_colors_by_rotating_angle">Sostenga el comparador en un ángulo para que la luz del día proveniente del norte atraviese la celda. La unidad de espejo utiliza la vista a lo largo de toda la celda.</string>
@@ -104,8 +104,8 @@
     <string name="wait_for_color_reaction">Espere <b>%reactionTime1</b> para completar la reacción de color.</string>
     <string name="wait_for_color_reaction_2">Espere <b>%reactionTime2</b> para completar la reacción de color. </string>
     <string name="wait_for_color_reaction_3">Espere <b>%reactionTime3</b> para completar la reacción de color. </string>
-    <string name="add_tablet_crush_swirl">Agregue una tableta de $reactivo1 en la otra celda. Aplaste la tableta y ciérrela con una tapa. Agite la celda hasta que el reactivo se disuelva completamente.</string>
-    <string name="add_tablet_crush_stir">Agregue una tableta de %reactivo3 a esta celda, aplaste y mezcle con una varilla de agitación limpia. Ciérrelo con la tapa.</string>
+    <string name="add_tablet_crush_swirl">Agregue una tableta de %reagent1 en la otra celda. Aplaste la tableta y ciérrela con una tapa. Agite la celda hasta que el reactivo se disuelva completamente.</string>
+    <string name="add_tablet_crush_stir">Agregue una tableta de %reagent3 a esta celda, aplaste y mezcle con una varilla de agitación limpia. Ciérrelo con la tapa.</string>
     <string name="edta_complex_copper_1">En el caso de altos niveles de cobre:</string>
     <string name="edta_complex_copper_2">Primero mide el resultado (A). Luego, agregue una tableta de EDTA a la muestra de agua ya coloreada.</string>
     <string name="edta_complex_copper_3">Triture y mezcle para disolver la tableta. Lea el segundo resultado (B). La concentración de zinc es el primer resultado (A) menos el segundo resultado (B).</string>

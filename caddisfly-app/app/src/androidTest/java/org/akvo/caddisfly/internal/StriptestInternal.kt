@@ -120,7 +120,7 @@ class StriptestInternal {
             val uuid = testInfo.uuid
             val id = uuid.substring(uuid.lastIndexOf("-") + 1)
 
-//            if (("411a4093f6b6").contains(id)) {
+//            if (("32d9b8f4aecf ac33b44f9992").contains(id)) {
             //            if (testInfo.getName().contains("Soil"))
 //            if (("aa4a4e3100c9 411a4093f6b6 ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id)) {
             //
@@ -235,13 +235,16 @@ class StriptestInternal {
                             if (mCurrentLanguage == "en") {
                                 mDevice.click(350, 390)
                             } else {
-                                mDevice.click(450, 600)
+//                                mDevice.click(450, 600)
+                                mDevice.click(900, 600)
                             }
+
                             sleep(3000)
                             takeScreenshot(id, pages)
                             pages++
                             sleep(600)
-                            mDevice.pressBack()
+
+                            onView(withText(R.string.ok)).perform(click())
                         }
                     } catch (ignore: Exception) {
                     }

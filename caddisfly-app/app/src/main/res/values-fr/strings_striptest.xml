@@ -53,7 +53,7 @@
     <string name="as_ins_7a">Remplissez la fiole de mesure carrée jusqu\'au sommet avec l\'échantillon (9,6 ml).</string>
     <string name="as_ins_7b">Verser l\'échantillon dans le flacon de réaction.</string>
     <string name="as_ins_3a">Ajouter un <b>réactif #1</b>.</string>
-    <string name="as_ins_3b">Si une odeur d\'oeuf pourri est détectée après l\'ajout du réactif #1, le sulfure est présent à des niveaux interférents,<b>[un sujet=sulfure]cliquez ici[/a]</b>pour voir comment enlever le sulfure avant de continuer.</string>
+    <string name="as_ins_3b">Si une odeur d\'oeuf pourri est détectée après l\'ajout du réactif #1, le sulfure est présent à des niveaux interférents, <b>[a topic=sulfide]cliquez ici[/a]</b> pour voir comment enlever le sulfure avant de continuer.</string>
     <string name="as_ins_3c">Ajouter un oreiller en poudre du <b>réactif #2</b> à l\'échantillon.</string>
     <string name="as_ins_4a">Fixer immédiatement le bouchon à la bouteille de réaction.</string>
     <string name="as_ins_4b">Agiter continuellement pendant 60 secondes. <b>Ne pas agiter, ne pas inverser ni laisser l\'échantillon se déposer sur la bandelette</b>.</string>

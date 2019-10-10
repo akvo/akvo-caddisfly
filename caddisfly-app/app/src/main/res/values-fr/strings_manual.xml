@@ -73,16 +73,16 @@
     <string name="pipet_reagent_close_cells">Pipetter 2 ml de %reagent1 Solution de réactif dans chaque cellule. Fermer les cellules avec les couvercles et agiter doucement.</string>
 
 
-    <string name="add_tablet1_crush">Ajouter un comprimé de %réactif1 à l\'autre cuve et écraser le comprimé.</string>
-    <string name="add_tablet2_dissolve">Ajouter ensuite une pastille de %réactif2, écraser la pastille et la fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
+    <string name="add_tablet1_crush">Ajouter un comprimé de %reagent1 à l\'autre cuve et écraser le comprimé.</string>
+    <string name="add_tablet2_dissolve">Ajouter ensuite une pastille de %reagent2, écraser la pastille et la fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
     <string name="take_right_cell">Retirer la cuve du compartiment droit du comparateur et retirer le couvercle.</string>
-    <string name="add_tablet2_swirl">Ajouter un comprimé de %réactif2 à la cuve dans l\'espace prévu à cet effet dans la partie droite du comparateur, le fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
+    <string name="add_tablet2_swirl">Ajouter un comprimé de %reagent2 à la cuve dans l\'espace prévu à cet effet dans la partie droite du comparateur, le fermer avec un couvercle. Agiter la cellule jusqu\'à dissolution complète du réactif.</string>
     <string name="edta_complex_zinc_1">Dans le cas de fortes teneurs en zinc :</string>
     <string name="edta_complex_zinc_2">Ajouter un comprimé d\'EDTA à l\'échantillon d\'eau déjà coloré.</string>
     <string name="edta_complex_zinc_3">Écraser et mélanger pour dissoudre le comprimé. Passez ensuite à l\'étape suivante des instructions.</string>
-    <string name="add_reagent1_swirl_gently">Ajouter un % de réactif1 dans chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
-    <string name="add_reagent2_swirl_gently">Ajouter 15 gouttes de %réactif2 à chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
-    <string name="add_reagent3_swirl_gently">Ajouter 21 gouttes de %réactif3 à chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
+    <string name="add_reagent1_swirl_gently">Ajouter un %reagent1 dans chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
+    <string name="add_reagent2_swirl_gently">Ajouter 15 gouttes de %reagent2 à chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
+    <string name="add_reagent3_swirl_gently">Ajouter 21 gouttes de %reagent3 à chaque cellule. Fermer les cellules avec un couvercle et agiter doucement.</string>
     <string name="remove_lids_place_sample_cell">Retirez les couvercles. Placer la cuve avec l\'échantillon tourné vers la marque (point) dans le compartiment droit du comparateur.</string>
     <string name="place_reference_cell">Placez la cellule de référence face à la marque (point) dans le compartiment gauche du comparateur.</string>
     <string name="match_colors_by_rotating_angle">Tenez le comparateur à un angle de façon à ce qu\'il y ait suffisamment de lumière du jour vers le nord pour traverser la cellule. Le miroir utilise la vue sur toute la longueur de la cellule.</string>
@@ -102,7 +102,7 @@
     <string name="sd_50_dip_sample_1">Retirer cache de protection et rincez l\'électrode avec de l\'eau distillée.</string>
     <string name="sd_50_dip_sample_2">Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Agiter le capteur doucement pendant qu\'il est dans l\'échantillon.</string>
     <string name="sd_50_dip_sample_3">Appuyer brièvement sur (*sd_on_off*) pour geler/valider la valeur mesurée.</string>
-    <string name="sd_maintenance">Remarque: Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
+    <string name="sd_maintenance"><b>Remarque</b>: Contrôler régulièrement le calibrage de l\'appareil et le recalibrer si nécessaire. Pour les instructions d\'étalonnage: voir le manuel du produit dans la boîte.</string>
     <string name="sd_70_dip_sample_1">Retirer cache de protection et rincez l\'électrode l\'échantillon d\'eau.</string>
     <string name="sd_70_dip_sample_2">Plonger l\'appareil sans cache de protection dans l\'échantillon d\'eau à tester au maximum jusqu\' à la bague d\'étanchéité. Appuyer brièvement sur (*sd_on_off*) pour geler/valider la valeur mesurée.</string>
     <string name="wait_for_color_reaction">Attendre <b>Temps de %reactionTime1</b> pour une réaction complète de la couleur.</string>

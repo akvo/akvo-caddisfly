@@ -188,7 +188,7 @@ class InstructionsTest : BaseTest() {
 
                 mActivityRule.launchActivity(intent)
 
-                val pages = navigateToTest(id, result)
+                navigateToTest(id, result)
 
 //                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],")
 //
