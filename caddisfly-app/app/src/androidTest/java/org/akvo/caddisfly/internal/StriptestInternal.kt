@@ -60,7 +60,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.math.max
 
-
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class StriptestInternal {

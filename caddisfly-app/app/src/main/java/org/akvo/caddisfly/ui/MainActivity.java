@@ -107,20 +107,8 @@ public class MainActivity extends BaseActivity {
             final Intent intent = new Intent(getBaseContext(), AboutActivity.class);
             startActivity(intent);
         });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (AppPreferences.isDiagnosticMode()) {
-                statusBarColors = new AnimatedColor(
-                        ContextCompat.getColor(this, R.color.colorPrimaryDark),
-                        ContextCompat.getColor(this, R.color.diagnostic_status));
-            } else {
-                statusBarColors = new AnimatedColor(
-                        ContextCompat.getColor(this, R.color.colorPrimaryDark),
-                        ContextCompat.getColor(this, R.color.black_main));
-            }
-            animateStatusBar();
-        }
 
-        setUpViews();
+        (new Handler()).post(this::setUpViews);
     }
 
     private void hideActionBar() {
@@ -145,6 +133,19 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (AppPreferences.isDiagnosticMode()) {
+                statusBarColors = new AnimatedColor(
+                        ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                        ContextCompat.getColor(this, R.color.diagnostic_status));
+            } else {
+                statusBarColors = new AnimatedColor(
+                        ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                        ContextCompat.getColor(this, R.color.black_main));
+            }
+            animateStatusBar();
+        }
 
         CaddisflyApp.getApp().setAppLanguage(this, null, false, refreshHandler);
 

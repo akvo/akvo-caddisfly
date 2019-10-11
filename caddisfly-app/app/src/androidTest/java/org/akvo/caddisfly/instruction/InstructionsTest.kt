@@ -43,7 +43,6 @@ import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
 import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,7 +69,6 @@ class InstructionsTest : BaseTest() {
     // third parameter is set to false which means the activity is not started automatically
     var mActivityRule = ActivityTestRule(TestActivity::class.java, false, false)
 
-    @Ignore
     @Test
     @RequiresDevice
     fun testInstructionsMd610() {
