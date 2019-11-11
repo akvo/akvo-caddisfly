@@ -9383,7 +9383,7 @@
         }
       ],
       "sampleQuantity": "10",
-      "ranges": "0,14",
+      "ranges": "4,10",
       "hasImage": true,
       "hasEndInstruction": "true",
       "instructions": [
@@ -9449,7 +9449,7 @@
         {
           "id": 1,
           "name": "pH",
-          "range": "0-14"
+          "range": "4-10"
         }
       ]
     },
