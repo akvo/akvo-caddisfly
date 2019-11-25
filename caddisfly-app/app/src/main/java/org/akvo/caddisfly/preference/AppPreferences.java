@@ -23,6 +23,9 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+
 import static org.akvo.caddisfly.common.AppConfig.IS_TEST_MODE;
 
 /**
@@ -63,5 +66,15 @@ public final class AppPreferences {
     public static boolean ignoreTimeDelays() {
         return isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.ignoreTimeDelaysKey, false);
+    }
+
+    public static void saveLastAppUpdateCheck() {
+        PreferencesUtil.setLong(CaddisflyApp.getApp(), "lastUpdateCheck",
+                Calendar.getInstance().getTimeInMillis());
+    }
+
+    public static boolean isAppUpdateCheckRequired() {
+        long lastCheck = PreferencesUtil.getLong(CaddisflyApp.getApp(), "lastUpdateCheck");
+        return TimeUnit.MILLISECONDS.toDays(Calendar.getInstance().getTimeInMillis() - lastCheck) > 0;
     }
 }

@@ -65,26 +65,6 @@ class UpdateTest {
     }
 
     @Test
-    fun testImmediateUpdate_Completes() {
-        fakeAppUpdateManager.partiallyAllowedUpdateType = AppUpdateType.IMMEDIATE
-        fakeAppUpdateManager.setUpdateAvailable(BuildConfig.VERSION_CODE + 1)
-
-        ActivityScenario.launch(MainActivity::class.java)
-
-        SystemClock.sleep(1000)
-
-        assertTrue(fakeAppUpdateManager.isImmediateFlowVisible)
-
-        fakeAppUpdateManager.userAcceptsUpdate()
-
-        fakeAppUpdateManager.downloadStarts()
-
-        fakeAppUpdateManager.downloadCompletes()
-
-        assertTrue(fakeAppUpdateManager.isInstallSplashScreenVisible)
-    }
-
-    @Test
     fun testFlexibleUpdate_DownloadFails() {
         fakeAppUpdateManager.partiallyAllowedUpdateType = AppUpdateType.FLEXIBLE
         fakeAppUpdateManager.setUpdateAvailable(BuildConfig.VERSION_CODE + 1)

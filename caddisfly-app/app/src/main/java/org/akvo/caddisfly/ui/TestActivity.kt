@@ -42,17 +42,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.appupdate.AppUpdateInfo
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.install.InstallState
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.InstallStatus
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.tasks.OnSuccessListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.FirebaseAnalytics.Event
 import com.google.firebase.analytics.FirebaseAnalytics.Param
-import dagger.android.AndroidInjection
 import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.R.*
@@ -84,13 +76,8 @@ import org.akvo.caddisfly.viewmodel.TestListViewModel
 import timber.log.Timber
 import java.lang.ref.WeakReference
 import java.util.*
-import java.util.concurrent.Executor
-import javax.inject.Inject
 
-private const val IMMEDIATE_UPDATE_REQUEST_CODE = 1867
-private const val FLEXIBLE_UPDATE_REQUEST_CODE = 4244
-
-class TestActivity : BaseActivity() {
+class TestActivity : AppUpdateActivity() {
     companion object {
         private const val REQUEST_TEST = 1
         private const val MESSAGE_TWO_LINE_FORMAT = "%s%n%n%s"
@@ -112,100 +99,10 @@ class TestActivity : BaseActivity() {
     // Tests like CBT has two test phases
     private var testPhase = 0
 
-    @Inject
-    lateinit var appUpdateManager: AppUpdateManager
-
-    @Inject
-    lateinit var playServiceExecutor: Executor
-
-    private val listener = { state: InstallState ->
-        if (state.installStatus() == InstallStatus.DOWNLOADED) {
-            popupSnackbarForCompleteUpdate()
-        } else if (state.installStatus() == InstallStatus.FAILED) {
-            popupSnackbarForRetryUpdate()
-        }
-        // Show module progress, log state, or install the update.
-    }
-
-    private fun checkInAppUpdate() {
-        appUpdateManager
-                .appUpdateInfo
-                .addOnSuccessListener(playServiceExecutor, OnSuccessListener { appUpdateInfo ->
-                    when (appUpdateInfo.updateAvailability()) {
-                        UpdateAvailability.UPDATE_AVAILABLE -> when {
-                            appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) -> startFlexibleUpdate(
-                                    appUpdateInfo
-                            )
-                            appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) -> startImmediateUpdate(
-                                    appUpdateInfo
-                            )
-                            else -> {
-                                // No update is allowed
-                            }
-                        }
-                        UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS -> startImmediateUpdate(
-                                appUpdateInfo
-                        )
-                        else -> {
-                            // No op
-                        }
-                    }
-                })
-    }
-
-    private fun startImmediateUpdate(appUpdateInfo: AppUpdateInfo?) {
-        appUpdateManager.startUpdateFlowForResult(
-                appUpdateInfo,
-                AppUpdateType.IMMEDIATE,
-                this,
-                IMMEDIATE_UPDATE_REQUEST_CODE
-        )
-    }
-
-    private fun startFlexibleUpdate(appUpdateInfo: AppUpdateInfo?) {
-        appUpdateManager.startUpdateFlowForResult(
-                appUpdateInfo,
-                AppUpdateType.FLEXIBLE,
-                this,
-                FLEXIBLE_UPDATE_REQUEST_CODE
-        )
-    }
-
-    private fun popupSnackbarForCompleteUpdate() {
-        Snackbar.make(
-                findViewById(R.id.mainLayout),
-                "An update has just been downloaded.",
-                Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            setAction("RESTART") { appUpdateManager.completeUpdate() }
-            val textView: TextView = view.findViewById(R.id.snackbar_text)
-//            textView.height = resources.getDimensionPixelSize(dimen.snackBarHeight)
-            textView.setTextColor(Color.WHITE)
-            show()
-        }
-    }
-
-    private fun popupSnackbarForRetryUpdate() {
-        Snackbar.make(
-                findViewById(R.id.mainLayout),
-                "Unable to download update.",
-                Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            setAction("RETRY") { checkInAppUpdate() }
-            val textView: TextView = view.findViewById(R.id.snackbar_text)
-//            textView.height = resources.getDimensionPixelSize(dimen.snackBarHeight)
-            textView.setTextColor(Color.WHITE)
-            show()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidInjection.inject(this)
 
         setContentView(layout.activity_test)
-
-        appUpdateManager.registerListener(listener)
 
         val intent: Intent = intent
 
@@ -245,8 +142,6 @@ class TestActivity : BaseActivity() {
                 !this.packageManager.hasSystemFeature(PackageManager.FEATURE_USB_HOST)) {
             ErrorMessages.alertFeatureNotSupported(this, true)
         }
-
-        checkInAppUpdate()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -24,7 +24,6 @@ import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
@@ -34,7 +33,6 @@ import android.os.Process
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -43,15 +41,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.appupdate.AppUpdateInfo
-import com.google.android.play.core.appupdate.AppUpdateManager
-import com.google.android.play.core.install.InstallState
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.InstallStatus
-import com.google.android.play.core.install.model.UpdateAvailability
-import com.google.android.play.core.tasks.OnSuccessListener
-import dagger.android.AndroidInjection
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.R.*
 import org.akvo.caddisfly.app.CaddisflyApp
@@ -64,114 +53,21 @@ import org.akvo.caddisfly.util.AlertUtil
 import org.akvo.caddisfly.util.AnimatedColor
 import org.akvo.caddisfly.util.PreferencesUtil
 import java.lang.ref.WeakReference
-import java.util.concurrent.Executor
-import javax.inject.Inject
 
 const val FIRST_PAGE = 0
 const val INTRO_PAGE_COUNT = 2
-private const val IMMEDIATE_UPDATE_REQUEST_CODE = 1867
-private const val FLEXIBLE_UPDATE_REQUEST_CODE = 4244
 
-class MainActivity : BaseActivity() {
 
-    @Inject
-    lateinit var appUpdateManager: AppUpdateManager
-
-    @Inject
-    lateinit var playServiceExecutor: Executor
+class MainActivity : AppUpdateActivity() {
 
     private val refreshHandler = WeakRefHandler(this)
     private var b: ActivityMainBinding? = null
     private var statusBarColors: AnimatedColor? = null
 
-    private val listener = { state: InstallState ->
-        if (state.installStatus() == InstallStatus.DOWNLOADED) {
-            popupSnackbarForCompleteUpdate()
-        } else if (state.installStatus() == InstallStatus.FAILED) {
-            popupSnackbarForRetryUpdate()
-        }
-        // Show module progress, log state, or install the update.
-    }
-
-    private fun checkInAppUpdate() {
-        appUpdateManager
-                .appUpdateInfo
-                .addOnSuccessListener(playServiceExecutor, OnSuccessListener { appUpdateInfo ->
-                    when (appUpdateInfo.updateAvailability()) {
-                        UpdateAvailability.UPDATE_AVAILABLE -> when {
-                            appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) -> startFlexibleUpdate(
-                                    appUpdateInfo
-                            )
-                            appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) -> startImmediateUpdate(
-                                    appUpdateInfo
-                            )
-                            else -> {
-                                // No update is allowed
-                            }
-                        }
-                        UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS -> startImmediateUpdate(
-                                appUpdateInfo
-                        )
-                        else -> {
-                            // No op
-                        }
-                    }
-                })
-    }
-
-    private fun startImmediateUpdate(appUpdateInfo: AppUpdateInfo?) {
-        appUpdateManager.startUpdateFlowForResult(
-                appUpdateInfo,
-                AppUpdateType.IMMEDIATE,
-                this,
-                IMMEDIATE_UPDATE_REQUEST_CODE
-        )
-    }
-
-    private fun startFlexibleUpdate(appUpdateInfo: AppUpdateInfo?) {
-        appUpdateManager.startUpdateFlowForResult(
-                appUpdateInfo,
-                AppUpdateType.FLEXIBLE,
-                this,
-                FLEXIBLE_UPDATE_REQUEST_CODE
-        )
-    }
-
-    private fun popupSnackbarForCompleteUpdate() {
-        Snackbar.make(
-                findViewById(id.mainLayout),
-                "An update has just been downloaded.",
-                Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            setAction("RESTART") { appUpdateManager.completeUpdate() }
-            val textView: TextView = view.findViewById(id.snackbar_text)
-//            textView.height = resources.getDimensionPixelSize(dimen.snackBarHeight)
-            textView.setTextColor(Color.WHITE)
-            show()
-        }
-    }
-
-    private fun popupSnackbarForRetryUpdate() {
-        Snackbar.make(
-                findViewById(id.mainLayout),
-                "Unable to download update.",
-                Snackbar.LENGTH_INDEFINITE
-        ).apply {
-            setAction("RETRY") { checkInAppUpdate() }
-            val textView: TextView = view.findViewById(id.snackbar_text)
-//            textView.height = resources.getDimensionPixelSize(dimen.snackBarHeight)
-            textView.setTextColor(Color.WHITE)
-            show()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidInjection.inject(this)
 
         b = DataBindingUtil.setContentView<ActivityMainBinding?>(this, layout.activity_main)
-
-        appUpdateManager.registerListener(listener)
 
         b!!.pageIndicator.setPageCount(INTRO_PAGE_COUNT)
 
@@ -208,8 +104,6 @@ class MainActivity : BaseActivity() {
         }
 
         Handler().post { setUpViews() }
-
-        checkInAppUpdate()
     }
 
     private fun hideActionBar() {
@@ -253,14 +147,6 @@ class MainActivity : BaseActivity() {
         }
 
         Handler().postDelayed({ setUpViews() }, 300)
-
-        appUpdateManager
-                .appUpdateInfo
-                .addOnSuccessListener(playServiceExecutor, OnSuccessListener { appUpdateInfo ->
-                    if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                        popupSnackbarForCompleteUpdate()
-                    }
-                })
     }
 
     fun onSettingsClick(@Suppress("UNUSED_PARAMETER") item: MenuItem?) {
@@ -339,11 +225,6 @@ class MainActivity : BaseActivity() {
         } else {
             super.onBackPressed()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        appUpdateManager.unregisterListener(listener)
     }
 
     internal inner class IntroFragmentAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {

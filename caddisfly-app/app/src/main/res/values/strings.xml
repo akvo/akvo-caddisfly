@@ -138,4 +138,8 @@
     <string name="go_to_external_app">Go to Akvo Flow</string>
     <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
 
+    <!--App Update-->
+    <string name="update_ready">Update is ready to install</string>
+    <string name="update_download_fail">Unable to download update</string>
+    <string name="restart">Restart</string>
 </resources>
