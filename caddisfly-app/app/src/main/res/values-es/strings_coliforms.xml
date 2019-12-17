@@ -20,17 +20,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="cbt">E.coli - Aquagenx CBT</string>
+    <string name="e_coli">E. coli</string>
+    <string name="total_coliform">Coliforme total</string>
+    <string name="prepare_sample">Prepare la muestra</string>
+    <string name="cbt_compartments">Compartimientos CBT</string>
 
     <string name="read_instructions">Lea las instrucciones</string>
     <string name="take_photo_compartments">Tome una foto de la bolsa de compartimiento</string>
     <string name="confidenceInterval">Superior 95&#37; Intervalo de confianza</string>
+    <string name="confidenceIntervalTc">TC Superior 95&#37; Intervalo de confianza</string>
     <string name="setCompartmentColors">Establecer colores de los compartimentos.</string>
 
     <string name="health_risk_category">Categoría de riesgo para la salud (basado en la NMP y el intervalo de confianza)</string>
-    <string name="recreational_health_risk_category">Categoría de riesgo de salud recreativa de la EPA de los EE. UU. Basada en NMP y nivel de confianza superior del 95&#37;</string>
+    <string name="recreational_health_risk_category">Categoría de riesgo para la salud recreativa de la EPA de los EE. UU basado en la NMP y el Intervalo de confianza Superior 95&#37; </string>
 
     <string name="collect_10ml_water_sample">Recoger <b>10 ml </b>de muestra de agua con Thio Bag (o botella).</string>
-
+    <string name="avoid_touching">Evite tocar el interior de la botella, la tapa o la bolsa Thio.</string>
+    <string name="open_growth_medium">Abra la bolsita de medio de crecimiento y agrega el polvo o la pastilla de prueba directamente a la muestra de la bolsita</string>
+    <string name="dissolve_medium_in_sample_a"><b>Polvo de medición:</b>Disuelva el polvo en la muestra durante unos minutos. Agite suavemente la bolsa varias veces hasta que el polvo se haya disuelto por completo. </string>
+    <string name="dissolve_medium_in_sample_b"><b>Pastilla de prueba:</b> Disuelva el medio en la muestra para 10 – 12 minutos máximo haciendo girar periódicamente la bolsa o apretando el botón de prueba en la bolsa Thio para promover la liberación del medio de su portador de plástico</string>
+    <string name="when_medium_dissolved">Cuando el medio está completamente disuelto, la muestra de agua se vuelve amarilla.</string>
+    <string name="leave_test_bud_carrier">Deje el portador de la pastilla de prueba en la bolsa Thio o botella mientras lo vierte.</string>
+    <string name="prepare_area_put_on_gloves">Prepare el área de trabajo y póngase guantes de plástico.</string>
     <string name="collect_100ml_water_sample">Recoger <b>100 ml </b> de muestra de agua con botella o bolsa de Thio.</string>
     <string name="label_compartment_bag">Etiquete la bolsa y / o pegue la etiqueta del código de barras en la bolsa del compartimiento.</string>
     <string name="tear_perforated_seam">Rasgar la costura perforada en la parte superior de la bolsa.</string>
@@ -43,7 +54,12 @@
     <string name="close_top_of_bag">Cierre la parte superior de la bolsa con el sello amarillo Whirl-Pak y luego baje la bolsa hacia el clip del sello <b>(paso 1)</b> y doble los extremos amarillos <b>(paso 2)</b>.</string>
     <string name="let_incubate">Deje que la muestra se incube, dependiendo de la temperatura ambiente:</string>
     <string name="take_photo_of_incubated">Tome una foto de la muestra incubada.</string>
-    <string name="change_colors_to_match">Cambie los colores en la interfaz para que coincidan con los colores de la muestra en los compartimientos de la bolsa.</string>
+    <string name="change_colors_to_match">En la siguiente pantalla, cambie los colores en la interfaz para que coincidan con los colores de la muestra en los compartimentos de la bolsa.</string>
+    <string name="click_compartments_to_change">Haga clic en los compartimentos para cambiar de color.</string>
+    <string name="note_blue_green_specks"><b>NOTA:</b> Cualquier rastro de azul o azul / verde en un compartimento indica la presencia de E. coli, incluso solo manchas de color verde azul / azul o solo sedimento verde azul / azul en el fondo de un compartimento.</string>
+    <string name="add_free_chlorine">Agregue 1–2 ml de blanqueador líquido (NaOCl) o suficientes tabletas de cloro libre (hipoclorito de calcio o dicloroisocianurato de sodio) para proporcionar aproximadamente 100 mg de cloro libre.</string>
+    <string name="dispose_contents_bag">Pasados 45 minutos, vierta el contenido en un fregadero, inodoro o agujero en el suelo y deseche de manera segura la bolsa del compartimento vacío.</string>
+    <string name="retain_plastic_seal_reuse">Conserve el clip de sellado de plástico para su reutilización.</string>
     <string name="add_90ml_distilled_water">Añadir <b> 90ml </b> de agua destilada a la muestra de agua.</string>
 
     <string name="low_risk_safe">Riesgo bajo / seguro</string>
@@ -59,14 +75,19 @@
 
     <string name="temperature">Temperatura</string>
     <string name="incubation_time">Tiempo de incubación</string>
-    <string name="temperature_35_37">35 – 44.5°C</string>
+    <string name="temperature_35_37">35 – 37°C</string>
     <string name="temperature_31_34">31 – 34°C</string>
     <string name="temperature_25_30">25 – 30°C</string>
     <string name="below25Degrees">Por debajo de 25 ºC</string>
-    <string name="hours_20">20 – 24 horas</string>
+    <string name="hours_20">20 horas</string>
     <string name="hours_24_30">24 – 30 horas</string>
     <string name="hours_40_48">40 – 48 horas</string>
     <string name="incubate_in_portable">Incubar en una incubadora portátil, preferiblemente a 35 – 37 ° C durante 48 horas o colocar en o cerca de otra fuente de calor.</string>
     <string name="in_addition_to_portable">Además de las incubadoras portátiles, las muestras se pueden mantener a una temperatura de 25 ° C a 44.5 ° C usando: bolsas / refrigeradores térmicos; proximidad a fuentes de calor para humanos y alimentos; incubadora de aves o reptiles, o cerca de serpentines de refrigeradores o respiraderos de calefacción de habitaciones.</string>
 
+    <string name="dissolve_medium_in_sample_tc">Disuelva el medio en la muestra durante unos minutos como máximo girando periódicamente la bolsa Thio</string>
+    <string name="take_photo_incubated_tc">Haga una foto de la muestra incubada mientras ilumina con una luz UV (365 nm) la bolsa del compartimento en un ambiente oscuro.</string>
+    <string name="note_total_coliform"><b>NOTA:</b> Los compartimentos positivos para E. coli también son automáticamente positivos para Total Coliform y se preseleccionarán en la siguiente interfaz.</string>
+    <string name="remember_to_shine">Recuerde iluminar con una luz UV para observar el color azul fluorescente (positivo para Coliforme total).</string>
+    <string name="open_growth_medium_powder">Abra la bolsita de medio de crecimiento y agrega el polvo de la prueba directamente a la muestra de la bolsita</string>
 </resources>

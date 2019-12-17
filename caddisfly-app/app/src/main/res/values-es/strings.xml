@@ -80,11 +80,13 @@
     <string name="error_bluetooth_not_supported">Bluetooth no es compatible.</string>
     <string name="location_permission">Se requiere permiso de ubicación para la conexión Bluetooth</string>
     <string name="unknown_device">Desconocido</string>
+    <string name="scanning">Escaneando el fotómetro MD610 …</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Agua y sistema de calidad del suelo</string>
     <string name="copyrightMessage">Derechos de autor © Stichting Akvo</string>
     <string name="legalInformation">Información legal</string>
     <string name="terms_of_service">Términos de servicio</string>
+    <string name="settings_disabled">Ajustes desactivados</string>
     <!--Software notices-->
     <string name="software_incorporates_material">Este software incorpora material del proyecto listado abajo.</string>
     <string name="apache_license_2">Licencia Apache 2.0</string>
