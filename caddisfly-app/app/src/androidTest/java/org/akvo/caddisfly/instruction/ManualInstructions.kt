@@ -19,55 +19,40 @@
 
 package org.akvo.caddisfly.instruction
 
-
-import android.util.Log
-import android.view.View
-import androidx.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
+import androidx.test.filters.RequiresDevice
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
+import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
-import org.akvo.caddisfly.ui.MainActivity
+import org.akvo.caddisfly.repository.TestConfigRepository
+import org.akvo.caddisfly.ui.TestActivity
 import org.akvo.caddisfly.util.*
-import org.akvo.caddisfly.util.DrawableMatcher.Companion.hasDrawable
-import org.akvo.caddisfly.util.TestHelper.clearPreferences
-import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
-import org.akvo.caddisfly.util.TestHelper.goToMainScreen
-import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
-import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
-import org.akvo.caddisfly.util.TestUtil.clickPercent
-import org.akvo.caddisfly.util.TestUtil.nextPage
-import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
-import org.akvo.caddisfly.viewmodel.TestListViewModel
-import org.hamcrest.Matchers.allOf
-import org.junit.Before
+import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RequiresExternalApp
-@LargeTest
 @RunWith(AndroidJUnit4::class)
 class ManualInstructions : BaseTest() {
-
-    private val jsArrayString = StringBuilder()
 
     companion object {
         @JvmStatic
         @BeforeClass
-        fun setup() {
+        fun initialize() {
             if (!TestHelper.isDeviceInitialized()) {
                 mDevice = UiDevice.getInstance(getInstrumentation())
             }
@@ -76,135 +61,140 @@ class ManualInstructions : BaseTest() {
 
     @Rule
     @JvmField
-    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
-
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-        loadData(mActivityTestRule.activity, mCurrentLanguage)
-        clearPreferences(mActivityTestRule)
-    }
+    // third parameter is set to false which means the activity is not started automatically
+    var mActivityRule = ActivityTestRule(TestActivity::class.java, false, false)
 
     @Test
-    fun testInstructionsSwatchSelect() {
+    @RequiresDevice
+    fun testInstructionsManual() {
 
-        goToMainScreen()
+        val testConfigRepository = TestConfigRepository()
 
-        val viewModel = ViewModelProviders.of(mActivityTestRule.activity).get(TestListViewModel::class.java)
+        val testList = testConfigRepository.getTests(TestType.MANUAL)
+        for (i in 0 until TestConstants.MANUAL_TESTS_COUNT) {
 
-        val testList = viewModel.getTests(TestType.MANUAL_COLOR_SELECT)
+            assertEquals(testList!![i].subtype, TestType.MANUAL)
 
-        for (i in 0 until TestConstants.MANUAL_SELECT_TESTS_COUNT) {
-            val testInfo = testList[i]
+            val uuid = testList[i].uuid
+            val result = testList[i].maxRangeValue - 0.1
 
-            var id = testInfo.uuid
-            id = id.substring(id.lastIndexOf("-") + 1)
+            val id = uuid.substring(uuid.lastIndexOf("-") + 1)
 
-            var pages = navigateToTest("Testers", i, id)
+//            if (("57a6ced96c17").contains(id))
+            //                    || testList.get(i).getBrand().contains("Tester")
+            //                            || testList.get(i).getBrand().contains("SD")
+            //                            || testList.get(i).getBrand().contains("Tube"))
+            run {
+                val intent = Intent()
+                intent.type = "text/plain"
+                intent.action = AppConfig.EXTERNAL_APP_ACTION
+                val data = Bundle()
+                data.putString(SensorConstants.RESOURCE_ID, uuid)
+                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage)
+                intent.putExtras(data)
 
-            sleep(500)
+                mActivityRule.launchActivity(intent)
 
-            val customShapeButton = onView(allOf<View>(withId(R.id.swatch_select), isDisplayed()))
+                navigateToTest(id, result)
 
-            customShapeButton.perform(clickPercent(0.1f, 0.7f))
+//                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],")
+//
+//                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
+//                        .append("\')\">").append(testList[i].name).append("</span></li>")
 
-            customShapeButton.perform(clickPercent(0.9f, 0.3f))
-
-            takeScreenshot(id, pages)
-
-            nextPage()
-
-            takeScreenshot(id, ++pages)
-
-            TestHelper.clickSubmitButton()
-
-            mDevice.pressBack()
-
-            jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],")
+//                TestHelper.currentActivity.finish()
+//                mActivityRule.finishActivity()
+            }
         }
 
-        mActivityTestRule.finishActivity()
-
-        mDevice.pressBack()
-
-        mDevice.pressBack()
-
-        Log.d("CaddisflyTests", jsArrayString.toString())
+//        Log.d("Caddisfly", jsArrayString.toString())
+//        Log.d("Caddisfly", listString.toString())
     }
 
-    @Suppress("SameParameterValue")
-    private fun navigateToTest(tabName: String, index: Int, id: String): Int {
-
-        gotoSurveyForm()
-
-        nextSurveyPage(tabName)
-
-        clickExternalSourceButton(index)
+    private fun navigateToTest(id: String, result: Double): Int {
 
         mDevice.waitForIdle()
 
-        sleep(200)
+        sleep(1000)
+
+        mDevice.waitForIdle()
 
         takeScreenshot(id, -1)
 
-        mDevice.waitForIdle()
-
-        onView(withId(R.id.imageBrand)).check(matches(hasDrawable()))
-
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click())
+        onView(withText(R.string.next)).perform(click())
 
         var pages = 0
         for (i in 0..16) {
 
             try {
+                sleep(1000)
 
-                nextPage()
+                takeScreenshot(id, pages)
 
-                sleep(200)
+                onView(withId(R.id.image_pageRight)).perform(click())
 
-                pressBack()
+            } catch (e: Exception) {
 
-                sleep(200)
+                onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                        .perform(replaceText(result.toString()), closeSoftKeyboard())
 
-                takeScreenshot(id, i)
+                try {
+                    onView(withText("μS/cm")).perform(click())
+                } catch (e: Exception) {
+                }
 
-                sleep(100)
+                sleep(500)
 
-                nextPage()
+                takeScreenshot(id, pages)
 
-                sleep(200)
+                sleep(300)
 
                 pages++
 
-            } catch (e: Exception) {
-                sleep(200)
+                onView(withText(R.string.next)).perform(click())
+
+                sleep(300)
+
+                if (("cd66ecab2794 79586d9319c8").contains(id)) {
+                    for (j in 0..16) {
+                        try {
+                            sleep(1000)
+
+                            takeScreenshot(id, pages)
+
+                            onView(withId(R.id.image_pageRight)).perform(click())
+
+                        } catch (e: Exception) {
+
+                            onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                                    .perform(replaceText(result.toString()), closeSoftKeyboard())
+
+                            sleep(500)
+
+                            takeScreenshot(id, pages)
+
+                            sleep(300)
+
+                            onView(withText(R.string.next)).perform(click())
+
+                            pages++
+
+                            break
+                        }
+                        pages++
+                    }
+                }
+
+                takeScreenshot(id, pages)
+
+                sleep(300)
+
+                TestHelper.clickSubmitButton()
+
                 break
             }
-
+            pages++
         }
-        return pages
-    }
-
-    @Test
-    fun instructionTest() {
-
-        goToMainScreen()
-
-        gotoSurveyForm()
-
-        nextSurveyPage("Meter")
-
-        clickExternalSourceButton(0)
-
-        sleep(1000)
-
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click())
-
-        onView(withText(R.string.sd_on)).check(matches(isDisplayed()))
-
-        onView(withText(R.string.sd_50_dip_sample_1)).check(matches(isDisplayed()))
-
-        mActivityTestRule.finishActivity()
+        return pages + 1
     }
 }

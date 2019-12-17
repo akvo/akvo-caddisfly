@@ -157,7 +157,7 @@ class TestActivity : AppUpdateActivity() {
             Toast.makeText(this, "Language: " + intent.getStringExtra(SensorConstants.LANGUAGE),
                     Toast.LENGTH_LONG).show()
         }
-        val questionTitle: String = intent.getStringExtra(SensorConstants.QUESTION_TITLE)!!
+        val questionTitle: String? = intent.getStringExtra(SensorConstants.QUESTION_TITLE)
         val uuid: String? = intent.getStringExtra(SensorConstants.RESOURCE_ID)
         if (uuid != null) {
             //Get the test config by uuid
@@ -345,16 +345,14 @@ class TestActivity : AppUpdateActivity() {
         }
     }
 
-    private fun getTestName(title: String): String {
-        var tempTitle = title
+    private fun getTestName(title: String?): String {
+        var tempTitle = getString(string.error)
 
         //ensure we have short name to display as title
-        if (title.isNotEmpty()) {
+        if (!title.isNullOrEmpty()) {
             if (title.length > 30) {
                 tempTitle = title.substring(0, 30)
             }
-        } else {
-            tempTitle = getString(string.error)
         }
         return tempTitle
     }

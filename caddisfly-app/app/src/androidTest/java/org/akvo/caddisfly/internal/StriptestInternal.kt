@@ -227,15 +227,17 @@ class StriptestInternal {
 
                 if ("ac33b44f9992, 32d9b8f4aecf".contains(id)) {
                     try {
-
                         if (pages == 5) {
-
-                            @Suppress("ConstantConditionIf")
-                            if (mCurrentLanguage == "en") {
-                                mDevice.click(350, 390)
-                            } else {
-//                                mDevice.click(450, 600)
-                                mDevice.click(900, 600)
+                            when (mCurrentLanguage) {
+                                "en" -> {
+                                    mDevice.click(350, 390)
+                                }
+                                "es" -> {
+                                    mDevice.click(900, 660)
+                                }
+                                else -> {
+                                    mDevice.click(900, 600)
+                                }
                             }
 
                             sleep(3000)

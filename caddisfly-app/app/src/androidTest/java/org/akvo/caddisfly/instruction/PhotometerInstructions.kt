@@ -24,7 +24,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -49,7 +49,7 @@ import org.junit.runner.RunWith
 
 @RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
-class InstructionsTest : BaseTest() {
+class PhotometerInstructions : BaseTest() {
 
     private val jsArrayString = StringBuilder()
     private val listString = StringBuilder()
@@ -151,140 +151,6 @@ class InstructionsTest : BaseTest() {
                 break
             }
 
-        }
-        return pages + 1
-    }
-
-    @Test
-    @RequiresDevice
-    fun testInstructionsManual() {
-
-        val testConfigRepository = TestConfigRepository()
-
-        val testList = testConfigRepository.getTests(TestType.MANUAL)
-        for (i in 0 until TestConstants.MANUAL_TESTS_COUNT) {
-
-            assertEquals(testList!![i].subtype, TestType.MANUAL)
-
-            val uuid = testList[i].uuid
-            val result = testList[i].maxRangeValue - 0.1
-
-            val id = uuid.substring(uuid.lastIndexOf("-") + 1)
-
-//            if (("57a6ced96c17").contains(id))
-            //                    || testList.get(i).getBrand().contains("Tester")
-            //                            || testList.get(i).getBrand().contains("SD")
-            //                            || testList.get(i).getBrand().contains("Tube"))
-            run {
-                val intent = Intent()
-                intent.type = "text/plain"
-                intent.action = AppConfig.EXTERNAL_APP_ACTION
-                val data = Bundle()
-                data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage)
-                intent.putExtras(data)
-
-                mActivityRule.launchActivity(intent)
-
-                navigateToTest(id, result)
-
-//                jsArrayString.append("[").append("\"").append(id).append("\",").append(pages).append("],")
-//
-//                listString.append("<li><span onclick=\"loadTestType(\'").append(id)
-//                        .append("\')\">").append(testList[i].name).append("</span></li>")
-
-//                TestHelper.currentActivity.finish()
-//                mActivityRule.finishActivity()
-            }
-        }
-
-//        Log.d("Caddisfly", jsArrayString.toString())
-//        Log.d("Caddisfly", listString.toString())
-    }
-
-    private fun navigateToTest(id: String, result: Double): Int {
-
-        mDevice.waitForIdle()
-
-        sleep(1000)
-
-        mDevice.waitForIdle()
-
-        takeScreenshot(id, -1)
-
-        onView(withText(R.string.next)).perform(click())
-
-        var pages = 0
-        for (i in 0..16) {
-
-            try {
-                sleep(1000)
-
-                takeScreenshot(id, pages)
-
-                onView(withId(R.id.image_pageRight)).perform(click())
-
-            } catch (e: Exception) {
-
-                onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                        .perform(replaceText(result.toString()), closeSoftKeyboard())
-
-                try {
-                    onView(withText("μS/cm")).perform(click())
-                } catch (e: Exception) {
-                }
-
-                sleep(500)
-
-                takeScreenshot(id, pages)
-
-                sleep(300)
-
-                pages++
-
-                onView(withText(R.string.next)).perform(click())
-
-                sleep(300)
-
-                if (("cd66ecab2794 79586d9319c8").contains(id)) {
-                    for (j in 0..16) {
-                        try {
-                            sleep(1000)
-
-                            takeScreenshot(id, pages)
-
-                            onView(withId(R.id.image_pageRight)).perform(click())
-
-                        } catch (e: Exception) {
-
-                            onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                                    .perform(replaceText(result.toString()), closeSoftKeyboard())
-
-                            sleep(500)
-
-                            takeScreenshot(id, pages)
-
-                            sleep(300)
-
-                            onView(withText(R.string.next)).perform(click())
-
-                            pages++
-
-                            break
-                        }
-                        pages++
-                    }
-                }
-
-                takeScreenshot(id, pages)
-
-                sleep(300)
-
-                TestHelper.clickSubmitButton()
-
-                break
-            }
-            pages++
         }
         return pages + 1
     }

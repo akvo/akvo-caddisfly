@@ -179,8 +179,9 @@ class MainActivity : AppUpdateActivity() {
     }
 
     private fun alertDependantAppNotFound() {
-        val message = String.format("%s\r\n\r\n%s", "Akvo Flow is not installed.",
-                "Please install the Akvo Flow app from your instance.")
+        val message = String.format("%s\r\n\r\n%s",
+                getString(string.external_app_not_installed),
+                getString(string.install_external_app))
         AlertUtil.showAlert(this, string.notFound, message, string.close,
                 DialogInterface.OnClickListener { _: DialogInterface?, _: Int -> closeApp(0) },
                 null, null)
@@ -227,7 +228,7 @@ class MainActivity : AppUpdateActivity() {
         }
     }
 
-    internal inner class IntroFragmentAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
+    internal inner class IntroFragmentAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         override fun getItem(position: Int): Fragment {
             return if (position == FIRST_PAGE) {
                 Intro1Fragment.newInstance()

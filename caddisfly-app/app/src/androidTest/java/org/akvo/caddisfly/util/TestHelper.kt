@@ -37,7 +37,6 @@ import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
@@ -68,8 +67,7 @@ fun skipOpeningExternalApp(model: String = ""): Boolean {
 
     try {
         val testLabSetting: String = Settings.System.getString(
-                InstrumentationRegistry.getInstrumentation()
-                        .targetContext.contentResolver, "firebase.test.lab")
+                getInstrumentation().targetContext.contentResolver, "firebase.test.lab")
 
         if ("true" == testLabSetting) {
             return true
