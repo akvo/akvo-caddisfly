@@ -19,19 +19,33 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <string name="optional">Opcional</string>
     <string name="skip">Omitir</string>
 
+    <string name="md610_photometer">Fotómetro MD 610</string>
     <string name="check_bluetooth_turned_on">Comprueba que el MD610 y su bluetooth estén encendidos</string>
     <string name="to_turn_md610_on">Para activar el MD 610:</string>
 
+    <string name="press_on_button"><![CDATA[Presione (*on*)]]></string>
+    <string name="press_mode_button"><![CDATA[Presione (*mode*) para entrar en el menú.]]></string>
+    <string name="select_bluetooth"><![CDATA[Presione (*down*) para desplazarse hasta Bluetooth y presione (*enter*)]]></string>
+    <string name="turn_bluetooth_on"><![CDATA[Presione (*shift*) + (*1*) para activar bluetooth.]]></string>
+    <string name="escape_to_menu"><![CDATA[Presione (*enter*) y (*esc*) para regresar al menú principal.]]></string>
+    <string name="perform_test"><![CDATA[Realice la pruebas <b>%1$s</b> en el MD 610 y presione (*f3*) cuando esté listo.]]></string>
     <string name="select_correct_test"><![CDATA[Seleccione la prueba correcta y vuelva a intentarlo.]]></string>
     <string name="data_does_not_match">Los datos recibidos no coinciden con el tipo de prueba esperado.</string>
     <string name="invalid_data_received">Datos inválidos recibidos</string>
     <string name="incorrect_test_selected">Prueba incorrecta seleccionada</string>
+    <string name="select_test"><![CDATA[Seleccione el test <b>%1$s</b> en el MD610]]></string>
     <string name="test_selected">Prueba seleccionada</string>
     <string name="to_select_test">seleccionando la prueba</string>
     <string name="test_instructions">Instrucciones de prueba</string>
 
+    <string name="select_test_instruction"><![CDATA[Mantenga presionado (*shift*)+ <b>%1$s</b> para seleccionar el test <b>%2$s</b> y luego presione (*enter*)]]></string>
+    <string name="select_diff_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b>para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'diff\'</b> y luego presione (*enter*)]]></string>
+    <string name="select_free_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b> para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'free\'</b> y luego presione (*enter*)]]></string>
+    <string name="select_Cr_VI_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b> para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'Cr(VI)\'</b> y luego (*enter*)]]></string>
+    <string name="select_Cr_III_VI_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b> para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'Cr(III+VI)\'</b> y luego (*enter*)]]></string>
     <string name="fill_vial_10_with_5ml_sample_zero_a">Enjuague un vial (10 mm Ø) con la muestra de agua.</string>
     <string name="fill_vial_10_with_5ml_sample_zero_b">Llene el vial (10 mm Ø) con <b>5 ml de su muestra</b>.</string>
     <string name="fill_vial_10_with_5ml_sample_zero_c">Limpie el exterior del vial, sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
@@ -153,7 +167,7 @@
     <string name="clean_stirring_rod_deionised">Enjuague el vial y la varilla de agitación a fondo con agua desionizada.</string>
     <string name="clean_deionised">Enjuague bien el vial con agua desionizada.</string>
     <string name="once_test_result_shown">Una vez que se muestra el resultado de la prueba en el fotómetro MD610, presione (* f3 *) para transferir datos.</string>
-    <string name="over_range_is_valid"><![CDATA[<b>Note:</b> Debajo del rango y sobre el rango también son resultados válidos]]></string>
+    <string name="over_range_is_valid"><![CDATA[<b>Nota:</b> Debajo del rango y sobre el rango también son resultados válidos]]></string>
     <string name="dechlorinate_residual_chlorine_1">En el caso de niveles altos de cloro residual, realice el análisis con una muestra de agua declorada. Para declorar:</string>
     <string name="dechlorinate_residual_chlorine_2">Agregue una tableta DECHLOR a la muestra de agua.</string>
     <string name="dechlorinate_residual_chlorine_3">Triture y mezcle para disolver la tableta. Luego continúe con el siguiente paso de las instrucciones.</string>
