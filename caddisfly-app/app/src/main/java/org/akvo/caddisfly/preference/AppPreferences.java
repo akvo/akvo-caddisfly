@@ -26,6 +26,7 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import static org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_TAKE_SCREENSHOTS;
 import static org.akvo.caddisfly.common.AppConfig.IS_TEST_MODE;
 
 /**
@@ -74,6 +75,9 @@ public final class AppPreferences {
     }
 
     public static boolean isAppUpdateCheckRequired() {
+        if (INSTRUMENTED_TEST_TAKE_SCREENSHOTS) {
+            return true;
+        }
         long lastCheck = PreferencesUtil.getLong(CaddisflyApp.getApp(), "lastUpdateCheck");
         return TimeUnit.MILLISECONDS.toDays(Calendar.getInstance().getTimeInMillis() - lastCheck) > 0;
     }

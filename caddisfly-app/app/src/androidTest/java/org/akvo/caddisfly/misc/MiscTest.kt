@@ -29,12 +29,12 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.goToMainScreen
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.mDevice
 import org.junit.Before
 import org.junit.BeforeClass
@@ -62,7 +62,7 @@ class MiscTest {
 
     @Before
     fun setUp() {
-        loadData(mActivityRule.activity, mCurrentLanguage)
+        loadData(mActivityRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         clearPreferences(mActivityRule)
     }
 

@@ -44,7 +44,7 @@ import androidx.test.runner.lifecycle.Stage.RESUMED
 import androidx.test.uiautomator.*
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.app.CaddisflyApp
-import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.AppConfig.*
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.hamcrest.Matchers.`is`
@@ -80,15 +80,13 @@ fun skipOpeningExternalApp(model: String = ""): Boolean {
 
 object TestHelper {
 
-    const val mCurrentLanguage = "en"
-    private const val TAKE_SCREENSHOTS = false
     private val STRING_HASH_MAP_EN = HashMap<String, String>()
     private val STRING_HASH_MAP_ES = HashMap<String, String>()
     private val STRING_HASH_MAP_FR = HashMap<String, String>()
     private val STRING_HASH_MAP_IN = HashMap<String, String>()
     private lateinit var currentHashMap: Map<String, String>
 
-//    private var mCounter: Int = 0
+    private var screenshotCount = -1
 
     val currentActivity: Activity
         get() {
@@ -126,7 +124,7 @@ object TestHelper {
         val assets = currentResources.assets
         val metrics = currentResources.displayMetrics
         val config = Configuration(currentResources.configuration)
-        config.locale = Locale(mCurrentLanguage)
+        config.locale = Locale(INSTRUMENTED_TEST_LANGUAGE)
         val res = Resources(assets, metrics, config)
 
         return res.getString(resourceId)
@@ -170,19 +168,21 @@ object TestHelper {
         }
     }
 
-    //    fun takeScreenshot() {
-//        if (TAKE_SCREENSHOTS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            val path = File(Environment.getExternalStorageDirectory().path
-//                    + "/Akvo Caddisfly/screenshots/screen-" + mCounter++ + "-" + mCurrentLanguage + ".png")
-//            mDevice.takeScreenshot(path, 0.5f, 60)
-//        }
-//    }
-//
+    fun takeScreenshot() {
+        takeScreenshot("app", screenshotCount++)
+    }
+
     fun takeScreenshot(name: String, page: Int) {
-        if (TAKE_SCREENSHOTS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            val path = File(Environment.getExternalStorageDirectory().path
-                    + "/Akvo Caddisfly/screenshots/" + name + "-" + mCurrentLanguage + "-" +
+        if (INSTRUMENTED_TEST_TAKE_SCREENSHOTS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            val folder = File(Environment.getExternalStorageDirectory().path
+                    + "/Akvo Caddisfly/screenshots/")
+            val path = File(folder, name + "-" + INSTRUMENTED_TEST_LANGUAGE + "-" +
                     String.format("%02d", page + 1) + ".png")
+
+            if (!folder.exists()) {
+                folder.mkdirs()
+            }
+
             mDevice.takeScreenshot(path, 0.1f, 30)
         }
     }
@@ -204,7 +204,7 @@ object TestHelper {
     fun activateTestMode() {
 
         @Suppress("ConstantConditionIf")
-        if (!AppConfig.IS_TEST_MODE) {
+        if (!IS_TEST_MODE) {
 
             onView(withId(R.id.button_info)).perform(click())
 

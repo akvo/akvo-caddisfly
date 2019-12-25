@@ -36,6 +36,7 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
@@ -47,7 +48,6 @@ import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.getString
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.navigateUp
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.hamcrest.Matchers.*
@@ -85,7 +85,7 @@ class BluetoothTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mActivityTestRule.activity, mCurrentLanguage)
+        loadData(mActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         clearPreferences(mActivityTestRule)
     }
 

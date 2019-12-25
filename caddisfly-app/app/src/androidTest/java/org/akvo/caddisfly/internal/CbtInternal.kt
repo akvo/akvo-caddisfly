@@ -38,6 +38,7 @@ import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.Constants
 import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
@@ -92,7 +93,7 @@ class CbtInternal {
 
     @Before
     fun setUp() {
-        TestHelper.loadData(mActivityTestRule.activity, TestHelper.mCurrentLanguage)
+        TestHelper.loadData(mActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         scale = mActivityTestRule.activity.resources.displayMetrics.density
         TestHelper.clearPreferences(mActivityTestRule)
         mActivityTestRule.finishActivity()
@@ -129,7 +130,7 @@ class CbtInternal {
             intent.action = AppConfig.EXTERNAL_APP_ACTION
             val data = Bundle()
             data.putString(SensorConstants.RESOURCE_ID, id)
-            data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage)
+            data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
             intent.putExtras(data)
 
             mTestActivityRule.launchActivity(intent)
@@ -372,7 +373,7 @@ class CbtInternal {
             intent.action = AppConfig.EXTERNAL_APP_ACTION
             val data = Bundle()
             data.putString(SensorConstants.RESOURCE_ID, id)
-            data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage)
+            data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
             intent.putExtras(data)
 
             mTestActivityRule.launchActivity(intent)
@@ -651,7 +652,7 @@ class CbtInternal {
                 intent.action = AppConfig.EXTERNAL_APP_ACTION
                 val data = Bundle()
                 data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage)
+                data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
                 intent.putExtras(data)
 
                 mTestActivityRule.launchActivity(intent)

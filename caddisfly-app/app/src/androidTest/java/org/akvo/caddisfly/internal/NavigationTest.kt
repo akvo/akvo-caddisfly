@@ -1,8 +1,6 @@
-package org.akvo.caddisfly.ui
+package org.akvo.caddisfly.internal
 
 
-import android.os.Build
-import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
@@ -11,25 +9,17 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
-import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
+import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
-import org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode
-import org.akvo.caddisfly.util.TestHelper.getString
-import org.akvo.caddisfly.util.TestHelper.goToMainScreen
-import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
-import org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestUtil.childAtPosition
+import org.akvo.caddisfly.util.TestHelper.navigateUp
+import org.akvo.caddisfly.util.TestHelper.takeScreenshot
 import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.skipOpeningExternalApp
 import org.akvo.caddisfly.util.sleep
-import org.hamcrest.Matchers.`is`
-import org.hamcrest.Matchers.allOf
-import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
@@ -38,7 +28,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class IntroTest {
+class NavigationTest {
 
     companion object {
         @JvmStatic
@@ -61,9 +51,7 @@ class IntroTest {
     }
 
     @Test
-    fun introTest() {
-
-        val goToTest = getString(R.string.goToTest)
+    fun navigationTest() {
 
         onView(withId(R.id.button_info)).perform(click())
 
@@ -93,13 +81,21 @@ class IntroTest {
         onView(withText(R.string.test_water_quality_using))
                 .check(matches(isDisplayed()))
 
+        takeScreenshot()
+
         onView(withText(R.string.next)).perform(click())
 
         getInstrumentation().waitForIdleSync()
 
+        takeScreenshot()
+
         onView(withId(R.id.button_info)).perform(click())
 
+        takeScreenshot()
+
         onView(withText(R.string.legalInformation)).perform(click())
+
+        takeScreenshot()
 
         onView(withId(R.id.homeButton)).perform(click())
 
@@ -123,89 +119,5 @@ class IntroTest {
 
         onView(withId(R.id.button_info)).perform(click())
 
-        enterDiagnosticMode()
-
-        onView(withId(R.id.actionSettings)).perform(click())
-
-        pressBack()
-
-        leaveDiagnosticMode()
-
-        sleep(1000)
-
-        pressBack()
-
-        sleep(3000)
-
-        getInstrumentation().waitForIdleSync()
-
-        onView(withText(R.string.next)).perform(click())
-
-        getInstrumentation().waitForIdleSync()
-
-        onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
-
-        if (!skipOpeningExternalApp(Build.MODEL)) {
-
-            onView(withText(R.string.go_to_external_app)).perform(click())
-
-            getInstrumentation().waitForIdleSync()
-
-            sleep(500)
-
-            mDevice.waitForIdle()
-
-            gotoSurveyForm()
-
-            mActivityTestRule.finishActivity()
-
-            sleep(2000)
-
-            assertNotNull(mDevice.findObject(By.text(goToTest)))
-        }
-    }
-
-    @Test
-    fun launchExternalApp() {
-
-        goToMainScreen()
-
-        val goToTest = getString(R.string.goToTest)
-
-        sleep(2000)
-
-        onView(withText(R.string.next)).perform(click())
-
-        onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
-
-        if (!skipOpeningExternalApp(Build.MODEL)) {
-
-            onView(withText(R.string.go_to_external_app)).perform(click())
-
-            sleep(500)
-
-            mActivityTestRule.finishActivity()
-
-            mDevice.waitForIdle()
-
-            gotoSurveyForm()
-
-            sleep(2000)
-
-            assertNotNull(mDevice.findObject(By.text(goToTest)))
-        }
-    }
-
-    private fun navigateUp() {
-        val imageButton = onView(
-                allOf<View>(withContentDescription(R.string.navigate_up),
-                        childAtPosition(
-                                allOf<View>(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                withClassName(`is`("android.widget.LinearLayout")),
-                                                0)),
-                                1),
-                        isDisplayed()))
-        imageButton.perform(click())
     }
 }

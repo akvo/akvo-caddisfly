@@ -34,6 +34,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.ui.MainActivity
@@ -44,7 +45,6 @@ import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.goToMainScreen
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
 import org.akvo.caddisfly.util.TestUtil.clickPercent
 import org.akvo.caddisfly.util.TestUtil.nextPage
@@ -82,7 +82,7 @@ class TesterInstructions : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mActivityTestRule.activity, mCurrentLanguage)
+        loadData(mActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         clearPreferences(mActivityTestRule)
     }
 

@@ -39,6 +39,7 @@ import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
@@ -49,7 +50,6 @@ import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.activateTestMode
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
 import org.hamcrest.Matchers
 import org.junit.Assert.assertEquals
@@ -92,7 +92,7 @@ class StriptestInternal {
     @Before
     fun setUp() {
         mMainActivityTestRule.launchActivity(Intent())
-        loadData(mMainActivityTestRule.activity, mCurrentLanguage)
+        loadData(mMainActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         clearPreferences(mMainActivityTestRule)
 
         activateTestMode()
@@ -147,7 +147,7 @@ class StriptestInternal {
                 intent.action = AppConfig.EXTERNAL_APP_ACTION
                 val data = Bundle()
                 data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, mCurrentLanguage)
+                data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
                 intent.putExtras(data)
 
                 mDevice.waitForIdle()
@@ -228,7 +228,7 @@ class StriptestInternal {
                 if ("ac33b44f9992, 32d9b8f4aecf".contains(id)) {
                     try {
                         if (pages == 5) {
-                            when (mCurrentLanguage) {
+                            when (INSTRUMENTED_TEST_LANGUAGE) {
                                 "en" -> {
                                     mDevice.click(350, 390)
                                 }

@@ -34,6 +34,7 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
@@ -92,7 +93,7 @@ class PhotometerInstructions : BaseTest() {
                 intent.action = AppConfig.EXTERNAL_APP_ACTION
                 val data = Bundle()
                 data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, TestHelper.mCurrentLanguage)
+                data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
                 intent.putExtras(data)
 
                 mActivityRule.launchActivity(intent)

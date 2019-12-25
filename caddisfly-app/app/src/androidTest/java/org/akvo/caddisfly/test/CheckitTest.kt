@@ -41,6 +41,7 @@ import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
@@ -48,7 +49,6 @@ import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.getString
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.allOf
 import org.junit.Assert.assertNotNull
@@ -81,7 +81,7 @@ class CheckitTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mIntentsRule.activity, mCurrentLanguage)
+        loadData(mIntentsRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         clearPreferences(mIntentsRule)
         stubCameraIntent()
     }

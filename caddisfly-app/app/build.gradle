@@ -4,6 +4,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.sentry.android.gradle'
 
+def secretsFile = file(System.properties['user.home'] + '/.gradle/gradle.properties')
+def secrets = new Properties()
+if (secretsFile.exists()) {
+    secrets.load(new FileInputStream(secretsFile))
+}
+
 android {
     compileSdkVersion 29
     testOptions.unitTests.includeAndroidResources = true
@@ -50,16 +56,20 @@ android {
 
     signingConfigs {
         caddisflyRelease {
-            storeFile file(CADDISFLY_RELEASE_STORE_FILE)
-            storePassword CADDISFLY_RELEASE_STORE_PASSWORD
-            keyAlias CADDISFLY_RELEASE_KEY_ALIAS
-            keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
+            if (secrets.getProperty('CADDISFLY_RELEASE_STORE_FILE')) {
+                storeFile file(CADDISFLY_RELEASE_STORE_FILE)
+                storePassword CADDISFLY_RELEASE_STORE_PASSWORD
+                keyAlias CADDISFLY_RELEASE_KEY_ALIAS
+                keyPassword CADDISFLY_RELEASE_KEY_PASSWORD
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.caddisflyRelease
+            if (secrets.getProperty('CADDISFLY_RELEASE_STORE_FILE')) {
+                signingConfig signingConfigs.caddisflyRelease
+            }
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
