@@ -26,6 +26,17 @@ import org.akvo.caddisfly.BuildConfig;
  */
 public final class AppConfig {
 
+
+    /**
+     * Takes screenshots during instrumented tests {see ScreenshotSuite}
+     * NOTE: Storage permission is required
+     */
+    public static final boolean INSTRUMENTED_TEST_TAKE_SCREENSHOTS = false;
+
+
+    public static final String INSTRUMENTED_TEST_LANGUAGE = "en";
+
+
     /**
      * For testing
      */

@@ -102,6 +102,8 @@
     <!--Messages-->
     <string name="phoneDoesNotSupport">This feature is not supported by this device</string>
     <string name="errorLoadingConfiguration">Could not load configuration information</string>
+    <string name="external_app_not_installed">Akvo Flow is not installed.</string>
+    <string name="install_external_app">Please install the Akvo Flow app from your instance.</string>
 
     <!--Bluetooth-->
     <string name="nearby_devices">Nearby devices</string>
@@ -138,4 +140,8 @@
     <string name="go_to_external_app">Go to Akvo Flow</string>
     <string name="errorAkvoFlowRequired">Please install Akvo Flow app</string>
 
+    <!--App Update-->
+    <string name="update_ready">Update is ready to install</string>
+    <string name="update_download_fail">Unable to download update</string>
+    <string name="restart">Restart</string>
 </resources>

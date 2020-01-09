@@ -19,33 +19,33 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
-    <string name="optional">Optional</string>
+    <string name="optional">Opcional</string>
     <string name="skip">Omitir</string>
 
-    <string name="md610_photometer">MD 610 Photometer</string>
+    <string name="md610_photometer">Fotómetro MD 610</string>
     <string name="check_bluetooth_turned_on">Comprueba que el MD610 y su bluetooth estén encendidos</string>
     <string name="to_turn_md610_on">Para activar el MD 610:</string>
 
-    <string name="press_on_button"><![CDATA[Press (*on*)]]></string>
-    <string name="press_mode_button"><![CDATA[Press (*mode*) to enter menu.]]></string>
-    <string name="select_bluetooth"><![CDATA[Press (*down*) to scroll to Bluetooth and press (*enter*)]]></string>
-    <string name="turn_bluetooth_on"><![CDATA[Press (*shift*) + (*1*) to turn bluetooth on.]]></string>
-    <string name="escape_to_menu"><![CDATA[Press (*enter*) and (*esc*) to return to main menu.]]></string>
-    <string name="perform_test"><![CDATA[Perform <b>%1$s</b> test on MD 610 and press (*f3*) when ready.]]></string>
+    <string name="press_on_button"><![CDATA[Presione (*on*)]]></string>
+    <string name="press_mode_button"><![CDATA[Presione (*mode*) para entrar en el menú.]]></string>
+    <string name="select_bluetooth"><![CDATA[Presione (*down*) para desplazarse hasta Bluetooth y presione (*enter*)]]></string>
+    <string name="turn_bluetooth_on"><![CDATA[Presione (*shift*) + (*1*) para activar bluetooth.]]></string>
+    <string name="escape_to_menu"><![CDATA[Presione (*enter*) y (*esc*) para regresar al menú principal.]]></string>
+    <string name="perform_test"><![CDATA[Realice la pruebas <b>%1$s</b> en el MD 610 y presione (*f3*) cuando esté listo.]]></string>
     <string name="select_correct_test"><![CDATA[Seleccione la prueba correcta y vuelva a intentarlo.]]></string>
     <string name="data_does_not_match">Los datos recibidos no coinciden con el tipo de prueba esperado.</string>
     <string name="invalid_data_received">Datos inválidos recibidos</string>
     <string name="incorrect_test_selected">Prueba incorrecta seleccionada</string>
-    <string name="select_test"><![CDATA[Select <b>%1$s</b> test on MD610]]></string>
+    <string name="select_test"><![CDATA[Seleccione el test <b>%1$s</b> en el MD610]]></string>
     <string name="test_selected">Prueba seleccionada</string>
     <string name="to_select_test">seleccionando la prueba</string>
     <string name="test_instructions">Instrucciones de prueba</string>
 
-    <string name="select_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and then press (*enter*)]]></string>
-    <string name="select_diff_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'diff\'</b> and then press (*enter*)]]></string>
-    <string name="select_free_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'free\'</b> and then press (*enter*)]]></string>
-    <string name="select_Cr_VI_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'Cr(VI)\'</b> and then press (*enter*)]]></string>
-    <string name="select_Cr_III_VI_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'Cr(III+VI)\'</b> and then press (*enter*)]]></string>
+    <string name="select_test_instruction"><![CDATA[Mantenga presionado (*shift*)+ <b>%1$s</b> para seleccionar el test <b>%2$s</b> y luego presione (*enter*)]]></string>
+    <string name="select_diff_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b>para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'diff\'</b> y luego presione (*enter*)]]></string>
+    <string name="select_free_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b> para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'free\'</b> y luego presione (*enter*)]]></string>
+    <string name="select_Cr_VI_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b> para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'Cr(VI)\'</b> y luego (*enter*)]]></string>
+    <string name="select_Cr_III_VI_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b> para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'Cr(III+VI)\'</b> y luego (*enter*)]]></string>
     <string name="fill_vial_10_with_5ml_sample_zero_a">Enjuague un vial (10 mm Ø) con la muestra de agua.</string>
     <string name="fill_vial_10_with_5ml_sample_zero_b">Llene el vial (10 mm Ø) con <b>5 ml de su muestra</b>.</string>
     <string name="fill_vial_10_with_5ml_sample_zero_c">Limpie el exterior del vial, sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
@@ -71,6 +71,7 @@
     <string name="fill_new_vial_24_with_10ml_sample_a">Enjuague un vial (24 mm Ø) con la muestra de agua.</string>
     <string name="fill_new_vial_24_with_10ml_sample_b">Llene el vial (24 mm Ø) con <b>10 ml de la muestra de agua (esta es la muestra)</b></string>
     <string name="add_water_till_10ml">Añadir muestra de agua a la marca de 10 ml en el vial.</string>
+    <string name="add_sample_exact">Agregue <b>exactamente la %sampleQuantity ml de la muestra de agua</b> al vial preparado.<b>Precaución: ¡El vial debe llenarse completamente!</b></string>
     <string name="remove_vial">Retire el vial de la cámara de muestras.</string>
     <string name="remove_vial_leave_drops">Retire el vial de la cámara de muestras y <b>vacíelo</b>, dejando unas gotas en el vial.</string>
     <string name="remove_vial_empty">Retire el vial de la cámara de muestras y <b>vacíe el vial</b></string>
@@ -93,6 +94,7 @@
     <string name="add_reagent_1_liquid">Llene el frasco con gotas del mismo tamaño sosteniendo la botella verticalmente y apriete lentamente: <b>%reagent1</b></string>
     <string name="add_reagent_2_liquid">Llene el frasco con gotas del mismo tamaño sosteniendo la botella verticalmente y apriete lentamente: <b>%reagent2</b></string>
     <string name="add_reagent_3_liquid">Llene el frasco con gotas del mismo tamaño sosteniendo la botella verticalmente y apriete lentamente: <b>%reagent3</b></string>
+    <string name="add_reagent_1_liquid_exact_ml">Agregue <b>exactamente %reagent1 de solución reactiva</b> a la muestra de agua. <b>(Precaución: ¡El vial debe llenarse completamente!)</b></string>
     <string name="fill_nitrate_test_tube">Llene el tubo de ensayo de nitrato con <b>20 ml de la muestra de agua</b>.</string>
     <string name="add_spoon_nitrate_test_powder">Añade <b>una cuchara de %reagent1 en polvo</b>.</string>
     <string name="add_spoon_cyanide_1">Agregue <b>dos cucharas de n. ° 4 (blanco) de cianuro-11</b> a la muestra de agua preparada</string>
@@ -126,8 +128,8 @@
     <string name="wipe_place_align_vial_sample_test_a">Limpie el exterior del vial (la muestra).</string>
     <string name="wipe_place_align_vial_sample_test_b">Sostenga el vial en la tapa, coloque el vial (la muestra) en la cámara y alinee las marcas de flecha.</string>
     <string name="wipe_place_align_vial_sample_test_c">Presione la tecla (*test*).</string>
-    <string name="press_enter_wait_1">Presione (*enter*) y espere un <b>período de reacción de $reactionTime1</b></string>
-    <string name="press_enter_wait_2">Presione (*enter*) y espere un <b>período de reacción de $reactionTime2</b></string>
+    <string name="press_enter_wait_1">Presione (*enter*) y espere un <b>período de reacción de %reactionTime1</b></string>
+    <string name="press_enter_wait_2">Presione (*enter*) y espere un <b>período de reacción de %reactionTime2</b></string>
     <string name="remix">Remezcle la solución</string>
     <string name="insert_16mm_adapter">Inserte el adaptador para viales de 16 mm Ø.</string>
     <string name="reaction_tube_1ml_sample">Abre el vial de reactivo A de NitraX y agregue <b>1 ml de la muestra de agua</b>. Cierre la tapa fuertemente.</string>
@@ -138,6 +140,7 @@
     <string name="reaction_tube_1_fifth_ml_blank">Abre un vial de reacción con tapa blanca y agregue <b>0.2 ml de agua desionizada</b> (este es el blanco)</string>
     <string name="reaction_tube_1_fifth_ml_sample">Abre otro vial de reacción con tapa blanca y agregue <b>0.2 ml de agua desionizada</b> (este es el blanco)</string>
     <string name="heat_120_100">Caliente el vial durante <b>120 minutos</b> en un termorreactor precalentado a una temperatura de <b>100 ° C</b>.</string>
+    <string name="heat_120_150">Caliente los viales durante <b>120 minutos</b> en el reactor precalentado a una temperatura de <b>150 ° C</b>. (PRECAUCIÓN: ¡Los viales están calientes!)</string>
     <string name="remove_cool_a">Retire el vial del termorreactor. <b>(PRECAUCIÓN: ¡Los viales están calientes!)</b></string>
     <string name="remove_cool_b">Invertir el vial y dejar enfriar a temperatura ambiente. No coloque los viales calientes en la cámara de muestras.</string>
     <string name="remove_cool_60_a"><b>(PRECAUCIÓN: ¡Los viales están calientes!)</b> Retire los tubos del bloque de calentamiento y déjelos enfriar a 60 ° C o menos.</string>
@@ -164,11 +167,16 @@
     <string name="clean_stirring_rod_deionised">Enjuague el vial y la varilla de agitación a fondo con agua desionizada.</string>
     <string name="clean_deionised">Enjuague bien el vial con agua desionizada.</string>
     <string name="once_test_result_shown">Una vez que se muestra el resultado de la prueba en el fotómetro MD610, presione (* f3 *) para transferir datos.</string>
-    <string name="over_range_is_valid"><![CDATA[<b>Note:</b> Debajo del rango y sobre el rango también son resultados válidos]]></string>
+    <string name="over_range_is_valid"><![CDATA[<b>Nota:</b> Debajo del rango y sobre el rango también son resultados válidos]]></string>
     <string name="dechlorinate_residual_chlorine_1">En el caso de niveles altos de cloro residual, realice el análisis con una muestra de agua declorada. Para declorar:</string>
     <string name="dechlorinate_residual_chlorine_2">Agregue una tableta DECHLOR a la muestra de agua.</string>
     <string name="dechlorinate_residual_chlorine_3">Triture y mezcle para disolver la tableta. Luego continúe con el siguiente paso de las instrucciones.</string>
     <string name="ci_dechlorinate_residual_chlorine_2">Agregue una tableta DECHLOR a la muestra de agua en la otra celda.</string>
 
+    <string name="wipe_outside_prepared_vial_blank">Limpie el exterior del vial preparado (en blanco).</string>
+    <string name="hold_blank_vial_place_in_chamber">Sostenga el vial en blanco por la tapa, coloque el vial en la cámara y alinee las marcas en forma de flechas.</string>
     <string name="press_zero_perform_test">Presione (*cero*) para realizar <b>la prueba de cero</b></string>
+    <string name="tube_upright_invert_flocculation">Coloque el tubo en posición vertical y, una vez que el agente reductor se haya asentado en el fondo, inviértalo suavemente de tres a cuatro veces para completar la floculación del agente reductor. </string>
+    <string name="stand_tube_further_2_minutes">Deje reposar el tubo durante 2 minutos más.</string>
+
 </resources>

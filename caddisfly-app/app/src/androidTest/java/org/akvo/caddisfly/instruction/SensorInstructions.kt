@@ -32,6 +32,7 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
@@ -43,7 +44,6 @@ import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -74,7 +74,7 @@ class SensorInstructions : BaseTest() {
     override fun setUp() {
         super.setUp()
         mActivityTestRule.launchActivity(Intent())
-        loadData(mActivityTestRule.activity, mCurrentLanguage)
+        loadData(mActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         clearPreferences(mActivityTestRule)
         mActivityTestRule.finishActivity()
     }
@@ -84,7 +84,7 @@ class SensorInstructions : BaseTest() {
     fun testInstructionsAllSensors() {
 
         mActivityTestRule.launchActivity(Intent())
-        loadData(mActivityTestRule.activity, mCurrentLanguage)
+        loadData(mActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
 
         val testConfigRepository = TestConfigRepository()
         val testList = testConfigRepository.getTests(TestType.SENSOR)
@@ -142,7 +142,7 @@ class SensorInstructions : BaseTest() {
         intent.action = AppConfig.EXTERNAL_APP_ACTION
         val data = Bundle()
         data.putString(SensorConstants.RESOURCE_ID, uuid)
-        data.putString(SensorConstants.LANGUAGE, mCurrentLanguage)
+        data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
         intent.putExtras(data)
 
         mActivityTestRule.launchActivity(intent)
@@ -173,7 +173,7 @@ class SensorInstructions : BaseTest() {
         intent.action = AppConfig.EXTERNAL_APP_ACTION
         val data = Bundle()
         data.putString(SensorConstants.RESOURCE_ID, uuid)
-        data.putString(SensorConstants.LANGUAGE, mCurrentLanguage)
+        data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
         intent.putExtras(data)
 
         mActivityTestRule.launchActivity(intent)

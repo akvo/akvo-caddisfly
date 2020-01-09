@@ -19,7 +19,6 @@
 
 package org.akvo.caddisfly.app;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -32,17 +31,20 @@ import android.util.DisplayMetrics;
 
 import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
+import org.akvo.caddisfly.di.DaggerAppComponent;
 import org.akvo.caddisfly.logging.SentryTree;
 import org.akvo.caddisfly.util.PreferencesUtil;
 
 import java.util.Arrays;
 import java.util.Locale;
 
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
 import timber.log.Timber;
 
-public class CaddisflyApp extends Application {
+public class CaddisflyApp extends DaggerApplication {
 
     private static CaddisflyApp app; // Singleton
 
@@ -84,6 +86,7 @@ public class CaddisflyApp extends Application {
     }
 
     // https://stackoverflow.com/a/52164101
+    @SuppressWarnings("SameParameterValue")
     private static String decrypt(String str) {
         str = str.replace("-", "");
         StringBuilder result = new StringBuilder();
@@ -110,6 +113,11 @@ public class CaddisflyApp extends Application {
         }
 
         app = this;
+    }
+
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerAppComponent.factory().create(this);
     }
 
     /**

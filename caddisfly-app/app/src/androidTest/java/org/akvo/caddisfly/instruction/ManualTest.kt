@@ -40,6 +40,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
@@ -47,7 +48,6 @@ import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.goToMainScreen
 import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
 import org.hamcrest.CoreMatchers.not
@@ -82,7 +82,7 @@ class ManualTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mIntentsRule.activity, mCurrentLanguage)
+        loadData(mIntentsRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         clearPreferences(mIntentsRule)
     }
 

@@ -31,6 +31,7 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
@@ -38,7 +39,6 @@ import org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode
 import org.akvo.caddisfly.util.TestHelper.goToMainScreen
 import org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode
 import org.akvo.caddisfly.util.TestHelper.loadData
-import org.akvo.caddisfly.util.TestHelper.mCurrentLanguage
 import org.akvo.caddisfly.util.TestHelper.navigateUp
 import org.akvo.caddisfly.util.mDevice
 import org.akvo.caddisfly.util.sleep
@@ -67,7 +67,7 @@ class DiagnosticTest {
 
     @Before
     fun setUp() {
-        loadData(mActivityRule.activity, mCurrentLanguage)
+        loadData(mActivityRule.activity, INSTRUMENTED_TEST_LANGUAGE)
         clearPreferences(mActivityRule)
     }
 
@@ -125,7 +125,7 @@ class DiagnosticTest {
         onView(withId(R.id.actionSettings)).perform(click())
 
         @Suppress("ConstantConditionIf")
-        if (mCurrentLanguage == "en") {
+        if (INSTRUMENTED_TEST_LANGUAGE == "en") {
             onView(withText("English")).perform(click())
             onView(withText("Français")).perform(click())
         } else {

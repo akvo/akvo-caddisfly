@@ -19,7 +19,7 @@
     <string name="close">Cerrar</string>
     <string name="previous">Anterior</string>
     <string name="next">Siguiente</string>
-    <string name="navigate_up">Navegar hacia arriba</string>
+    <string name="navigate_up">Desplazarse hacia arriba</string>
     <string name="logo">Símbolo</string>
     <string name="result">Resultado</string>
     <string name="language">Idioma</string>
@@ -72,6 +72,8 @@
     <!--Messages-->
     <string name="phoneDoesNotSupport">Esta función no es compatible con este dispositivo.</string>
     <string name="errorLoadingConfiguration">No se pudo cargar la información de configuración</string>
+    <string name="external_app_not_installed">Akvo Flow no esta instalada.</string>
+    <string name="install_external_app">Por favor, instale la aplicación Akvo Flow que corresponde a su instancia.</string>
     <!--Bluetooth-->
     <string name="nearby_devices">Dispositivos cercanos</string>
     <string name="connect_device">Conéctate a tu dispositivo</string>
@@ -80,11 +82,13 @@
     <string name="error_bluetooth_not_supported">Bluetooth no es compatible.</string>
     <string name="location_permission">Se requiere permiso de ubicación para la conexión Bluetooth</string>
     <string name="unknown_device">Desconocido</string>
+    <string name="scanning">Escaneando el fotómetro MD610 …</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Agua y sistema de calidad del suelo</string>
     <string name="copyrightMessage">Derechos de autor © Stichting Akvo</string>
     <string name="legalInformation">Información legal</string>
     <string name="terms_of_service">Términos de servicio</string>
+    <string name="settings_disabled">Ajustes desactivados</string>
     <!--Software notices-->
     <string name="software_incorporates_material">Este software incorpora material del proyecto listado abajo.</string>
     <string name="apache_license_2">Licencia Apache 2.0</string>
@@ -101,4 +105,8 @@
     <string name="to_conduct_a_water_quality_test">Para realizar una prueba de calidad del agua, vaya a Akvo Flow y seleccione la pregunta de Caddisfly.</string>
     <string name="go_to_external_app">Ir a Akvo Flow</string>
     <string name="errorAkvoFlowRequired">Por favor, instale la aplicación Akvo Flow</string>
+    <!--App Update-->
+    <string name="update_ready">La actualización esta lista para instalarse</string>
+    <string name="update_download_fail">Error al descargar la actualización</string>
+    <string name="restart">Reiniciar</string>
 </resources>

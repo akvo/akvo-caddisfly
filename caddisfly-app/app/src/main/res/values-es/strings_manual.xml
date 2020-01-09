@@ -30,6 +30,9 @@
     <string name="sd_turn_off">Mantenga presionado (*sd_on_off*) (3 segundos) para apagar el instrumento.</string>
     <string name="sd_rinse">Enjuague el sensor con agua destilada (nunca toque el electrodo con nada) y vuelva a colocar la tapa protectora. Asegúrese de que la tapa protectora esté llena de solución KCL.</string>
     <string name="fill_turbidity_tube">Conecte los tubos de turbidez y llene el tubo con la muestra de agua hasta que ya no pueda ver el círculo negro en el fondo amarillo.</string>
+    <string name="empty_tube_see_black_circle">Vacíe el tubo a intervalos pequeños hasta que vuelva a ver el círculo negro en el fondo amarillo.</string>
+    <string name="read_turbidity_on_side_tube">Lea la turbidez en el costado del tubo.</string>
+
     <string name="fill_in_value_turbidity_tube">Ingrese el valor de turbidez obtenido en la aplicación.</string>
     <string name="clean_turbidity_tube">Vacíe el tubo completamente, límpielo si es necesario, desconecte los tubos y guárdelos.</string>
     <string name="sd_70_rinse">Enjuague el sensor con agua destilada (nunca toque el electrodo con nada) y vuelva a colocar la tapa protectora.</string>
@@ -46,6 +49,7 @@
     <string name="pt_add_reagent_2">Agregue la tableta DPD No.1 directamente de la lámina al compartimiento derecho (Cl DPD). Evite tocar las tabletas reactivas.</string>
     <string name="pt_close_shake">Cierre la caja con la tapa y agite hasta que los reactivos se disuelvan. Asegúrese de colocar la tapa correctamente con la flecha hacia usted.</string>
     <string name="select_color_intervals">Seleccione los intervalos de color</string>
+    <string name="color_intervals">Intervalos de color</string>
     <string name="select_colors_before_continue">Seleccione los intervalos de color antes de continuar</string>
 
     <string name="checkit_comparator_uses">El comparador Checkit utiliza dos celdas y un disco de color.</string>
@@ -58,7 +62,7 @@
     <!--Nitrate Checkit-->
     <string name="fill_nitrate_tube">Llene el tubo de ensayo de nitrato hasta la marca de 20 ml.</string>
     <string name="add_one_level_spoon">Agregue una cuchara llena de %reagent1 en polvo y una tableta de %reactivo2 al tubo de ensayo. <b>¡No triture la tableta!</b></string>
-    <string name="close_with_lid_shake">Ciérrelo con una tapa y agite por<b>1 minuto</b>.</string>
+    <string name="close_with_lid_shake">Ciérrelo con una tapa y agite por <b>1 minuto</b>.</string>
     <string name="allow_minute_flocculation">Permite <b>1 minuto</b> para la floculación del polvo de la prueba de Nitrato.</string>
     <string name="invert_test_tube">Invierte el tubo de ensayo dos o tres veces para completar la floculación.</string>
     <string name="allow_time_complete_sediment">Permite <b>2 minutos</b> para que se complete el sedimento del polvo de la prueba de Nitrato.</string>
