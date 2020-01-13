@@ -42,6 +42,7 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.FragmentResultPhotoBinding;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -53,8 +54,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
-import static org.akvo.caddisfly.common.AppConfig.FILE_PROVIDER_AUTHORITY_URI;
-import static org.akvo.caddisfly.common.AppConfig.SKIP_PHOTO_VALIDATION;
+import static org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_RUNNING;
+import static org.akvo.caddisfly.common.AppConstants.FILE_PROVIDER_AUTHORITY_URI;
 
 
 public class ResultPhotoFragment extends BaseFragment {
@@ -114,7 +115,7 @@ public class ResultPhotoFragment extends BaseFragment {
 
         if (imageFileName != null && !imageFileName.isEmpty()) {
 
-            final File newPhotoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+            final File newPhotoPath = FileHelper.getFilesDir(FileType.RESULT_IMAGE);
             resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
 
             File imgFile = new File(resultImagePath);
@@ -175,7 +176,7 @@ public class ResultPhotoFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
 
-            final File newPhotoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+            final File newPhotoPath = FileHelper.getFilesDir(FileType.RESULT_IMAGE);
 
             resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
 
@@ -237,7 +238,7 @@ public class ResultPhotoFragment extends BaseFragment {
     }
 
     public boolean isValid() {
-        return SKIP_PHOTO_VALIDATION || (resultImagePath != null &&
+        return INSTRUMENTED_TEST_RUNNING || (resultImagePath != null &&
                 !resultImagePath.isEmpty() && new File(resultImagePath).exists());
     }
 

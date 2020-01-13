@@ -232,7 +232,7 @@ public class DecodeData {
 
     // debug code
 //    public void saveImage() {
-//        ImageUtil.saveImage(decodeImageByteArray, FileHelper.FileType.TEST_IMAGE,
+//        ImageUtil.saveImage(decodeImageByteArray, FileType.TEST_IMAGE,
 //                String.valueOf(Calendar.getInstance().getTimeInMillis()));
 //    }
 }

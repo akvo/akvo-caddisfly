@@ -25,6 +25,7 @@ import android.os.Environment;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -148,7 +149,7 @@ public final class FileUtil {
      * @return absolute path name of saved file, or empty string on failure.
      */
     @SuppressWarnings("SameParameterValue")
-    public static String writeBitmapToExternalStorage(Bitmap bitmap, FileHelper.FileType fileType, String fileName) {
+    public static String writeBitmapToExternalStorage(Bitmap bitmap, FileType fileType, String fileName) {
         // Find the root of the external storage
         // See http://developer.android.com/guide/topics/data/data-  storage.html#filesExternal
         // See http://stackoverflow.com/questions/3551821/android-write-to-sd-card-folder

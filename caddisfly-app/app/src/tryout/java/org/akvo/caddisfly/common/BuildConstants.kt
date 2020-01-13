@@ -16,17 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.akvo.caddisfly.common;
+package org.akvo.caddisfly.common
 
 /**
  * Global Configuration settings for the app.
  */
-public final class AppConstants {
-
-    public static final String APP_FOLDER = "Akvo Caddisfly";
-
-    private AppConstants() {
-    }
-
+object BuildConstants {
+    const val APP_FOLDER = "Akvo Caddisfly Experiment"
 }

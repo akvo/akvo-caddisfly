@@ -21,11 +21,6 @@ package org.akvo.caddisfly.common
 
 object TestConstants {
 
-    /**
-     * To launch Flow app.
-     */
-    const val FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow"
-
     const val SENSOR_TESTS_COUNT = 3
     const val STRIP_TESTS_COUNT = 22
     const val MD610_TESTS_COUNT = 57

@@ -37,8 +37,8 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig
 import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
+import org.akvo.caddisfly.common.AppConstants.EXTERNAL_APP_ACTION
 import org.akvo.caddisfly.common.Constants
 import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
@@ -127,7 +127,7 @@ class CbtInternal {
         val intent = Intent()
         if (skipOpeningExternalApp()) {
             intent.type = "text/plain"
-            intent.action = AppConfig.EXTERNAL_APP_ACTION
+            intent.action = EXTERNAL_APP_ACTION
             val data = Bundle()
             data.putString(SensorConstants.RESOURCE_ID, id)
             data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
@@ -370,7 +370,7 @@ class CbtInternal {
         val intent = Intent()
         if (skipOpeningExternalApp()) {
             intent.type = "text/plain"
-            intent.action = AppConfig.EXTERNAL_APP_ACTION
+            intent.action = EXTERNAL_APP_ACTION
             val data = Bundle()
             data.putString(SensorConstants.RESOURCE_ID, id)
             data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
@@ -649,7 +649,7 @@ class CbtInternal {
             run {
                 val intent = Intent()
                 intent.type = "text/plain"
-                intent.action = AppConfig.EXTERNAL_APP_ACTION
+                intent.action = EXTERNAL_APP_ACTION
                 val data = Bundle()
                 data.putString(SensorConstants.RESOURCE_ID, uuid)
                 data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)

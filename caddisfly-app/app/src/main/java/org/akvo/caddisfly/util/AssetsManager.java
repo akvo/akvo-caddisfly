@@ -24,6 +24,7 @@ import android.content.res.AssetManager;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public final class AssetsManager {
 
         json = loadJsonFromAsset(Constants.TESTS_META_FILENAME);
 
-        File customConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.CUSTOM_CONFIG),
+        File customConfig = new File(FileHelper.getFilesDir(FileType.CUSTOM_CONFIG),
                 Constants.TESTS_META_FILENAME);
         customJson = FileUtil.loadTextFromFile(customConfig);
 
@@ -94,7 +95,7 @@ public final class AssetsManager {
     }
 
     public String getExperimentalJson() {
-        File experimentalConfig = new File(FileHelper.getFilesDir(FileHelper.FileType.EXP_CONFIG),
+        File experimentalConfig = new File(FileHelper.getFilesDir(FileType.EXP_CONFIG),
                 Constants.TESTS_META_FILENAME);
         return FileUtil.loadTextFromFile(experimentalConfig);
     }

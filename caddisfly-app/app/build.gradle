@@ -129,11 +129,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.2.1'
 
     // Dagger
-    implementation 'com.google.dagger:dagger:2.25.2'
-    kapt 'com.google.dagger:dagger-compiler:2.25.2'
-    implementation 'com.google.dagger:dagger-android:2.25.2'
-    kapt 'com.google.dagger:dagger-android-processor:2.25.2'
-    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.25.2'
+    implementation 'com.google.dagger:dagger:2.25.3'
+    kapt 'com.google.dagger:dagger-compiler:2.25.3'
+    implementation 'com.google.dagger:dagger-android:2.25.3'
+    kapt 'com.google.dagger:dagger-android-processor:2.25.3'
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.25.3'
 
     // Sentry
     implementation 'io.sentry:sentry-android:1.7.23'

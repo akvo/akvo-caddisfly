@@ -35,6 +35,7 @@ import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
@@ -295,7 +296,7 @@ public class ManualTestActivity extends BaseActivity
         SparseArray<String> results = new SparseArray<>();
         Intent resultIntent = new Intent();
 
-        final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+        final File photoPath = FileHelper.getFilesDir(FileType.RESULT_IMAGE);
 
         String resultImagePath = "";
         String imageFileName = "";

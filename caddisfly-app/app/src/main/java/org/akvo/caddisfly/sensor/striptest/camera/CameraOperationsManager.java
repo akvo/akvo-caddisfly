@@ -24,7 +24,7 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StriptestHandler;
@@ -76,7 +76,7 @@ public class CameraOperationsManager {
                 // Use test image if we are in test mode
                 StriptestHandler.getDecodeData().setDecodeImageByteArray(bytes);
 
-//                ImageUtil.saveImageBytes(camera, bytes, FileHelper.FileType.TEST_IMAGE,
+//                ImageUtil.saveImageBytes(camera, bytes, FileType.TEST_IMAGE,
 //                        String.valueOf(Calendar.getInstance().getTimeInMillis()));
             } else {
                 // store image for later use
@@ -89,7 +89,7 @@ public class CameraOperationsManager {
 
     public CameraOperationsManager(String name) {
         if (AppPreferences.isTestMode()) {
-            bytes = ImageUtil.loadImageBytes(name, FileHelper.FileType.TEST_IMAGE);
+            bytes = ImageUtil.loadImageBytes(name, FileType.TEST_IMAGE);
         }
     }
 

@@ -43,9 +43,9 @@ import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage.RESUMED
 import androidx.test.uiautomator.*
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.app.CaddisflyApp
-import org.akvo.caddisfly.common.AppConfig.*
-import org.akvo.caddisfly.common.TestConstants
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
+import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_TAKE_SCREENSHOTS
+import org.akvo.caddisfly.common.AppConstants.FLOW_SURVEY_PACKAGE_NAME
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
@@ -203,23 +203,23 @@ object TestHelper {
 
     fun activateTestMode() {
 
-        @Suppress("ConstantConditionIf")
-        if (!IS_TEST_MODE) {
-
-            onView(withId(R.id.button_info)).perform(click())
-
-            onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click())
-
-            val version = CaddisflyApp.getAppVersion(false)
-
-            onView(withText(version)).check(matches(isDisplayed()))
-
-            enterDiagnosticMode()
-
-            onView(withId(R.id.actionSettings)).perform(click())
-
-            clickListViewItem("Test Mode")
-        }
+//        @Suppress("ConstantConditionIf")
+//        if (!IS_TEST_MODE) {
+//
+//            onView(withId(R.id.button_info)).perform(click())
+//
+//            onView(withText(R.string.about)).check(matches(isDisplayed())).perform(click())
+//
+//            val version = CaddisflyApp.getAppVersion(false)
+//
+//            onView(withText(version)).check(matches(isDisplayed()))
+//
+//            enterDiagnosticMode()
+//
+//            onView(withId(R.id.actionSettings)).perform(click())
+//
+//            clickListViewItem("Test Mode")
+//        }
 
         goToMainScreen()
     }
@@ -294,7 +294,7 @@ object TestHelper {
     fun gotoSurveyForm() {
 
         val context = getInstrumentation().context
-        val intent = context.packageManager.getLaunchIntentForPackage(TestConstants.FLOW_SURVEY_PACKAGE_NAME)
+        val intent = context.packageManager.getLaunchIntentForPackage(FLOW_SURVEY_PACKAGE_NAME)
         intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         context.startActivity(intent)
 

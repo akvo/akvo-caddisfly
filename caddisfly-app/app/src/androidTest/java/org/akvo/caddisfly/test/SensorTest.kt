@@ -93,7 +93,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Soil - Moisture"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.SENSOR_NOT_CONNECTED) {
+        if (TestUtil.isEmulator || AppConfig.INSTRUMENTED_TEST_RUNNING) {
             return
         }
 
@@ -193,7 +193,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.SENSOR_NOT_CONNECTED) {
+        if (TestUtil.isEmulator || AppConfig.INSTRUMENTED_TEST_RUNNING) {
 
             mDevice.pressBack()
 
@@ -232,7 +232,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.SENSOR_NOT_CONNECTED) {
+        if (TestUtil.isEmulator || AppConfig.INSTRUMENTED_TEST_RUNNING) {
             return
         }
 

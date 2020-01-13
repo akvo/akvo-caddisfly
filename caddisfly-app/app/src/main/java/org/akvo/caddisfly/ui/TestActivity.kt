@@ -50,6 +50,7 @@ import org.akvo.caddisfly.R
 import org.akvo.caddisfly.R.*
 import org.akvo.caddisfly.app.CaddisflyApp
 import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.AppConstants.EXTERNAL_APP_ACTION
 import org.akvo.caddisfly.common.ConstantKey
 import org.akvo.caddisfly.common.Constants
 import org.akvo.caddisfly.common.SensorConstants
@@ -124,7 +125,7 @@ class TestActivity : AppUpdateActivity() {
         if (testInfo == null) {
             val type = intent.type
             if ("text/plain" == type
-                    && AppConfig.EXTERNAL_APP_ACTION == intent.action) {
+                    && EXTERNAL_APP_ACTION == intent.action) {
                 getTestSelectedByExternalApp(fragmentManager, intent)
             }
         }
@@ -237,7 +238,7 @@ class TestActivity : AppUpdateActivity() {
     }
 
     private fun startBluetoothTest() {
-        val intent: Intent = if (AppPreferences.isTestMode() || AppConfig.SKIP_BLUETOOTH_SCAN) {
+        val intent: Intent = if (AppPreferences.isTestMode()) {
             Intent(this, DeviceControlActivity::class.java)
         } else {
             Intent(this, DeviceScanActivity::class.java)

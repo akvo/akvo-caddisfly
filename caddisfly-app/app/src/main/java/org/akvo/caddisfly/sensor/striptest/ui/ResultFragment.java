@@ -39,7 +39,7 @@ import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.SensorConstants;
-import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.GroupType;
@@ -135,7 +135,7 @@ public class ResultFragment extends BaseFragment {
 
                 // store image on sd card
                 path = FileUtil.writeBitmapToExternalStorage(totalImage,
-                        FileHelper.FileType.RESULT_IMAGE, totalImageUrl);
+                        FileType.RESULT_IMAGE, totalImageUrl);
 
                 intent.putExtra(SensorConstants.IMAGE, path);
 

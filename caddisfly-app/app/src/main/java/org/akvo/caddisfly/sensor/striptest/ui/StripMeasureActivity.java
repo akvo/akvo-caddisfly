@@ -34,7 +34,7 @@ import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
@@ -153,7 +153,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         startCameraPreview();
 
         if (AppPreferences.isTestMode()) {
-            byte[] bytes = ImageUtil.loadImageBytes(testInfo.getName(), FileHelper.FileType.TEST_IMAGE);
+            byte[] bytes = ImageUtil.loadImageBytes(testInfo.getName(), FileType.TEST_IMAGE);
             if (bytes.length == 0) {
                 setResult(Activity.RESULT_OK, new Intent());
                 (new Handler()).postDelayed(this::finish, 4000);

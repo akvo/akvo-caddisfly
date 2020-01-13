@@ -16,24 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with Akvo Caddisfly. If not, see <http://www.gnu.org/licenses/>.
  */
+package org.akvo.caddisfly.common
 
-package org.akvo.caddisfly.util;
+import org.akvo.caddisfly.BuildConfig
 
-
-import android.app.Activity;
-
-import org.akvo.caddisfly.ui.TestListActivity;
-
-public class ConfigDownloader {
+/**
+ * Global Configuration settings for the app.
+ */
+object AppConstants {
+    /**
+     * Url to policies and terms
+     */
+    const val TERMS_OF_USE_URL = "https://akvo.org/help/akvo-policies-and-terms-2/"
 
     /**
-     * Download latest version of the experimental config file.
-     *
-     * @param activity          the activity
-     * @param configSyncHandler the callback
+     * The intent action string used by the caddisfly question type.
      */
-    public static void syncExperimentalConfig(Activity activity,
-                                              TestListActivity.SyncCallbackInterface configSyncHandler) {
-        // Obsolete
-    }
+    const val EXTERNAL_APP_ACTION = "org.akvo.flow.action.caddisfly"
+    /**
+     * Uri for photos from built in camera.
+     */
+    const val FILE_PROVIDER_AUTHORITY_URI = BuildConfig.APPLICATION_ID + ".fileprovider"
+    /**
+     * To launch Flow app.
+     */
+    const val FLOW_SURVEY_PACKAGE_NAME = "org.akvo.flow"
 }

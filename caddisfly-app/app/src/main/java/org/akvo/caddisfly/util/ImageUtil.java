@@ -26,6 +26,7 @@ import android.text.TextUtils;
 import androidx.exifinterface.media.ExifInterface;
 
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -171,7 +172,7 @@ public final class ImageUtil {
      * @param fileType the file type
      * @return the loaded bytes
      */
-    public static byte[] loadImageBytes(String name, FileHelper.FileType fileType) {
+    public static byte[] loadImageBytes(String name, FileType fileType) {
         File path = FileHelper.getFilesDir(fileType, "");
         File file = new File(path, name + ".yuv");
         if (file.exists()) {
@@ -191,7 +192,7 @@ public final class ImageUtil {
     }
 
 /*    public static void saveImageBytes(Camera camera, byte[] data,
-                                      FileHelper.FileType fileType, String fileName) {
+                                      FileType fileType, String fileName) {
         try {
             Camera.Parameters parameters = camera.getParameters();
             Camera.Size size = parameters.getPreviewSize();
@@ -218,7 +219,7 @@ public final class ImageUtil {
      * @param fileType the folder to save in
      * @param fileName the name of the file
      *//*
-    public static void saveImage(@NonNull byte[] data, FileHelper.FileType fileType, String fileName) {
+    public static void saveImage(@NonNull byte[] data, FileType fileType, String fileName) {
 
         File path = FileHelper.getFilesDir(fileType);
 

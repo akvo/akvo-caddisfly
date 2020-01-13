@@ -40,7 +40,7 @@ import org.akvo.caddisfly.preference.SettingsActivity;
 import org.akvo.caddisfly.util.PreferencesUtil;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
-import static org.akvo.caddisfly.common.AppConfig.TERMS_OF_USE_URL;
+import static org.akvo.caddisfly.common.AppConstants.TERMS_OF_USE_URL;
 
 /**
  * Activity to display info about the app.

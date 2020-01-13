@@ -441,7 +441,7 @@ public class DeviceControlActivity extends BaseActivity {
         showSkipMenu = false;
         setTitle(R.string.awaitingResult);
         invalidateOptionsMenu();
-        if (AppPreferences.isTestMode() || AppConfig.SKIP_BLUETOOTH_SCAN) {
+        if (AppPreferences.isTestMode()) {
             if (debugTestHandler != null) {
                 debugTestHandler.removeCallbacksAndMessages(null);
             }

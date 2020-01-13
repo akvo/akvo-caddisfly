@@ -168,7 +168,7 @@ class BluetoothTest : BaseTest() {
         onView(withText(R.string.next)).perform(click())
 
         @Suppress("ConstantConditionIf")
-        if (!AppConfig.SKIP_BLUETOOTH_SCAN) {
+        if (!AppConfig.INSTRUMENTED_TEST_RUNNING) {
             if (TestUtil.isEmulator) {
                 onView(withText("Bluetooth not supported."))
                         .inRoot(withDecorView(not<View>(`is`<View>(mActivityTestRule.activity.window

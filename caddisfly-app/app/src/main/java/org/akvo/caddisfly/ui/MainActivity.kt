@@ -44,7 +44,7 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.R.*
 import org.akvo.caddisfly.app.CaddisflyApp
-import org.akvo.caddisfly.common.AppConfig
+import org.akvo.caddisfly.common.AppConstants.FLOW_SURVEY_PACKAGE_NAME
 import org.akvo.caddisfly.databinding.ActivityMainBinding
 import org.akvo.caddisfly.helper.ApkHelper
 import org.akvo.caddisfly.preference.AppPreferences
@@ -168,7 +168,7 @@ class MainActivity : AppUpdateActivity() {
 
     fun onOkClicked(@Suppress("UNUSED_PARAMETER") view: View?) {
         val intent: Intent? = packageManager
-                .getLaunchIntentForPackage(AppConfig.FLOW_SURVEY_PACKAGE_NAME)
+                .getLaunchIntentForPackage(FLOW_SURVEY_PACKAGE_NAME)
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)

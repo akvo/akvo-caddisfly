@@ -40,6 +40,7 @@ import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
@@ -58,6 +59,7 @@ import org.akvo.caddisfly.widget.ButtonType;
 import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -156,6 +158,13 @@ public class CbtActivity extends BaseActivity
 
             @Override
             public void onPageSelected(int position) {
+
+                if (resultPhotoFragment.get(position - 1) != null &&
+                        !resultPhotoFragment.get(position - 1).isValid()) {
+                    pageBack();
+                    return;
+                }
+
                 pagerIndicator.setActiveIndex(position);
                 showHideFooter();
                 if (pageIndex.getType(position) == PageType.PHOTO && position > 2) {
@@ -198,7 +207,7 @@ public class CbtActivity extends BaseActivity
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle inState) {
+    public void onRestoreInstanceState(@NotNull Bundle inState) {
         for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
             Fragment fragment = getSupportFragmentManager().getFragments().get(i);
             if (fragment instanceof ResultPhotoFragment) {
@@ -438,7 +447,7 @@ public class CbtActivity extends BaseActivity
         SparseArray<String> results = new SparseArray<>();
         Intent resultIntent = new Intent();
 
-        final File photoPath = FileHelper.getFilesDir(FileHelper.FileType.RESULT_IMAGE);
+        final File photoPath = FileHelper.getFilesDir(FileType.RESULT_IMAGE);
 
         String resultImagePath = "";
         String imageFileName = "";

@@ -37,8 +37,6 @@ import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.ui.BaseFragment;
 
-import static org.akvo.caddisfly.common.AppConfig.SKIP_RESULT_VALIDATION;
-
 public class MeasurementInputFragment extends BaseFragment {
     private static final String ARG_INSTRUCTION = "resultInstruction";
     private static final String ARG_TEST_INFO = "testInfo";
@@ -221,8 +219,9 @@ public class MeasurementInputFragment extends BaseFragment {
         listener = null;
     }
 
+    @SuppressWarnings("SameParameterValue")
     boolean isValid(boolean showEmptyError) {
-        return SKIP_RESULT_VALIDATION || isValidResult(showEmptyError) != -1f;
+        return isValidResult(showEmptyError) != -1f;
     }
 
     public String getResult() {

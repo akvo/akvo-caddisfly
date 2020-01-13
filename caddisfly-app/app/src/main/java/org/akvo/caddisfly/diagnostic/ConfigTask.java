@@ -25,6 +25,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import org.akvo.caddisfly.helper.FileHelper;
+import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.ui.TestListActivity;
 import org.akvo.caddisfly.util.FileUtil;
 
@@ -41,7 +42,7 @@ public class ConfigTask extends AsyncTask<String, String, String> {
 
     private final WeakReference<Context> contextRef;
     private final TestListActivity.SyncCallbackInterface configSyncHandler;
-    private FileHelper.FileType fileType;
+    private FileType fileType;
     private ProgressDialog pd;
 
     public ConfigTask(Context context, TestListActivity.SyncCallbackInterface syncCallback) {
@@ -69,7 +70,7 @@ public class ConfigTask extends AsyncTask<String, String, String> {
             connection = (HttpURLConnection) url.openConnection();
             connection.connect();
 
-            fileType = FileHelper.FileType.valueOf(params[1]);
+            fileType = FileType.valueOf(params[1]);
 
             InputStream stream = connection.getInputStream();
 
