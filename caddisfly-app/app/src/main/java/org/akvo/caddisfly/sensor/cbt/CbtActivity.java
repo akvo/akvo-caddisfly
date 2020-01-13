@@ -33,9 +33,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
@@ -49,6 +47,7 @@ import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.PageType;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.manual.ResultPhotoFragment;
 import org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
@@ -353,7 +352,7 @@ public class CbtActivity extends BaseActivity
     public void onSkipClick(MenuItem item) {
         viewPager.setCurrentItem(pageIndex.getSkipToIndex());
 
-        if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+        if (AppPreferences.analyticsEnabled()) {
             Bundle bundle = new Bundle();
             bundle.putString("InstructionsSkipped", testInfo.getName() +
                     " (" + testInfo.getBrand() + ")");

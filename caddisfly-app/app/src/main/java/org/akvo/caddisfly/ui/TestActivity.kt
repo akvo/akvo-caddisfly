@@ -45,11 +45,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.FirebaseAnalytics.Event
 import com.google.firebase.analytics.FirebaseAnalytics.Param
-import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.R.*
 import org.akvo.caddisfly.app.CaddisflyApp
-import org.akvo.caddisfly.common.AppConfig
 import org.akvo.caddisfly.common.AppConstants.EXTERNAL_APP_ACTION
 import org.akvo.caddisfly.common.ConstantKey
 import org.akvo.caddisfly.common.Constants
@@ -291,7 +289,7 @@ class TestActivity : AppUpdateActivity() {
 
             val intent = Intent(data)
             @Suppress("ConstantConditionIf")
-            if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+            if (AppPreferences.analyticsEnabled()) {
                 val bundle = Bundle()
                 bundle.putString(Param.ITEM_ID, testInfo!!.uuid)
                 bundle.putString(Param.ITEM_NAME, testInfo!!.name)

@@ -51,9 +51,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.Constants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
@@ -476,7 +474,7 @@ public class DeviceControlActivity extends BaseActivity {
         viewPager.setCurrentItem(instructionList.size() + 1);
         showWaitingView();
 
-        if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+        if (AppPreferences.analyticsEnabled()) {
             Bundle bundle = new Bundle();
             bundle.putString("InstructionsSkipped", testInfo.getName() +
                     " (" + testInfo.getBrand() + ")");

@@ -23,38 +23,29 @@ package org.akvo.caddisfly.common
  */
 object AppConfig {
     /**
-     * Stop animations only for running Espresso UI tests
-     * Do not run sensor tests if no sensors connected
-     * Skip scanning or connecting to bluetooth device
-     */
-    const val INSTRUMENTED_TEST_RUNNING = true
-
-    /**
+     * INSTRUMENTED TESTS
+     * Stops animations during running Espresso UI tests
+     * Ignores tests that require externals sensors to be connected
+     * Skips scanning or connecting to bluetooth devices
      * Takes screenshots during instrumented tests {see ScreenshotSuite}
-     * NOTE: Storage permission is required
-     */
-    const val INSTRUMENTED_TEST_TAKE_SCREENSHOTS = false
-
-    /**
+     * NOTE: Storage permission is required for saving screenshots
      * The language to run the instrumented tests in
      */
+    const val INSTRUMENTED_TEST_RUNNING = false
+    const val INSTRUMENTED_TEST_TAKE_SCREENSHOTS = false
     const val INSTRUMENTED_TEST_LANGUAGE = "en"
 
-    /**
-     * Stop analytics only for testing
-     */
-    const val STOP_ANALYTICS = true
     /**
      * Date on which the app version will expire.
      * This is to ensure that installs from apk meant for testing only cannot be used for too long.
      */
     const val APP_EXPIRY = false
     const val APP_EXPIRY_DAY = 1
-    const val APP_EXPIRY_MONTH = 11
-    const val APP_EXPIRY_YEAR = 2019
+    const val APP_EXPIRY_MONTH = 2
+    const val APP_EXPIRY_YEAR = 2020
 
     /**
      * The sound volume for the beeps and other sound effects.
      */
-    const val SOUND_EFFECTS_VOLUME = 0.01f
+    const val SOUND_EFFECTS_VOLUME = 1f
 }

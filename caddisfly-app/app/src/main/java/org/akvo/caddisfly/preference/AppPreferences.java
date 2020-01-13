@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.preference;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.util.PreferencesUtil;
@@ -58,6 +59,7 @@ public final class AppPreferences {
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static boolean isTestMode() {
         return INSTRUMENTED_TEST_RUNNING || (isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false));
@@ -73,11 +75,17 @@ public final class AppPreferences {
                 Calendar.getInstance().getTimeInMillis());
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static boolean isAppUpdateCheckRequired() {
         if (INSTRUMENTED_TEST_RUNNING) {
             return true;
         }
         long lastCheck = PreferencesUtil.getLong(CaddisflyApp.getApp(), "lastUpdateCheck");
         return TimeUnit.MILLISECONDS.toDays(Calendar.getInstance().getTimeInMillis() - lastCheck) > 0;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static boolean analyticsEnabled() {
+        return !INSTRUMENTED_TEST_RUNNING && !BuildConfig.DEBUG;
     }
 }

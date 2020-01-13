@@ -26,9 +26,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
-import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.AppConfig;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
@@ -38,11 +36,13 @@ import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -172,7 +172,7 @@ public class StripTestActivity extends BaseActivity {
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle inState) {
+    public void onRestoreInstanceState(@NotNull Bundle inState) {
         for (int i = 0; i < getSupportFragmentManager().getFragments().size(); i++) {
             Fragment fragment = getSupportFragmentManager().getFragments().get(i);
             if (fragment instanceof BaseFragment) {
@@ -315,7 +315,7 @@ public class StripTestActivity extends BaseActivity {
         viewPager.setCurrentItem(skipToPageNumber);
         showWaitingView();
 
-        if (!BuildConfig.DEBUG && !AppConfig.STOP_ANALYTICS) {
+        if (AppPreferences.analyticsEnabled()) {
             Bundle bundle = new Bundle();
             bundle.putString("InstructionsSkipped", testInfo.getName() +
                     " (" + testInfo.getBrand() + ")");
