@@ -55,7 +55,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    testBuildType "check"
+    testBuildType "inspect"
 
     signingConfigs {
         caddisflyRelease {
@@ -69,7 +69,8 @@ android {
     }
 
     buildTypes {
-        check {
+        // NOTE: This variant is for running instrumented tests only
+        inspect {
             // Takes screenshots during test {use ScreenshotSuite} (Requires Storage permission)
             buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
             // Stops animations, ignores external sensors, skips bluetooth scans
