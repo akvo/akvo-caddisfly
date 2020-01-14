@@ -105,6 +105,11 @@ class StriptestInstructions : BaseTest() {
 
         onView(withText(R.string.prepare_test)).perform(click())
 
+        if (TestUtil.isEmulator) {
+            onView(withText(R.string.camera_not_good)).check(matches(isDisplayed()))
+            return
+        }
+
         sleep(7000)
 
         onView(withText(R.string.skip)).check(matches(isDisplayed()))

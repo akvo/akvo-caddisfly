@@ -424,9 +424,13 @@ class ManualTest : BaseTest() {
                 withParent(withId(R.id.toolbar)),
                 isDisplayed())).perform(click())
 
+        sleep(500)
+
         onView(allOf<View>(withContentDescription(R.string.navigate_up),
                 withParent(withId(R.id.toolbar)),
                 isDisplayed())).perform(click())
+
+        sleep(500)
 
         onView(allOf<View>(withContentDescription(R.string.navigate_up),
                 withParent(withId(R.id.toolbar)),

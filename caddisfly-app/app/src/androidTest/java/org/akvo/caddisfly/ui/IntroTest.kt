@@ -11,11 +11,10 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
-import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.util.TestHelper
+import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode
 import org.akvo.caddisfly.util.TestHelper.getString
@@ -24,9 +23,6 @@ import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.leaveDiagnosticMode
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
-import org.akvo.caddisfly.util.mDevice
-import org.akvo.caddisfly.util.skipOpeningExternalApp
-import org.akvo.caddisfly.util.sleep
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import org.junit.Assert.assertNotNull
@@ -70,7 +66,7 @@ class IntroTest {
         navigateUp()
 
         onView(withId(R.id.button_info)).perform(click())
-
+        sleep(500)
         pressBack()
 
         onView(withId(R.id.button_info)).perform(click())
@@ -161,7 +157,7 @@ class IntroTest {
 
             sleep(2000)
 
-            assertNotNull(mDevice.findObject(By.text(goToTest)))
+            assertNotNull(TestUtil.findObject(goToTest))
         }
     }
 
@@ -192,7 +188,7 @@ class IntroTest {
 
             sleep(2000)
 
-            assertNotNull(mDevice.findObject(By.text(goToTest)))
+            assertNotNull(TestUtil.findObject(goToTest))
         }
     }
 

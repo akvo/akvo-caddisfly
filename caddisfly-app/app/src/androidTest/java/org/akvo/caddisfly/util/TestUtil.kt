@@ -188,24 +188,32 @@ object TestUtil {
         swipeLeft()
     }
 
-    fun nextSurveyPage(tabName: String) {
+    fun findObject(tabName: String): UiObject2? {
         var tab: UiObject2? = mDevice.findObject(By.text(tabName))
+        if (tab == null) {
+            tab = mDevice.findObject(By.text(tabName.toUpperCase()))
+        }
+        return tab
+    }
+
+    fun nextSurveyPage(tabName: String) {
+        var tab: UiObject2? = findObject(tabName)
         if (tab == null || !tab.isSelected) {
             swipeLeft()
             if (tab == null || !tab.isSelected) {
                 for (i in 0..11) {
                     swipeRight()
-                    tab = mDevice.findObject(By.text(tabName))
+                    tab = findObject(tabName)
                     if (tab != null && tab.isSelected) {
                         break
                     }
-                    tab = mDevice.findObject(By.text("Striptest"))
+                    tab = findObject("Striptest")
                     if (tab != null && tab.isSelected) {
                         for (j in 0..19) {
                             mDevice.waitForIdle()
                             swipeLeft()
                             sleep(200)
-                            tab = mDevice.findObject(By.text(tabName))
+                            tab = findObject(tabName)
                             if (tab != null && tab.isSelected) {
                                 break
                             }
