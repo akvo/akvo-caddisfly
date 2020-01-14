@@ -10,8 +10,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
+import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
@@ -46,7 +46,7 @@ class NavigationTest {
 
     @Before
     fun setUp() {
-        loadData(mActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
+        loadData(mActivityTestRule.activity, BuildConfig.TEST_LANGUAGE)
         clearPreferences(mActivityTestRule)
     }
 

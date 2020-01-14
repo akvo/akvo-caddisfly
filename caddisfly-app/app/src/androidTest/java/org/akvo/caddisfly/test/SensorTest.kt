@@ -32,8 +32,6 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
@@ -71,7 +69,7 @@ class SensorTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mActivityRule.activity, INSTRUMENTED_TEST_LANGUAGE)
+        loadData(mActivityRule.activity, BuildConfig.TEST_LANGUAGE)
         clearPreferences(mActivityRule)
     }
 
@@ -93,7 +91,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Soil - Moisture"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.INSTRUMENTED_TEST_RUNNING) {
+        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING) {
             return
         }
 
@@ -193,7 +191,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.INSTRUMENTED_TEST_RUNNING) {
+        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING) {
 
             mDevice.pressBack()
 
@@ -232,7 +230,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || AppConfig.INSTRUMENTED_TEST_RUNNING) {
+        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING) {
             return
         }
 

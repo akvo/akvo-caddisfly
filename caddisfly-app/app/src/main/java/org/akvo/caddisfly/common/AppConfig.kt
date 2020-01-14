@@ -22,18 +22,6 @@ package org.akvo.caddisfly.common
  * Global Configuration settings for the app.
  */
 object AppConfig {
-    /**
-     * INSTRUMENTED TESTS
-     * Stops animations during running Espresso UI tests
-     * Ignores tests that require externals sensors to be connected
-     * Skips scanning or connecting to bluetooth devices
-     * Takes screenshots during instrumented tests {see ScreenshotSuite}
-     * NOTE: Storage permission is required for saving screenshots
-     * The language to run the instrumented tests in
-     */
-    const val INSTRUMENTED_TEST_RUNNING = false
-    const val INSTRUMENTED_TEST_TAKE_SCREENSHOTS = false
-    const val INSTRUMENTED_TEST_LANGUAGE = "en"
 
     /**
      * Date on which the app version will expire.

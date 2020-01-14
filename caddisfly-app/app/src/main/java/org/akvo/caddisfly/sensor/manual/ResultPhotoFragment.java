@@ -38,6 +38,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.FragmentResultPhotoBinding;
@@ -54,7 +55,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
-import static org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_RUNNING;
 import static org.akvo.caddisfly.common.AppConstants.FILE_PROVIDER_AUTHORITY_URI;
 
 
@@ -238,7 +238,7 @@ public class ResultPhotoFragment extends BaseFragment {
     }
 
     public boolean isValid() {
-        return INSTRUMENTED_TEST_RUNNING || (resultImagePath != null &&
+        return BuildConfig.TEST_RUNNING || (resultImagePath != null &&
                 !resultImagePath.isEmpty() && new File(resultImagePath).exists());
     }
 

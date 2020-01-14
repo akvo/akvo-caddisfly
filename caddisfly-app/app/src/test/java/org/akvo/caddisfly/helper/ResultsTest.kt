@@ -19,14 +19,17 @@
 
 package org.akvo.caddisfly.helper
 
+import android.os.Build
 import android.util.SparseArray
-import junit.framework.Assert.assertEquals
 import org.akvo.caddisfly.repository.TestConfigRepository
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class ResultsTest {
 
     @Test

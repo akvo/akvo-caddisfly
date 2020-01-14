@@ -31,8 +31,8 @@ import androidx.test.filters.RequiresDevice
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
+import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
@@ -74,7 +74,7 @@ class BluetoothInstructions : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mActivityRule.activity, INSTRUMENTED_TEST_LANGUAGE)
+        loadData(mActivityRule.activity, BuildConfig.TEST_LANGUAGE)
         clearPreferences(mActivityRule)
     }
 

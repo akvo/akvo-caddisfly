@@ -19,11 +19,14 @@
 
 package org.akvo.caddisfly.util
 
+import android.os.Build
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.robolectric.annotation.Config
 import java.util.*
 
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class DateUtilTest {
 
     @Before

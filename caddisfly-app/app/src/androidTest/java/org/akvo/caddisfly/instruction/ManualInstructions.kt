@@ -30,8 +30,8 @@ import androidx.test.filters.RequiresDevice
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
+import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.AppConstants.EXTERNAL_APP_ACTION
 import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
@@ -91,7 +91,7 @@ class ManualInstructions : BaseTest() {
                 intent.action = EXTERNAL_APP_ACTION
                 val data = Bundle()
                 data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
+                data.putString(SensorConstants.LANGUAGE, BuildConfig.TEST_LANGUAGE)
                 intent.putExtras(data)
 
                 mActivityRule.launchActivity(intent)

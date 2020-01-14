@@ -27,8 +27,6 @@ import org.akvo.caddisfly.util.PreferencesUtil;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
-import static org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_RUNNING;
-
 /**
  * Static functions to get or set values of various preferences.
  */
@@ -61,7 +59,7 @@ public final class AppPreferences {
 
     @SuppressWarnings("ConstantConditions")
     public static boolean isTestMode() {
-        return INSTRUMENTED_TEST_RUNNING || (isDiagnosticMode()
+        return BuildConfig.TEST_RUNNING || (isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false));
     }
 
@@ -77,7 +75,7 @@ public final class AppPreferences {
 
     @SuppressWarnings("ConstantConditions")
     public static boolean isAppUpdateCheckRequired() {
-        if (INSTRUMENTED_TEST_RUNNING) {
+        if (BuildConfig.TEST_RUNNING) {
             return true;
         }
         long lastCheck = PreferencesUtil.getLong(CaddisflyApp.getApp(), "lastUpdateCheck");
@@ -86,6 +84,6 @@ public final class AppPreferences {
 
     @SuppressWarnings("ConstantConditions")
     public static boolean analyticsEnabled() {
-        return !INSTRUMENTED_TEST_RUNNING && !BuildConfig.DEBUG;
+        return !BuildConfig.TEST_RUNNING && !BuildConfig.DEBUG;
     }
 }

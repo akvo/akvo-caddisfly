@@ -20,19 +20,22 @@
 package org.akvo.caddisfly.ui
 
 import android.content.Context
+import android.os.Build
 import androidx.annotation.StringRes
 import androidx.test.core.app.ApplicationProvider
-import junit.framework.Assert.assertEquals
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.preference.AppPreferences
 import org.akvo.caddisfly.util.PreferencesUtil
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class AppPreferencesTest {
 
     @Test

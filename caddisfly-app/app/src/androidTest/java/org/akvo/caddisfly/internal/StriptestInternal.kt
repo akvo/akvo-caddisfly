@@ -37,8 +37,8 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
+import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.AppConstants.EXTERNAL_APP_ACTION
 import org.akvo.caddisfly.common.SensorConstants
 import org.akvo.caddisfly.common.TestConstants
@@ -92,7 +92,7 @@ class StriptestInternal {
     @Before
     fun setUp() {
         mMainActivityTestRule.launchActivity(Intent())
-        loadData(mMainActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
+        loadData(mMainActivityTestRule.activity, BuildConfig.TEST_LANGUAGE)
         clearPreferences(mMainActivityTestRule)
 
         activateTestMode()
@@ -147,7 +147,7 @@ class StriptestInternal {
                 intent.action = EXTERNAL_APP_ACTION
                 val data = Bundle()
                 data.putString(SensorConstants.RESOURCE_ID, uuid)
-                data.putString(SensorConstants.LANGUAGE, INSTRUMENTED_TEST_LANGUAGE)
+                data.putString(SensorConstants.LANGUAGE, BuildConfig.TEST_LANGUAGE)
                 intent.putExtras(data)
 
                 mDevice.waitForIdle()
@@ -228,7 +228,7 @@ class StriptestInternal {
                 if ("ac33b44f9992, 32d9b8f4aecf".contains(id)) {
                     try {
                         if (pages == 5) {
-                            when (INSTRUMENTED_TEST_LANGUAGE) {
+                            when (BuildConfig.TEST_LANGUAGE) {
                                 "en" -> {
                                     mDevice.click(350, 390)
                                 }

@@ -105,7 +105,7 @@ public class CaddisflyApp extends DaggerApplication {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         } else {
-            String sentryDsn = decrypt(BuildConfig.sentryDsn);
+            String sentryDsn = decrypt(BuildConfig.SENTRY_DSN);
             if (!sentryDsn.isEmpty()) {
                 Sentry.init(sentryDsn, new AndroidSentryClientFactory(getApplicationContext()));
             }

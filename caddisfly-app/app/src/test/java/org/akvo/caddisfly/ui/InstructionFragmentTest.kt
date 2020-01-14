@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.ui
 
+import android.os.Build
 import junit.framework.TestCase.assertNotNull
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.Constants
@@ -27,10 +28,12 @@ import org.akvo.caddisfly.sensor.cbt.CbtResultFragment
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startVisibleFragment
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class InstructionFragmentTest {
 
     @Test

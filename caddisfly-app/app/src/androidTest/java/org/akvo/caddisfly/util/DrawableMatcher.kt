@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
@@ -49,7 +50,7 @@ class DrawableMatcher private constructor(private val expectedId: Int) : TypeSaf
         }
 
         val resources = target.context.resources
-        val expectedDrawable = resources.getDrawable(expectedId)
+        val expectedDrawable = ContextCompat.getDrawable(target.context, expectedId)
         resourceName = resources.getResourceEntryName(expectedId)
 
         if (expectedDrawable == null) {

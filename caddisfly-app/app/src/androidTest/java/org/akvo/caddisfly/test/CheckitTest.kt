@@ -41,7 +41,6 @@ import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
@@ -81,7 +80,7 @@ class CheckitTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mIntentsRule.activity, INSTRUMENTED_TEST_LANGUAGE)
+        loadData(mIntentsRule.activity, BuildConfig.TEST_LANGUAGE)
         clearPreferences(mIntentsRule)
         stubCameraIntent()
     }

@@ -26,7 +26,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
-import org.akvo.caddisfly.BuildConfig;
+import androidx.annotation.NonNull;
+
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.AppConfig;
 
@@ -35,8 +36,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 /**
  * Installation related utility methods.
@@ -77,14 +76,12 @@ public final class ApkHelper {
 
                 builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
                     dialogInterface.dismiss();
-                    if (!BuildConfig.showExperimentalTests) {
-                        try {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(marketUrl);
-                            intent.setPackage("com.android.vending");
-                            activity.startActivity(intent);
-                        } catch (Exception ignore) {
-                        }
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(marketUrl);
+                        intent.setPackage("com.android.vending");
+                        activity.startActivity(intent);
+                    } catch (Exception ignore) {
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         activity.finishAndRemoveTask();

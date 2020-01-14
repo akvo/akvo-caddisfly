@@ -32,8 +32,8 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
+import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
@@ -95,7 +95,7 @@ class CbtInstructions : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
+        loadData(mActivityTestRule.activity, BuildConfig.TEST_LANGUAGE)
         clearPreferences(mActivityTestRule)
         scale = mActivityTestRule.activity.resources.displayMetrics.density
         mActivityTestRule.finishActivity()

@@ -28,12 +28,10 @@ android {
 
     productFlavors {
         mainExt {
-            buildConfigField 'boolean', 'showExperimentalTests', 'false'
         }
         tryout {
             applicationIdSuffix ".tryout"
             versionName "Experiment Beta 10.21"
-            buildConfigField 'boolean', 'showExperimentalTests', 'true'
         }
     }
 
@@ -46,13 +44,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    buildTypes {
-        debug {
-            debuggable true
-            buildConfigField "String", "sentryDsn", "\"\""
-            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
-        }
-    }
+    testBuildType "check"
 
     signingConfigs {
         caddisflyRelease {
@@ -66,6 +58,26 @@ android {
     }
 
     buildTypes {
+        check {
+            // Takes screenshots during test {use ScreenshotSuite} (Requires Storage permission)
+            buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
+            // Stops animations, ignores external sensors, skips bluetooth scans
+            buildConfigField "Boolean", "TEST_RUNNING", "true"
+            // The language to run the instrumented tests in
+            buildConfigField "String", "TEST_LANGUAGE", "\"en\""
+
+            debuggable = true
+            signingConfig signingConfigs.debug
+            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
+            buildConfigField "String", "SENTRY_DSN", "\"\""
+        }
+        debug {
+            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
+            buildConfigField "String", "SENTRY_DSN", "\"\""
+            buildConfigField "Boolean", "TEST_RUNNING", "false"
+            buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
+            buildConfigField "String", "TEST_LANGUAGE", "\"\""
+        }
         release {
             if (secrets.getProperty('CADDISFLY_RELEASE_STORE_FILE')) {
                 signingConfig signingConfigs.caddisflyRelease
@@ -74,8 +86,11 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
-            buildConfigField "String", "sentryDsn", "\"${sentryDsn}\""
-            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
+            resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
+            buildConfigField "String", "SENTRY_DSN", "\"${sentryDsn}\""
+            buildConfigField "Boolean", "TEST_RUNNING", "false"
+            buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
+            buildConfigField "String", "TEST_LANGUAGE", "\"en\""
         }
     }
 
@@ -87,6 +102,14 @@ android {
     testOptions {
         unitTests {
             includeAndroidResources = true
+        }
+    }
+
+    tasks.withType(Test) {
+        testLogging {
+            exceptionFormat "full"
+            events "started", "skipped", "passed", "failed"
+            showStandardStreams true
         }
     }
 }
@@ -101,7 +124,10 @@ dependencies {
 
     // Support
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.2' // Do not upgrade until https://issuetracker.google.com/issues/141869006 is fixed
+
+    // Don't upgrade until https://issuetracker.google.com/issues/141869006 is fixed
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.exifinterface:exifinterface:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

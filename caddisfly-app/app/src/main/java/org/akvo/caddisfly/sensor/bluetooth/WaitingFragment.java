@@ -10,8 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.AppConfig;
 
 import java.util.Locale;
 
@@ -39,7 +39,7 @@ public class WaitingFragment extends Fragment {
             textIndex.setText(String.format(Locale.US, "%d.", getArguments().getInt(INSTRUCTION_INDEX)));
         }
 
-        if (!AppConfig.INSTRUMENTED_TEST_RUNNING) {
+        if (!BuildConfig.TEST_RUNNING) {
             progressCircle.setVisibility(View.VISIBLE);
         }
 

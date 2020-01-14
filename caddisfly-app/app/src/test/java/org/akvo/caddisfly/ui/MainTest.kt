@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.ui
 
+import android.os.Build
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageButton
@@ -32,8 +33,10 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
 
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class MainTest {
 
     @Rule

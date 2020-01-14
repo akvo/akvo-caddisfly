@@ -96,7 +96,7 @@ object FileHelper {
         val imagesFolder = getFilesDir(FileType.RESULT_IMAGE)
         val files = imagesFolder.listFiles()
         if (files != null) {
-            for (tempFile in imagesFolder.listFiles()) {
+            for (tempFile in imagesFolder.listFiles()!!) {
                 tempFile.delete()
             }
         }

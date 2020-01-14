@@ -42,9 +42,8 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage.RESUMED
 import androidx.test.uiautomator.*
+import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_TAKE_SCREENSHOTS
 import org.akvo.caddisfly.common.AppConstants.FLOW_SURVEY_PACKAGE_NAME
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.hamcrest.Matchers.`is`
@@ -56,11 +55,7 @@ import java.util.*
 lateinit var mDevice: UiDevice
 
 fun isPatchAvailable(id: String = "."): Boolean {
-    return if (("aa4a4e3100c9").contains(id)) {
-        ("ASUS_Z01BDB SM-J500F").contains(Build.MODEL)
-    } else {
-        ("SM-J500F").contains(Build.MODEL)
-    }
+    return ("SM-J500F").contains(Build.MODEL)
 }
 
 fun skipOpeningExternalApp(model: String = ""): Boolean {
@@ -124,7 +119,7 @@ object TestHelper {
         val assets = currentResources.assets
         val metrics = currentResources.displayMetrics
         val config = Configuration(currentResources.configuration)
-        config.locale = Locale(INSTRUMENTED_TEST_LANGUAGE)
+        config.locale = Locale(BuildConfig.TEST_LANGUAGE)
         val res = Resources(assets, metrics, config)
 
         return res.getString(resourceId)
@@ -173,10 +168,11 @@ object TestHelper {
     }
 
     fun takeScreenshot(name: String, page: Int) {
-        if (INSTRUMENTED_TEST_TAKE_SCREENSHOTS && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (BuildConfig.TAKE_SCREENSHOTS
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             val folder = File(Environment.getExternalStorageDirectory().path
                     + "/Akvo Caddisfly/screenshots/")
-            val path = File(folder, name + "-" + INSTRUMENTED_TEST_LANGUAGE + "-" +
+            val path = File(folder, name + "-" + BuildConfig.TEST_LANGUAGE + "-" +
                     String.format("%02d", page + 1) + ".png")
 
             if (!folder.exists()) {

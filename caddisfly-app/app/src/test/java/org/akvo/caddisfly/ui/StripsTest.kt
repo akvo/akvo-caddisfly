@@ -21,25 +21,27 @@ package org.akvo.caddisfly.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.rule.ActivityTestRule
-import junit.framework.Assert.*
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.TestConstants.STRIP_TESTS_COUNT
 import org.akvo.caddisfly.common.ConstantKey
 import org.akvo.caddisfly.model.TestType
-import org.junit.Assert
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowLooper
 
 @RunWith(RobolectricTestRunner::class)
+@Config(sdk = [Build.VERSION_CODES.O_MR1])
 class StripsTest {
 
     @Rule
@@ -80,7 +82,7 @@ class StripsTest {
         assert(adapter != null)
         assertEquals("Water - Phosphate",
                 adapter!!.getItemAt(20).name)
-        Assert.assertEquals("Soil - Phosphorous",
+        assertEquals("Soil - Phosphorous",
                 (recyclerView.getChildAt(4).findViewById<View>(R.id.text_title) as TextView).text)
     }
 

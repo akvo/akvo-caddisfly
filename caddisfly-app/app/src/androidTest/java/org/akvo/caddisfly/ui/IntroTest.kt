@@ -13,8 +13,8 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
+import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.common.AppConfig.INSTRUMENTED_TEST_LANGUAGE
 import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.enterDiagnosticMode
@@ -56,7 +56,7 @@ class IntroTest {
 
     @Before
     fun setUp() {
-        loadData(mActivityTestRule.activity, INSTRUMENTED_TEST_LANGUAGE)
+        loadData(mActivityTestRule.activity, BuildConfig.TEST_LANGUAGE)
         clearPreferences(mActivityTestRule)
     }
 

@@ -19,12 +19,10 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -35,7 +33,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.ActivityTestListBinding;
@@ -44,21 +41,16 @@ import org.akvo.caddisfly.helper.ErrorMessages;
 import org.akvo.caddisfly.helper.PermissionsDelegate;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.repository.TestConfigRepository;
 import org.akvo.caddisfly.util.ApiUtil;
-import org.akvo.caddisfly.util.ConfigDownloader;
 import org.akvo.caddisfly.viewmodel.TestListViewModel;
 
 public class TestListActivity extends BaseActivity
         implements TestListFragment.OnListFragmentInteractionListener {
 
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
-    private static final int REQUEST_SYNC_PERMISSION = 101;
 
     private final PermissionsDelegate permissionsDelegate = new PermissionsDelegate(this);
-    private final String[] storagePermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private TestListFragment fragment;
     private TestInfo testInfo;
     private ActivityTestListBinding b;
 
@@ -69,18 +61,9 @@ public class TestListActivity extends BaseActivity
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (permissionsDelegate.resultGranted(grantResults)) {
-            if (requestCode == REQUEST_SYNC_PERMISSION) {
-                startSync();
-            } else {
-                startTest();
-            }
+            startTest();
         } else {
-            String message;
-            if (requestCode == REQUEST_SYNC_PERMISSION) {
-                message = getString(R.string.storagePermission);
-            } else {
-                message = getString(R.string.cameraAndStoragePermissions);
-            }
+            String message = getString(R.string.cameraAndStoragePermissions);
 
             Snackbar snackbar = Snackbar
                     .make(b.mainLayout, message,
@@ -126,7 +109,7 @@ public class TestListActivity extends BaseActivity
 
             TestType testType = (TestType) getIntent().getSerializableExtra(ConstantKey.TYPE);
 
-            fragment = TestListFragment.newInstance(testType);
+            TestListFragment fragment = TestListFragment.newInstance(testType);
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, fragment, "TestListViewModel").commit();
@@ -166,46 +149,11 @@ public class TestListActivity extends BaseActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        if (BuildConfig.showExperimentalTests && AppPreferences.isDiagnosticMode()) {
-            getMenuInflater().inflate(R.menu.menu_test_list, menu);
-        }
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Download and sync test config.
-     *
-     * @param item menu item click on
-     */
-    @SuppressWarnings("unused")
-    public void onDownloadTests(MenuItem item) {
-        if (permissionsDelegate.hasPermissions(storagePermission)) {
-            startSync();
-        } else {
-            permissionsDelegate.requestPermissions(storagePermission, REQUEST_SYNC_PERMISSION);
-        }
-    }
-
-    private void startSync() {
-        ConfigDownloader.syncExperimentalConfig(this, () -> {
-            if (fragment != null) {
-                fragment.refresh();
-            }
-        });
-    }
-
-    public interface SyncCallbackInterface {
-        void onDownloadFinished();
     }
 }
