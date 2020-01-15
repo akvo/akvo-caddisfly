@@ -1,11 +1,9 @@
 package org.akvo
 
 import org.akvo.caddisfly.test.SensorTest
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
-// Runs all unit tests.
-@RunWith(Enclosed::class)
+// Uncomment @Runwith below to run this suite. This is commented because gradlew runs the test twice
+//@RunWith(Suite::class)
 @Suite.SuiteClasses(SensorTest::class)
 class ExternalDeviceSuite

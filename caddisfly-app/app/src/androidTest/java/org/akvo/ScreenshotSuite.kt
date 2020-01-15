@@ -4,12 +4,14 @@ import org.akvo.caddisfly.instruction.*
 import org.akvo.caddisfly.internal.NavigationTest
 import org.akvo.caddisfly.internal.StriptestInternal
 import org.akvo.caddisfly.update.UpdateTest
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
-// Runs tests that generate screenshots
-@RunWith(Enclosed::class)
+/**
+ * Runs only tests that generate screenshots
+ */
+
+// Uncomment @Runwith below to run this suite. This is commented because gradlew runs the test twice
+//@RunWith(Suite::class)
 @Suite.SuiteClasses(
         BluetoothInstructions::class, CbtInstructions::class,
         ManualInstructions::class, PhotometerInstructions::class,

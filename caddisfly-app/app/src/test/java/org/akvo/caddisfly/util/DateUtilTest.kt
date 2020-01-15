@@ -26,7 +26,7 @@ import org.junit.Test
 import org.robolectric.annotation.Config
 import java.util.*
 
-@Config(sdk = [Build.VERSION_CODES.O_MR1])
+@Config(sdk = [Build.VERSION_CODES.P])
 class DateUtilTest {
 
     @Before

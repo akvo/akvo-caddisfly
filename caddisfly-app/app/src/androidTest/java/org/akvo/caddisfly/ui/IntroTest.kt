@@ -63,11 +63,19 @@ class IntroTest {
 
         onView(withId(R.id.button_info)).perform(click())
 
+        sleep(500)
+
         navigateUp()
 
-        onView(withId(R.id.button_info)).perform(click())
         sleep(500)
+
+        onView(withId(R.id.button_info)).perform(click())
+
+        sleep(1000)
+
         pressBack()
+
+        sleep(500)
 
         onView(withId(R.id.button_info)).perform(click())
 

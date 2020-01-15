@@ -33,7 +33,7 @@ import org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startFragment
 import org.robolectric.shadows.support.v4.SupportFragmentTestUtil.startVisibleFragment
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.O_MR1])
+@Config(sdk = [Build.VERSION_CODES.P])
 class InstructionFragmentTest {
 
     @Test

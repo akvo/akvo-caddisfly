@@ -55,9 +55,15 @@ class NavigationTest {
 
         onView(withId(R.id.button_info)).perform(click())
 
+        sleep(500)
+
         navigateUp()
 
+        sleep(500)
+
         onView(withId(R.id.button_info)).perform(click())
+
+        sleep(500)
 
         pressBack()
 

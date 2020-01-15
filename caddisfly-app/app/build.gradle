@@ -10,17 +10,6 @@ if (secretsFile.exists()) {
     secrets.load(new FileInputStream(secretsFile))
 }
 
-def getProps(String propName) {
-    def propsFile = rootProject.file('local.properties')
-    if (propsFile.exists()) {
-        def props = new Properties()
-        props.load(new FileInputStream(propsFile))
-        return props[propName]
-    } else {
-        return ""
-    }
-}
-
 android {
     compileSdkVersion 29
     testOptions.unitTests.includeAndroidResources = true
@@ -101,8 +90,13 @@ android {
             resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
             buildConfigField "Boolean", "TEST_RUNNING", "false"
             buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
-            buildConfigField "String", "TEST_LANGUAGE", "\"en\""
-            buildConfigField "String", "SENTRY_DSN",  "\"" + getProps("sentryDsn") + "\""
+            buildConfigField "String", "TEST_LANGUAGE", "\"\""
+            buildConfigField "String", "SENTRY_DSN", "\"${sentryDsn}\""
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "akvo-caddisfly-${variant.versionCode}.apk"
+                }
+            }
         }
     }
 
