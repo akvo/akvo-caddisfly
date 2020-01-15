@@ -82,7 +82,7 @@ android {
         release {
             if (secrets.getProperty('CADDISFLY_RELEASE_STORE_FILE')) {
                 signingConfig signingConfigs.caddisflyRelease
-                buildConfigField "String", "SENTRY_DSN", "\"${sentryDsn}\""
+                buildConfigField "String", "SENTRY_DSN", "\"${CADDISFLY_SENTRY_DSN}\""
             } else {
                 buildConfigField "String", "SENTRY_DSN", "\"\""
             }
