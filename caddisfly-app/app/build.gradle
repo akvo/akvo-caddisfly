@@ -71,6 +71,7 @@ android {
             signingConfig signingConfigs.debug
             resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
             buildConfigField "String", "SENTRY_DSN", "\"\""
+            buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + 0L + ")"
         }
         debug {
             resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
@@ -78,6 +79,7 @@ android {
             buildConfigField "Boolean", "TEST_RUNNING", "false"
             buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
             buildConfigField "String", "TEST_LANGUAGE", "\"\""
+            buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + 0L + ")"
         }
         release {
             if (secrets.getProperty('CADDISFLY_RELEASE_STORE_FILE')) {
@@ -94,6 +96,9 @@ android {
             buildConfigField "Boolean", "TEST_RUNNING", "false"
             buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
             buildConfigField "String", "TEST_LANGUAGE", "\"\""
+            // Expiry date of apk. To prevent test builds from being used in production
+            buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" +
+                    (System.currentTimeMillis()) + "L)"
             android.applicationVariants.all { variant ->
                 variant.outputs.all {
                     outputFileName = "akvo-caddisfly-${variant.versionCode}.apk"

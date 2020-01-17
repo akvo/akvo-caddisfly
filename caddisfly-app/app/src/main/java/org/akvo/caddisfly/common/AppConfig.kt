@@ -22,16 +22,6 @@ package org.akvo.caddisfly.common
  * Global Configuration settings for the app.
  */
 object AppConfig {
-
-    /**
-     * Date on which the app version will expire.
-     * This is to ensure that installs from apk meant for testing only cannot be used for too long.
-     */
-    const val APP_EXPIRY = false
-    const val APP_EXPIRY_DAY = 1
-    const val APP_EXPIRY_MONTH = 2
-    const val APP_EXPIRY_YEAR = 2020
-
     /**
      * The sound volume for the beeps and other sound effects.
      */

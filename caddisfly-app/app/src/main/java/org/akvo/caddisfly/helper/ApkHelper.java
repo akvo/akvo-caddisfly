@@ -28,8 +28,8 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 
+import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
-import org.akvo.caddisfly.common.AppConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,17 +52,17 @@ public final class ApkHelper {
      * @return True if the app has expired
      */
     public static boolean isAppVersionExpired(@NonNull final Activity activity) {
-        if (AppConfig.APP_EXPIRY && isNonStoreVersion(activity)) {
+        //noinspection ConstantConditions
+        if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("release") &&
+                isNonStoreVersion(activity)) {
             final Uri marketUrl = Uri.parse("https://play.google.com/store/apps/details?id=" +
                     activity.getPackageName());
 
-            final GregorianCalendar appExpiryDate = new GregorianCalendar(AppConfig.APP_EXPIRY_YEAR,
-                    AppConfig.APP_EXPIRY_MONTH - 1, AppConfig.APP_EXPIRY_DAY);
+            final Calendar appExpiryDate = GregorianCalendar.getInstance();
+            appExpiryDate.setTime(BuildConfig.BUILD_TIME);
+            appExpiryDate.add(Calendar.DAY_OF_YEAR, 15);
 
-            appExpiryDate.add(Calendar.DAY_OF_MONTH, 1);
-
-            GregorianCalendar now = new GregorianCalendar();
-            if (now.after(appExpiryDate)) {
+            if ((new GregorianCalendar()).after(appExpiryDate)) {
 
                 String message = String.format("%s%n%n%s", activity.getString(R.string.thisVersionHasExpired),
                         activity.getString(R.string.uninstallAndInstallFromStore));
