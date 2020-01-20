@@ -33,6 +33,7 @@ import android.os.Process
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -48,6 +49,7 @@ import org.akvo.caddisfly.app.CaddisflyApp
 import org.akvo.caddisfly.common.AppConstants.FLOW_SURVEY_PACKAGE_NAME
 import org.akvo.caddisfly.databinding.ActivityMainBinding
 import org.akvo.caddisfly.helper.ApkHelper
+import org.akvo.caddisfly.preference.AppPreferences
 import org.akvo.caddisfly.preference.AppPreferences.isDiagnosticMode
 import org.akvo.caddisfly.preference.SettingsActivity
 import org.akvo.caddisfly.util.AlertUtil
@@ -122,16 +124,11 @@ class MainActivity : AppUpdateActivity() {
             b!!.buttonNext.visibility = View.VISIBLE
             b!!.buttonOk.visibility = View.GONE
         }
+        switchLayoutForDiagnosticOrUserMode()
     }
 
     override fun onResume() {
         super.onResume()
-
-        if (isDiagnosticMode()) {
-            text_diagnostic_mode.visibility = View.VISIBLE
-        } else {
-            text_diagnostic_mode.visibility = View.GONE
-        }
 
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             statusBarColors = if (isDiagnosticMode()) {
@@ -232,6 +229,27 @@ class MainActivity : AppUpdateActivity() {
             b!!.viewPager.currentItem = b!!.viewPager.currentItem - 1
         } else {
             super.onBackPressed()
+        }
+    }
+
+    /**
+     * Disables diagnostic mode.
+     */
+    fun disableDiagnosticsMode(@Suppress("UNUSED_PARAMETER") view: View?) {
+        Toast.makeText(baseContext, getString(string.diagnosticModeDisabled),
+                Toast.LENGTH_SHORT).show()
+        AppPreferences.disableDiagnosticMode()
+        switchLayoutForDiagnosticOrUserMode()
+        changeActionBarStyleBasedOnCurrentMode()
+    }
+
+    private fun switchLayoutForDiagnosticOrUserMode() {
+        if (isDiagnosticMode()) {
+            text_diagnostic_mode.visibility = View.VISIBLE
+            fabDisableDiagnostics.show()
+        } else {
+            text_diagnostic_mode.visibility = View.GONE
+            fabDisableDiagnostics.hide()
         }
     }
 
