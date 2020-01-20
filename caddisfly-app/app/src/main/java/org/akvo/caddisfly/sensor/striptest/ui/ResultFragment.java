@@ -59,7 +59,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -164,7 +163,7 @@ public class ResultFragment extends BaseFragment {
 
         // TODO: check null mDecodeData here
         // get the images for the patches
-        Map<Integer, float[][][]> patchImageMap = mDecodeData.getStripImageMap();
+        SparseArray<float[][][]> patchImageMap = mDecodeData.getStripImageMap();
 
         // todo check order of patches
         // for display purposes sort the patches by physical position on the strip
@@ -180,7 +179,7 @@ public class ResultFragment extends BaseFragment {
             int delay = patch.getTimeDelay();
 
             // check if we have the corresponding image
-            if (!patchImageMap.containsKey(delay)) {
+            if (patchImageMap.indexOfKey(delay) < 0) {
                 Timber.d("patch not found!");
                 patchResult.setMeasured(false);
                 continue;

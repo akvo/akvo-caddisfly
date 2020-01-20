@@ -51,6 +51,7 @@
     <string name="refreshKey">refresh</string>
     <string name="refreshAboutKey">refreshAbout</string>
     <string name="testModeOnKey">testModeOn</string>
+    <string name="saveTestImageKey">SaveTestImage</string>
 
     <string name="ignoreTimeDelaysKey">ignoreTimeDelays</string>
     <string name="cameraMegaPixelsKey">cameraMegaPixels</string>
@@ -65,6 +66,7 @@
     <string name="debugging">Debugging</string>
     <string name="download_experimental_tests">Download experimental tests</string>
     <string name="testModeOn">Test Mode</string>
+    <string name="save_test_image">Save test image</string>
     <string name="diagnostics_options">Diagnostic Options</string>
     <string name="disableDiagnostics">Close diagnostics mode</string>t
 

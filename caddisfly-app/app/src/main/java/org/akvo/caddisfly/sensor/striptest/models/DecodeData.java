@@ -1,22 +1,25 @@
 package org.akvo.caddisfly.sensor.striptest.models;
 
 import android.media.Image;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 
+import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPattern;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPatternInfo;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.PerspectiveTransform;
+import org.akvo.caddisfly.util.ImageUtil;
 import org.apache.commons.math3.linear.RealMatrix;
 
-import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 public class DecodeData {
 
-    private final Map<Integer, Integer> versionNumberMap;
-    private final Map<Integer, float[][][]> stripImageMap;
+    private final SparseIntArray versionNumberMap;
+    private final SparseArray<float[][][]> stripImageMap;
     private Image decodeImage;
     private byte[] decodeImageByteArray;
     private int decodeWidth;
@@ -29,31 +32,31 @@ public class DecodeData {
     private List<float[]> shadowPoints;
     private float[][] whitePointArray;
     private float[] deltaEStats;
-    private float[] illumData;
+    private float[] illuminationData;
     private RealMatrix calMatrix;
     private int stripPixelWidth;
     private TestInfo testInfo;
 
     public DecodeData() {
-        this.versionNumberMap = new HashMap<>();
-        this.stripImageMap = new HashMap<>();
+        this.versionNumberMap = new SparseIntArray();
+        this.stripImageMap = new SparseArray<>();
     }
 
     public void addStripImage(float[][][] image, int delay) {
         this.stripImageMap.put(delay, image);
     }
 
-    public Map<Integer, float[][][]> getStripImageMap() {
+    public SparseArray<float[][][]> getStripImageMap() {
         return this.stripImageMap;
     }
 
     //put version number in array: number, frequency
     public void addVersionNumber(Integer number) {
-        Integer existingFrequency = versionNumberMap.get(number);
-        if (existingFrequency != null) {
-            versionNumberMap.put(number, versionNumberMap.get(number) + 1);
-        } else {
+        int versionNumber = versionNumberMap.get(number, -1);
+        if (versionNumber == -1) {
             versionNumberMap.put(number, 1);
+        } else {
+            versionNumberMap.put(number, versionNumber + 1);
         }
     }
 
@@ -62,11 +65,11 @@ public class DecodeData {
         int largestValue = -1;
 
         //look for the most frequent value
-        for (Integer key : versionNumberMap.keySet()) {
-            int freq = versionNumberMap.get(key);
+        for (int i = 0; i < versionNumberMap.size(); i++) {
+            int freq = versionNumberMap.valueAt(i);
             if (freq > mostFrequent) {
                 mostFrequent = freq;
-                largestValue = key;
+                largestValue = versionNumberMap.keyAt(i);
             }
         }
         return largestValue;
@@ -77,18 +80,17 @@ public class DecodeData {
         int prevMostFrequent = 0;
 
         //look for the most frequent value
-        for (Integer key : versionNumberMap.keySet()) {
-            int freq = versionNumberMap.get(key);
+        for (int i = 0; i < versionNumberMap.size(); i++) {
+            int freq = versionNumberMap.valueAt(i);
             if (freq > mostFrequent) {
                 prevMostFrequent = mostFrequent;
                 mostFrequent = freq;
             }
         }
-        // this means we have seen the most frequent version number at least 5 times more often
-        // second most frequent.
+        // this means we have seen the most frequent version number at least
+        // 5 times more often than second most frequent.
         return mostFrequent - prevMostFrequent > 5;
     }
-
 
     public int getDecodeWidth() {
         return decodeWidth;
@@ -179,12 +181,12 @@ public class DecodeData {
         this.distanceOk = distanceOk;
     }
 
-    public float[] getIllumData() {
-        return illumData;
+    public float[] getIlluminationData() {
+        return illuminationData;
     }
 
-    public void setIllumData(float[] illumData) {
-        this.illumData = illumData;
+    public void setIlluminationData(float[] illuminationData) {
+        this.illuminationData = illuminationData;
     }
 
 
@@ -223,16 +225,15 @@ public class DecodeData {
         tilt = DecodeProcessor.NO_TILT;
         distanceOk = true;
         calMatrix = null;
-        illumData = null;
+        illuminationData = null;
     }
 
     public void clearImageMap() {
         stripImageMap.clear();
     }
 
-    // debug code
-//    public void saveImage() {
-//        ImageUtil.saveImage(decodeImageByteArray, FileType.TEST_IMAGE,
-//                String.valueOf(Calendar.getInstance().getTimeInMillis()));
-//    }
+    public void saveImage() {
+        ImageUtil.saveYuvImage(decodeImageByteArray, FileType.TEST_IMAGE,
+                String.valueOf(Calendar.getInstance().getTimeInMillis()));
+    }
 }

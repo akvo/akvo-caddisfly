@@ -227,8 +227,8 @@ public class DecodeProcessor {
     }
 
     /*
-    * checks exposure of image, by looking at the Y value of the white. It should be as high as
-    * possible, without being overexposed.
+     * checks exposure of image, by looking at the Y value of the white. It should be as high as
+     * possible, without being overexposed.
      */
     private void checkExposureQuality() {
         DecodeData decodeData = StriptestHandler.getDecodeData();
@@ -270,7 +270,7 @@ public class DecodeProcessor {
     }
 
     /*
-    * checks exposure of image, by looking at the homogeneity of the white values.
+     * checks exposure of image, by looking at the homogeneity of the white values.
      */
     private void checkShadowQuality() {
         DecodeData decodeData = StriptestHandler.getDecodeData();
@@ -385,7 +385,7 @@ public class DecodeProcessor {
         PerspectiveTransform cardToImageTransform = decodeData.getCardToImageTransform();
         TestInfo testInfo = decodeData.getTestInfo();
 
-        float[] illumination = decodeData.getIllumData();
+        float[] illumination = decodeData.getIlluminationData();
         RealMatrix calMatrix = decodeData.getCalMatrix();
 
         // we cut of an edge of 1mm at the edges, to avoid any white space captured at the edge

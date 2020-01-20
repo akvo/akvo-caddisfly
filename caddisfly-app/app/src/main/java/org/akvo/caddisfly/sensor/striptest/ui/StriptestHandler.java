@@ -26,6 +26,7 @@ import android.widget.TextSwitcher;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.model.TestInfo;
+import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.striptest.camera.CameraOperationsManager;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
@@ -426,8 +427,9 @@ public final class StriptestHandler extends Handler {
                         mListener.moveToInstructions(currentTestStage);
                     } else {
 
-                        // debug code
-                        // mDecodeData.saveImage();
+                        if (AppPreferences.isSaveTestImage()) {
+                            mDecodeData.saveImage();
+                        }
 
                         // we are done
                         mListener.moveToResults();

@@ -66,14 +66,14 @@ public class CalibrationUtils {
         // compute the mean luminosity of the whole image. To compute this, we compute the volume
         // underneath the curve, which gives us the average.
 
-        float xmax = calCardData.hSize;
-        float ymax = calCardData.vSize;
+        float xMax = calCardData.hSize;
+        float yMax = calCardData.vSize;
 
-        float Ymean = (float) (0.5 * Ya * xmax + 0.5 * Yb * ymax + Yc * xmax * xmax / 3.0
-                + Yd * ymax * ymax / 3.0 + Ye * 0.25 * xmax * ymax + Yf);
+        float yMean = (float) (0.5 * Ya * xMax + 0.5 * Yb * yMax + Yc * xMax * xMax / 3.0
+                + Yd * yMax * yMax / 3.0 + Ye * 0.25 * xMax * yMax + Yf);
 
-        float[] illumData = new float[]{Ya, Yb, Yc, Yd, Ye, Yf, Ymean};
-        decodeData.setIllumData(illumData);
+        float[] illuminationData = new float[]{Ya, Yb, Yc, Yd, Ye, Yf, yMean};
+        decodeData.setIlluminationData(illuminationData);
 
         // now we create a new map with corrected values. U and V are unchanged
         float Ynew;
@@ -85,7 +85,7 @@ public class CalibrationUtils {
             x = loc.x;
             y = loc.y;
             Ynew = capValue(YUV[0] - (Ya * x + Yb * y + Yc * x * x + Yd * y * y
-                    + Ye * x * y + Yf) + Ymean, 0.0f, 255.0f);
+                    + Ye * x * y + Yf) + yMean, 0.0f, 255.0f);
             resultYUVMap.put(label, new float[]{Ynew, YUV[1], YUV[2]});
         }
         return resultYUVMap;

@@ -46,6 +46,7 @@ public final class AppPreferences {
     public static void disableDiagnosticMode() {
         PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.diagnosticModeKey, false);
         PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false);
+        PreferencesUtil.setBoolean(CaddisflyApp.getApp(), R.string.saveTestImageKey, false);
     }
 
     public static boolean isSoundOn() {
@@ -57,10 +58,14 @@ public final class AppPreferences {
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.showDebugMessagesKey, false);
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static boolean isTestMode() {
         return BuildConfig.TEST_RUNNING || (isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false));
+    }
+
+    public static boolean isSaveTestImage() {
+        return (isDiagnosticMode()
+                && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.saveTestImageKey, false));
     }
 
     public static boolean ignoreTimeDelays() {
@@ -73,7 +78,6 @@ public final class AppPreferences {
                 Calendar.getInstance().getTimeInMillis());
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static boolean isAppUpdateCheckRequired() {
         if (BuildConfig.TEST_RUNNING) {
             return true;
@@ -82,7 +86,6 @@ public final class AppPreferences {
         return TimeUnit.MILLISECONDS.toDays(Calendar.getInstance().getTimeInMillis() - lastCheck) > 0;
     }
 
-    @SuppressWarnings("ConstantConditions")
     public static boolean analyticsEnabled() {
         return !BuildConfig.TEST_RUNNING && !BuildConfig.DEBUG;
     }
