@@ -428,7 +428,7 @@ public final class StriptestHandler extends Handler {
                     } else {
 
                         if (AppPreferences.isSaveTestImage()) {
-                            mDecodeData.saveImage();
+                            mDecodeData.saveCapturedImage();
                         }
 
                         // we are done

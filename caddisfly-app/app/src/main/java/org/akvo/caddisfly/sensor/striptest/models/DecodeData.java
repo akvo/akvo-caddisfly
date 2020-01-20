@@ -13,7 +13,6 @@ import org.akvo.caddisfly.sensor.striptest.qrdetector.PerspectiveTransform;
 import org.akvo.caddisfly.util.ImageUtil;
 import org.apache.commons.math3.linear.RealMatrix;
 
-import java.util.Calendar;
 import java.util.List;
 
 public class DecodeData {
@@ -189,7 +188,6 @@ public class DecodeData {
         this.illuminationData = illuminationData;
     }
 
-
     public RealMatrix getCalMatrix() {
         return calMatrix;
     }
@@ -232,8 +230,7 @@ public class DecodeData {
         stripImageMap.clear();
     }
 
-    public void saveImage() {
-        ImageUtil.saveYuvImage(decodeImageByteArray, FileType.TEST_IMAGE,
-                String.valueOf(Calendar.getInstance().getTimeInMillis()));
+    public void saveCapturedImage() {
+        ImageUtil.saveYuvImage(decodeImageByteArray, FileType.TEST_IMAGE, testInfo.getName());
     }
 }

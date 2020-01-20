@@ -41,13 +41,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import kotlinx.android.synthetic.main.activity_main.*
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.R.*
 import org.akvo.caddisfly.app.CaddisflyApp
 import org.akvo.caddisfly.common.AppConstants.FLOW_SURVEY_PACKAGE_NAME
 import org.akvo.caddisfly.databinding.ActivityMainBinding
 import org.akvo.caddisfly.helper.ApkHelper
-import org.akvo.caddisfly.preference.AppPreferences
+import org.akvo.caddisfly.preference.AppPreferences.isDiagnosticMode
 import org.akvo.caddisfly.preference.SettingsActivity
 import org.akvo.caddisfly.util.AlertUtil
 import org.akvo.caddisfly.util.AnimatedColor
@@ -126,8 +127,14 @@ class MainActivity : AppUpdateActivity() {
     override fun onResume() {
         super.onResume()
 
+        if (isDiagnosticMode()) {
+            text_diagnostic_mode.visibility = View.VISIBLE
+        } else {
+            text_diagnostic_mode.visibility = View.GONE
+        }
+
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-            statusBarColors = if (AppPreferences.isDiagnosticMode()) {
+            statusBarColors = if (isDiagnosticMode()) {
                 AnimatedColor(
                         ContextCompat.getColor(this, color.colorPrimaryDark),
                         ContextCompat.getColor(this, color.diagnostic_status))
@@ -154,7 +161,7 @@ class MainActivity : AppUpdateActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (AppPreferences.isDiagnosticMode()) {
+        if (isDiagnosticMode()) {
             menuInflater.inflate(R.menu.menu_main_diagnostic, menu)
         } else {
             menuInflater.inflate(R.menu.menu_main, menu)
