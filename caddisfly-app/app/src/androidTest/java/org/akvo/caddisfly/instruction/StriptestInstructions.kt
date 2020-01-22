@@ -155,7 +155,9 @@ class StriptestInstructions : BaseTest() {
 
         sleep(7000)
 
-        if (isPatchAvailable()) {
+        val patchAvailable = isStripPatchAvailable("Water - pH")
+
+        if (patchAvailable) {
             onView(withText("4.8")).check(matches(isDisplayed()))
             pressBack()
             onView(withText("pH")).check(matches(isDisplayed()))
@@ -167,7 +169,7 @@ class StriptestInstructions : BaseTest() {
 
         sleep(2500)
 
-        if (isPatchAvailable()) {
+        if (patchAvailable) {
             assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")))
         } else {
             assertNotNull(mDevice.findObject(By.text("pH: null ")))

@@ -45,6 +45,8 @@ import androidx.test.uiautomator.*
 import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConstants.FLOW_SURVEY_PACKAGE_NAME
+import org.akvo.caddisfly.helper.FileHelper.getFilesDir
+import org.akvo.caddisfly.helper.FileType
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
@@ -54,8 +56,9 @@ import java.util.*
 
 lateinit var mDevice: UiDevice
 
-fun isPatchAvailable(id: String = "."): Boolean {
-    return ("SM-J500F").contains(Build.MODEL)
+fun isStripPatchAvailable(name: String = "."): Boolean {
+    val file = File(getFilesDir(FileType.TEST_IMAGE, ""), "$name.yuv")
+    return file.exists()
 }
 
 fun skipOpeningExternalApp(model: String = ""): Boolean {

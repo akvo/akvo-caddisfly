@@ -126,7 +126,10 @@ class StriptestTest : BaseTest() {
         onView(withText(R.string.skip)).check(doesNotExist())
 
         TestHelper.clickStartButton()
-        if (isPatchAvailable()) {
+
+        val patchAvailable = isStripPatchAvailable("Water - Chlorine, Hardness, Alkalinity, pH")
+
+        if (patchAvailable) {
             sleep(36000)
         } else {
             sleep(5000)
@@ -140,7 +143,7 @@ class StriptestTest : BaseTest() {
 
         TestHelper.clickStartButton()
 
-        if (isPatchAvailable()) {
+        if (patchAvailable) {
             sleep(35000)
 
             onView(withText(R.string.result)).check(matches(isDisplayed()))
@@ -178,7 +181,7 @@ class StriptestTest : BaseTest() {
 
         sleep(2000)
 
-        if (isPatchAvailable()) {
+        if (patchAvailable) {
             assertNotNull(mDevice.findObject(By.text("Total Chlorine: 0.0 mg/l")))
             assertNotNull(mDevice.findObject(By.text("Free Chlorine: 0.15 mg/l")))
             assertNotNull(mDevice.findObject(By.text("Total Hardness:  mg/l")))
@@ -221,7 +224,9 @@ class StriptestTest : BaseTest() {
 
         TestHelper.clickStartButton()
 
-        if (isPatchAvailable()) {
+        val patchAvailable = isStripPatchAvailable("Soil Nitrogen")
+
+        if (patchAvailable) {
 
             sleep(65000)
 
@@ -245,7 +250,7 @@ class StriptestTest : BaseTest() {
 
         sleep(2000)
 
-        if (isPatchAvailable()) {
+        if (patchAvailable) {
             assertNotNull(mDevice.findObject(By.text("Nitrogen: 205.15 mg/l")))
             assertNotNull(mDevice.findObject(By.text("Nitrate Nitrogen: 41.0 mg/l")))
             assertNotNull(mDevice.findObject(By.text("Nitrite Nitrogen: 0.03 mg/l")))
@@ -284,7 +289,9 @@ class StriptestTest : BaseTest() {
 
         onView(withText(R.string.result)).check(matches(isDisplayed()))
 
-        if (isPatchAvailable()) {
+        val patchAvailable = isStripPatchAvailable("Water - pH")
+
+        if (patchAvailable) {
             onView(withText("pH")).check(matches(isDisplayed()))
             onView(withText("4.8")).check(matches(isDisplayed()))
         } else {
@@ -295,7 +302,7 @@ class StriptestTest : BaseTest() {
 
         TestHelper.clickSubmitResultButton()
 
-        if (isPatchAvailable()) {
+        if (patchAvailable) {
             assertNotNull(mDevice.findObject(By.text("pH: 4.8 ")))
         }
     }
@@ -325,7 +332,7 @@ class StriptestTest : BaseTest() {
 
         TestHelper.clickStartButton()
 
-        if (isPatchAvailable()) {
+        if (isStripPatchAvailable("Water - Nitrate, Nitrite")) {
             sleep(60000)
             onView(withText(R.string.result)).check(matches(isDisplayed()))
             onView(withText("Nitrate")).check(matches(isDisplayed()))
@@ -376,7 +383,9 @@ class StriptestTest : BaseTest() {
 
         TestHelper.clickStartButton()
 
-        if (isPatchAvailable("aa4a4e3100c9")) {
+        val patchAvailable = isStripPatchAvailable("Water - Mercury")
+
+        if (patchAvailable) {
             sleep(35000)
             onView(withText(R.string.result)).check(matches(isDisplayed()))
             onView(withText("Mercury")).check(matches(isDisplayed()))
@@ -394,7 +403,7 @@ class StriptestTest : BaseTest() {
 
         sleep(2000)
 
-        if (isPatchAvailable("aa4a4e3100c9")) {
+        if (patchAvailable) {
             mDevice.swipe(200, 750, 200, 600, 4)
             assertNotNull(mDevice.findObject(By.text("Mercury: 5.0 ug/l")))
         } else {

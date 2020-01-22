@@ -125,7 +125,7 @@ class StriptestInternal {
             //
             run {
 
-                if (!isPatchAvailable(id)) {
+                if (!isStripPatchAvailable(testInfo.name)) {
                     resultWaitDelay = 7000
                 } else if (("6843158b47b4 6ed8142b6b07, 420551851acd 1b7db640037c d555f04db952 aa4a4e3100c9 "
                                 + "411a4093f6b6 321bbbd9876b 798b81d2b019 32d9b8f4aecf").contains(id)) {
@@ -169,6 +169,7 @@ class StriptestInternal {
 
                 TestHelper.clickStartButton()
 
+                // 5 in 1 strip
                 if ("411a4093f6b6".contains(id)) {
 
                     sleep(2000)
