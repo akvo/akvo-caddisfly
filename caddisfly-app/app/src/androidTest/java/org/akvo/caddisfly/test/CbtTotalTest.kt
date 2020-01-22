@@ -17,6 +17,7 @@ import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
+import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.*
