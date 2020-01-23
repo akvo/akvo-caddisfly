@@ -19,13 +19,9 @@
 
 package org.akvo.caddisfly.ui;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -37,8 +33,6 @@ import androidx.core.content.ContextCompat;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.preference.AppPreferences;
-
-import java.util.Locale;
 
 /**
  * The base activity with common functions.
@@ -152,20 +146,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 getWindow().setStatusBarColor(color);
             }
         }
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Configuration config = newBase.getResources().getConfiguration();
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(newBase);
-            String language = prefs.getString(newBase.getString(R.string.languageKey), "en");
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            config.setLocale(locale);
-            newBase = newBase.createConfigurationContext(config);
-        }
-        super.attachBaseContext(newBase);
     }
 }
 
