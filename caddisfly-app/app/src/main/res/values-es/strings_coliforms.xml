@@ -34,20 +34,20 @@
     <string name="health_risk_category">Categoría de riesgo para la salud (basado en la NMP y el intervalo de confianza)</string>
     <string name="recreational_health_risk_category">Categoría de riesgo para la salud recreativa de la EPA de los EE. UU basado en la NMP y el Intervalo de confianza Superior 95&#37; </string>
 
-    <string name="collect_10ml_water_sample">Recoger <b>10 ml </b>de muestra de agua con Thio Bag (o botella).</string>
+    <string name="collect_10ml_water_sample">Recoger <b>10 ml </b>de muestra de agua con la bolsa Thio (o botella).</string>
     <string name="avoid_touching">Evite tocar el interior de la botella, la tapa o la bolsa Thio.</string>
     <string name="open_growth_medium">Abra la bolsita de medio de crecimiento y agrega el polvo o la pastilla de prueba directamente a la muestra de la bolsita</string>
-    <string name="dissolve_medium_in_sample_a"><b>Polvo de medición:</b>Disuelva el polvo en la muestra durante unos minutos. Agite suavemente la bolsa varias veces hasta que el polvo se haya disuelto por completo. </string>
+    <string name="dissolve_medium_in_sample_a"><b>Polvo de medición:</b> Disuelva el polvo en la muestra durante unos minutos. Agite suavemente la bolsa varias veces hasta que el polvo se haya disuelto por completo. </string>
     <string name="dissolve_medium_in_sample_b"><b>Pastilla de prueba:</b> Disuelva el medio en la muestra para 10 – 12 minutos máximo haciendo girar periódicamente la bolsa o apretando el botón de prueba en la bolsa Thio para promover la liberación del medio de su portador de plástico</string>
     <string name="when_medium_dissolved">Cuando el medio está completamente disuelto, la muestra de agua se vuelve amarilla.</string>
     <string name="leave_test_bud_carrier">Deje el portador de la pastilla de prueba en la bolsa Thio o botella mientras lo vierte.</string>
     <string name="prepare_area_put_on_gloves">Prepare el área de trabajo y póngase guantes de plástico.</string>
     <string name="collect_100ml_water_sample">Recoger <b>100 ml </b> de muestra de agua con botella o bolsa de Thio.</string>
     <string name="label_compartment_bag">Etiquete la bolsa y / o pegue la etiqueta del código de barras en la bolsa del compartimiento.</string>
-    <string name="tear_perforated_seam">Rasgar la costura perforada en la parte superior de la bolsa.</string>
+    <string name="tear_perforated_seam">Rasgue la costura perforada en la parte superior de la bolsa.</string>
     <string name="rub_sides_of_compartment">Frote los lados en la parte superior de cada compartimiento para abrir la bolsa, use las lengüetas blancas en la parte superior de la bolsa para mantener la bolsa abierta mientras se vierte.</string>
     <string name="slowly_pour_sample_into_bag">Vierta lentamente la muestra en la bolsa mientras la inclina y aprieta suavemente para distribuir la muestra entre los cinco compartimentos.</string>
-    <string name="fill_evenly_across_bag"><b>Llene uniformemente a través de la bolsa hasta la línea de llenado negra</b>.</string>
+    <string name="fill_evenly_across_bag"><b>Llene la bolsa de forma uniforme hasta la línea de llenado negra</b>.</string>
     <string name="attach_seal_clip">Coloque el clip de sellado en la bolsa por encima de la línea de llenado y por debajo de las aberturas superiores del compartimiento.</string>
     <string name="snap_rod_shaped">Coloque la parte con forma de cilindro-clip del otro lado de la bolsa en forma de U para bloquearla en su lugar.</string>
     <string name="roll_fold_bag">Después de colocar el clip, la bolsa se puede mantener vertical u horizontal.</string>
@@ -78,12 +78,12 @@
     <string name="temperature_35_37">35 – 37°C</string>
     <string name="temperature_31_34">31 – 34°C</string>
     <string name="temperature_25_30">25 – 30°C</string>
-    <string name="below25Degrees">Por debajo de 25 ºC</string>
+    <string name="below25Degrees">Por debajo de 25ºC</string>
     <string name="hours_20">20 horas</string>
     <string name="hours_24_30">24 – 30 horas</string>
     <string name="hours_40_48">40 – 48 horas</string>
-    <string name="incubate_in_portable">Incubar en una incubadora portátil, preferiblemente a 35 – 37 ° C durante 48 horas o colocar en o cerca de otra fuente de calor.</string>
-    <string name="in_addition_to_portable">Además de las incubadoras portátiles, las muestras se pueden mantener a una temperatura de 25 ° C a 44.5 ° C usando: bolsas / refrigeradores térmicos; proximidad a fuentes de calor para humanos y alimentos; incubadora de aves o reptiles, o cerca de serpentines de refrigeradores o respiraderos de calefacción de habitaciones.</string>
+    <string name="incubate_in_portable">Incubar en una incubadora portátil, preferiblemente a 35 – 37°C durante 48 horas o colocar en o cerca de otra fuente de calor.</string>
+    <string name="in_addition_to_portable">Además de las incubadoras portátiles, las muestras se pueden mantener a una temperatura de 25°C a 44.5°C usando: bolsas / refrigeradores térmicos; proximidad a fuentes de calor para humanos y alimentos; incubadora de aves o reptiles, o cerca de serpentines de refrigeradores o respiraderos de calefacción de habitaciones.</string>
 
     <string name="dissolve_medium_in_sample_tc">Disuelva el medio en la muestra durante unos minutos como máximo girando periódicamente la bolsa Thio</string>
     <string name="take_photo_incubated_tc">Haga una foto de la muestra incubada mientras ilumina con una luz UV (365 nm) la bolsa del compartimento en un ambiente oscuro.</string>

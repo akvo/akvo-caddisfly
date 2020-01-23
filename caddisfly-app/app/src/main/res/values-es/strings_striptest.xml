@@ -22,7 +22,7 @@
     <string name="brightness">El brillo</string>
     <string name="measure_instruction">Coloque la tira en el área negra con manchas de color a la izquierda. Sostenga la cámara sobre la tarjeta de color hasta que se complete la medición.</string>
     <string name="imageQuality">Qualidad de la imagen</string>
-    <string name="prepare_test">Prepararse para la prueba</string>
+    <string name="prepare_test">Prepárese para la prueba</string>
     <string name="taking_photo">Tomando foto</string>
     <string name="waiting">Esperando</string>
     <string name="success_quality_checks">¡Éxito! Control de calidad certificado</string>
@@ -45,19 +45,19 @@
 
     <!--Water-->
     <string name="place_strip_clr_hg_1"><b>Coloque una tira de prueba limpia debajo de la tira de prueba usada para que el parche tenga un fondo blanco.</b></string>
-    <string name="place_strip_clr_hg_2">Coloque las tiras apiladas con el parche hacia <b>la izquierda</b>en el área negra de la Tarjeta de referencia de color y presione <b>Empezar</b>.</string>
+    <string name="place_strip_clr_hg_2">Coloque las tiras apiladas con el parche hacia <b>la izquierda</b> en el área negra de la Tarjeta de Referencia de Color y presione <b>Comenzar</b>.</string>
     <string name="as_safety_1"><b>PELIGRO:</b> Se generan gases de hidrógeno y arsina durante la prueba. Trabaje en un área bien ventilada, lejos de llamas abiertas y otras fuentes de ignición.</string>
-    <string name="as_safety_2">Revise las hojas de datos de seguridad del material para obtener información sobre manipulación, almacenamiento y eliminación segura. Desechar de acuerdo con las regulaciones locales. Elimine los desechos de acuerdo con la legislación ambiental.</string>
+    <string name="as_safety_2">Revise las hojas de datos de seguridad del material para obtener información sobre la manipulación, el almacenamiento y la eliminación segura. Desechar de acuerdo con las regulaciones locales. Elimine los desechos de acuerdo con la legislación ambiental.</string>
     <string name="as_ins_1a">Inserte una tira reactiva en la tapa para que la almohadilla cubra completamente la pequeña abertura.</string>
     <string name="as_ins_1b">Cierre la tapa y presione para asegurarlo.</string>
     <string name="as_ins_7a">Llene el vial de medición cuadrado hasta la parte superior con la muestra (9,6 ml).</string>
-    <string name="as_ins_7b">Verter la muestra en la botella de reacción.</string>
+    <string name="as_ins_7b">Vierta la muestra en la botella de reacción.</string>
     <string name="as_ins_3a">Agregue un <b>Reactivo #1</b>.</string>
     <string name="as_ins_3b">Si se detecta un olor a huevo podrido después de agregar el reactivo n. ° 1, el sulfuro está presente a un nivel que representa una interferencia, <b>[a topic=sulfide]haga clic aquí[/a]</b> para ver cómo eliminar el sulfuro antes de continuar.</string>
-    <string name="as_ins_3c">Agregue un <b>Reactivo #2</b> almohada en polvo a la muestra.</string>
+    <string name="as_ins_3c">Agregue una almohada en polvo de <b>Reactivo #2</b>  a la muestra.</string>
     <string name="as_ins_4a">Fije inmediatamente la tapa a la botella de reacción.</string>
-    <string name="as_ins_4b">Remueva sin parar durante 60 segundos. <b>No agite ni invierta ni permita que la muestra llegue a la tira.</b></string>
-    <string name="as_ins_5">Espere 20 minutos. Remueve dos veces durante el período de reacción.</string>
+    <string name="as_ins_4b">Haga girar sin parar durante 60 segundos. <b>No agite ni invierta ni permita que la muestra llegue a la tira.</b></string>
+    <string name="as_ins_5">Espere 20 minutos. Haga girar dos veces durante el período de reacción.</string>
     <string name="as_ins_6">Retire la tira reactiva de la tapa e inmediatamente coloque la tira reactiva hacia la <b>isquierda</b> en la Tarjeta de referencia de color y presione <b>Empezar</b>.</string>
     <string name="fill_half_with_sample">Llene la <b>MITAD</b> del vial con agua de muestra.</string>
     <string name="collect_water_sample">Recoja la muestra de agua.</string>
@@ -83,7 +83,7 @@
     <string name="swirl_and_mix">Remueva la muestra para mezclar el reactivo.</string>
     <string name="dip_sample_5s">Sumerja la tira en la muestra durante <b>5 segundos</b> y retírela.</string>
     <string name="shake_excess_water_off">Agite para eliminar el exceso de agua de la tira reactiva.</string>
-    <string name="place_strip_clr">Coloque la tira reactiva con el parche hacia la <b>izquierda</b> en el área negra de la Tarjeta de referencia de color y presione <b>Empezar</b>.</string>
+    <string name="place_strip_clr">Coloque la tira reactiva con el parche hacia la <b>izquierda</b> en el área negra de la Tarjeta de Referencia de Color y presione <b>Comenzar</b>.</string>
     <string name="add_5_drops_po4_1">Añada a la muestra <b>5 gotas</b> de <b>Reagente PO4-1</b>.</string>
     <string name="place_smaller_container">Coloque el recipiente más pequeño en el estante provisto.</string>
     <string name="add_6_drops_po4_2">Añada <b>6 gotas</b> de <b>Reagente PO4-2 </b> al contenedor más pequeño.</string>
@@ -92,7 +92,7 @@
     <string name="dip_sample_1s">Sumerja la tira reactiva en la muestra durante <b>1 segundo</b> y retírela.</string>
     <string name="as_ins_2">Llene la botella de reacción con muestra hasta la línea de llenado (50 ml).</string>
 
-    <string name="as_remove_sulfide">Complete los siguientes pasos para eliminar el sulfuro antes de comenzar el procedimiento de prueba:</string>
+    <string name="as_remove_sulfide">Complete los siguientes pasos para eliminar el sulfuro antes de empezar la prueba:</string>
     <string name="as_remove_sulfide_1">Rasgue un pequeño trozo de algodón y forme una bola del tamaño de un guisante.</string>
     <string name="as_remove_sulfide_2">Sature el algodón con unas gotas de acetato de plomo. Exprima el exceso de líquido del algodón, dejándolo húmedo.</string>
     <string name="as_remove_sulfide_3">Presione la bola de algodón saturado en la pequeña abertura de la tapa de la botella de reacción desde la parte inferior. Asegúrese de que el algodón esté firmemente en su lugar y que quede un espacio entre el algodón y la superficie superior de la tapa.</string>
@@ -101,7 +101,7 @@
     <string name="as_remove_sulfide_wear_gloves">Siempre use guantes o lávese bien las manos después de manipular el acetato de plomo.</string>
 
     <!--Soil-->
-    <string name="collect_mehlich_extraction_sample">Recoger muestra de extracción de Mehlich</string>
+    <string name="collect_mehlich_extraction_sample">Recoja la muestra de extracción de Mehlich</string>
     <string name="collect_5ml_mehlich_sample">Recoja <b>5 ml </b>de muestra de extracción de Mehlich usando la botella provista.</string>
     <string name="collect_water_extraction_sample">Recoja la muestra de extracción de agua.</string>
     <string name="dip_strip_15_seconds_and_remove">Sumerja la tira en la muestra durante <b>15 segundos</b> y retírela.</string>
