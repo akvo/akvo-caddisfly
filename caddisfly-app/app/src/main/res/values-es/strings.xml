@@ -24,7 +24,7 @@
     <string name="result">Resultado</string>
     <string name="language">Idioma</string>
     <string name="notSupported">No soportado</string>
-    <string name="stage_one"><b>Etapa 1 </b></string>
+    <string name="stage_one"><b>Etapa 1: </b></string>
     <string name="stage_two"><b>Etapa 2:</b> </string>
     <string name="us_cm">μS/cm</string>
     <string name="ms_cm">ms/cm</string>
