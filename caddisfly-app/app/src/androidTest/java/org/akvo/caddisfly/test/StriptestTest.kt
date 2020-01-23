@@ -224,7 +224,7 @@ class StriptestTest : BaseTest() {
 
         TestHelper.clickStartButton()
 
-        val patchAvailable = isStripPatchAvailable("Soil Nitrogen")
+        val patchAvailable = isStripPatchAvailable("Soil - Nitrogen")
 
         if (patchAvailable) {
 

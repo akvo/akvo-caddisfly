@@ -61,7 +61,7 @@ fun isStripPatchAvailable(name: String = "."): Boolean {
     return file.exists()
 }
 
-fun skipOpeningExternalApp(model: String = ""): Boolean {
+fun skipOpeningExternalApp(model: Int = Build.VERSION_CODES.LOLLIPOP): Boolean {
 
     try {
         val testLabSetting: String = Settings.System.getString(
@@ -73,7 +73,7 @@ fun skipOpeningExternalApp(model: String = ""): Boolean {
     } catch (e: IllegalStateException) {
     }
 
-    return model.contains("ASUS_Z007")
+    return model < Build.VERSION_CODES.LOLLIPOP
 }
 
 object TestHelper {

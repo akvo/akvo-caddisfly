@@ -165,7 +165,7 @@ dependencies {
     implementation 'com.github.felHR85:UsbSerial:4.5.1'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-core:17.2.2'
 
     // Dagger
     implementation 'com.google.dagger:dagger:2.25.3'

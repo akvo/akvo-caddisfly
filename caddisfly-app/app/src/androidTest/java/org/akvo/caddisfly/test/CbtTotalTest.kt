@@ -79,7 +79,7 @@ class CbtTotalTest : BaseTest() {
 
         sleep(2000)
 
-        if (!skipOpeningExternalApp(Build.MODEL)) {
+        if (!skipOpeningExternalApp(Build.VERSION.SDK_INT)) {
             onView(allOf(withId(R.id.button_next), withText(R.string.next))).perform(click())
             onView(allOf(withId(R.id.button_ok), withText(R.string.go_to_external_app))).perform(click())
             sleep(2000)
@@ -226,7 +226,7 @@ class CbtTotalTest : BaseTest() {
 
         sleep(2000)
 
-        if (!skipOpeningExternalApp(Build.MODEL)) {
+        if (!skipOpeningExternalApp(Build.VERSION.SDK_INT)) {
             onView(allOf(withId(R.id.button_next), withText(R.string.next))).perform(click())
             onView(allOf(withId(R.id.button_ok), withText(R.string.go_to_external_app))).perform(click())
             sleep(2000)

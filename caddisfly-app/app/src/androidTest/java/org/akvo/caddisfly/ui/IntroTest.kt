@@ -149,7 +149,7 @@ class IntroTest {
 
         onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 
-        if (!skipOpeningExternalApp(Build.MODEL)) {
+        if (!skipOpeningExternalApp(Build.VERSION.SDK_INT)) {
 
             onView(withText(R.string.go_to_external_app)).perform(click())
 
@@ -182,7 +182,7 @@ class IntroTest {
 
         onView(withText(R.string.go_to_external_app)).check(matches(isDisplayed()))
 
-        if (!skipOpeningExternalApp(Build.MODEL)) {
+        if (!skipOpeningExternalApp(Build.VERSION.SDK_INT)) {
 
             onView(withText(R.string.go_to_external_app)).perform(click())
 
