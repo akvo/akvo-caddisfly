@@ -60,7 +60,7 @@ import org.junit.runner.RunWith
 @RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class TesterInstructions : BaseTest() {
+class TesterInstructionsTest : BaseTest() {
 
     private val jsArrayString = StringBuilder()
 
@@ -87,7 +87,7 @@ class TesterInstructions : BaseTest() {
     }
 
     @Test
-    fun testInstructionsSwatchSelect() {
+    fun tester_Survey_All() {
 
         goToMainScreen()
 
@@ -184,27 +184,5 @@ class TesterInstructions : BaseTest() {
 
         }
         return pages
-    }
-
-    @Test
-    fun instructionTest() {
-
-        goToMainScreen()
-
-        gotoSurveyForm()
-
-        nextSurveyPage("Meter")
-
-        clickExternalSourceButton(0)
-
-        sleep(1000)
-
-        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click())
-
-        onView(withText(R.string.sd_on)).check(matches(isDisplayed()))
-
-        onView(withText(R.string.sd_50_dip_sample_1)).check(matches(isDisplayed()))
-
-        mActivityTestRule.finishActivity()
     }
 }

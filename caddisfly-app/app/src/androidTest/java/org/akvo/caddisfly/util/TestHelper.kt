@@ -25,12 +25,14 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Environment
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
@@ -50,6 +52,7 @@ import org.akvo.caddisfly.helper.FileType
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
+import org.junit.Assert
 import timber.log.Timber
 import java.io.File
 import java.util.*
@@ -61,6 +64,10 @@ fun isStripPatchAvailable(name: String = "."): Boolean {
     return file.exists()
 }
 
+/**
+ * Skip opening external Survey if the tests are running in Firebase Test Lab
+ * or if the phone OS is too old
+ */
 fun skipOpeningExternalApp(model: Int = Build.VERSION_CODES.LOLLIPOP): Boolean {
 
     try {
@@ -372,5 +379,12 @@ object TestHelper {
     fun clickSubmitResultButton() {
         onView(allOf(withId(R.id.buttonSubmitResult), withText(R.string.submitResult), isDisplayed()))
                 .perform(click())
+    }
+
+    fun assertBackgroundColor(view: Int, color: Int) {
+        val bar = currentActivity.findViewById<View>(view)
+        val actualColor = (bar.background as ColorDrawable).color
+        val expectedColor = ContextCompat.getColor(currentActivity, color)
+        Assert.assertEquals(actualColor, expectedColor)
     }
 }

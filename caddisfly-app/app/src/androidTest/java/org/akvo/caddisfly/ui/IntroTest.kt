@@ -57,7 +57,7 @@ class IntroTest {
     }
 
     @Test
-    fun introTest() {
+    fun app_IntroTest() {
 
         val goToTest = getString(R.string.goToTest)
 
@@ -170,7 +170,7 @@ class IntroTest {
     }
 
     @Test
-    fun launchExternalApp() {
+    fun app_LaunchExternalApp() {
 
         goToMainScreen()
 

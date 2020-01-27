@@ -28,7 +28,7 @@ import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
-class NavigationTest {
+class AppNavigationTest {
 
     companion object {
         @JvmStatic
@@ -51,7 +51,7 @@ class NavigationTest {
     }
 
     @Test
-    fun navigationTest() {
+    fun app_NavigationTest() {
 
         onView(withId(R.id.button_info)).perform(click())
 

@@ -62,7 +62,7 @@ import kotlin.math.max
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class StriptestInternal {
+class StriptestTest {
 
     @Rule
     @JvmField
@@ -101,7 +101,7 @@ class StriptestInternal {
     }
 
     @Test
-    fun testInstructionsAllStripTests() {
+    fun striptest_All() {
 
         val testConfigRepository = TestConfigRepository()
         val testList = testConfigRepository.getTests(TestType.STRIP_TEST)
@@ -229,6 +229,8 @@ class StriptestInternal {
                 if ("ac33b44f9992, 32d9b8f4aecf".contains(id)) {
                     try {
                         if (pages == 5) {
+
+                            // todo: Click location should be based on screen resolution?
                             when (BuildConfig.TEST_LANGUAGE) {
                                 "en" -> {
                                     mDevice.click(350, 390)

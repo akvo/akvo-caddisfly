@@ -61,7 +61,7 @@ import java.util.*
 
 @RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
-class BluetoothTest : BaseTest() {
+class MD610Test : BaseTest() {
 
     companion object {
         @JvmStatic
@@ -91,7 +91,7 @@ class BluetoothTest : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun testResultData() {
+    fun md610_Survey_CalciumHardness() {
 
         activateTestMode()
 
@@ -152,7 +152,7 @@ class BluetoothTest : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun bluetoothTest() {
+    fun md610_Survey_Fluoride() {
 
         activateTestMode()
 
@@ -297,6 +297,5 @@ class BluetoothTest : BaseTest() {
         assertNotNull(mDevice.findObject(By.text("1. Fluoride")))
 
         assertNotNull(mDevice.findObject(By.text("Fluoride: >2 mg/l")))
-
     }
 }

@@ -63,7 +63,7 @@ import org.junit.runner.RunWith
 @RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class ManualTest : BaseTest() {
+class MeterTest : BaseTest() {
 
     companion object {
         @JvmStatic
@@ -109,7 +109,7 @@ class ManualTest : BaseTest() {
     }
 
     @Test
-    fun runManualTurbidityTest() {
+    fun meter_Survey_DelAgua_Turbidity() {
 
         goToMainScreen()
 
@@ -199,7 +199,7 @@ class ManualTest : BaseTest() {
     }
 
     @Test
-    fun runManualPhTest() {
+    fun meter_Survey_SD50_pH() {
 
         goToMainScreen()
 
@@ -305,7 +305,7 @@ class ManualTest : BaseTest() {
     }
 
     @Test
-    fun runManualEcTest() {
+    fun meter_Survey_SD70_EC1() {
 
         goToMainScreen()
 
@@ -442,7 +442,7 @@ class ManualTest : BaseTest() {
     }
 
     @Test
-    fun runManualEcTest2() {
+    fun meter_Survey_SD70_EC2() {
 
         gotoSurveyForm()
 
@@ -498,5 +498,27 @@ class ManualTest : BaseTest() {
         mDevice.pressBack()
 
         mDevice.pressBack()
+    }
+
+    @Test
+    fun meter_Survey_SD50_pH_Instructions() {
+
+        goToMainScreen()
+
+        gotoSurveyForm()
+
+        nextSurveyPage("Meter")
+
+        clickExternalSourceButton(0)
+
+        sleep(1000)
+
+        onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click())
+
+        onView(withText(R.string.sd_on)).check(matches(isDisplayed()))
+
+        onView(withText(R.string.sd_50_dip_sample_1)).check(matches(isDisplayed()))
+
+        mIntentsRule.finishActivity()
     }
 }

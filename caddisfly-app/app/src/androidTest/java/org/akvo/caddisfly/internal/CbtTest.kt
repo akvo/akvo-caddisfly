@@ -60,7 +60,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class CbtInternal {
+class CbtTest {
 
     companion object {
         @JvmStatic
@@ -78,7 +78,6 @@ class CbtInternal {
             GrantPermissionRule.grant(
                     "android.permission.CAMERA",
                     "android.permission.WRITE_EXTERNAL_STORAGE")
-
 
     private var scale: Float = 0.toFloat()
 
@@ -99,30 +98,27 @@ class CbtInternal {
         mActivityTestRule.finishActivity()
     }
 
-
     @Test
-    fun testCbt() {
-        cbtInstructions(Constants.CBT_ID, 0)
-    }
-
-
-    @Test
-    fun testCbtDilution() {
-        cbtInstructions(Constants.CBT_ID_2, 1)
-    }
-
-
-    @Test
-    fun testCbtTotal() {
-        cbtInstructions2(Constants.CBT_ID_3, 0)
+    fun cbt_Test() {
+        runCbtTest(Constants.CBT_ID, 0)
     }
 
     @Test
-    fun testCbtTotalDilution() {
-        cbtInstructions2(Constants.CBT_ID_4, 1)
+    fun cbt_DilutionTest() {
+        runCbtTest(Constants.CBT_ID_2, 1)
     }
 
-    private fun cbtInstructions(id: String, buttonIndex: Int) {
+    @Test
+    fun cbt_TC_Test() {
+        runCbtTotalColiformTest(Constants.CBT_ID_3, 0)
+    }
+
+    @Test
+    fun cbt_TC_DilutionTest() {
+        runCbtTotalColiformTest(Constants.CBT_ID_4, 1)
+    }
+
+    private fun runCbtTest(id: String, buttonIndex: Int) {
 
         val intent = Intent()
         if (skipOpeningExternalApp()) {
@@ -365,7 +361,7 @@ class CbtInternal {
         TestHelper.clickSubmitButton()
     }
 
-    private fun cbtInstructions2(id: String, buttonIndex: Int) {
+    private fun runCbtTotalColiformTest(id: String, buttonIndex: Int) {
 
         val intent = Intent()
         if (skipOpeningExternalApp()) {
@@ -631,7 +627,7 @@ class CbtInternal {
 
 
     @Test
-    fun testCbtWithoutSurvey() {
+    fun cbt_Test2() {
 
         val testConfigRepository = TestConfigRepository()
 
@@ -642,10 +638,6 @@ class CbtInternal {
 
             val uuid = testList[i].uuid
 
-//            val id = uuid.substring(uuid.lastIndexOf("-") + 1)
-
-            //            if (("9991fb84dd90 606b771e0ffe 6060e4dbe59d").contains(id))
-            //
             run {
                 val intent = Intent()
                 intent.type = "text/plain"

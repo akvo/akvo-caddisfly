@@ -72,7 +72,7 @@ class DiagnosticTest {
     }
 
     @Test
-    fun testDiagnosticMode() {
+    fun app_DiagnosticMode() {
 
         onView(withId(R.id.button_info)).perform(click())
 
@@ -250,5 +250,12 @@ class DiagnosticTest {
         clearPreferences(mActivityRule)
 
         getInstrumentation().waitForIdleSync()
+
+        mActivityRule.finishActivity()
+
+        mDevice.pressBack()
+
+        mDevice.pressBack()
+
     }
 }

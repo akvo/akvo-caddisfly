@@ -31,7 +31,7 @@ import org.junit.Test
 
 
 @RequiresExternalApp
-class StriptestTest : BaseTest() {
+class StriptestSurveyTest : BaseTest() {
 
     companion object {
 
@@ -62,31 +62,31 @@ class StriptestTest : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun startStriptest() {
+    fun striptest_Survey_5in1() {
         test5in1()
     }
 
     @Test
     @RequiresDevice
-    fun startSoilNitrogenTest() {
+    fun striptest_Survey_Nitrogen() {
         testSoilNitrogen()
     }
 
     @Test
     @RequiresDevice
-    fun pHMerckTest() {
+    fun striptest_Survey_pHMerck() {
         testMerckPH()
     }
 
     @Test
     @RequiresDevice
-    fun startNitrateTest() {
+    fun striptest_Survey_Nitrate() {
         testNitrate100()
     }
 
     @Test
     @RequiresDevice
-    fun startMercuryTest() {
+    fun striptest_Survey_Mercury() {
         testMercury()
     }
 
@@ -412,7 +412,7 @@ class StriptestTest : BaseTest() {
     }
 
     @Test
-    fun instructionsTest() {
+    fun striptest_Survey_SoilPhosphorous() {
 
         gotoSurveyForm()
 
@@ -495,7 +495,7 @@ class StriptestTest : BaseTest() {
     }
 
     @Test
-    fun ironStripTestInstructions() {
+    fun striptest_Survey_WaterIron() {
 
         TestHelper.goToMainScreen()
 

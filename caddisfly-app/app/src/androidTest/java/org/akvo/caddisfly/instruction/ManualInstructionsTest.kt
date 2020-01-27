@@ -38,17 +38,19 @@ import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.TestActivity
-import org.akvo.caddisfly.util.*
+import org.akvo.caddisfly.util.BaseTest
+import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
+import org.akvo.caddisfly.util.mDevice
+import org.akvo.caddisfly.util.sleep
 import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
-class ManualInstructions : BaseTest() {
+class ManualInstructionsTest : BaseTest() {
 
     companion object {
         @JvmStatic
@@ -67,7 +69,7 @@ class ManualInstructions : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun testInstructionsManual() {
+    fun manual_AllInstructions() {
 
         val testConfigRepository = TestConfigRepository()
 

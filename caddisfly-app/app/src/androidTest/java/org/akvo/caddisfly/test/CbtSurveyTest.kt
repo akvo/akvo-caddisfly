@@ -23,12 +23,14 @@ import android.app.Activity
 import android.app.Instrumentation
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
@@ -43,6 +45,7 @@ import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.*
+import org.akvo.caddisfly.util.TestHelper.assertBackgroundColor
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
 import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
 import org.akvo.caddisfly.util.TestHelper.getString
@@ -52,6 +55,7 @@ import org.akvo.caddisfly.util.TestUtil.clickPercent
 import org.akvo.caddisfly.util.TestUtil.nextPage
 import org.akvo.caddisfly.util.TestUtil.nextSurveyPage
 import org.hamcrest.CoreMatchers.not
+import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
 import org.junit.Assert.assertNotNull
 import org.junit.Before
@@ -64,7 +68,7 @@ import org.junit.runner.RunWith
 @RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class CbtTest : BaseTest() {
+class CbtSurveyTest : BaseTest() {
 
     companion object {
         @JvmStatic
@@ -115,7 +119,7 @@ class CbtTest : BaseTest() {
     }
 
     @Test
-    fun cbtTest() {
+    fun cbt_Survey_Test() {
 
         gotoSurveyForm()
 
@@ -185,7 +189,7 @@ class CbtTest : BaseTest() {
     }
 
     @Test
-    fun cbtDilutionTest() {
+    fun cbt_Survey_DilutionTest() {
 
         gotoSurveyForm()
 
@@ -307,5 +311,152 @@ class CbtTest : BaseTest() {
         assertNotNull(mDevice.findObject(By.text("$result1: Very Unsafe ")))
         assertNotNull(mDevice.findObject(By.text("MPN: >1000 MPN/100ml")))
         assertNotNull(mDevice.findObject(By.text("$interval: 94351.0 ")))
+    }
+
+    @Test
+    fun cbt_Survey() {
+
+        sleep(2000)
+
+        if (!skipOpeningExternalApp(Build.VERSION.SDK_INT)) {
+            onView(allOf(withId(R.id.button_next), withText(R.string.next))).perform(click())
+            onView(allOf(withId(R.id.button_ok), withText(R.string.go_to_external_app))).perform(click())
+            sleep(2000)
+        }
+
+        gotoSurveyForm()
+
+        nextSurveyPage("Coliforms")
+
+        clickExternalSourceButton(0)
+
+        sleep(2000)
+
+        val materialButton = onView(
+                allOf(withId(R.id.button_phase_2), withText(R.string.submitResult),
+                        TestUtil.childAtPosition(
+                                allOf(withId(R.id.layoutPrepareSubmit),
+                                        TestUtil.childAtPosition(
+                                                withClassName(Matchers.`is`("android.widget.LinearLayout")),
+                                                2)),
+                                1),
+                        isDisplayed()))
+        materialButton.perform(click())
+
+        onView(allOf(withId(R.id.takePhoto), withText(R.string.takePhoto),
+                TestUtil.childAtPosition(
+                        TestUtil.childAtPosition(
+                                withId(R.id.viewPager),
+                                0),
+                        3),
+                isDisplayed()))
+
+        nextPage(3)
+
+        onView(withText(R.string.skip)).check(ViewAssertions.doesNotExist())
+
+        onView(withId(R.id.textResult1)).check(matches(withText("0")))
+
+        onView(withId(R.id.textUnit1)).check(matches(withText("MPN/100ml")))
+
+        assertBackgroundColor(R.id.layoutRisk, R.color.safe)
+        assertBackgroundColor(R.id.layoutRisk2, R.color.safe)
+
+        val riskText = getString(R.string.low_risk_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val lowRisk = riskText[0].trim { it <= ' ' }
+        val safe = riskText[1].trim { it <= ' ' }
+
+        onView(withId(R.id.textRisk)).check(matches(withText(lowRisk)))
+        onView(withId(R.id.textSubRisk)).check(matches(withText(safe)))
+
+        nextPage()
+
+        onView(withText(R.string.skip)).check(ViewAssertions.doesNotExist())
+
+        onView(withText(R.string.round_off_test)).check(matches(isDisplayed()))
+        onView(allOf(withId(R.id.buttonSubmit), isDisplayed())).check(matches(isDisplayed()))
+
+        TestUtil.prevPage(2)
+
+        sleep(2000)
+
+        val customShapeButton = onView(allOf(withId(R.id.compartments),
+                isDisplayed()))
+
+        customShapeButton.perform(clickPercent(0.1f, 0.5f))
+        customShapeButton.perform(clickPercent(0.3f, 0.5f))
+        customShapeButton.perform(clickPercent(0.5f, 0.5f))
+        customShapeButton.perform(clickPercent(0.7f, 0.1f))
+        customShapeButton.perform(clickPercent(0.9f, 0.1f))
+
+        sleep(1000)
+
+        nextPage()
+
+        onView(withText(R.string.skip)).check(ViewAssertions.doesNotExist())
+
+        onView(withId(R.id.textResult1)).check(matches(withText(">100")))
+        onView(withId(R.id.textUnit1)).check(matches(withText("MPN/100ml")))
+
+        val riskText2 = getString(R.string.very_high_risk_unsafe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val veryHighRisk = riskText2[0].trim { it <= ' ' }
+        val unsafe = riskText2[1].trim { it <= ' ' }
+
+        onView(withId(R.id.textRisk)).check(matches(withText(veryHighRisk)))
+        onView(withId(R.id.textSubRisk)).check(matches(withText(unsafe)))
+
+        assertBackgroundColor(R.id.layoutRisk, R.color.unsafe)
+        assertBackgroundColor(R.id.layoutRisk2, R.color.unsafe)
+
+        TestUtil.prevPage()
+
+        sleep(2000)
+
+        val button = onView(allOf(withId(R.id.compartments),
+                isDisplayed()))
+
+        button.perform(clickPercent(0.5f, 0.5f))
+        button.perform(clickPercent(0.9f, 0.1f))
+
+        sleep(1000)
+
+        nextPage()
+
+        onView(withText(R.string.skip)).check(ViewAssertions.doesNotExist())
+
+        sleep(1000)
+
+        onView(withId(R.id.textResult1)).check(matches(withText("4")))
+        onView(withId(R.id.textUnit1)).check(matches(withText("MPN/100ml")))
+
+        val riskText3 = getString(R.string.intermediate_possibly_safe)
+                .split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val intermediate = riskText3[0].trim { it <= ' ' }
+        val possiblySafe = riskText3[1].trim { it <= ' ' }
+
+        onView(withId(R.id.textRisk)).check(matches(withText(intermediate)))
+        onView(withId(R.id.textSubRisk)).check(matches(withText(possiblySafe)))
+
+        assertBackgroundColor(R.id.layoutRisk, R.color.possibly_safe)
+        assertBackgroundColor(R.id.layoutRisk2, R.color.possibly_safe)
+
+        nextPage()
+
+        onView(withText(R.string.skip)).check(ViewAssertions.doesNotExist())
+
+        sleep(5000)
+
+        val result1 = getString(R.string.health_risk_category)
+        val interval = getString(R.string.confidenceInterval)
+
+        TestHelper.clickSubmitButton()
+
+        sleep(1000)
+
+        assertNotNull(mDevice.findObject(By.text("$result1: Intermediate Risk / Possibly Safe ")))
+        assertNotNull(mDevice.findObject(By.text("MPN: 4 MPN/100ml")))
+        assertNotNull(mDevice.findObject(By.text("$interval: 10.94 ")))
     }
 }

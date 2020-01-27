@@ -44,7 +44,7 @@ class MainTest {
     var rule = ActivityTestRule(MainActivity::class.java)
 
     @Test
-    fun titleIsCorrect() {
+    fun app_TitleIsCorrect() {
         assertEquals(rule.activity.title, "Akvo Caddisfly")
 
         val textView = rule.activity.findViewById<TextView>(R.id.textToolbarTitle)
@@ -52,13 +52,13 @@ class MainTest {
     }
 
     @Test
-    fun onCreateShouldInflateTheMenu() {
+    fun app_OnCreateShouldInflateTheMenu() {
         val toolbar = rule.activity.findViewById<Toolbar>(R.id.toolbar)
         assertNull(toolbar)
     }
 
     @Test
-    fun introTest() {
+    fun app_IntroTest() {
         val button = rule.activity.findViewById<AppCompatImageButton>(R.id.button_info)
 
         button.performClick()
@@ -71,7 +71,7 @@ class MainTest {
     }
 
     @Test
-    fun introNext() {
+    fun app_IntroNext() {
         val button = rule.activity.findViewById<Button>(R.id.button_next)
         button.performClick()
 

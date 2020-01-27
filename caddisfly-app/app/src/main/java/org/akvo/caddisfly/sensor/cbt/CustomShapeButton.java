@@ -246,13 +246,17 @@ public class CustomShapeButton extends View {
     }
 
     public void setKey(String key) {
-        mKey = key;
-        String[] values = mKey.split("");
-        area1 = Integer.parseInt(values[1]);
-        area2 = Integer.parseInt(values[2]);
-        area3 = Integer.parseInt(values[3]);
-        area4 = Integer.parseInt(values[4]);
-        area5 = Integer.parseInt(values[5]);
+        try {
+            mKey = key;
+            String[] values = mKey.split("");
+            area1 = Integer.parseInt(values[1]);
+            area2 = Integer.parseInt(values[2]);
+            area3 = Integer.parseInt(values[3]);
+            area4 = Integer.parseInt(values[4]);
+            area5 = Integer.parseInt(values[5]);
+        } catch (Exception e) {
+            mKey = "00000";
+        }
     }
 
     private Paint getPaint(int value, boolean active) {

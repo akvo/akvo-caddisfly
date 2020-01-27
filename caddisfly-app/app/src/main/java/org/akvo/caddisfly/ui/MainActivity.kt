@@ -125,6 +125,11 @@ class MainActivity : AppUpdateActivity() {
             b!!.buttonOk.visibility = View.GONE
         }
         switchLayoutForDiagnosticOrUserMode()
+
+        // Setting text here as some phones not translating text
+        // Could probably be removed after review
+        b!!.buttonNext.text = getString(string.next)
+        b!!.buttonOk.text = getString(string.go_to_external_app)
     }
 
     override fun onResume() {

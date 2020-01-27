@@ -115,6 +115,7 @@
             android:contentDescription="@string/disableDiagnostics"
             android:onClick="disableDiagnosticsMode"
             android:src="@drawable/ic_revert_24dp"
+            android:visibility="gone"
             app:backgroundTint="@color/diagnostic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -67,7 +67,7 @@ class MiscTest {
     }
 
     @Test
-    fun testSoftwareNotices() {
+    fun app_SoftwareNotices() {
 
         goToMainScreen()
 

@@ -60,7 +60,7 @@ import org.junit.runner.RunWith
 
 @RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
-class CbtInstructions : BaseTest() {
+class CbtInstructionsTest : BaseTest() {
 
     private val jsArrayString = StringBuilder()
     private val listString = StringBuilder()
@@ -102,7 +102,9 @@ class CbtInstructions : BaseTest() {
     }
 
     @Test
-    fun testInstructionsCbt() {
+    fun cbt_Survey_All() {
+
+        mDevice.pressBack()
 
         val testConfigRepository = TestConfigRepository()
         var buttonIndex = 0

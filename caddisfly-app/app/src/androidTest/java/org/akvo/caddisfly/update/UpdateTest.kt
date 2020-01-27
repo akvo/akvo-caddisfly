@@ -58,7 +58,7 @@ class UpdateTest {
     }
 
     @Test
-    fun testFlexibleUpdate_Completes() {
+    fun app_Update_Completes() {
         fakeAppUpdateManager.partiallyAllowedUpdateType = AppUpdateType.FLEXIBLE
         fakeAppUpdateManager.setUpdateAvailable(BuildConfig.VERSION_CODE + 1)
 
@@ -93,7 +93,7 @@ class UpdateTest {
     }
 
     @Test
-    fun testFlexibleUpdate_DownloadFails() {
+    fun app_Update_DownloadFails() {
         fakeAppUpdateManager.partiallyAllowedUpdateType = AppUpdateType.FLEXIBLE
         fakeAppUpdateManager.setUpdateAvailable(BuildConfig.VERSION_CODE + 1)
 

@@ -58,7 +58,7 @@ import org.junit.runner.RunWith
 @RequiresExternalApp
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class StriptestInstructions : BaseTest() {
+class StriptestInstructionsTest : BaseTest() {
 
     companion object {
         @JvmStatic
@@ -91,7 +91,7 @@ class StriptestInstructions : BaseTest() {
     }
 
     @Test
-    fun instructionsTest() {
+    fun striptest_Survey_Water_pH() {
 
         gotoSurveyForm()
 

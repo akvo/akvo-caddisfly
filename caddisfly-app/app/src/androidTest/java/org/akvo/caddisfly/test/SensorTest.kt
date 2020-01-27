@@ -19,6 +19,7 @@
 
 package org.akvo.caddisfly.test
 
+import android.content.Intent
 import android.os.SystemClock
 import android.view.View
 import androidx.test.espresso.Espresso
@@ -32,6 +33,9 @@ import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.uiautomator.UiDevice
 import org.akvo.caddisfly.R
+import org.akvo.caddisfly.common.TestConstants
+import org.akvo.caddisfly.model.TestType
+import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.util.*
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
@@ -42,10 +46,7 @@ import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.not
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 
 @RequiresExternalApp
@@ -75,7 +76,7 @@ class SensorTest : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun eCTest() {
+    fun sensor_Survey_SoilEC() {
 
         gotoSurveyForm()
 
@@ -175,7 +176,7 @@ class SensorTest : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun testSensorFromSurvey() {
+    fun sensor_Survey_WaterEC() {
 
         gotoSurveyForm()
 
@@ -212,7 +213,7 @@ class SensorTest : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun surveyQuestions() {
+    fun sensor_Survey_SoilMoisture() {
 
         goToMainScreen()
 
@@ -278,7 +279,7 @@ class SensorTest : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun testEC() {
+    fun sensor_Survey_WaterEC_Waiting() {
 
         gotoSurveyForm()
 
@@ -304,5 +305,51 @@ class SensorTest : BaseTest() {
 
         Espresso.pressBack()
 
+    }
+
+    @Test
+    @RequiresDevice
+    fun sensor_Survey_All() {
+
+        mActivityRule.launchActivity(Intent())
+        loadData(mActivityRule.activity, org.akvo.caddisfly.BuildConfig.TEST_LANGUAGE)
+
+        val testConfigRepository = TestConfigRepository()
+        val testList = testConfigRepository.getTests(TestType.SENSOR)
+
+        for (i in 0 until TestConstants.SENSOR_TESTS_COUNT) {
+
+            val testInfo = testList!![i]
+            Assert.assertEquals(testInfo.subtype, TestType.SENSOR)
+
+            var id = testInfo.uuid
+            id = id.substring(id.lastIndexOf("-") + 1)
+
+            navigateToTest(i, id)
+
+            onView(withId(R.id.imageBrand)).check(matches(DrawableMatcher.hasDrawable()))
+
+            onView(withText(testInfo.name)).check(matches(isDisplayed()))
+
+            mDevice.pressBack()
+        }
+        mActivityRule.finishActivity()
+    }
+
+    private fun navigateToTest(index: Int, id: String) {
+
+        gotoSurveyForm()
+
+        TestUtil.nextSurveyPage("Sensor")
+
+        clickExternalSourceButton(index)
+
+        mDevice.waitForIdle()
+
+        sleep(1000)
+
+        TestHelper.takeScreenshot(id, -1)
+
+        mDevice.waitForIdle()
     }
 }

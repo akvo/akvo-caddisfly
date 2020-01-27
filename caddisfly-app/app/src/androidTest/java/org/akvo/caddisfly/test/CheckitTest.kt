@@ -113,7 +113,7 @@ class CheckitTest : BaseTest() {
     }
 
     @Test
-    fun runManualCheckitTest() {
+    fun checkIt_Survey_Chlorine() {
 
         gotoSurveyForm()
 

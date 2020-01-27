@@ -34,17 +34,16 @@ import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConstants.EXTERNAL_APP_ACTION
 import org.akvo.caddisfly.common.SensorConstants
-import org.akvo.caddisfly.common.TestConstants
 import org.akvo.caddisfly.model.TestType
 import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.ui.TestActivity
-import org.akvo.caddisfly.util.*
-import org.akvo.caddisfly.util.DrawableMatcher.Companion.hasDrawable
+import org.akvo.caddisfly.util.BaseTest
+import org.akvo.caddisfly.util.TestHelper
 import org.akvo.caddisfly.util.TestHelper.clearPreferences
-import org.akvo.caddisfly.util.TestHelper.clickExternalSourceButton
-import org.akvo.caddisfly.util.TestHelper.gotoSurveyForm
 import org.akvo.caddisfly.util.TestHelper.loadData
 import org.akvo.caddisfly.util.TestHelper.takeScreenshot
+import org.akvo.caddisfly.util.mDevice
+import org.akvo.caddisfly.util.sleep
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
@@ -53,9 +52,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 
-@RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
-class SensorInstructions : BaseTest() {
+class SensorInstructionsTest : BaseTest() {
     companion object {
         @JvmStatic
         @BeforeClass
@@ -81,53 +79,7 @@ class SensorInstructions : BaseTest() {
 
     @Test
     @RequiresDevice
-    fun testInstructionsAllSensors() {
-
-        mActivityTestRule.launchActivity(Intent())
-        loadData(mActivityTestRule.activity, BuildConfig.TEST_LANGUAGE)
-
-        val testConfigRepository = TestConfigRepository()
-        val testList = testConfigRepository.getTests(TestType.SENSOR)
-
-        for (i in 0 until TestConstants.SENSOR_TESTS_COUNT) {
-
-            val testInfo = testList!![i]
-            assertEquals(testInfo.subtype, TestType.SENSOR)
-
-            var id = testInfo.uuid
-            id = id.substring(id.lastIndexOf("-") + 1)
-
-            navigateToTest(i, id)
-
-            onView(withId(R.id.imageBrand)).check(matches(hasDrawable()))
-
-            onView(withText(testInfo.name)).check(matches(isDisplayed()))
-
-            mDevice.pressBack()
-        }
-        mActivityTestRule.finishActivity()
-    }
-
-    private fun navigateToTest(index: Int, id: String) {
-
-        gotoSurveyForm()
-
-        TestUtil.nextSurveyPage("Sensor")
-
-        clickExternalSourceButton(index)
-
-        mDevice.waitForIdle()
-
-        sleep(1000)
-
-        takeScreenshot(id, -1)
-
-        mDevice.waitForIdle()
-    }
-
-    @Test
-    @RequiresDevice
-    fun testInstructionsAllManualColorSelect() {
+    fun tester_AllInstructions() {
 
         val testConfigRepository = TestConfigRepository()
         val testList = testConfigRepository.getTests(TestType.MANUAL_COLOR_SELECT)
@@ -157,8 +109,7 @@ class SensorInstructions : BaseTest() {
     }
 
     @Test
-    @RequiresDevice
-    fun testInstructionsAllManualColorSelect2() {
+    fun tester_AllInstructions2() {
 
         val testConfigRepository = TestConfigRepository()
         val testList = testConfigRepository.getTests(TestType.MANUAL_COLOR_SELECT)
@@ -213,7 +164,6 @@ class SensorInstructions : BaseTest() {
                 pressBack()
                 break
             }
-
         }
     }
 }

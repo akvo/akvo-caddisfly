@@ -18,8 +18,6 @@
  */
 package org.akvo.caddisfly.ui
 
-import android.app.Activity
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.TextView
@@ -34,14 +32,14 @@ import com.google.android.play.core.tasks.OnSuccessListener
 import dagger.android.AndroidInjection
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.preference.AppPreferences
-import timber.log.Timber
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
 private const val FLEXIBLE_UPDATE_REQUEST_CODE = 1200
 
 /**
- * The base activity with common functions.
+ * The base activity for activities where app update has to be checked
+ * based on sample: https://github.com/malvinstn/FakeAppUpdateManagerSample
  */
 abstract class AppUpdateActivity : BaseActivity() {
 
@@ -139,14 +137,14 @@ abstract class AppUpdateActivity : BaseActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FLEXIBLE_UPDATE_REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_CANCELED) {
-                Timber.e("Update cancelled")
-            }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == FLEXIBLE_UPDATE_REQUEST_CODE) {
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//               //Capture update cancelled analytics here
+//            }
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

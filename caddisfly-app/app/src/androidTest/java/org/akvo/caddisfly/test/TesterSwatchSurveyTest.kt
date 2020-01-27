@@ -47,7 +47,6 @@ import org.akvo.caddisfly.util.TestUtil.prevPage
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers.allOf
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
@@ -57,7 +56,7 @@ import org.junit.runner.RunWith
 
 @RequiresExternalApp
 @RunWith(AndroidJUnit4::class)
-class SwatchSelectTest : BaseTest() {
+class TesterSwatchSurveyTest : BaseTest() {
 
     private var scale: Float = 0.toFloat()
 
@@ -85,7 +84,7 @@ class SwatchSelectTest : BaseTest() {
 
 
     @Test
-    fun runSwatchSelectCancelLR() {
+    fun tester_Survey_Chlorine_pH_LowRange_Cancel() {
 
         gotoSurveyForm()
 
@@ -125,12 +124,10 @@ class SwatchSelectTest : BaseTest() {
                 withParent(withId(R.id.toolbar)),
                 isDisplayed())).perform(click())
 
-        assertNull(mDevice.findObject(By.text("Electrical Conductivity: 20000.0 μS/cm")))
-
     }
 
     @Test
-    fun runSwatchSelectLR() {
+    fun tester_Survey_Chlorine_pH_LowRange() {
 
         gotoSurveyForm()
 
@@ -369,7 +366,7 @@ class SwatchSelectTest : BaseTest() {
     }
 
     @Test
-    fun runSwatchSelectHR() {
+    fun tester_Survey_HighRange() {
 
         gotoSurveyForm()
 
