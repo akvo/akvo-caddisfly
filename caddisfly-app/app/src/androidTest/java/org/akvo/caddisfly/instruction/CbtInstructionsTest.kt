@@ -106,6 +106,8 @@ class CbtInstructionsTest : BaseTest() {
 
         mDevice.pressBack()
 
+        sleep(1000)
+
         val testConfigRepository = TestConfigRepository()
         var buttonIndex = 0
         var tabName = "Coliforms"

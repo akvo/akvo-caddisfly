@@ -128,7 +128,6 @@ class CbtTest {
             data.putString(SensorConstants.RESOURCE_ID, id)
             data.putString(SensorConstants.LANGUAGE, BuildConfig.TEST_LANGUAGE)
             intent.putExtras(data)
-
             mTestActivityRule.launchActivity(intent)
         } else {
             TestHelper.gotoSurveyForm()

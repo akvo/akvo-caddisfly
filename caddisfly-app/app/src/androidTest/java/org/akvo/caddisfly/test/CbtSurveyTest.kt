@@ -19,26 +19,19 @@
 
 package org.akvo.caddisfly.test
 
-import android.app.Activity
-import android.app.Instrumentation
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Build
-import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.intent.Intents.intending
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
-import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
@@ -82,7 +75,7 @@ class CbtSurveyTest : BaseTest() {
 
     @Rule
     @JvmField
-    var mIntentsRule = IntentsTestRule(MainActivity::class.java)
+    var mActivityTestRule = ActivityTestRule(MainActivity::class.java)
 
     @Rule
     @JvmField
@@ -94,29 +87,29 @@ class CbtSurveyTest : BaseTest() {
     @Before
     override fun setUp() {
         super.setUp()
-        loadData(mIntentsRule.activity, BuildConfig.TEST_LANGUAGE)
-        clearPreferences(mIntentsRule)
-        stubCameraIntent()
+        loadData(mActivityTestRule.activity, BuildConfig.TEST_LANGUAGE)
+        clearPreferences(mActivityTestRule)
+//        stubCameraIntent()
     }
 
-    private fun stubCameraIntent() {
-        val result = createImageCaptureStub()
-        intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result)
-    }
+//    private fun stubCameraIntent() {
+//        val result = createImageCaptureStub()
+//        intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(result)
+//    }
 
-    private fun createImageCaptureStub(): Instrumentation.ActivityResult {
-        // Put the drawable in a bundle.
-        val bundle = Bundle()
-        bundle.putParcelable("data", BitmapFactory.decodeResource(
-                mIntentsRule.activity.resources, R.drawable.closer))
-
-        // Create the Intent that will include the bundle.
-        val resultData = Intent()
-        resultData.putExtras(bundle)
-
-        // Create the ActivityResult with the Intent.
-        return Instrumentation.ActivityResult(Activity.RESULT_OK, resultData)
-    }
+//    private fun createImageCaptureStub(): Instrumentation.ActivityResult {
+//        // Put the drawable in a bundle.
+//        val bundle = Bundle()
+//        bundle.putParcelable("data", BitmapFactory.decodeResource(
+//                mIntentsRule.activity.resources, R.drawable.closer))
+//
+//        // Create the Intent that will include the bundle.
+//        val resultData = Intent()
+//        resultData.putExtras(bundle)
+//
+//        // Create the ActivityResult with the Intent.
+//        return Instrumentation.ActivityResult(Activity.RESULT_OK, resultData)
+//    }
 
     @Test
     fun cbt_Survey_Test() {
@@ -179,7 +172,7 @@ class CbtSurveyTest : BaseTest() {
 
         TestHelper.clickSubmitButton()
 
-        mIntentsRule.finishActivity()
+        mActivityTestRule.finishActivity()
 
         sleep(3000)
 
@@ -304,7 +297,7 @@ class CbtSurveyTest : BaseTest() {
 
         TestHelper.clickSubmitButton()
 
-        mIntentsRule.finishActivity()
+        mActivityTestRule.finishActivity()
 
         sleep(2500)
 
@@ -316,12 +309,13 @@ class CbtSurveyTest : BaseTest() {
     @Test
     fun cbt_Survey() {
 
-        sleep(2000)
+        sleep(1000)
 
         if (!skipOpeningExternalApp(Build.VERSION.SDK_INT)) {
             onView(allOf(withId(R.id.button_next), withText(R.string.next))).perform(click())
             onView(allOf(withId(R.id.button_ok), withText(R.string.go_to_external_app))).perform(click())
             sleep(2000)
+            mActivityTestRule.launchActivity(Intent())
         }
 
         gotoSurveyForm()
