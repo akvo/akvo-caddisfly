@@ -1,8 +1,8 @@
 package org.akvo.caddisfly.sensor.striptest.qrdetector;
 
 /**
- * Created by markwestra on 18/05/2017.
- * Uses a very naive treshold: a single fixed blackpoint. As we have good control over the lighting conditions, this should be sufficient.
+ * Uses a very naive threshold: a single fixed black point. As we have good control
+ * over the lighting conditions, this should be sufficient.
  */
 
 public class BitMatrixCreator {
@@ -21,7 +21,7 @@ public class BitMatrixCreator {
         }
 
         if (rowStride != dataWidth) {
-            throw new IllegalArgumentException("Rowstride not equal to data width");
+            throw new IllegalArgumentException("Row stride not equal to data width");
         }
 
         if (matrix == null) {
@@ -32,7 +32,7 @@ public class BitMatrixCreator {
 
         if (yDataArray == null) return null;
 
-        // lets use the approximate location of the four corners to estimate the blackpoint
+        // lets use the approximate location of the four corners to estimate the black point
         int size =  (int) Math.round(0.25 * width);
         int blackTopLeft = estimateBlackPoint(yDataArray,rowStride,1,1, size, size);
         int blackTopRight = estimateBlackPoint(yDataArray,rowStride, width - size, 1, width, size);

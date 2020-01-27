@@ -26,7 +26,10 @@ local-release-notes
 .settings
 
 # IntelliJ files
-.idea
+.idea/**
+!.idea
+!.idea/dictionaries/
+!.idea/dictionaries/common.xml
 *.iml
 
 # OSX files

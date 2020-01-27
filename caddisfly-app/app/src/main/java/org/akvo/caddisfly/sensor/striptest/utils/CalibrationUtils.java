@@ -12,9 +12,6 @@ import org.apache.commons.math3.linear.SingularValueDecomposition;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by markwestra on 16/06/2017
- */
 public class CalibrationUtils {
 
     @SuppressWarnings("SameParameterValue")

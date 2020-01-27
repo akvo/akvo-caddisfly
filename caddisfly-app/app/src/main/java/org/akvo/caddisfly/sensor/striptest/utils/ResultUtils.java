@@ -12,9 +12,6 @@ import java.text.DecimalFormatSymbols;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by markwestra on 03/08/2017
- */
 public class ResultUtils {
     static final int INTERPOLATION_NUMBER = 10;
 

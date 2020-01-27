@@ -33,10 +33,6 @@ import org.akvo.caddisfly.util.ImageUtil;
 
 import timber.log.Timber;
 
-/**
- * Created by markwestra on 19/07/2017
- */
-
 public class CameraOperationsManager {
     private static final long AUTO_FOCUS_DELAY = 5000L;
 
@@ -51,7 +47,7 @@ public class CameraOperationsManager {
             if (mCamera != null) {
                 if (!changingExposure) {
                     // Check the focus. This is mainly needed in order to restart focus that doesn't run anymore,
-                    // which sometimes happens on samsung devices.
+                    // which sometimes happens on Samsung devices.
                     mCamera.autoFocus((success, camera) -> {
                         // if we are in one of the other modes, we need to run 'cancelAutofocus' in order
                         // to start the continuous focus again. *sigh*

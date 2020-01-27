@@ -19,16 +19,13 @@
 
 package org.akvo.caddisfly.sensor.striptest.models;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-
-/**
- * Created by markwestra on 01/08/2015
- */
 public class CalibrationCardData {
     @NonNull
     private final Map<String, Location> locations;

@@ -3,9 +3,6 @@ package org.akvo.caddisfly.sensor.striptest.models;
 
 import org.akvo.caddisfly.model.Result;
 
-/**
- * Created by markwestra on 03/08/2017
- */
 public class PatchResult {
 
     private int id;

@@ -3,9 +3,6 @@ package org.akvo.caddisfly.sensor.striptest.utils;
 import android.os.Handler;
 import android.os.Message;
 
-/**
- * Created by markwestra on 19/05/2017
- */
 public class MessageUtils {
 
     public static void sendMessage(Handler handler, int messageId, int data) {

@@ -126,7 +126,7 @@ public class SwatchSelectWidget extends View {
         clColors.add(new ColorItem(0.1, 214, 192, 184));
     }
 
-    //stackoverflow.com/questions/12166476/android-canvas-drawtext-set-font-size-from-width
+    //stackoverflow.com/questions/12166476/android-canvas-drawText-set-font-size-from-width
 
     /**
      * Sets the text size for a Paint object so a given string of text will be a
@@ -152,7 +152,7 @@ public class SwatchSelectWidget extends View {
         paint.setTextSize(desiredTextSize);
     }
 
-    // stackoverflow.com/questions/5896234/how-to-use-android-canvas-to-draw-a-rectangle-with-only-topleft-and-topright-cor
+    // stackoverflow.com/questions/5896234/how-to-use-android-canvas-to-draw-a-rectangle-with-only-topLeft-and-topRight-cor
     private static Path RoundedRect(
             float left, float top, float right, float bottom, float rx, float ry,
             boolean tl, boolean tr, boolean br, boolean bl
@@ -200,7 +200,7 @@ public class SwatchSelectWidget extends View {
 
         path.rLineTo(0, -heightMinusCorners);
 
-        path.close();//Given close, last lineto can be removed.
+        path.close();//Given close, last lineTo can be removed.
 
         return path;
     }

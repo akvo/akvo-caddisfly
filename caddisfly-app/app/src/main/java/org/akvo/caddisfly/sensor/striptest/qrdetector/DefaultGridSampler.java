@@ -62,6 +62,7 @@ public final class DefaultGridSampler extends GridSampler {
             // Quick check to see if points transformed to something inside the image;
             // sufficient to check the endpoints
             checkAndNudgePoints(image, points);
+            //noinspection SpellCheckingInspection
             try {
                 for (int x = 0; x < max; x += 2) {
                     if (image.get((int) points[x], (int) points[x + 1])) {

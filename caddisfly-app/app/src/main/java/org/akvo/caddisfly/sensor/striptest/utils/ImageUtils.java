@@ -8,9 +8,6 @@ import org.apache.commons.math3.fitting.WeightedObservedPoints;
 
 import java.util.List;
 
-/**
- * Created by markwestra on 06/06/2017
- */
 public class ImageUtils {
 
     private static final double LOWER_PERCENTAGE_BOUND = 0.9;

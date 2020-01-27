@@ -27,9 +27,6 @@ import java.util.Objects;
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueString;
 import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
-/**
- * Created by markwestra on 06/10/2017
- */
 @SuppressWarnings("WeakerAccess")
 public class BitmapUtils {
     private final static int IMG_WIDTH = 500;

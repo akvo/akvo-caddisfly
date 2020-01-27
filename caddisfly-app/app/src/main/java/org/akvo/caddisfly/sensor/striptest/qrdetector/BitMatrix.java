@@ -199,7 +199,7 @@ public final class BitMatrix implements Cloneable {
      */
     public void setRegion(int left, int top, int width, int height) {
         if (top < 0 || left < 0) {
-            throw new IllegalArgumentException("Left and top must be nonnegative");
+            throw new IllegalArgumentException("Left and top must be non-negative");
         }
         if (height < 1 || width < 1) {
             throw new IllegalArgumentException("Height and width must be at least 1");

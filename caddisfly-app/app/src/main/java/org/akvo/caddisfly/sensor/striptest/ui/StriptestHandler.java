@@ -389,7 +389,7 @@ public final class StriptestHandler extends Handler {
                 int quality = qualityPercentage(mDecodeData.getDeltaEStats());
                 if (mFragment != null) {
                     mFragment.showQuality(quality);
-                    if (mState.equals(State.PREPARE) && quality > Constants.CALIB_PERCENTAGE_LIMIT) {
+                    if (mState.equals(State.PREPARE) && quality > Constants.CALIBRATION_PERCENTAGE_LIMIT) {
                         successCount++;
                         mFragment.setProgress(successCount);
                     }
@@ -401,7 +401,7 @@ public final class StriptestHandler extends Handler {
                     break;
                 }
 
-                if (mState.equals(State.MEASURE) && captureNextImage && quality > Constants.CALIB_PERCENTAGE_LIMIT) {
+                if (mState.equals(State.MEASURE) && captureNextImage && quality > Constants.CALIBRATION_PERCENTAGE_LIMIT) {
                     captureNextImage = false;
 
                     mDecodeProcessor.storeImageData(mPatchTimeDelays.get(nextPatch).getTimeDelay());

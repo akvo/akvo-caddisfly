@@ -1,5 +1,7 @@
 package org.akvo.caddisfly.sensor.striptest.utils;
 
+import androidx.annotation.NonNull;
+
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardData;
 import org.akvo.caddisfly.sensor.striptest.models.CalibrationCardException;
 import org.akvo.caddisfly.sensor.striptest.models.DecodeData;
@@ -16,15 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 import static org.akvo.caddisfly.sensor.striptest.qrdetector.MathUtils.distance;
 import static org.akvo.caddisfly.sensor.striptest.utils.MathUtils.meanMedianMax;
 
-/**
- * Created by markwestra on 07/06/2017
- */
 public class CalibrationCardUtils {
     private static final int VERSION_NUMBER_NOT_FOUND_CODE = 0;
     /*
@@ -184,7 +182,7 @@ public class CalibrationCardUtils {
 
     public static void readCalibrationFile(CalibrationCardData calCardData, int version) throws CalibrationCardException {
 //        Log.d(TAG, "reading calibration file");
-        String calFileName = "calibrationv2-" + version + ".json";
+        String calFileName = "calibration-v2-" + version + ".json";
         String json = AssetsManager.getInstance().loadJSONFromAsset(calFileName);
 
 //        boolean success = false;
@@ -427,7 +425,7 @@ public class CalibrationCardUtils {
 //            i++;
 //        }
 //
-//        // we now have a delta array, in the order of the keyset. Let's get the 3 worst ones
+//        // we now have a delta array, in the order of the keySet. Let's get the 3 worst ones
 //        String name1 = "", name2 = "", name3 = "", name4 = "", name5 = "";
 //        float worst = 0;
 //

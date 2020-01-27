@@ -1,8 +1,5 @@
 package org.akvo.caddisfly.sensor.striptest.utils;
 
-/**
- * Created by markwestra on 13/06/2017
- */
 public class ColorUtils {
 
     private final static float XREF = 95.047f;

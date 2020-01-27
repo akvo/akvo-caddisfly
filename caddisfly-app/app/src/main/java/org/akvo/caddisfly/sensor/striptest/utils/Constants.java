@@ -17,7 +17,7 @@ public final class Constants {
     public static final int COUNT_QUALITY_CHECK_LIMIT = 15;
     public static final int PIXEL_PER_MM = 5;
     public static final int SKIP_MM_EDGE = 1;
-    public static final int CALIB_PERCENTAGE_LIMIT = 95;
+    public static final int CALIBRATION_PERCENTAGE_LIMIT = 95;
     public static final int MEASURE_TIME_COMPENSATION_MILLIS = 3000;
     public static final float STRIP_WIDTH_FRACTION = 0.5f;
     public static final int GET_READY_SECONDS = 12;

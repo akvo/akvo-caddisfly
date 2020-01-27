@@ -29,10 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Created by mark westra on 17/05/2017
- */
-
 public class DecodeProcessor {
 
     public static final int NO_TILT = -1;

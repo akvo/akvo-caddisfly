@@ -2,9 +2,6 @@ package org.akvo.caddisfly.sensor.striptest.utils;
 
 import java.util.Arrays;
 
-/**
- * Created by markwestra on 16/06/2017
- */
 class MathUtils {
 
 //    public static float mean(float[] m) {
