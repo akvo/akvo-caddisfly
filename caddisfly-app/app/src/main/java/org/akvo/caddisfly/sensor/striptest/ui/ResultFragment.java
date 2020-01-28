@@ -194,12 +194,19 @@ public class ResultFragment extends BaseFragment {
 //                return null;
             }
 
-            patchResult.setImage(img);
-            float[] xyz = getPatchColour(patchImageMap.get(delay), patch, testInfo);
-            float[] lab = ColorUtils.XYZtoLAB(xyz);
-            patchResult.setXyz(xyz);
-            patchResult.setLab(lab);
-            patchResult.setPatch(patch);
+            try {
+                patchResult.setImage(img);
+                float[] xyz = getPatchColour(patchImageMap.get(delay), patch, testInfo);
+                float[] lab = ColorUtils.XYZtoLAB(xyz);
+                patchResult.setXyz(xyz);
+                patchResult.setLab(lab);
+                patchResult.setPatch(patch);
+            } catch (Exception e) {
+                // failed extracting color from patch. Strip invalid or not place correctly
+                Timber.e(e);
+                patchResult.setMeasured(false);
+                continue;
+            }
 
             // the patches are sorted by position here
             patchResultList.add(patchResult);

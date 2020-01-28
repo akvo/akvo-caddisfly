@@ -152,22 +152,27 @@ public class ImageUtils {
             rowCount[j] = rowTot;
         }
 
-        // find height of strip by finding rising and dropping edges
-        // rising edge  = largest positive difference
-        // falling edge = largest negative difference
-        int risePos = 0;
-        int fallPos = 0;
+        // find height of strip by finding top and bottom edges
+        // find top edge of strip
+        int topEdge = 0;
         double riseVal = 0;
-        double fallVal = 0;
         for (int i = 0; i < height - 1; i++) {
             int rowDiff = rowCount[i + 1] - rowCount[i];
             if (rowDiff > riseVal) {
                 riseVal = rowDiff;
-                risePos = i + 1;
+                topEdge = i + 1;
             }
-            if (rowDiff < fallVal) {
+        }
+
+        // find bottom edge of strip
+        int bottomEdge = 0;
+        double fallVal = 0;
+        // start 20 pixels away from top edge when looking for bottom edge
+        for (int i = height - 1; i >= topEdge + 20; i--) {
+            int rowDiff = rowCount[i - 1] - rowCount[i];
+            if (rowDiff > fallVal) {
                 fallVal = rowDiff;
-                fallPos = i;
+                bottomEdge = i;
             }
         }
 
@@ -177,7 +182,7 @@ public class ImageUtils {
         int colTotal;
         for (int i = 0; i < width; i++) { // iterate over cols
             colTotal = 0;
-            for (int j = risePos; j < fallPos; j++) { // iterate over rows
+            for (int j = topEdge; j < bottomEdge; j++) { // iterate over rows
                 if (rotatedImage[i][j][1] > 50) {
                     colTotal++;
                 }
@@ -186,7 +191,7 @@ public class ImageUtils {
         }
 
         // threshold is that half of the rows in a column should be white
-        int threshold = (fallPos - risePos) / 2;
+        int threshold = (bottomEdge - topEdge) / 2;
 
         boolean found = false;
 
@@ -208,12 +213,12 @@ public class ImageUtils {
 
         // cut out final strip
         // here, we also transpose the matrix so the rows correspond to the vertical dimension
-        float[][][] result = new float[fallPos - risePos + 1][end - start + 1][3];
+        float[][][] result = new float[bottomEdge - topEdge + 1][end - start + 1][3];
         for (int i = start; i < end; i++) {
-            for (int j = risePos; j < fallPos; j++) {
-                result[j - risePos][i - start][0] = rotatedImage[i][j][0];
-                result[j - risePos][i - start][1] = rotatedImage[i][j][1];
-                result[j - risePos][i - start][2] = rotatedImage[i][j][2];
+            for (int j = topEdge; j < bottomEdge; j++) {
+                result[j - topEdge][i - start][0] = rotatedImage[i][j][0];
+                result[j - topEdge][i - start][1] = rotatedImage[i][j][1];
+                result[j - topEdge][i - start][2] = rotatedImage[i][j][2];
             }
         }
         return result;
