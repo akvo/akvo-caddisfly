@@ -25,7 +25,6 @@ import java.util.List;
  *
  * @author Sean Owen
  * @author dswitkin@google.com (Daniel Switkin)
- * @see Reader#decode(BinaryBitmap, java.util.Map)
  */
 public enum DecodeHintType {
 
@@ -42,7 +41,6 @@ public enum DecodeHintType {
 
     /**
      * Image is known to be of one of a few possible formats.
-     * Maps to a {@link List} of {@link BarcodeFormat}s.
      */
     POSSIBLE_FORMATS(List.class),
 

@@ -21,7 +21,6 @@ package org.akvo.caddisfly.sensor.striptest.qrdetector;
  * error correction level.</p>
  *
  * @author Sean Owen
- * @see DataMask
  * @see ErrorCorrectionLevel
  */
 final class FormatInformation {

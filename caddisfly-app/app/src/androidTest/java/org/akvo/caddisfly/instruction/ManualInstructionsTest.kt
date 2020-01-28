@@ -158,6 +158,7 @@ class ManualInstructionsTest : BaseTest() {
 
                 sleep(300)
 
+                @Suppress("SpellCheckingInspection")
                 if (("cd66ecab2794 79586d9319c8").contains(id)) {
                     for (j in 0..16) {
                         try {

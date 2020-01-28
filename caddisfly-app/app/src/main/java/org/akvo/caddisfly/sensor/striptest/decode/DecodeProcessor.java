@@ -561,17 +561,6 @@ public class DecodeProcessor {
         // color transform: Android YUV (YCbCr) to sRGB D65
         Map<String, float[]> patchRGBMap = CalibrationCardUtils.YUVtoLinearRGB(patchYUVMapCorrected);
 
-        // sRGB D65 to linear sRGB to XYZ D65
-        // XYZ is scaled [0..100]
-//        Map<String, float[]> patchXYZMap = CalibrationCardUtils.linearRGBtoXYZ(patchRGBMap);
-
-        // Set calibration goal RGB values so we can display them later
-//        Map<String, int[]> patchCalRGBMap = CalibrationCardUtils.XYZtoRGBint(calXYZMap);
-//        StriptestHandler.getDecodeData().setCalibrationPatchRGB(patchCalRGBMap);
-
-        // measure the distance in terms of deltaE2000
-//        float[] deltaE2000Stats = CalibrationCardUtils.deltaE2000stats(calXYZMap, patchXYZMap);
-
         Map<String, float[]> resultXYZMap;
 //        float[] deltaE2000Stats2;
 
@@ -580,13 +569,6 @@ public class DecodeProcessor {
 
         // measure the distance in terms of deltaE2000
         float[] deltaE2000Stats = CalibrationCardUtils.deltaE2000stats(calXYZMap, resultXYZMap);
-
-        // what are the worst stats?
-//        String[] worst = CalibrationCardUtils.worstPatches(calXYZMap, resultXYZMap);
-
-        // set calibrated colours so we can display them
-//        Map<String, int[]> patchRGBCalMap = CalibrationCardUtils.XYZtoRGBint(resultXYZMap);
-//        decodeData.setMeasuredPatchRGB(patchRGBCalMap);
 
         // set deltaE2000 stats
         decodeData.setDeltaEStats(deltaE2000Stats);

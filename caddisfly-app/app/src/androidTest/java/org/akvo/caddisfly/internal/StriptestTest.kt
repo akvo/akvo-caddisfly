@@ -119,12 +119,9 @@ class StriptestTest {
             val uuid = testInfo.uuid
             val id = uuid.substring(uuid.lastIndexOf("-") + 1)
 
-//            if (("32d9b8f4aecf ac33b44f9992").contains(id)) {
-            //            if (testInfo.getName().contains("Soil"))
-//            if (("aa4a4e3100c9 411a4093f6b6 ac33b44f9992 71e4c7cd2280 ac3b4d9c9599 fe26af2621a7 4c5cbcf6b1c1").contains(id)) {
-            //
             run {
 
+                @Suppress("SpellCheckingInspection")
                 if (!isStripPatchAvailable(testInfo.name)) {
                     resultWaitDelay = 7000
                 } else if (("6843158b47b4 6ed8142b6b07, 420551851acd 1b7db640037c d555f04db952 aa4a4e3100c9 "
@@ -195,7 +192,6 @@ class StriptestTest {
 
                 TestHelper.clickSubmitResultButton()
             }
-//            }
         }
     }
 
@@ -226,6 +222,7 @@ class StriptestTest {
 
                 pages++
 
+                @Suppress("SpellCheckingInspection")
                 if ("ac33b44f9992, 32d9b8f4aecf".contains(id)) {
                     try {
                         if (pages == 5) {

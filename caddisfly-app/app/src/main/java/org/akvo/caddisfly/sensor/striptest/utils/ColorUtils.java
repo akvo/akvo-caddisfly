@@ -2,9 +2,9 @@ package org.akvo.caddisfly.sensor.striptest.utils;
 
 public class ColorUtils {
 
-    private final static float XREF = 95.047f;
-    private final static float YREF = 100f;
-    private final static float ZREF = 108.883f;
+    private final static float X_REF = 95.047f;
+    private final static float Y_REF = 100f;
+    private final static float Z_REF = 108.883f;
     private final static float eps = 0.008856f; //kE
     private final static float kappa = 903.3f; // kK
     private final static float kappaEps = 8.0f; // kKE
@@ -28,16 +28,16 @@ public class ColorUtils {
     // same as https://en.wikipedia.org/wiki/SRGB
     // https://www.itu.int/rec/dologin_pub.asp?lang=e&id=T-REC-T.871-201105-I!!PDF-E
     public static float[] YUVtoLinearRGB(float[] YUV) {
-        float Rgamma = YUV[0] + 1.402f * YUV[2];
-        float Ggamma = YUV[0] - 0.3441f * YUV[1] - 0.7141f * YUV[2];
-        float Bgamma = YUV[0] + 1.772f * YUV[1];
+        float rGamma = YUV[0] + 1.402f * YUV[2];
+        float gGamma = YUV[0] - 0.3441f * YUV[1] - 0.7141f * YUV[2];
+        float bGamma = YUV[0] + 1.772f * YUV[1];
 
         // make linear and clamp
-        float Rlinear = Math.min(Math.max(0.0f, gammaToLinearRGB(Rgamma)), 1.0f);
-        float Glinear = Math.min(Math.max(0.0f, gammaToLinearRGB(Ggamma)), 1.0f);
-        float Blinear = Math.min(Math.max(0.0f, gammaToLinearRGB(Bgamma)), 1.0f);
+        float rLinear = Math.min(Math.max(0.0f, gammaToLinearRGB(rGamma)), 1.0f);
+        float gLinear = Math.min(Math.max(0.0f, gammaToLinearRGB(gGamma)), 1.0f);
+        float bLinear = Math.min(Math.max(0.0f, gammaToLinearRGB(bGamma)), 1.0f);
 
-        return new float[]{Rlinear, Glinear, Blinear};
+        return new float[]{rLinear, gLinear, bLinear};
     }
 
     // linear sRGB D65 scaled [0..1 ]to XYZ D65 scaled [0 .. 100]
@@ -62,19 +62,19 @@ public class ColorUtils {
     // using sRGB gamma companding
     // we assume XYZ is scaled [0..100]
     // RGB is scaled to [0..255] and clamped
-    public static int[] XYZtoRGBint(float[] XYZ) {
-        float[] XYZscaled = new float[3];
+    public static int[] xyzToRgbInt(float[] XYZ) {
+        float[] xyzScaled = new float[3];
         float[] RGB = new float[3];
 
         // first we scale to [0..1]
         for (int i = 0; i < 3; i++) {
-            XYZscaled[i] = XYZ[i] / 100.0f;
+            xyzScaled[i] = XYZ[i] / 100.0f;
         }
 
         // next, we apply a matrix:
-        RGB[0] = 3.2404542f * XYZscaled[0] - 1.5371385f * XYZscaled[1] - 0.4985314f * XYZscaled[2];
-        RGB[1] = -0.9692660f * XYZscaled[0] + 1.8760108f * XYZscaled[1] + 0.0415560f * XYZscaled[2];
-        RGB[2] = 0.0556434f * XYZscaled[0] - 0.2040259f * XYZscaled[1] + 1.0572252f * XYZscaled[2];
+        RGB[0] = 3.2404542f * xyzScaled[0] - 1.5371385f * xyzScaled[1] - 0.4985314f * xyzScaled[2];
+        RGB[1] = -0.9692660f * xyzScaled[0] + 1.8760108f * xyzScaled[1] + 0.0415560f * xyzScaled[2];
+        RGB[2] = 0.0556434f * xyzScaled[0] - 0.2040259f * xyzScaled[1] + 1.0572252f * xyzScaled[2];
 
         // next, we apply gamma encoding
         for (int i = 0; i < 3; i++) {
@@ -86,19 +86,19 @@ public class ColorUtils {
         }
 
         // next, we scale to [0..255] and clamp
-        int[] RGBint = new int[3];
+        int[] rgbInt = new int[3];
         for (int i = 0; i < 3; i++) {
             RGB[i] *= 255.0f;
-            RGBint[i] = Math.min(Math.max(0, Math.round(RGB[i])), 255);
+            rgbInt[i] = Math.min(Math.max(0, Math.round(RGB[i])), 255);
         }
-        return RGBint;
+        return rgbInt;
     }
 
     // XYZ D65 scaled [0..100] to LAB D65
     public static float[] XYZtoLAB(float[] XYZ) {
-        float xr = XYZ[0] / XREF;
-        float yr = XYZ[1] / YREF;
-        float zr = XYZ[2] / ZREF;
+        float xr = XYZ[0] / X_REF;
+        float yr = XYZ[1] / Y_REF;
+        float zr = XYZ[2] / Z_REF;
 
         float fx, fy, fz;
         if (xr > eps) {
@@ -144,7 +144,7 @@ public class ColorUtils {
         float yr = (float) ((CIEL > kappaEps) ? Math.pow((CIEL + 16.0f) / 116.0f, 3.0f) : (CIEL / kappa));
         float zr = (fz3 > eps) ? fz3 : ((116.0f * fz - 16.0f) / kappa);
 
-        return new float[]{xr * XREF, yr * YREF, zr * ZREF};
+        return new float[]{xr * X_REF, yr * Y_REF, zr * Z_REF};
     }
 
     // deltaE2000 colour distance between two lab colour values

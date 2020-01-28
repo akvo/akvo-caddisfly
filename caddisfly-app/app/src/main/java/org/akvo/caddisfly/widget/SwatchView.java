@@ -143,7 +143,7 @@ public class SwatchView extends View {
                         lab[1] = patchColorValues.get(1).floatValue();
                         lab[2] = patchColorValues.get(2).floatValue();
 
-                        rgbCols[i] = ColorUtils.XYZtoRGBint(ColorUtils.Lab2XYZ(lab));
+                        rgbCols[i] = ColorUtils.xyzToRgbInt(ColorUtils.Lab2XYZ(lab));
                         int color = Color.rgb(rgbCols[i][0], rgbCols[i][1], rgbCols[i][2]);
 
                         colors.get(i).setRgb(color);

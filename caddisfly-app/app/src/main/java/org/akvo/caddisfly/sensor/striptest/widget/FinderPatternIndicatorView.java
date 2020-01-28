@@ -172,14 +172,14 @@ public class FinderPatternIndicatorView extends View {
             //Camera preview size is in landscape mode, canvas is in portrait mode
             //the width of the canvas corresponds to the height of the decodeSize.
             //float ratio = 1.0f * canvas.getWidth() / decodeHeight;
-            float hratio = 1.0f * previewScreenWidth / decodeHeight;
-            float vratio = 1.0f * previewScreenHeight / decodeWidth;
+            float hRatio = 1.0f * previewScreenWidth / decodeHeight;
+            float vRatio = 1.0f * previewScreenHeight / decodeWidth;
 
             for (int i = 0; i < patterns.size(); i++) {
                 //The x of the canvas corresponds to the y of the pattern,
                 //The y of the canvas corresponds to the x of the pattern.
-                float x = previewScreenWidth - patterns.get(i).getY() * hratio;
-                float y = patterns.get(i).getX() * vratio;
+                float x = previewScreenWidth - patterns.get(i).getY() * hRatio;
+                float y = patterns.get(i).getX() * vRatio;
                 canvas.drawCircle(x, y, 10, paint);
             }
         }
@@ -200,17 +200,17 @@ public class FinderPatternIndicatorView extends View {
         }
 
         if (shadowGrid != null) {
-            float hratio = 1.0f * previewScreenWidth / decodeHeight;
-            float vratio = 1.0f * previewScreenHeight / decodeWidth;
-            float ratioRatio = vratio/hratio;
-            int xtop;
-            int ytop;
+            float hRatio = 1.0f * previewScreenWidth / decodeHeight;
+            float vRatio = 1.0f * previewScreenHeight / decodeWidth;
+            float ratioRatio = vRatio / hRatio;
+            int xTop;
+            int yTop;
             for (int i = 0; i < GRID_H; i++) {
                 for (int j = 0; j < GRID_V; j++) {
                     if (shadowGrid[i][j]) {
-                        xtop = Math.round(i * mGridStepDisplay);
-                        ytop = Math.round(j * mGridStepDisplay * ratioRatio);
-                        canvas.drawRect(xtop, ytop, xtop + mGridStepDisplay, ytop + mGridStepDisplay, paint2);
+                        xTop = Math.round(i * mGridStepDisplay);
+                        yTop = Math.round(j * mGridStepDisplay * ratioRatio);
+                        canvas.drawRect(xTop, yTop, xTop + mGridStepDisplay, yTop + mGridStepDisplay, paint2);
                     }
                 }
             }

@@ -130,6 +130,7 @@ class DiagnosticTest {
             onView(withText("Français")).perform(click())
         } else {
             onView(withText("Français")).perform(click())
+            @Suppress("SpellCheckingInspection")
             onView(withText("Annuler")).perform(click())
         }
 
@@ -155,6 +156,7 @@ class DiagnosticTest {
 
         onView(withId(R.id.button_info)).perform(click())
 
+        @Suppress("SpellCheckingInspection")
         onView(withText("L'information légale")).check(matches(isDisplayed())).perform(click())
 
         navigateUp()
@@ -165,6 +167,7 @@ class DiagnosticTest {
 
         getInstrumentation().waitForIdleSync()
 
+        @Suppress("SpellCheckingInspection")
         onView(withText("Suivant")).perform(click())
 
         sleep(1500)
@@ -197,6 +200,7 @@ class DiagnosticTest {
 
         onView(withId(R.id.button_info)).perform(click())
 
+        @Suppress("SpellCheckingInspection")
         onView(withText("Información legal")).check(matches(isDisplayed())).perform(click())
 
         navigateUp()
@@ -207,6 +211,7 @@ class DiagnosticTest {
 
         getInstrumentation().waitForIdleSync()
 
+        @Suppress("SpellCheckingInspection")
         onView(withText("Siguiente")).perform(click())
 
         sleep(1500)

@@ -110,10 +110,10 @@ public class ImageUtils {
 
         // rotate around the midpoint, to straighten the binary strip
         // compute rotation matrix
-        // cosfie -sinfie
-        // sinfie cosfie
-        float cosfie = (float) Math.cos(rotAngleRad);
-        float sinfie = (float) Math.sin(rotAngleRad);
+        // cosAngle -sinAngle
+        // sinAngle cosAngle
+        float cosAngle = (float) Math.cos(rotAngleRad);
+        float sinAngle = (float) Math.sin(rotAngleRad);
 
         float xm, ym;
         int xt, yt;
@@ -124,8 +124,8 @@ public class ImageUtils {
                 xm = i - midPointX;
                 ym = j - midPointY;
 
-                xt = Math.round(cosfie * xm - sinfie * ym + midPointX);
-                yt = Math.round(sinfie * xm + cosfie * ym + midPointY);
+                xt = Math.round(cosAngle * xm - sinAngle * ym + midPointX);
+                yt = Math.round(sinAngle * xm + cosAngle * ym + midPointY);
 
                 if (xt < 0 || xt > width - 1 || yt < 0 || yt > height - 1) {
                     rotatedImage[i][j][0] = 0; // X
@@ -160,12 +160,13 @@ public class ImageUtils {
         double riseVal = 0;
         double fallVal = 0;
         for (int i = 0; i < height - 1; i++) {
-            if (rowCount[i + 1] - rowCount[i] > riseVal) {
-                riseVal = rowCount[i + 1] - rowCount[i];
+            int rowDiff = rowCount[i + 1] - rowCount[i];
+            if (rowDiff > riseVal) {
+                riseVal = rowDiff;
                 risePos = i + 1;
             }
-            if (rowCount[i + 1] - rowCount[i] < fallVal) {
-                fallVal = rowCount[i + 1] - rowCount[i];
+            if (rowDiff < fallVal) {
+                fallVal = rowDiff;
                 fallPos = i;
             }
         }

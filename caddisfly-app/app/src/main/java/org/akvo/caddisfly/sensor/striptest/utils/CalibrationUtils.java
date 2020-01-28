@@ -26,7 +26,7 @@ public class CalibrationUtils {
 
         float[][] whitePoints = decodeData.getWhitePointArray();
         int numRows = whitePoints.length;
-        RealMatrix coef = new Array2DRowRealMatrix(numRows, 6);
+        RealMatrix coefficient = new Array2DRowRealMatrix(numRows, 6);
         RealVector Y = new ArrayRealVector(numRows);
 
         //create constant, x, y, x^2, y^2 and xy terms
@@ -34,18 +34,18 @@ public class CalibrationUtils {
         for (int i = 0; i < numRows; i++) {
             x = whitePoints[i][0];
             y = whitePoints[i][1];
-            coef.setEntry(i, 0, x);
-            coef.setEntry(i, 1, y);
-            coef.setEntry(i, 2, x * x);
-            coef.setEntry(i, 3, y * y);
-            coef.setEntry(i, 4, x * y);
-            coef.setEntry(i, 5, 1.0f); // constant term
+            coefficient.setEntry(i, 0, x);
+            coefficient.setEntry(i, 1, y);
+            coefficient.setEntry(i, 2, x * x);
+            coefficient.setEntry(i, 3, y * y);
+            coefficient.setEntry(i, 4, x * y);
+            coefficient.setEntry(i, 5, 1.0f); // constant term
 
             Y.setEntry(i, whitePoints[i][2]);
         }
 
         // solve the least squares problem
-        DecompositionSolver solver = new SingularValueDecomposition(coef).getSolver();
+        DecompositionSolver solver = new SingularValueDecomposition(coefficient).getSolver();
         RealVector solutionL = solver.solve(Y);
 
         // get individual coefficients
@@ -73,7 +73,7 @@ public class CalibrationUtils {
         decodeData.setIlluminationData(illuminationData);
 
         // now we create a new map with corrected values. U and V are unchanged
-        float Ynew;
+        float yNew;
         Map<String, float[]> resultYUVMap = new HashMap<>();
 
         for (String label : calCardData.getCalValues().keySet()) {
@@ -81,9 +81,9 @@ public class CalibrationUtils {
             float[] YUV = patchYUVMap.get(label);
             x = loc.x;
             y = loc.y;
-            Ynew = capValue(YUV[0] - (Ya * x + Yb * y + Yc * x * x + Yd * y * y
+            yNew = capValue(YUV[0] - (Ya * x + Yb * y + Yc * x * x + Yd * y * y
                     + Ye * x * y + Yf) + yMean, 0.0f, 255.0f);
-            resultYUVMap.put(label, new float[]{Ynew, YUV[1], YUV[2]});
+            resultYUVMap.put(label, new float[]{yNew, YUV[1], YUV[2]});
         }
         return resultYUVMap;
     }
@@ -94,42 +94,42 @@ public class CalibrationUtils {
 
     // Following http://docs.scipy.org/doc/scipy/reference/tutorial/linalg.html#solving-linear-least-squares-problems-and-pseudo-inverses
     // we will solve P = M x
-    public static Map<String, float[]> rootPolynomialCalibration(DecodeData decodeData, Map<String, float[]> calibXYZMap, Map<String, float[]> patchRGBMap) {
-        int numPatch = calibXYZMap.keySet().size();
-        RealMatrix coef = new Array2DRowRealMatrix(numPatch, 13);
+    public static Map<String, float[]> rootPolynomialCalibration(DecodeData decodeData, Map<String, float[]> calibrationXYZMap, Map<String, float[]> patchRGBMap) {
+        int numPatch = calibrationXYZMap.keySet().size();
+        RealMatrix coefficient = new Array2DRowRealMatrix(numPatch, 13);
         RealMatrix cal = new Array2DRowRealMatrix(numPatch, 3);
         int index = 0;
 
-        float[] calibXYZ, patchRGB;
+        float[] calibrationXYZ, patchRGB;
 
         // create coefficient and calibration vectors
-        float ONETHIRD = 1.0f / 3.0f;
-        for (String label : calibXYZMap.keySet()) {
-            calibXYZ = calibXYZMap.get(label);
+        final float ONE_THIRD = 1.0f / 3.0f;
+        for (String label : calibrationXYZMap.keySet()) {
+            calibrationXYZ = calibrationXYZMap.get(label);
             patchRGB = patchRGBMap.get(label);
 
-            coef.setEntry(index, 0, patchRGB[0]);
-            coef.setEntry(index, 1, patchRGB[1]);
-            coef.setEntry(index, 2, patchRGB[2]);
-            coef.setEntry(index, 3, Math.sqrt(patchRGB[0] * patchRGB[1])); // sqrt(R * G)
-            coef.setEntry(index, 4, Math.sqrt(patchRGB[1] * patchRGB[2])); // sqrt(G * B)
-            coef.setEntry(index, 5, Math.sqrt(patchRGB[0] * patchRGB[2])); // sqrt(R * B)
-            coef.setEntry(index, 6, Math.pow(patchRGB[0] * patchRGB[1] * patchRGB[1], ONETHIRD)); // RGG ^ 1/3
-            coef.setEntry(index, 7, Math.pow(patchRGB[1] * patchRGB[2] * patchRGB[2], ONETHIRD)); // GBB ^ 1/3
-            coef.setEntry(index, 8, Math.pow(patchRGB[0] * patchRGB[2] * patchRGB[2], ONETHIRD)); // RBB ^ 1/3
-            coef.setEntry(index, 9, Math.pow(patchRGB[1] * patchRGB[0] * patchRGB[0], ONETHIRD)); // GRR ^ 1/3
-            coef.setEntry(index, 10, Math.pow(patchRGB[2] * patchRGB[1] * patchRGB[1], ONETHIRD)); // BGG ^ 1/3
-            coef.setEntry(index, 11, Math.pow(patchRGB[2] * patchRGB[0] * patchRGB[0], ONETHIRD)); // BRR ^ 1/3
-            coef.setEntry(index, 12, Math.pow(patchRGB[0] * patchRGB[1] * patchRGB[2], ONETHIRD)); // RGB ^ 1/3
+            coefficient.setEntry(index, 0, patchRGB[0]);
+            coefficient.setEntry(index, 1, patchRGB[1]);
+            coefficient.setEntry(index, 2, patchRGB[2]);
+            coefficient.setEntry(index, 3, Math.sqrt(patchRGB[0] * patchRGB[1])); // sqrt(R * G)
+            coefficient.setEntry(index, 4, Math.sqrt(patchRGB[1] * patchRGB[2])); // sqrt(G * B)
+            coefficient.setEntry(index, 5, Math.sqrt(patchRGB[0] * patchRGB[2])); // sqrt(R * B)
+            coefficient.setEntry(index, 6, Math.pow(patchRGB[0] * patchRGB[1] * patchRGB[1], ONE_THIRD)); // RGG ^ 1/3
+            coefficient.setEntry(index, 7, Math.pow(patchRGB[1] * patchRGB[2] * patchRGB[2], ONE_THIRD)); // GBB ^ 1/3
+            coefficient.setEntry(index, 8, Math.pow(patchRGB[0] * patchRGB[2] * patchRGB[2], ONE_THIRD)); // RBB ^ 1/3
+            coefficient.setEntry(index, 9, Math.pow(patchRGB[1] * patchRGB[0] * patchRGB[0], ONE_THIRD)); // GRR ^ 1/3
+            coefficient.setEntry(index, 10, Math.pow(patchRGB[2] * patchRGB[1] * patchRGB[1], ONE_THIRD)); // BGG ^ 1/3
+            coefficient.setEntry(index, 11, Math.pow(patchRGB[2] * patchRGB[0] * patchRGB[0], ONE_THIRD)); // BRR ^ 1/3
+            coefficient.setEntry(index, 12, Math.pow(patchRGB[0] * patchRGB[1] * patchRGB[2], ONE_THIRD)); // RGB ^ 1/3
 
-            cal.setEntry(index, 0, calibXYZ[0]);
-            cal.setEntry(index, 1, calibXYZ[1]);
-            cal.setEntry(index, 2, calibXYZ[2]);
+            cal.setEntry(index, 0, calibrationXYZ[0]);
+            cal.setEntry(index, 1, calibrationXYZ[1]);
+            cal.setEntry(index, 2, calibrationXYZ[2]);
             index++;
         }
 
         // we solve A X = B. First we decompose A, which is the measured patches
-        DecompositionSolver solver = new SingularValueDecomposition(coef).getSolver();
+        DecompositionSolver solver = new SingularValueDecomposition(coefficient).getSolver();
 
         // then we get the solution matrix X, in the case of B = calibrated values of the patches
         RealMatrix sol = solver.solve(cal);
@@ -137,21 +137,21 @@ public class CalibrationUtils {
         decodeData.setCalMatrix(sol);
 
         //use the solution to correct the image
-        float Xnew, Ynew, Znew;
+        float xNew, YNew, zNew;
         Map<String, float[]> resultXYZMap = new HashMap<>();
 
         index = 0;
-        for (String label : calibXYZMap.keySet()) {
-            Xnew = 0;
-            Ynew = 0;
-            Znew = 0;
+        for (String label : calibrationXYZMap.keySet()) {
+            xNew = 0;
+            YNew = 0;
+            zNew = 0;
             for (int i = 0; i <= 12; i++) {
-                Xnew += coef.getEntry(index, i) * sol.getEntry(i, 0);
-                Ynew += coef.getEntry(index, i) * sol.getEntry(i, 1);
-                Znew += coef.getEntry(index, i) * sol.getEntry(i, 2);
+                xNew += coefficient.getEntry(index, i) * sol.getEntry(i, 0);
+                YNew += coefficient.getEntry(index, i) * sol.getEntry(i, 1);
+                zNew += coefficient.getEntry(index, i) * sol.getEntry(i, 2);
             }
 
-            resultXYZMap.put(label, new float[]{Xnew, Ynew, Znew});
+            resultXYZMap.put(label, new float[]{xNew, YNew, zNew});
             index++;
         }
         return resultXYZMap;

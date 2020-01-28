@@ -108,7 +108,6 @@ public class CalibrationCardData {
     public static class Location {
         public final Float x;
         public final Float y;
-        @SuppressWarnings("unused")
         private final Boolean grayPatch;
 
         Location(Float x, Float y, Boolean grayPatch) {
