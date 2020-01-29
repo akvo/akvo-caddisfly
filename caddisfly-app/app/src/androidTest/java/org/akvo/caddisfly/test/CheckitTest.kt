@@ -117,7 +117,7 @@ class CheckitTest : BaseTest() {
 
         gotoSurveyForm()
 
-        TestUtil.nextSurveyPage("CheckIt")
+        TestUtil.nextSurveyPage("Checkit")
 
         sleep(1000)
 

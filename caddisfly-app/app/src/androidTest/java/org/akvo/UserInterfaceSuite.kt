@@ -6,7 +6,8 @@ import org.akvo.caddisfly.test.TesterSwatchSurveyTest
 import org.akvo.caddisfly.ui.IntroTest
 import org.junit.runners.Suite
 
-// Uncomment @Runwith below to run this suite. This is commented because gradlew runs the test twice
+// Uncomment @Runwith below to run this suite. Commented because gradlew runs the tests twice
+// https://github.com/gradle/gradle/issues/2603
 //@RunWith(Suite::class)
 @Suite.SuiteClasses(MiscTest::class, CbtSurveyTest::class, TesterSwatchSurveyTest::class, IntroTest::class)
 class UserInterfaceSuite

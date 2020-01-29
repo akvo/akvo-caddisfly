@@ -26,6 +26,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.style.ImageSpan;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.ref.WeakReference;
 
 //ref: https://stackoverflow.com/questions/25628258/align-text-around-imagespan-center-vertical
@@ -37,7 +39,7 @@ public class CenteredImageSpan extends ImageSpan {
     }
 
     @Override
-    public int getSize(Paint paint, CharSequence text,
+    public int getSize(@NotNull Paint paint, CharSequence text,
                        int start, int end,
                        Paint.FontMetricsInt fontMetricsInt) {
         Drawable d = getCachedDrawable();

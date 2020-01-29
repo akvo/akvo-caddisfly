@@ -91,9 +91,9 @@ public class Detector {
                                         ResultPoint topRight,
                                         ResultPoint bottomLeft,
                                         float moduleSize) throws NotFoundException {
-        int tltrCentersDimension = MathUtils.round(ResultPoint.distance(topLeft, topRight) / moduleSize);
-        int tlblCentersDimension = MathUtils.round(ResultPoint.distance(topLeft, bottomLeft) / moduleSize);
-        int dimension = ((tltrCentersDimension + tlblCentersDimension) / 2) + 7;
+        int topLeftTopRightCenters = MathUtils.round(ResultPoint.distance(topLeft, topRight) / moduleSize);
+        int topLeftBottomLeftCenters = MathUtils.round(ResultPoint.distance(topLeft, bottomLeft) / moduleSize);
+        int dimension = ((topLeftTopRightCenters + topLeftBottomLeftCenters) / 2) + 7;
         switch (dimension & 0x03) { // mod 4
             case 0:
                 dimension++;
@@ -297,9 +297,11 @@ public class Detector {
         boolean steep = Math.abs(toY - fromY) > Math.abs(toX - fromX);
         if (steep) {
             int temp = fromX;
+            //noinspection SuspiciousNameCombination
             fromX = fromY;
             fromY = temp;
             temp = toX;
+            //noinspection SuspiciousNameCombination
             toX = toY;
             toY = temp;
         }
@@ -307,14 +309,14 @@ public class Detector {
         int dx = Math.abs(toX - fromX);
         int dy = Math.abs(toY - fromY);
         int error = -dx / 2;
-        int xstep = fromX < toX ? 1 : -1;
-        int ystep = fromY < toY ? 1 : -1;
+        int xStep = fromX < toX ? 1 : -1;
+        int yStep = fromY < toY ? 1 : -1;
 
         // In black pixels, looking for white, first or second time.
         int state = 0;
         // Loop up until x == toX, but not beyond
-        int xLimit = toX + xstep;
-        for (int x = fromX, y = fromY; x != xLimit; x += xstep) {
+        int xLimit = toX + xStep;
+        for (int x = fromX, y = fromY; x != xLimit; x += xStep) {
             int realX = steep ? y : x;
             int realY = steep ? x : y;
 
@@ -333,7 +335,7 @@ public class Detector {
                 if (y == toY) {
                     break;
                 }
-                y += ystep;
+                y += yStep;
                 error -= dx;
             }
         }
@@ -341,7 +343,7 @@ public class Detector {
         // is "white" so this last point at (toX+xStep,toY) is the right ending. This is really a
         // small approximation; (toX+xStep,toY+yStep) might be really correct. Ignore this.
         if (state == 2) {
-            return MathUtils.distance(toX + xstep, toY, fromX, fromY);
+            return MathUtils.distance(toX + xStep, toY, fromX, fromY);
         }
         // else we didn't find even black-white-black; no estimate is really possible
         return Float.NaN;

@@ -100,7 +100,7 @@ public class Result implements Parcelable {
             colorItems = null;
         }
         byte tmpGrayScale = in.readByte();
-        grayScale = tmpGrayScale != 0 && tmpGrayScale == 1;
+        grayScale = tmpGrayScale == 1;
         resultValue = in.readByte() == 0x00 ? null : in.readFloat();
     }
 

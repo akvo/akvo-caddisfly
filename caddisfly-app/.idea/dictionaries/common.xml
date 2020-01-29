@@ -2,6 +2,7 @@
   <dictionary name="common">
     <words>
       <w>adid</w>
+      <w>adjoint</w>
       <w>agua</w>
       <w>akvo</w>
       <w>akvocaddisfly</w>
@@ -28,6 +29,8 @@
       <w>checksums</w>
       <w>chromotropic</w>
       <w>codabar</w>
+      <w>codacy</w>
+      <w>cofactor</w>
       <w>coli</w>
       <w>coliform</w>
       <w>coliforms</w>
@@ -93,6 +96,7 @@
       <w>stackoverflow</w>
       <w>stichting</w>
       <w>striptest</w>
+      <w>subfolders</w>
       <w>sulpha</w>
       <w>thermoreactor</w>
       <w>thio</w>

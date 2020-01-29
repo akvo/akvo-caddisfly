@@ -56,7 +56,8 @@ constructor(context: Context, attrs: AttributeSet? = null,
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        setMeasuredDimension(ceil(distanceBetweenBullets * pageCount.toDouble()).toInt(), heightMeasureSpec)
+        setMeasuredDimension(ceil(distanceBetweenBullets * pageCount.toDouble()).toInt()
+                + (activeBulletRadius / 2).toInt(), heightMeasureSpec)
     }
 
     public override fun onDraw(canvas: Canvas) {

@@ -171,7 +171,7 @@ public class SwatchView extends View {
                         if (blockWidth == 0) {
                             blockWidth = (width - (colorCount - 4) * gutterSize) / colorCount;
                             if (testInfo.getGroupingType() == GroupType.GROUP) {
-                                lineHeight = blockWidth + (VAL_BAR_HEIGHT / 3);
+                                lineHeight = blockWidth + (VAL_BAR_HEIGHT / 3f);
                             } else {
                                 lineHeight = blockWidth + VAL_BAR_HEIGHT + VAL_BAR_HEIGHT;
                             }
