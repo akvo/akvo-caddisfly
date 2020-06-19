@@ -4,12 +4,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.sentry.android.gradle'
 
-def secretsFile = file(System.properties['user.home'] + '/.gradle/gradle.properties')
-def secrets = new Properties()
-if (secretsFile.exists()) {
-    secrets.load(new FileInputStream(secretsFile))
-}
-
 android {
     compileSdkVersion 29
     testOptions.unitTests.includeAndroidResources = true
@@ -18,8 +12,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 286
-        versionName "1.0.14"
+        versionCode 288
+        versionName "1.0.15"
         resConfigs "en", "en_US", "fr", "in", "es"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,7 +42,7 @@ android {
 
     signingConfigs {
         caddisflyRelease {
-            if (secrets.getProperty('CADDISFLY_RELEASE_STORE_FILE')) {
+            if (project.hasProperty('CADDISFLY_RELEASE_STORE_FILE')) {
                 storeFile file(CADDISFLY_RELEASE_STORE_FILE)
                 storePassword CADDISFLY_RELEASE_STORE_PASSWORD
                 keyAlias CADDISFLY_RELEASE_KEY_ALIAS
@@ -82,7 +76,7 @@ android {
             buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + 0L + ")"
         }
         release {
-            if (secrets.getProperty('CADDISFLY_RELEASE_STORE_FILE')) {
+            if (project.hasProperty('CADDISFLY_RELEASE_STORE_FILE')) {
                 signingConfig signingConfigs.caddisflyRelease
                 buildConfigField "String", "SENTRY_DSN", "\"${CADDISFLY_SENTRY_DSN}\""
             } else {

@@ -61,3 +61,5 @@ notes.md
 # Sentry config
 sentry.properties
 sentry-debug*
+
+app/gradle.properties
