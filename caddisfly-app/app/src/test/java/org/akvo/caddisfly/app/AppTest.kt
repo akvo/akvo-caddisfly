@@ -18,7 +18,7 @@ class AppTest {
     @Test
     fun shouldMatchPermissions() {
         val manifest = AndroidManifest(
-            Fs.fromUrl("build/intermediates/merged_manifests/" + BuildConfig.FLAVOR + "Debug" + "/AndroidManifest.xml"),
+            Fs.fromUrl("build/intermediates/merged_manifests/" + BuildConfig.FLAVOR + BuildConfig.BUILD_TYPE.capitalize() + "/AndroidManifest.xml"),
             null, null
         )
 
