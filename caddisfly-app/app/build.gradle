@@ -55,7 +55,7 @@ android {
         // NOTE: This variant is for running instrumented tests only
         inspect {
             // Takes screenshots during test {use ScreenshotSuite} (Requires Storage permission)
-            buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
+            buildConfigField "Boolean", "TAKE_SCREENSHOTS", "true"
             // Stops animations, ignores external sensors, skips bluetooth scans
             buildConfigField "Boolean", "TEST_RUNNING", "true"
             // The language to run the instrumented tests in
