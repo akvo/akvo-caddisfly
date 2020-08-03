@@ -9,3 +9,5 @@ Akvo Caddisfly
 Akvo Caddisfly is a simple, low cost, open source, smartphone-based drinking water testing system connected to an online data platform.
 
 See subfolders for more information
+
+Screenshots of the app can be found here https://github.com/akvo/akvo-caddisfly-screenshots
