@@ -179,4 +179,12 @@
     <string name="tube_upright_invert_flocculation">Stand the tube upright and after the reducing agent has settled to the bottom, gently invert it three to four times so as to complete the flocculation of the reducing agent.</string>
     <string name="stand_tube_further_2_minutes">Let the tube stand for a further 2 minutes.</string>
 
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_a">Rinse a vial (24 mm Ø) with the water sample.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_b">Fill the vial (24 mm Ø) with <b>3 ml of your sample</b> and <b>7 ml of deionised water</b>.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_c">Wipe the outside of the vial, hold vial at the lid, place vial in the chamber and align arrow marks.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_d">Press (*zero*) to perform <b>zero test</b>.</string>
+    <string name="add_reagent_1_nickel">Add <b>four level spoons of %reagent1</b>.</string>
+    <string name="mix_shaking">Mix the contents by shaking.</string>
+    <string name="add_reagent_2_nickel">Add <b>0.4 mL %reagent2 reagent solution</b> to the water sample.</string>
+
 </resources>

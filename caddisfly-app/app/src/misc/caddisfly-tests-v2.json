@@ -908,6 +908,30 @@
     },
     {
       "name": "Nickel",
+      "uuid": "1c741fe2-d1af-11ea-87d0-0242ac130003",
+      "sample": "Water",
+      "device": "Photometer",
+      "brand": "Lovibond",
+      "model": "MD610",
+      "reagents": [
+        {
+          "code": "424401"
+        },
+        {
+          "code": "424402"
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Nickel",
+          "unit": "mg/l",
+          "range": "0.2-7"
+        }
+      ]
+    },
+    {
+      "name": "Nickel",
       "uuid": "01b9ddba-c93c-416f-9420-a444a7fbd36f",
       "sample": "Water",
       "device": "Photometer",
@@ -1887,7 +1911,7 @@
       ]
     },
     {
-      "name": "Arsenic",
+      "name": "Arsenic (0 - 500)",
       "uuid": "32b6d11b-c7f3-475f-adf9-32d9b8f4aecf",
       "sample": "Water",
       "device": "Test Strip",
@@ -1905,7 +1929,7 @@
       ]
     },
     {
-      "name": "Arsenic",
+      "name": "Arsenic (0 - 4000)",
       "uuid": "beca9731-63f4-434f-a3c2-ac33b44f9992",
       "sample": "Water",
       "device": "Test Strip",
@@ -1990,7 +2014,7 @@
       "uuid": "af98ac35-dc55-4d86-bbdc-aa4a4e3100c9",
       "sample": "Water",
       "device": "Test Strip",
-      "productCode": "480048",
+      "productCode": "480049",
       "brand": "SenSafe",
       "hasImage": true,
       "results": [
@@ -2008,7 +2032,7 @@
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "sample": "Water",
       "device": "Test Strip",
-      "productCode": "27454",
+      "productCode": "2745425",
       "brand": "Hach",
       "hasImage": true,
       "results": [
@@ -2058,7 +2082,7 @@
       "uuid": "debbbf5e-fe0c-4b9c-be1f-6ed8142b6b07",
       "sample": "Water",
       "device": "Test Strip",
-      "productCode": "27456",
+      "productCode": "2745650",
       "brand": "Hach",
       "hasImage": true,
       "results": [
@@ -2108,7 +2132,7 @@
       "uuid": "f4c57d34-dd17-4750-9fcd-fe26af2621a7",
       "sample": "Water",
       "device": "Test Strip",
-      "productCode": "27571",
+      "productCode": "2757150",
       "brand": "Hach",
       "hasImage": true,
       "results": [
@@ -2169,7 +2193,7 @@
       "uuid": "459a42d9-0834-4656-9e5a-e3bde46bdcff",
       "sample": "Water",
       "device": "Test Strip",
-      "productCode": "2745348",
+      "productCode": "2745325",
       "brand": "Hach",
       "hasImage": true,
       "results": [
