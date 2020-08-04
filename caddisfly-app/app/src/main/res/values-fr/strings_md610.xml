@@ -179,4 +179,12 @@
     <string name="tube_upright_invert_flocculation">Tenir le tube à la verticale et après que l\'agent réducteur se soit déposé au fond, l\'inverser doucement trois à quatre fois afin de compléter la floculation de l\'agent réducteur.</string>
     <string name="stand_tube_further_2_minutes">Laissez le tube reposer pendant 2 minutes supplémentaires.</string>
 
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_a">Rincez le flacon (24 mm Ø) avec l\'échantillon d\'eau.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_b">Remplissez le flacon de (24 mm Ø) avec <b>3 ml de votre échantillon  d\'eau </b> et <b>7 ml d\'eau déminéralisée</b>.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_c">Essuyez l\'extérieur du flacon, maintenez le couvercle du flacon, mettez le flacon dans la chambre de l\'appareil en suivant les flèches marquées.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_d">Appuyez sur (*zero*) pour effectuer le <b>test zéro</b>.</string>
+    <string name="add_reagent_1_nickel">Ajoutez <b>une cuillère à soupe de %reagent1</b>.</string>
+    <string name="mix_shaking">Mélangez le contenu en secouant.</string>
+    <string name="add_reagent_2_nickel">Ajoutez <b>0.4 mL de solution réactive %reagent2 </b> à l\'échantillon d\'eau.</string>
+
 </resources>

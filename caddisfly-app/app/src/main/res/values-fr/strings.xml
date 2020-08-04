@@ -19,7 +19,7 @@
     <string name="close">Fermer</string>
     <string name="previous">Précédent</string>
     <string name="next">Suivant</string>
-    <string name="navigate_up">Revenir en haut de la page</string>
+    <string name="navigate_up">Naviguer vers le haut</string>
     <string name="logo">Logo</string>
     <string name="result">Résultat</string>
     <string name="language">Langue</string>
@@ -72,6 +72,8 @@
     <!--Messages-->
     <string name="phoneDoesNotSupport">Cette fonctionnalité n\'est pas pris en charge par cet appareil</string>
     <string name="errorLoadingConfiguration">Impossible de charger les informations de configuration</string>
+    <string name="external_app_not_installed">Akvo Flow n\'est pas installée.</string>
+    <string name="install_external_app">Veuillez installer l\'application Akvo Flow.</string>
     <!--Bluetooth-->
     <string name="nearby_devices">Les appareils à proximité</string>
     <string name="connect_device">Connectez-vous à votre appareil</string>
@@ -103,4 +105,8 @@
     <string name="to_conduct_a_water_quality_test">Pour effectuer un test de qualité de l\'eau, allez dans Flow et sélectionnez la question Caddisfly.</string>
     <string name="go_to_external_app">Aller à Akvo Flow</string>
     <string name="errorAkvoFlowRequired">Veuillez installer l\'application Akvo Flow</string>
+    <!--App Update-->
+    <string name="update_ready">La mise à jour est prête à installer</string>
+    <string name="update_download_fail">Impossible de télécharger la mise à jour</string>
+    <string name="restart">Redémarrer</string>
 </resources>
