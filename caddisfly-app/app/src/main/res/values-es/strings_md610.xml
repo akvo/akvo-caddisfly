@@ -179,4 +179,12 @@
     <string name="tube_upright_invert_flocculation">Coloque el tubo en posición vertical y, una vez que el agente reductor se haya asentado en el fondo, inviértalo suavemente de tres a cuatro veces para completar la floculación del agente reductor. </string>
     <string name="stand_tube_further_2_minutes">Deje reposar el tubo durante 2 minutos más.</string>
 
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_a">Enjuague un vial (24 mm Ø) con la muestra de agua.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_b">Llene el vial (24 mm Ø) con <b>3 ml de su muestra</b> y <b> 7 ml de agua desionizada</b>.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_c">Limpie el exterior del vial, sostenga el vial en la tapa, coloque el vial en la cámara y alinee las marcas de flecha.</string>
+    <string name="fill_vial_24_with_3ml_sample_7ml_deionized_water_zero_d">Presione (*zero*) para realizar la <b>prueba de cero</b>.</string>
+    <string name="add_reagent_1_nickel">Añade <b>4 cucharas de %reagent1 en polvo</b>.</string>
+    <string name="mix_shaking">Mezcle el contenido agitando.</string>
+    <string name="add_reagent_2_nickel">Agregue <b>0.4 mL de solución reactiva %reagent2</b> a la muestra de agua.</string>
+
 </resources>
