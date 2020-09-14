@@ -373,6 +373,68 @@
       ]
     },
     {
+      "name": "Water - Dissolved Oxygen",
+      "subtype": "manual",
+      "uuid": "cf0840aa-f678-11ea-adc1-0242ac120002",
+      "brand": "Lovibond SD 400 Oxi L",
+      "imageScale": "centerCrop",
+      "ranges": "0,50",
+      "instructions": [
+        {
+          "section": [
+            "prepare_do"
+          ]
+        },
+        {
+          "section": [
+            "connect_do_sensor"
+          ]
+        },
+        {
+          "section": [
+            "turn_on_do"
+          ]
+        },
+        {
+          "section": [
+            "immers_do_sensor"
+          ]
+        },
+        {
+          "section": [
+            "take_photo_of_result_do",
+            "~photo~"
+          ]
+        },
+        {
+          "section": [
+            "enter_measured_value_do",
+            "~input~",
+            "image:pt_6_do_enter"
+          ]
+        },
+        {
+          "section": [
+            "disconnect_do_sensor"
+          ]
+        },
+        {
+          "section": [
+            "safe_storage_do"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Dissolved Oxygen",
+          "unit": "mg/l",
+          "range": "0-50",
+          "unitChoice": "mg/l,mS/cm"
+        }
+      ]
+    },
+    {
       "name": "Soil - Nitrogen",
       "subtype": "striptest",
       "uuid": "53a1649a-be67-4a13-8cba-1b7db640037c",

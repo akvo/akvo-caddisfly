@@ -113,5 +113,13 @@
     <string name="edta_complex_copper_1">In the case of high levels of copper:</string>
     <string name="edta_complex_copper_2">First measure the result (A). Then add one EDTA tablet to the already coloured water sample.</string>
     <string name="edta_complex_copper_3">Crush and mix to dissolve the tablet. Read the second result (B). The concentration Zinc is the first result (A) minus the second result (B).</string>
+    <string name="prepare_do">"Make sure that:\n 4 AA batteries are inserted in the battery compartment\n The SD card is inserted in the device\n The oxygen sensor is recently calibrated (see manual for calibration)"</string>
+    <string name="connect_do_sensor">"In order to connect the sensor to the measuring device, the sensor connecting plug is connected to the jack on the measuring device and tightened clockwise. Please ensure that the nose and the recess of the polarity reversal safeguard fit together correctly."</string>
+    <string name="turn_on_do">Turn the device on and wait until the display is initialised.</string>
+    <string name="immers_do_sensor">Immerse the sensor in the water sample. During measurement, it must be ensured that the temperature sensor is also fully immersed in the sample. During the measurement, it takes a little time for equilibrium to be reached and the dissolved oxygen is diffused through the membrane with the luminophores.</string>
+    <string name="disconnect_do_sensor">In order to remove the sensor from the device, the connecting plug is unscrewed anticlockwise and the plug is pulled out of the jack.</string>
+    <string name="safe_storage_do">"Be careful with the sensor since it is sensitive. The sensor must always be kept moist. For this purpose, the storage flask included in the scope of supply is fitted on the sensor and screwed tight."</string>
+    <string name="enter_measured_value_do">Enter the measured value in the display (highlighted value in the image).</string>
+    <string name="take_photo_of_result_do">Take a photo of the result on the display.</string>
 
 </resources>
