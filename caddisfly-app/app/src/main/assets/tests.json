@@ -409,8 +409,12 @@
         {
           "section": [
             "enter_measured_value_do",
-            "~input~",
             "image:pt_6_do_enter"
+          ]
+        },
+        {
+          "section": [
+            "~input~"
           ]
         },
         {
@@ -429,8 +433,7 @@
           "id": 1,
           "name": "Dissolved Oxygen",
           "unit": "mg/l",
-          "range": "0-50",
-          "unitChoice": "mg/l,mS/cm"
+          "range": "0-50"
         }
       ]
     },
