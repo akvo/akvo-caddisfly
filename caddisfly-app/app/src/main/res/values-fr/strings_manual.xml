@@ -113,5 +113,13 @@
     <string name="edta_complex_copper_1">Dans le cas de teneurs élevées en cuivre :</string>
     <string name="edta_complex_copper_2">Mesurez d\'abord le résultat (A). Ajouter ensuite un comprimé d\'EDTA à l\'échantillon d\'eau déjà coloré.</string>
     <string name="edta_complex_copper_3">Écraser et mélanger pour dissoudre le comprimé. Lisez le deuxième résultat (B). La concentration Zinc est le premier résultat (A) moins le deuxième résultat (B).</string>
+    <string name="prepare_do">Assurez-vous que: \n - 4 piles AA sont insérées dans le compartiment à piles \n - La carte SD est insérée dans l\'appareil \n - Le capteur d\'oxygène a été récemment étalonné (voir le manuel pour l\'étalonnage)</string>
+    <string name="connect_do_sensor">Branchez la fiche de connexion du capteur sur la prise de l\'appareil de mesure et vissez-la dans le sens des aiguilles d\'une montre.</string>
+    <string name="turn_on_do">Allumez l\'appareil.</string>
+    <string name="immers_do_sensor">Plongez le capteur dans l\'échantillon d\'eau. Assurez-vous que le capteur de température est complètement immergé. Attendez que le résultat soit stable pour vous assurer que l\'oxygène dissous est entièrement diffusé.</string>
+    <string name="disconnect_do_sensor">Pour retirer le capteur de l\'appareil, la fiche de connexion est dévissée dans le sens inverse des aiguilles d\'une montre et la fiche est retirée de la prise.</string>
+    <string name="safe_storage_do">Faîtes attention, le capteur est sensible et il doit rester humide. Pour cela, le ballon de stockage inclus dans la livraison est monté sur le capteur et vissé de manière étanche.</string>
+    <string name="enter_measured_value_do">Dans l\'écran suivant, entrez la valeur mesurée à partir de l\'affichage (le carré rouge indique l\'emplacement où le résultat sera affiché).</string>
+    <string name="take_photo_of_result_do">Prenez une photo du résultat sur l\'écran.</string>
 
 </resources>
