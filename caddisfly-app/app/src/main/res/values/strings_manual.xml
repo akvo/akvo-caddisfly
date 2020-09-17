@@ -113,5 +113,13 @@
     <string name="edta_complex_copper_1">In the case of high levels of copper:</string>
     <string name="edta_complex_copper_2">First measure the result (A). Then add one EDTA tablet to the already coloured water sample.</string>
     <string name="edta_complex_copper_3">Crush and mix to dissolve the tablet. Read the second result (B). The concentration Zinc is the first result (A) minus the second result (B).</string>
+    <string name="prepare_do">"Make sure that:\n - 4 AA batteries are inserted in the battery compartment\n - The SD card is inserted in the device\n - The oxygen sensor is recently calibrated (see manual for calibration)"</string>
+    <string name="connect_do_sensor">Connect the sensor connecting plug to the jack on the measuring device and tighten it clockwise.</string>
+    <string name="turn_on_do">Turn the device on.</string>
+    <string name="immers_do_sensor">Immerse the sensor in the water sample. Make sure that the temperature sensor is fully immersed. Wait until the result is stable to ensure the dissolved oxygen is fully diffused.</string>
+    <string name="disconnect_do_sensor">In order to remove the sensor from the device, the connecting plug is unscrewed anticlockwise and the plug is pulled out of the jack.</string>
+    <string name="safe_storage_do">Be careful with the sensor since it is sensitive. The sensor must always be kept moist. For this purpose, the storage flask included in the scope of supply is fitted on the sensor and screwed tight.</string>
+    <string name="enter_measured_value_do">In the next screen, enter the measured value from the display (the red square shows the location where the result will be displayed).</string>
+    <string name="take_photo_of_result_do">Take a photo of the result on the display.</string>
 
 </resources>
