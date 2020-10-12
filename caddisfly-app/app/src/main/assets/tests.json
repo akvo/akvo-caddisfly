@@ -3725,6 +3725,155 @@
       ]
     },
     {
+      "name": "Bromine",
+      "subtype": "bluetooth",
+      "md610_id": "80",
+      "uuid": "66866b4a-0c6e-11eb-adc1-0242ac120002",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "DPD No. 1",
+          "code": "511050BT",
+          "type": "tablet"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.05,13",
+      "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirring_rod_deionised",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero_a",
+            "fill_vial_24_with_10ml_sample_zero_b",
+            "fill_vial_24_with_10ml_sample_zero_c",
+            "fill_vial_24_with_10ml_sample_zero_d",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial_leave_drops",
+            "image:take_out_vial_leave_drops"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_a",
+            "add_reagent_1_tablet_b",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_a",
+            "wipe_place_align_vial_b",
+            "wipe_place_align_vial_c",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Bromine",
+          "unit": "mg/l",
+          "range": "0.05-13"
+        }
+      ]
+    },
+    {
+      "name": "Boron",
+      "subtype": "bluetooth",
+      "md610_id": "85",
+      "uuid": "727c79e4-0c6e-11eb-adc1-0242ac120002",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "BORON No. 1 tablet",
+          "code": "515790",
+          "reactionTime": 20,
+          "type": "tablet"
+        },
+        {
+          "name": "BORON No. 2 tablet",
+          "code": "515800BT",
+          "type": "tablet"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.1,2",
+      "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirring_rod_deionised",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero_a",
+            "fill_vial_24_with_10ml_sample_zero_b",
+            "fill_vial_24_with_10ml_sample_zero_c",
+            "fill_vial_24_with_10ml_sample_zero_d",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_a",
+            "add_reagent_1_tablet_b_dissolve",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet_a",
+            "add_reagent_2_tablet_b",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_gently_swirl_tablets",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1_a",
+            "wipe_place_align_vial_wait_1_b",
+            "wipe_place_align_vial_wait_1_c",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Boron",
+          "unit": "mg/l",
+          "range": "0.1-2"
+        }
+      ]
+    },
+    {
       "name": "Chloride",
       "subtype": "bluetooth",
       "md610_id": "90",
@@ -6843,6 +6992,226 @@
       ]
     },
     {
+      "name": "Ozone in presence of Chlorine",
+      "subtype": "bluetooth",
+      "md610_id": "300",
+      "uuid": "f3177eb0-0c6d-11eb-adc1-0242ac120002",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "DPD No. 1",
+          "code": "511050BT",
+          "reactionTime": 2,
+          "type": "tablet"
+        },
+        {
+          "name": "DPD No. 3",
+          "code": "511080BT",
+          "reactionTime": 2,
+          "type": "tablet"
+        },
+        {
+          "name": "GLYCINE",
+          "code": "512170BT",
+          "type": "tablet"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.02,2,0.02,2",
+      "selectInstruction": "select_diff_test_instruction",
+      "endInstruction": "clean_stirring_rod_deionised",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero_a",
+            "fill_vial_24_with_10ml_sample_zero_b",
+            "fill_vial_24_with_10ml_sample_zero_c",
+            "fill_vial_24_with_10ml_sample_zero_d",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial_leave_drops",
+            "image:take_out_vial_leave_drops"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_a",
+            "add_reagent_2_tablet_a",
+            "add_reagent_2_tablet_b",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablets",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1_a",
+            "wipe_place_align_vial_wait_1_b",
+            "wipe_place_align_vial_wait_1_c",
+            "image:place_vial_test"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial_empty_clean",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "fill_second_vial",
+            "image:fill_vial_24_10_sample"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet_a",
+            "add_reagent_2_tablet_b"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablets",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_a",
+            "add_reagent_2_tablet_a",
+            "add_reagent_2_tablet_b",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "transfer_second_vial_to_prepared_vial"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablets"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_2_a",
+            "wipe_place_align_vial_wait_2_b",
+            "wipe_place_align_vial_wait_2_c",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Ozone",
+          "md610_id": "O3",
+          "unit": "mg/l",
+          "range": "0.02-2"
+        },
+        {
+          "id": 2,
+          "name": "Total Chlorine",
+          "md610_id": "total Cl2",
+          "unit": "mg/l",
+          "range": "0.02-2"
+        }
+      ]
+    },
+    {
+      "name": "Ozone in absence of Chlorine",
+      "subtype": "bluetooth",
+      "md610_id": "300",
+      "uuid": "e81d1196-0c6d-11eb-adc1-0242ac120002",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "DPD No. 1",
+          "code": "511050BT",
+          "reactionTime": 2,
+          "type": "tablet"
+        },
+        {
+          "name": "DPD No. 3",
+          "code": "511080BT",
+          "type": "tablet"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.02,2",
+      "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirring_rod_deionised",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero_a",
+            "fill_vial_24_with_10ml_sample_zero_b",
+            "fill_vial_24_with_10ml_sample_zero_c",
+            "fill_vial_24_with_10ml_sample_zero_d",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial_leave_drops",
+            "image:take_out_vial_leave_drops"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_a",
+            "add_reagent_2_tablet_a",
+            "add_reagent_2_tablet_b",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_water_till_10ml",
+            "image:fill_vial_24_10_sample"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablets",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1_a",
+            "wipe_place_align_vial_wait_1_b",
+            "wipe_place_align_vial_wait_1_c",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Ozone",
+          "unit": "mg/l",
+          "range": "0.02-2"
+        }
+      ]
+    },
+    {
       "name": "Phosphate",
       "subtype": "bluetooth",
       "md610_id": "320",
@@ -7603,6 +7972,157 @@
           "name": "Sulfate",
           "unit": "mg/l",
           "range": "5-100"
+        }
+      ]
+    },
+    {
+      "name": "Sulfide",
+      "subtype": "bluetooth",
+      "md610_id": "365",
+      "uuid": "2aa964a0-0c6f-11eb-adc1-0242ac120002",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "SULFIDE No. 1 tablet",
+          "code": "502930",
+          "reactionTime": 10,
+          "type": "tablet"
+        },
+        {
+          "name": "SULFIDE No. 2 tablet",
+          "code": "502940",
+          "type": "tablet"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.04,0.5",
+      "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirring_rod_deionised",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero_a",
+            "fill_vial_24_with_10ml_sample_zero_b",
+            "fill_vial_24_with_10ml_sample_zero_c",
+            "fill_vial_24_with_10ml_sample_zero_d",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_a",
+            "add_reagent_1_tablet_b_dissolve",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet_a",
+            "add_reagent_2_tablet_b",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1_a",
+            "wipe_place_align_vial_wait_1_b",
+            "wipe_place_align_vial_wait_1_c",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Sulfide",
+          "unit": "mg/l",
+          "range": "0.04-0.5"
+        }
+      ]
+    },
+    {
+      "name": "Sulfite",
+      "subtype": "bluetooth",
+      "md610_id": "370",
+      "uuid": "32b9bd20-0c6f-11eb-adc1-0242ac120002",
+      "brand": "Lovibond MD610",
+      "imageScale": "centerCrop",
+      "reagents": [
+        {
+          "name": "SULFITE LR",
+          "code": "518020BT",
+          "reactionTime": 5,
+          "type": "tablet"
+        }
+      ],
+      "sampleQuantity": "10",
+      "ranges": "0.1,5",
+      "selectInstruction": "select_test_instruction",
+      "endInstruction": "clean_stirring_rod_deionised",
+      "instructions": [
+        {
+          "section": [
+            "fill_vial_24_with_10ml_sample_zero_a",
+            "fill_vial_24_with_10ml_sample_zero_b",
+            "fill_vial_24_with_10ml_sample_zero_c",
+            "fill_vial_24_with_10ml_sample_zero_d",
+            "image:correct_filling_aligning"
+          ]
+        },
+        {
+          "section": [
+            "remove_vial",
+            "image:take_out_vial"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_1_tablet_a",
+            "add_reagent_1_tablet_b",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "add_reagent_2_tablet_a",
+            "add_reagent_2_tablet_b",
+            "image:add_tablet"
+          ]
+        },
+        {
+          "section": [
+            "close_and_swirl_vial_dissolve_tablet",
+            "image:close_swirl_tablet"
+          ]
+        },
+        {
+          "section": [
+            "wipe_place_align_vial_wait_1_a",
+            "wipe_place_align_vial_wait_1_b",
+            "wipe_place_align_vial_wait_1_c",
+            "image:place_vial_test"
+          ]
+        }
+      ],
+      "results": [
+        {
+          "id": 1,
+          "name": "Sulfite",
+          "unit": "mg/l",
+          "range": "0.1-5"
         }
       ]
     },

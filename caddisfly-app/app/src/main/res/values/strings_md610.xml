@@ -187,4 +187,11 @@
     <string name="mix_shaking">Mix the contents by shaking.</string>
     <string name="add_reagent_2_nickel">Add <b>0.4 mL %reagent2 reagent solution</b> to the water sample.</string>
 
+    <string name="add_reagent_1_tablet_b_dissolve">Crush the tablet using a clean stirring rod and let it dissolve.</string>
+    <string name="close_gently_swirl_tablets">Close the vial tightly with the cap and swirl gently (do not shake heavily!) several times until the tablets are dissolved.</string>
+    <string name="close_and_swirl_vial_dissolve_tablets">Close the vial tightly with the cap and swirl several times until the tablets are dissolved.</string>
+    <string name="remove_vial_empty_clean">Remove the vial from the sample chamber, <b>empty the vial</b> and rinse vial and cap several times.</string>
+    <string name="fill_second_vial"><b>Fill a second clean vial with 10 ml of water sample.</b></string>
+    <string name="transfer_second_vial_to_prepared_vial">Transfer the contents of the second vial (Glycine solution) into the prepared vial.</string>
+
 </resources>
