@@ -77,7 +77,7 @@ class PhotometerTest {
 
         assertSame(MD610_TESTS_COUNT, (recyclerView.adapter as TestInfoAdapter).itemCount)
 
-        assertEquals("Cyanide",
+        assertEquals("COD",
                 (recyclerView.adapter as TestInfoAdapter).getItemAt(26).name)
         assertEquals("62 Ammonia",
                 (recyclerView.getChildAt(4).findViewById<View>(R.id.text_title) as TextView).text)
