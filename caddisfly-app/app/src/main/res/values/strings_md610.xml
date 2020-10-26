@@ -193,5 +193,16 @@
     <string name="remove_vial_empty_clean">Remove the vial from the sample chamber, <b>empty the vial</b> and rinse vial and cap several times.</string>
     <string name="fill_second_vial"><b>Fill a second clean vial with 10 ml of water sample.</b></string>
     <string name="transfer_second_vial_to_prepared_vial">Transfer the contents of the second vial (Glycine solution) into the prepared vial.</string>
+    <string name="select_with_cl_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'with Cl\'</b> and then press (*enter*)]]></string>
+    <string name="select_without_cl_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'without Cl\'</b> and then press (*enter*)]]></string>
+    <string name="tablets_correct_order">Note: tablets must be added in the correct order.</string>
+    <string name="sample_solution_pH">Note 1: the sample solution should have a pH value between 6 and 7.</string>
+    <string name="sample_temperature_19_21">Note 2: The temperature of the sample must be between 19°C and 21°C.</string>
+    <string name="analysis_immediately">Note 1: the analysis must take place immediately after taking the sample.</string>
+    <string name="sample_free_of_chlorine_demand">Note 2: To avoid any measurement errors, only use sample bottles/vials free of Chlorine demand.</string>
+    <string name="adjust_pH">Note 3: Strong alkaline or acidic water samples must be adjusted between pH 6 and pH 7 before the reagent is added\n\n(use 0.5 mol/l Sulfuric acid resp. 1 mol/l Sodium hydroxide).</string>
+    <string name="bromine_high_concentration">Note 4: Concentrations above 22 mg/l Bromine can lead to results showing 0 mg/l. In this case, the water sample must be diluted with water free of Bromine. 10 ml of the diluted sample should be mixed with the reagent.</string>
+    <string name="sample_temperature_20">Note 2: The sample temperature should be 20°C. A different temperature can lead to higher or lower results.</string>
+    <string name="ozone_high_concentration">Note 4: Concentrations above 6 mg/l Ozone can lead to results showing 0 mg/l. In this case, the water sample must be diluted with water free of Ozone. 10 ml of the diluted sample should be mixed with the reagent.</string>
 
 </resources>

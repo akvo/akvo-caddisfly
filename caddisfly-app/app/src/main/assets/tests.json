@@ -3745,6 +3745,14 @@
       "instructions": [
         {
           "section": [
+            "analysis_immediately",
+            "sample_free_of_chlorine_demand",
+            "adjust_pH",
+            "bromine_high_concentration"
+          ]
+        },
+        {
+          "section": [
             "fill_vial_24_with_10ml_sample_zero_a",
             "fill_vial_24_with_10ml_sample_zero_b",
             "fill_vial_24_with_10ml_sample_zero_c",
@@ -3832,6 +3840,8 @@
         {
           "section": [
             "remove_vial",
+            "sample_solution_pH",
+            "sample_temperature_19_21",
             "image:take_out_vial"
           ]
         },
@@ -3839,6 +3849,7 @@
           "section": [
             "add_reagent_1_tablet_a",
             "add_reagent_1_tablet_b_dissolve",
+            "tablets_correct_order",
             "image:add_tablet"
           ]
         },
@@ -3846,6 +3857,7 @@
           "section": [
             "add_reagent_2_tablet_a",
             "add_reagent_2_tablet_b",
+            "tablets_correct_order",
             "image:add_tablet"
           ]
         },
@@ -7019,9 +7031,17 @@
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,2,0.02,2",
-      "selectInstruction": "select_diff_test_instruction",
+      "selectInstruction": "select_with_cl_test_instruction",
       "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
+        {
+          "section": [
+            "analysis_immediately",
+            "sample_free_of_chlorine_demand",
+            "adjust_pH",
+            "ozone_high_concentration"
+          ]
+        },
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero_a",
@@ -7155,9 +7175,17 @@
       ],
       "sampleQuantity": "10",
       "ranges": "0.02,2",
-      "selectInstruction": "select_test_instruction",
+      "selectInstruction": "select_without_cl_test_instruction",
       "endInstruction": "clean_stirring_rod_deionised",
       "instructions": [
+        {
+          "section": [
+            "analysis_immediately",
+            "sample_free_of_chlorine_demand",
+            "adjust_pH",
+            "ozone_high_concentration"
+          ]
+        },
         {
           "section": [
             "fill_vial_24_with_10ml_sample_zero_a",
@@ -8012,6 +8040,8 @@
         {
           "section": [
             "remove_vial",
+            "analysis_immediately",
+            "sample_temperature_20",
             "image:take_out_vial"
           ]
         },
@@ -8019,6 +8049,7 @@
           "section": [
             "add_reagent_1_tablet_a",
             "add_reagent_1_tablet_b_dissolve",
+            "tablets_correct_order",
             "image:add_tablet"
           ]
         },
@@ -8026,6 +8057,7 @@
           "section": [
             "add_reagent_2_tablet_a",
             "add_reagent_2_tablet_b",
+            "tablets_correct_order",
             "image:add_tablet"
           ]
         },
