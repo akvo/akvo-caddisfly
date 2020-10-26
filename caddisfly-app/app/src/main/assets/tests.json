@@ -3728,7 +3728,7 @@
       "name": "Bromine",
       "subtype": "bluetooth",
       "md610_id": "80",
-      "uuid": "66866b4a-0c6e-11eb-adc1-0242ac120002",
+      "uuid": "757e0669-75c7-462e-96d1-1a1f89498b76",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -3807,7 +3807,7 @@
       "name": "Boron",
       "subtype": "bluetooth",
       "md610_id": "85",
-      "uuid": "727c79e4-0c6e-11eb-adc1-0242ac120002",
+      "uuid": "bec072ab-fe4d-47ae-bb26-331102169f64",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -7007,7 +7007,7 @@
       "name": "Ozone in presence of Chlorine",
       "subtype": "bluetooth",
       "md610_id": "300",
-      "uuid": "f3177eb0-0c6d-11eb-adc1-0242ac120002",
+      "uuid": "d8bf5165-9d22-4aae-ae23-cba1e0b544f8",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -7157,7 +7157,7 @@
       "name": "Ozone in absence of Chlorine",
       "subtype": "bluetooth",
       "md610_id": "300",
-      "uuid": "e81d1196-0c6d-11eb-adc1-0242ac120002",
+      "uuid": "59fc8823-cfc9-4384-aeee-5c3c765b9194",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -8007,7 +8007,7 @@
       "name": "Sulfide",
       "subtype": "bluetooth",
       "md610_id": "365",
-      "uuid": "2aa964a0-0c6f-11eb-adc1-0242ac120002",
+      "uuid": "1a317bd6-2861-4e47-96c1-84d6e83172d6",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
@@ -8089,7 +8089,7 @@
       "name": "Sulfite",
       "subtype": "bluetooth",
       "md610_id": "370",
-      "uuid": "32b9bd20-0c6f-11eb-adc1-0242ac120002",
+      "uuid": "c37adf31-c622-47c5-850c-4361028134f5",
       "brand": "Lovibond MD610",
       "imageScale": "centerCrop",
       "reagents": [
