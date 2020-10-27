@@ -3745,10 +3745,11 @@
       "instructions": [
         {
           "section": [
-            "analysis_immediately",
-            "sample_free_of_chlorine_demand",
-            "adjust_pH",
-            "bromine_high_concentration"
+            "notes_title",
+            "/analysis_immediately",
+            "/sample_free_of_chlorine_demand",
+            "/adjust_pH",
+            "/bromine_high_concentration"
           ]
         },
         {
@@ -7036,10 +7037,11 @@
       "instructions": [
         {
           "section": [
-            "analysis_immediately",
-            "sample_free_of_chlorine_demand",
-            "adjust_pH",
-            "ozone_high_concentration"
+            "notes_title",
+            "/analysis_immediately",
+            "/sample_free_of_chlorine_demand",
+            "/adjust_pH",
+            "/ozone_high_concentration"
           ]
         },
         {
@@ -7180,10 +7182,11 @@
       "instructions": [
         {
           "section": [
-            "analysis_immediately",
-            "sample_free_of_chlorine_demand",
-            "adjust_pH",
-            "ozone_high_concentration"
+            "notes_title",
+            "/analysis_immediately",
+            "/sample_free_of_chlorine_demand",
+            "/adjust_pH",
+            "/ozone_high_concentration"
           ]
         },
         {
