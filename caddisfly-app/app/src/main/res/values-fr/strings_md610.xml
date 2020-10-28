@@ -187,4 +187,23 @@
     <string name="mix_shaking">Mélangez le contenu en secouant.</string>
     <string name="add_reagent_2_nickel">Ajoutez <b>0.4 mL de solution réactive %reagent2 </b> à l\'échantillon d\'eau.</string>
 
+    <string name="add_reagent_1_tablet_b_dissolve">Écrasez le comprimé à l\'aide d\'un agitateur propre et laissez-le se dissoudre.</string>
+    <string name="close_gently_swirl_tablets">Fermez hermétiquement le flacon avec le capuchon et agitez doucement (surtout ne secouez pas trop fort) plusieurs fois jusqu\'à ce que les comprimés soient dissous.</string>
+    <string name="close_and_swirl_vial_dissolve_tablets">Fermer hermétiquement le flacon avec le capuchon et agiter plusieurs fois jusqu\'à ce que les comprimés soient dissous.</string>
+    <string name="remove_vial_empty_clean">Retirez le tube de la chambre d\'échantillon, <b>videz le tube</b> et rincer le flacon et le bouchon plusieurs fois.</string>
+    <string name="fill_second_vial"><b>Remplissez un deuxième flacon propre avec 10 ml d\'échantillon d\'eau.</b></string>
+    <string name="transfer_second_vial_to_prepared_vial">Transférer le contenu du deuxième flacon (solution de glycine) dans le flacon préparé.</string>
+    <string name="select_with_cl_test_instruction"><![CDATA[Appuyez et maintenez (*shift*) + <b>%1$s</b> pour sélectionner le test <b>%2$s</b> et appuyez sur (*enter*). Sélectionnez <b>\'with Cl\'</b> et appuyez sur (*enter*)]]></string>
+    <string name="select_without_cl_test_instruction"><![CDATA[Appuyez et maintenez (*shift*) + <b>%1$s</b> pour sélectionner le test <b>%2$s</b> et appuyez sur (*enter*). Sélectionnez <b>\'without Cl\'</b> et appuyez sur (*enter*)]]></string>
+    <string name="tablets_correct_order">Les comprimés doivent être ajoutés dans le bon ordre.</string>
+    <string name="sample_solution_pH">La solution échantillon doit avoir un pH compris entre 6 et 7.</string>
+    <string name="sample_temperature_19_21">La température de l\'échantillon doit être comprise entre 19°C et 21°C.</string>
+    <string name="analysis_immediately">L\'analyse doit avoir lieu immédiatement après le prélèvement de l\'échantillon.</string>
+    <string name="sample_free_of_chlorine_demand">Pour éviter toute erreur de mesure, n\'utilisez que des flacons / flacons d\'échantillons sans demande de chlore.</string>
+    <string name="adjust_pH">Les échantillons d\'eau fortement alcaline ou acide doivent être ajustés afin d\'avoir un pH compris entre 6 et 7 avant d\'ajouter le réactif\n(utilisez 0,5 mol/l d\'acide sulfurique ou 1 mol/l d\'hydroxyde de sodium).</string>
+    <string name="bromine_high_concentration">Des concentrations supérieures à 22 mg/l de brome peuvent conduire à des résultats de 0 mg/l. Dans ce cas, l\'échantillon d\'eau doit être dilué avec de l\'eau sans brome. 10 ml de l\'échantillon dilué doivent être mélangés avec le réactif.</string>
+    <string name="sample_temperature_20">La température de l\'échantillon doit être de 20°C. Une température différente peut conduire à des résultats supérieurs ou inférieurs.</string>
+    <string name="ozone_high_concentration">Des concentrations supérieures à 6 mg/l d\'ozone peuvent conduire à des résultats de 0 mg/l. Dans ce cas, l\'échantillon d\'eau doit être dilué avec de l\'eau exempte d\'ozone. 10 ml de l\'échantillon dilué doivent être mélangés avec le réactif.</string>
+    <string name="notes_title"><b>NOTES</b></string>
+
 </resources>

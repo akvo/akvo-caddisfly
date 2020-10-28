@@ -187,4 +187,23 @@
     <string name="mix_shaking">Mezcle el contenido agitando.</string>
     <string name="add_reagent_2_nickel">Agregue <b>0.4 mL de solución reactiva %reagent2</b> a la muestra de agua.</string>
 
+    <string name="add_reagent_1_tablet_b_dissolve">Triture la tableta con una varilla limpia y deje que se disuelva.</string>
+    <string name="close_gently_swirl_tablets">Cierre bien el vial con la tapa y gírelo suavemente (¡no agite muy fuerte!) varias veces hasta que las tabletas se disuelvan.</string>
+    <string name="close_and_swirl_vial_dissolve_tablets">Cierre bien el vial con la tapa y agítelo varias veces hasta que se disuelvan las tabletas.</string>
+    <string name="remove_vial_empty_clean">Retire el vial de la cámara de muestras, <b>vacíe el vial</b> y enjuague el vial y la tapa varias veces.</string>
+    <string name="fill_second_vial"><b>Llene un segundo vial limpio con 10 ml de muestra de agua.</b></string>
+    <string name="transfer_second_vial_to_prepared_vial">Transfiera el contenido del segundo vial (solución de glicina) al vial preparado.</string>
+    <string name="select_with_cl_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b>para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'with CI\'</b> y luego presione (*enter*)]]></string>
+    <string name="select_without_cl_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b>para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'without CI\'</b> y luego presione (*enter*)]]></string>
+    <string name="tablets_correct_order">Las tabletas deben agregarse en el orden correcto.</string>
+    <string name="sample_solution_pH">La solución de muestra debe tener un valor de pH entre 6 y 7.</string>
+    <string name="sample_temperature_19_21">La temperatura de la muestra debe estar entre 19°C y 21°C.</string>
+    <string name="analysis_immediately">El análisis debe tener lugar inmediatamente después de tomar la muestra.</string>
+    <string name="sample_free_of_chlorine_demand">Para evitar errores de medición, utilice únicamente frascos / viales de muestra sin demanda de cloro.</string>
+    <string name="adjust_pH">Las muestras de agua fuertemente alcalinas o ácidas deben ajustarse para tener un pH de entre 6 y 7 antes de añadir el reactivo\n(utilice 0,5 mol/l de ácido sulfúrico o 1 mol/l de hidróxido de sodio).</string>
+    <string name="bromine_high_concentration">Las concentraciones superiores a 22 mg/l de bromo pueden dar lugar a resultados que muestren 0 mg/l. En este caso, la muestra de agua debe diluirse con agua libre de Bromo. Se deben mezclar 10 ml de la muestra diluida con el reactivo.</string>
+    <string name="sample_temperature_20">La temperatura de la muestra debe ser de 20°C. Una temperatura diferente puede llevar a resultados más altos o más bajos.</string>
+    <string name="ozone_high_concentration">Las concentraciones superiores a 6 mg/l de ozono pueden dar lugar a resultados que muestren 0 mg/l. En este caso, la muestra de agua debe diluirse con agua libre de ozono. Se deben mezclar 10 ml de la muestra diluida con el reactivo.</string>
+    <string name="notes_title"><b>NOTAS</b></string>
+
 </resources>
