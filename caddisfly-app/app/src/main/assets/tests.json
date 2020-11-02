@@ -3831,6 +3831,13 @@
       "instructions": [
         {
           "section": [
+            "notes_title",
+            "/sample_solution_pH",
+            "/sample_temperature_19_21"
+          ]
+        },
+        {
+          "section": [
             "fill_vial_24_with_10ml_sample_zero_a",
             "fill_vial_24_with_10ml_sample_zero_b",
             "fill_vial_24_with_10ml_sample_zero_c",
@@ -3841,8 +3848,6 @@
         {
           "section": [
             "remove_vial",
-            "sample_solution_pH",
-            "sample_temperature_19_21",
             "image:take_out_vial"
           ]
         },
@@ -3850,7 +3855,7 @@
           "section": [
             "add_reagent_1_tablet_a",
             "add_reagent_1_tablet_b_dissolve",
-            "tablets_correct_order",
+            "/tablets_correct_order",
             "image:add_tablet"
           ]
         },
@@ -3858,7 +3863,7 @@
           "section": [
             "add_reagent_2_tablet_a",
             "add_reagent_2_tablet_b",
-            "tablets_correct_order",
+            "/tablets_correct_order",
             "image:add_tablet"
           ]
         },
@@ -7005,7 +7010,7 @@
       ]
     },
     {
-      "name": "Ozone in presence of Chlorine",
+      "name": "Ozone",
       "subtype": "bluetooth",
       "md610_id": "300",
       "uuid": "d8bf5165-9d22-4aae-ae23-cba1e0b544f8",
@@ -7063,7 +7068,7 @@
           "section": [
             "add_reagent_1_tablet_a",
             "add_reagent_2_tablet_a",
-            "add_reagent_2_tablet_b",
+            "add_reagent_2_tablet_c",
             "image:add_tablet"
           ]
         },
@@ -7101,8 +7106,8 @@
         },
         {
           "section": [
-            "add_reagent_2_tablet_a",
-            "add_reagent_2_tablet_b"
+            "add_reagent_3_tablet_a",
+            "add_reagent_3_tablet_b"
           ]
         },
         {
@@ -7115,7 +7120,7 @@
           "section": [
             "add_reagent_1_tablet_a",
             "add_reagent_2_tablet_a",
-            "add_reagent_2_tablet_b",
+            "add_reagent_2_tablet_c",
             "image:add_tablet"
           ]
         },
@@ -7156,7 +7161,7 @@
       ]
     },
     {
-      "name": "Ozone in absence of Chlorine",
+      "name": "Ozone",
       "subtype": "bluetooth",
       "md610_id": "300",
       "uuid": "59fc8823-cfc9-4384-aeee-5c3c765b9194",
@@ -7208,7 +7213,7 @@
           "section": [
             "add_reagent_1_tablet_a",
             "add_reagent_2_tablet_a",
-            "add_reagent_2_tablet_b",
+            "add_reagent_2_tablet_c",
             "image:add_tablet"
           ]
         },
@@ -8033,6 +8038,13 @@
       "instructions": [
         {
           "section": [
+            "notes_title",
+            "/analysis_immediately",
+            "/sample_temperature_20"
+          ]
+        },
+        {
+          "section": [
             "fill_vial_24_with_10ml_sample_zero_a",
             "fill_vial_24_with_10ml_sample_zero_b",
             "fill_vial_24_with_10ml_sample_zero_c",
@@ -8043,8 +8055,6 @@
         {
           "section": [
             "remove_vial",
-            "analysis_immediately",
-            "sample_temperature_20",
             "image:take_out_vial"
           ]
         },
@@ -8052,7 +8062,7 @@
           "section": [
             "add_reagent_1_tablet_a",
             "add_reagent_1_tablet_b_dissolve",
-            "tablets_correct_order",
+            "/tablets_correct_order",
             "image:add_tablet"
           ]
         },
@@ -8060,7 +8070,7 @@
           "section": [
             "add_reagent_2_tablet_a",
             "add_reagent_2_tablet_b",
-            "tablets_correct_order",
+            "/tablets_correct_order",
             "image:add_tablet"
           ]
         },
@@ -8127,13 +8137,6 @@
           "section": [
             "add_reagent_1_tablet_a",
             "add_reagent_1_tablet_b",
-            "image:add_tablet"
-          ]
-        },
-        {
-          "section": [
-            "add_reagent_2_tablet_a",
-            "add_reagent_2_tablet_b",
             "image:add_tablet"
           ]
         },

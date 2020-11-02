@@ -73,12 +73,12 @@
     <string name="add_water_till_10ml">Ajoutez l\'échantillon d\'eau jusqu\'au trait de 10 ml marqué sur le flacon</string>
     <string name="add_sample_exact">Verser la quantité <b>exacte%s de l\'échantillon d\'eau en ml dans </b>la cuvette préparée.<b>  Attention : Le flacon est rempli jusqu\'en haut !</b></string>
     <string name="remove_vial">Rétirez le tube d\'echantillon de la chambre.</string>
-    <string name="remove_vial_leave_drops">Rétirez le tube de la chambre d\'echantillon et <b>videz</b> le, laissez un peu de gouttes dans le flacon</string>
+    <string name="remove_vial_leave_drops">Retirez le tube de la chambre d\'échantillon et <b>videz-le en laissant quelques gouttes dans le flacon</b>.</string>
     <string name="remove_vial_empty">Rétirez le tube d\'échantillon de la chambre et <b>videz le flacon</b></string>
     <string name="remove_vial_empty_fill_a">Rétirez le tube de la chambre d\'échantillon et <b>videz le tube</b>.</string>
     <string name="remove_vial_empty_fill_b">Rincez le flacon et le couvercle plusieurs fois, puis remplissez le tube avec <b>%sampleQuantity ml</b> de l\'échantillon d\'eau</string>
     <string name="add_reagent_1_tablet_a">Ajoutez <b>une pastille %reagent1</b> directement de la plaquette à l\'échantillon d\'eau.</string>
-    <string name="add_reagent_1_tablet_b">Écrassez le comprimé en utilisant une tige de mélange propre.</string>
+    <string name="add_reagent_1_tablet_b">Écrasez le comprimé en utilisant une tige de mélange propre.</string>
     <string name="add_reagent_1_tablet_no_crush">Ajoutez <b>une pastille %reagent1</b> directement de la plaquette à l\'échantillon d\'eau.</string>
     <string name="add_reagent_2_tablet_no_crush">Ajoutez <b>une pastille %reagent2</b> directement de la plaquette à l\'échantillon d\'eau.</string>
     <string name="add_reagent_3_tablet_no_crush">Ajoutez <b>une pastille %reagent3</b> directement de la plaquette à l\'échantillon d\'eau.</string>
@@ -195,7 +195,7 @@
     <string name="transfer_second_vial_to_prepared_vial">Transférer le contenu du deuxième flacon (solution de glycine) dans le flacon préparé.</string>
     <string name="select_with_cl_test_instruction"><![CDATA[Appuyez et maintenez (*shift*) + <b>%1$s</b> pour sélectionner le test <b>%2$s</b> et appuyez sur (*enter*). Sélectionnez <b>\'with Cl\'</b> et appuyez sur (*enter*)]]></string>
     <string name="select_without_cl_test_instruction"><![CDATA[Appuyez et maintenez (*shift*) + <b>%1$s</b> pour sélectionner le test <b>%2$s</b> et appuyez sur (*enter*). Sélectionnez <b>\'without Cl\'</b> et appuyez sur (*enter*)]]></string>
-    <string name="tablets_correct_order">Les comprimés doivent être ajoutés dans le bon ordre.</string>
+    <string name="tablets_correct_order">Note: Les comprimés doivent être ajoutés dans le bon ordre.</string>
     <string name="sample_solution_pH">La solution échantillon doit avoir un pH compris entre 6 et 7.</string>
     <string name="sample_temperature_19_21">La température de l\'échantillon doit être comprise entre 19°C et 21°C.</string>
     <string name="analysis_immediately">L\'analyse doit avoir lieu immédiatement après le prélèvement de l\'échantillon.</string>
@@ -205,5 +205,7 @@
     <string name="sample_temperature_20">La température de l\'échantillon doit être de 20°C. Une température différente peut conduire à des résultats supérieurs ou inférieurs.</string>
     <string name="ozone_high_concentration">Des concentrations supérieures à 6 mg/l d\'ozone peuvent conduire à des résultats de 0 mg/l. Dans ce cas, l\'échantillon d\'eau doit être dilué avec de l\'eau exempte d\'ozone. 10 ml de l\'échantillon dilué doivent être mélangés avec le réactif.</string>
     <string name="notes_title"><b>NOTES</b></string>
+    <string name="add_reagent_2_tablet_c">Écrasez les comprimés en utilisant une tige de mélange propre</string>
+    <string name="add_reagent_3_tablet_b">Écrasez le comprimé en utilisant une tige de mélange propre.</string>
 
 </resources>
