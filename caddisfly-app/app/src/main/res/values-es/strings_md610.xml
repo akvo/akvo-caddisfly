@@ -73,7 +73,7 @@
     <string name="add_water_till_10ml">Añadir muestra de agua a la marca de 10 ml en el vial.</string>
     <string name="add_sample_exact">Agregue <b>exactamente la %sampleQuantity ml de la muestra de agua</b> al vial preparado.<b>Precaución: ¡El vial debe llenarse completamente!</b></string>
     <string name="remove_vial">Retire el vial de la cámara de muestras.</string>
-    <string name="remove_vial_leave_drops">Retire el vial de la cámara de muestras y <b>vacíelo</b>, dejando unas gotas en el vial.</string>
+    <string name="remove_vial_leave_drops">Retire el vial de la cámara de muestras y <b>vacíelo, dejando unas gotas en el vial.</b>.</string>
     <string name="remove_vial_empty">Retire el vial de la cámara de muestras y <b>vacíe el vial</b></string>
     <string name="remove_vial_empty_fill_a">Retire el vial de la cámara de muestras y <b>vacíe el vial</b>.</string>
     <string name="remove_vial_empty_fill_b">Enjuague el vial y la tapa varias veces y luego llene el vial con <b>%sampleQuantity ml</b> de la muestra de agua.</string>
@@ -195,7 +195,7 @@
     <string name="transfer_second_vial_to_prepared_vial">Transfiera el contenido del segundo vial (solución de glicina) al vial preparado.</string>
     <string name="select_with_cl_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b>para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'with CI\'</b> y luego presione (*enter*)]]></string>
     <string name="select_without_cl_test_instruction"><![CDATA[Mantenga presionado (*shift*) + <b>%1$s</b>para seleccionar el test <b>%2$s</b> y presione (*enter*). Seleccione <b>\'without CI\'</b> y luego presione (*enter*)]]></string>
-    <string name="tablets_correct_order">Las tabletas deben agregarse en el orden correcto.</string>
+    <string name="tablets_correct_order">Nota: Las tabletas deben agregarse en el orden correcto.</string>
     <string name="sample_solution_pH">La solución de muestra debe tener un valor de pH entre 6 y 7.</string>
     <string name="sample_temperature_19_21">La temperatura de la muestra debe estar entre 19°C y 21°C.</string>
     <string name="analysis_immediately">El análisis debe tener lugar inmediatamente después de tomar la muestra.</string>
@@ -205,5 +205,7 @@
     <string name="sample_temperature_20">La temperatura de la muestra debe ser de 20°C. Una temperatura diferente puede llevar a resultados más altos o más bajos.</string>
     <string name="ozone_high_concentration">Las concentraciones superiores a 6 mg/l de ozono pueden dar lugar a resultados que muestren 0 mg/l. En este caso, la muestra de agua debe diluirse con agua libre de ozono. Se deben mezclar 10 ml de la muestra diluida con el reactivo.</string>
     <string name="notes_title"><b>NOTAS</b></string>
+    <string name="add_reagent_2_tablet_c">Aplaste las tabletas con una varilla de agitación limpia</string>
+    <string name="add_reagent_3_tablet_b">Aplaste la tableta con una varilla de agitación limpia</string>
 
 </resources>

@@ -73,7 +73,7 @@
     <string name="add_water_till_10ml">Add water sample to the 10 ml mark in the vial</string>
     <string name="add_sample_exact">Add <b>exactly %sampleQuantity ml of the water sample</b> to the prepared vial. <b>Caution: Vial is filled up to the top!</b></string>
     <string name="remove_vial">Remove the vial from the sample chamber.</string>
-    <string name="remove_vial_leave_drops">Remove the vial from the sample chamber and <b>empty it</b>, leaving a few drops remaining in the vial.</string>
+    <string name="remove_vial_leave_drops">Remove the vial from the sample chamber and <b>empty it, leaving a few drops remaining in the vial</b>.</string>
     <string name="remove_vial_empty">Remove the vial from the sample chamber and <b>empty the vial</b></string>
     <string name="remove_vial_empty_fill_a">Remove the vial from the sample chamber and <b>empty the vial</b>.</string>
     <string name="remove_vial_empty_fill_b">Rinse vial and cap several times and then fill the vial with <b>%sampleQuantity ml</b> of the water sample.</string>
@@ -195,7 +195,7 @@
     <string name="transfer_second_vial_to_prepared_vial">Transfer the contents of the second vial (Glycine solution) into the prepared vial.</string>
     <string name="select_with_cl_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'with Cl\'</b> and then press (*enter*)]]></string>
     <string name="select_without_cl_test_instruction"><![CDATA[Press and hold (*shift*) + <b>%1$s</b> to select <b>%2$s</b> test and press (*enter*). Select <b>\'without Cl\'</b> and then press (*enter*)]]></string>
-    <string name="tablets_correct_order">Tablets must be added in the correct order.</string>
+    <string name="tablets_correct_order">Note: tablets must be added in the correct order.</string>
     <string name="sample_solution_pH">The sample solution should have a pH value between 6 and 7.</string>
     <string name="sample_temperature_19_21">The temperature of the sample must be between 19°C and 21°C.</string>
     <string name="analysis_immediately">The analysis must take place immediately after taking the sample.</string>
@@ -205,5 +205,7 @@
     <string name="sample_temperature_20">The sample temperature should be 20°C. A different temperature can lead to higher or lower results.</string>
     <string name="ozone_high_concentration">Concentrations above 6 mg/l Ozone can lead to results showing 0 mg/l. In this case, the water sample must be diluted with water free of Ozone. 10 ml of the diluted sample should be mixed with the reagent.</string>
     <string name="notes_title"><b>NOTES</b></string>
+    <string name="add_reagent_2_tablet_c">Crush the tablets using a clean stirring rod</string>
+    <string name="add_reagent_3_tablet_b">Crush the tablet using a clean stirring rod</string>
 
 </resources>
