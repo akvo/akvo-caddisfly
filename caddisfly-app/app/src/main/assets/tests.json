@@ -1834,7 +1834,7 @@
           "name": "Total Hardness",
           "unit": "mg/l",
           "range": "0-425",
-          "timeDelay": 0,
+          "timeDelay": 30,
           "patchPos": 30.5,
           "patchWidth": 6,
           "colors": [
@@ -1869,7 +1869,7 @@
           "name": "Total Alkalinity",
           "unit": "mg/l",
           "range": "0-240",
-          "timeDelay": 0,
+          "timeDelay": 30,
           "patchPos": 44,
           "patchWidth": 6,
           "colors": [
@@ -1903,7 +1903,7 @@
           "id": 5,
           "name": "pH",
           "range": "6.2-8.4",
-          "timeDelay": 0,
+          "timeDelay": 30,
           "patchPos": 57,
           "patchWidth": 6,
           "colors": [
