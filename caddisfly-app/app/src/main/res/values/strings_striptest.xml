@@ -105,4 +105,8 @@
     <string name="collect_5ml_mehlich_sample">Collect <b>5 ml</b> Mehlich extraction sample using the provided bottle.</string>
     <string name="collect_water_extraction_sample">Collect water extraction sample</string>
     <string name="dip_strip_15_seconds_and_remove">Dip a strip into sample for <b>15 seconds</b> and remove.</string>
+
+    <string name="wait_30_sec">Hold the strip level for 30 seconds.</string>
+    <string name="determine_strip_color">Compare the color of the test strip to the chart provided in the package to determine the test results.</string>
+    <string name="take_photo_of_result_strip">Take a photo of the test strip next to the color chart.</string>
 </resources>

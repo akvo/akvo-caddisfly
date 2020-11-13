@@ -83,14 +83,16 @@ public class MeasurementInputFragment extends BaseFragment {
 
                 b.textName.setText(testResult.getName());
 
+                String testResultRange = testResult.getRange();
+                String displayedRange = testResultRange.isEmpty() ? testInfo.getMinMaxRange() : testResultRange;
                 if (testResult.getUnit().isEmpty()) {
-                    b.textRange.setText(String.format("(%s)", testInfo.getMinMaxRange()));
+                    b.textRange.setText(String.format("(%s)", displayedRange));
                 } else {
-                    b.textRange.setText(String.format("(%s %s)", testInfo.getMinMaxRange(), testResult.getUnit()));
+                    b.textRange.setText(String.format("(%s %s)", displayedRange, testResult.getUnit()));
                 }
 
-                String range = testInfo.getRanges();
-                String[] ranges = range.split(",");
+                String range = testResultRange.isEmpty() ? testInfo.getRanges(): testResultRange;
+                String[] ranges = testResultRange.isEmpty() ? range.split(","): range.split("-");
                 minValue = Float.parseFloat(ranges[0].trim());
                 maxValue = Float.parseFloat(ranges[1].trim());
 

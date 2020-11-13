@@ -2005,9 +2005,11 @@
     },
     {
       "name": "Water - Nitrate, Nitrite",
-      "subtype": "striptest",
+      "subtype": "manual",
       "uuid": "c801b70c-39e4-493a-b20e-6843158b47b4",
       "brand": "Hach 2745425",
+      "imageScale": "fitCenter",
+      "ranges": "0,50,0,3",
       "groupingType": "INDIVIDUAL",
       "hasImage": true,
       "length": 82.6,
@@ -2028,8 +2030,31 @@
         },
         {
           "section": [
-            "place_strip_clr",
-            "image:place_clr"
+            "wait_30_sec",
+            "determine_strip_color"
+          ]
+        },
+        {
+          "section": [
+            "enter_measured_value",
+            "~input~"
+          ]
+        },
+        {
+          "section": [
+            "enter_measured_value",
+            "~input~"
+          ]
+        },
+        {
+          "section": [
+            "take_photo_of_result_strip",
+            "~photo~"
+          ]
+        },
+        {
+          "section": [
+            "~result~"
           ]
         }
       ],
@@ -2038,75 +2063,13 @@
           "id": 1,
           "name": "Nitrate Nitrogen",
           "unit": "mg/l",
-          "range": "0-50",
-          "timeDelay": 60,
-          "patchPos": 3.3,
-          "patchWidth": 6,
-          "colors": [
-            {
-              "value": 0,
-              "lab": [81.57,-1.10,10.30]
-            },
-            {
-              "value": 1,
-              "lab": [79.41,3.80,8.74]
-            },
-            {
-              "value": 2,
-              "lab": [77.44,8.25,5.98]
-            },
-            {
-              "value": 5,
-              "lab": [71.57,20.89,-0.05]
-            },
-            {
-              "value": 10,
-              "lab": [65.16,32.56,-5.13]
-            },
-            {
-              "value": 20,
-              "lab": [57.42,50.66,-11.23]
-            },
-            {
-              "value": 50,
-              "lab": [43.66,66.87,-14.09]
-            }
-          ]
+          "range": "0-50"
         },
         {
           "id": 2,
           "name": "Nitrite Nitrogen",
           "unit": "mg/l",
-          "range": "0-3",
-          "timeDelay": 30,
-          "patchPos": 16.8,
-          "patchWidth": 6,
-          "colors": [
-            {
-              "value": 0,
-              "lab": [86.23,-1.15,2.84]
-            },
-            {
-              "value": 0.15,
-              "lab": [82.55,5.69,-0.57]
-            },
-            {
-              "value": 0.3,
-              "lab": [80.29,11.74,-2.93]
-            },
-            {
-              "value": 1.0,
-              "lab": [72.66,28.62,-9.70]
-            },
-            {
-              "value": 1.5,
-              "lab": [69.52,36.77,-12.47]
-            },
-            {
-              "value": 3.0,
-              "lab": [61.65,49.53,-15.35]
-            }
-          ]
+          "range": "0-3"
         }
       ]
     },

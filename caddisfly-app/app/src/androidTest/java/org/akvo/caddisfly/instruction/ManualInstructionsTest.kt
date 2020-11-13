@@ -138,7 +138,7 @@ class ManualInstructionsTest : BaseTest() {
 
             } catch (e: Exception) {
 
-                onView(withId(R.id.editResult)).check(matches(isDisplayed()))
+                onView(withId(R.id.editResult)).check(matches(isCompletelyDisplayed()))
                         .perform(replaceText(result.toString()), closeSoftKeyboard())
 
                 try {
