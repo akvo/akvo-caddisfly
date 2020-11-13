@@ -1745,7 +1745,6 @@
           "section": [
             "stage_two",
             "dip_strip_move_back_forth_30_seconds",
-            "dry_off_excess_water_place_on_towel",
             "image:dip_sample_30_back_forward"
           ]
         },
@@ -1763,7 +1762,7 @@
           "name": "Total Chlorine",
           "unit": "mg/l",
           "range": "0-10",
-          "timeDelay": 35,
+          "timeDelay": 0,
           "patchPos": 3,
           "patchWidth": 6,
           "testStage": 2,
@@ -1799,7 +1798,7 @@
           "name": "Free Chlorine",
           "unit": "mg/l",
           "range": "0-10",
-          "timeDelay": 35,
+          "timeDelay": 0,
           "patchPos": 17,
           "patchWidth": 6,
           "testStage": 2,
