@@ -80,7 +80,7 @@ class StripsTest {
         val adapter = recyclerView.adapter as TestInfoAdapter?
         recyclerView.adapter
         assert(adapter != null)
-        assertEquals("Water - Phosphate",
+        assertEquals("Water - Potassium",
                 adapter!!.getItemAt(20).name)
         assertEquals("Soil - Phosphorous",
                 (recyclerView.getChildAt(4).findViewById<View>(R.id.text_title) as TextView).text)

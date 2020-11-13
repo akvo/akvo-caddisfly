@@ -56,6 +56,9 @@ public class Result implements Parcelable {
     @SerializedName("unit")
     @Expose
     private final String unit;
+    @SerializedName("range")
+    @Expose
+    private final String range;
     @SerializedName("formula")
     @Expose
     private final String formula;
@@ -87,6 +90,7 @@ public class Result implements Parcelable {
         md610Id = in.readString();
         name = in.readString();
         unit = in.readString();
+        range = in.readString();
         formula = in.readString();
         unitChoice = in.readString();
         patchPos = in.readByte() == 0x00 ? null : in.readDouble();
@@ -118,6 +122,10 @@ public class Result implements Parcelable {
 
     public String getUnit() {
         return unit == null ? "" : unit;
+    }
+
+    public String getRange() {
+        return range == null ? "" : range;
     }
 
     public String getFormula() {
@@ -174,6 +182,7 @@ public class Result implements Parcelable {
         dest.writeString(md610Id);
         dest.writeString(name);
         dest.writeString(unit);
+        dest.writeString(range);
         dest.writeString(formula);
         dest.writeString(unitChoice);
         if (patchPos == null) {

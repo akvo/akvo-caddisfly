@@ -22,9 +22,9 @@ package org.akvo.caddisfly.common
 object TestConstants {
 
     const val SENSOR_TESTS_COUNT = 3
-    const val STRIP_TESTS_COUNT = 22
+    const val STRIP_TESTS_COUNT = 21
     const val MD610_TESTS_COUNT = 64
-    const val MANUAL_TESTS_COUNT = 20
+    const val MANUAL_TESTS_COUNT = 21
     const val MANUAL_SELECT_TESTS_COUNT = 2
     const val CBT_TESTS_COUNT = 4
 }
