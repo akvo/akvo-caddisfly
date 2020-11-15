@@ -105,4 +105,8 @@
     <string name="collect_5ml_mehlich_sample">Collecter <b>5 ml</b> d\'échantillon d\'extraction de Mehlich à l\'aide du flacon fourni.</string>
     <string name="collect_water_extraction_sample">collecter l\'échantillon d\'eau d\'extraction </string>
     <string name="dip_strip_15_seconds_and_remove">Plonger une bandelette dans l\'échantillon pendant <b>15 secondes</b> et la retirer.</string>
+
+    <string name="wait_30_sec">Maintenez la bande de niveau pendant 30 secondes.</string>
+    <string name="determine_strip_color">Comparez la couleur de la bandelette de test au graphique fourni dans l\'emballage pour déterminer les résultats du test.</string>
+    <string name="take_photo_of_result_strip">Prenez une photo de la bandelette de test à côté du nuancier.</string>
 </resources>

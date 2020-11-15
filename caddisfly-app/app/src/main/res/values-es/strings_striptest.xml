@@ -105,4 +105,8 @@
     <string name="collect_5ml_mehlich_sample">Recoja <b>5 ml </b>de muestra de extracción de Mehlich usando la botella provista.</string>
     <string name="collect_water_extraction_sample">Recoja la muestra de extracción de agua.</string>
     <string name="dip_strip_15_seconds_and_remove">Sumerja la tira en la muestra durante <b>15 segundos</b> y retírela.</string>
+
+    <string name="wait_30_sec">Mantenga la tira nivelada durante 30 segundos.</string>
+    <string name="determine_strip_color">Compare el color de la tira reactiva con la tabla proporcionada en el paquete para determinar los resultados de la prueba.</string>
+    <string name="take_photo_of_result_strip">Tome una foto de la tira reactiva junto a la tabla de colores.</string>
 </resources>
