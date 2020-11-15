@@ -12,8 +12,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 293
-        versionName "1.0.18"
+        versionCode 294
+        versionName "1.0.19"
         resConfigs "en", "en_US", "fr", "in", "es"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -59,7 +59,7 @@ android {
             // Stops animations, ignores external sensors, skips bluetooth scans
             buildConfigField "Boolean", "TEST_RUNNING", "true"
             // The language to run the instrumented tests in
-            buildConfigField "String", "TEST_LANGUAGE", "\"en\""
+            buildConfigField "String", "TEST_LANGUAGE", "\"es\""
 
             debuggable = true
             signingConfig signingConfigs.debug
