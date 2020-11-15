@@ -48,6 +48,8 @@ import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.hamcrest.core.AllOf.allOf
+
 
 @RunWith(AndroidJUnit4::class)
 class ManualInstructionsTest : BaseTest() {
@@ -138,7 +140,9 @@ class ManualInstructionsTest : BaseTest() {
 
             } catch (e: Exception) {
 
-                onView(withId(R.id.editResult)).check(matches(isCompletelyDisplayed()))
+                onView(allOf(isCompletelyDisplayed(), withId(R.id.editResult))).check(
+                    matches(
+                        isCompletelyDisplayed()))
                         .perform(replaceText(result.toString()), closeSoftKeyboard())
 
                 try {
@@ -154,9 +158,38 @@ class ManualInstructionsTest : BaseTest() {
 
                 pages++
 
-                onView(withText(R.string.next)).perform(click())
+                onView(allOf(isCompletelyDisplayed(), withText(R.string.next))).perform(click())
 
                 sleep(300)
+
+                if (("6843158b47b4").contains(id)) {
+                    //Water - Nitrate, Nitrite contains 2 consecutive input screens + the last image screen
+                    onView(allOf(isCompletelyDisplayed(), withId(R.id.editResult))).check(
+                        matches(
+                            isCompletelyDisplayed()))
+                        .perform(replaceText(result.toString()), closeSoftKeyboard())
+
+                    try {
+                        onView(withText("μS/cm")).perform(click())
+                    } catch (e: Exception) {
+                    }
+
+                    sleep(500)
+
+                    takeScreenshot(id, pages)
+
+                    sleep(300)
+
+                    pages++
+
+                    onView(allOf(isCompletelyDisplayed(), withText(R.string.next))).perform(click())
+
+                    sleep(1000)
+
+                    takeScreenshot(id, pages)
+
+                    onView(withId(R.id.image_pageRight)).perform(click())
+                }
 
                 @Suppress("SpellCheckingInspection")
                 if (("cd66ecab2794 79586d9319c8").contains(id)) {
@@ -170,8 +203,9 @@ class ManualInstructionsTest : BaseTest() {
 
                         } catch (e: Exception) {
 
-                            onView(withId(R.id.editResult)).check(matches(isDisplayed()))
-                                    .perform(replaceText(result.toString()), closeSoftKeyboard())
+                            onView(allOf(isCompletelyDisplayed(), withId(R.id.editResult)))
+                                .check(matches(isDisplayed()))
+                                .perform(replaceText(result.toString()), closeSoftKeyboard())
 
                             sleep(500)
 
@@ -179,7 +213,7 @@ class ManualInstructionsTest : BaseTest() {
 
                             sleep(300)
 
-                            onView(withText(R.string.next)).perform(click())
+                            onView(allOf(isCompletelyDisplayed(), withText(R.string.next))).perform(click())
 
                             pages++
 
