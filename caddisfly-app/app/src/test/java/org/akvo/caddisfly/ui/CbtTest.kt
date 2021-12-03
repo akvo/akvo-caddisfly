@@ -32,7 +32,6 @@ import org.akvo.caddisfly.common.Constants
 import org.akvo.caddisfly.repository.TestConfigRepository
 import org.akvo.caddisfly.sensor.cbt.CbtActivity
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
@@ -88,7 +87,7 @@ class CbtTest {
         ShadowLooper.runUiThreadTasksIncludingDelayedTasks()
 
         val nextIntent = shadowOf(activity).nextStartedActivity
-        assertNull(nextIntent)
+        assertEquals("android.content.pm.action.REQUEST_PERMISSIONS", nextIntent.action)
 
         //        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(null));
 
@@ -133,7 +132,7 @@ class CbtTest {
 
         val nextIntent = shadowOf(activity).nextStartedActivity
 
-        assertNull(nextIntent)
+        assertEquals("android.content.pm.action.REQUEST_PERMISSIONS", nextIntent.action)
 
         //        assertThat(ShadowToast.getTextOfLatestToast(), equalTo(null));
 
