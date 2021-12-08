@@ -112,6 +112,7 @@
     <string name="connect">Connect</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
     <string name="location_permission">Location permission is required for bluetooth connection</string>
+    <string name="turn_location_on">To continue, turn on device location. Required for bluetooth connection</string>
     <string name="unknown_device">Unknown</string>
     <string name="scanning">Scanning for MD610 photometer…</string>
 

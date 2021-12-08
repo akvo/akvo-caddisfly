@@ -68,6 +68,8 @@
     <!--Messages-->
     <string name="phoneDoesNotSupport">Perangkat ini tidak mendukung fitur ini</string>
     <string name="errorLoadingConfiguration">Tidak dapat memuat informasi konfigurasi</string>
+    <!--Bluetooth-->
+    <string name="turn_location_on">Untuk melanjutkan, aktifkan lokasi perangkat. Diperlukan untuk koneksi bluetooth</string>
     <!--About Screen-->
     <string name="waterQualitySystem">Sistem kualitas Air &amp; Tanah</string>
     <string name="copyrightMessage">Hak Cipta © Stichting Akvo</string>

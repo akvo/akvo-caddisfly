@@ -35,6 +35,8 @@
 
 package org.akvo.caddisfly.sensor.bluetooth;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -51,12 +53,15 @@ import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ParcelUuid;
+import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -73,8 +78,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.akvo.caddisfly.R;
@@ -85,8 +99,6 @@ import org.akvo.caddisfly.util.ApiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
@@ -377,9 +389,12 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 return;
             }
 
-            // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
-            // fire an intent to display a dialog asking the user to grant permission to enable it.
-            if (!mBluetoothAdapter.isEnabled()) {
+            if (mBluetoothAdapter.isEnabled()) {
+                // Ensures Location is enabled on the device. This is required for bluetooth connections
+                checkLocationIsEnabled();
+            } else {
+                // Ensures Bluetooth is enabled on the device.  If Bluetooth is not currently enabled,
+                // fire an intent to display a dialog asking the user to grant permission to enable it.
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
@@ -440,6 +455,71 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
             }
 
+        }
+    }
+
+    /**
+     * Ensure location is enabled on the device
+     * https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
+     */
+    private void checkLocationIsEnabled() {
+        LocationRequest mLocationRequestBalancedPowerAccuracy = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationRequest mLocationRequestHighAccuracy = LocationRequest.create().setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequestHighAccuracy)
+                .addLocationRequest(mLocationRequestBalancedPowerAccuracy)
+                .setNeedBle(true)
+                .setAlwaysShow(true);
+
+        Task<LocationSettingsResponse> task =
+                LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
+
+        task.addOnCompleteListener(task1 -> {
+            try {
+                task1.getResult(ApiException.class);
+            } catch (ApiException exception) {
+                switch (exception.getStatusCode()) {
+                    case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+                        // Location settings are not satisfied.
+                        try {
+                            ResolvableApiException resolvable = (ResolvableApiException) exception;
+                            // Show the dialog by calling startResolutionForResult(),
+                            resolvable.startResolutionForResult(DeviceScanActivity.this, 1);
+                        } catch (IntentSender.SendIntentException e) {
+                            // Ignore the error.
+                        } catch (ClassCastException e) {
+                            // Ignore, should be an impossible error.
+                        }
+                        break;
+                    case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                        // The device is probably in airplane mode
+                        (new Handler()).postDelayed(this::navigateToLocationSettings, 1000);
+                        break;
+                }
+            }
+        });
+    }
+
+    /**
+     * If device is on airplane mode then only option is to open the settings screen and
+     * request user to enable location from there.
+     */
+    public void navigateToLocationSettings() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.turn_location_on)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.ok, (dialog, id) -> {
+                        dialog.dismiss();
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    })
+                    .setNegativeButton(R.string.cancel, (dialog, id) -> {
+                        dialog.cancel();
+                        finish();
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
         }
     }
 

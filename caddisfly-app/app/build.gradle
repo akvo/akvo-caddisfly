@@ -15,6 +15,7 @@ android {
         versionCode 294
         versionName "1.0.19"
         resConfigs "en", "en_US", "fr", "in", "es"
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -142,6 +143,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation 'com.google.android.play:core:1.6.4'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     // Math
     implementation 'org.apache.commons:commons-math3:3.6.1'
@@ -170,6 +172,9 @@ dependencies {
 
     // Sentry
     implementation 'io.sentry:sentry-android:1.7.29'
+
+    // Multidex
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     // Testing
     testImplementation 'junit:junit:4.12'
