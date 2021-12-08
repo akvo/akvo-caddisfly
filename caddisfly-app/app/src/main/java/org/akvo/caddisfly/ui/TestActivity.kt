@@ -90,7 +90,7 @@ class TestActivity : AppUpdateActivity() {
     private val handler = WeakRefHandler(this)
     private val permissionsDelegate = PermissionsDelegate(this)
     private val permissions = arrayOf(permission.CAMERA, permission.WRITE_EXTERNAL_STORAGE)
-    private val bluetoothPermissions = arrayOf(permission.ACCESS_COARSE_LOCATION)
+    private val bluetoothPermissions = arrayOf(permission.ACCESS_FINE_LOCATION)
     private var testInfo: TestInfo? = null
     private var cameraIsOk = false
     private var mainLayout: LinearLayout? = null

@@ -94,7 +94,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class DeviceScanActivity extends BaseActivity implements DeviceConnectDialog.InterfaceCommunicator {
 
     private static final int PERMISSION_ALL = 1;
-    private static final String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION};
+    private static final String[] PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION};
 
     private static final float SNACK_BAR_LINE_SPACING = 1.4f;
     private static final int REQUEST_ENABLE_BT = 1;
@@ -301,7 +301,7 @@ public class DeviceScanActivity extends BaseActivity implements DeviceConnectDia
         layoutInfo.setVisibility(View.VISIBLE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+                && this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PERMISSION_GRANTED) {
             if (snackbar == null || !snackbar.isShownOrQueued()) {
                 requestPermissions(PERMISSIONS, PERMISSION_ALL);
             }

@@ -20,7 +20,7 @@
 package org.akvo.caddisfly.bluetooth
 
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.view.View
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -75,7 +75,7 @@ class MD610Test : BaseTest() {
 
     @Rule
     @JvmField
-    var mRuntimePermissionRule = GrantPermissionRule.grant(ACCESS_COARSE_LOCATION)!!
+    var mRuntimePermissionRule = GrantPermissionRule.grant(ACCESS_FINE_LOCATION)!!
 
     @Rule
     @JvmField
