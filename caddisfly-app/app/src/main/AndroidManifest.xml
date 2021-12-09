@@ -21,7 +21,6 @@
     package="org.akvo.caddisfly">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
@@ -45,7 +44,6 @@
         android:name=".app.CaddisflyApp"
         android:allowBackup="true"
         android:extractNativeLibs="false"
-        android:requestLegacyExternalStorage="true"
         android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"

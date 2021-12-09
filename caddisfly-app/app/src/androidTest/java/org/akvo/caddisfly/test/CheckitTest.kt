@@ -94,8 +94,7 @@ class CheckitTest : BaseTest() {
     @JvmField
     var mGrantPermissionRule: GrantPermissionRule =
             GrantPermissionRule.grant(
-                    "android.permission.CAMERA",
-                    "android.permission.WRITE_EXTERNAL_STORAGE")
+                    "android.permission.CAMERA")
 
 
     private fun createImageCaptureStub(): Instrumentation.ActivityResult {

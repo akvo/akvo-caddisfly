@@ -36,7 +36,6 @@ class AppTest {
             "android.permission.BLUETOOTH",
             "android.permission.BLUETOOTH_CONNECT",
             "android.permission.BLUETOOTH_SCAN",
-            "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.INTERNET",
             "android.permission.ACCESS_NETWORK_STATE",
             "com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE",
