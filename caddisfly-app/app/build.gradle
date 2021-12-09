@@ -5,13 +5,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'io.sentry.android.gradle'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
     testOptions.unitTests.includeAndroidResources = true
 
     defaultConfig {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 294
         versionName "1.0.19"
         resConfigs "en", "en_US", "fr", "in", "es"
@@ -31,7 +31,7 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        dataBinding true
     }
 
     compileOptions {
@@ -56,11 +56,11 @@ android {
         // NOTE: This variant is for running instrumented tests only
         inspect {
             // Takes screenshots during test {use ScreenshotSuite} (Requires Storage permission)
-            buildConfigField "Boolean", "TAKE_SCREENSHOTS", "true"
+            buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
             // Stops animations, ignores external sensors, skips bluetooth scans
             buildConfigField "Boolean", "TEST_RUNNING", "true"
             // The language to run the instrumented tests in
-            buildConfigField "String", "TEST_LANGUAGE", "\"es\""
+            buildConfigField "String", "TEST_LANGUAGE", "\"en\""
 
             debuggable = true
             signingConfig signingConfigs.debug
