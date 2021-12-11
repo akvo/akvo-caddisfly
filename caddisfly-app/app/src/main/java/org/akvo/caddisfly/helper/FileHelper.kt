@@ -29,7 +29,7 @@ import java.io.File
  * The different types of files.
  */
 enum class FileType {
-    EXP_CONFIG, CARD, TEST_IMAGE, RESULT_IMAGE
+    CARD, TEST_IMAGE, RESULT_IMAGE
 }
 
 object FileHelper {
@@ -38,8 +38,6 @@ object FileHelper {
      */
 // Folders
     private val ROOT_DIRECTORY = File.separator + BuildConstants.APP_FOLDER
-    private val DIR_EXP_CONFIG = (ROOT_DIRECTORY
-            + File.separator + "qa" + File.separator + "experiment-config") // Experimental config json folder
     private val DIR_TEST_IMAGE = (ROOT_DIRECTORY
             + File.separator + "qa" + File.separator + "test-image") // Images saved for testing
     private val DIR_CARD = (ROOT_DIRECTORY
@@ -72,7 +70,6 @@ object FileHelper {
     @JvmStatic
     fun getFilesDir(type: FileType, subPath: String): File {
         val path: String = when (type) {
-            FileType.EXP_CONFIG -> FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_EXP_CONFIG
             FileType.CARD -> FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_CARD
             FileType.RESULT_IMAGE -> FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_RESULT_IMAGES
             FileType.TEST_IMAGE -> FileUtil.getFilesStorageDir(CaddisflyApp.getApp(), false) + DIR_TEST_IMAGE

@@ -8,7 +8,6 @@ import com.google.gson.JsonSyntaxException;
 import org.akvo.caddisfly.model.TestConfig;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.model.TestType;
-import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.util.AssetsManager;
 
 import java.util.ArrayList;
@@ -60,38 +59,12 @@ public class TestConfigRepository {
                 Collections.sort(testInfoList, (object1, object2) ->
                         object1.getName().compareToIgnoreCase(object2.getName()));
             }
-
-            if (AppPreferences.isDiagnosticMode()) {
-                addExperimentalTests(testType, testInfoList);
-            }
         } catch (Exception e) {
             Timber.e(e);
         }
 
         testMap.put(testType, testInfoList);
         return testInfoList;
-    }
-
-    private void addExperimentalTests(TestType testType, List<TestInfo> testInfoList) {
-        TestConfig testConfig = new Gson().fromJson(assetsManager.getExperimentalJson(), TestConfig.class);
-        if (testConfig != null) {
-            List<TestInfo> experimentalList = testConfig.getTests();
-
-            for (int i = experimentalList.size() - 1; i >= 0; i--) {
-                if (experimentalList.get(i).getSubtype() != testType) {
-                    experimentalList.remove(i);
-                }
-            }
-
-            if (experimentalList.size() > 0) {
-                Collections.sort(experimentalList, (object1, object2) ->
-                        object1.getName().compareToIgnoreCase(object2.getName()));
-
-                testInfoList.add(new TestInfo("Experimental"));
-
-                testInfoList.addAll(experimentalList);
-            }
-        }
     }
 
     /**
@@ -101,18 +74,7 @@ public class TestConfigRepository {
      * @return the test object
      */
     public TestInfo getTestInfo(final String id) {
-
-        TestInfo testInfo;
-        testInfo = getTestInfoItem(assetsManager.getJson(), id);
-        if (testInfo != null) {
-            return testInfo;
-        }
-
-        if (AppPreferences.isDiagnosticMode()) {
-            testInfo = getTestInfoItem(assetsManager.getExperimentalJson(), id);
-        }
-
-        return testInfo;
+        return getTestInfoItem(assetsManager.getJson(), id);
     }
 
     @Nullable
