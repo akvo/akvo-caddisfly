@@ -39,17 +39,11 @@ public final class AssetsManager {
     private final AssetManager manager;
 
     private final String json;
-    private final String customJson;
 
     public AssetsManager() {
         this.manager = CaddisflyApp.getApp().getApplicationContext().getAssets();
 
         json = loadJsonFromAsset(Constants.TESTS_META_FILENAME);
-
-        File customConfig = new File(FileHelper.getFilesDir(FileType.CUSTOM_CONFIG),
-                Constants.TESTS_META_FILENAME);
-        customJson = FileUtil.loadTextFromFile(customConfig);
-
     }
 
     public static AssetsManager getInstance() {
@@ -99,9 +93,4 @@ public final class AssetsManager {
                 Constants.TESTS_META_FILENAME);
         return FileUtil.loadTextFromFile(experimentalConfig);
     }
-
-    public String getCustomJson() {
-        return customJson;
-    }
-
 }

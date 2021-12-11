@@ -64,28 +64,6 @@ public class TestConfigRepository {
             if (AppPreferences.isDiagnosticMode()) {
                 addExperimentalTests(testType, testInfoList);
             }
-
-            TestConfig testConfig = new Gson().fromJson(assetsManager.getCustomJson(), TestConfig.class);
-            if (testConfig != null) {
-                List<TestInfo> customList = testConfig.getTests();
-
-                for (int i = customList.size() - 1; i >= 0; i--) {
-                    if (customList.get(i).getSubtype() != testType) {
-                        customList.remove(i);
-                    }
-                }
-
-                if (customList.size() > 0) {
-                    Collections.sort(customList, (object1, object2) ->
-                            object1.getName().compareToIgnoreCase(object2.getName()));
-
-                    testInfoList.add(new TestInfo("Custom"));
-
-                    testInfoList.addAll(customList);
-                }
-            }
-
-
         } catch (Exception e) {
             Timber.e(e);
         }
@@ -132,12 +110,8 @@ public class TestConfigRepository {
 
         if (AppPreferences.isDiagnosticMode()) {
             testInfo = getTestInfoItem(assetsManager.getExperimentalJson(), id);
-            if (testInfo != null) {
-                return testInfo;
-            }
         }
 
-        testInfo = getTestInfoItem(assetsManager.getCustomJson(), id);
         return testInfo;
     }
 
