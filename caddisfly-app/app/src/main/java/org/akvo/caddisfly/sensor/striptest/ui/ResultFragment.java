@@ -47,7 +47,6 @@ import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.SensorConstants;
-import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.ColorItem;
 import org.akvo.caddisfly.model.GroupType;
@@ -60,10 +59,10 @@ import org.akvo.caddisfly.sensor.striptest.utils.ColorUtils;
 import org.akvo.caddisfly.sensor.striptest.utils.Constants;
 import org.akvo.caddisfly.sensor.striptest.utils.ResultUtils;
 import org.akvo.caddisfly.ui.BaseFragment;
-import org.akvo.caddisfly.util.FileUtil;
 import org.akvo.caddisfly.util.MathUtil;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -128,19 +127,12 @@ public class ResultFragment extends BaseFragment {
         buttonSave = rootView.findViewById(R.id.buttonSubmitResult);
         buttonSave.setOnClickListener(v -> {
             Intent intent = new Intent();
-            String path;
-
             if (totalImage != null) {
-
-                // store image on sd card
-                path = FileUtil.writeBitmapToExternalStorage(totalImage,
-                        FileType.RESULT_IMAGE, totalImageUrl);
-
-                intent.putExtra(SensorConstants.IMAGE, path);
-
-                if (path.length() == 0) {
-                    totalImageUrl = "";
-                }
+                intent.putExtra(SensorConstants.IMAGE, totalImageUrl);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                totalImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                totalImage.recycle();
+                intent.putExtra(SensorConstants.IMAGE_BITMAP, stream.toByteArray());
             } else {
                 totalImageUrl = "";
             }
