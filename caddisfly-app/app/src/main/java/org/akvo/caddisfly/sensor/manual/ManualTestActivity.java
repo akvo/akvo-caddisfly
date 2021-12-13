@@ -68,7 +68,6 @@ public class ManualTestActivity extends BaseActivity
 
     private ImageView imagePageRight;
     private ImageView imagePageLeft;
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     private final PageIndex pageIndex = new PageIndex();
     private String imageFileName = "";
     private TestInfo testInfo;
@@ -114,8 +113,7 @@ public class ManualTestActivity extends BaseActivity
 
         totalPageCount = instructionList.size();
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
 
         pagerIndicator.showDots(true);
         pagerIndicator.setPageCount(totalPageCount);

@@ -76,20 +76,20 @@ public class CbtActivity extends BaseActivity
 
     private CbtResultFragment resultFragment;
 
-    private SparseArray<ResultPhotoFragment> resultPhotoFragment = new SparseArray<>();
-    private SparseArray<CompartmentBagFragment> inputFragment = new SparseArray<>();
+    private final SparseArray<ResultPhotoFragment> resultPhotoFragment = new SparseArray<>();
+    private final SparseArray<CompartmentBagFragment> inputFragment = new SparseArray<>();
 
-    private ArrayList<Integer> inputIndexes = new ArrayList<>();
-    private SparseArray<String> cbtResultKeys = new SparseArray<>();
+    private final ArrayList<Integer> inputIndexes = new ArrayList<>();
+    private final SparseArray<String> cbtResultKeys = new SparseArray<>();
 
     private ImageView imagePageRight;
     private ImageView imagePageLeft;
-    private PageIndex pageIndex = new PageIndex();
+    private final PageIndex pageIndex = new PageIndex();
     private String imageFileName = "";
     private String currentPhotoPath;
     private TestInfo testInfo;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private ArrayList<Instruction> instructionList = new ArrayList<>();
+    private final ArrayList<Instruction> instructionList = new ArrayList<>();
     private int totalPageCount;
     private RelativeLayout footerLayout;
     private PageIndicatorView pagerIndicator;

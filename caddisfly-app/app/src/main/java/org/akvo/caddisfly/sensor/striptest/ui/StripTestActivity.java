@@ -332,25 +332,6 @@ public class StripTestActivity extends BaseActivity {
         invalidateOptionsMenu();
     }
 
-    public void onSubmitClick(View view) {
-        sendResults();
-    }
-
-    private void sendResults() {
-        SparseArray<String> results = new SparseArray<>();
-
-        results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
-        results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
-
-        JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
-                results, null, null);
-
-        Intent intent = new Intent();
-        intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
     public void onStartTest(View view) {
         Intent intent = new Intent(getBaseContext(), StripMeasureActivity.class);
         intent.putExtra(ConstantKey.START_MEASURE, true);
