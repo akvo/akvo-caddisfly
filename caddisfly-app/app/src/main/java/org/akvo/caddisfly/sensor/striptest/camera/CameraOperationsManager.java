@@ -24,7 +24,6 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.HandlerThread;
 
-import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.preference.AppPreferences;
 import org.akvo.caddisfly.sensor.striptest.ui.StripMeasureActivity;
 import org.akvo.caddisfly.sensor.striptest.ui.StriptestHandler;
@@ -81,7 +80,7 @@ public class CameraOperationsManager {
 
     public CameraOperationsManager(String name) {
         if (AppPreferences.isTestMode()) {
-            bytes = ImageUtil.loadImageBytes(name, FileType.TEST_IMAGE);
+            bytes = ImageUtil.loadImageBytes(name);
         }
     }
 

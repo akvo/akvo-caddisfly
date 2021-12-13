@@ -19,15 +19,14 @@
 
 package org.akvo.caddisfly.util;
 
+import static org.akvo.caddisfly.helper.FileHelper.getUnitTestImagesFolder;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.exifinterface.media.ExifInterface;
-
-import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.helper.FileType;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -169,13 +168,11 @@ public final class ImageUtil {
     /**
      * load the  bytes from a file.
      *
-     * @param name     the file name
-     * @param fileType the file type
+     * @param name the file name
      * @return the loaded bytes
      */
-    public static byte[] loadImageBytes(String name, FileType fileType) {
-        File path = FileHelper.getFilesDir(fileType, "");
-        File file = new File(path, name + ".yuv");
+    public static byte[] loadImageBytes(String name) {
+        File file = new File(getUnitTestImagesFolder(), name + ".yuv");
         if (file.exists()) {
             byte[] bytes = new byte[(int) file.length()];
             BufferedInputStream bis;
@@ -196,15 +193,10 @@ public final class ImageUtil {
      * Save an image in yuv format
      *
      * @param data     the image data
-     * @param fileType the folder to save in
      * @param fileName the name of the file
      */
-    public static void saveYuvImage(@NonNull byte[] data, FileType fileType, String fileName) {
-
-        File path = FileHelper.getFilesDir(fileType);
-
-        File file = new File(path, fileName + ".yuv");
-
+    public static void saveYuvImage(@NonNull byte[] data, String fileName) {
+        File file = new File(getUnitTestImagesFolder(), fileName + ".yuv");
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(file.getPath());
