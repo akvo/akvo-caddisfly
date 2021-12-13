@@ -19,6 +19,14 @@
 
 package org.akvo.caddisfly.sensor.striptest.ui;
 
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmaps;
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createResultImageGroup;
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createResultImageSingle;
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createValueBitmap;
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueString;
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.roundSignificant;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -63,14 +71,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import timber.log.Timber;
-
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmaps;
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createResultImageGroup;
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createResultImageSingle;
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.createValueBitmap;
-import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueString;
-import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
-import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.roundSignificant;
 
 /**
  * Activity that displays the results.

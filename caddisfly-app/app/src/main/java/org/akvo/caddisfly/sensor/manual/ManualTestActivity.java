@@ -1,5 +1,10 @@
 package org.akvo.caddisfly.sensor.manual;
 
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
+import static org.akvo.caddisfly.util.ApiUtil.setKeyboardVisibilityListener;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -57,11 +62,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
-import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
-import static org.akvo.caddisfly.util.ApiUtil.setKeyboardVisibilityListener;
-
 public class ManualTestActivity extends BaseActivity
         implements MeasurementInputFragment.OnSubmitResultListener,
         ResultPhotoFragment.OnPhotoTakenListener, OnKeyboardVisibilityListener {
@@ -69,8 +69,8 @@ public class ManualTestActivity extends BaseActivity
     private ImageView imagePageRight;
     private ImageView imagePageLeft;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private PageIndex pageIndex = new PageIndex();
-
+    private final PageIndex pageIndex = new PageIndex();
+    private String imageFileName = "";
     private TestInfo testInfo;
     private CustomViewPager viewPager;
     private FrameLayout resultLayout;
@@ -78,11 +78,11 @@ public class ManualTestActivity extends BaseActivity
     private PageIndicatorView pagerIndicator;
     private boolean showSkipMenu = true;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private SparseArray<ResultPhotoFragment> resultPhotoFragment = new SparseArray<>();
-    private SparseArray<MeasurementInputFragment> inputFragment = new SparseArray<>();
+    private final SparseArray<ResultPhotoFragment> resultPhotoFragment = new SparseArray<>();
+    private final SparseArray<MeasurementInputFragment> inputFragment = new SparseArray<>();
     private int totalPageCount;
     //    private float scale;
-    private ArrayList<Instruction> instructionList = new ArrayList<>();
+    private final ArrayList<Instruction> instructionList = new ArrayList<>();
     private PlaceholderFragment submitFragment;
 
     @Override

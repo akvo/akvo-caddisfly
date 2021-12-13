@@ -1,5 +1,9 @@
 package org.akvo.caddisfly.sensor.cbt;
 
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -65,10 +69,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
-
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
-import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
 public class CbtActivity extends BaseActivity
         implements CompartmentBagFragment.OnCompartmentBagSelectListener,
@@ -408,23 +408,13 @@ public class CbtActivity extends BaseActivity
 
         // If E.coli input fragment then add or remove TC part based on input
         if (fragmentId != secondFragmentId) {
-            if (key.equals("11111")) {
-                InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, true);
-                totalPageCount = instructionList.size();
-                pagerIndicator.setPageCount(totalPageCount);
-                Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
-                pagerIndicator.setVisibility(View.GONE);
-                pagerIndicator.invalidate();
-                pagerIndicator.setVisibility(View.VISIBLE);
-            } else {
-                InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, false);
-                totalPageCount = instructionList.size();
-                pagerIndicator.setPageCount(totalPageCount);
-                Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
-                pagerIndicator.setVisibility(View.GONE);
-                pagerIndicator.invalidate();
-                pagerIndicator.setVisibility(View.VISIBLE);
-            }
+            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, key.equals("11111"));
+            totalPageCount = instructionList.size();
+            pagerIndicator.setPageCount(totalPageCount);
+            Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+            pagerIndicator.setVisibility(View.GONE);
+            pagerIndicator.invalidate();
+            pagerIndicator.setVisibility(View.VISIBLE);
         }
     }
 

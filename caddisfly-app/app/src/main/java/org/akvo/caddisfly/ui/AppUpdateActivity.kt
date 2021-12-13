@@ -101,7 +101,7 @@ abstract class AppUpdateActivity : BaseActivity() {
                 })
     }
 
-    private fun startFlexibleUpdate(appUpdateInfo: AppUpdateInfo?) {
+    private fun startFlexibleUpdate(appUpdateInfo: AppUpdateInfo) {
         appUpdateManager.startUpdateFlowForResult(
                 appUpdateInfo,
                 AppUpdateType.FLEXIBLE,

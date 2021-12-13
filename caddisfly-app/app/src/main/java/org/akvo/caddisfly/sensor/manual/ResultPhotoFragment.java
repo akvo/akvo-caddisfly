@@ -19,6 +19,10 @@
 
 package org.akvo.caddisfly.sensor.manual;
 
+import static android.app.Activity.RESULT_OK;
+import static org.akvo.caddisfly.common.AppConstants.FILE_PROVIDER_AUTHORITY_URI;
+import static org.akvo.caddisfly.helper.FileHelper.getFormImagesFolder;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -53,9 +57,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
-
-import static android.app.Activity.RESULT_OK;
-import static org.akvo.caddisfly.common.AppConstants.FILE_PROVIDER_AUTHORITY_URI;
 
 
 public class ResultPhotoFragment extends BaseFragment {
