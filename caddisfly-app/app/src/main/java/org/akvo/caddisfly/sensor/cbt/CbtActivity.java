@@ -439,10 +439,10 @@ public class CbtActivity extends BaseActivity
         if (resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)) != null) {
             imageFileName = UUID.randomUUID().toString() + ".jpg";
             String resultImagePath = resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)).getImageFileName();
-            Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
+            Bitmap bitmap1 = BitmapFactory.decodeFile(resultImagePath);
             if (resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)) != null) {
                 String result1ImagePath = resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)).getImageFileName();
-                Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
+                Bitmap bitmap2 = BitmapFactory.decodeFile(result1ImagePath);
                 if (bitmap1 != null && bitmap2 != null) {
 
                     if (Math.abs(bitmap1.getWidth() - bitmap2.getWidth()) > 50) {
@@ -464,7 +464,7 @@ public class CbtActivity extends BaseActivity
                     new File(resultImagePath).delete();
                 }
             } else {
-                resultBitmap = bitmap2;
+                resultBitmap = bitmap1;
             }
         }
 
