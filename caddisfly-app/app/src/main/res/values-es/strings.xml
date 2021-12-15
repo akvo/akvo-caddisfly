@@ -81,6 +81,7 @@
     <string name="connect">Conectar</string>
     <string name="error_bluetooth_not_supported">Bluetooth no es compatible.</string>
     <string name="location_permission">Se requiere permiso de ubicación para la conexión Bluetooth</string>
+    <string name="turn_location_on">Para continuar, active la ubicación del dispositivo. Requerido para la conexión bluetooth</string>
     <string name="unknown_device">Desconocido</string>
     <string name="scanning">Escaneando el fotómetro MD610 …</string>
     <!--About Screen-->

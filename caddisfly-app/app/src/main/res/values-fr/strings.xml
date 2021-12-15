@@ -81,6 +81,7 @@
     <string name="connect">Connectez</string>
     <string name="error_bluetooth_not_supported">Bluetooth non pris en charge.</string>
     <string name="location_permission">L\'autorisation de localisation est nécessaire pour la connexion par Bluetooth</string>
+    <string name="turn_location_on">Pour continuer, activez la localisation de l\'appareil. Requis pour la connexion Bluetooth</string>
     <string name="unknown_device">Inconnu</string>
     <string name="scanning">Recherche d\'un photomètre MD610.....</string>
     <!--About Screen-->

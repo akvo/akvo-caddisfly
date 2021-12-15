@@ -28,11 +28,14 @@ class AppTest {
     companion object {
 
         private val EXPECTED_PERMISSIONS = arrayOf(
+            "android.permission.ACCESS_FINE_LOCATION",
             "android.permission.ACCESS_COARSE_LOCATION",
             "android.permission.BLUETOOTH_ADMIN",
             "android.permission.WAKE_LOCK",
             "android.permission.CAMERA",
             "android.permission.BLUETOOTH",
+            "android.permission.BLUETOOTH_CONNECT",
+            "android.permission.BLUETOOTH_SCAN",
             "android.permission.WRITE_EXTERNAL_STORAGE",
             "android.permission.INTERNET",
             "android.permission.ACCESS_NETWORK_STATE",
