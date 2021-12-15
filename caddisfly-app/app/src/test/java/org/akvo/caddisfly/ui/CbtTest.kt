@@ -66,7 +66,7 @@ class CbtTest {
     @Test
     fun clickingInstructions() {
 
-        val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permissions = arrayOf(Manifest.permission.CAMERA)
 
         val testConfigRepository = TestConfigRepository()
         val testInfo = testConfigRepository.getTestInfo(Constants.CBT_ID)
@@ -114,7 +114,7 @@ class CbtTest {
     @Test
     fun clickingNext() {
 
-        val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permissions = arrayOf(Manifest.permission.CAMERA)
 
         val testConfigRepository = TestConfigRepository()
         val testInfo = testConfigRepository.getTestInfo(Constants.CBT_ID)

@@ -284,7 +284,7 @@ class MeterTest : BaseTest() {
 
         sleep(1500)
 
-        onView(withText(R.string.takePhoto)).perform(click())
+        onView(withText(R.string.retakePhoto)).perform(click())
 
         sleep(1500)
 
@@ -392,7 +392,7 @@ class MeterTest : BaseTest() {
 
         sleep(500)
 
-        onView(withText(R.string.takePhoto)).perform(click())
+        onView(withText(R.string.retakePhoto)).perform(click())
 
         sleep(1500)
 

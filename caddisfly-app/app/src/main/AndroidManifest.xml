@@ -21,7 +21,6 @@
     package="org.akvo.caddisfly">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
@@ -45,7 +44,6 @@
         android:name=".app.CaddisflyApp"
         android:allowBackup="true"
         android:extractNativeLibs="false"
-        android:requestLegacyExternalStorage="true"
         android:fullBackupContent="@xml/backup_scheme"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/appName"
@@ -62,7 +60,8 @@
             android:autoRemoveFromRecents="true"
             android:excludeFromRecents="true"
             android:label="@string/appName"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,7 +70,8 @@
         </activity>
         <activity
             android:name=".ui.TestActivity"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"
+            android:exported="true">
             <intent-filter>
                 <action android:name="org.akvo.flow.action.caddisfly" />
 
@@ -82,7 +82,8 @@
         </activity>
         <activity
             android:name=".ui.TestListActivity"
-            android:screenOrientation="nosensor">
+            android:screenOrientation="nosensor"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -154,7 +155,8 @@
             android:name=".sensor.UsbConnectionActivity"
             android:autoRemoveFromRecents="true"
             android:screenOrientation="nosensor"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>

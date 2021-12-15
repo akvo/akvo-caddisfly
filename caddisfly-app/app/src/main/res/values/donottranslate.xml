@@ -64,7 +64,6 @@
     <string name="sound">Sound</string>
     <string name="ignoreTimeDelays">Ignore time delays</string>
     <string name="debugging">Debugging</string>
-    <string name="download_experimental_tests">Download experimental tests</string>
     <string name="testModeOn">Test Mode</string>
     <string name="save_test_image">Save test image</string>
     <string name="diagnostics_options">Diagnostic Options</string>

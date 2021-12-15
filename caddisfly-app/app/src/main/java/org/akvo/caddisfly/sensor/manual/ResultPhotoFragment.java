@@ -19,6 +19,10 @@
 
 package org.akvo.caddisfly.sensor.manual;
 
+import static android.app.Activity.RESULT_OK;
+import static org.akvo.caddisfly.common.AppConstants.FILE_PROVIDER_AUTHORITY_URI;
+import static org.akvo.caddisfly.helper.FileHelper.getFormImagesFolder;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,13 +30,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
@@ -42,8 +44,6 @@ import org.akvo.caddisfly.BuildConfig;
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.databinding.FragmentResultPhotoBinding;
-import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.ui.BaseFragment;
 import org.akvo.caddisfly.util.ImageUtil;
@@ -54,9 +54,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 
-import static android.app.Activity.RESULT_OK;
-import static org.akvo.caddisfly.common.AppConstants.FILE_PROVIDER_AUTHORITY_URI;
-
 
 public class ResultPhotoFragment extends BaseFragment {
 
@@ -65,8 +62,7 @@ public class ResultPhotoFragment extends BaseFragment {
     private static final int MANUAL_TEST = 2;
     private OnPhotoTakenListener mListener;
     private String imageFileName = "";
-    private String currentPhotoPath;
-    private String resultImagePath;
+    private String currentPhotoPath = "";
     private FragmentResultPhotoBinding b;
 
     /**
@@ -95,7 +91,6 @@ public class ResultPhotoFragment extends BaseFragment {
         if (savedInstanceState != null) {
             currentPhotoPath = savedInstanceState.getString(ConstantKey.CURRENT_PHOTO_PATH);
             imageFileName = savedInstanceState.getString(ConstantKey.CURRENT_IMAGE_FILE_NAME);
-            resultImagePath = savedInstanceState.getString(ConstantKey.RESULT_IMAGE_PATH);
         }
 
         View view = b.getRoot();
@@ -114,11 +109,7 @@ public class ResultPhotoFragment extends BaseFragment {
         }
 
         if (imageFileName != null && !imageFileName.isEmpty()) {
-
-            final File newPhotoPath = FileHelper.getFilesDir(FileType.RESULT_IMAGE);
-            resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
-
-            File imgFile = new File(resultImagePath);
+            File imgFile = new File(currentPhotoPath);
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 b.imageResult.setImageBitmap(myBitmap);
@@ -136,7 +127,6 @@ public class ResultPhotoFragment extends BaseFragment {
     public void onSaveInstanceState(@NotNull Bundle outState) {
         outState.putString(ConstantKey.CURRENT_PHOTO_PATH, currentPhotoPath);
         outState.putString(ConstantKey.CURRENT_IMAGE_FILE_NAME, imageFileName);
-        outState.putString(ConstantKey.RESULT_IMAGE_PATH, resultImagePath);
         super.onSaveInstanceState(outState);
     }
 
@@ -175,47 +165,25 @@ public class ResultPhotoFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-
-            final File newPhotoPath = FileHelper.getFilesDir(FileType.RESULT_IMAGE);
-
-            resultImagePath = newPhotoPath.getAbsolutePath() + File.separator + imageFileName;
-
             if (currentPhotoPath != null) {
-                ImageUtil.resizeImage(currentPhotoPath, resultImagePath, 640);
-
-                File imageFile = new File(currentPhotoPath);
-                if (imageFile.exists() && !new File(currentPhotoPath).delete()) {
-                    Toast.makeText(getActivity(), R.string.delete_error, Toast.LENGTH_SHORT).show();
+                ImageUtil.resizeImage(currentPhotoPath, currentPhotoPath, 640);
+                File imgFile = new File(currentPhotoPath);
+                if (imgFile.exists()) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    b.imageResult.setImageBitmap(myBitmap);
+                    b.imageResult.setBackground(null);
+                    b.takePhoto.setText(R.string.retakePhoto);
                 }
             }
 
-            File imgFile = new File(resultImagePath);
-            if (imgFile.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                b.imageResult.setImageBitmap(myBitmap);
-                b.imageResult.setBackground(null);
-                b.takePhoto.setText(R.string.retakePhoto);
-            }
-
-            (new Handler()).postDelayed(() -> mListener.onPhotoTaken(imageFileName), 600);
+            (new Handler()).postDelayed(() -> mListener.onPhotoTaken(), 600);
         }
     }
 
     private File createImageFile() throws IOException {
-
-        // Create an image file name
         imageFileName = UUID.randomUUID().toString();
-
-        File storageDir = Objects.requireNonNull(getActivity())
-                .getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
+        File image = File.createTempFile(imageFileName, ".jpg", getFormImagesFolder());
         imageFileName += ".jpg";
-        // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;
     }
@@ -238,15 +206,15 @@ public class ResultPhotoFragment extends BaseFragment {
     }
 
     public boolean isValid() {
-        return BuildConfig.TEST_RUNNING || (resultImagePath != null &&
-                !resultImagePath.isEmpty() && new File(resultImagePath).exists());
+        return BuildConfig.TEST_RUNNING || (currentPhotoPath != null &&
+                !currentPhotoPath.isEmpty() && new File(currentPhotoPath).exists());
     }
 
     public String getImageFileName() {
-        return imageFileName;
+        return currentPhotoPath;
     }
 
     public interface OnPhotoTakenListener {
-        void onPhotoTaken(String photoPath);
+        void onPhotoTaken();
     }
 }

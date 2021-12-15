@@ -27,7 +27,6 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.os.Environment
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.view.View
@@ -47,8 +46,8 @@ import androidx.test.uiautomator.*
 import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConstants.FLOW_SURVEY_PACKAGE_NAME
-import org.akvo.caddisfly.helper.FileHelper.getFilesDir
-import org.akvo.caddisfly.helper.FileType
+import org.akvo.caddisfly.helper.FileHelper
+import org.akvo.caddisfly.helper.FileHelper.getUnitTestImagesFolder
 import org.akvo.caddisfly.util.TestUtil.childAtPosition
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
@@ -60,7 +59,7 @@ import java.util.*
 lateinit var mDevice: UiDevice
 
 fun isStripPatchAvailable(name: String = "."): Boolean {
-    val file = File(getFilesDir(FileType.TEST_IMAGE, ""), "$name.yuv")
+    val file = File(getUnitTestImagesFolder(), "$name.yuv")
     return file.exists()
 }
 
@@ -178,10 +177,8 @@ object TestHelper {
     }
 
     fun takeScreenshot(name: String, page: Int) {
-        if (BuildConfig.TAKE_SCREENSHOTS
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            val folder = File(Environment.getExternalStorageDirectory().path
-                    + "/Akvo Caddisfly/screenshots/")
+        if (BuildConfig.TAKE_SCREENSHOTS) {
+            val folder = FileHelper.getScreenshotFolder()
             val path = File(folder, name + "-" + BuildConfig.TEST_LANGUAGE + "-" +
                     String.format("%02d", page + 1) + ".png")
 

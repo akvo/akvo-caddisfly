@@ -34,7 +34,6 @@ import androidx.annotation.Nullable;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.helper.SoundPoolPlayer;
 import org.akvo.caddisfly.model.Result;
 import org.akvo.caddisfly.model.TestInfo;
@@ -59,7 +58,6 @@ import timber.log.Timber;
 public class StripMeasureActivity extends BaseActivity implements StripMeasureListener {
 
     public static final boolean DEBUG = false;
-    private TestInfo testInfo;
     // a handler to handle the state machine of the preview, capture, decode, fullCapture cycle
     private StriptestHandler mStriptestHandler;
     private FinderPatternIndicatorView mFinderPatternIndicatorView;
@@ -98,7 +96,7 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
     public void onResume() {
         super.onResume();
 
-        testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
+        TestInfo testInfo = getIntent().getParcelableExtra(ConstantKey.TEST_INFO);
         int currentStage = getIntent().getIntExtra(ConstantKey.TEST_STAGE, 1);
 
         boolean startMeasure = getIntent().getBooleanExtra(ConstantKey.START_MEASURE, false);
@@ -153,10 +151,12 @@ public class StripMeasureActivity extends BaseActivity implements StripMeasureLi
         startCameraPreview();
 
         if (AppPreferences.isTestMode()) {
-            byte[] bytes = ImageUtil.loadImageBytes(testInfo.getName(), FileType.TEST_IMAGE);
-            if (bytes.length == 0) {
-                setResult(Activity.RESULT_OK, new Intent());
-                (new Handler()).postDelayed(this::finish, 4000);
+            if (testInfo != null) {
+                byte[] bytes = ImageUtil.loadImageBytes(testInfo.getName());
+                if (bytes.length == 0) {
+                    setResult(Activity.RESULT_OK, new Intent());
+                    (new Handler()).postDelayed(this::finish, 4000);
+                }
             }
         }
     }

@@ -1,5 +1,7 @@
 package org.akvo.caddisfly.sensor.striptest.ui;
 
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,8 +50,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
-
 public class StripTestActivity extends BaseActivity {
 
     private static final int REQUEST_QUALITY_TEST = 1;
@@ -58,7 +58,7 @@ public class StripTestActivity extends BaseActivity {
     private ImageView imagePageRight;
     private ImageView imagePageLeft;
     private ResultFragment resultFragment;
-    private PageIndex pageIndex = new PageIndex();
+    private final PageIndex pageIndex = new PageIndex();
 
     private TestInfo testInfo;
     private CustomViewPager viewPager;
@@ -73,7 +73,7 @@ public class StripTestActivity extends BaseActivity {
     private int skipToPageNumber;
     private int currentStage = 1;
 
-    private ArrayList<Instruction> instructionList = new ArrayList<>();
+    private final ArrayList<Instruction> instructionList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -330,25 +330,6 @@ public class StripTestActivity extends BaseActivity {
         resultLayout.setVisibility(View.INVISIBLE);
         showSkipMenu = false;
         invalidateOptionsMenu();
-    }
-
-    public void onSubmitClick(View view) {
-        sendResults();
-    }
-
-    private void sendResults() {
-        SparseArray<String> results = new SparseArray<>();
-
-        results.put(1, String.valueOf(testInfo.getResults().get(0).getResultValue()));
-        results.put(2, String.valueOf(testInfo.getResults().get(1).getResultValue()));
-
-        JSONObject resultJsonObj = TestConfigHelper.getJsonResult(this, testInfo,
-                results, null, null);
-
-        Intent intent = new Intent();
-        intent.putExtra(SensorConstants.RESPONSE, resultJsonObj.toString());
-        setResult(RESULT_OK, intent);
-        finish();
     }
 
     public void onStartTest(View view) {

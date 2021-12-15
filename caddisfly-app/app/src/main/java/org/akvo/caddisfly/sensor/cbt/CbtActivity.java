@@ -1,5 +1,9 @@
 package org.akvo.caddisfly.sensor.cbt;
 
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
+import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
+import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -37,8 +41,6 @@ import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
 import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
-import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.helper.InstructionHelper;
 import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
@@ -52,7 +54,6 @@ import org.akvo.caddisfly.sensor.manual.ResultPhotoFragment;
 import org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils;
 import org.akvo.caddisfly.ui.BaseActivity;
 import org.akvo.caddisfly.ui.BaseFragment;
-import org.akvo.caddisfly.util.ImageUtil;
 import org.akvo.caddisfly.util.StringUtil;
 import org.akvo.caddisfly.widget.ButtonType;
 import org.akvo.caddisfly.widget.CustomViewPager;
@@ -61,14 +62,11 @@ import org.akvo.caddisfly.widget.SwipeDirection;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
-
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsHorizontal;
-import static org.akvo.caddisfly.sensor.striptest.utils.BitmapUtils.concatTwoBitmapsVertical;
-import static org.akvo.caddisfly.sensor.striptest.utils.ResultUtils.createValueUnitString;
 
 public class CbtActivity extends BaseActivity
         implements CompartmentBagFragment.OnCompartmentBagSelectListener,
@@ -76,20 +74,20 @@ public class CbtActivity extends BaseActivity
 
     private CbtResultFragment resultFragment;
 
-    private SparseArray<ResultPhotoFragment> resultPhotoFragment = new SparseArray<>();
-    private SparseArray<CompartmentBagFragment> inputFragment = new SparseArray<>();
+    private final SparseArray<ResultPhotoFragment> resultPhotoFragment = new SparseArray<>();
+    private final SparseArray<CompartmentBagFragment> inputFragment = new SparseArray<>();
 
-    private ArrayList<Integer> inputIndexes = new ArrayList<>();
-    private SparseArray<String> cbtResultKeys = new SparseArray<>();
+    private final ArrayList<Integer> inputIndexes = new ArrayList<>();
+    private final SparseArray<String> cbtResultKeys = new SparseArray<>();
 
     private ImageView imagePageRight;
     private ImageView imagePageLeft;
-    private PageIndex pageIndex = new PageIndex();
+    private final PageIndex pageIndex = new PageIndex();
     private String imageFileName = "";
     private String currentPhotoPath;
     private TestInfo testInfo;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private ArrayList<Instruction> instructionList = new ArrayList<>();
+    private final ArrayList<Instruction> instructionList = new ArrayList<>();
     private int totalPageCount;
     private RelativeLayout footerLayout;
     private PageIndicatorView pagerIndicator;
@@ -408,23 +406,13 @@ public class CbtActivity extends BaseActivity
 
         // If E.coli input fragment then add or remove TC part based on input
         if (fragmentId != secondFragmentId) {
-            if (key.equals("11111")) {
-                InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, true);
-                totalPageCount = instructionList.size();
-                pagerIndicator.setPageCount(totalPageCount);
-                Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
-                pagerIndicator.setVisibility(View.GONE);
-                pagerIndicator.invalidate();
-                pagerIndicator.setVisibility(View.VISIBLE);
-            } else {
-                InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, false);
-                totalPageCount = instructionList.size();
-                pagerIndicator.setPageCount(totalPageCount);
-                Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
-                pagerIndicator.setVisibility(View.GONE);
-                pagerIndicator.invalidate();
-                pagerIndicator.setVisibility(View.VISIBLE);
-            }
+            InstructionHelper.setupInstructions(testInfo.getInstructions2(), instructionList, pageIndex, key.equals("11111"));
+            totalPageCount = instructionList.size();
+            pagerIndicator.setPageCount(totalPageCount);
+            Objects.requireNonNull(viewPager.getAdapter()).notifyDataSetChanged();
+            pagerIndicator.setVisibility(View.GONE);
+            pagerIndicator.invalidate();
+            pagerIndicator.setVisibility(View.VISIBLE);
         }
     }
 
@@ -446,21 +434,15 @@ public class CbtActivity extends BaseActivity
         SparseArray<String> results = new SparseArray<>();
         Intent resultIntent = new Intent();
 
-        final File photoPath = FileHelper.getFilesDir(FileType.RESULT_IMAGE);
-
-        String resultImagePath = "";
-        String imageFileName = "";
+        Bitmap resultBitmap = null;
 
         if (resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)) != null) {
-            imageFileName = resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)).getImageFileName();
-            resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
-
+            imageFileName = UUID.randomUUID().toString() + ".jpg";
+            String resultImagePath = resultPhotoFragment.get(pageIndex.getPhotoPageIndex(0)).getImageFileName();
+            Bitmap bitmap1 = BitmapFactory.decodeFile(resultImagePath);
             if (resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)) != null) {
-                String result1ImagePath = photoPath.getAbsolutePath() + File.separator +
-                        resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)).getImageFileName();
-                Bitmap bitmap1 = BitmapFactory.decodeFile(result1ImagePath);
-                Bitmap bitmap2 = BitmapFactory.decodeFile(resultImagePath);
-                Bitmap resultBitmap;
+                String result1ImagePath = resultPhotoFragment.get(pageIndex.getPhotoPageIndex(1)).getImageFileName();
+                Bitmap bitmap2 = BitmapFactory.decodeFile(result1ImagePath);
                 if (bitmap1 != null && bitmap2 != null) {
 
                     if (Math.abs(bitmap1.getWidth() - bitmap2.getWidth()) > 50) {
@@ -473,14 +455,16 @@ public class CbtActivity extends BaseActivity
                         resultBitmap = concatTwoBitmapsVertical(bitmap1, bitmap2);
                     }
 
+                    bitmap1.recycle();
+                    bitmap2.recycle();
+
                     //noinspection ResultOfMethodCallIgnored
                     new File(result1ImagePath).delete();
                     //noinspection ResultOfMethodCallIgnored
                     new File(resultImagePath).delete();
-                    imageFileName = UUID.randomUUID().toString() + ".jpg";
-                    resultImagePath = photoPath.getAbsolutePath() + File.separator + imageFileName;
-                    ImageUtil.saveImage(resultBitmap, resultImagePath);
                 }
+            } else {
+                resultBitmap = bitmap1;
             }
         }
 
@@ -501,8 +485,12 @@ public class CbtActivity extends BaseActivity
                 results, null, imageFileName);
 
         resultIntent.putExtra(SensorConstants.RESPONSE, resultJson.toString());
-        if (!imageFileName.isEmpty()) {
-            resultIntent.putExtra(SensorConstants.IMAGE, resultImagePath);
+        if (!imageFileName.isEmpty() && resultBitmap != null) {
+            resultIntent.putExtra(SensorConstants.IMAGE, imageFileName);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            resultBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            resultBitmap.recycle();
+            resultIntent.putExtra(SensorConstants.IMAGE_BITMAP, stream.toByteArray());
         }
 
         setResult(Activity.RESULT_OK, resultIntent);
@@ -511,7 +499,7 @@ public class CbtActivity extends BaseActivity
     }
 
     @Override
-    public void onPhotoTaken(String photoPath) {
+    public void onPhotoTaken() {
         nextPage();
     }
 

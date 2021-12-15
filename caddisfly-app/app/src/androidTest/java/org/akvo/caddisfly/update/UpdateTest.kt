@@ -33,12 +33,6 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class UpdateTest {
 
-    @Rule
-    @JvmField
-    var mGrantPermissionRule: GrantPermissionRule =
-            GrantPermissionRule.grant(
-                    "android.permission.WRITE_EXTERNAL_STORAGE")
-
     private lateinit var fakeAppUpdateManager: FakeAppUpdateManager
 
     companion object {

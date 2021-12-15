@@ -18,7 +18,7 @@
   -->
 
 <paths>
-    <external-path
+    <external-files-path
         name="my_images"
-        path="Android/data/org.akvo.caddisfly/files/Pictures" />
+        path="Pictures" />
 </paths>

@@ -23,10 +23,7 @@ import android.content.res.AssetManager;
 
 import org.akvo.caddisfly.app.CaddisflyApp;
 import org.akvo.caddisfly.common.Constants;
-import org.akvo.caddisfly.helper.FileHelper;
-import org.akvo.caddisfly.helper.FileType;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -39,17 +36,11 @@ public final class AssetsManager {
     private final AssetManager manager;
 
     private final String json;
-    private final String customJson;
 
     public AssetsManager() {
         this.manager = CaddisflyApp.getApp().getApplicationContext().getAssets();
 
         json = loadJsonFromAsset(Constants.TESTS_META_FILENAME);
-
-        File customConfig = new File(FileHelper.getFilesDir(FileType.CUSTOM_CONFIG),
-                Constants.TESTS_META_FILENAME);
-        customJson = FileUtil.loadTextFromFile(customConfig);
-
     }
 
     public static AssetsManager getInstance() {
@@ -92,16 +83,6 @@ public final class AssetsManager {
 
     public String getJson() {
         return json;
-    }
-
-    public String getExperimentalJson() {
-        File experimentalConfig = new File(FileHelper.getFilesDir(FileType.EXP_CONFIG),
-                Constants.TESTS_META_FILENAME);
-        return FileUtil.loadTextFromFile(experimentalConfig);
-    }
-
-    public String getCustomJson() {
-        return customJson;
     }
 
 }

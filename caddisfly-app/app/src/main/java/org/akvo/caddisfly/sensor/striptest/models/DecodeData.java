@@ -4,7 +4,6 @@ import android.media.Image;
 import android.util.SparseArray;
 import android.util.SparseIntArray;
 
-import org.akvo.caddisfly.helper.FileType;
 import org.akvo.caddisfly.model.TestInfo;
 import org.akvo.caddisfly.sensor.striptest.decode.DecodeProcessor;
 import org.akvo.caddisfly.sensor.striptest.qrdetector.FinderPattern;
@@ -231,6 +230,6 @@ public class DecodeData {
     }
 
     public void saveCapturedImage() {
-        ImageUtil.saveYuvImage(decodeImageByteArray, FileType.TEST_IMAGE, testInfo.getName());
+        ImageUtil.saveYuvImage(decodeImageByteArray, testInfo.getName());
     }
 }

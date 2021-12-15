@@ -68,8 +68,7 @@ class StriptestTest {
     @JvmField
     var mGrantPermissionRule: GrantPermissionRule =
             GrantPermissionRule.grant(
-                    "android.permission.CAMERA",
-                    "android.permission.WRITE_EXTERNAL_STORAGE")
+                    "android.permission.CAMERA")
 
     companion object {
         @JvmStatic
