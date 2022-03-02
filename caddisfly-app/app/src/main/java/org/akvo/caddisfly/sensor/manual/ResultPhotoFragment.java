@@ -206,7 +206,7 @@ public class ResultPhotoFragment extends BaseFragment {
     }
 
     public boolean isValid() {
-        return BuildConfig.TEST_RUNNING || (currentPhotoPath != null &&
+        return BuildConfig.TEST_RUNNING.get() || (currentPhotoPath != null &&
                 !currentPhotoPath.isEmpty() && new File(currentPhotoPath).exists());
     }
 

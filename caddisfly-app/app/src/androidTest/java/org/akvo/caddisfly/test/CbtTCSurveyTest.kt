@@ -50,6 +50,12 @@ class CbtTCSurveyTest : BaseTest() {
                 mDevice = UiDevice.getInstance(getInstrumentation())
             }
         }
+
+        @JvmStatic
+        @BeforeClass
+        fun initialize() {
+            BuildConfig.TEST_RUNNING.set(true)
+        }
     }
 
     @Rule

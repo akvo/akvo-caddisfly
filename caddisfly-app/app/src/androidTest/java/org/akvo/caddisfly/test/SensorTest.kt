@@ -92,7 +92,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Soil - Moisture"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING) {
+        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING.get()) {
             return
         }
 
@@ -192,7 +192,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING) {
+        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING.get()) {
 
             mDevice.pressBack()
 
@@ -231,7 +231,7 @@ class SensorTest : BaseTest() {
 
         onView(allOf<View>(withId(R.id.textTitle), withText("Water - Electrical Conductivity"))).check(matches(isDisplayed()))
 
-        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING) {
+        if (TestUtil.isEmulator || BuildConfig.TEST_RUNNING.get()) {
             return
         }
 

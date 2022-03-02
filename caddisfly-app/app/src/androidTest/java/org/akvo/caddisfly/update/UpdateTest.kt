@@ -8,11 +8,9 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.UiDevice
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.testing.FakeAppUpdateManager
-import com.google.android.play.core.install.model.AppUpdateType
 import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.ui.MainActivity
 import org.akvo.caddisfly.update.di.TestInjector
@@ -25,7 +23,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.BeforeClass
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -53,7 +50,6 @@ class UpdateTest {
 
     @Test
     fun app_Update_Completes() {
-        fakeAppUpdateManager.partiallyAllowedUpdateType = AppUpdateType.FLEXIBLE
         fakeAppUpdateManager.setUpdateAvailable(BuildConfig.VERSION_CODE + 1)
 
         ActivityScenario.launch(MainActivity::class.java)
@@ -88,7 +84,6 @@ class UpdateTest {
 
     @Test
     fun app_Update_DownloadFails() {
-        fakeAppUpdateManager.partiallyAllowedUpdateType = AppUpdateType.FLEXIBLE
         fakeAppUpdateManager.setUpdateAvailable(BuildConfig.VERSION_CODE + 1)
 
         ActivityScenario.launch(MainActivity::class.java)

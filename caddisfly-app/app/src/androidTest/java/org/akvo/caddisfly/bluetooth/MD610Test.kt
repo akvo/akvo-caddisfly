@@ -167,7 +167,7 @@ class MD610Test : BaseTest() {
         onView(withText(R.string.next)).perform(click())
 
         @Suppress("ConstantConditionIf")
-        if (!BuildConfig.TEST_RUNNING) {
+        if (!BuildConfig.TEST_RUNNING.get()) {
             if (TestUtil.isEmulator) {
                 onView(withText("Bluetooth not supported."))
                         .inRoot(withDecorView(not<View>(`is`<View>(mActivityTestRule.activity.window

@@ -58,7 +58,8 @@ android {
             // Takes screenshots during test {use ScreenshotSuite} (Requires Storage permission)
             buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
             // Stops animations, ignores external sensors, skips bluetooth scans
-            buildConfigField "Boolean", "TEST_RUNNING", "true"
+            buildConfigField "java.util.concurrent.atomic.AtomicBoolean", "TEST_RUNNING",
+                    "new java.util.concurrent.atomic.AtomicBoolean(true)"
             // The language to run the instrumented tests in
             buildConfigField "String", "TEST_LANGUAGE", "\"en\""
 
@@ -71,7 +72,8 @@ android {
         debug {
             resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "false")
             buildConfigField "String", "SENTRY_DSN", "\"\""
-            buildConfigField "Boolean", "TEST_RUNNING", "false"
+            buildConfigField "java.util.concurrent.atomic.AtomicBoolean", "TEST_RUNNING",
+                    "new java.util.concurrent.atomic.AtomicBoolean(false)"
             buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
             buildConfigField "String", "TEST_LANGUAGE", "\"\""
             buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + 0L + ")"
@@ -88,7 +90,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             resValue("bool", "FIREBASE_ANALYTICS_ENABLED", "true")
-            buildConfigField "Boolean", "TEST_RUNNING", "false"
+            buildConfigField "java.util.concurrent.atomic.AtomicBoolean", "TEST_RUNNING",
+                    "new java.util.concurrent.atomic.AtomicBoolean(false)"
             buildConfigField "Boolean", "TAKE_SCREENSHOTS", "false"
             buildConfigField "String", "TEST_LANGUAGE", "\"\""
             // Expiry date of apk. To prevent test builds from being used in production

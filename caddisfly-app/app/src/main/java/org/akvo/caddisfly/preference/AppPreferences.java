@@ -59,7 +59,7 @@ public final class AppPreferences {
     }
 
     public static boolean isTestMode() {
-        return BuildConfig.TEST_RUNNING || (isDiagnosticMode()
+        return BuildConfig.TEST_RUNNING.get() || (isDiagnosticMode()
                 && PreferencesUtil.getBoolean(CaddisflyApp.getApp(), R.string.testModeOnKey, false));
     }
 
@@ -79,7 +79,7 @@ public final class AppPreferences {
     }
 
     public static boolean isAppUpdateCheckRequired() {
-        if (BuildConfig.TEST_RUNNING) {
+        if (BuildConfig.TEST_RUNNING.get()) {
             return true;
         }
         long lastCheck = PreferencesUtil.getLong(CaddisflyApp.getApp(), "lastUpdateCheck");
@@ -87,6 +87,6 @@ public final class AppPreferences {
     }
 
     public static boolean analyticsEnabled() {
-        return !BuildConfig.TEST_RUNNING && !BuildConfig.DEBUG;
+        return !BuildConfig.TEST_RUNNING.get() && !BuildConfig.DEBUG;
     }
 }

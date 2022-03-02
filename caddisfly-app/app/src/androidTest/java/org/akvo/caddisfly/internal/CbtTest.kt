@@ -35,7 +35,9 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import androidx.test.rule.ActivityTestRule
 import androidx.test.rule.GrantPermissionRule
+import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import org.akvo.caddisfly.BuildConfig
 import org.akvo.caddisfly.R
 import org.akvo.caddisfly.common.AppConstants.EXTERNAL_APP_ACTION
@@ -51,12 +53,10 @@ import org.akvo.caddisfly.util.TestHelper.getString
 import org.hamcrest.CoreMatchers.not
 import org.hamcrest.Matchers
 import org.hamcrest.core.IsInstanceOf
+import org.junit.*
 import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.regex.Pattern
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -69,6 +69,12 @@ class CbtTest {
             if (!TestHelper.isDeviceInitialized()) {
                 mDevice = UiDevice.getInstance(getInstrumentation())
             }
+        }
+
+        @JvmStatic
+        @BeforeClass
+        fun initialize() {
+            BuildConfig.TEST_RUNNING.set(true)
         }
     }
 
@@ -237,7 +243,7 @@ class CbtTest {
 
         onView(withText(R.string.take_photo_of_incubated)).check(matches(isDisplayed()))
 
-        TestUtil.nextPage()
+        takePhoto()
 
         onView(withContentDescription("8")).check(matches(DrawableMatcher.hasDrawable()))
 
@@ -494,7 +500,7 @@ class CbtTest {
 
         onView(withText(R.string.take_photo_of_incubated)).check(matches(isDisplayed()))
 
-        TestUtil.nextPage()
+        takePhoto()
 
         onView(withContentDescription("8")).check(matches(DrawableMatcher.hasDrawable()))
 
@@ -516,7 +522,7 @@ class CbtTest {
 
         onView(withText(R.string.take_photo_incubated_tc)).check(matches(isDisplayed()))
 
-        TestUtil.nextPage()
+        takePhoto()
 
         TestUtil.checkTextInTable(R.string.change_colors_to_match)
 
@@ -623,6 +629,34 @@ class CbtTest {
         TestHelper.clickSubmitButton()
     }
 
+    private fun takePhoto() {
+        if (BuildConfig.TEST_RUNNING.get()) {
+            TestUtil.nextPage()
+        } else {
+            onView(withId(R.id.takePhoto)).perform(click())
+
+            sleep(2000)
+
+            mDevice.findObject(
+                By.res("com.android.camera2:id/shutter_button").desc("Shutter")
+                    .clazz("android.widget.ImageView").text(Pattern.compile(""))
+                    .pkg("com.android.camera2")
+            ).clickAndWait(
+                Until.newWindow(), 6000
+            )
+
+            sleep(2000)
+
+            mDevice.findObject(
+                By.res("com.android.camera2:id/done_button").desc("Done")
+                    .clazz("android.widget.ImageButton")
+            ).clickAndWait(
+                Until.newWindow(), 6000
+            )
+
+            sleep(2000)
+        }
+    }
 
     @Test
     fun cbt_Test2() {
@@ -649,7 +683,7 @@ class CbtTest {
 
                 navigateToCbtTest()
 
-                navigateToCbtTest2()
+                navigateToCbtTest2(i)
             }
         }
     }
@@ -683,7 +717,7 @@ class CbtTest {
         return pages + 1
     }
 
-    private fun navigateToCbtTest2() {
+    private fun navigateToCbtTest2(testNumber: Int) {
 
         sleep(1000)
 
@@ -691,19 +725,25 @@ class CbtTest {
 
         sleep(1000)
 
+        takePhoto()
+
         for (i in 0..16) {
 
             try {
                 sleep(1000)
 
-                if (i == 2) {
+                if (i == 1) {
                     val customShapeButton = onView(Matchers.allOf(withId(R.id.compartments),
                             isDisplayed()))
 
                     customShapeButton.perform(TestUtil.clickPercent(0.1f, 0.5f))
                     customShapeButton.perform(TestUtil.clickPercent(0.5f, 0.5f))
                     customShapeButton.perform(TestUtil.clickPercent(0.9f, 0.1f))
-                } else if (i == 5) {
+                } else if (i == 2 && (testNumber == 2 || testNumber == 3)) {
+                    takePhoto()
+                } else if (i == 4 && (testNumber == 2 || testNumber == 3)) {
+                    onView(withId(R.id.image_pageRight)).perform(click())
+                } else if (i == 4) {
                     val customShapeButton = onView(Matchers.allOf(withId(R.id.compartments),
                             isDisplayed()))
                     customShapeButton.perform(TestUtil.clickPercent(0.3f, 0.5f))

@@ -39,7 +39,7 @@ public class WaitingFragment extends Fragment {
             textIndex.setText(String.format(Locale.US, "%d.", getArguments().getInt(INSTRUCTION_INDEX)));
         }
 
-        if (!BuildConfig.TEST_RUNNING) {
+        if (!BuildConfig.TEST_RUNNING.get()) {
             progressCircle.setVisibility(View.VISIBLE);
         }
 
