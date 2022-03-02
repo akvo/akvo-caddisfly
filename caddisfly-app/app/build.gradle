@@ -12,8 +12,8 @@ android {
         applicationId "org.akvo.caddisfly"
         minSdkVersion 19
         targetSdkVersion 31
-        versionCode 295
-        versionName "1.0.20"
+        versionCode 298
+        versionName "1.0.22"
         resConfigs "en", "en_US", "fr", "in", "es"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -137,15 +137,15 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // Don't upgrade until https://issuetracker.google.com/issues/141869006 is fixed
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
 
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.exifinterface:exifinterface:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'com.google.android.play:core:1.6.4'
+    implementation 'com.google.android.play:core:1.10.3'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     // Math
@@ -155,7 +155,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     // Architecture Components
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
@@ -167,11 +167,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:17.2.2'
 
     // Dagger
-    implementation 'com.google.dagger:dagger:2.25.3'
-    kapt 'com.google.dagger:dagger-compiler:2.25.3'
-    implementation 'com.google.dagger:dagger-android:2.25.3'
-    kapt 'com.google.dagger:dagger-android-processor:2.25.3'
-    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.25.3'
+    implementation 'com.google.dagger:dagger:2.40.5'
+    kapt 'com.google.dagger:dagger-compiler:2.40.5'
+    implementation 'com.google.dagger:dagger-android:2.40.5'
+    kapt 'com.google.dagger:dagger-android-processor:2.40.5'
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.40.5'
 
     // Sentry
     implementation 'io.sentry:sentry-android:1.7.29'
