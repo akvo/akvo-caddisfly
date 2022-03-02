@@ -248,12 +248,12 @@ public class CustomShapeButton extends View {
     public void setKey(String key) {
         try {
             mKey = key;
-            String[] values = mKey.split("");
-            area1 = Integer.parseInt(values[1]);
-            area2 = Integer.parseInt(values[2]);
-            area3 = Integer.parseInt(values[3]);
-            area4 = Integer.parseInt(values[4]);
-            area5 = Integer.parseInt(values[5]);
+            char[] values = key.toCharArray();
+            area1 = Integer.parseInt(String.valueOf(values[0]));
+            area2 = Integer.parseInt(String.valueOf(values[1]));
+            area3 = Integer.parseInt(String.valueOf(values[2]));
+            area4 = Integer.parseInt(String.valueOf(values[3]));
+            area5 = Integer.parseInt(String.valueOf(values[4]));
         } catch (Exception e) {
             mKey = "00000";
         }
