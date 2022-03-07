@@ -29,12 +29,6 @@ import java.util.*
 @Config(sdk = [Build.VERSION_CODES.P])
 class DateUtilTest {
 
-    @Before
-    @Throws(Exception::class)
-    fun setUp() {
-        ClassUtil.assertUtilityClassWellDefined(DateUtil::class.java)
-    }
-
     @Test
     fun testGetDaysNoDifference() {
         val currentDate = Calendar.getInstance()

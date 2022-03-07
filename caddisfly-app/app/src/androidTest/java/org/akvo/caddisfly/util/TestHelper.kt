@@ -70,7 +70,7 @@ fun isStripPatchAvailable(name: String = "."): Boolean {
 fun skipOpeningExternalApp(model: Int = Build.VERSION_CODES.LOLLIPOP): Boolean {
 
     try {
-        val testLabSetting: String = Settings.System.getString(
+        val testLabSetting: String? = Settings.System.getString(
                 getInstrumentation().targetContext.contentResolver, "firebase.test.lab")
 
         if ("true" == testLabSetting) {
@@ -353,23 +353,18 @@ object TestHelper {
     }
 
     fun clickCloseButton() {
-        onView(allOf(withId(R.id.buttonClose), withText(R.string.close),
-                childAtPosition(
-                        allOf(withId(R.id.buttonsLayout),
-                                childAtPosition(
-                                        withClassName(`is`("android.widget.RelativeLayout")),
-                                        2)),
-                        1),
-                isDisplayed())).perform(click())
+        sleep(2000)
+        try {
+            onView(allOf(withId(R.id.buttonClose), withText(R.string.close),
+                    isDisplayed())).perform(click())
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
+        sleep(2000)
     }
 
     fun clickStartButton() {
         onView(allOf(withId(R.id.buttonStart), withText(R.string.start),
-                childAtPosition(
-                        childAtPosition(
-                                withClassName(`is`<String>("android.widget.RelativeLayout")),
-                                2),
-                        2),
                 isDisplayed())).perform(click())
     }
 
