@@ -30,10 +30,8 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.akvo.caddisfly.R;
 import org.akvo.caddisfly.common.ConstantKey;
-import org.akvo.caddisfly.common.SensorConstants;
 import org.akvo.caddisfly.databinding.FragmentInstructionBinding;
 import org.akvo.caddisfly.helper.InstructionHelper;
-import org.akvo.caddisfly.helper.TestConfigHelper;
 import org.akvo.caddisfly.model.Instruction;
 import org.akvo.caddisfly.model.PageIndex;
 import org.akvo.caddisfly.model.Result;
@@ -45,10 +43,8 @@ import org.akvo.caddisfly.widget.CustomViewPager;
 import org.akvo.caddisfly.widget.PageIndicatorView;
 import org.akvo.caddisfly.widget.SwipeDirection;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class StripTestActivity extends BaseActivity {
 
@@ -332,8 +328,8 @@ public class StripTestActivity extends BaseActivity {
         invalidateOptionsMenu();
     }
 
-    public void onStartTest(View view) {
-        Intent intent = new Intent(getBaseContext(), StripMeasureActivity.class);
+    public void onStartTest() {
+        Intent intent = new Intent(this, StripMeasureActivity.class);
         intent.putExtra(ConstantKey.START_MEASURE, true);
         intent.putExtra(ConstantKey.TEST_INFO, testInfo);
         intent.putExtra(ConstantKey.TEST_STAGE, currentStage);
@@ -389,6 +385,10 @@ public class StripTestActivity extends BaseActivity {
 
             View view = fragmentInstructionBinding.getRoot();
 
+            view.findViewById(R.id.buttonStart).setOnClickListener(v -> {
+                ((StripTestActivity) requireActivity()).onStartTest();
+            });
+
             if (showOk) {
                 view.findViewById(R.id.buttonStart).setVisibility(View.VISIBLE);
             }
@@ -401,7 +401,7 @@ public class StripTestActivity extends BaseActivity {
         public void setResult(TestInfo testInfo) {
             if (testInfo != null) {
 
-                LayoutInflater inflater = (LayoutInflater) Objects.requireNonNull(getActivity())
+                LayoutInflater inflater = (LayoutInflater) requireActivity()
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
                 resultLayout.removeAllViews();

@@ -37,10 +37,4 @@
     <declare-styleable name="TimerView">
         <attr name="circleColor" format="color" />
     </declare-styleable>
-
-    <declare-styleable name="RowView">
-        <attr name="number" format="string" localization="suggested" />
-        <attr name="paragraph" format="string" localization="suggested" />
-    </declare-styleable>
-
 </resources>

@@ -36,15 +36,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
-import kotlinx.android.synthetic.main.activity_main.*
 import org.akvo.caddisfly.R
-import org.akvo.caddisfly.R.*
+import org.akvo.caddisfly.R.color
+import org.akvo.caddisfly.R.string
 import org.akvo.caddisfly.app.CaddisflyApp
 import org.akvo.caddisfly.common.AppConstants.FLOW_SURVEY_PACKAGE_NAME
 import org.akvo.caddisfly.databinding.ActivityMainBinding
@@ -64,15 +63,17 @@ const val INTRO_PAGE_COUNT = 2
 class MainActivity : AppUpdateActivity() {
 
     private val refreshHandler = WeakRefHandler(this)
-    private var b: ActivityMainBinding? = null
+    private lateinit var b: ActivityMainBinding
     private var statusBarColors: AnimatedColor? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        b = DataBindingUtil.setContentView<ActivityMainBinding?>(this, layout.activity_main)
+        b = ActivityMainBinding.inflate(layoutInflater)
+        val view = b.root
+        setContentView(view)
 
-        b!!.pageIndicator.setPageCount(INTRO_PAGE_COUNT)
+        b.pageIndicator.setPageCount(INTRO_PAGE_COUNT)
 
         setTitle(string.appName)
 
@@ -85,23 +86,29 @@ class MainActivity : AppUpdateActivity() {
 
         hideActionBar()
 
-        b!!.viewPager.addOnPageChangeListener(object : OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+        b.viewPager.addOnPageChangeListener(object : OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
             override fun onPageSelected(position: Int) {
-                b!!.pageIndicator.setActiveIndex(position)
+                b.pageIndicator.setActiveIndex(position)
                 if (position == 1) {
-                    b!!.buttonNext.visibility = View.GONE
-                    b!!.buttonOk.visibility = View.VISIBLE
+                    b.buttonNext.visibility = View.GONE
+                    b.buttonOk.visibility = View.VISIBLE
                 } else {
-                    b!!.buttonNext.visibility = View.VISIBLE
-                    b!!.buttonOk.visibility = View.GONE
+                    b.buttonNext.visibility = View.VISIBLE
+                    b.buttonOk.visibility = View.GONE
                 }
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
         })
 
-        b!!.buttonInfo.setOnClickListener {
+        b.buttonInfo.setOnClickListener {
             val intent = Intent(baseContext, AboutActivity::class.java)
             startActivity(intent)
         }
@@ -115,21 +122,21 @@ class MainActivity : AppUpdateActivity() {
     }
 
     private fun setUpViews() {
-        b!!.viewPager.adapter = IntroFragmentAdapter(supportFragmentManager)
-        b!!.pageIndicator.setActiveIndex(0)
-        if (b!!.viewPager.currentItem == 1) {
-            b!!.buttonNext.visibility = View.GONE
-            b!!.buttonOk.visibility = View.VISIBLE
+        b.viewPager.adapter = IntroFragmentAdapter(supportFragmentManager)
+        b.pageIndicator.setActiveIndex(0)
+        if (b.viewPager.currentItem == 1) {
+            b.buttonNext.visibility = View.GONE
+            b.buttonOk.visibility = View.VISIBLE
         } else {
-            b!!.buttonNext.visibility = View.VISIBLE
-            b!!.buttonOk.visibility = View.GONE
+            b.buttonNext.visibility = View.VISIBLE
+            b.buttonOk.visibility = View.GONE
         }
         switchLayoutForDiagnosticOrUserMode()
 
         // Setting text here as some phones not translating text
         // Could probably be removed after review
-        b!!.buttonNext.text = getString(string.next)
-        b!!.buttonOk.text = getString(string.go_to_external_app)
+        b.buttonNext.text = getString(string.next)
+        b.buttonOk.text = getString(string.go_to_external_app)
     }
 
     override fun onResume() {
@@ -138,12 +145,14 @@ class MainActivity : AppUpdateActivity() {
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
             statusBarColors = if (isDiagnosticMode()) {
                 AnimatedColor(
-                        ContextCompat.getColor(this, color.colorPrimaryDark),
-                        ContextCompat.getColor(this, color.diagnostic_status))
+                    ContextCompat.getColor(this, color.colorPrimaryDark),
+                    ContextCompat.getColor(this, color.diagnostic_status)
+                )
             } else {
                 AnimatedColor(
-                        ContextCompat.getColor(this, color.colorPrimaryDark),
-                        ContextCompat.getColor(this, color.black_main))
+                    ContextCompat.getColor(this, color.colorPrimaryDark),
+                    ContextCompat.getColor(this, color.black_main)
+                )
             }
             animateStatusBar()
         }
@@ -172,12 +181,12 @@ class MainActivity : AppUpdateActivity() {
     }
 
     fun onNextClicked(@Suppress("UNUSED_PARAMETER") view: View?) {
-        b!!.viewPager.setCurrentItem(1, true)
+        b.viewPager.setCurrentItem(1, true)
     }
 
     fun onOkClicked(@Suppress("UNUSED_PARAMETER") view: View?) {
         val intent: Intent? = packageManager
-                .getLaunchIntentForPackage(FLOW_SURVEY_PACKAGE_NAME)
+            .getLaunchIntentForPackage(FLOW_SURVEY_PACKAGE_NAME)
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
@@ -188,12 +197,16 @@ class MainActivity : AppUpdateActivity() {
     }
 
     private fun alertDependantAppNotFound() {
-        val message = String.format("%s\r\n\r\n%s",
-                getString(string.external_app_not_installed),
-                getString(string.install_external_app))
-        AlertUtil.showAlert(this, string.notFound, message, string.close,
-                DialogInterface.OnClickListener { _: DialogInterface?, _: Int -> closeApp(0) },
-                null, null)
+        val message = String.format(
+            "%s\r\n\r\n%s",
+            getString(string.external_app_not_installed),
+            getString(string.install_external_app)
+        )
+        AlertUtil.showAlert(
+            this, string.notFound, message, string.close,
+            { _: DialogInterface?, _: Int -> closeApp(0) },
+            null, null
+        )
     }
 
     private fun closeApp(delay: Int) {
@@ -220,7 +233,7 @@ class MainActivity : AppUpdateActivity() {
     /**
      * Handler to restart the app after language has been changed.
      */
-    private class WeakRefHandler internal constructor(ref: Activity) : Handler() {
+    private class WeakRefHandler(ref: Activity) : Handler() {
         private val ref: WeakReference<Activity> = WeakReference(ref)
         override fun handleMessage(msg: Message) {
             val f = ref.get()
@@ -230,8 +243,8 @@ class MainActivity : AppUpdateActivity() {
     }
 
     override fun onBackPressed() {
-        if (b!!.viewPager.currentItem > 0) {
-            b!!.viewPager.currentItem = b!!.viewPager.currentItem - 1
+        if (b.viewPager.currentItem > 0) {
+            b.viewPager.currentItem = b.viewPager.currentItem - 1
         } else {
             super.onBackPressed()
         }
@@ -241,8 +254,10 @@ class MainActivity : AppUpdateActivity() {
      * Disables diagnostic mode.
      */
     fun disableDiagnosticsMode(@Suppress("UNUSED_PARAMETER") view: View?) {
-        Toast.makeText(baseContext, getString(string.diagnosticModeDisabled),
-                Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            baseContext, getString(string.diagnosticModeDisabled),
+            Toast.LENGTH_SHORT
+        ).show()
         AppPreferences.disableDiagnosticMode()
         switchLayoutForDiagnosticOrUserMode()
         changeActionBarStyleBasedOnCurrentMode()
@@ -250,11 +265,11 @@ class MainActivity : AppUpdateActivity() {
 
     private fun switchLayoutForDiagnosticOrUserMode() {
         if (isDiagnosticMode()) {
-            text_diagnostic_mode.visibility = View.VISIBLE
-            fabDisableDiagnostics.show()
+            b.textDiagnosticMode.visibility = View.VISIBLE
+            b.fabDisableDiagnostics.show()
         } else {
-            text_diagnostic_mode.visibility = View.GONE
-            fabDisableDiagnostics.hide()
+            b.textDiagnosticMode.visibility = View.GONE
+            b.fabDisableDiagnostics.hide()
         }
     }
 

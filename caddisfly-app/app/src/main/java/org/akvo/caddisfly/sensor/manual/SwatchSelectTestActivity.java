@@ -252,10 +252,6 @@ public class SwatchSelectTestActivity extends BaseActivity
         }
     }
 
-    public void onSubmitClick(View view) {
-        sendResults();
-    }
-
     private void sendResults() {
         if (inputFragment.get(pageIndex.getInputPageIndex(0)).isValid()) {
             SparseArray<String> results = new SparseArray<>();
@@ -321,6 +317,10 @@ public class SwatchSelectTestActivity extends BaseActivity
             }
 
             View view = fragmentInstructionBinding.getRoot();
+
+            view.findViewById(R.id.buttonSubmit).setOnClickListener(v -> {
+                ((SwatchSelectTestActivity)requireActivity()).sendResults();
+            });
 
             if (showOk) {
                 view.findViewById(R.id.buttonSubmit).setVisibility(View.VISIBLE);

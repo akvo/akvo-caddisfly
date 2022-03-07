@@ -73,7 +73,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp"
                 android:enabled="true"
-                android:onClick="onSubmitClick"
                 android:text="@string/submitResult"
                 android:theme="?primaryButtonStyle"
                 android:visibility="gone" />
@@ -86,7 +85,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp"
                 android:enabled="true"
-                android:onClick="onCloseClick"
                 android:text="@string/close"
                 android:theme="?primaryButtonStyle"
                 android:visibility="gone" />
@@ -99,7 +97,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp"
                 android:enabled="true"
-                android:onClick="onStartTest"
                 android:text="@string/start"
                 android:theme="?primaryButtonStyle"
                 android:visibility="gone" />

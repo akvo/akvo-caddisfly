@@ -408,11 +408,7 @@ public class ManualTestActivity extends BaseActivity
         nextPage();
     }
 
-    public void onSubmitClick(View view) {
-        sendResults();
-    }
-
-    /**
+     /**
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
@@ -460,6 +456,10 @@ public class ManualTestActivity extends BaseActivity
             }
 
             View view = fragmentInstructionBinding.getRoot();
+
+            view.findViewById(R.id.buttonSubmit).setOnClickListener(v -> {
+                ((ManualTestActivity)requireActivity()).sendResults();
+            });
 
             if (showButton == ButtonType.SUBMIT) {
                 view.findViewById(R.id.buttonSubmit).setVisibility(View.VISIBLE);
