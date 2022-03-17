@@ -302,11 +302,11 @@ class CbtTest {
         if (id == Constants.CBT_ID_2) {
             onView(withText(lowRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText("56")))
-            onView(withId(R.id.textResult2)).check(matches(withText("56")))
+            onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())))
         } else {
             onView(withText(intermediateRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText("5.6")))
-            onView(withId(R.id.textResult2)).check(matches(withText("5.6")))
+            onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())))
         }
 
         onView(withText(possiblySafe)).check(matches(isDisplayed()))
@@ -342,11 +342,11 @@ class CbtTest {
         if (id == Constants.CBT_ID_2) {
             onView(withText(R.string.very_unsafe)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText(">1000")))
-            onView(withId(R.id.textResult2)).check(matches(withText(">1000")))
+            onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())))
         } else {
             onView(withText(veryHighRisk)).check(matches(isDisplayed()))
             onView(withId(R.id.textResult1)).check(matches(withText(">100")))
-            onView(withId(R.id.textResult2)).check(matches(withText(">100")))
+            onView(withId(R.id.textResult2)).check(matches(not(isDisplayed())))
         }
 
         getInstrumentation().waitForIdleSync()

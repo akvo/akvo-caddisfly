@@ -333,7 +333,7 @@ object TestHelper {
     }
 
     fun navigateUp() {
-        onView(allOf<View>(withContentDescription(R.string.navigate_up),
+        onView(allOf(withContentDescription(R.string.navigate_up),
                 isDisplayed())).perform(click())
     }
 
