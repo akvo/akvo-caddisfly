@@ -46,6 +46,7 @@ public class CustomShapeButton extends View {
 
     private Rect rect1;
     private String mKey;
+    private int height;
 
     public CustomShapeButton(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -165,16 +166,23 @@ public class CustomShapeButton extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        height = h;
+    }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        mPath.reset();
 
         int lineTop = 60;
         int fillLine = 80;
         int left = 0;
         colWidth = (getWidth() / 5);
 
-        bottom = (int) (getHeight() - strokePaint.getStrokeWidth());
+        bottom = (int) (height - strokePaint.getStrokeWidth());
 
         int fillHeight = bottom - fillLine;
         bottom1 = (int) (fillHeight * 0.2) + lineTop;
@@ -193,7 +201,7 @@ public class CustomShapeButton extends View {
 
         canvas.drawRect(colWidth * 2, fillLine, colWidth * 3, bottom, getPaint(area3, active3));
 
-        canvas.drawRect(colWidth * 3, bottom2, colWidth * 4 + (colWidth / 3), bottom, getPaint(area3, active3));
+        canvas.drawRect(colWidth * 3, bottom2, colWidth * 4 + (colWidth / 3f), bottom, getPaint(area3, active3));
 
         canvas.drawRect(colWidth * 3, fillLine, colWidth * 4, bottom2, getPaint(area4, active4));
 
@@ -209,8 +217,8 @@ public class CustomShapeButton extends View {
 
         mPath.moveTo(colWidth * 3, lineTop);
         mPath.lineTo(colWidth * 3, bottom2);
-        mPath.lineTo((colWidth * 4) + (colWidth / 3), bottom2);
-        mPath.lineTo((colWidth * 4) + (colWidth / 3), bottom);
+        mPath.lineTo((colWidth * 4) + (colWidth / 3f), bottom2);
+        mPath.lineTo((colWidth * 4) + (colWidth / 3f), bottom);
         mPath.lineTo((colWidth * 2), bottom);
 
         mPath.moveTo(colWidth * 4, lineTop);
@@ -228,11 +236,11 @@ public class CustomShapeButton extends View {
         canvas.drawPath(markerPath, markerPaint);
 
         int halfWidth = colWidth / 2;
-        canvas.drawText("1", halfWidth - 10, fillLine + (bottom3 / 2) - 10, getTextPaint(area1));
-        canvas.drawText("2", colWidth - 10, bottom3 + ((bottom - bottom3) / 2), getTextPaint(area2));
+        canvas.drawText("1", halfWidth - 10, fillLine + (bottom3 / 2f) - 10, getTextPaint(area1));
+        canvas.drawText("2", colWidth - 10, bottom3 + ((bottom - bottom3) / 2f), getTextPaint(area2));
         canvas.drawText("3", (colWidth * 3) + 20, fillLine + (bottom - bottom2), getTextPaint(area3));
-        canvas.drawText("4", halfWidth - 10 + colWidth * 3, fillLine + (bottom2 / 2) - 20, getTextPaint(area4));
-        canvas.drawText("5", halfWidth - 10 + colWidth * 4, fillLine + (bottom1 / 2) - 26, getTextPaint(area5));
+        canvas.drawText("4", halfWidth - 10 + colWidth * 3, fillLine + (bottom2 / 2f) - 20, getTextPaint(area4));
+        canvas.drawText("5", halfWidth - 10 + colWidth * 4, fillLine + (bottom1 / 2f) - 26, getTextPaint(area5));
     }
 
     public String getKey() {
