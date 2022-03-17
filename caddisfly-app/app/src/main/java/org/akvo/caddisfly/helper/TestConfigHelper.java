@@ -60,6 +60,10 @@ public final class TestConfigHelper {
      * Get the most probable number for the key.
      */
     public static MpnValue getMpnValueForKey(String key, String sampleQuantity) {
+        if (key.isEmpty()) {
+            return new MpnValue("", 0d, "");
+        }
+
         String fileName = MPN_TABLE_FILENAME;
 
         if (sampleQuantity.equals("10")) {
@@ -69,8 +73,9 @@ public final class TestConfigHelper {
         HashMap<String, MpnValue> mpnTable = loadMpnTable(fileName);
         MpnValue mpnValue = mpnTable.get(key.replace("2", "1"));
 
-        populateDisplayColors(mpnValue, fileName);
-
+        if (mpnValue != null) {
+            populateDisplayColors(mpnValue, fileName);
+        }
         return mpnValue;
     }
 
